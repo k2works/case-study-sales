@@ -1,6 +1,7 @@
 # 販売管理システムのケーススタディ
 
 [![Node.js CI](https://github.com/k2works/case-study-sales/actions/workflows/node.js.yml/badge.svg)](https://github.com/k2works/case-study-sales/actions/workflows/node.js.yml)
+[![Java CI](https://github.com/k2works/case-study-sales/actions/workflows/gradle.yml/badge.svg)](https://github.com/k2works/case-study-sales/actions/workflows/gradle.yml)
 
 ## 概要
 
