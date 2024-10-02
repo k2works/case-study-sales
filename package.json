@@ -8,7 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 0",
     "build": "npx gulp build",
     "slides": "npx gulp slides",
-    "docs": "npx gulp docs"
+    "docs": "npx gulp docs",
+    "heroku-postbuild": "webpack --config ./webpack.config.js --progress"
   },
   "author": "",
   "license": "ISC",
@@ -29,6 +30,7 @@
     "webpack-dev-server": "^5.1.0"
   },
   "dependencies": {
-    "@k2works/full-stack-lab": "^1.7.0"
+    "@k2works/full-stack-lab": "^1.7.0",
+    "http-server": "^14.1.1"
   }
 }
