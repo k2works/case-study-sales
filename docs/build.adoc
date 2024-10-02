@@ -886,7 +886,7 @@ module.exports = {
 }
 ----
 
-## アプリケーション開発環境の構築
+## バックエンドアプリケーション開発環境の構築
 
 Javaアプリケーション 開発環境を構築するためには、以下の手順を実行してください。
 
@@ -1470,4 +1470,35 @@ springdoc.paths-to-match=/api/**
 springdoc.swagger-ui.path=/swagger-ui.html
 springdoc.packages-to-scan=com.example.sms.presentation.api
 springdoc.paths-to-match=/api/**
+----
+
+## フロントエンドアプリケーション開発環境の構築
+
+Reactアプリケーション開発環境を構成するためには、以下の手順を実行してください。
+
+### Reactのセットアップ
+
+#### Viteのセットアップ
+
+https://vitejs.dev/[Vite]とは、Reactの開発環境を構築するためのツールです。以下の手順でViteをセットアップしてください。
+
+. 以下のコマンドを実行して、Viteをインストールしてください。
++
+[source, bash]
+----
+npm create vite@latest
+...
+> npx
+> create-vite
+
+√ Project name: ... app
+√ Select a framework: » React
+√ Select a variant: » TypeScript
+----
++
+[source, bash]
+----
+cd app
+npm install
+npm run dev
 ----
