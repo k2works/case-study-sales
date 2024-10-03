@@ -252,6 +252,81 @@ git push heroku-take01 take01:master
 #### アプリケーションの起動
 . `heroku open` コマンドを実行して、アプリケーションを起動します。
 
+#### APIアプリケーションのデプロイ
+
+`api` ディレクトリ内にSpring Bootプロジェクトがある場合、そのディレクトリをHerokuにデプロイする手順を以下に示します。
+
+. Herokuアプリの作成
++
+Herokuにログインし、新しいアプリケーションを作成します。
++
+[source,bash]
+----
+heroku login
+heroku create your-heroku-app-name
+----
++
+. Herokuのリモートリポジトリを追加
++
+Herokuのリモートリポジトリを追加します。
++
+[source,bash]
+----
+heroku git:remote -a your-heroku-app-name
+----
++
+. Procfileの作成
++
+`api` ディレクトリに `Procfile` を作成し、実行コマンドを記述します。
++
+[source,bash]
+----
+echo "web: java -Dserver.port=\$PORT -jar target/*.jar" > Procfile
+----
++
+. アプリケーションのビルド
++
+Spring BootアプリケーションをビルドしてJARファイルを作成します。Mavenを使用する場合は次のコマンドを実行します：
++
+[source,bash]
+----
+./gradlew build
+----
++
+. `subtree` を使用してHerokuにデプロイ
++
+ルートディレクトリに戻り、`git subtree` を使用して `api` ディレクトリをHerokuにデプロイします：
++
+[source,bash]
+----
+cd ..
+git add .
+git commit -m "Prepare for deployment"
+git subtree push --prefix api heroku main
+----
++
+もし `main` ブランチ以外を使用する場合は、適宜ブランチ名を変更してください。
++
+. Herokuデプロイメントの確認
++
+Herokuの管理ダッシュボードにアクセスして、デプロイメントが正常に完了したことを確認します。デプロイメントが完了すると、Herokuが提供するURLにアクセスしてアプリケーションを確認できます。
++
+[source,bash]
+----
+heroku open
+----
++
+これで、`app` ディレクトリ内のSpring BootアプリケーションをHerokuにデプロイすることができます。問題が発生した場合は、Herokuのログを確認し、デバッグを行ってください。
++
+. ログの確認
++
+Herokuのログを確認するには、次のコマンドを実行します：
++
+[source,bash]
+----
+heroku logs --tail
+----
+
 ## Vercelとは
 Vercelは、サーバーレスのプラットフォームで、フロントエンドの開発者が簡単にWebサイトやアプリケーションをデプロイできるようにするものです。
 
