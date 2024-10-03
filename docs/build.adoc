@@ -1502,3 +1502,133 @@ cd app
 npm install
 npm run dev
 ----
+
+#### テスト環境のセットアップ
+
+##### Jestのセットアップ
+
+https://jestjs.io/[Jest]とは、JavaScriptのテストフレームワークです。以下の手順でJestをセットアップしてください。
+
+. 以下のコマンドを実行して、`.babelrc` ファイルを追加してください。
++
+[source,bash]
+----
+npm install --save-dev @babel/preset-react @babel/preset-typescript
+----
++
+[source,json]
+----
+{
+  "presets": [
+    "@babel/preset-env",
+    "@babel/preset-typescript",
+    "@babel/preset-react"
+  ]
+}
+----
++
+. 以下のコマンドを実行して、Jestをインストールしてください。
++
+[source, bash]
+----
+npm install --save-dev jest ts-jest @types/jest jest-environment-jsdom@latest @testing-library/react@latest @testing-library/jest-dom@latest @testing-library/user-event@latest jest-dom jest-environment-jsdom jest-transform-css identity-obj-proxy
+----
++
+. `jest.config.cjs` ファイルを作成してください。
++
+[source, javascript]
+----
+module.exports = {
+    moduleFileExtensions: [
+        "js",
+        "ts",
+        "tsx"
+    ],
+    testMatch: [
+        "**/src/**/*.test.ts",
+        "**/src/**/*.test.tsx"
+    ],
+    roots: [
+        "<rootDir>/src"
+    ],
+    preset: "ts-jest",
+    testEnvironment: "jest-environment-jsdom",
+    transform: {
+        '^.+\\.jsx?$': 'babel-jest',
+        '^.+\\.tsx?$': 'babel-jest',
+        '\\.css$': 'jest-transform-css',
+    },
+    moduleNameMapper: {
+        '\\.(css|scss)$': 'identity-obj-proxy',
+        "\\.(gif|ttf|eot|svg|png)$": "<rootDir>/test/__mocks__/fileMock.js",
+        uuid: require.resolve('uuid'),
+    },
+};
+----
++
+. `package.json` ファイルに以下の設定を追加してください。
++
+[source, json]
+----
+"scripts": {
+"test": "jest"
+},
+----
++
+. `tsconfig.app.json` ファイルに以下の設定を変更してください。
++
+[source, json]
+----
+    "noUnusedLocals": false,
+----
++
+. `App.tsx` ファイルを修正します
++
+[source, javascript]
+----
+import { useState } from "react";
+import "./App.css";
+import React from "react";
+
+function App() {
+    const [count, setCount] = useState(0);
+
+    return (
+        <>
+            <h1>React</h1>
+            <div className="card">
+                <button onClick={() => setCount((count) => count + 1)}>
+                    count is {count}
+                </button>
+                <p>
+                    Edit <code>src/App.tsx</code> and save to test HMR
+                </p>
+            </div>
+        </>
+    );
+}
+
+export default App;
+----
++
+. `App.test.tsx` ファイルを作成してください。
++
+[source, javascript]
+----
+import "@testing-library/jest-dom";
+import { render } from "@testing-library/react";
+import App from "./App";
+import React from "react";
+
+test("Renders the main page", () => {
+    render(<App />);
+    expect(true).toBeTruthy();
+});
+----
++
+. 以下のコマンドを実行して、テストを実行してください。
++
+[source, bash]
+----
+npm run test
+----
