@@ -106,7 +106,7 @@ const erd = {
         cb();
     },
     copy: () => {
-        return src(`${DOCKER_OUTPUT_PATH}/**`)
+        return src(`${DOCKER_OUTPUT_PATH}/**`, {encoding: false})
             .pipe(dest(PUBLIC_ERD_PATH));
     },
 };
