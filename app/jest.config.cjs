@@ -21,6 +21,5 @@ module.exports = {
     moduleNameMapper: {
         '\\.(css|scss)$': 'identity-obj-proxy',
         "\\.(gif|ttf|eot|svg|png)$": "<rootDir>/test/__mocks__/fileMock.js",
-        uuid: require.resolve('uuid'),
     },
 };
