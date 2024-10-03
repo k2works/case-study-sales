@@ -1513,7 +1513,7 @@ https://jestjs.io/[Jest]とは、JavaScriptのテストフレームワークで�
 +
 [source,bash]
 ----
-npm install --save-dev @babel/preset-react @babel/preset-typescript
+npm install --save-dev @babel/preset-env @babel/preset-react @babel/preset-typescript
 ----
 +
 [source,json]
@@ -1561,7 +1561,6 @@ module.exports = {
     moduleNameMapper: {
         '\\.(css|scss)$': 'identity-obj-proxy',
         "\\.(gif|ttf|eot|svg|png)$": "<rootDir>/test/__mocks__/fileMock.js",
-        uuid: require.resolve('uuid'),
     },
 };
 ----
