@@ -9,7 +9,8 @@
     "build": "npx gulp build",
     "slides": "npx gulp slides",
     "docs": "npx gulp docs",
-    "heroku-postbuild": "webpack --config ./webpack.config.js --progress"
+    "heroku-postbuild": "webpack --config ./webpack.config.js --progress",
+    "deploy:api": "git subtree push --prefix api heroku main"
   },
   "author": "",
   "license": "ISC",
