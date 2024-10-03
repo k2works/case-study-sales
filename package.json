@@ -13,7 +13,13 @@
     "deploy": "npm-run-all deploy:*",
     "deploy:api": "git subtree push --prefix api heroku main",
     "deploy:app": "cd app && vercel",
-    "deploy:docs": "vercel"
+    "deploy:docs": "vercel",
+    "jig": "npm-run-all jig:*",
+    "jig:api": "npx gulp jig",
+    "jig:db": "npx gulp jig_erd",
+    "erd": "npx gulp erd",
+    "db:schemaspy:mysql": "docker-compose run --rm schemaspy_mysql",
+    "db:schemaspy:postresql": "docker-compose run --rm schemaspy_postgresql"
   },
   "author": "",
   "license": "ISC",
@@ -38,6 +44,9 @@
   },
   "dependencies": {
     "@k2works/full-stack-lab": "^1.7.0",
+    "fs-extra": "^11.2.0",
+    "gulp-exec": "^5.0.0",
+    "gulp-rename": "^2.0.0",
     "http-server": "^14.1.1"
   }
 }
