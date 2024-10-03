@@ -39,7 +39,7 @@ const asciidoctor = {
                 mkdirs: true,
             });
         });
-        src(`${inputRootDir}/images/*.*`).pipe(dest(`${outputRootDir}/images`))
+        src(`${inputRootDir}/images/*.*`, {encoding: false}).pipe(dest(`${outputRootDir}/images`))
             .on('end', cb); // src.pipeの完了後にcb()を実行
     },
     watch: (cb) => {
@@ -83,7 +83,7 @@ const marp = {
             })
             .catch(console.error);
 
-        src(`${inputRootDir}/images/*.*`).pipe(dest(`${outputRootDir}/images`));
+        src(`${inputRootDir}/images/*.*` , {encoding: false}).pipe(dest(`${outputRootDir}/images`));
 
         cb();
     },

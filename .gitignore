@@ -136,3 +136,5 @@ public
 docker/schemaspy/output
 docker/mssql/data
 docker/mssql/log
+
+tmp

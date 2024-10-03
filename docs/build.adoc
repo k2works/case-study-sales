@@ -903,24 +903,6 @@ Javaアプリケーション 開発環境を構築するためには、以下の
 docker-compose up -d
 ----
 
-#### Prismaのセットアップ
-
-https://www.prisma.io/[Prisma]とは、JavaScript製ORMです。
-
-. 以下のコマンドを実行して、Prismaをインストールしてください。
-+
-[source, bash]
-----
-npm install prisma --save-dev
-----
-+
-. 以下のコマンドを実行して、Prismaを初期化してください。
-+
-[source, bash]
-----
-npx prisma init
-----
-
 ### Javaのセットアップ
 
 #### パッケージのインストール(Windows)
@@ -1630,4 +1612,124 @@ test("Renders the main page", () => {
 [source, bash]
 ----
 npm run test
+----
+
+## データベース開発環境の構築
+
+TypeScriptでデータベース開発環境を構成するためには、以下の手順を実行してください。
+
+### TypeScriptのセットアップ
+
+#### Viteのセットアップ
+
+https://vitejs.dev/[Vite]とは、Reactの開発環境を構築するためのツールです。以下の手順でViteをセットアップしてください。
+
+. 以下のコマンドを実行して、Viteをインストールしてください。
++
+[source, bash]
+----
+npm create vite@latest
+...
+> npx
+> create-vite
+
+√ Project name: ... db
+√ Select a framework: » Vanilla
+√ Select a variant: » TypeScript
+----
++
+[source, bash]
+----
+cd db
+npm install
+npm run db
+----
+
+#### テスト環境のセットアップ
+
+##### Jestのセットアップ
+
+https://jestjs.io/[Jest]とは、JavaScriptのテストフレームワークです。以下の手順でJestをセットアップしてください。
+
+. 以下のコマンドを実行して、Jestをインストールしてください。
++
+[source, bash]
+----
+npm install --save-dev typescript jest ts-jest @types/jest
+----
++
+. `jest.config.cjs` ファイルを作成してください。
++
+[source, javascript]
+----
+module.exports = {
+    moduleFileExtensions: [
+        "ts",
+        "js"
+    ],
+    transform: {
+        "^.+\\.ts$": ["ts-jest", { tsconfig: "tsconfig.json" }]
+    },
+    testMatch: [
+        "**/**/*.test.ts"
+    ]
+};
+----
++
+. `package.json` ファイルに以下の設定を追加してください。
++
+[source, json]
+----
+"scripts": {
+"test": "jest"
+},
+----
+
+##### Prismaのセットアップ
+
+https://www.prisma.io/[Prisma]とは、JavaScript製ORMです。
+
+. 以下のコマンドを実行して、Prismaをインストールしてください。
++
+[source, bash]
+----
+npm install prisma --save-dev
+----
++
+. `.env` ファイルを設定してください。
++
+[source, properties]
+----
+DATABASE_URL="postgresql://root:password@localhost:5432/mydb?schema=public"
+----
++
+. 以下のコマンドを実行して、Prismaを初期化してください。
++
+[source, bash]
+----
+npx prisma init
+----
++
+. 開発に必要なパッケージをインストールしてください。
++
+[source, bash]
+----
+npm install --save-dev tsx dotenv
+----
++
+. `package.json` にデータベースタスクを追加します.
++
+[source, javascript]
+----
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "jest",
+    "db:migrate": "prisma migrate dev",
+    "db:generate": "prisma generate",
+    "db:seed": "prisma db seed",
+    "db:show": "prisma studio",
+    "db:migrate:create-only": "prisma migrate dev --create-only"
+  },
 ----
