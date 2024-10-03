@@ -34,3 +34,10 @@ exports.jig = custom.jigBuildTasks();
 exports.jig_erd = custom.jigErdBuildTasks();
 
 exports.erd = custom.erdBuildTasks();
+
+exports.buildDocs = series(
+    parallel(core.asciidoctorBuildTasks(), core.marpBuildTasks()),
+    custom.jigBuildTasks(),
+    custom.jigErdBuildTasks(),
+    custom.erdBuildTasks(),
+);

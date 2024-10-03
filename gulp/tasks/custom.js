@@ -23,8 +23,10 @@ const jig = {
         return src(apiGradlewPath, { read: false })
             .pipe(exec(command, { cwd: apiCwd }));
     },
-    clean: async () => {
+    cleanDoc: async () => {
         await fs.remove("./public/jig");
+    },
+    cleanApi: () => {
         const command = isWindows ? 'gradlew.bat clean' : './gradlew clean';
         return src(apiGradlewPath, {read: false})
             .pipe(exec(command, {cwd: apiCwd}));
@@ -121,7 +123,7 @@ const erdBuildTasks = () => {
 }
 
 const jigBuildTasks = () => {
-    return series(jig.clean, jig.build, jig.docs, jig.copy);
+    return series(jig.cleanDoc, jig.cleanApi, jig.build, jig.docs, jig.copy);
 }
 
 const jigErdBuildTasks = () => {
