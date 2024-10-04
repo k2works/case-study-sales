@@ -2,7 +2,7 @@ package com.example.sms.service.user;
 
 import com.example.sms.domain.model.RoleName;
 import com.example.sms.domain.model.User;
-import com.example.sms.infrastructure.datasource.UserDataSource;
+import com.example.sms.infrastructure.repository.user.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class AuthUserServiceTest {
     AuthService service;
 
     @MockBean
-    UserDataSource repository;
+    UserRepository repository;
 
     @Test
     @DisplayName("ユーザが存在する場合、ユーザ情報を返す")
