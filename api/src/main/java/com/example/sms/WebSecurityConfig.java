@@ -33,30 +33,36 @@ public class WebSecurityConfig {
     }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/js/**", "/css/**").permitAll()
+        http.formLogin(login -> login
+                .loginProcessingUrl("/login")
+                .usernameParameter("username")
+                .passwordParameter("password")
+                .defaultSuccessUrl("/", true)
+                .failureUrl("/login?error=true")
+                .permitAll()
+        ).logout(logout -> logout
+                .logoutSuccessUrl("/login")
+        ).headers(headers -> headers
+                .frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)
+        ).csrf(csrf -> csrf.ignoringRequestMatchers(PathRequest.toH2Console())
+        ).csrf(csrf -> csrf.ignoringRequestMatchers("/api/**")
+        ).cors(cors -> cors
+                .configurationSource(request -> new org.springframework.web.cors.CorsConfiguration() {{
+                            setAllowedOriginPatterns(java.util.List.of("*"));
+                            setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                            setAllowedHeaders(java.util.List.of("*"));
+                            setAllowCredentials(true);
+                        }}
+                )
+        ).authorizeHttpRequests(authz -> authz
+                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/test/**").permitAll()
                         .anyRequest().authenticated()
-                ).formLogin(form -> form
-                        .loginProcessingUrl("/login")
-                        .usernameParameter("username")
-                        .passwordParameter("password")
-                        .defaultSuccessUrl("/", true)
-                        .failureUrl("/login?error=true")
-                        .permitAll()
-                ).logout(logout -> logout
-                        .logoutSuccessUrl("/login")
-                ).headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)
-                ).csrf(csrf -> csrf.ignoringRequestMatchers(PathRequest.toH2Console())
-                ).csrf(csrf -> csrf.ignoringRequestMatchers("/api/**")
-                ).cors(cors -> cors
-                        .configurationSource(request -> new org.springframework.web.cors.CorsConfiguration() {{
-                                    setAllowedOriginPatterns(java.util.List.of("*"));
-                                    setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-                                    setAllowedHeaders(java.util.List.of("*"));
-                                    setAllowCredentials(true);
-                                }}
-                        )
-                );
+                //).sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                //).exceptionHandling(ex -> ex.authenticationEntryPoint(new AuthEntryPointJwt())
+        );
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
