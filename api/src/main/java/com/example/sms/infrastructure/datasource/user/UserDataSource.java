@@ -32,7 +32,7 @@ public class UserDataSource implements UserRepository {
     }
 
     @Override
-    public void insert(User user) {
+    public void save(User user) {
         Usr userEntity = userObjMapper.mapToEntity(user);
         userMapper.insert(userEntity);
     }

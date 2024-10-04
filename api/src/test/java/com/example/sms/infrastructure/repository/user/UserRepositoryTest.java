@@ -30,7 +30,7 @@ public class UserRepositoryTest {
     @DisplayName("ユーザー一覧を取得できる")
     void shouldRetrieveAllUsers() {
         User user = getUser();
-        repository.insert(user);
+        repository.save(user);
         assertEquals(1, repository.selectAll().size());
     }
 
@@ -38,7 +38,7 @@ public class UserRepositoryTest {
     @DisplayName("ユーザーを登録できる")
     void shouldRegisterAUser() {
         User user = getUser();
-        repository.insert(user);
+        repository.save(user);
         Optional<User> actual = repository.findById("userId");
         assertTrue(actual.isPresent());
         assertEquals(user.getUserId(), actual.get().getUserId());
@@ -52,7 +52,7 @@ public class UserRepositoryTest {
     @DisplayName("ユーザーを更新できる")
     void shouldUpdateAUser() {
         User user = getUser();
-        repository.insert(user);
+        repository.save(user);
         User updateUser = new User(user.getUserId(), "password2", "firstName2", "lastName2", RoleName.ADMIN);
         repository.update(updateUser);
         Optional<User> actual = repository.findById("userId");
@@ -68,7 +68,7 @@ public class UserRepositoryTest {
     @DisplayName("ユーザーを削除できる")
     void shouldDeleteAUser() {
         User user = getUser();
-        repository.insert(user);
+        repository.save(user);
         repository.deleteById("userId");
         Optional<User> actual = repository.findById("userId");
         assertTrue(actual.isEmpty());

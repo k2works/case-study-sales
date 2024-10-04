@@ -10,7 +10,7 @@ public interface UserRepository {
 
     List<User> selectAll();
 
-    void insert(User user);
+    void save(User user);
 
     void update(User user);
 
