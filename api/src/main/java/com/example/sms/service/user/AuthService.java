@@ -1,7 +1,7 @@
 package com.example.sms.service.user;
 
 import com.example.sms.domain.model.User;
-import com.example.sms.infrastructure.repository.UserRepository;
+import com.example.sms.infrastructure.datasource.UserDataSource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class AuthService implements UserDetailsService {
-    final UserRepository userRepository;
+    final UserDataSource userRepository;
 
-    public AuthService(UserRepository userRepository) {
+    public AuthService(UserDataSource userRepository) {
         this.userRepository = userRepository;
     }
 
