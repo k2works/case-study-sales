@@ -1,6 +1,9 @@
 package com.example.sms.infrastructure.datasource.user;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 @Mapper
 public interface UsrMapper {
@@ -51,4 +54,9 @@ public interface UsrMapper {
      * @mbg.generated Fri Oct 04 15:48:01 JST 2024
      */
     int updateByPrimaryKey(Usr record);
+
+    List<Usr> selectAll();
+
+    @Select("DELETE FROM system.usr")
+    void deleteAll();
 }

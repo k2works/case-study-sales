@@ -4,6 +4,7 @@ import com.example.sms.domain.model.User;
 import com.example.sms.infrastructure.repository.user.UserRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -19,6 +20,36 @@ public class UserDataSource implements UserRepository {
     @Override
     public Optional<User> findById(String userId) {
         Optional<Usr> userEntity = Optional.ofNullable(userMapper.selectByPrimaryKey(userId));
-        return Optional.of(userObjMapper.mapToDomainEntity(userEntity.orElseThrow()));
+        return userEntity.map(userObjMapper::mapToDomainEntity);
+    }
+
+    @Override
+    public List<User> selectAll() {
+        List<Usr> userEntities = userMapper.selectAll();
+        return userEntities.stream()
+                .map(userObjMapper::mapToDomainEntity)
+                .toList();
+    }
+
+    @Override
+    public void insert(User user) {
+        Usr userEntity = userObjMapper.mapToEntity(user);
+        userMapper.insert(userEntity);
+    }
+
+    @Override
+    public void update(User user) {
+        Usr userEntity = userObjMapper.mapToEntity(user);
+        userMapper.updateByPrimaryKey(userEntity);
+    }
+
+    @Override
+    public void deleteById(String userId) {
+        userMapper.deleteByPrimaryKey(userId);
+    }
+
+    @Override
+    public void deleteAll() {
+        userMapper.deleteAll();
     }
 }
