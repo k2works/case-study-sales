@@ -34,7 +34,7 @@ public class UserDataSource implements UserRepository {
     @Override
     public void save(User user) {
         Usr userEntity = userObjMapper.mapToEntity(user);
-        if (userMapper.selectByPrimaryKey(user.getUserId()) != null) {
+        if (userMapper.selectByPrimaryKey(user.getUserId().Value()) != null) {
             userMapper.updateByPrimaryKey(userEntity);
             return;
         }

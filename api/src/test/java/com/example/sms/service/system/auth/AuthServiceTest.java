@@ -1,9 +1,10 @@
 package com.example.sms.service.system.auth;
 
 import com.example.sms.IntegrationTest;
-import com.example.sms.domain.model.system.user.RoleName;
+import com.example.sms.TestDataFactory;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.infrastructure.repository.system.user.UserRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,16 +28,24 @@ public class AuthServiceTest {
     @MockBean
     UserRepository repository;
 
+    @Autowired
+    TestDataFactory testDataFactory;
+
+    @BeforeEach
+    void setUp() {
+        testDataFactory.setUpForAuthApiService();
+    }
+
     @Test
     @DisplayName("ユーザが存在する場合、ユーザ情報を返す")
     void loadUserByUsername_WhenUserExists_ReturnsUserDetails() {
-        User user = new User("test", "pass", "first", "last", RoleName.USER);
+        User user = testDataFactory.User();
 
         when(repository.findById(anyString())).thenReturn(Optional.of(user));
 
-        UserDetails userDetails = service.loadUserByUsername("test");
+        UserDetails userDetails = service.loadUserByUsername(user.getUserId().Value());
 
-        assertEquals("test", userDetails.getUsername());
+        assertEquals("U999999", userDetails.getUsername());
     }
 
     @Test
@@ -45,6 +54,6 @@ public class AuthServiceTest {
         when(repository.findById(anyString())).thenReturn(Optional.empty());
 
         assertThrows(UsernameNotFoundException.class,
-                () -> service.loadUserByUsername("test"));
+                () -> service.loadUserByUsername("U999990"));
     }
 }

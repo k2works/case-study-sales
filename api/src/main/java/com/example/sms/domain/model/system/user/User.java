@@ -13,7 +13,7 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 public class User {
-    String userId;
+    UserId userId;
 
     String password;
 
@@ -22,4 +22,11 @@ public class User {
     String lastName;
 
     RoleName roleName;
+
+    static public User of(String userId, String password, String firstName, String lastName, RoleName roleName) {
+        if (userId == null) {
+            throw new UserException("ユーザーIDが未入力です");
+        }
+        return new User(new UserId(userId), password, firstName, lastName, roleName);
+    }
 }

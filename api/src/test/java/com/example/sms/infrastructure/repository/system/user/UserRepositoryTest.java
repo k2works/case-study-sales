@@ -21,7 +21,7 @@ public class UserRepositoryTest {
     private UserRepository repository;
 
     private static User getUser() {
-        return new User("userId", "password", "firstName", "lastName", RoleName.USER);
+        return User.of("U999999", "password", "firstName", "lastName", RoleName.USER);
     }
 
     @BeforeEach
@@ -42,7 +42,7 @@ public class UserRepositoryTest {
     void shouldRegisterAUser() {
         User user = getUser();
         repository.save(user);
-        Optional<User> actual = repository.findById("userId");
+        Optional<User> actual = repository.findById(user.getUserId().Value());
         assertTrue(actual.isPresent());
         assertEquals(user.getUserId(), actual.get().getUserId());
         assertEquals(user.getFirstName(), actual.get().getFirstName());
@@ -58,7 +58,7 @@ public class UserRepositoryTest {
         repository.save(user);
         User updateUser = new User(user.getUserId(), "password2", "firstName2", "lastName2", RoleName.ADMIN);
         repository.update(updateUser);
-        Optional<User> actual = repository.findById("userId");
+        Optional<User> actual = repository.findById(user.getUserId().Value());
         assertTrue(actual.isPresent());
         assertEquals(updateUser.getUserId(), actual.get().getUserId());
         assertEquals(updateUser.getFirstName(), actual.get().getFirstName());

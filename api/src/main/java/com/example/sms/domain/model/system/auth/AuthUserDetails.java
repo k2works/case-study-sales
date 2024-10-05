@@ -29,7 +29,7 @@ public class AuthUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getUserId();
+        return user.getUserId().Value();
     }
 
     @Override

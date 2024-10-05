@@ -1,8 +1,10 @@
 package com.example.sms.presentation.api.system.auth;
 
 import com.example.sms.PresentationTest;
+import com.example.sms.TestDataFactory;
 import com.example.sms.infrastructure.security.JWTAuth.JwtUtils;
 import com.example.sms.infrastructure.security.JWTAuth.payload.response.MessageResponse;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,6 +36,14 @@ public class AuthApiControllerTest {
     @MockBean
     private JwtUtils jwtUtils;
 
+    @Autowired
+    TestDataFactory testDataFactory;
+
+    @BeforeEach
+    void setUp() {
+        testDataFactory.setUpForAuthApiService();
+    }
+
     @Test
     @DisplayName("ユーザーを認証してJWTを返すことができる")
     @Disabled("CIで失敗するため無効化")
@@ -42,11 +52,11 @@ public class AuthApiControllerTest {
         when(jwtUtils.generateJwtToken(any(Authentication.class))).thenReturn(jwtToken);
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/signin")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"userId\":\"taro-yamada\",\"password\":\"demo\"}"))
+                        .content("{\"userId\":\"U999999\",\"password\":\"demo\"}"))
                 .andExpect(status().isOk())
                 .andReturn();
         String actualResponseBody = mvcResult.getResponse().getContentAsString();
-        String expectedResponseBody = "{\"userId\":\"taro-yamada\",\"roles\":[\"ROLE_USER\"],\"accessToken\":\"testjwt\",\"tokenType\":\"Bearer\"}";
+        String expectedResponseBody = "{\"userId\":\"U999999\",\"roles\":[\"ROLE_USER\"],\"accessToken\":\"testjwt\",\"tokenType\":\"Bearer\"}";
         // 改行コードとスペースを削除して比較
         expectedResponseBody = expectedResponseBody.replaceAll("\\r|\\n|\\s", "");
         actualResponseBody = actualResponseBody.replaceAll("\\r|\\n|\\s", "");
@@ -59,7 +69,7 @@ public class AuthApiControllerTest {
     void registerNewUser() throws Exception {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/signup")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"userId\":\"testuser\",\"password\":\"testpassword\",\"firstName\":\"Test\",\"lastName\":\"User\",\"role\":\"USER\"}"))
+                        .content("{\"userId\":\"U999990\",\"password\":\"testpassword\",\"firstName\":\"Test\",\"lastName\":\"User\",\"role\":\"USER\"}"))
                 .andExpect(status().isOk())
                 .andReturn();
         ResponseEntity<MessageResponse> responseEntity = ResponseEntity.ok(new MessageResponse("User registered successfully!"));

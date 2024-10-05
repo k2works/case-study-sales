@@ -1,6 +1,7 @@
 package com.example.sms.presentation.api.system.user;
 
 import com.example.sms.domain.model.system.user.User;
+import com.example.sms.domain.model.system.user.UserId;
 import com.example.sms.infrastructure.Message;
 import com.example.sms.infrastructure.security.JWTAuth.payload.response.MessageResponse;
 import com.example.sms.service.system.user.UserManagementService;
@@ -52,7 +53,7 @@ public class UserApiController {
     @GetMapping("/{userId}")
     public ResponseEntity<?> find(@PathVariable String userId) {
         try {
-            User user = userManagementService.find(userId);
+            User user = userManagementService.find(new UserId(userId));
             return ResponseEntity.ok(user);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
@@ -63,7 +64,7 @@ public class UserApiController {
     @PostMapping
     public ResponseEntity<?> create(@RequestBody @Validated UserResource resource) {
         try {
-            String userId = resource.getUserId();
+            UserId userId = new UserId(resource.getUserId());
             String password = passwordEncoder.encode(resource.getPassword());
             User userOptional = userManagementService.find(userId);
             if (userOptional != null) {
@@ -81,7 +82,7 @@ public class UserApiController {
     @PutMapping("/{userId}")
     public ResponseEntity<?> update(@PathVariable String userId, @RequestBody @Validated UserResource resource) {
         try {
-            User userOptional = userManagementService.find(userId);
+            User userOptional = userManagementService.find(new UserId(userId));
             if (userOptional == null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.user.not.exist")));
             }
@@ -89,7 +90,7 @@ public class UserApiController {
             if (resource.getPassword().isEmpty()) {
                 password = userOptional.getPassword();
             }
-            User user = new User(userId, password, resource.getFirstName(), resource.getLastName(), resource.getRoleName());
+            User user = User.of(userId, password, resource.getFirstName(), resource.getLastName(), resource.getRoleName());
             userManagementService.save(user);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.user.updated")));
         } catch (Exception e) {
@@ -101,11 +102,11 @@ public class UserApiController {
     @DeleteMapping("/{userId}")
     public ResponseEntity<?> delete(@PathVariable String userId) {
         try {
-            User userOptional = userManagementService.find(userId);
+            User userOptional = userManagementService.find(new UserId(userId));
             if (userOptional == null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.user.not.exist")));
             }
-            userManagementService.delete(userId);
+            userManagementService.delete(new UserId(userId));
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.user.deleted")));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));

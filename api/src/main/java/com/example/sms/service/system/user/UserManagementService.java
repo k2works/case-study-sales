@@ -1,6 +1,7 @@
 package com.example.sms.service.system.user;
 
 import com.example.sms.domain.model.system.user.User;
+import com.example.sms.domain.model.system.user.UserId;
 import com.example.sms.infrastructure.repository.system.user.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -41,14 +42,14 @@ public class UserManagementService {
     /**
      * ユーザー削除
      */
-    public void delete(String userId) {
-        userRepository.deleteById(userId);
+    public void delete(UserId userId) {
+        userRepository.deleteById(userId.Value());
     }
 
     /**
      * ユーザー検索
      */
-    public User find(String userId) {
-        return userRepository.findById(userId).orElse(null);
+    public User find(UserId userId) {
+        return userRepository.findById(userId.Value()).orElse(null);
     }
 }

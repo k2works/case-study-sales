@@ -18,17 +18,17 @@ public class AuthStepdefs extends SpringAcceptanceTest {
     @前提(": ユーザーが登録されている")
     public void initial() {
         userRepository.deleteAll();
-        userRepository.save(new User("user", "$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK", "first", "last", RoleName.USER));
-        userRepository.save(new User("admin", "$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK", "first", "last", RoleName.ADMIN));
+        userRepository.save(User.of("U999999", "$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK", "first", "last", RoleName.USER));
+        userRepository.save(User.of("U888888", "$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK", "first", "last", RoleName.ADMIN));
     }
 
     @もし(": {string} でログインする")
     public void login(String user) {
         String url = "http://localhost:8080/api/auth/signin";
         if (user.equals("管理者権限")) {
-            signin("admin", "demo", url);
+            signin("U888888", "demo", url);
         } else {
-            signin("user", "demo", url);
+            signin("U999999", "demo", url);
         }
     }
 

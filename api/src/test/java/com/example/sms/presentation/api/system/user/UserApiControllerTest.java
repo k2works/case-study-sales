@@ -37,7 +37,7 @@ public class UserApiControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "U888888", roles = {"ADMIN"})
     @DisplayName("ユーザー一覧を取得できる")
     void canRetrieveUserList() throws Exception {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/users")
@@ -48,21 +48,21 @@ public class UserApiControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "U888888", roles = {"ADMIN"})
     @DisplayName("ユーザーを取得できる")
     void canRetrieveUser() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/users/user")
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/users/U999999")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
         String actualResponseBody = mvcResult.getResponse().getContentAsString();
         String expectedResponseBody = """
                 {
-                    "userId":"user",
-                    "password":"$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK",
-                    "firstName":"first",
-                    "lastName":"last",
-                    "roleName":"USER"
+                   "userId":{"value":"U999999"},
+                   "password":"$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK",
+                   "firstName":"first",
+                   "lastName":"last",
+                   "roleName":"USER"
                 }""";
         // 改行コードとスペースを削除して比較
         expectedResponseBody = expectedResponseBody.replaceAll("\\r|\\n|\\s", "");
@@ -72,14 +72,14 @@ public class UserApiControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "U888888", roles = {"ADMIN"})
     @DisplayName("ユーザーを作成できる")
     void canCreateUser() throws Exception {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
-                                    "userId": "newUser",
+                                    "userId": "U999990",
                                     "password": "newPassword",
                                     "firstName": "Ddd",
                                     "lastName": "Ddd",
@@ -95,14 +95,14 @@ public class UserApiControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "U888888", roles = {"ADMIN"})
     @DisplayName("ユーザーを更新できる")
     void canUpdateUser() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/users/user")
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/users/U999999")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
-                                    "userId": "user",
+                                    "userId": "U999999",
                                     "password": "password",
                                     "firstName": "firstName2",
                                     "lastName": "lastName2",
@@ -117,10 +117,10 @@ public class UserApiControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "U888888", roles = {"ADMIN"})
     @DisplayName("ユーザーを削除できる")
     void canDeleteUser() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/users/user")
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/users/U999999")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();

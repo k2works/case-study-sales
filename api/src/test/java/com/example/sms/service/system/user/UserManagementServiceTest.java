@@ -4,6 +4,7 @@ import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactory;
 import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.domain.model.system.user.User;
+import com.example.sms.domain.model.system.user.UserId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -44,7 +45,7 @@ public class UserManagementServiceTest {
         @WithMockUser(username = "admin", roles = "ADMIN")
         @DisplayName("ユーザーを新規登録できる")
         void registerNewUser() {
-            User newUser = new User("newuser", "$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK", "first", "last", RoleName.USER);
+            User newUser = User.of("U999990", "$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK", "first", "last", RoleName.USER);
             userManagementService.register(newUser);
             List<User> result = userManagementService.selectAll();
             assertEquals(3, result.size());
@@ -78,7 +79,7 @@ public class UserManagementServiceTest {
         void searchUser() {
             User user = testDataFactory.User();
             User result = userManagementService.find(user.getUserId());
-            assertEquals("user", result.getUserId());
+            assertEquals(new UserId("U999999"), result.getUserId());
         }
     }
 }

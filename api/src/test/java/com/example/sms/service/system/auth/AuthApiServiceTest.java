@@ -41,11 +41,11 @@ public class AuthApiServiceTest {
         void shouldAuthenticateUser() {
             User user = testDataFactory.User();
             Mockito.when(authApiServiceMock.authenticateUser(Mockito.any(), Mockito.any()))
-                    .thenReturn(new JwtResponse("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJVMDAwMDA3IiwiaWF0IjoxNjU2NzMxODc3LCJleHAiOjE2NTY4MTgyNzd9.2JGYfw4c2P4EzCFFuCN7kf5fMihSXEVfLZSRnC5OOOn4vpPy9QewaVXTheUzsv16X8Lk1bpvcAyQYSUuKj0vJA", "user", List.of("USER")));
-            JwtResponse result = authApiServiceMock.authenticateUser(user.getUserId(), user.getPassword());
+                    .thenReturn(new JwtResponse("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJVMDAwMDA3IiwiaWF0IjoxNjU2NzMxODc3LCJleHAiOjE2NTY4MTgyNzd9.2JGYfw4c2P4EzCFFuCN7kf5fMihSXEVfLZSRnC5OOOn4vpPy9QewaVXTheUzsv16X8Lk1bpvcAyQYSUuKj0vJA", "U999999", List.of("USER")));
+            JwtResponse result = authApiServiceMock.authenticateUser(user.getUserId().Value(), user.getPassword());
 
             assertEquals("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJVMDAwMDA3IiwiaWF0IjoxNjU2NzMxODc3LCJleHAiOjE2NTY4MTgyNzd9.2JGYfw4c2P4EzCFFuCN7kf5fMihSXEVfLZSRnC5OOOn4vpPy9QewaVXTheUzsv16X8Lk1bpvcAyQYSUuKj0vJA", result.getAccessToken());
-            assertEquals(user.getUserId(), result.getUserId());
+            assertEquals(user.getUserId().Value(), result.getUserId());
             assertEquals(List.of("USER"), result.getRoles());
         }
     }
