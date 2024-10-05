@@ -1,7 +1,8 @@
-package com.example.sms.service.user;
+package com.example.sms.service.system.auth;
 
-import com.example.sms.domain.model.User;
+import com.example.sms.domain.model.system.user.User;
 import com.example.sms.infrastructure.repository.user.UserRepository;
+import com.example.sms.domain.model.system.auth.AuthUserDetails;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

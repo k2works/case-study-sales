@@ -1,7 +1,7 @@
 package com.example.sms.infrastructure.repository.user;
 
-import com.example.sms.domain.model.RoleName;
-import com.example.sms.domain.model.User;
+import com.example.sms.domain.model.system.user.RoleName;
+import com.example.sms.domain.model.system.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

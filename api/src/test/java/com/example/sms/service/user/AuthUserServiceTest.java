@@ -1,8 +1,9 @@
 package com.example.sms.service.user;
 
-import com.example.sms.domain.model.RoleName;
-import com.example.sms.domain.model.User;
+import com.example.sms.domain.model.system.user.RoleName;
+import com.example.sms.domain.model.system.user.User;
 import com.example.sms.infrastructure.repository.user.UserRepository;
+import com.example.sms.service.system.auth.AuthService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

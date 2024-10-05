@@ -1,6 +1,6 @@
 package com.example.sms.infrastructure.datasource.user;
 
-import com.example.sms.domain.model.User;
+import com.example.sms.domain.model.system.user.User;
 import com.example.sms.infrastructure.repository.user.UserRepository;
 import org.springframework.stereotype.Repository;
 

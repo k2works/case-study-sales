@@ -1,14 +1,14 @@
 package com.example.sms.presentation.api.auth;
 
-import com.example.sms.domain.model.RoleName;
-import com.example.sms.domain.model.User;
+import com.example.sms.domain.model.system.user.RoleName;
+import com.example.sms.domain.model.system.user.User;
 import com.example.sms.infrastructure.repository.user.UserRepository;
 import com.example.sms.infrastructure.security.JWTAuth.JwtUtils;
 import com.example.sms.infrastructure.security.JWTAuth.payload.request.LoginRequest;
 import com.example.sms.infrastructure.security.JWTAuth.payload.request.SignupRequest;
 import com.example.sms.infrastructure.security.JWTAuth.payload.response.JwtResponse;
 import com.example.sms.infrastructure.security.JWTAuth.payload.response.MessageResponse;
-import com.example.sms.service.user.AuthUserDetails;
+import com.example.sms.domain.model.system.auth.AuthUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

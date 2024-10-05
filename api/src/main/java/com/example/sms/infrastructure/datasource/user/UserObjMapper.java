@@ -1,10 +1,8 @@
 package com.example.sms.infrastructure.datasource.user;
 
-import com.example.sms.domain.model.RoleName;
-import com.example.sms.domain.model.User;
+import com.example.sms.domain.model.system.user.RoleName;
+import com.example.sms.domain.model.system.user.User;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class UserObjMapper {

@@ -1,6 +1,6 @@
 package com.example.sms.infrastructure.repository.user;
 
-import com.example.sms.domain.model.User;
+import com.example.sms.domain.model.system.user.User;
 
 import java.util.Optional;
 import java.util.List;

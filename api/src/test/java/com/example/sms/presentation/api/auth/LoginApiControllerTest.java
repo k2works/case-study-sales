@@ -6,7 +6,7 @@ import com.example.sms.infrastructure.datasource.user.UserObjMapper;
 import com.example.sms.infrastructure.repository.user.UserRepository;
 import com.example.sms.infrastructure.security.JWTAuth.JwtUtils;
 import com.example.sms.infrastructure.security.JWTAuth.payload.response.MessageResponse;
-import com.example.sms.service.user.AuthService;
+import com.example.sms.service.system.auth.AuthService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

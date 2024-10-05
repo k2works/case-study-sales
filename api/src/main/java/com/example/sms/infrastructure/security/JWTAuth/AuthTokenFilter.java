@@ -1,6 +1,6 @@
 package com.example.sms.infrastructure.security.JWTAuth;
 
-import com.example.sms.service.user.AuthService;
+import com.example.sms.service.system.auth.AuthService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

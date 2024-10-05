@@ -1,6 +1,6 @@
 package com.example.sms.infrastructure.security.JWTAuth;
 
-import com.example.sms.service.user.AuthUserDetails;
+import com.example.sms.domain.model.system.auth.AuthUserDetails;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

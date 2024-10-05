@@ -1,12 +1,15 @@
-package com.example.sms.service.user;
+package com.example.sms.domain.model.system.auth;
 
-import com.example.sms.domain.model.User;
+import com.example.sms.domain.model.system.user.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
+/**
+ * 認証ユーザー
+ */
 public class AuthUserDetails implements UserDetails {
     private final User user;
 
