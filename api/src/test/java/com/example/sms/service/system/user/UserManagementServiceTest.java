@@ -2,6 +2,7 @@ package com.example.sms.service.system.user;
 
 import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactory;
+import com.example.sms.domain.model.system.user.Name;
 import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.user.UserId;
@@ -56,11 +57,11 @@ public class UserManagementServiceTest {
         @DisplayName("ユーザーの登録情報を編集できる")
         void editUserDetails() {
             User user = testDataFactory.User();
-            User updateUser = new User(user.getUserId(), user.getPassword(), "editedFirstName", "editedLastName", user.getRoleName());
+            User updateUser = new User(user.getUserId(), user.getPassword(), new Name("editedFirstName", "editedLastName"), user.getRoleName());
             userManagementService.save(updateUser);
             User result = userManagementService.find(user.getUserId());
-            assertEquals("editedFirstName", result.getFirstName());
-            assertEquals("editedLastName", result.getLastName());
+            assertEquals("editedFirstName", result.getName().FirstName());
+            assertEquals("editedLastName", result.getName().LastName());
         }
 
         @Test

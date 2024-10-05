@@ -17,9 +17,7 @@ public class User {
 
     Password password;
 
-    String firstName;
-
-    String lastName;
+    Name name;
 
     RoleName roleName;
 
@@ -27,6 +25,9 @@ public class User {
         if (userId == null) {
             throw new UserException("ユーザーIDが未入力です");
         }
-        return new User(new UserId(userId), new Password(password), firstName, lastName, roleName);
+        if (firstName == null || lastName == null) {
+            throw new UserException("名前が未入力です");
+        }
+        return new User(new UserId(userId), new Password(password), new Name(firstName, lastName), roleName);
     }
 }

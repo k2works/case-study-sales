@@ -58,12 +58,12 @@ public class UserApiControllerTest {
         String actualResponseBody = mvcResult.getResponse().getContentAsString();
         String expectedResponseBody = """
                 {
-                  "userId":{"value":"U999999"},
-                  "password":{"value":"$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK"},
-                  "firstName":"first",
-                  "lastName":"last",
-                  "roleName":"USER"
-                }""";
+                 "userId":{"value":"U999999"},
+                 "password":{"value":"$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK"},
+                 "name":{"firstName":"first","lastName":"last"},
+                 "roleName":"USER"
+                 }
+                """;
         // 改行コードとスペースを削除して比較
         expectedResponseBody = expectedResponseBody.replaceAll("\\r|\\n|\\s", "");
         actualResponseBody = actualResponseBody.replaceAll("\\r|\\n|\\s", "");

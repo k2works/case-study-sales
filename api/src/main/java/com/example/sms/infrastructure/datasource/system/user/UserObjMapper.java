@@ -18,8 +18,8 @@ public class UserObjMapper {
         Usr usr = new Usr();
         usr.setUserId(user.getUserId().Value());
         usr.setPassword(user.getPassword().Value());
-        usr.setFirstName(user.getFirstName());
-        usr.setLastName(user.getLastName());
+        usr.setFirstName(user.getName().FirstName());
+        usr.setLastName(user.getName().LastName());
         usr.setRoleName(user.getRoleName().name());
         return usr;
     }

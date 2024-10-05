@@ -1,5 +1,6 @@
 package com.example.sms.infrastructure.repository.system.user;
 
+import com.example.sms.domain.model.system.user.Name;
 import com.example.sms.domain.model.system.user.Password;
 import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.domain.model.system.user.User;
@@ -46,8 +47,7 @@ public class UserRepositoryTest {
         Optional<User> actual = repository.findById(user.getUserId().Value());
         assertTrue(actual.isPresent());
         assertEquals(user.getUserId(), actual.get().getUserId());
-        assertEquals(user.getFirstName(), actual.get().getFirstName());
-        assertEquals(user.getLastName(), actual.get().getLastName());
+        assertEquals(user.getName(), actual.get().getName());
         assertEquals(user.getPassword(), actual.get().getPassword());
         assertEquals(user.getRoleName(), actual.get().getRoleName());
     }
@@ -57,13 +57,12 @@ public class UserRepositoryTest {
     void shouldUpdateAUser() {
         User user = getUser();
         repository.save(user);
-        User updateUser = new User(user.getUserId(), new Password("b234567Z"), "firstName2", "lastName2", RoleName.ADMIN);
+        User updateUser = new User(user.getUserId(), new Password("b234567Z"), new Name("firstName2", "lastName2"), RoleName.ADMIN);
         repository.update(updateUser);
         Optional<User> actual = repository.findById(user.getUserId().Value());
         assertTrue(actual.isPresent());
         assertEquals(updateUser.getUserId(), actual.get().getUserId());
-        assertEquals(updateUser.getFirstName(), actual.get().getFirstName());
-        assertEquals(updateUser.getLastName(), actual.get().getLastName());
+        assertEquals(updateUser.getName(), actual.get().getName());
         assertEquals(updateUser.getPassword(), actual.get().getPassword());
         assertEquals(updateUser.getRoleName(), actual.get().getRoleName());
     }

@@ -60,8 +60,7 @@ public class UserStepDefs extends SpringAcceptanceTest {
                 result = latestResponse.getBody();
                 User user = objectMapper.readValue(result, User.class);
                 assertEquals("newUser", user.getUserId());
-                assertEquals("太郎", user.getFirstName());
-                assertEquals("山田", user.getLastName());
+                assertEquals("山田 太郎", user.getName().FullName());
                 assertEquals(RoleName.ADMIN, user.getRoleName());
                 break;
             default:

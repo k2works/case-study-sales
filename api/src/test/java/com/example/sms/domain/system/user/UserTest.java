@@ -9,7 +9,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@DisplayName("認証・認可ドメイン")
+@DisplayName("ユーザー")
 public class UserTest {
     @Nested
     class ユーザー {
@@ -18,8 +18,9 @@ public class UserTest {
             User user = User.of("U999999", "a234567Z", "firstName", "lastName", RoleName.USER);
             assertEquals(new UserId("U999999"), user.getUserId());
             assertEquals(new Password("a234567Z"), user.getPassword());
-            assertEquals("firstName", user.getFirstName());
-            assertEquals("lastName", user.getLastName());
+            assertEquals("firstName", user.getName().FirstName());
+            assertEquals("lastName", user.getName().LastName());
+            assertEquals("firstName lastName", user.getName().FullName());
             assertEquals(RoleName.USER, user.getRoleName());
         }
 
@@ -52,6 +53,12 @@ public class UserTest {
             assertThrows(PasswordException.class, () -> User.of("U999999", "12345678", "テスト", "太郎", RoleName.USER));
             assertThrows(PasswordException.class, () -> User.of("U999999", "a2345678", "テスト", "太郎", RoleName.USER));
             assertThrows(PasswordException.class, () -> User.of("U999999", "A2345678", "テスト", "太郎", RoleName.USER));
+        }
+
+        @Test
+        public void 名前が未入力の場合は生成できない() {
+            assertThrows(UserException.class, () -> User.of("U999999", "password", null, "太郎", RoleName.USER));
+            assertThrows(UserException.class, () -> User.of("U999999", "password", "テスト", null, RoleName.USER));
         }
     }
 }
