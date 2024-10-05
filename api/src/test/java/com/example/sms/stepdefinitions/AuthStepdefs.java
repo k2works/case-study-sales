@@ -3,7 +3,7 @@ package com.example.sms.stepdefinitions;
 import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.infrastructure.repository.system.user.UserRepository;
-import com.example.sms.stepdefinitions.utils.SpringIntegrationTest;
+import com.example.sms.stepdefinitions.utils.SpringAcceptanceTest;
 import io.cucumber.java.ja.ならば;
 import io.cucumber.java.ja.もし;
 import io.cucumber.java.ja.前提;
@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 
-public class AuthStepdefs extends SpringIntegrationTest {
+public class AuthStepdefs extends SpringAcceptanceTest {
     @Autowired
     UserRepository userRepository;
 

@@ -18,7 +18,7 @@ import java.util.Objects;
 
 @CucumberContextConfiguration
 @SpringBootTest(classes = SmsApplication.class, webEnvironment = WebEnvironment.DEFINED_PORT)
-public class SpringIntegrationTest {
+public class SpringAcceptanceTest {
     static ResponseResults latestResponse = null;
 
     @Autowired
