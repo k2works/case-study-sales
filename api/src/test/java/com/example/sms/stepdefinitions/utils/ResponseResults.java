@@ -19,11 +19,11 @@ public class ResponseResults {
         this.body = stringWriter.toString();
     }
 
-    ClientHttpResponse getTheResponse() {
+    public ClientHttpResponse getTheResponse() {
         return theResponse;
     }
 
-    String getBody() {
+    public String getBody() {
         return body;
     }
 }

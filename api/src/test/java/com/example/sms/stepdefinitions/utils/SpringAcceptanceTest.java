@@ -19,7 +19,7 @@ import java.util.Objects;
 @CucumberContextConfiguration
 @SpringBootTest(classes = SmsApplication.class, webEnvironment = WebEnvironment.DEFINED_PORT)
 public class SpringAcceptanceTest {
-    static ResponseResults latestResponse = null;
+    protected static ResponseResults latestResponse = null;
 
     @Autowired
     protected RestTemplate restTemplate;
@@ -58,7 +58,7 @@ public class SpringAcceptanceTest {
         });
     }
 
-    void executePost(String url, String resource) throws IOException {
+    protected void executePost(String url, String resource) throws IOException {
         final Map<String, String> headers = new HashMap<>();
         headers.put("Accept", "application/json");
         headers.put("Content-Type", "application/json");
@@ -82,7 +82,7 @@ public class SpringAcceptanceTest {
                 });
     }
 
-    void executePut(String url, String resource) throws IOException {
+    protected void executePut(String url, String resource) throws IOException {
         final Map<String, String> headers = new HashMap<>();
         headers.put("Accept", "application/json");
         headers.put("Content-Type", "application/json");
@@ -106,7 +106,7 @@ public class SpringAcceptanceTest {
                 });
     }
 
-    void executeDelete(String url) throws IOException {
+    protected void executeDelete(String url) throws IOException {
         final Map<String, String> headers = new HashMap<>();
         headers.put("Accept", "application/json");
         headers.put("Content-Type", "application/json");
