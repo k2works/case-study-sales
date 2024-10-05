@@ -1,4 +1,4 @@
-package com.example.sms.stepdefinitions;
+package com.example.sms.stepdefinitions.utils;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.http.client.ClientHttpResponse;

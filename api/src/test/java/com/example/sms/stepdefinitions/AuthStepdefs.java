@@ -3,6 +3,7 @@ package com.example.sms.stepdefinitions;
 import com.example.sms.domain.model.RoleName;
 import com.example.sms.domain.model.User;
 import com.example.sms.infrastructure.repository.user.UserRepository;
+import com.example.sms.stepdefinitions.utils.SpringIntegrationTest;
 import io.cucumber.java.ja.ならば;
 import io.cucumber.java.ja.もし;
 import io.cucumber.java.ja.前提;

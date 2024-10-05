@@ -1,4 +1,4 @@
-package com.example.sms.stepdefinitions;
+package com.example.sms.stepdefinitions.utils;
 
 import com.example.sms.SmsApplication;
 import com.example.sms.infrastructure.security.JWTAuth.payload.response.JwtResponse;
@@ -26,7 +26,7 @@ public class SpringIntegrationTest {
 
     String authHeader = null;
 
-    void signin(String userId, String password, String url) {
+    protected void signin(String userId, String password, String url) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -41,7 +41,7 @@ public class SpringIntegrationTest {
         authHeader = Objects.requireNonNull(jwtResponse).getTokenType() + " " + jwtResponse.getAccessToken();
     }
 
-    void executeGet(String url) throws IOException {
+    protected void executeGet(String url) throws IOException {
         final Map<String, String> headers = new HashMap<>();
         headers.put("Accept", "application/json");
         headers.put("Authorization", authHeader);

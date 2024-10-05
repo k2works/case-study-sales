@@ -1,4 +1,4 @@
-package com.example.sms.stepdefinitions;
+package com.example.sms.stepdefinitions.utils;
 
 import lombok.Getter;
 import lombok.Setter;
