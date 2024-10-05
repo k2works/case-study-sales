@@ -19,6 +19,9 @@ public class AuthService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
+    /**
+     * ユーザー認証
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findById(username).orElseThrow(() -> new UsernameNotFoundException(username + " is not found."));
