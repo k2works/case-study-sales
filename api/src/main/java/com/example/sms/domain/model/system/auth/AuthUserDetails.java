@@ -24,7 +24,7 @@ public class AuthUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return user.getPassword().Value();
     }
 
     @Override

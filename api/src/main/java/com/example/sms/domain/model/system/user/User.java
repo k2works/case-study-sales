@@ -15,7 +15,7 @@ import lombok.Value;
 public class User {
     UserId userId;
 
-    String password;
+    Password password;
 
     String firstName;
 
@@ -27,6 +27,6 @@ public class User {
         if (userId == null) {
             throw new UserException("ユーザーIDが未入力です");
         }
-        return new User(new UserId(userId), password, firstName, lastName, roleName);
+        return new User(new UserId(userId), new Password(password), firstName, lastName, roleName);
     }
 }

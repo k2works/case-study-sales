@@ -42,7 +42,7 @@ public class AuthApiServiceTest {
             User user = testDataFactory.User();
             Mockito.when(authApiServiceMock.authenticateUser(Mockito.any(), Mockito.any()))
                     .thenReturn(new JwtResponse("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJVMDAwMDA3IiwiaWF0IjoxNjU2NzMxODc3LCJleHAiOjE2NTY4MTgyNzd9.2JGYfw4c2P4EzCFFuCN7kf5fMihSXEVfLZSRnC5OOOn4vpPy9QewaVXTheUzsv16X8Lk1bpvcAyQYSUuKj0vJA", "U999999", List.of("USER")));
-            JwtResponse result = authApiServiceMock.authenticateUser(user.getUserId().Value(), user.getPassword());
+            JwtResponse result = authApiServiceMock.authenticateUser(user.getUserId().Value(), user.getPassword().Value());
 
             assertEquals("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJVMDAwMDA3IiwiaWF0IjoxNjU2NzMxODc3LCJleHAiOjE2NTY4MTgyNzd9.2JGYfw4c2P4EzCFFuCN7kf5fMihSXEVfLZSRnC5OOOn4vpPy9QewaVXTheUzsv16X8Lk1bpvcAyQYSUuKj0vJA", result.getAccessToken());
             assertEquals(user.getUserId().Value(), result.getUserId());

@@ -1,5 +1,6 @@
 package com.example.sms.infrastructure.repository.system.user;
 
+import com.example.sms.domain.model.system.user.Password;
 import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.domain.model.system.user.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +22,7 @@ public class UserRepositoryTest {
     private UserRepository repository;
 
     private static User getUser() {
-        return User.of("U999999", "password", "firstName", "lastName", RoleName.USER);
+        return User.of("U999999", "a234567Z", "firstName", "lastName", RoleName.USER);
     }
 
     @BeforeEach
@@ -56,7 +57,7 @@ public class UserRepositoryTest {
     void shouldUpdateAUser() {
         User user = getUser();
         repository.save(user);
-        User updateUser = new User(user.getUserId(), "password2", "firstName2", "lastName2", RoleName.ADMIN);
+        User updateUser = new User(user.getUserId(), new Password("b234567Z"), "firstName2", "lastName2", RoleName.ADMIN);
         repository.update(updateUser);
         Optional<User> actual = repository.findById(user.getUserId().Value());
         assertTrue(actual.isPresent());

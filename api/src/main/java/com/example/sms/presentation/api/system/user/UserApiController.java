@@ -70,7 +70,7 @@ public class UserApiController {
             if (userOptional != null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.user.already.exist")));
             }
-            User user = new User(userId, password, resource.getFirstName(), resource.getLastName(), resource.getRoleName());
+            User user = User.of(userId.Value(), password, resource.getFirstName(), resource.getLastName(), resource.getRoleName());
             userManagementService.register(user);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.user.registered")));
         } catch (Exception e) {
@@ -88,7 +88,7 @@ public class UserApiController {
             }
             String password = passwordEncoder.encode(resource.getPassword());
             if (resource.getPassword().isEmpty()) {
-                password = userOptional.getPassword();
+                password = userOptional.getPassword().Value();
             }
             User user = User.of(userId, password, resource.getFirstName(), resource.getLastName(), resource.getRoleName());
             userManagementService.save(user);

@@ -2,7 +2,6 @@ package com.example.sms.presentation.api.system.auth;
 
 import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.domain.model.system.user.User;
-import com.example.sms.domain.model.system.user.UserId;
 import com.example.sms.infrastructure.repository.system.user.UserRepository;
 import com.example.sms.infrastructure.security.JWTAuth.JwtUtils;
 import com.example.sms.infrastructure.security.JWTAuth.payload.request.LoginRequest;
@@ -67,7 +66,7 @@ public class AuthApiController {
                 return ResponseEntity.badRequest().body(new MessageResponse("Error: UserId is already taken"));
             }
 
-            UserId userId = new UserId(signupRequest.getUserId());
+            String userId = signupRequest.getUserId();
             String password = passwordEncoder.encode(signupRequest.getPassword());
             String userNameFirst = signupRequest.getFirstName();
             String userNameLast = signupRequest.getLastName();
@@ -78,7 +77,7 @@ public class AuthApiController {
             } else {
                 roleName = RoleName.valueOf(role);
             }
-            User newUser = new User(userId, password, userNameFirst, userNameLast, roleName);
+            User newUser = User.of(userId, password, userNameFirst, userNameLast, roleName);
             userRepository.save(newUser);
 
             return ResponseEntity.ok(new MessageResponse("User registered successfully!"));

@@ -2,14 +2,13 @@ package com.example.sms.infrastructure.datasource.system.user;
 
 import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.domain.model.system.user.User;
-import com.example.sms.domain.model.system.user.UserId;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserObjMapper {
     User mapToDomainEntity(Usr userEntity) {
-        return new User(
-                new UserId(userEntity.getUserId()),
+        return User.of(
+                userEntity.getUserId(),
                 userEntity.getPassword(),
                 userEntity.getFirstName(),
                 userEntity.getLastName(),
@@ -18,7 +17,7 @@ public class UserObjMapper {
     Usr mapToEntity(User user) {
         Usr usr = new Usr();
         usr.setUserId(user.getUserId().Value());
-        usr.setPassword(user.getPassword());
+        usr.setPassword(user.getPassword().Value());
         usr.setFirstName(user.getFirstName());
         usr.setLastName(user.getLastName());
         usr.setRoleName(user.getRoleName().name());
