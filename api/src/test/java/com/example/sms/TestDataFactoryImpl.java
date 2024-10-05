@@ -23,6 +23,13 @@ public class TestDataFactoryImpl implements TestDataFactory {
         return user();
     }
 
+    @Override
+    public void setUpForUserManagementService() {
+        userRepository.deleteAll();
+        userRepository.save(user());
+        userRepository.save(admin());
+    }
+
     private static User user() {
         return new User("user", "$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK", "first", "last", RoleName.USER);
     }

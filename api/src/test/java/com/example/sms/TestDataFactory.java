@@ -6,4 +6,6 @@ public interface TestDataFactory {
     void setUpForAuthApiService();
 
     User User();
+
+    void setUpForUserManagementService();
 }
