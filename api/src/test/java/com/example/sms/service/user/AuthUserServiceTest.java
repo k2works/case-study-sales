@@ -19,6 +19,7 @@ import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@DisplayName("認証ユーザサービス")
 public class AuthUserServiceTest {
     @Autowired
     AuthService service;
