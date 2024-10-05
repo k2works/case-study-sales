@@ -1,27 +1,26 @@
-package com.example.sms.service.user;
+package com.example.sms.service.system.auth;
 
+import com.example.sms.IntegrationTest;
 import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.infrastructure.repository.user.UserRepository;
-import com.example.sms.service.system.auth.AuthService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-@SpringBootTest
-@DisplayName("認証ユーザサービス")
-public class AuthUserServiceTest {
+@IntegrationTest
+@DisplayName("認証サービス")
+public class AuthServiceTest {
     @Autowired
     AuthService service;
 

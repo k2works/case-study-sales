@@ -1,12 +1,8 @@
 package com.example.sms.presentation.api.auth;
 
-import com.example.sms.WebSecurityConfig;
-import com.example.sms.infrastructure.datasource.user.UserDataSource;
-import com.example.sms.infrastructure.datasource.user.UserObjMapper;
-import com.example.sms.infrastructure.repository.user.UserRepository;
+import com.example.sms.PresentationTest;
 import com.example.sms.infrastructure.security.JWTAuth.JwtUtils;
 import com.example.sms.infrastructure.security.JWTAuth.payload.response.MessageResponse;
-import com.example.sms.service.system.auth.AuthService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,10 +10,7 @@ import org.mybatis.spring.boot.test.autoconfigure.AutoConfigureMybatis;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.h2.H2ConsoleAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -33,14 +26,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(includeFilters = @ComponentScan.Filter(
-        type = FilterType.ASSIGNABLE_TYPE,
-        classes = {AuthService.class, UserRepository.class, WebSecurityConfig.class, JwtUtils.class, UserDataSource.class, UserObjMapper.class}
-))
+@PresentationTest
 @AutoConfigureMybatis
 @ImportAutoConfiguration(H2ConsoleAutoConfiguration.class)
 @DisplayName("認証APIコントローラ")
-public class LoginApiControllerTest {
+public class AuthApiControllerTest {
     @Autowired
     MockMvc mockMvc;
 

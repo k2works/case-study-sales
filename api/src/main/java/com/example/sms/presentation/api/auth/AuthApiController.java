@@ -8,38 +8,37 @@ import com.example.sms.infrastructure.security.JWTAuth.payload.request.LoginRequ
 import com.example.sms.infrastructure.security.JWTAuth.payload.request.SignupRequest;
 import com.example.sms.infrastructure.security.JWTAuth.payload.response.JwtResponse;
 import com.example.sms.infrastructure.security.JWTAuth.payload.response.MessageResponse;
-import com.example.sms.domain.model.system.auth.AuthUserDetails;
+import com.example.sms.service.system.auth.AuthApiService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
-
+/**
+ * 認証API
+ */
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
 @Tag(name = "JWTAuth", description = "JWT認証")
-public class LoginApiController {
+public class AuthApiController {
     final AuthenticationManager authenticationManager;
     final UserRepository userRepository;
     final PasswordEncoder passwordEncoder;
     final JwtUtils jwtUtils;
+    final AuthApiService authApiService;
 
-    public LoginApiController(AuthenticationManager authenticationManager, UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtils jwtUtils) {
+    public AuthApiController(AuthenticationManager authenticationManager, UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtils jwtUtils, AuthApiService authApiService) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtils = jwtUtils;
+        this.authApiService = authApiService;
     }
 
     @Operation(summary = "ユーザー認証", description = "データベースに登録されているユーザーを認証する")
@@ -51,17 +50,8 @@ public class LoginApiController {
                 return ResponseEntity.badRequest().body(new MessageResponse("Error: User is not exist"));
             }
 
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequest.getUserId(), loginRequest.getPassword())
-            );
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            String jwt = jwtUtils.generateJwtToken(authentication);
-
-            AuthUserDetails userDetails = (AuthUserDetails) authentication.getPrincipal();
-            List<String> roles = userDetails.getAuthorities().stream()
-                    .map(GrantedAuthority::getAuthority).toList();
-
-            return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), roles));
+            JwtResponse jwtResponse = authApiService.authenticateUser(loginRequest.getUserId(), loginRequest.getPassword());
+            return ResponseEntity.ok(jwtResponse);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
