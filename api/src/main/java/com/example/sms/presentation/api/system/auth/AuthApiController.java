@@ -1,8 +1,8 @@
-package com.example.sms.presentation.api.auth;
+package com.example.sms.presentation.api.system.auth;
 
 import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.domain.model.system.user.User;
-import com.example.sms.infrastructure.repository.user.UserRepository;
+import com.example.sms.infrastructure.repository.system.user.UserRepository;
 import com.example.sms.infrastructure.security.JWTAuth.JwtUtils;
 import com.example.sms.infrastructure.security.JWTAuth.payload.request.LoginRequest;
 import com.example.sms.infrastructure.security.JWTAuth.payload.request.SignupRequest;

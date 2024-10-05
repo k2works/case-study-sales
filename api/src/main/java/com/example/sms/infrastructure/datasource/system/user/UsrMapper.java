@@ -1,4 +1,4 @@
-package com.example.sms.infrastructure.datasource.user;
+package com.example.sms.infrastructure.datasource.system.user;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;

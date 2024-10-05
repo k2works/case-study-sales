@@ -1,4 +1,4 @@
-package com.example.sms.presentation.api.auth;
+package com.example.sms.presentation.api.system.auth;
 
 import com.example.sms.PresentationTest;
 import com.example.sms.infrastructure.security.JWTAuth.JwtUtils;

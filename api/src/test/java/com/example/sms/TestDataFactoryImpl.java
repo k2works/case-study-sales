@@ -2,7 +2,7 @@ package com.example.sms;
 
 import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.domain.model.system.user.User;
-import com.example.sms.infrastructure.repository.user.UserRepository;
+import com.example.sms.infrastructure.repository.system.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

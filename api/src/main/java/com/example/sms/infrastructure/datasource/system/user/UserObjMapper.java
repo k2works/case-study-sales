@@ -1,4 +1,4 @@
-package com.example.sms.infrastructure.datasource.user;
+package com.example.sms.infrastructure.datasource.system.user;
 
 import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.domain.model.system.user.User;

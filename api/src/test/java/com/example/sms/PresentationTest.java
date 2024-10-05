@@ -1,8 +1,8 @@
 package com.example.sms;
 
-import com.example.sms.infrastructure.datasource.user.UserDataSource;
-import com.example.sms.infrastructure.datasource.user.UserObjMapper;
-import com.example.sms.infrastructure.repository.user.UserRepository;
+import com.example.sms.infrastructure.datasource.system.user.UserDataSource;
+import com.example.sms.infrastructure.datasource.system.user.UserObjMapper;
+import com.example.sms.infrastructure.repository.system.user.UserRepository;
 import com.example.sms.infrastructure.security.JWTAuth.JwtUtils;
 import com.example.sms.service.system.auth.AuthApiService;
 import com.example.sms.service.system.auth.AuthService;
