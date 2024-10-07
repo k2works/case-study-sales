@@ -1,4 +1,4 @@
-package com.example.sms.infrastructure.repository.system.user;
+package com.example.sms.service.system.user;
 
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.user.UserList;

@@ -1,4 +1,4 @@
-package com.example.sms.infrastructure.security.JWTAuth.payload.response;
+package com.example.sms.presentation.api.system.auth.payload.response;
 
 import java.util.List;
 

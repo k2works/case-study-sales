@@ -3,7 +3,7 @@ package com.example.sms.presentation.api.system.auth;
 import com.example.sms.PresentationTest;
 import com.example.sms.TestDataFactory;
 import com.example.sms.infrastructure.security.JWTAuth.JwtUtils;
-import com.example.sms.infrastructure.security.JWTAuth.payload.response.MessageResponse;
+import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;

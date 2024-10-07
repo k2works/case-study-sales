@@ -1,4 +1,4 @@
-package com.example.sms.infrastructure;
+package com.example.sms.presentation;
 
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;

@@ -1,7 +1,7 @@
 package com.example.sms.stepdefinitions.utils;
 
 import com.example.sms.SmsApplication;
-import com.example.sms.infrastructure.security.JWTAuth.payload.response.JwtResponse;
+import com.example.sms.presentation.api.system.auth.payload.response.JwtResponse;
 import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

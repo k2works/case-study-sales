@@ -1,4 +1,4 @@
-package com.example.sms.infrastructure.repository.system.auth;
+package com.example.sms.service.system.auth;
 
 import org.springframework.security.core.Authentication;
 

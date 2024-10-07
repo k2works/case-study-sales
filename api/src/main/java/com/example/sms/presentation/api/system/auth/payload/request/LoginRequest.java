@@ -1,4 +1,4 @@
-package com.example.sms.infrastructure.security.JWTAuth.payload.request;
+package com.example.sms.presentation.api.system.auth.payload.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;

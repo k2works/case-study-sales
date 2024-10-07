@@ -2,7 +2,7 @@ package com.example.sms.infrastructure.datasource.system.user;
 
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.user.UserList;
-import com.example.sms.infrastructure.repository.system.user.UserRepository;
+import com.example.sms.service.system.user.UserRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

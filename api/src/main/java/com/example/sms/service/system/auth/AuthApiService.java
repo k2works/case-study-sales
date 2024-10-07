@@ -1,8 +1,7 @@
 package com.example.sms.service.system.auth;
 
 import com.example.sms.domain.model.system.auth.AuthUserDetails;
-import com.example.sms.infrastructure.repository.system.auth.JWTRepository;
-import com.example.sms.infrastructure.security.JWTAuth.payload.response.JwtResponse;
+import com.example.sms.presentation.api.system.auth.payload.response.JwtResponse;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

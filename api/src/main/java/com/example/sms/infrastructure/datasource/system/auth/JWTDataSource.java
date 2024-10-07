@@ -1,7 +1,7 @@
 package com.example.sms.infrastructure.datasource.system.auth;
 
-import com.example.sms.infrastructure.repository.system.auth.JWTRepository;
 import com.example.sms.infrastructure.security.JWTAuth.JwtUtils;
+import com.example.sms.service.system.auth.JWTRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Repository;
 

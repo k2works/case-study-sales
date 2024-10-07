@@ -3,7 +3,6 @@ package com.example.sms.service.system.user;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.user.UserId;
 import com.example.sms.domain.model.system.user.UserList;
-import com.example.sms.infrastructure.repository.system.user.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
