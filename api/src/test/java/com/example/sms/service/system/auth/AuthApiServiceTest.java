@@ -3,7 +3,6 @@ package com.example.sms.service.system.auth;
 import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactory;
 import com.example.sms.domain.model.system.user.User;
-import com.example.sms.presentation.api.system.auth.payload.response.JwtResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -11,25 +10,27 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
-import java.util.List;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @IntegrationTest
 @DisplayName("認証APIサービス")
 public class AuthApiServiceTest {
+
     @Autowired
     AuthApiService authApiService;
 
     @Autowired
     TestDataFactory testDataFactory;
 
+    @MockBean
+    JWTRepository jwtRepository;
+
     @Nested
     @DisplayName("ユーザーの認証")
     class UserAuthentication {
-        @MockBean
-        AuthApiService authApiServiceMock;
 
         @BeforeEach
         void setUp() {
@@ -40,13 +41,17 @@ public class AuthApiServiceTest {
         @DisplayName("ユーザーを認証する")
         void shouldAuthenticateUser() {
             User user = testDataFactory.User();
-            Mockito.when(authApiServiceMock.authenticateUser(Mockito.any(), Mockito.any()))
-                    .thenReturn(new JwtResponse("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJVMDAwMDA3IiwiaWF0IjoxNjU2NzMxODc3LCJleHAiOjE2NTY4MTgyNzd9.2JGYfw4c2P4EzCFFuCN7kf5fMihSXEVfLZSRnC5OOOn4vpPy9QewaVXTheUzsv16X8Lk1bpvcAyQYSUuKj0vJA", "U999999", List.of("USER")));
-            JwtResponse result = authApiServiceMock.authenticateUser(user.getUserId().Value(), user.getPassword().Value());
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-            assertEquals("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJVMDAwMDA3IiwiaWF0IjoxNjU2NzMxODc3LCJleHAiOjE2NTY4MTgyNzd9.2JGYfw4c2P4EzCFFuCN7kf5fMihSXEVfLZSRnC5OOOn4vpPy9QewaVXTheUzsv16X8Lk1bpvcAyQYSUuKj0vJA", result.getAccessToken());
-            assertEquals(user.getUserId().Value(), result.getUserId());
-            assertEquals(List.of("USER"), result.getRoles());
+            // モックの設定
+            Mockito.when(jwtRepository.generateJwtToken(Mockito.nullable(Authentication.class)))
+                    .thenReturn("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJVMDAwMDA3IiwiaWF0IjoxNjU2NzMxODc3LCJleHAiOjE2NTY4MTgyNzd9.2JGYfw4c2P4EzCFFuCN7kf5fMihSXEVfLZSRnC5OOOn4vpPy9QewaVXTheUzsv16X8Lk1bpvcAyQYSUuKj0vJA");
+
+            // 認証メソッドの呼び出し
+            String jwtToken = authApiService.authenticateUser(authentication, user.getUserId().Value(), user.getPassword().Value());
+
+            // 検証
+            assertEquals("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJVMDAwMDA3IiwiaWF0IjoxNjU2NzMxODc3LCJleHAiOjE2NTY4MTgyNzd9.2JGYfw4c2P4EzCFFuCN7kf5fMihSXEVfLZSRnC5OOOn4vpPy9QewaVXTheUzsv16X8Lk1bpvcAyQYSUuKj0vJA", jwtToken);
         }
     }
 }

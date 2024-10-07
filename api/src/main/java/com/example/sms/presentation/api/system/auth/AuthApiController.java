@@ -1,5 +1,6 @@
 package com.example.sms.presentation.api.system.auth;
 
+import com.example.sms.domain.model.system.auth.AuthUserDetails;
 import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.user.UserId;
@@ -13,8 +14,15 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 認証API
@@ -24,11 +32,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auth")
 @Tag(name = "JWTAuth", description = "JWT認証")
 public class AuthApiController {
+    final AuthenticationManager authenticationManager;
     final PasswordEncoder passwordEncoder;
     final UserManagementService userManagementService;
     final AuthApiService authApiService;
 
-    public AuthApiController(PasswordEncoder passwordEncoder, UserManagementService userManagementService, AuthApiService authApiService) {
+    public AuthApiController(AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, UserManagementService userManagementService, AuthApiService authApiService) {
+        this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
         this.userManagementService = userManagementService;
         this.authApiService = authApiService;
@@ -43,7 +53,16 @@ public class AuthApiController {
                 return ResponseEntity.badRequest().body(new MessageResponse("Error: User is not exist"));
             }
 
-            JwtResponse jwtResponse = authApiService.authenticateUser(loginRequest.getUserId(), loginRequest.getPassword());
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getUserId(), loginRequest.getPassword())
+            );
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = authApiService.authenticateUser(authentication, loginRequest.getUserId(), loginRequest.getPassword());
+            AuthUserDetails userDetails = (AuthUserDetails) authentication.getPrincipal();
+            List<String> roles = userDetails.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority).toList();
+
+            JwtResponse jwtResponse = new JwtResponse(jwt, userDetails.getUsername(), roles);
             return ResponseEntity.ok(jwtResponse);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
