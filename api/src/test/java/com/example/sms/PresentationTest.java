@@ -3,6 +3,7 @@ package com.example.sms;
 import com.example.sms.infrastructure.Message;
 import com.example.sms.infrastructure.datasource.system.user.UserDataSource;
 import com.example.sms.infrastructure.datasource.system.user.UserObjMapper;
+import com.example.sms.infrastructure.repository.system.auth.JWTRepository;
 import com.example.sms.infrastructure.repository.system.user.UserRepository;
 import com.example.sms.infrastructure.security.JWTAuth.JwtUtils;
 import com.example.sms.service.system.auth.AuthApiService;
@@ -24,11 +25,12 @@ import java.lang.annotation.Target;
 @WebMvcTest(includeFilters = @ComponentScan.Filter(
         type = FilterType.ASSIGNABLE_TYPE,
         classes = {
+                WebSecurityConfig.class,
                 AuthService.class,
                 AuthApiService.class,
                 UserManagementService.class,
                 UserRepository.class,
-                WebSecurityConfig.class,
+                JWTRepository.class,
                 JwtUtils.class,
                 UserDataSource.class,
                 UserObjMapper.class,

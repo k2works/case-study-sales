@@ -1,7 +1,7 @@
 package com.example.sms.service.system.auth;
 
 import com.example.sms.domain.model.system.auth.AuthUserDetails;
-import com.example.sms.infrastructure.security.JWTAuth.JwtUtils;
+import com.example.sms.infrastructure.repository.system.auth.JWTRepository;
 import com.example.sms.infrastructure.security.JWTAuth.payload.response.JwtResponse;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,12 +20,11 @@ import java.util.List;
 @Transactional
 public class AuthApiService {
     final AuthenticationManager authenticationManager;
+    final JWTRepository jwtRepository;
 
-    final JwtUtils jwtUtils;
-
-    public AuthApiService(AuthenticationManager authenticationManager, JwtUtils jwtUtils) {
+    public AuthApiService(AuthenticationManager authenticationManager, JWTRepository jwtRepository) {
         this.authenticationManager = authenticationManager;
-        this.jwtUtils = jwtUtils;
+        this.jwtRepository = jwtRepository;
     }
 
     /**
@@ -36,7 +35,7 @@ public class AuthApiService {
                 new UsernamePasswordAuthenticationToken(userId, password)
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
+        String jwt = jwtRepository.generateJwtToken(authentication);
 
         AuthUserDetails userDetails = (AuthUserDetails) authentication.getPrincipal();
         List<String> roles = userDetails.getAuthorities().stream()
