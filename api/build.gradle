@@ -67,7 +67,7 @@ dependencies {
 	testImplementation 'io.cucumber:cucumber-java8:7.18.0'
 	testImplementation 'io.cucumber:cucumber-junit:7.18.0'
 	testImplementation 'io.cucumber:cucumber-spring:7.18.1'
-	implementation 'commons-io:commons-io:2.9.0'
+	implementation 'commons-io:commons-io:2.16.1'
 	testImplementation group: 'org.junit.vintage', name: 'junit-vintage-engine', version: '5.11.0-M1'
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
