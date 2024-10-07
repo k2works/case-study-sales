@@ -6,10 +6,8 @@ import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        features = {
-                "classpath:features/Auth.feature",
-        },
+        features = "classpath:features/",
         glue = {"com.example.sms"}
 )
-public class AcceptanceTest {
+public class AcceptanceTests {
 }

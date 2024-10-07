@@ -26,9 +26,9 @@ public class UserStepDefs extends SpringAcceptanceTest {
     public void login(String user) {
         String url = AUTH_API_URL + "/" + "signin";
         if (user.equals("管理者")) {
-            signin("admin", "demo", url);
+            signin("U888888", "demo", url);
         } else {
-            signin("user", "demo", url);
+            signin("U999999", "demo", url);
         }
     }
 
@@ -59,7 +59,7 @@ public class UserStepDefs extends SpringAcceptanceTest {
             case "ユーザー":
                 result = latestResponse.getBody();
                 User user = objectMapper.readValue(result, User.class);
-                assertEquals("newUser", user.getUserId());
+                assertEquals("U000005", user.getUserId().Value());
                 assertEquals("山田 太郎", user.getName().FullName());
                 assertEquals(RoleName.ADMIN, user.getRoleName());
                 break;
@@ -74,8 +74,8 @@ public class UserStepDefs extends SpringAcceptanceTest {
         UserResource user = new UserResource();
         user.setUserId(userId);
         user.setPassword(password);
-        user.setFirstName("太郎");
-        user.setLastName("山田");
+        user.setFirstName("山田");
+        user.setLastName("太郎");
         user.setRoleName(RoleName.valueOf("ADMIN"));
 
         ObjectMapper mapper = new ObjectMapper();
@@ -115,8 +115,8 @@ public class UserStepDefs extends SpringAcceptanceTest {
         UserResource user = new UserResource();
         user.setUserId(userId);
         user.setPassword("a234567X");
-        user.setFirstName("太郎2");
-        user.setLastName("山田2");
+        user.setFirstName("山田2");
+        user.setLastName("太郎2");
         user.setRoleName(RoleName.valueOf("USER"));
 
         ObjectMapper mapper = new ObjectMapper();
