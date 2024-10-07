@@ -1,6 +1,7 @@
 package com.example.sms.infrastructure.datasource.system.user;
 
 import com.example.sms.domain.model.system.user.User;
+import com.example.sms.domain.model.system.user.UserList;
 import com.example.sms.infrastructure.repository.system.user.UserRepository;
 import org.springframework.stereotype.Repository;
 
@@ -24,11 +25,11 @@ public class UserDataSource implements UserRepository {
     }
 
     @Override
-    public List<User> selectAll() {
+    public UserList selectAll() {
         List<Usr> userEntities = userMapper.selectAll();
-        return userEntities.stream()
+        return new UserList(userEntities.stream()
                 .map(userObjMapper::mapToDomainEntity)
-                .toList();
+                .toList());
     }
 
     @Override

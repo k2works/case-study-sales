@@ -2,6 +2,7 @@ package com.example.sms.presentation.api.system.user;
 
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.user.UserId;
+import com.example.sms.domain.model.system.user.UserList;
 import com.example.sms.infrastructure.Message;
 import com.example.sms.infrastructure.security.JWTAuth.payload.response.MessageResponse;
 import com.example.sms.service.system.user.UserManagementService;
@@ -12,8 +13,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * ユーザーAPI
@@ -42,8 +41,8 @@ public class UserApiController {
             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
-            List<User> users = userManagementService.selectAll();
-            return ResponseEntity.ok(users);
+            UserList users = userManagementService.selectAll();
+            return ResponseEntity.ok(users.asList());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }

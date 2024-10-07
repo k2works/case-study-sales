@@ -2,10 +2,9 @@ package com.example.sms.service.system.user;
 
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.user.UserId;
+import com.example.sms.domain.model.system.user.UserList;
 import com.example.sms.infrastructure.repository.system.user.UserRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * ユーザー管理サービス
@@ -21,7 +20,7 @@ public class UserManagementService {
     /**
      * ユーザー一覧
      */
-    public List<User> selectAll() {
+    public UserList selectAll() {
         return userRepository.selectAll();
     }
 

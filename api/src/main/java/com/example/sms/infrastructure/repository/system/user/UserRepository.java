@@ -1,14 +1,14 @@
 package com.example.sms.infrastructure.repository.system.user;
 
 import com.example.sms.domain.model.system.user.User;
+import com.example.sms.domain.model.system.user.UserList;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository {
     Optional<User> findById(String userId);
 
-    List<User> selectAll();
+    UserList selectAll();
 
     void save(User user);
 

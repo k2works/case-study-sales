@@ -2,18 +2,13 @@ package com.example.sms.service.system.user;
 
 import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactory;
-import com.example.sms.domain.model.system.user.Name;
-import com.example.sms.domain.model.system.user.RoleName;
-import com.example.sms.domain.model.system.user.User;
-import com.example.sms.domain.model.system.user.UserId;
+import com.example.sms.domain.model.system.user.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -38,8 +33,8 @@ public class UserManagementServiceTest {
         @WithMockUser(username = "admin", roles = "ADMIN")
         @DisplayName("ユーザー一覧を取得できる")
         void getAllUsers() {
-            List<User> result = userManagementService.selectAll();
-            assertEquals(2, result.size());
+            UserList result = userManagementService.selectAll();
+            assertEquals(2, result.asList().size());
         }
 
         @Test
@@ -48,8 +43,8 @@ public class UserManagementServiceTest {
         void registerNewUser() {
             User newUser = User.of("U999990", "$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK", "first", "last", RoleName.USER);
             userManagementService.register(newUser);
-            List<User> result = userManagementService.selectAll();
-            assertEquals(3, result.size());
+            UserList result = userManagementService.selectAll();
+            assertEquals(3, result.asList().size());
         }
 
         @Test
@@ -70,8 +65,8 @@ public class UserManagementServiceTest {
         void deleteUser() {
             User user = testDataFactory.User();
             userManagementService.delete(user.getUserId());
-            List<User> result = userManagementService.selectAll();
-            assertEquals(1, result.size());
+            UserList result = userManagementService.selectAll();
+            assertEquals(1, result.asList().size());
         }
 
         @Test
