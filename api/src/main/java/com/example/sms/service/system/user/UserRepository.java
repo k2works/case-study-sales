@@ -5,6 +5,9 @@ import com.example.sms.domain.model.system.user.UserList;
 
 import java.util.Optional;
 
+/**
+ * ユーザーレポジトリ
+ */
 public interface UserRepository {
     Optional<User> findById(String userId);
 

@@ -10,17 +10,17 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class AuthApiService {
-    final JWTRepository jwtRepository;
+    final AuthRepository authRepository;
 
-    public AuthApiService(JWTRepository jwtRepository) {
-        this.jwtRepository = jwtRepository;
+    public AuthApiService(AuthRepository authRepository) {
+        this.authRepository = authRepository;
     }
 
     /**
      * ユーザーJWT認証
      */
     public String authenticateUser(Authentication authentication, String userId, String password) {
-        return jwtRepository.generateJwtToken(authentication);
+        return authRepository.generateJwtToken(authentication);
     }
 
 }

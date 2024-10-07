@@ -26,7 +26,7 @@ public class AuthApiServiceTest {
     TestDataFactory testDataFactory;
 
     @MockBean
-    JWTRepository jwtRepository;
+    AuthRepository authRepository;
 
     @Nested
     @DisplayName("ユーザーの認証")
@@ -44,7 +44,7 @@ public class AuthApiServiceTest {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
             // モックの設定
-            Mockito.when(jwtRepository.generateJwtToken(Mockito.nullable(Authentication.class)))
+            Mockito.when(authRepository.generateJwtToken(Mockito.nullable(Authentication.class)))
                     .thenReturn("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJVMDAwMDA3IiwiaWF0IjoxNjU2NzMxODc3LCJleHAiOjE2NTY4MTgyNzd9.2JGYfw4c2P4EzCFFuCN7kf5fMihSXEVfLZSRnC5OOOn4vpPy9QewaVXTheUzsv16X8Lk1bpvcAyQYSUuKj0vJA");
 
             // 認証メソッドの呼び出し

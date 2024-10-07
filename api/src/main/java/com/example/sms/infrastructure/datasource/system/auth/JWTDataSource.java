@@ -1,12 +1,12 @@
 package com.example.sms.infrastructure.datasource.system.auth;
 
 import com.example.sms.infrastructure.security.JWTAuth.JwtUtils;
-import com.example.sms.service.system.auth.JWTRepository;
+import com.example.sms.service.system.auth.AuthRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class JWTDataSource implements JWTRepository {
+public class JWTDataSource implements AuthRepository {
     final JwtUtils jwtUtils;
 
     public JWTDataSource(JwtUtils jwtUtils) {

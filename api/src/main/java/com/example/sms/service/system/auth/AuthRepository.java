@@ -2,7 +2,10 @@ package com.example.sms.service.system.auth;
 
 import org.springframework.security.core.Authentication;
 
-public interface JWTRepository {
+/**
+ * 認証リポジトリ
+ */
+public interface AuthRepository {
     String generateJwtToken(Authentication authentication);
 
     String getUserNameFromJwtToke(String authToken);

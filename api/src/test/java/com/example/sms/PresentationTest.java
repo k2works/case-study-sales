@@ -5,8 +5,8 @@ import com.example.sms.infrastructure.datasource.system.user.UserObjMapper;
 import com.example.sms.infrastructure.security.JWTAuth.JwtUtils;
 import com.example.sms.presentation.Message;
 import com.example.sms.service.system.auth.AuthApiService;
+import com.example.sms.service.system.auth.AuthRepository;
 import com.example.sms.service.system.auth.AuthService;
-import com.example.sms.service.system.auth.JWTRepository;
 import com.example.sms.service.system.user.UserManagementService;
 import com.example.sms.service.system.user.UserRepository;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
@@ -30,7 +30,7 @@ import java.lang.annotation.Target;
                 AuthApiService.class,
                 UserManagementService.class,
                 UserRepository.class,
-                JWTRepository.class,
+                AuthRepository.class,
                 JwtUtils.class,
                 UserDataSource.class,
                 UserObjMapper.class,
