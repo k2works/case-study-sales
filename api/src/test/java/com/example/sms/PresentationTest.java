@@ -1,5 +1,6 @@
 package com.example.sms;
 
+import com.example.sms.infrastructure.datasource.system.auth.JWTDataSource;
 import com.example.sms.infrastructure.datasource.system.user.UserDataSource;
 import com.example.sms.infrastructure.datasource.system.user.UserObjMapper;
 import com.example.sms.infrastructure.security.JWTAuth.JwtUtils;
@@ -27,11 +28,13 @@ import java.lang.annotation.Target;
         classes = {
                 WebSecurityConfig.class,
                 AuthService.class,
+                AuthRepository.class,
                 AuthApiService.class,
                 UserManagementService.class,
                 UserRepository.class,
                 AuthRepository.class,
                 JwtUtils.class,
+                JWTDataSource.class,
                 UserDataSource.class,
                 UserObjMapper.class,
                 TestDataFactory.class,
