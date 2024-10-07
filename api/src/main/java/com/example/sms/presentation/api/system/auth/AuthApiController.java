@@ -2,22 +2,19 @@ package com.example.sms.presentation.api.system.auth;
 
 import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.domain.model.system.user.User;
-import com.example.sms.infrastructure.repository.system.user.UserRepository;
-import com.example.sms.infrastructure.security.JWTAuth.JwtUtils;
+import com.example.sms.domain.model.system.user.UserId;
 import com.example.sms.infrastructure.security.JWTAuth.payload.request.LoginRequest;
 import com.example.sms.infrastructure.security.JWTAuth.payload.request.SignupRequest;
 import com.example.sms.infrastructure.security.JWTAuth.payload.response.JwtResponse;
 import com.example.sms.infrastructure.security.JWTAuth.payload.response.MessageResponse;
 import com.example.sms.service.system.auth.AuthApiService;
+import com.example.sms.service.system.user.UserManagementService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 /**
  * 認証API
@@ -27,17 +24,13 @@ import java.util.Optional;
 @RequestMapping("/api/auth")
 @Tag(name = "JWTAuth", description = "JWT認証")
 public class AuthApiController {
-    final AuthenticationManager authenticationManager;
-    final UserRepository userRepository;
     final PasswordEncoder passwordEncoder;
-    final JwtUtils jwtUtils;
+    final UserManagementService userManagementService;
     final AuthApiService authApiService;
 
-    public AuthApiController(AuthenticationManager authenticationManager, UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtils jwtUtils, AuthApiService authApiService) {
-        this.authenticationManager = authenticationManager;
-        this.userRepository = userRepository;
+    public AuthApiController(PasswordEncoder passwordEncoder, UserManagementService userManagementService, AuthApiService authApiService) {
         this.passwordEncoder = passwordEncoder;
-        this.jwtUtils = jwtUtils;
+        this.userManagementService = userManagementService;
         this.authApiService = authApiService;
     }
 
@@ -45,8 +38,8 @@ public class AuthApiController {
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         try {
-            Optional<User> user = userRepository.findById(loginRequest.getUserId());
-            if (((Optional<?>) user).isEmpty()) {
+            User user = userManagementService.find(new UserId(loginRequest.getUserId()));
+            if (user == null) {
                 return ResponseEntity.badRequest().body(new MessageResponse("Error: User is not exist"));
             }
 
@@ -61,15 +54,12 @@ public class AuthApiController {
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signupRequest) {
         try {
-            Optional<User> user = userRepository.findById(signupRequest.getUserId());
-            if (user.isPresent()) {
+            UserId userId = new UserId(signupRequest.getUserId());
+            String password = passwordEncoder.encode(signupRequest.getPassword());
+            User userOptional = userManagementService.find(userId);
+            if (userOptional != null) {
                 return ResponseEntity.badRequest().body(new MessageResponse("Error: UserId is already taken"));
             }
-
-            String userId = signupRequest.getUserId();
-            String password = passwordEncoder.encode(signupRequest.getPassword());
-            String userNameFirst = signupRequest.getFirstName();
-            String userNameLast = signupRequest.getLastName();
             String role = signupRequest.getRole();
             RoleName roleName;
             if (role == null) {
@@ -77,8 +67,8 @@ public class AuthApiController {
             } else {
                 roleName = RoleName.valueOf(role);
             }
-            User newUser = User.of(userId, password, userNameFirst, userNameLast, roleName);
-            userRepository.save(newUser);
+            User user = User.of(userId.Value(), password, signupRequest.getFirstName(), signupRequest.getLastName(), roleName);
+            userManagementService.register(user);
 
             return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
         } catch (Exception e) {
