@@ -5,11 +5,13 @@ import com.example.sms.domain.model.system.user.UserId;
 import com.example.sms.domain.model.system.user.UserList;
 import com.example.sms.infrastructure.repository.system.user.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * ユーザー管理サービス
  */
 @Service
+@Transactional
 public class UserManagementService {
     final UserRepository userRepository;
 
