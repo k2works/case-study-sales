@@ -14,7 +14,7 @@ const isWindows = process.platform === 'win32';
 
 const jig = {
     build: () => {
-        const command = isWindows ? 'gradlew.bat build' : './gradlew build';
+        const command = isWindows ? 'gradlew.bat build -x test' : './gradlew build -x test';
         return src(apiGradlewPath, { read: false })
             .pipe(exec(command, { cwd: apiCwd }));
     },
@@ -43,7 +43,7 @@ const jig = {
 
 const jig_erd = {
     build: () => {
-        const command = isWindows ? 'gradlew.bat test' : './gradlew test';
+        const command = isWindows ? 'gradlew.bat test --tests "com.example.sms.Erd.run"' : './gradlew test --tests "com.example.sms.Erd.run"';
         return src(apiGradlewPath, { read: false })
             .pipe(exec(command, { cwd: apiCwd }));
     },
