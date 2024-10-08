@@ -6,9 +6,62 @@
 
 # 開発
 
+## ユースケース
+
+### 認証
+
+[plantuml]
+----
+@startuml
+left to right direction
+actor "ユーザー" as member
+actor "管理者" as admin
+rectangle ユーザー認証 {
+  usecase "管理者を認証する" as UC1
+  usecase "ユーザーを認証する" as UC2
+}
+admin --> UC1
+member --> UC2
+@enduml
+----
+
+### ユーザー管理
+
+[plantuml]
+----
+@startuml
+left to right direction
+actor "管理者" as admin
+rectangle ユーザー管理 {
+    usecase "ユーザー一覧を取得する" as UC1
+    usecase "ユーザーを新規登録する" as UC2
+    usecase "ユーザーを取得する" as UC3
+    usecase "登録済みユーザーを更新登録する" as UC4
+    usecase "登録済みユーザーを削除する" as UC5
+}
+admin --> UC1
+admin --> UC2
+admin --> UC3
+admin --> UC4
+admin --> UC5
+@enduml
+----
+
 ## 仕様
 
-## ユースケース
+### 認証
+
+[source,yml]
+----
+include::../api/src/test/resources/features/Auth.feature[]
+----
+
+### ユーザー管理
+
+[source,yml]
+----
+include::../api/src/test/resources/features/User.feature[]
+----
 
 ## ユーザーインターフェース
 
@@ -16,10 +69,55 @@
 
 ### インタラクション
 
-## オブジェクトモデル
+## アーキテクチャ
+
+[plantuml]
+----
+@startuml
+title: Apiアーキテクチャ
+
+package "プレゼンテーション層" as UI {
+	class Controller
+}
+
+package "サービス層" as APP{
+	class Service
+}
+
+package "インフラストラクチャ層" as IF {
+	class DataSource
+}
+
+package "ドメイン層" as DOMAIN{
+    package "Model" as MODEL {
+        class User
+        class Auth
+    }
+}
+
+database データベース as DB {
+
+}
+
+UI ---> APP
+Service -> MODEL
+APP ---> IF
+DataSource --> DB
+
+@endtuml
+----
+
+[source,java]
+----
+include::../api/src/test/java/com/example/sms/ArchitectureRuleTest.java[]
+----
+
+## ドメインモデル
+
+image::./images/business-rule-relation.svg[]
 
 ## データモデル
 
 image::./images/library-er-summary.svg[]
 
-image::./images/relationships.real.compact.png[]
+image::./images/relationships.implied.compact.png[]
