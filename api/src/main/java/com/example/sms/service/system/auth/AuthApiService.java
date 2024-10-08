@@ -23,4 +23,24 @@ public class AuthApiService {
         return authRepository.generateJwtToken(authentication);
     }
 
+    /**
+     * JWTトークンの検証
+     */
+    public boolean validateJwtToken(String authToken) {
+        return authRepository.validateJwtToke(authToken);
+    }
+
+    /**
+     * JWTトークンの取得
+     */
+    public boolean validateJwtToke(String jwt) {
+        return authRepository.validateJwtToke(jwt);
+    }
+
+    /**
+     * JWTトークンからユーザー名の取得
+     */
+    public String getUserNameFromJwtToke(String jwt) {
+        return authRepository.getUserNameFromJwtToke(jwt);
+    }
 }

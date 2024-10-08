@@ -71,6 +71,8 @@ dependencies {
 	testImplementation group: 'org.junit.vintage', name: 'junit-vintage-engine', version: '5.11.0-M1'
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'com.tngtech.archunit:archunit:1.2.2'
+	testImplementation 'com.tngtech.archunit:archunit-junit5:1.2.2'
 }
 
 tasks.named('test') {

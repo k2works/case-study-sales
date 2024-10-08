@@ -4,7 +4,6 @@ import com.example.sms.domain.model.system.user.User;
 import com.example.sms.infrastructure.datasource.system.user.UserObjMapper;
 import com.example.sms.infrastructure.datasource.system.user.Usr;
 import com.example.sms.infrastructure.datasource.system.user.UsrMapper;
-import com.example.sms.infrastructure.security.JWTAuth.JwtUtils;
 import com.example.sms.service.system.auth.AuthRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Repository;
@@ -12,12 +11,12 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public class JWTDataSource implements AuthRepository {
+public class JwtDataSource implements AuthRepository {
     final UsrMapper userMapper;
     final UserObjMapper userObjMapper;
     final JwtUtils jwtUtils;
 
-    public JWTDataSource(UsrMapper userMapper, UserObjMapper userObjMapper, JwtUtils jwtUtils) {
+    public JwtDataSource(UsrMapper userMapper, UserObjMapper userObjMapper, JwtUtils jwtUtils) {
         this.userMapper = userMapper;
         this.userObjMapper = userObjMapper;
         this.jwtUtils = jwtUtils;

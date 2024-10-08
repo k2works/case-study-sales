@@ -1,4 +1,4 @@
-package com.example.sms.infrastructure.security.JWTAuth;
+package com.example.sms.presentation.api.system.auth;
 
 
 import jakarta.servlet.ServletException;

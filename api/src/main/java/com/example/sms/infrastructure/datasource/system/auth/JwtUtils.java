@@ -1,4 +1,4 @@
-package com.example.sms.infrastructure.security.JWTAuth;
+package com.example.sms.infrastructure.datasource.system.auth;
 
 import com.example.sms.domain.model.system.auth.AuthUserDetails;
 import io.jsonwebtoken.*;

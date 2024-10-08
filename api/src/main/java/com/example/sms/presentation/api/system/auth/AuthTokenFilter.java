@@ -1,5 +1,6 @@
-package com.example.sms.infrastructure.security.JWTAuth;
+package com.example.sms.presentation.api.system.auth;
 
+import com.example.sms.service.system.auth.AuthApiService;
 import com.example.sms.service.system.auth.AuthService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -20,18 +21,18 @@ import java.io.IOException;
 public class AuthTokenFilter extends OncePerRequestFilter {
     private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
     @Autowired
-    private JwtUtils jwtUtils;
+    private AuthApiService authApiService;
     @Autowired
-    private AuthService userAuthService;
+    private AuthService authService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             String jwt = parseJwt(request);
-            if (jwt != null && jwtUtils.validateJwtToke(jwt)) {
-                String username = jwtUtils.getUserNameFromJwtToke(jwt);
+            if (jwt != null && authApiService.validateJwtToke(jwt)) {
+                String username = authApiService.getUserNameFromJwtToke(jwt);
 
-                UserDetails userDetails = userAuthService.loadUserByUsername(username);
+                UserDetails userDetails = authService.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 

@@ -2,8 +2,8 @@ package com.example.sms.presentation.api.system.auth;
 
 import com.example.sms.PresentationTest;
 import com.example.sms.TestDataFactory;
-import com.example.sms.infrastructure.security.JWTAuth.JwtUtils;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
+import com.example.sms.service.system.auth.AuthApiService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -34,7 +34,7 @@ public class AuthApiControllerTest {
     MockMvc mockMvc;
 
     @MockBean
-    private JwtUtils jwtUtils;
+    private AuthApiService authApiService;
 
     @Autowired
     TestDataFactory testDataFactory;
@@ -49,7 +49,7 @@ public class AuthApiControllerTest {
     @Disabled("CIで失敗するため無効化")
     void authenticateUserAndReturnJwt() throws Exception {
         String jwtToken = "testjwt";
-        when(jwtUtils.generateJwtToken(any(Authentication.class))).thenReturn(jwtToken);
+        when(authApiService.authenticateUser(any(Authentication.class), any(), any())).thenReturn(jwtToken);
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/signin")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"userId\":\"U999999\",\"password\":\"demo\"}"))
