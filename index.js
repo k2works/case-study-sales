@@ -97,11 +97,11 @@ const uiModel = `
   }
   
   class ナビゲーション {
-    ログイン()
     ホーム()
+    ログアウト()
   }
   
-  ホーム *- ナビゲーション 
+  ナビゲーション -* ホーム 
 `;
 
 const uiInteraction = `
