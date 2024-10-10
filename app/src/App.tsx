@@ -1,22 +1,20 @@
-import { useState } from "react";
-import "./App.css";
-import React from "react";
+import React, {useState} from 'react'
+import './App.css'
+import SiteLayout from "./components/application/SiteLayout";
+import ErrorBoundary from "./components/application/ErrorBoundary";
 
 function App() {
-    const [count, setCount] = useState(0);
+    const [count, setCount] = useState(0)
 
     return (
-        <>
-            <h1>React</h1>
-            <div className="card">
-                <button onClick={() => setCount((count) => count + 1)}>
-                    count is {count}
-                </button>
-                <p>
-                    Edit <code>src/App.tsx</code> and save to test HMR
-                </p>
-            </div>
-        </>
+        <SiteLayout menu={
+            <p>Site Layout Menu</p>
+        }>
+            <ErrorBoundary>
+                <h1>Contents</h1>
+                <p>This is the main part of the example layout</p>
+            </ErrorBoundary>
+        </SiteLayout>
     );
 }
 
