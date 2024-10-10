@@ -1,6 +1,10 @@
-import React from "react";
+import React, {ReactNode} from "react";
 
-export default function Header() {
+interface HeaderProps {
+    menu: ReactNode;
+}
+
+export const Header: React.FC<HeaderProps> = ({menu = null}) => {
     return (
         <header className="header" id="header">
             <div className="header-container w-container">
@@ -8,7 +12,7 @@ export default function Header() {
                     <a className="logo" href="">SMS</a>
                 </div>
 
-                <div id="nav"></div>
+                <div id="nav">{menu}</div>
             </div>
         </header>
     );

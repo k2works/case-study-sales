@@ -4,7 +4,7 @@ import {RouteAuthGuard} from "./RouteAuthGuard";
 import {NotFound} from "./NotFound";
 import {Login} from "../system/Login.tsx";
 import {Logout} from "../system/Logout.tsx";
-import Home from "./Home.tsx";
+import {Home} from "./Home.tsx";
 
 export const RouteConfig: React.FC = () => {
     return (

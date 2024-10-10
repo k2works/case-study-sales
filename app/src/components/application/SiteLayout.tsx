@@ -1,20 +1,20 @@
 import React, {ReactNode} from 'react';
-import Header from "./Header";
-import Footer from "./Footer";
+import {Header} from "./Header";
+import {Footer} from "./Footer";
+import {HeaderNavigation, SideNavigation} from "./Navigation";
 
 interface SiteLayoutProps {
     children: ReactNode;
-    menu?: ReactNode;
 }
 
-export default function SiteLayout({children, menu = null}: SiteLayoutProps) {
+export const SiteLayout: React.FC<SiteLayoutProps> = ({children}: SiteLayoutProps) => {
     return (
         <div className="root">
             <div className="root-container w-container">
-                <Header/>
+                <Header menu={<HeaderNavigation/>}/>
                 <div className="section-container">
                     <section className="sidebar" id="side-nav">
-                        {menu}
+                        {<SideNavigation/>}
                     </section>
 
                     <section className="contents" id="contents">

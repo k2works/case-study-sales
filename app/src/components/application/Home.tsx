@@ -1,13 +1,10 @@
 import React from "react";
-import SiteLayout from "./SiteLayout";
+import {SiteLayout} from "./SiteLayout";
 import ErrorBoundary from "./ErrorBoundary";
-import Navigation from "./Navigation";
 
-export default function Home() {
+export const Home: React.FC = () => {
     return (
-        <SiteLayout menu={
-            <Navigation/>
-        }>
+        <SiteLayout>
             <ErrorBoundary>
                 <div className="single-view-container">
                     <div className="single-view-header">
@@ -22,7 +19,7 @@ export default function Home() {
 
                         <dl className="info">
                             <dt><span>新機能</span>
-                                <time>2024.11.1</time>
+                                <time>2023.7.1</time>
                             </dt>
                             <dd>
                                 <a href="#" id="auth-func">認証機能リリース</a>
