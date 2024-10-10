@@ -14,24 +14,25 @@
 </head>
 
 <body>
+<div id="header">
   <h1>アプリケーション</h1>
-  <h2>
-    <a href="./docs/slides/index.html" target="_blank">ガイド</a>
-  </h2>
-  <h2>
-    <a href="./docs/index.html" target="_blank">ドキュメント</a>
-  </h2>
-  <h2>
-    <a href="jig" target="_blank">JIG</a>
-  </h2>
-  <h2>
-    <a href="jig-erd" target="_blank">JIG-ERD</a>
-  </h2>
-  <h2>
-    <a href="erd/postgresql" target="_blank">ERD Postgresql</a>
-  </h2>
+</div>
+<div id="nav">
+  <ul class="nav-sub-list">
+    <li class="nav-sub-item"><a href="http://localhost:8080" target="_blank">アプリケーション</a></li>
+    <li class="nav-sub-item"><a href="docs/slides" target="_blank">ガイド</a></li>
+    <li class="nav-sub-item"><a href="docs" target="_blank">ドキュメント</a></li>
+    <li class="nav-sub-item"><a href="jig" target="_blank">JIG</a></li>
+    <li class="nav-sub-item"><a href="jig-erd" target="_blank">JIG-ERD</a></li>
+    <li class="nav-sub-item"><a href="erd/postgresql" target="_blank">ERD Postgresql</a></li>
+    <li class="nav-sub-item"><a href="http://localhost:8080/swagger-ui/index.html" target="_blank">SwaggerUI</a></li>
+    <li class="nav-sub-item"><a href="http://localhost:8080/h2-console" target="_blank">H2 DataBase</a></li>
+  </ul>
+</div>
+<div id="main">
   <div id="app"></div>
   <div class="dev" id="app-dev"></div>
+</div>
 </body>
 
 </html>
