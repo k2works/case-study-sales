@@ -1,21 +1,16 @@
-import React, {useState} from 'react'
+import React from 'react'
 import './App.css'
-import SiteLayout from "./components/application/SiteLayout";
-import ErrorBoundary from "./components/application/ErrorBoundary";
+import {Route, Routes} from "react-router-dom";
+import Home from "./components/application/Home";
 
 function App() {
-    const [count, setCount] = useState(0)
-
     return (
-        <SiteLayout menu={
-            <p>Site Layout Menu</p>
-        }>
-            <ErrorBoundary>
-                <h1>Contents</h1>
-                <p>This is the main part of the example layout</p>
-            </ErrorBoundary>
-        </SiteLayout>
+        <>
+            <Routes>
+                <Route path="/" element={<Home/>}/>
+            </Routes>
+        </>
     );
 }
 
-export default App;
+export default App
