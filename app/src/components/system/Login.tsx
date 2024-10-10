@@ -1,40 +1,77 @@
-import React, {useState} from "react";
-import {useNavigate} from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {useLocation, useNavigate} from "react-router-dom";
+import {APIResponse, CustomLocation, DataType, RoleType, UserType} from "../../types";
+import {AuthUserContextType, useAuthUserContext} from "../../providers/AuthUser";
 
-export default function Login() {
-    const [userId, setUserId] = useState("U000001");
-    const [password, setPassword] = useState("a234567Z");
+const DEFAULT_USER_ID = "U000001";
+const DEFAULT_PASSWORD = "a234567Z";
+
+const ErrorMessage = ({message}: { message: string }) => (
+        <div className="view-message-content">
+            <div className="view-message-content-icon">
+                <i className="fas fa-exclamation-circle"></i>
+            </div>
+            <div className="view-message-content-error-text">
+                <p className="view-message-content-text-title">ログインに失敗しました</p>
+                <p className="view-message-content-text-subtitle">{message}</p>
+            </div>
+        </div>
+    )
+;
+
+export const Login: React.FC = () => {
+    const [userId, setUserId] = useState(DEFAULT_USER_ID);
+    const [password, setPassword] = useState(DEFAULT_PASSWORD);
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
+    const location: CustomLocation = useLocation() as CustomLocation;
+    const fromPathName: string = location.state?.from?.pathname || "/";
+    const authUser: AuthUserContextType = useAuthUserContext();
 
-    const handleLogin = async () => {
+    useEffect(() => {
+        if (authUser.isLogin()) {
+            navigate("/", {replace: true});
+        }
+    }, [authUser, navigate]);
+
+    const handleSignIn = async () => {
+        const signIn = async (userId: string, password: string): Promise<APIResponse> => {
+            const url = `http://localhost:8080/api/auth/signin`;
+            try {
+                const response = await fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        userId,
+                        password
+                    })
+                });
+
+                return await response.json();
+            } catch (error) {
+                throw new Error(`サービスから応答がありません ${error}`);
+            }
+        };
+
         try {
-            const response = await fetch('http://localhost:8080/api/auth/signin', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({userId, password}),
+            const result = await signIn(userId, password);
+            if (result.message) {
+                setMessage(result.message);
+                return;
+            }
+            const data: DataType = result as DataType;
+            const user: UserType = {
+                userId: data.userId,
+                token: data.token,
+                roles: data.roles as RoleType[],
+            };
+            authUser.signIn(user, () => {
+                navigate(fromPathName, {replace: true});
             });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || 'Network response was not ok');
-            }
-
-            const data = await response.json();
-            if (data.accessToken) {
-                setMessage("ログイン成功");
-                navigate('/');
-            } else {
-                setMessage("ログイン失敗: " + data.error);
-            }
-        } catch (error) {
-            if (error instanceof Error) {
-                setMessage("ログインに失敗しました: " + error.message);
-            } else {
-                setMessage("ログインに失敗しました: 不明なエラー");
-            }
+        } catch (e: any) {
+            setMessage(e.message);
         }
     };
 
@@ -42,15 +79,17 @@ export default function Login() {
         <div className="root-container w-container">
             <div className="view-container" id="contents">
                 <div className="single-view-object-container">
-                    <div className="view-message-box-container" id="message">{message}</div>
+                    <div className="view-message-box-container" id="message">
+                        {message && <ErrorMessage message={message}/>}
+                    </div>
                     <div className="single-view-box-container">
                         <div className="single-view-header">
                             <div className="single-view-header-item">
-                                <h1 className="single-view-title logo">SMS</h1>
-                                <p className="single-view-subtitle">Sales Management System</p>
+                                <h1 className="single-view-title logo">HCOSS</h1>
+                                <p className="single-view-subtitle">Healthy Company Operation Support System</p>
                             </div>
                             <div className="single-view-header-item">
-                                <button className="action-button" id="login" onClick={handleLogin}>ログイン</button>
+                                <button className="action-button" id="login" onClick={handleSignIn}>ログイン</button>
                             </div>
                         </div>
                         <div className="single-view-content">

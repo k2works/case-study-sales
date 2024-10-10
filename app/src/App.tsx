@@ -1,18 +1,16 @@
 import React from 'react'
 import './App.css'
-import {Route, Routes} from "react-router-dom";
-import Home from "./components/application/Home";
-import Login from "./components/system/Login.tsx";
+import {Providers} from "./components/application/Providers";
+import {RouteConfig} from "./components/application/RouteConfig";
 
-function App() {
+export const App = () => {
     return (
         <>
-            <Routes>
-                <Route path="/" element={<Home/>}/>
-                <Route path="/login" element={<Login/>}/>
-            </Routes>
+            <Providers>
+                <RouteConfig/>
+            </Providers>
         </>
     );
 }
 
-export default App
+export default App;

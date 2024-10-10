@@ -10,7 +10,7 @@ export default function Navigation() {
                         <Link to="/">HOME</Link>
                     </li>
                     <li className="nav-item" id="side-nav-logout-nav">
-                        <Link to="/login">ログアウト</Link>
+                        <Link to="/logout">ログアウト</Link>
                     </li>
                 </ul>
             </nav>
