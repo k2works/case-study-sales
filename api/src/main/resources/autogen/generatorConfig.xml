@@ -39,6 +39,13 @@
                enableCountByExample="false">
             <property name="useActualColumnNames" value="false"  />
         </table>
+        <table schema="system" tableName="%"
+               enableSelectByExample="false"
+               enableDeleteByExample="false"
+               enableUpdateByExample="false"
+               enableCountByExample="false">
+            <property name="useActualColumnNames" value="false"  />
+        </table>
 
     </context>
 </generatorConfiguration>

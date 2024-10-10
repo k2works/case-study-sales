@@ -1,21 +1,14 @@
-import { useState } from "react";
-import "./App.css";
-import React from "react";
+import React from 'react'
+import './App.css'
+import {Providers} from "./components/application/Providers";
+import {RouteConfig} from "./components/application/RouteConfig";
 
-function App() {
-    const [count, setCount] = useState(0);
-
+export const App = () => {
     return (
         <>
-            <h1>React</h1>
-            <div className="card">
-                <button onClick={() => setCount((count) => count + 1)}>
-                    count is {count}
-                </button>
-                <p>
-                    Edit <code>src/App.tsx</code> and save to test HMR
-                </p>
-            </div>
+            <Providers>
+                <RouteConfig/>
+            </Providers>
         </>
     );
 }
