@@ -63,12 +63,6 @@ include::../api/src/test/resources/features/Auth.feature[]
 include::../api/src/test/resources/features/User.feature[]
 ----
 
-## ユーザーインターフェース
-
-### モデル
-
-### インタラクション
-
 ## アーキテクチャ
 
 [plantuml]
@@ -112,12 +106,19 @@ DataSource --> DB
 include::../api/src/test/java/com/example/sms/ArchitectureRuleTest.java[]
 ----
 
-## ドメインモデル
-
-image::./images/business-rule-relation.svg[]
-
 ## データモデル
 
 image::./images/library-er-summary.svg[]
 
 image::./images/relationships.implied.compact.png[]
+
+## ドメインモデル
+
+image::./images/business-rule-relation.svg[]
+
+## ユーザーインターフェース
+
+### モデル
+
+### インタラクション
+
