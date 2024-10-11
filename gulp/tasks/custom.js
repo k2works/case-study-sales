@@ -137,12 +137,24 @@ const assets = {
         await fs.remove('./public/assets');
         cb();
     },
-    copy: async (done) => {
+    copyDocs: async (done) => {
         const copyFeatures = src(path.join(apiCwd, 'src/test/resources/features/**'))
             .pipe(dest('./docs/assets'));
 
         const copyTests = src(path.join(apiCwd, 'src/test/java/com/example/sms/ArchitectureRuleTest**'))
             .pipe(dest('./docs/assets'));
+
+        const mergedStreams = merge(copyFeatures, copyTests);
+
+        mergedStreams.on('end', done);
+        mergedStreams.on('error', done);
+    },
+    copyPublic: async (done) => {
+        const copyFeatures = src(path.join(apiCwd, 'src/test/resources/features/**'))
+            .pipe(dest('./public/assets'));
+
+        const copyTests = src(path.join(apiCwd, 'src/test/java/com/example/sms/ArchitectureRuleTest**'))
+            .pipe(dest('./public/assets'));
 
         const mergedStreams = merge(copyFeatures, copyTests);
 
@@ -157,7 +169,7 @@ const assets = {
 
 exports.assets = assets;
 const assetsBuildTasks = () => {
-    return series(assets.copy, assets.move);
+    return series(assets.copyDocs, assets.copyPublic);
 }
 exports.assetsBuildTasks = assetsBuildTasks;
 
