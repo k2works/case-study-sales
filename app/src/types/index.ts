@@ -18,7 +18,7 @@ export type CustomLocation = {
 export type DataType = {
     userId: string;
     type: string;
-    token: string;
+    accessToken: string;
     roles: string[];
 }
 

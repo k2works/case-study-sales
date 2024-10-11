@@ -5,3 +5,25 @@
   text-align: center;
 }
 
+/* modal-overlay クラスはオーバーレイのスタイリング */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75); /* 半透明の黒 */
+  display: flex;
+  align-items: center; /* 縦方向の中央揃え */
+  justify-content: center; /* 横方向の中央揃え */
+}
+
+/* modal クラスはモーダルコンテンツのスタイリング */
+.modal {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 600px;
+  margin: 0 auto;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+}

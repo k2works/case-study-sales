@@ -46,7 +46,7 @@ export const Login: React.FC = () => {
             const data: DataType = result as DataType;
             const user: UserType = {
                 userId: data.userId,
-                token: data.token,
+                token: data.accessToken,
                 roles: data.roles as RoleType[],
             };
             authUser.signIn(user, () => {
