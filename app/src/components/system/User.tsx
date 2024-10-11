@@ -5,6 +5,7 @@ import {UserAccountType} from "../../types";
 import BeatLoader from "react-spinners/BeatLoader";
 import {Message, useMessage} from "../application/Message";
 import {showErrorMessage} from "../application/utils";
+import {PageNation, usePageNation} from "../application/PageNation";
 import {useModal} from "../application/hooks";
 import {useUser} from "./hooks";
 
@@ -12,6 +13,7 @@ export const User: React.FC = () => {
     const Content: React.FC = () => {
         const [loading, setLoading] = useState<boolean>(false);
         const {message, setMessage, error, setError} = useMessage();
+        const {pageNation, setPageNation} = usePageNation();
         const {modalIsOpen, setModalIsOpen, isEditing, setIsEditing, editId, setEditId} = useModal();
         const {
             initialUser,
@@ -29,11 +31,12 @@ export const User: React.FC = () => {
             });
         }, []);
 
-        const fetchUsers = async () => {
+        const fetchUsers = async (page: number = 1) => {
             setLoading(true);
             try {
-                const fetchedUsers = await userService.select();
-                setUsers(fetchedUsers);
+                const fetchedUsers = await userService.select(page);
+                setUsers(fetchedUsers.list);
+                setPageNation({...fetchedUsers});
                 setError("");
             } catch (error: any) {
                 showErrorMessage(`ユーザー情報の取得に失敗しました: ${error?.message}`, setError);
@@ -161,6 +164,10 @@ export const User: React.FC = () => {
                                     ))}
                                 </ul>
                             </div>
+                            <PageNation
+                                pageNation={pageNation}
+                                callBack={fetchUsers}
+                            />
                         </div>
                     </div>
                 </div>
