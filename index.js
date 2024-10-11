@@ -10,7 +10,7 @@ const contents = `
 
 ## TODOリスト
 - [x] ユーザー管理APIを作成する
-- [ ] ユーザー管理画面を作成する
+- [x] ユーザー管理画面を作成する
 `;
 
 const mindmap = `
@@ -99,13 +99,18 @@ const ui = `
 const uiModel = `
 @startuml
   class ユーザー一覧 {
+    新規作成()
+    編集()
+    削除()
   }
-  
+
   class ユーザー {
     ユーザーID
     パスワード
     役割
-    名前   
+    姓
+    名
+    保存()
   }
   
   class ナビゲーション {
@@ -116,6 +121,7 @@ const uiModel = `
   
   ユーザー一覧 *-- ユーザー
   ナビゲーション -* ユーザー一覧
+@enduml
 `;
 
 const uiInteraction = `
