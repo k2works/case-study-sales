@@ -73,6 +73,7 @@ dependencies {
 	testAnnotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'com.tngtech.archunit:archunit:1.2.2'
 	testImplementation 'com.tngtech.archunit:archunit-junit5:1.2.2'
+	implementation 'com.github.pagehelper:pagehelper-spring-boot-starter:1.4.7'
 }
 
 tasks.named('test') {

@@ -4,8 +4,10 @@ import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.user.UserId;
 import com.example.sms.domain.model.system.user.UserList;
 import com.example.sms.presentation.Message;
+import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
 import com.example.sms.service.system.user.UserManagementService;
+import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -34,15 +36,15 @@ public class UserApiController {
         this.userManagementService = userManagementService;
         this.message = message;
     }
-
     @Operation(summary = "ユーザー一覧を取得する", description = "ユーザー一覧を取得する")
     @GetMapping
     public ResponseEntity<?> select(
             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
+            PageNation.startPage(page, pageSize);
             UserList users = userManagementService.selectAll();
-            return ResponseEntity.ok(users.asList());
+            return ResponseEntity.ok(new PageInfo<>(users.asList()));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }

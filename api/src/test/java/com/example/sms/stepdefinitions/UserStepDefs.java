@@ -51,10 +51,9 @@ public class UserStepDefs extends SpringAcceptanceTest {
         switch (service) {
             case "ユーザー一覧":
                 result = latestResponse.getBody();
-                User[] userArray = objectMapper.readValue(result, User[].class);
-                UserListResponse response = new UserListResponse();
-                response.setUsers(List.of(userArray));
-                assertEquals(2, response.getUsers().size());
+                UserListResponse response = objectMapper.readValue(result, UserListResponse.class);
+                List<User> list = response.getList();
+                assertEquals(2, list.size());
                 break;
             case "ユーザー":
                 result = latestResponse.getBody();
