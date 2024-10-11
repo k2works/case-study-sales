@@ -1,6 +1,8 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {FaBars, FaTimes} from "react-icons/fa";
+import {getRoleFromUser} from "./RouteAuthGuard.tsx";
+import {RoleType} from "../../types";
 
 const NAV_CONTAINER_CLASS = "nav-container";
 const SIDE_NAV_CLASS = "side-nav";
@@ -34,15 +36,25 @@ const SubNavItem: React.FC<SubNavItemProps> = ({id, to, children}) => (
     </li>
 );
 
+const NaveItems: React.FC = () => {
+    const role = getRoleFromUser();
+
+    return (
+        <ul>
+            <NavItem id="side-nav-home-nav" to="/"
+                     className={`${NAV_ITEM_CLASS} ${NAV_SUB_ITEM_CLASS} ${ACTIVE_CLASS}`}>ホーム</NavItem>
+            {role === RoleType.ADMIN && (
+                <NavItem id="side-nav-user-nav" to="/User" className={NAV_ITEM_CLASS}>ユーザー</NavItem>
+            )}
+            <NavItem id="side-nav-logout-nav" to="/Logout" className={NAV_ITEM_CLASS}>ログアウト</NavItem>
+        </ul>
+    )
+};
 
 export const SideNavigation: React.FC = () => (
     <div className={NAV_CONTAINER_CLASS}>
         <nav className={SIDE_NAV_CLASS} id="side-nav-menu">
-            <ul>
-                <NavItem id="side-nav-home-nav" to="/"
-                         className={`${NAV_ITEM_CLASS} ${NAV_SUB_ITEM_CLASS} ${ACTIVE_CLASS}`}>ホーム</NavItem>
-                <NavItem id="side-nav-logout-nav" to="/Logout" className={NAV_ITEM_CLASS}>ログアウト</NavItem>
-            </ul>
+            <NaveItems/>
         </nav>
     </div>
 );
@@ -68,11 +80,7 @@ export const HeaderNavigation: React.FC = () => {
             </button>
 
             <nav className="nav" id="nav-menu" onClick={clearMenu}>
-                <ul>
-                    <NavItem id="side-nav-home-nav" to="/"
-                             className={`${NAV_ITEM_CLASS} ${NAV_SUB_ITEM_CLASS} ${ACTIVE_CLASS}`}>ホーム</NavItem>
-                    <NavItem id="side-nav-logout-nav" to="/Logout" className={NAV_ITEM_CLASS}>ログアウト</NavItem>
-                </ul>
+                <NaveItems/>
             </nav>
         </div>
     );

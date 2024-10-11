@@ -27,3 +27,14 @@ export type APIResponse = {
     message?: string;
 };
 
+export type UserAccountType = {
+    userId: { value: string };
+    name: {
+        firstName?: string;
+        lastName?: string;
+    }
+    password?: {
+        value: string
+    };
+    roleName?: string;
+}

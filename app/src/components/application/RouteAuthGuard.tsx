@@ -13,6 +13,12 @@ const isUserAllowed = (roles: RoleType[], allowedRoles?: RoleType[]): boolean =>
     return allowedRoles ? roles.some(role => allowedRoles.includes(role)) : true;
 }
 
+export const getRoleFromUser = (): RoleType => {
+    const {user: authUser} = useAuthUserContext();
+    if (!authUser) return RoleType.USER;
+    return authUser.roles[0];
+}
+
 export const RouteAuthGuard: React.FC<Props> = ({component, redirectPath, allowedRoles}) => {
     const {user: authUser} = useAuthUserContext();
     const location = useLocation();
