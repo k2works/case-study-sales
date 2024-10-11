@@ -138,4 +138,3 @@ docker/mssql/data
 docker/mssql/log
 
 tmp
-docs/assets
