@@ -26,12 +26,24 @@ export const UserService = () => {
     };
 
     const create = async (user: UserAccountType) => {
-        return await apiUtils.fetchPost(endPoint, user);
+        return await apiUtils.fetchPost(endPoint, {
+            userId: user.userId.value,
+            password: user.password?.value,
+            firstName: user.name.firstName,
+            lastName: user.name.lastName,
+            roleName: user.roleName
+        });
     };
 
     const update = async (user: UserAccountType) => {
-        const url = `${endPoint}/${user.userId}`;
-        return await apiUtils.fetchPut(url, user);
+        const url = `${endPoint}/${user.userId.value}`;
+        return await apiUtils.fetchPut(url, {
+            userId: user.userId.value,
+            password: user.password?.value,
+            firstName: user.name.firstName,
+            lastName: user.name.lastName,
+            roleName: user.roleName
+        });
     };
 
     const search = async (pageSize = 10, code: string, page = 1): Promise<any> => {
