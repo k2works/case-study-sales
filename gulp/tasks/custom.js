@@ -8,9 +8,26 @@ const path = require('path');
 const projectRoot = process.cwd();
 const apiGradlewPath = path.join(projectRoot, 'api', 'gradlew');
 const apiCwd = path.join(projectRoot, 'api');
+const appCwd = path.join(projectRoot, 'app');
 
 // Windows環境かどうかをチェック
 const isWindows = process.platform === 'win32';
+
+const api = {
+    dev: () => {
+        const command = isWindows ? 'gradlew.bat bootRun' : './gradlew bootRun';
+        return src(apiGradlewPath, { read: false })
+            .pipe(exec(command, { cwd: apiCwd }));
+    }
+}
+
+const app = {
+    dev: () => {
+        const command = 'npm run dev';
+        return src(apiGradlewPath, { read: false })
+            .pipe(exec(command, { cwd: appCwd }));
+    }
+}
 
 const jig = {
     build: () => {
@@ -130,6 +147,8 @@ const jigErdBuildTasks = () => {
     return series(jig_erd.clean, jig_erd.build, jig_erd.copy, jig_erd.publish);
 }
 
+exports.app = app;
+exports.api = api;
 exports.jig = jig;
 exports.jig_erd = jig_erd;
 exports.erd = erd;
