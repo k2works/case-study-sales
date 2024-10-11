@@ -15,7 +15,7 @@ const contents = `
 - [x] 認証APIを作成する
 - [x] ログイン画面を作成する
   - npm install react-router-dom react-modal react-spinner react-tab react-icons
-- [ ] ホーム画面を作成する
+- [x] ホーム画面を作成する
 `;
 
 const mindmap = `
