@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
-import {APIResponse, CustomLocation, DataType, RoleType, UserType} from "../../types";
+import {CustomLocation, DataType, RoleType, UserType} from "../../types";
 import {AuthUserContextType, useAuthUserContext} from "../../providers/AuthUser";
+import AuthService from "../../services/auth";
 
 const DEFAULT_USER_ID = "U000001";
 const DEFAULT_PASSWORD = "a234567Z";
@@ -35,28 +36,9 @@ export const Login: React.FC = () => {
     }, [authUser, navigate]);
 
     const handleSignIn = async () => {
-        const signIn = async (userId: string, password: string): Promise<APIResponse> => {
-            const url = `http://localhost:8080/api/auth/signin`;
-            try {
-                const response = await fetch(url, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        userId,
-                        password
-                    })
-                });
-
-                return await response.json();
-            } catch (error) {
-                throw new Error(`サービスから応答がありません ${error}`);
-            }
-        };
-
+        const authService = AuthService();
         try {
-            const result = await signIn(userId, password);
+            const result = await authService.signIn(userId, password);
             if (result.message) {
                 setMessage(result.message);
                 return;

@@ -27,31 +27,3 @@ export type APIResponse = {
     message?: string;
 };
 
-export type UserAccountType = {
-    userId: { value: string };
-    name: {
-        firstName?: string;
-        lastName?: string;
-    }
-    password?: {
-        value: string
-    };
-    roleName?: string;
-};
-
-export type SampleType = {
-    id: string;
-    name: string;
-    description: string;
-    createdAt: string;
-    updatedAt: string;
-    checked?: boolean;
-    record1?: {
-        id: string
-        item: string
-    }[]
-    record2?: {
-        id: string
-        item: string
-    }[]
-};

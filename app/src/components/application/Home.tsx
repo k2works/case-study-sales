@@ -19,7 +19,7 @@ export const Home: React.FC = () => {
 
                         <dl className="info">
                             <dt><span>新機能</span>
-                                <time>2023.7.1</time>
+                                <time>2024.12.1</time>
                             </dt>
                             <dd>
                                 <a href="#" id="auth-func">認証機能リリース</a>
