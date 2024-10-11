@@ -85,8 +85,8 @@ export const Login: React.FC = () => {
                     <div className="single-view-box-container">
                         <div className="single-view-header">
                             <div className="single-view-header-item">
-                                <h1 className="single-view-title logo">HCOSS</h1>
-                                <p className="single-view-subtitle">Healthy Company Operation Support System</p>
+                                <h1 className="single-view-title logo">SMS</h1>
+                                <p className="single-view-subtitle">Sales Management System</p>
                             </div>
                             <div className="single-view-header-item">
                                 <button className="action-button" id="login" onClick={handleSignIn}>ログイン</button>
