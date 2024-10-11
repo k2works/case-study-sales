@@ -53,14 +53,14 @@ admin --> UC5
 
 [source,yml]
 ----
-include::../api/src/test/resources/features/Auth.feature[]
+include::./assets/Auth.feature[]
 ----
 
 ### ユーザー管理
 
 [source,yml]
 ----
-include::../api/src/test/resources/features/User.feature[]
+include::./assets/User.feature[]
 ----
 
 ## アーキテクチャ
@@ -103,7 +103,7 @@ DataSource --> DB
 
 [source,java]
 ----
-include::../api/src/test/java/com/example/sms/ArchitectureRuleTest.java[]
+include::./assets/ArchitectureRuleTest.java[]
 ----
 
 ## データモデル

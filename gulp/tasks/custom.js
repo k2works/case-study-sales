@@ -3,6 +3,7 @@ const exec = require('gulp-exec');
 const gulpRename = require('gulp-rename');
 const fs = require('fs-extra');
 const path = require('path');
+const merge = require('gulp-merge');
 
 // プロジェクトルートのディレクトリを取得
 const projectRoot = process.cwd();
@@ -129,6 +130,36 @@ const erd = {
             .pipe(dest(PUBLIC_ERD_PATH));
     },
 };
+
+const assets = {
+    clean: async (cb) => {
+        await fs.remove('./docs/assets');
+        await fs.remove('./public/assets');
+        cb();
+    },
+    copy: async (done) => {
+        const copyFeatures = src(path.join(apiCwd, 'src/test/resources/features/**'))
+            .pipe(dest('./docs/assets'));
+
+        const copyTests = src(path.join(apiCwd, 'src/test/java/com/example/sms/ArchitectureRuleTest**'))
+            .pipe(dest('./docs/assets'));
+
+        const mergedStreams = merge(copyFeatures, copyTests);
+
+        mergedStreams.on('end', done);
+        mergedStreams.on('error', done);
+    },
+    move: async (done) => {
+        src(`./docs/assets/*.*`, {encoding: false}).pipe(dest(`./public/assets`))
+            .on('end', done);
+    }
+};
+
+exports.assets = assets;
+const assetsBuildTasks = () => {
+    return series(assets.copy, assets.move);
+}
+exports.assetsBuildTasks = assetsBuildTasks;
 
 const erdBuildTasks = () => {
     return series(

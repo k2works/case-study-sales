@@ -12,13 +12,14 @@ exports.default = series(
 exports.build = series(
     core.webpackBuildTasks(),
     parallel(
+        custom.assetsBuildTasks(),
         core.asciidoctorBuildTasks(),
         core.marpBuildTasks(),
     )
 );
 
 exports.docs = series(
-    parallel(core.asciidoctorBuildTasks(), core.marpBuildTasks()),
+    parallel(custom.assetsBuildTasks(), core.asciidoctorBuildTasks(), core.marpBuildTasks()),
     parallel(core.asciidoctor.server, core.asciidoctor.watch, core.marp.watch),
 );
 
@@ -39,7 +40,11 @@ exports.buildDocs = series(
 
 exports.dev = series(
     core.webpackBuildTasks(),
-    parallel(core.asciidoctorBuildTasks(), core.marpBuildTasks()),
+    parallel(
+        custom.assetsBuildTasks(),
+        core.asciidoctorBuildTasks(),
+        core.marpBuildTasks()
+    ),
     custom.jigBuildTasks(),
     custom.jigErdBuildTasks(),
     custom.erdBuildTasks(),
