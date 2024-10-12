@@ -118,7 +118,7 @@ image::./images/business-rule-relation.svg[]
 
 ## ユーザーインターフェース
 
-### 画面
+### ビュー
 
 #### 認証
 
