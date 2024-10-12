@@ -1454,6 +1454,58 @@ springdoc.packages-to-scan=com.example.sms.presentation.api
 springdoc.paths-to-match=/api/**
 ----
 
+##### JWTのセットアップ
+
+https://jwt.io/[JWT] とは、JSON Web Token の略で、認証情報を JSON 形式でエンコードしたトークンです。以下の手順で JWT をセットアップしてください。
+
+. `build.gradle` に以下の設定を追加してください。
++
+[source,groovy]
+----
+	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.5'
+----
+
+##### 受入テストのセットアップ
+
+https://cucumber.io/[Cucumber] とは、BDD（振る舞い駆動開発）を支援するツールです。以下の手順で Cucumber をセットアップしてください。
+
+. `build.gradle` に以下の設定を追加してください。
++
+[source,groovy]
+----
+	testImplementation 'io.cucumber:cucumber-java:7.18.0'
+	testImplementation 'io.cucumber:cucumber-java8:7.18.0'
+	testImplementation 'io.cucumber:cucumber-junit:7.18.0'
+	testImplementation 'io.cucumber:cucumber-spring:7.18.1'
+	implementation 'commons-io:commons-io:2.16.1'
+	testImplementation group: 'org.junit.vintage', name: 'junit-vintage-engine', version: '5.11.0-M1'
+----
+
+##### アーキテクチャルールのセットアップ
+
+https://www.archunit.org/[ArchUnit] とは、アーキテクチャルールをテストするためのツールです。以下の手順で ArchUnit をセットアップしてください。
+
+. `build.gradle` に以下の設定を追加してください。
++
+[source,groovy]
+----
+	testImplementation 'com.tngtech.archunit:archunit:1.2.2'
+	testImplementation 'com.tngtech.archunit:archunit-junit5:1.2.2'
+----
+
+##### ページネーションのセットアップ
+
+https://github.com/pagehelper/Mybatis-PageHelper[Mybatis-PageHelper] とは、ページネーションをサポートするためのツールです。以下の手順で Pageable をセットアップしてください。
+
+. `build.gradle` に以下の設定を追加してください。
++
+[source,groovy]
+----
+	implementation 'com.github.pagehelper:pagehelper-spring-boot-starter:1.4.7'
+----
+
 ## フロントエンドアプリケーション開発環境の構築
 
 Reactアプリケーション開発環境を構成するためには、以下の手順を実行してください。
@@ -1612,6 +1664,17 @@ test("Renders the main page", () => {
 [source, bash]
 ----
 npm run test
+----
+
+### 追加パッケージ
+
+#### Reactコンポーネントのセットアップ
+
+. 以下のコマンドを実行して、コンポーネントをインストールしてください。
++
+[source,bash]
+----
+npm install react-router-dom react-modal @types/react-modal react-spinners react-tab react-icons
 ----
 
 ## データベース開発環境の構築
