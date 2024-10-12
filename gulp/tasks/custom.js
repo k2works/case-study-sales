@@ -3,18 +3,36 @@ const exec = require('gulp-exec');
 const gulpRename = require('gulp-rename');
 const fs = require('fs-extra');
 const path = require('path');
+const merge = require('gulp-merge');
 
 // プロジェクトルートのディレクトリを取得
 const projectRoot = process.cwd();
 const apiGradlewPath = path.join(projectRoot, 'api', 'gradlew');
 const apiCwd = path.join(projectRoot, 'api');
+const appCwd = path.join(projectRoot, 'app');
 
 // Windows環境かどうかをチェック
 const isWindows = process.platform === 'win32';
 
+const api = {
+    dev: () => {
+        const command = isWindows ? 'gradlew.bat bootRun' : './gradlew bootRun';
+        return src(apiGradlewPath, { read: false })
+            .pipe(exec(command, { cwd: apiCwd }));
+    }
+}
+
+const app = {
+    dev: () => {
+        const command = 'npm run dev';
+        return src(apiGradlewPath, { read: false })
+            .pipe(exec(command, { cwd: appCwd }));
+    }
+}
+
 const jig = {
     build: () => {
-        const command = isWindows ? 'gradlew.bat build' : './gradlew build';
+        const command = isWindows ? 'gradlew.bat build -x test' : './gradlew build -x test';
         return src(apiGradlewPath, { read: false })
             .pipe(exec(command, { cwd: apiCwd }));
     },
@@ -43,7 +61,7 @@ const jig = {
 
 const jig_erd = {
     build: () => {
-        const command = isWindows ? 'gradlew.bat test' : './gradlew test';
+        const command = isWindows ? 'gradlew.bat test --tests "com.example.sms.Erd.run"' : './gradlew test --tests "com.example.sms.Erd.run"';
         return src(apiGradlewPath, { read: false })
             .pipe(exec(command, { cwd: apiCwd }));
     },
@@ -113,6 +131,48 @@ const erd = {
     },
 };
 
+const assets = {
+    clean: async (cb) => {
+        await fs.remove('./docs/assets');
+        await fs.remove('./public/assets');
+        cb();
+    },
+    copyDocs: async (done) => {
+        const copyFeatures = src(path.join(apiCwd, 'src/test/resources/features/**'))
+            .pipe(dest('./docs/assets'));
+
+        const copyTests = src(path.join(apiCwd, 'src/test/java/com/example/sms/ArchitectureRuleTest**'))
+            .pipe(dest('./docs/assets'));
+
+        const mergedStreams = merge(copyFeatures, copyTests);
+
+        mergedStreams.on('end', done);
+        mergedStreams.on('error', done);
+    },
+    copyPublic: async (done) => {
+        const copyFeatures = src(path.join(apiCwd, 'src/test/resources/features/**'))
+            .pipe(dest('./public/assets'));
+
+        const copyTests = src(path.join(apiCwd, 'src/test/java/com/example/sms/ArchitectureRuleTest**'))
+            .pipe(dest('./public/assets'));
+
+        const mergedStreams = merge(copyFeatures, copyTests);
+
+        mergedStreams.on('end', done);
+        mergedStreams.on('error', done);
+    },
+    move: async (done) => {
+        src(`./docs/assets/*.*`, {encoding: false}).pipe(dest(`./public/assets`))
+            .on('end', done);
+    }
+};
+
+exports.assets = assets;
+const assetsBuildTasks = () => {
+    return series(assets.copyDocs, assets.copyPublic);
+}
+exports.assetsBuildTasks = assetsBuildTasks;
+
 const erdBuildTasks = () => {
     return series(
         parallel(
@@ -130,6 +190,8 @@ const jigErdBuildTasks = () => {
     return series(jig_erd.clean, jig_erd.build, jig_erd.copy, jig_erd.publish);
 }
 
+exports.app = app;
+exports.api = api;
 exports.jig = jig;
 exports.jig_erd = jig_erd;
 exports.erd = erd;

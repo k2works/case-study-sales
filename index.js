@@ -2,172 +2,154 @@ import "./style.css";
 import render from "@k2works/full-stack-lab";
 
 const contents = `
-## 機能名
+## ユーザー管理機能
+
 ## 仕様
+
+- 管理者はユーザーを管理できる
+
 ## TODOリスト
+- [x] ユーザー管理APIを作成する
+- [x] ユーザー管理画面を作成する
 `;
 
 const mindmap = `
 @startmindmap
-+ root
-++ right
-+++ right right
-*** right2
--- left
---- left left
--- left2
-
+* ユーザー管理
+-- ユースケース
+--- ユーザー一覧を取得する
+--- ユーザーを新規登録する
+--- ユーザーを取得する
+--- 登録済みユーザーを更新登録する
+--- 登録済みユーザーを削除する
+-- ドメインモデル
+--- ユーザー管理APIを作成する
+-- データモデル
+--- ユーザーDBを作成する
+** ユーザーインターフェース
+*** ユーザー管理画面を作成する
+** モデル
+*** ログイン
+*** ナビゲーション
+*** ユーザー一覧
+**** ユーザー
+** インタラクション
 @endmindmap
 `;
 
 const usecase = `
 @startuml
 left to right direction
-actor "Actor" as ac
-rectangle Application {
-  usecase "UseCase1" as UC1
-  usecase "UseCase2" as UC2
-  usecase "UseCase3" as UC3
+actor "管理者" as admin
+rectangle ユーザー管理 {
+    usecase "ユーザー一覧を取得する" as UC1
+    usecase "ユーザーを新規登録する" as UC2
+    usecase "ユーザーを取得する" as UC3
+    usecase "登録済みユーザーを更新登録する" as UC4
+    usecase "登録済みユーザーを削除する" as UC5
 }
-ac --> UC1
-ac --> UC2
-ac --> UC3
+admin --> UC1
+admin --> UC2
+admin --> UC3
+admin --> UC4
+admin --> UC5
 @enduml
 `;
 
 const ui = `
 @startsalt
 {+
-  コレクション画面
+  ユーザー管理画面（コレクション）
   {+
   {
-  生徒
-  教員
-  組
-  部
-  イベント
-  } |
-  {
-    == 生徒
-    { + <&zoom-in> (          )}
-    {T#
-    + 田尻　智裕  | 3年B組    | 野球部 写真部
-    + 山田　太郎  | 3年A組    | 野球部
-    + 鈴木　花子  | 3年A組    | 写真部
-    }
-  }
-  }
-----------------
-  シングル画面
-  {+
-  {
-  生徒
-  教員
-  組
-  部
-  イベント
+  ホーム
+  ユーザー
+  ログアウト
   } |
   {
     {
-      <&person> <b>田尻 智裕
+      <b>ユーザー一覧</b>
     }
+    [  新規登録  ]
+    ---------------------
     {
-      名前
-      田尻　智裕
-      組
-      3年B組
-      部
-      野球部 写真部
-      関連する生徒
-      田尻　智裕 山田　太郎　鈴木　花子
+      Uxxxxxx | User1    | [  編集  ] | [  削除  ]
+      Uxxxxxx | User2    | [  編集  ] | [  削除  ]
+      Uxxxxxx | User3    | [  編集  ] | [  削除  ]
     }
   }
   }
+  ----------------
+    ユーザー管理画面（シングル）
+    {+
+        {
+        [  保存   ]
+        ---------------------
+        ユーザーID    | "Uxxxxxx"   "
+        姓           | "MyName   "
+        名           | "MyName   "
+        パスワード | "****     "
+        役割       | ^Admin     ^^User    ^
+        }
+    }
 }
 @endsalt
 `;
 
 const uiModel = `
 @startuml
-  class 部 {
-    名称
-    カテゴリー
-    生徒数
-    印刷()
-    新規()
+  class ユーザー一覧 {
+    新規作成()
+    編集()
     削除()
   }
-  class 生徒 {
-    氏名
-    成績
-    印刷()
-    新規()
-    削除()
+
+  class ユーザー {
+    ユーザーID
+    パスワード
+    役割
+    姓
+    名
+    保存()
   }
-  class 組 {
-    名称
-    印刷()
-    新規()
-    削除()
+  
+  class ナビゲーション {
+    ホーム()
+    ユーザー()
+    ログアウト()
   }
-  class 教員 {
-    氏名
-    電話番号
-    印刷()
-    新規()
-    削除()
-  }
-  class イベント {
-    名称
-    日付
-    印刷()
-    新規()
-    削除()
-  }
-  部 *-* 生徒
-  部 *-- 教員
-  イベント *- 教員
-  生徒 --* 組
+  
+  ユーザー一覧 *-- ユーザー
+  ナビゲーション -* ユーザー一覧
+@enduml
 `;
 
 const uiInteraction = `
 @startuml
-  イベント_コレクション --> イベント_シングル
-  イベント_シングル --> 教員_シングル
-  教員_コレクション --> 教員_シングル
-  教員_シングル --> 部_コレクション
-  教員_シングル <-> 組_シングル
-  組_コレクション --> 組_シングル
-  組_シングル --> 生徒_コレクション
-  生徒_コレクション --> 生徒_シングル
-  生徒_シングル -> 組_シングル
-  生徒_シングル --> 部_コレクション
-  部_コレクション --> 部_シングル
-  部_シングル --> 生徒_コレクション
+  ログイン_シングル --> ユーザー_コレクション
+    ユーザー_コレクション --> ユーザー_シングル
+    ユーザー_シングル --> ユーザー_コレクション
+  ログイン_シングル <-- ユーザー_コレクション
 @enduml
 `;
 
 const uml = `
 @startuml
-abstract class AbstractList
-abstract AbstractCollection
-interface List
-interface Collection
-List <|-- AbstractList
-Collection <|-- AbstractCollection
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
-class ArrayList {
-  Object[] elementData
-  size()
+class ユーザー一覧
+class ユーザー
+class ユーザーID
+class パスワード
+class 役割
+class 名前 {
+    + 姓
+    + 名
 }
-enum TimeUnit {
-  DAYS
-  HOURS
-  MINUTES
-}
-annotation SuppressWarnings
+
+ユーザー一覧 *- ユーザー
+ユーザー *-- ユーザーID
+ユーザー *-- パスワード
+ユーザー *-- 役割
+ユーザー *-- 名前
 @enduml
 `;
 
@@ -177,26 +159,14 @@ const erd = `
 hide circle
 ' avoid problems with angled crows feet
 skinparam linetype ortho
-entity "Entity01" as e01 {
-  *e1_id : number <<generated>>
-  --
-  *name : text
-  description : text
+entity "ユーザー" as usr {
+    *ユーザーID : text
+    --
+    姓 : text
+    名 : text
+    パスワード : text
+    役割 : text
 }
-entity "Entity02" as e02 {
-  *e2_id : number <<generated>>
-  --
-  *e1_id : number <<FK>>
-  other_details : text
-}
-entity "Entity03" as e03 {
-  *e3_id : number <<generated>>
-  --
-  e1_id : number <<FK>>
-  other_details : text
-}
-e01 ||..o{ e02
-e01 |o..o{ e03
 @enduml
 `;
 
