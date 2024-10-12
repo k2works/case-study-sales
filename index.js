@@ -5,8 +5,25 @@ const mindmap = `
 @startmindmap
 * マスタ管理
 -- ユースケース
+--- マスタ管理
+---- 部門
+----- 部門一覧
+----- 部門詳細
+----- 部門新規作成
+----- 部門編集
+----- 部門削除
+---- 社員
+----- 社員一覧
+----- 社員詳細
+----- 社員新規作成
+----- 社員編集
+----- 社員削除
 -- ドメインモデル
+--- 部門
+--- 社員
 -- データモデル
+--- 部門マスタ
+--- 社員マスタ
 ** ユーザーインターフェース
 *** ビュー
 *** モデル
@@ -23,6 +40,8 @@ const contents = `
 
 ## TODOリスト
 - [ ] マスタ管理APIを作成する
+  - [ ] 部門APIを作成する
+  - [ ] 社員APIを作成する
 - [ ] マスタ管理画面を作成する
 `;
 
@@ -31,17 +50,46 @@ const usecase = `
 left to right direction
 actor "管理者" as admin
 rectangle マスタ管理 {
+ rectangle 部門 {
+    (部門一覧)
+    (部門詳細)
+    (部門新規作成)
+    (部門編集)
+    (部門削除)
+ }
+ rectangle 社員 {
+    (社員一覧)
+    (社員詳細)
+    (社員新規作成)
+    (社員編集)
+    (社員削除)
+ }
 }
-admin --> (マスタ管理)
+admin --> (部門一覧)
+admin --> (部門詳細)
+admin --> (部門新規作成)
+admin --> (部門編集)
+admin --> (部門削除)
+admin --> (社員一覧)
+admin --> (社員詳細)
+admin --> (社員新規作成)
+admin --> (社員編集)
+admin --> (社員削除)
+
 @enduml
 `;
 
 const uml = `
 @startuml
-class マスタ一覧
-class マスタ
+class 部門一覧
+class 部門
 
-マスタ一覧 *- マスタ
+class 社員一覧
+class 社員
+
+部門一覧 *-- 部門
+部門 *-- 社員
+社員一覧 *-- 社員
 @enduml
 `;
 
@@ -51,10 +99,22 @@ const erd = `
 hide circle
 ' avoid problems with angled crows feet
 skinparam linetype ortho
-entity "マスタ" as master {
-    *ID : text
+entity "部門マスタ" as department {
+    *部門コード : text
     --
+    *開始日 : date
+    終了日 : date
+    部門名 : text
 }
+
+entity "社員マスタ" as employee {
+    *社員コード : text
+    --
+    社員名 : text
+    部門コード : text
+}
+
+department ||--o{ employee
 @enduml
 `;
 
