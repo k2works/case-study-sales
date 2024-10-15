@@ -25,7 +25,7 @@ public class EmployeeDataSource implements EmployeeRepository {
     public Optional<Employee> findById(String empCode) {
         社員マスタ employeeEntity = employeeMapper.selectByPrimaryKey(empCode);
         if (employeeEntity != null) {
-            return Optional.of(employeeEntityMapper.mapToDomainEntity(employeeEntity));
+            return Optional.of(employeeEntityMapper.mapToDomainModel(employeeEntity));
         }
         return Optional.empty();
     }
@@ -34,7 +34,7 @@ public class EmployeeDataSource implements EmployeeRepository {
     public EmployeeList selectAll() {
         List<社員マスタ> employeeEntities = employeeMapper.selectAll();
         return new EmployeeList(employeeEntities.stream()
-                .map(employeeEntityMapper::mapToDomainEntity)
+                .map(employeeEntityMapper::mapToDomainModel)
                 .toList());
     }
 

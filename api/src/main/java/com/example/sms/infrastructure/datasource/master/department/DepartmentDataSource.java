@@ -29,7 +29,7 @@ public class DepartmentDataSource implements DepartmentRepository {
         departmentKey.set開始日(departmentId.getStartDate());
         部門マスタ departmentEntity = departmentMapper.selectByPrimaryKey(departmentKey);
         if (departmentEntity != null) {
-            return Optional.of(departmentEntityMapper.mapToDomainEntity(departmentEntity));
+            return Optional.of(departmentEntityMapper.mapToDomainModel(departmentEntity));
         }
         return Optional.empty();
     }
@@ -38,7 +38,7 @@ public class DepartmentDataSource implements DepartmentRepository {
     public DepartmentList selectAll() {
         List<部門マスタ> departmentEntities = departmentMapper.selectAll();
         return new DepartmentList(departmentEntities.stream()
-                .map(departmentEntityMapper::mapToDomainEntity)
+                .map(departmentEntityMapper::mapToDomainModel)
                 .toList());
     }
 

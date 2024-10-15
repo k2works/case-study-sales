@@ -25,7 +25,7 @@ public class JwtDataSource implements AuthRepository {
     @Override
     public Optional<User> findById(String userId) {
         Optional<Usr> userEntity = Optional.ofNullable(userMapper.selectByPrimaryKey(userId));
-        return userEntity.map(userEntityMapper::mapToDomainEntity);
+        return userEntity.map(userEntityMapper::mapToDomainModel);
     }
 
     @Override

@@ -42,7 +42,7 @@ public class DepartmentEntityMapper {
         return employeeEntity;
     }
 
-    public Department mapToDomainEntity(部門マスタ departmentEntity) {
+    public Department mapToDomainModel(部門マスタ departmentEntity) {
         List<Employee> employees = departmentEntity.get社員().stream()
                 .map(this::mapToEmployee)
                 .collect(Collectors.toList());

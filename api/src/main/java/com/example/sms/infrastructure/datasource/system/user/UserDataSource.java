@@ -21,14 +21,14 @@ public class UserDataSource implements UserRepository {
     @Override
     public Optional<User> findById(String userId) {
         Optional<Usr> userEntity = Optional.ofNullable(userMapper.selectByPrimaryKey(userId));
-        return userEntity.map(userEntityMapper::mapToDomainEntity);
+        return userEntity.map(userEntityMapper::mapToDomainModel);
     }
 
     @Override
     public UserList selectAll() {
         List<Usr> userEntities = userMapper.selectAll();
         return new UserList(userEntities.stream()
-                .map(userEntityMapper::mapToDomainEntity)
+                .map(userEntityMapper::mapToDomainModel)
                 .toList());
     }
 

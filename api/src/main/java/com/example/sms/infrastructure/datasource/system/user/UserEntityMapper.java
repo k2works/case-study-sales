@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserEntityMapper {
-    public User mapToDomainEntity(Usr userEntity) {
+    public User mapToDomainModel(Usr userEntity) {
         return User.of(
                 userEntity.getUserId(),
                 userEntity.getPassword(),

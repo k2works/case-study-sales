@@ -38,7 +38,7 @@ public class EmployeeEntityMapper {
         return departmentEntity;
     }
 
-    public Employee mapToDomainEntity(社員マスタ employeeEntity) {
+    public Employee mapToDomainModel(社員マスタ employeeEntity) {
         Department department = mapToDepartment(employeeEntity.get部門());
 
         return new Employee(
