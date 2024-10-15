@@ -5,7 +5,7 @@ import com.example.sms.domain.model.system.user.User;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserObjMapper {
+public class UserEntityMapper {
     public User mapToDomainEntity(Usr userEntity) {
         return User.of(
                 userEntity.getUserId(),
