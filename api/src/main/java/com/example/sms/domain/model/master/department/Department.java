@@ -15,20 +15,13 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 public class Department {
-    // 部門ID
-    DepartmentId departmentId;
-    // 終了日
-    LocalDateTime endDate;
-    // 部門名
-    String departmentName;
-    // 組織階層
-    Integer layer;
-    // 部門パス
-    String path;
-    // 最下層区分
-    Integer lowerType;
-    // 伝票入力可否
-    Integer slitYn;
+    DepartmentId departmentId; // 部門ID
+    LocalDateTime endDate; // 終了日
+    String departmentName; // 部門名
+    Integer layer; // 組織階層
+    String path; // 部門パス
+    Integer lowerType; // 最下層区分
+    Integer slitYn; // 伝票入力可否
 
     public static Department of(DepartmentId departmentId, LocalDateTime endDate, String departmentName, int layer, String path, int layerType, int slitYn) {
         return new Department(departmentId, endDate, departmentName, layer, path, layerType, slitYn);

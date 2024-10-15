@@ -3,11 +3,13 @@ package com.example.sms.service.master.employee;
 import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.master.employee.EmployeeList;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 社員サービス
  */
 @Service
+@Transactional
 public class EmployeeService {
     final EmployeeRepository employeeRepository;
 

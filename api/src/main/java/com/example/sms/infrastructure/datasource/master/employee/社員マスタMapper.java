@@ -1,6 +1,9 @@
 package com.example.sms.infrastructure.datasource.master.employee;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 @Mapper
 public interface 社員マスタMapper {
@@ -51,4 +54,9 @@ public interface 社員マスタMapper {
      * @mbg.generated Fri Oct 04 15:48:01 JST 2024
      */
     int updateByPrimaryKey(社員マスタ record);
+
+    List<社員マスタ> selectAll();
+
+    @Delete("DELETE FROM 社員マスタ")
+    void deleteAll();
 }

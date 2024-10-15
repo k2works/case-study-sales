@@ -25,4 +25,8 @@ public class Employee {
     LocalDateTime startDate; // 開始日
     String occuCode;      // 職種コード
     String approvalCode;  // 承認権限コード
+
+    public static Employee of(String empCode, String name, String kana, String password, String tel, String fax, String deptCode, LocalDateTime startDate, String occuCode, String approvalCode) {
+        return new Employee(empCode, name, kana, password, tel, fax, deptCode, startDate, occuCode, approvalCode);
+    }
 }

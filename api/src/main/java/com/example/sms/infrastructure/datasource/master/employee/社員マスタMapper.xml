@@ -239,4 +239,10 @@
         更新者名 = #{更新者名,jdbcType=VARCHAR}
         where 社員コード = #{社員コード,jdbcType=VARCHAR}
     </update>
+
+    <select id="selectAll" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from public.社員マスタ
+    </select>
 </mapper>
