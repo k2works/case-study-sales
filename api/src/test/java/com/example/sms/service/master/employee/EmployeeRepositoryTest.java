@@ -50,8 +50,8 @@ public class EmployeeRepositoryTest {
         assertEquals(employee.getLoginPassword(), actual.getLoginPassword());
         assertEquals(employee.getTel(), actual.getTel());
         assertEquals(employee.getFax(), actual.getFax());
-        assertEquals(employee.getDeptCode(), actual.getDeptCode());
-        assertEquals(employee.getDepartmentStartDate(), actual.getDepartmentStartDate());
+        assertEquals(employee.getDepartmentId().getDeptCode(), actual.getDepartmentId().getDeptCode());
+        assertEquals(employee.getDepartmentId().getDepartmentStartDate(), actual.getDepartmentId().getDepartmentStartDate());
         assertEquals(employee.getOccuCode(), actual.getOccuCode());
         assertEquals(employee.getApprovalCode(), actual.getApprovalCode());
     }

@@ -1,9 +1,7 @@
 package com.example.sms.infrastructure.datasource.master.employee;
 
 import com.example.sms.domain.model.master.department.Department;
-import com.example.sms.domain.model.master.department.DepartmentCode;
 import com.example.sms.domain.model.master.department.DepartmentId;
-import com.example.sms.domain.model.master.department.DepartmentStartDate;
 import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.infrastructure.datasource.master.department.部門マスタ;
 import org.springframework.stereotype.Component;
@@ -18,8 +16,8 @@ public class EmployeeEntityMapper {
         employeeEntity.setパスワード(employee.getLoginPassword());
         employeeEntity.set電話番号(employee.getTel());
         employeeEntity.setFax番号(employee.getFax());
-        employeeEntity.set部門コード(employee.getDeptCode().getValue());
-        employeeEntity.set開始日(employee.getDepartmentStartDate().getValue());
+        employeeEntity.set部門コード(employee.getDepartmentId().getDeptCode().getValue());
+        employeeEntity.set開始日(employee.getDepartmentId().getDepartmentStartDate().getValue());
         employeeEntity.set職種コード(employee.getOccuCode());
         employeeEntity.set承認権限コード(employee.getApprovalCode());
         if (employee.getDepartment() != null) {
@@ -42,8 +40,7 @@ public class EmployeeEntityMapper {
 
     public Employee mapToDomainModel(社員マスタ employeeEntity) {
         Department department = mapToDepartment(employeeEntity.get部門());
-        DepartmentCode departmentCode = DepartmentCode.of(employeeEntity.get部門コード());
-        DepartmentStartDate departmentStartDate = DepartmentStartDate.of(employeeEntity.get開始日());
+        DepartmentId departmentId = DepartmentId.of(employeeEntity.get部門コード(), employeeEntity.get開始日());
 
         return new Employee(
                 employeeEntity.get社員コード(),
@@ -52,8 +49,7 @@ public class EmployeeEntityMapper {
                 employeeEntity.getパスワード(),
                 employeeEntity.get電話番号(),
                 employeeEntity.getFax番号(),
-                departmentCode,
-                departmentStartDate,
+                departmentId,
                 employeeEntity.get職種コード(),
                 employeeEntity.get承認権限コード(),
                 department

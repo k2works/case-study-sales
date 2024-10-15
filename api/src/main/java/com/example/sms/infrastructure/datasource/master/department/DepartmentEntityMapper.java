@@ -35,8 +35,8 @@ public class DepartmentEntityMapper {
         employeeEntity.setパスワード(employee.getLoginPassword());
         employeeEntity.set電話番号(employee.getTel());
         employeeEntity.setFax番号(employee.getFax());
-        employeeEntity.set部門コード(employee.getDeptCode().getValue());
-        employeeEntity.set開始日(employee.getDepartmentStartDate().getValue());
+        employeeEntity.set部門コード(employee.getDepartmentId().getDeptCode().getValue());
+        employeeEntity.set開始日(employee.getDepartmentId().getDepartmentStartDate().getValue());
         employeeEntity.set職種コード(employee.getOccuCode());
         employeeEntity.set承認権限コード(employee.getApprovalCode());
         return employeeEntity;
