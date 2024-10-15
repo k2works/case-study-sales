@@ -1,5 +1,6 @@
 package com.example.sms;
 
+import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.system.user.User;
 
 public interface TestDataFactory {
@@ -7,5 +8,9 @@ public interface TestDataFactory {
 
     User User();
 
+    Department Department();
+
     void setUpForUserManagementService();
+
+    void setUpForDepartmentService();
 }
