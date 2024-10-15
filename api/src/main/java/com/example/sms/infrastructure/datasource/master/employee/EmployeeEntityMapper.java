@@ -32,7 +32,7 @@ public class EmployeeEntityMapper {
         departmentEntity.set開始日(department.getDepartmentId().getDepartmentStartDate().getValue());
         departmentEntity.set部門名(department.getDepartmentName());
         departmentEntity.set組織階層(department.getLayer());
-        departmentEntity.set部門パス(department.getPath());
+        departmentEntity.set部門パス(department.getPath().getValue());
         departmentEntity.set最下層区分(department.getLowerType());
         departmentEntity.set伝票入力可否(department.getSlitYn());
         return departmentEntity;

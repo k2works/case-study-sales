@@ -54,7 +54,7 @@ public class DepartmentServiceTest {
         void editDepartmentDetails() {
             Department department = testDataFactory.Department();
 
-            Department updateDepartment = Department.of(department.getDepartmentId(), department.getEndDate(), "editedDepartmentName", department.getLayer(), department.getPath(), department.getLowerType(), department.getSlitYn());
+            Department updateDepartment = Department.of(department.getDepartmentId(), department.getEndDate().getValue(), "editedDepartmentName", department.getLayer(), department.getPath().getValue(), department.getLowerType(), department.getSlitYn());
             departmentService.save(updateDepartment);
 
             Department result = departmentService.find(department.getDepartmentId());
