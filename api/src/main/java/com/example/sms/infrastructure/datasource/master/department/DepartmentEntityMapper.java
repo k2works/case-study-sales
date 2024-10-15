@@ -1,9 +1,6 @@
 package com.example.sms.infrastructure.datasource.master.department;
 
-import com.example.sms.domain.model.master.department.Department;
-import com.example.sms.domain.model.master.department.DepartmentEndDate;
-import com.example.sms.domain.model.master.department.DepartmentId;
-import com.example.sms.domain.model.master.department.DepartmentPath;
+import com.example.sms.domain.model.master.department.*;
 import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.infrastructure.datasource.master.employee.社員マスタ;
 import org.springframework.stereotype.Component;
@@ -21,8 +18,8 @@ public class DepartmentEntityMapper {
         departmentEntity.set部門名(department.getDepartmentName());
         departmentEntity.set組織階層(department.getLayer());
         departmentEntity.set部門パス(department.getPath().getValue());
-        departmentEntity.set最下層区分(department.getLowerType());
-        departmentEntity.set伝票入力可否(department.getSlitYn());
+        departmentEntity.set最下層区分(department.getLowerType().getValue());
+        departmentEntity.set伝票入力可否(department.getSlitYn().getValue());
         departmentEntity.set社員(department.getEmployees().stream()
                 .map(this::mapToEmployeeEntity)
                 .collect(Collectors.toList()));
@@ -55,8 +52,8 @@ public class DepartmentEntityMapper {
                 departmentEntity.get部門名(),
                 departmentEntity.get組織階層(),
                 DepartmentPath.of(departmentEntity.get部門パス()),
-                departmentEntity.get最下層区分(),
-                departmentEntity.get伝票入力可否(),
+                DepartmentLowerType.of(departmentEntity.get最下層区分()),
+                SlitYnType.of(departmentEntity.get伝票入力可否()),
                 employees
         );
     }

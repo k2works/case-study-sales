@@ -22,13 +22,15 @@ public class Department {
     String departmentName; // 部門名
     Integer layer; // 組織階層
     DepartmentPath path; // 部門パス
-    Integer lowerType; // 最下層区分
-    Integer slitYn; // 伝票入力可否
+    DepartmentLowerType lowerType; // 最下層区分
+    SlitYnType slitYn; // 伝票入力可否
     List<Employee> employees; // 社員
 
     public static Department of(DepartmentId departmentId, LocalDateTime endDate, String departmentName, int layer, String path, int layerType, int slitYn) {
         DepartmentEndDate departmentEndDate = DepartmentEndDate.of(endDate);
         DepartmentPath departmentPath = DepartmentPath.of(path);
-        return new Department(departmentId, departmentEndDate, departmentName, layer, departmentPath, layerType, slitYn, List.of());
+        DepartmentLowerType lowerType = DepartmentLowerType.of(layerType);
+        SlitYnType slitYnType = SlitYnType.of(slitYn);
+        return new Department(departmentId, departmentEndDate, departmentName, layer, departmentPath, lowerType, slitYnType, List.of());
     }
 }
