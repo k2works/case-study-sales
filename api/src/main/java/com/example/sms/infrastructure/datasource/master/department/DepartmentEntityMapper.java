@@ -21,7 +21,25 @@ public class DepartmentEntityMapper {
         departmentEntity.set部門パス(department.getPath());
         departmentEntity.set最下層区分(department.getLowerType());
         departmentEntity.set伝票入力可否(department.getSlitYn());
+        departmentEntity.set社員(department.getEmployees().stream()
+                .map(this::mapToEmployeeEntity)
+                .collect(Collectors.toList()));
         return departmentEntity;
+    }
+
+    private 社員マスタ mapToEmployeeEntity(Employee employee) {
+        社員マスタ employeeEntity = new 社員マスタ();
+        employeeEntity.set社員コード(employee.getEmpCode());
+        employeeEntity.set社員名(employee.getName());
+        employeeEntity.set社員名カナ(employee.getKana());
+        employeeEntity.setパスワード(employee.getLoginPassword());
+        employeeEntity.set電話番号(employee.getTel());
+        employeeEntity.setFax番号(employee.getFax());
+        employeeEntity.set部門コード(employee.getDeptCode());
+        employeeEntity.set開始日(employee.getStartDate());
+        employeeEntity.set職種コード(employee.getOccuCode());
+        employeeEntity.set承認権限コード(employee.getApprovalCode());
+        return employeeEntity;
     }
 
     public Department mapToDomainEntity(部門マスタ departmentEntity) {

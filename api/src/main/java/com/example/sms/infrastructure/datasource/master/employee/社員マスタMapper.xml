@@ -21,6 +21,12 @@
         <result column="作成者名" jdbcType="VARCHAR" property="作成者名"/>
         <result column="更新日時" jdbcType="TIMESTAMP" property="更新日時"/>
         <result column="更新者名" jdbcType="VARCHAR" property="更新者名"/>
+
+        <association property="部門"
+                     javaType="com.example.sms.infrastructure.datasource.master.department.部門マスタ"
+                     column="{部門コード=部門コード, 開始日=開始日}"
+                     select="com.example.sms.infrastructure.datasource.master.department.部門マスタMapper.selectByPrimaryKey"
+                     fetchType="lazy"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--

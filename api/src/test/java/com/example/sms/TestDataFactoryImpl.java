@@ -36,12 +36,12 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
     @Override
     public Department Department() {
-        return department("30000", "部門3");
+        return department("30000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門3");
     }
 
     @Override
     public Employee Employee() {
-        return employee("EMP999", "30000");
+        return employee("EMP999", "30000", LocalDateTime.of(2021, 1, 1, 0, 0));
     }
 
     @Override
@@ -54,18 +54,21 @@ public class TestDataFactoryImpl implements TestDataFactory {
     @Override
     public void setUpForDepartmentService() {
         departmentRepository.deleteAll();
-        departmentRepository.save(department("10000", "部門1"));
-        departmentRepository.save(department("20000", "部門2"));
+        departmentRepository.save(department("10000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門1"));
+        departmentRepository.save(department("20000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門2"));
         employeeRepository.deleteAll();
-        employeeRepository.save(employee("EMP001", "10000"));
-        employeeRepository.save(employee("EMP002", "10000"));
+        employeeRepository.save(employee("EMP001", "10000", LocalDateTime.of(2021, 1, 1, 0, 0)));
+        employeeRepository.save(employee("EMP002", "10000", LocalDateTime.of(2021, 1, 1, 0, 0)));
     }
 
     @Override
     public void setUpForEmployeeService() {
+        LocalDateTime startDate = LocalDateTime.of(2021, 1, 1, 0, 0);
+        departmentRepository.deleteAll();
+        departmentRepository.save(department("10000", startDate, "部門1"));
         employeeRepository.deleteAll();
-        employeeRepository.save(employee("EMP001", "10000"));
-        employeeRepository.save(employee("EMP002", "10000"));
+        employeeRepository.save(employee("EMP001", "10000", startDate));
+        employeeRepository.save(employee("EMP002", "10000", startDate));
     }
 
     private static User user() {
@@ -76,11 +79,11 @@ public class TestDataFactoryImpl implements TestDataFactory {
         return User.of("U888888", "$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK", "first", "last", RoleName.USER);
     }
 
-    private static Department department(String departmentId, String departmentName) {
-        return Department.of(DepartmentId.of(departmentId, LocalDateTime.of(2021, 1, 1, 0, 0, 0)), LocalDateTime.of(9999, 12, 31, 0, 0), departmentName, 0, departmentId + "~", 0, 1);
+    private static Department department(String departmentId, LocalDateTime startDate, String departmentName) {
+        return Department.of(DepartmentId.of(departmentId, startDate), LocalDateTime.of(9999, 12, 31, 0, 0), departmentName, 0, departmentId + "~", 0, 1);
     }
 
-    private static Employee employee(String empCode, String departmentCode) {
-        return Employee.of(empCode, "name", "kana", "password", "090-1234-5678", "03-1234-5678", departmentCode, LocalDateTime.of(2021, 1, 1, 0, 0, 0), "", "");
+    private static Employee employee(String empCode, String departmentCode, LocalDateTime startDate) {
+        return Employee.of(empCode, "name", "kana", "password", "090-1234-5678", "03-1234-5678", departmentCode, startDate, "", "");
     }
 }

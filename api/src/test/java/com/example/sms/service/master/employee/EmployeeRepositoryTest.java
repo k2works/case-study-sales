@@ -44,17 +44,26 @@ public class EmployeeRepositoryTest {
         repository.save(employee);
 
         Employee actual = repository.findById(employee.getEmpCode()).get();
-        assertEquals(employee, actual);
+        assertEquals(employee.getEmpCode(), actual.getEmpCode());
+        assertEquals(employee.getName(), actual.getName());
+        assertEquals(employee.getKana(), actual.getKana());
+        assertEquals(employee.getLoginPassword(), actual.getLoginPassword());
+        assertEquals(employee.getTel(), actual.getTel());
+        assertEquals(employee.getFax(), actual.getFax());
+        assertEquals(employee.getDeptCode(), actual.getDeptCode());
+        assertEquals(employee.getStartDate(), actual.getStartDate());
+        assertEquals(employee.getOccuCode(), actual.getOccuCode());
+        assertEquals(employee.getApprovalCode(), actual.getApprovalCode());
     }
 
     @Test
     @DisplayName("社員を更新できる")
     void shouldUpdateEmployee() {
         Employee employee = getEmployee();
-
         repository.save(employee);
 
-        Employee updateEmployee = new Employee("EMP999", "updateName", "updateKana", "password", "090-1234-5678", "03-1234-5678", "11101", LocalDateTime.of(2021, 1, 1, 0, 0, 0), "", "");
+        employee = repository.findById(employee.getEmpCode()).get();
+        Employee updateEmployee = Employee.of("EMP999", "updateName", "updateKana", "password", "090-1234-5678", "03-1234-5678", "11101", LocalDateTime.of(2021, 1, 1, 0, 0, 0), "", "", employee.getDepartment());
         repository.save(updateEmployee);
 
         Employee actual = repository.findById(employee.getEmpCode()).get();
