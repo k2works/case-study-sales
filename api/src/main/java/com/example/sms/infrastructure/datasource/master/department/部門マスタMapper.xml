@@ -218,4 +218,13 @@
         where 部門コード = #{部門コード,jdbcType=VARCHAR}
         and 開始日 = #{開始日,jdbcType=TIMESTAMP}
     </update>
+
+    <select id="selectAll"
+            parameterType="java.lang.String"
+            resultMap="BaseResultMap">
+
+        select
+        <include refid="Base_Column_List"/>
+        from public.部門マスタ
+    </select>
 </mapper>

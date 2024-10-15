@@ -19,9 +19,9 @@ public class DepartmentEntityMapper {
         return departmentEntity;
     }
 
-    public Department mapToDomainEntity(部門マスタKey departmentEntityKey, 部門マスタ departmentEntity) {
+    public Department mapToDomainEntity(部門マスタ departmentEntity) {
         return new Department(
-                new DepartmentId(departmentEntityKey.get部門コード(), departmentEntityKey.get開始日()),
+                new DepartmentId(departmentEntity.get部門コード(), departmentEntity.get開始日()),
                 departmentEntity.get終了日(),
                 departmentEntity.get部門名(),
                 departmentEntity.get組織階層(),
