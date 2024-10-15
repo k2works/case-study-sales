@@ -60,7 +60,7 @@ public class DepartmentRepositoryTest {
         Department department = getDepartment();
         repository.save(department);
 
-        Department updateDepartment = new Department(new DepartmentId("10000", LocalDateTime.of(2021, 1, 1, 0, 0, 0)), LocalDateTime.of(9999, 12, 31, 0, 0), "全社2", 1, "10000~", 1, 0);
+        Department updateDepartment = Department.of(DepartmentId.of("10000", LocalDateTime.of(2021, 1, 1, 0, 0, 0)), LocalDateTime.of(9999, 12, 31, 0, 0), "全社2", 1, "10000~", 1, 0);
         repository.save(updateDepartment);
 
         Department actual = repository.findById(updateDepartment.getDepartmentId()).get();

@@ -33,6 +33,7 @@ public class DepartmentServiceTest {
         @DisplayName("部門一覧を取得できる")
         void getAllDepartments() {
             DepartmentList result = departmentService.selectAll();
+
             assertEquals(2, result.asList().size());
         }
 
@@ -40,17 +41,22 @@ public class DepartmentServiceTest {
         @DisplayName("部門を新規登録できる")
         void registerNewDepartment() {
             Department newDepartment = testDataFactory.Department();
+
             departmentService.register(newDepartment);
+
             DepartmentList result = departmentService.selectAll();
             assertEquals(3, result.asList().size());
+            assertEquals(2, result.asList().getFirst().getEmployees().size());
         }
 
         @Test
         @DisplayName("部門の登録情報を編集できる")
         void editDepartmentDetails() {
             Department department = testDataFactory.Department();
+
             Department updateDepartment = Department.of(department.getDepartmentId(), department.getEndDate(), "editedDepartmentName", department.getLayer(), department.getPath(), department.getLowerType(), department.getSlitYn());
             departmentService.save(updateDepartment);
+
             Department result = departmentService.find(department.getDepartmentId());
             assertEquals("editedDepartmentName", result.getDepartmentName());
         }
@@ -59,7 +65,9 @@ public class DepartmentServiceTest {
         @DisplayName("部門を削除できる")
         void deleteDepartment() {
             Department department = testDataFactory.Department();
+
             departmentService.delete(department.getDepartmentId());
+
             DepartmentList result = departmentService.selectAll();
             assertEquals(2, result.asList().size());
         }
@@ -68,7 +76,9 @@ public class DepartmentServiceTest {
         @DisplayName("部門を検索できる")
         void findDepartment() {
             Department department = testDataFactory.Department();
+
             departmentService.register(department);
+
             Department result = departmentService.find(department.getDepartmentId());
             assertEquals(department, result);
         }

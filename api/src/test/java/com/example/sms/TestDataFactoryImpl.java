@@ -41,7 +41,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
     @Override
     public Employee Employee() {
-        return employee("EMP999");
+        return employee("EMP999", "30000");
     }
 
     @Override
@@ -56,13 +56,16 @@ public class TestDataFactoryImpl implements TestDataFactory {
         departmentRepository.deleteAll();
         departmentRepository.save(department("10000", "部門1"));
         departmentRepository.save(department("20000", "部門2"));
+        employeeRepository.deleteAll();
+        employeeRepository.save(employee("EMP001", "10000"));
+        employeeRepository.save(employee("EMP002", "10000"));
     }
 
     @Override
     public void setUpForEmployeeService() {
         employeeRepository.deleteAll();
-        employeeRepository.save(employee("EMP001"));
-        employeeRepository.save(employee("EMP002"));
+        employeeRepository.save(employee("EMP001", "10000"));
+        employeeRepository.save(employee("EMP002", "10000"));
     }
 
     private static User user() {
@@ -77,7 +80,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
         return Department.of(DepartmentId.of(departmentId, LocalDateTime.of(2021, 1, 1, 0, 0, 0)), LocalDateTime.of(9999, 12, 31, 0, 0), departmentName, 0, departmentId + "~", 0, 1);
     }
 
-    private static Employee employee(String empCode) {
-        return Employee.of(empCode, "name", "kana", "password", "090-1234-5678", "03-1234-5678", "11101", LocalDateTime.of(2021, 1, 1, 0, 0, 0), "", "");
+    private static Employee employee(String empCode, String departmentCode) {
+        return Employee.of(empCode, "name", "kana", "password", "090-1234-5678", "03-1234-5678", departmentCode, LocalDateTime.of(2021, 1, 1, 0, 0, 0), "", "");
     }
 }

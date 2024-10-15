@@ -59,4 +59,6 @@ public interface 社員マスタMapper {
 
     @Delete("DELETE FROM 社員マスタ")
     void deleteAll();
+
+    List<社員マスタ> selectByDepartmentCode(String 部門コード);
 }
