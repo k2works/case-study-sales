@@ -2,9 +2,11 @@ package com.example.sms;
 
 import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentId;
+import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.service.master.department.DepartmentRepository;
+import com.example.sms.service.master.employee.EmployeeRepository;
 import com.example.sms.service.system.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,6 +19,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
     UserRepository userRepository;
     @Autowired
     DepartmentRepository departmentRepository;
+    @Autowired
+    EmployeeRepository employeeRepository;
 
     @Override
     public void setUpForAuthApiService() {
@@ -36,6 +40,11 @@ public class TestDataFactoryImpl implements TestDataFactory {
     }
 
     @Override
+    public Employee Employee() {
+        return employee("EMP999");
+    }
+
+    @Override
     public void setUpForUserManagementService() {
         userRepository.deleteAll();
         userRepository.save(user());
@@ -49,6 +58,13 @@ public class TestDataFactoryImpl implements TestDataFactory {
         departmentRepository.save(department("20000", "部門2"));
     }
 
+    @Override
+    public void setUpForEmployeeService() {
+        employeeRepository.deleteAll();
+        employeeRepository.save(employee("EMP001"));
+        employeeRepository.save(employee("EMP002"));
+    }
+
     private static User user() {
         return User.of("U999999", "$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK", "first", "last", RoleName.USER);
     }
@@ -59,5 +75,9 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
     private static Department department(String departmentId, String departmentName) {
         return Department.of(DepartmentId.of(departmentId, LocalDateTime.of(2021, 1, 1, 0, 0, 0)), LocalDateTime.of(9999, 12, 31, 0, 0), departmentName, 0, departmentId + "~", 0, 1);
+    }
+
+    private static Employee employee(String empCode) {
+        return Employee.of(empCode, "name", "kana", "password", "090-1234-5678", "03-1234-5678", "11101", LocalDateTime.of(2021, 1, 1, 0, 0, 0), "", "");
     }
 }
