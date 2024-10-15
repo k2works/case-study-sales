@@ -17,4 +17,8 @@ public class DepartmentId {
     String deptCode;
     // 開始日
     LocalDateTime startDate;
+
+    public static DepartmentId of(String number, LocalDateTime of) {
+        return new DepartmentId(number, of);
+    }
 }

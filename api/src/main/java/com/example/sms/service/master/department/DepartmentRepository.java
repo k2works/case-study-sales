@@ -13,8 +13,6 @@ public interface DepartmentRepository {
 
     void save(Department department);
 
-    void update(Department department);
-
     void deleteById(DepartmentId departmentId);
 
     void deleteAll();

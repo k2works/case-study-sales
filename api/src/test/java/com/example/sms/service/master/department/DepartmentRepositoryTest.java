@@ -23,10 +23,14 @@ public class DepartmentRepositoryTest {
         repository.deleteAll();
     }
 
+    private Department getDepartment() {
+        return Department.of(DepartmentId.of("10000", LocalDateTime.of(2021, 1, 1, 0, 0, 0)), LocalDateTime.of(9999, 12, 31, 0, 0), "全社", 0, "10000~", 0, 1);
+    }
+
     @Test
     @DisplayName("部門一覧を取得できる")
     void shouldRetrieveAllDepartments() {
-        Department department = new Department(new DepartmentId("10000", LocalDateTime.of(2021, 1, 1, 0, 0, 0)), LocalDateTime.of(9999, 12, 31, 0, 0), "全社", 0, "10000~", 0, 1);
+        Department department = getDepartment();
 
         repository.save(department);
 
@@ -36,7 +40,7 @@ public class DepartmentRepositoryTest {
     @Test
     @DisplayName("部門を登録できる")
     void shouldRegisterADepartment() {
-        Department department = new Department(new DepartmentId("10000", LocalDateTime.of(2021, 1, 1, 0, 0, 0)), LocalDateTime.of(9999, 12, 31, 0, 0), "全社", 0, "10000~", 0, 1);
+        Department department = getDepartment();
 
         repository.save(department);
 
@@ -53,13 +57,11 @@ public class DepartmentRepositoryTest {
     @Test
     @DisplayName("部門を更新できる")
     void shouldUpdateADepartment() {
-        Department department = new Department(new DepartmentId("10000", LocalDateTime.of(2021, 1, 1, 0, 0, 0)), LocalDateTime.of(9999, 12, 31, 0, 0), "全社", 0, "10000~", 0, 1);
-
+        Department department = getDepartment();
         repository.save(department);
 
         Department updateDepartment = new Department(new DepartmentId("10000", LocalDateTime.of(2021, 1, 1, 0, 0, 0)), LocalDateTime.of(9999, 12, 31, 0, 0), "全社2", 1, "10000~", 1, 0);
-
-        repository.update(updateDepartment);
+        repository.save(updateDepartment);
 
         Department actual = repository.findById(updateDepartment.getDepartmentId()).get();
         assertEquals(updateDepartment.getDepartmentId(), actual.getDepartmentId());
@@ -74,8 +76,7 @@ public class DepartmentRepositoryTest {
     @Test
     @DisplayName("部門を削除できる")
     void shouldDeleteADepartment() {
-        Department department = new Department(new DepartmentId("10000", LocalDateTime.of(2021, 1, 1, 0, 0, 0)), LocalDateTime.of(9999, 12, 31, 0, 0), "全社", 0, "10000~", 0, 1);
-
+        Department department = getDepartment();
         repository.save(department);
 
         repository.deleteById(department.getDepartmentId());

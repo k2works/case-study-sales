@@ -50,34 +50,23 @@ public class DepartmentDataSource implements DepartmentRepository {
         部門マスタKey departmentKey = new 部門マスタKey();
         departmentKey.set部門コード(department.getDepartmentId().getDeptCode());
         departmentKey.set開始日(department.getDepartmentId().getStartDate());
-        部門マスタ departmentEntity = departmentEntityMapper.mapToEntity(department);
-
-        departmentEntity.set作成日時(LocalDateTime.now());
-        departmentEntity.set作成者名(username);
-        departmentEntity.set更新日時(LocalDateTime.now());
-        departmentEntity.set更新者名(username);
-        departmentMapper.insert(departmentEntity);
-    }
-
-    @Override
-    public void update(Department department) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication != null && authentication.getName() != null ? authentication.getName() : "system";
-
-        部門マスタKey departmentKey = new 部門マスタKey();
-        departmentKey.set部門コード(department.getDepartmentId().getDeptCode());
-        departmentKey.set開始日(department.getDepartmentId().getStartDate());
         Optional<部門マスタ> departmentEntity = Optional.ofNullable(departmentMapper.selectByPrimaryKey(departmentKey));
         if (departmentEntity.isEmpty()) {
-            return;
-        }
+            部門マスタ newDepartmentEntity = departmentEntityMapper.mapToEntity(department);
 
-        部門マスタ updateDepartmentEntity = departmentEntityMapper.mapToEntity(department);
-        updateDepartmentEntity.set作成日時(departmentEntity.get().get作成日時());
-        updateDepartmentEntity.set作成者名(departmentEntity.get().get作成者名());
-        updateDepartmentEntity.set更新日時(LocalDateTime.now());
-        updateDepartmentEntity.set更新者名(username);
-        departmentMapper.updateByPrimaryKey(updateDepartmentEntity);
+            newDepartmentEntity.set作成日時(LocalDateTime.now());
+            newDepartmentEntity.set作成者名(username);
+            newDepartmentEntity.set更新日時(LocalDateTime.now());
+            newDepartmentEntity.set更新者名(username);
+            departmentMapper.insert(newDepartmentEntity);
+        } else {
+            部門マスタ updateDepartmentEntity = departmentEntityMapper.mapToEntity(department);
+            updateDepartmentEntity.set作成日時(departmentEntity.get().get作成日時());
+            updateDepartmentEntity.set作成者名(departmentEntity.get().get作成者名());
+            updateDepartmentEntity.set更新日時(LocalDateTime.now());
+            updateDepartmentEntity.set更新者名(username);
+            departmentMapper.updateByPrimaryKey(updateDepartmentEntity);
+        }
     }
 
     @Override

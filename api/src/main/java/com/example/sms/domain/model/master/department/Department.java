@@ -29,4 +29,8 @@ public class Department {
     Integer lowerType;
     // 伝票入力可否
     Integer slitYn;
+
+    public static Department of(DepartmentId departmentId, LocalDateTime endDate, String departmentName, int layer, String path, int layerType, int slitYn) {
+        return new Department(departmentId, endDate, departmentName, layer, path, layerType, slitYn);
+    }
 }
