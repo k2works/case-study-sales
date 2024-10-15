@@ -47,7 +47,7 @@ public class EmployeeServiceTest {
     @DisplayName("社員の登録情報を編集できる")
     void shouldEditEmployeeDetails() {
         Employee employee = testDataFactory.Employee();
-        Employee updateEmployee = Employee.of(employee.getEmpCode(), "editedEmployeeName", employee.getKana(), employee.getLoginPassword(), employee.getTel(), employee.getFax(), employee.getDeptCode(), employee.getStartDate(), employee.getOccuCode(), employee.getApprovalCode());
+        Employee updateEmployee = Employee.of(employee.getEmpCode(), "editedEmployeeName", employee.getKana(), employee.getLoginPassword(), employee.getTel(), employee.getFax(), employee.getDeptCode().getValue(), employee.getDepartmentStartDate().getValue(), employee.getOccuCode(), employee.getApprovalCode());
 
         employeeService.save(updateEmployee);
 

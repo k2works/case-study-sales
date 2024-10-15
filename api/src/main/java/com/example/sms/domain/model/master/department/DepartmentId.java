@@ -13,12 +13,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 public class DepartmentId {
-    // 部門コード
-    String deptCode;
-    // 開始日
-    LocalDateTime startDate;
+    DepartmentCode deptCode; // 部門コード
+    DepartmentStartDate departmentStartDate;// 開始日
 
-    public static DepartmentId of(String number, LocalDateTime of) {
-        return new DepartmentId(number, of);
+    public static DepartmentId of(String code, LocalDateTime from) {
+        DepartmentCode deptCode = new DepartmentCode(code);
+        DepartmentStartDate departmentStartDate = new DepartmentStartDate(from);
+        return new DepartmentId(deptCode, departmentStartDate);
     }
 }

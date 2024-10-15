@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
 public class DepartmentEntityMapper {
     public 部門マスタ mapToEntity(Department department) {
         部門マスタ departmentEntity = new 部門マスタ();
-        departmentEntity.set部門コード(department.getDepartmentId().getDeptCode());
-        departmentEntity.set開始日(department.getDepartmentId().getStartDate());
+        departmentEntity.set部門コード(department.getDepartmentId().getDeptCode().getValue());
+        departmentEntity.set開始日(department.getDepartmentId().getDepartmentStartDate().getValue());
         departmentEntity.set終了日(department.getEndDate());
         departmentEntity.set部門名(department.getDepartmentName());
         departmentEntity.set組織階層(department.getLayer());
@@ -35,8 +35,8 @@ public class DepartmentEntityMapper {
         employeeEntity.setパスワード(employee.getLoginPassword());
         employeeEntity.set電話番号(employee.getTel());
         employeeEntity.setFax番号(employee.getFax());
-        employeeEntity.set部門コード(employee.getDeptCode());
-        employeeEntity.set開始日(employee.getStartDate());
+        employeeEntity.set部門コード(employee.getDeptCode().getValue());
+        employeeEntity.set開始日(employee.getDepartmentStartDate().getValue());
         employeeEntity.set職種コード(employee.getOccuCode());
         employeeEntity.set承認権限コード(employee.getApprovalCode());
         return employeeEntity;
@@ -48,7 +48,7 @@ public class DepartmentEntityMapper {
                 .collect(Collectors.toList());
 
         return new Department(
-                new DepartmentId(departmentEntity.get部門コード(), departmentEntity.get開始日()),
+                DepartmentId.of(departmentEntity.get部門コード(), departmentEntity.get開始日()),
                 departmentEntity.get終了日(),
                 departmentEntity.get部門名(),
                 departmentEntity.get組織階層(),

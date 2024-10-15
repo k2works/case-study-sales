@@ -25,8 +25,8 @@ public class DepartmentDataSource implements DepartmentRepository {
     @Override
     public Optional<Department> findById(DepartmentId departmentId) {
         部門マスタKey departmentKey = new 部門マスタKey();
-        departmentKey.set部門コード(departmentId.getDeptCode());
-        departmentKey.set開始日(departmentId.getStartDate());
+        departmentKey.set部門コード(departmentId.getDeptCode().getValue());
+        departmentKey.set開始日(departmentId.getDepartmentStartDate().getValue());
         部門マスタ departmentEntity = departmentMapper.selectByPrimaryKey(departmentKey);
         if (departmentEntity != null) {
             return Optional.of(departmentEntityMapper.mapToDomainModel(departmentEntity));
@@ -48,8 +48,8 @@ public class DepartmentDataSource implements DepartmentRepository {
         String username = authentication != null && authentication.getName() != null ? authentication.getName() : "system";
 
         部門マスタKey departmentKey = new 部門マスタKey();
-        departmentKey.set部門コード(department.getDepartmentId().getDeptCode());
-        departmentKey.set開始日(department.getDepartmentId().getStartDate());
+        departmentKey.set部門コード(department.getDepartmentId().getDeptCode().getValue());
+        departmentKey.set開始日(department.getDepartmentId().getDepartmentStartDate().getValue());
         Optional<部門マスタ> departmentEntity = Optional.ofNullable(departmentMapper.selectByPrimaryKey(departmentKey));
         if (departmentEntity.isEmpty()) {
             部門マスタ newDepartmentEntity = departmentEntityMapper.mapToEntity(department);
@@ -72,8 +72,8 @@ public class DepartmentDataSource implements DepartmentRepository {
     @Override
     public void deleteById(DepartmentId departmentId) {
         部門マスタKey departmentKey = new 部門マスタKey();
-        departmentKey.set部門コード(departmentId.getDeptCode());
-        departmentKey.set開始日(departmentId.getStartDate());
+        departmentKey.set部門コード(departmentId.getDeptCode().getValue());
+        departmentKey.set開始日(departmentId.getDepartmentStartDate().getValue());
         departmentMapper.deleteByPrimaryKey(departmentKey);
     }
 
