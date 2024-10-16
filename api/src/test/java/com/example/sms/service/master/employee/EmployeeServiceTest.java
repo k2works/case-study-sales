@@ -49,7 +49,8 @@ public class EmployeeServiceTest {
         Employee employee = testDataFactory.Employee();
         Employee updateEmployee = Employee.of(
                 Employee.of(employee.getEmpCode().getValue(), "edited EmployeeName", employee.getEmpName().NameKana(), employee.getTel().getValue(), employee.getFax().getValue(), employee.getOccuCode().getValue()),
-                employee.getDepartment()
+                employee.getDepartment(),
+                employee.getUser()
         );
 
         employeeService.save(updateEmployee);

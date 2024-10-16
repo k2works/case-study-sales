@@ -34,11 +34,7 @@ public class Employee {
         return new Employee(employeeCode, employeeName, null, phoneNumber, faxNumber, jobCode, "", null, null);
     }
 
-    public static Employee of(Employee employee, Department department) {
-        return new Employee(employee.getEmpCode(), employee.getEmpName(), employee.getLoginPassword(), employee.getTel(), employee.getFax(), employee.getOccuCode(), employee.getApprovalCode(), department, employee.getUser());
-    }
-
-    public static Employee of(Employee employee, User user) {
-        return new Employee(employee.getEmpCode(), employee.getEmpName(), employee.getLoginPassword(), employee.getTel(), employee.getFax(), employee.getOccuCode(), employee.getApprovalCode(), employee.getDepartment(), user);
+    public static Employee of(Employee employee, Department department, User user) {
+        return new Employee(employee.getEmpCode(), employee.getEmpName(), employee.getLoginPassword(), employee.getTel(), employee.getFax(), employee.getOccuCode(), employee.getApprovalCode(), department, user);
     }
 }

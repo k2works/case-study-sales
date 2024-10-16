@@ -66,7 +66,8 @@ public class EmployeeRepositoryTest {
         employee = repository.findById(employee.getEmpCode()).get();
         Employee updateEmployee = Employee.of(
                 Employee.of("EMP999", "firstName lastName2", "firstKana lastKana2", "090-1234-5678", "03-1234-5678", ""),
-                employee.getDepartment()
+                employee.getDepartment(),
+                employee.getUser()
         );
         repository.save(updateEmployee);
 
