@@ -28,7 +28,7 @@ public class DepartmentEntityMapper {
 
     private 社員マスタ mapToEmployeeEntity(Employee employee) {
         社員マスタ employeeEntity = new 社員マスタ();
-        employeeEntity.set社員コード(employee.getEmpCode());
+        employeeEntity.set社員コード(employee.getEmpCode().getValue());
         employeeEntity.set社員名(employee.getName());
         employeeEntity.set社員名カナ(employee.getKana());
         employeeEntity.setパスワード(employee.getLoginPassword());

@@ -3,6 +3,7 @@ package com.example.sms.infrastructure.datasource.master.employee;
 import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.employee.Employee;
+import com.example.sms.domain.model.master.employee.EmployeeCode;
 import com.example.sms.infrastructure.datasource.master.department.部門マスタ;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class EmployeeEntityMapper {
     public 社員マスタ mapToEntity(Employee employee) {
         社員マスタ employeeEntity = new 社員マスタ();
-        employeeEntity.set社員コード(employee.getEmpCode());
+        employeeEntity.set社員コード(employee.getEmpCode().getValue());
         employeeEntity.set社員名(employee.getName());
         employeeEntity.set社員名カナ(employee.getKana());
         employeeEntity.setパスワード(employee.getLoginPassword());
@@ -41,9 +42,10 @@ public class EmployeeEntityMapper {
     public Employee mapToDomainModel(社員マスタ employeeEntity) {
         Department department = mapToDepartment(employeeEntity.get部門());
         DepartmentId departmentId = DepartmentId.of(employeeEntity.get部門コード(), employeeEntity.get開始日());
+        EmployeeCode employeeCode = EmployeeCode.of(employeeEntity.get社員コード());
 
         return new Employee(
-                employeeEntity.get社員コード(),
+                employeeCode,
                 employeeEntity.get社員名(),
                 employeeEntity.get社員名カナ(),
                 employeeEntity.getパスワード(),

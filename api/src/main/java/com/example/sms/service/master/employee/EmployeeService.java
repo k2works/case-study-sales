@@ -1,6 +1,7 @@
 package com.example.sms.service.master.employee;
 
 import com.example.sms.domain.model.master.employee.Employee;
+import com.example.sms.domain.model.master.employee.EmployeeCode;
 import com.example.sms.domain.model.master.employee.EmployeeList;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,14 +42,14 @@ public class EmployeeService {
     /**
      * 社員削除
      */
-    public void delete(String empCode) {
+    public void delete(EmployeeCode empCode) {
         employeeRepository.deleteById(empCode);
     }
 
     /**
      * 社員検索
      */
-    public Employee find(String empCode) {
+    public Employee find(EmployeeCode empCode) {
         return employeeRepository.findById(empCode).orElse(null);
     }
 }

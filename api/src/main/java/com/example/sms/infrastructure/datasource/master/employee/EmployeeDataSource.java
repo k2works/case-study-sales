@@ -1,6 +1,7 @@
 package com.example.sms.infrastructure.datasource.master.employee;
 
 import com.example.sms.domain.model.master.employee.Employee;
+import com.example.sms.domain.model.master.employee.EmployeeCode;
 import com.example.sms.domain.model.master.employee.EmployeeList;
 import com.example.sms.service.master.employee.EmployeeRepository;
 import org.springframework.security.core.Authentication;
@@ -22,8 +23,8 @@ public class EmployeeDataSource implements EmployeeRepository {
     }
 
     @Override
-    public Optional<Employee> findById(String empCode) {
-        社員マスタ employeeEntity = employeeMapper.selectByPrimaryKey(empCode);
+    public Optional<Employee> findById(EmployeeCode empCode) {
+        社員マスタ employeeEntity = employeeMapper.selectByPrimaryKey(empCode.getValue());
         if (employeeEntity != null) {
             return Optional.of(employeeEntityMapper.mapToDomainModel(employeeEntity));
         }
@@ -43,7 +44,7 @@ public class EmployeeDataSource implements EmployeeRepository {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication != null && authentication.getName() != null ? authentication.getName() : "system";
 
-        Optional<社員マスタ> employeeEntity = Optional.ofNullable(employeeMapper.selectByPrimaryKey(employee.getEmpCode()));
+        Optional<社員マスタ> employeeEntity = Optional.ofNullable(employeeMapper.selectByPrimaryKey(employee.getEmpCode().getValue()));
         if (employeeEntity.isEmpty()) {
             社員マスタ newEmployeeEntity = employeeEntityMapper.mapToEntity(employee);
 
@@ -64,8 +65,8 @@ public class EmployeeDataSource implements EmployeeRepository {
     }
 
     @Override
-    public void deleteById(String empCode) {
-        employeeMapper.deleteByPrimaryKey(empCode);
+    public void deleteById(EmployeeCode empCode) {
+        employeeMapper.deleteByPrimaryKey(empCode.getValue());
     }
 
     @Override

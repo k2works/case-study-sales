@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 public class Employee {
-    String empCode;       // 社員コード
+    EmployeeCode empCode;       // 社員コード
     String name;          // 社員名
     String kana;          // 社員名カナ
     String loginPassword; // パスワード
@@ -29,12 +29,14 @@ public class Employee {
     Department department; // 部門
 
     public static Employee of(String empCode, String name, String kana, String password, String tel, String fax, String deptCode, LocalDateTime startDate, String occuCode, String approvalCode) {
+        EmployeeCode employeeCode = EmployeeCode.of(empCode);
         DepartmentId departmentId = DepartmentId.of(deptCode, startDate);
-        return new Employee(empCode, name, kana, password, tel, fax, departmentId, occuCode, approvalCode, null);
+        return new Employee(employeeCode, name, kana, password, tel, fax, departmentId, occuCode, approvalCode, null);
     }
 
     public static Employee of(String empCode, String name, String kana, String password, String tel, String fax, String deptCode, LocalDateTime startDate, String occuCode, String approvalCode, Department department) {
+        EmployeeCode employeeCode = EmployeeCode.of(empCode);
         DepartmentId departmentId = DepartmentId.of(deptCode, startDate);
-        return new Employee(empCode, name, kana, password, tel, fax, departmentId, occuCode, approvalCode, department);
+        return new Employee(employeeCode, name, kana, password, tel, fax, departmentId, occuCode, approvalCode, department);
     }
 }
