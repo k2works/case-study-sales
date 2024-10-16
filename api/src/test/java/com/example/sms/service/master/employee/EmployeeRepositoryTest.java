@@ -23,7 +23,7 @@ public class EmployeeRepositoryTest {
     }
 
     private Employee getEmployee() {
-        return Employee.of("EMP999", "name", "kana", "password", "090-1234-5678", "03-1234-5678", "11101", LocalDateTime.of(2021, 1, 1, 0, 0, 0), "", "");
+        return Employee.of("EMP999", "firstName lastName", "firstKana lastKana", "password", "090-1234-5678", "03-1234-5678", "11101", LocalDateTime.of(2021, 1, 1, 0, 0, 0), "", "");
     }
 
     @Test
@@ -45,8 +45,8 @@ public class EmployeeRepositoryTest {
 
         Employee actual = repository.findById(employee.getEmpCode()).get();
         assertEquals(employee.getEmpCode(), actual.getEmpCode());
-        assertEquals(employee.getName(), actual.getName());
-        assertEquals(employee.getKana(), actual.getKana());
+        assertEquals(employee.getEmpName().Name(), actual.getEmpName().Name());
+        assertEquals(employee.getEmpName().NameKana(), actual.getEmpName().NameKana());
         assertEquals(employee.getLoginPassword(), actual.getLoginPassword());
         assertEquals(employee.getTel(), actual.getTel());
         assertEquals(employee.getFax(), actual.getFax());
@@ -63,7 +63,7 @@ public class EmployeeRepositoryTest {
         repository.save(employee);
 
         employee = repository.findById(employee.getEmpCode()).get();
-        Employee updateEmployee = Employee.of("EMP999", "updateName", "updateKana", "password", "090-1234-5678", "03-1234-5678", "11101", LocalDateTime.of(2021, 1, 1, 0, 0, 0), "", "", employee.getDepartment());
+        Employee updateEmployee = Employee.of("EMP999", "firstName lastName2", "firstKana lastKana2", "password", "090-1234-5678", "03-1234-5678", "11101", LocalDateTime.of(2021, 1, 1, 0, 0, 0), "", "", employee.getDepartment());
         repository.save(updateEmployee);
 
         Employee actual = repository.findById(employee.getEmpCode()).get();

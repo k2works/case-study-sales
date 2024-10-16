@@ -47,12 +47,12 @@ public class EmployeeServiceTest {
     @DisplayName("社員の登録情報を編集できる")
     void shouldEditEmployeeDetails() {
         Employee employee = testDataFactory.Employee();
-        Employee updateEmployee = Employee.of(employee.getEmpCode().getValue(), "editedEmployeeName", employee.getKana(), employee.getLoginPassword(), employee.getTel(), employee.getFax(), employee.getDepartmentId().getDeptCode().getValue(), employee.getDepartmentId().getDepartmentStartDate().getValue(), employee.getOccuCode(), employee.getApprovalCode());
+        Employee updateEmployee = Employee.of(employee.getEmpCode().getValue(), "edited EmployeeName", employee.getEmpName().NameKana(), employee.getLoginPassword(), employee.getTel(), employee.getFax(), employee.getDepartmentId().getDeptCode().getValue(), employee.getDepartmentId().getDepartmentStartDate().getValue(), employee.getOccuCode(), employee.getApprovalCode());
 
         employeeService.save(updateEmployee);
 
         Employee result = employeeService.find(employee.getEmpCode());
-        assertEquals("editedEmployeeName", result.getName());
+        assertEquals("edited EmployeeName", result.getEmpName().Name());
     }
 
     @Test

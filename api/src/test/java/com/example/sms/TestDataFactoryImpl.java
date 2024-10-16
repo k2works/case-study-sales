@@ -84,6 +84,6 @@ public class TestDataFactoryImpl implements TestDataFactory {
     }
 
     private static Employee employee(String empCode, String departmentCode, LocalDateTime startDate) {
-        return Employee.of(empCode, "name", "kana", "password", "090-1234-5678", "03-1234-5678", departmentCode, startDate, "", "");
+        return Employee.of(empCode, "firstName lastName", "firstNameKana lastNameKana", "password", "090-1234-5678", "03-1234-5678", departmentCode, startDate, "", "");
     }
 }
