@@ -1,6 +1,7 @@
 package com.example.sms.infrastructure.datasource.master.employee;
 
 import com.example.sms.infrastructure.datasource.master.department.部門マスタ;
+import com.example.sms.infrastructure.datasource.system.user.Usr;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +14,16 @@ public class 社員マスタ {
 
     public void set部門(部門マスタ 部門) {
         this.部門 = 部門;
+    }
+
+    private Usr user;
+
+    public Usr getUser() {
+        return user;
+    }
+
+    public void setUser(Usr user) {
+        this.user = user;
     }
 
     /**

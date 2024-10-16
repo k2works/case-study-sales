@@ -3,7 +3,11 @@ package com.example.sms.infrastructure.datasource.master.employee;
 import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.employee.*;
+import com.example.sms.domain.model.system.user.RoleName;
+import com.example.sms.domain.model.system.user.User;
+import com.example.sms.domain.model.system.user.UserId;
 import com.example.sms.infrastructure.datasource.master.department.部門マスタ;
+import com.example.sms.infrastructure.datasource.system.user.Usr;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -22,6 +26,9 @@ public class EmployeeEntityMapper {
         employeeEntity.set承認権限コード(employee.getApprovalCode());
         if (employee.getDepartment() != null) {
             employeeEntity.set部門(mapToDepartmentEntity(employee.getDepartment()));
+        }
+        if (employee.getUserId() != null) {
+            employeeEntity.setUserId(employee.getUserId().getValue());
         }
         return employeeEntity;
     }
@@ -46,6 +53,8 @@ public class EmployeeEntityMapper {
         PhoneNumber phoneNumber = PhoneNumber.of(employeeEntity.get電話番号());
         FaxNumber faxNumber = FaxNumber.of(employeeEntity.getFax番号());
         JobCode jobCode = JobCode.of(employeeEntity.get職種コード());
+        UserId userId = UserId.of(employeeEntity.getUserId());
+        User user = mapToUser(employeeEntity.getUser());
 
         return new Employee(
                 employeeCode,
@@ -56,7 +65,9 @@ public class EmployeeEntityMapper {
                 departmentId,
                 jobCode,
                 employeeEntity.get承認権限コード(),
-                department
+                department,
+                userId,
+                user
         );
     }
 
@@ -71,6 +82,18 @@ public class EmployeeEntityMapper {
                 departmentEntity.get部門パス(),
                 departmentEntity.get最下層区分(),
                 departmentEntity.get伝票入力可否()
+        );
+    }
+
+    private User mapToUser(Usr userEntity) {
+        if (userEntity == null) return null;
+
+        return User.of(
+                userEntity.getUserId(),
+                userEntity.getPassword(),
+                userEntity.getFirstName(),
+                userEntity.getLastName(),
+                RoleName.valueOf(userEntity.getRoleName())
         );
     }
 }

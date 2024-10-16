@@ -63,6 +63,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
     @Override
     public void setUpForEmployeeService() {
+        userRepository.deleteAll();
+        userRepository.save(user());
         LocalDateTime startDate = LocalDateTime.of(2021, 1, 1, 0, 0);
         departmentRepository.deleteAll();
         departmentRepository.save(department("10000", startDate, "部門1"));
@@ -84,6 +86,9 @@ public class TestDataFactoryImpl implements TestDataFactory {
     }
 
     private static Employee employee(String empCode, String departmentCode, LocalDateTime startDate) {
-        return Employee.of(empCode, "firstName lastName", "firstNameKana lastNameKana", "password", "090-1234-5678", "03-1234-5678", departmentCode, startDate, "", "");
+        return Employee.of(
+                Employee.of(empCode, "firstName lastName", "firstNameKana lastNameKana", "password", "090-1234-5678", "03-1234-5678", departmentCode, startDate, "", ""),
+                user()
+        );
     }
 }

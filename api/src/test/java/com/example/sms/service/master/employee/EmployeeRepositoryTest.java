@@ -63,7 +63,10 @@ public class EmployeeRepositoryTest {
         repository.save(employee);
 
         employee = repository.findById(employee.getEmpCode()).get();
-        Employee updateEmployee = Employee.of("EMP999", "firstName lastName2", "firstKana lastKana2", "password", "090-1234-5678", "03-1234-5678", "11101", LocalDateTime.of(2021, 1, 1, 0, 0, 0), "", "", employee.getDepartment());
+        Employee updateEmployee = Employee.of(
+                Employee.of("EMP999", "firstName lastName2", "firstKana lastKana2", "password", "090-1234-5678", "03-1234-5678", "11101", LocalDateTime.of(2021, 1, 1, 0, 0, 0), "", ""),
+                employee.getDepartment()
+        );
         repository.save(updateEmployee);
 
         Employee actual = repository.findById(employee.getEmpCode()).get();
