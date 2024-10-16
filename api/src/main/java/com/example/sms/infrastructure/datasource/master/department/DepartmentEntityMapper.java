@@ -20,25 +20,7 @@ public class DepartmentEntityMapper {
         departmentEntity.set部門パス(department.getPath().getValue());
         departmentEntity.set最下層区分(department.getLowerType().getValue());
         departmentEntity.set伝票入力可否(department.getSlitYn().getValue());
-        departmentEntity.set社員(department.getEmployees().stream()
-                .map(this::mapToEmployeeEntity)
-                .collect(Collectors.toList()));
         return departmentEntity;
-    }
-
-    private 社員マスタ mapToEmployeeEntity(Employee employee) {
-        社員マスタ employeeEntity = new 社員マスタ();
-        employeeEntity.set社員コード(employee.getEmpCode().getValue());
-        employeeEntity.set社員名(employee.getEmpName().Name());
-        employeeEntity.set社員名カナ(employee.getEmpName().NameKana());
-        employeeEntity.setパスワード(employee.getLoginPassword());
-        employeeEntity.set電話番号(employee.getTel().getValue());
-        employeeEntity.setFax番号(employee.getFax().getValue());
-        employeeEntity.set部門コード(employee.getDepartmentId().getDeptCode().getValue());
-        employeeEntity.set開始日(employee.getDepartmentId().getDepartmentStartDate().getValue());
-        employeeEntity.set職種コード(employee.getOccuCode().getValue());
-        employeeEntity.set承認権限コード(employee.getApprovalCode());
-        return employeeEntity;
     }
 
     public Department mapToDomainModel(部門マスタ departmentEntity) {

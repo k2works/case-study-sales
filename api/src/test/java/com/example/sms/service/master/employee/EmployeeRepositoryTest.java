@@ -1,5 +1,7 @@
 package com.example.sms.service.master.employee;
 
+import com.example.sms.domain.model.master.department.Department;
+import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.employee.Employee;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,7 +25,14 @@ public class EmployeeRepositoryTest {
     }
 
     private Employee getEmployee() {
-        return Employee.of("EMP999", "firstName lastName", "firstKana lastKana", "password", "090-1234-5678", "03-1234-5678", "11101", LocalDateTime.of(2021, 1, 1, 0, 0, 0), "", "");
+        String departmentCode = "10000";
+        String departmentName = "全社";
+        LocalDateTime startDate = LocalDateTime.of(2021, 1, 1, 0, 0);
+        Department department = Department.of(DepartmentId.of(departmentCode, startDate), LocalDateTime.of(9999, 12, 31, 0, 0), departmentName, 0, departmentCode + "~", 0, 1);
+        return Employee.of(
+                Employee.of("EMP999", "firstName lastName2", "firstKana lastKana2", "password", "090-1234-5678", "03-1234-5678", departmentCode, LocalDateTime.of(2021, 1, 1, 0, 0, 0), "", ""),
+                department
+        );
     }
 
     @Test
@@ -50,8 +59,8 @@ public class EmployeeRepositoryTest {
         assertEquals(employee.getLoginPassword(), actual.getLoginPassword());
         assertEquals(employee.getTel(), actual.getTel());
         assertEquals(employee.getFax(), actual.getFax());
-        assertEquals(employee.getDepartmentId().getDeptCode(), actual.getDepartmentId().getDeptCode());
-        assertEquals(employee.getDepartmentId().getDepartmentStartDate(), actual.getDepartmentId().getDepartmentStartDate());
+        assertEquals(employee.getDepartment().getDepartmentId().getDeptCode(), actual.getDepartment().getDepartmentId().getDeptCode());
+        assertEquals(employee.getDepartment().getDepartmentId().getDepartmentStartDate(), actual.getDepartment().getDepartmentId().getDepartmentStartDate());
         assertEquals(employee.getOccuCode(), actual.getOccuCode());
         assertEquals(employee.getApprovalCode(), actual.getApprovalCode());
     }

@@ -41,7 +41,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
     @Override
     public Employee Employee() {
-        return employee("EMP999", "30000", LocalDateTime.of(2021, 1, 1, 0, 0));
+        return employee("EMP999", "10000", LocalDateTime.of(2021, 1, 1, 0, 0));
     }
 
     @Override
@@ -87,7 +87,10 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
     private static Employee employee(String empCode, String departmentCode, LocalDateTime startDate) {
         return Employee.of(
-                Employee.of(empCode, "firstName lastName", "firstNameKana lastNameKana", "password", "090-1234-5678", "03-1234-5678", departmentCode, startDate, "", ""),
+                Employee.of(
+                        Employee.of(empCode, "firstName lastName", "firstNameKana lastNameKana", "password", "090-1234-5678", "03-1234-5678", departmentCode, startDate, "", ""),
+                        department(departmentCode, startDate, "部門1")
+                ),
                 user()
         );
     }

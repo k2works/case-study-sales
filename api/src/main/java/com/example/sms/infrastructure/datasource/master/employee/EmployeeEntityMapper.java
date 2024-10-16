@@ -20,29 +20,16 @@ public class EmployeeEntityMapper {
         employeeEntity.setパスワード(employee.getLoginPassword());
         employeeEntity.set電話番号(employee.getTel().getValue());
         employeeEntity.setFax番号(employee.getFax().getValue());
-        employeeEntity.set部門コード(employee.getDepartmentId().getDeptCode().getValue());
-        employeeEntity.set開始日(employee.getDepartmentId().getDepartmentStartDate().getValue());
+        if (employee.getDepartment() != null) {
+            employeeEntity.set部門コード(employee.getDepartment().getDepartmentId().getDeptCode().getValue());
+            employeeEntity.set開始日(employee.getDepartment().getDepartmentId().getDepartmentStartDate().getValue());
+        }
         employeeEntity.set職種コード(employee.getOccuCode().getValue());
         employeeEntity.set承認権限コード(employee.getApprovalCode());
-        if (employee.getDepartment() != null) {
-            employeeEntity.set部門(mapToDepartmentEntity(employee.getDepartment()));
-        }
-        if (employee.getUserId() != null) {
-            employeeEntity.setUserId(employee.getUserId().getValue());
+        if (employee.getUser() != null) {
+            employeeEntity.setUserId(employee.getUser().getUserId().getValue());
         }
         return employeeEntity;
-    }
-
-    private 部門マスタ mapToDepartmentEntity(Department department) {
-        部門マスタ departmentEntity = new 部門マスタ();
-        departmentEntity.set部門コード(department.getDepartmentId().getDeptCode().getValue());
-        departmentEntity.set開始日(department.getDepartmentId().getDepartmentStartDate().getValue());
-        departmentEntity.set部門名(department.getDepartmentName());
-        departmentEntity.set組織階層(department.getLayer());
-        departmentEntity.set部門パス(department.getPath().getValue());
-        departmentEntity.set最下層区分(department.getLowerType().getValue());
-        departmentEntity.set伝票入力可否(department.getSlitYn().getValue());
-        return departmentEntity;
     }
 
     public Employee mapToDomainModel(社員マスタ employeeEntity) {
@@ -62,11 +49,9 @@ public class EmployeeEntityMapper {
                 employeeEntity.getパスワード(),
                 phoneNumber,
                 faxNumber,
-                departmentId,
                 jobCode,
                 employeeEntity.get承認権限コード(),
                 department,
-                userId,
                 user
         );
     }
@@ -76,7 +61,7 @@ public class EmployeeEntityMapper {
 
         return Department.of(
                 DepartmentId.of(departmentEntity.get部門コード(), departmentEntity.get開始日()),
-                departmentEntity.get開始日(),
+                departmentEntity.get終了日(),
                 departmentEntity.get部門名(),
                 departmentEntity.get組織階層(),
                 departmentEntity.get部門パス(),
