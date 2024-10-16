@@ -20,8 +20,8 @@ public class Employee {
     EmployeeCode empCode;       // 社員コード
     EmployeeName empName;       // 社員名
     String loginPassword; // パスワード
-    String tel;           // 電話番号
-    String fax;           // fax番号
+    PhoneNumber tel;           // 電話番号
+    FaxNumber fax;           // fax番号
     DepartmentId departmentId; // 部門ID
     String occuCode;      // 職種コード
     String approvalCode;  // 承認権限コード
@@ -31,13 +31,17 @@ public class Employee {
         EmployeeCode employeeCode = EmployeeCode.of(empCode);
         DepartmentId departmentId = DepartmentId.of(deptCode, startDate);
         EmployeeName employeeName = EmployeeName.of(name, kana);
-        return new Employee(employeeCode, employeeName, password, tel, fax, departmentId, occuCode, approvalCode, null);
+        PhoneNumber phoneNumber = PhoneNumber.of(tel);
+        FaxNumber faxNumber = FaxNumber.of(fax);
+        return new Employee(employeeCode, employeeName, password, phoneNumber, faxNumber, departmentId, occuCode, approvalCode, null);
     }
 
     public static Employee of(String empCode, String name, String kana, String password, String tel, String fax, String deptCode, LocalDateTime startDate, String occuCode, String approvalCode, Department department) {
         EmployeeCode employeeCode = EmployeeCode.of(empCode);
         DepartmentId departmentId = DepartmentId.of(deptCode, startDate);
         EmployeeName employeeName = EmployeeName.of(name, kana);
-        return new Employee(employeeCode, employeeName, password, tel, fax, departmentId, occuCode, approvalCode, department);
+        PhoneNumber phoneNumber = PhoneNumber.of(tel);
+        FaxNumber faxNumber = FaxNumber.of(fax);
+        return new Employee(employeeCode, employeeName, password, phoneNumber, faxNumber, departmentId, occuCode, approvalCode, department);
     }
 }

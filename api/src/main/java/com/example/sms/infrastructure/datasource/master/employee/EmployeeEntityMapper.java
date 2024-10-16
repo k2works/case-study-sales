@@ -2,9 +2,7 @@ package com.example.sms.infrastructure.datasource.master.employee;
 
 import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentId;
-import com.example.sms.domain.model.master.employee.Employee;
-import com.example.sms.domain.model.master.employee.EmployeeCode;
-import com.example.sms.domain.model.master.employee.EmployeeName;
+import com.example.sms.domain.model.master.employee.*;
 import com.example.sms.infrastructure.datasource.master.department.部門マスタ;
 import org.springframework.stereotype.Component;
 
@@ -16,8 +14,8 @@ public class EmployeeEntityMapper {
         employeeEntity.set社員名(employee.getEmpName().Name());
         employeeEntity.set社員名カナ(employee.getEmpName().NameKana());
         employeeEntity.setパスワード(employee.getLoginPassword());
-        employeeEntity.set電話番号(employee.getTel());
-        employeeEntity.setFax番号(employee.getFax());
+        employeeEntity.set電話番号(employee.getTel().getValue());
+        employeeEntity.setFax番号(employee.getFax().getValue());
         employeeEntity.set部門コード(employee.getDepartmentId().getDeptCode().getValue());
         employeeEntity.set開始日(employee.getDepartmentId().getDepartmentStartDate().getValue());
         employeeEntity.set職種コード(employee.getOccuCode());
@@ -45,13 +43,15 @@ public class EmployeeEntityMapper {
         DepartmentId departmentId = DepartmentId.of(employeeEntity.get部門コード(), employeeEntity.get開始日());
         EmployeeCode employeeCode = EmployeeCode.of(employeeEntity.get社員コード());
         EmployeeName employeeName = EmployeeName.of(employeeEntity.get社員名(), employeeEntity.get社員名カナ());
+        PhoneNumber phoneNumber = PhoneNumber.of(employeeEntity.get電話番号());
+        FaxNumber faxNumber = FaxNumber.of(employeeEntity.getFax番号());
 
         return new Employee(
                 employeeCode,
                 employeeName,
                 employeeEntity.getパスワード(),
-                employeeEntity.get電話番号(),
-                employeeEntity.getFax番号(),
+                phoneNumber,
+                faxNumber,
                 departmentId,
                 employeeEntity.get職種コード(),
                 employeeEntity.get承認権限コード(),
