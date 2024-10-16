@@ -21,6 +21,7 @@
         <result column="作成者名" jdbcType="VARCHAR" property="作成者名"/>
         <result column="更新日時" jdbcType="TIMESTAMP" property="更新日時"/>
         <result column="更新者名" jdbcType="VARCHAR" property="更新者名"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
 
         <association property="部門"
                      javaType="com.example.sms.infrastructure.datasource.master.department.部門マスタ"
@@ -68,12 +69,14 @@
         パスワード, 電話番号, FAX番号,
         部門コード, 開始日, 職種コード,
         承認権限コード, 作成日時, 作成者名,
-        更新日時, 更新者名)
+        更新日時, 更新者名, user_id
+        )
         values (#{社員コード,jdbcType=VARCHAR}, #{社員名,jdbcType=VARCHAR}, #{社員名カナ,jdbcType=VARCHAR},
         #{パスワード,jdbcType=VARCHAR}, #{電話番号,jdbcType=VARCHAR}, #{fax番号,jdbcType=VARCHAR},
         #{部門コード,jdbcType=VARCHAR}, #{開始日,jdbcType=TIMESTAMP}, #{職種コード,jdbcType=VARCHAR},
         #{承認権限コード,jdbcType=VARCHAR}, #{作成日時,jdbcType=TIMESTAMP}, #{作成者名,jdbcType=VARCHAR},
-        #{更新日時,jdbcType=TIMESTAMP}, #{更新者名,jdbcType=VARCHAR})
+        #{更新日時,jdbcType=TIMESTAMP}, #{更新者名,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}
+        )
     </insert>
     <insert id="insertSelective" parameterType="com.example.sms.infrastructure.datasource.master.employee.社員マスタ">
         <!--
@@ -125,6 +128,9 @@
             <if test="更新者名 != null">
                 更新者名,
             </if>
+            <if test="userId != null">
+                user_id,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="社員コード != null">
@@ -169,7 +175,11 @@
             <if test="更新者名 != null">
                 #{更新者名,jdbcType=VARCHAR},
             </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
         </trim>
+        >
     </insert>
     <update id="updateByPrimaryKeySelective"
             parameterType="com.example.sms.infrastructure.datasource.master.employee.社員マスタ">
@@ -219,6 +229,9 @@
             <if test="更新者名 != null">
                 更新者名 = #{更新者名,jdbcType=VARCHAR},
             </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=VARCHAR},
+            </if>
         </set>
         where 社員コード = #{社員コード,jdbcType=VARCHAR}
     </update>
@@ -242,7 +255,8 @@
         作成日時 = #{作成日時,jdbcType=TIMESTAMP},
         作成者名 = #{作成者名,jdbcType=VARCHAR},
         更新日時 = #{更新日時,jdbcType=TIMESTAMP},
-        更新者名 = #{更新者名,jdbcType=VARCHAR}
+        更新者名 = #{更新者名,jdbcType=VARCHAR},
+        user_id = #{userId,jdbcType=VARCHAR}
         where 社員コード = #{社員コード,jdbcType=VARCHAR}
     </update>
 
