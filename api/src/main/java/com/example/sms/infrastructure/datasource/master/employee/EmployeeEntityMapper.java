@@ -18,7 +18,7 @@ public class EmployeeEntityMapper {
         employeeEntity.setFax番号(employee.getFax().getValue());
         employeeEntity.set部門コード(employee.getDepartmentId().getDeptCode().getValue());
         employeeEntity.set開始日(employee.getDepartmentId().getDepartmentStartDate().getValue());
-        employeeEntity.set職種コード(employee.getOccuCode());
+        employeeEntity.set職種コード(employee.getOccuCode().getValue());
         employeeEntity.set承認権限コード(employee.getApprovalCode());
         if (employee.getDepartment() != null) {
             employeeEntity.set部門(mapToDepartmentEntity(employee.getDepartment()));
@@ -45,6 +45,7 @@ public class EmployeeEntityMapper {
         EmployeeName employeeName = EmployeeName.of(employeeEntity.get社員名(), employeeEntity.get社員名カナ());
         PhoneNumber phoneNumber = PhoneNumber.of(employeeEntity.get電話番号());
         FaxNumber faxNumber = FaxNumber.of(employeeEntity.getFax番号());
+        JobCode jobCode = JobCode.of(employeeEntity.get職種コード());
 
         return new Employee(
                 employeeCode,
@@ -53,7 +54,7 @@ public class EmployeeEntityMapper {
                 phoneNumber,
                 faxNumber,
                 departmentId,
-                employeeEntity.get職種コード(),
+                jobCode,
                 employeeEntity.get承認権限コード(),
                 department
         );

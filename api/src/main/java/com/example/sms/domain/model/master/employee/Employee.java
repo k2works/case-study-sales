@@ -23,7 +23,7 @@ public class Employee {
     PhoneNumber tel;           // 電話番号
     FaxNumber fax;           // fax番号
     DepartmentId departmentId; // 部門ID
-    String occuCode;      // 職種コード
+    JobCode occuCode;      // 職種コード
     String approvalCode;  // 承認権限コード
     Department department; // 部門
 
@@ -33,7 +33,8 @@ public class Employee {
         EmployeeName employeeName = EmployeeName.of(name, kana);
         PhoneNumber phoneNumber = PhoneNumber.of(tel);
         FaxNumber faxNumber = FaxNumber.of(fax);
-        return new Employee(employeeCode, employeeName, password, phoneNumber, faxNumber, departmentId, occuCode, approvalCode, null);
+        JobCode jobCode = JobCode.of(occuCode);
+        return new Employee(employeeCode, employeeName, password, phoneNumber, faxNumber, departmentId, jobCode, approvalCode, null);
     }
 
     public static Employee of(String empCode, String name, String kana, String password, String tel, String fax, String deptCode, LocalDateTime startDate, String occuCode, String approvalCode, Department department) {
@@ -42,6 +43,7 @@ public class Employee {
         EmployeeName employeeName = EmployeeName.of(name, kana);
         PhoneNumber phoneNumber = PhoneNumber.of(tel);
         FaxNumber faxNumber = FaxNumber.of(fax);
-        return new Employee(employeeCode, employeeName, password, phoneNumber, faxNumber, departmentId, occuCode, approvalCode, department);
+        JobCode jobCode = JobCode.of(occuCode);
+        return new Employee(employeeCode, employeeName, password, phoneNumber, faxNumber, departmentId, jobCode, approvalCode, department);
     }
 }
