@@ -5,7 +5,6 @@ import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.employee.*;
 import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.domain.model.system.user.User;
-import com.example.sms.domain.model.system.user.UserId;
 import com.example.sms.infrastructure.datasource.master.department.部門マスタ;
 import com.example.sms.infrastructure.datasource.system.user.Usr;
 import org.springframework.stereotype.Component;
@@ -34,13 +33,11 @@ public class EmployeeEntityMapper {
 
     public Employee mapToDomainModel(社員マスタ employeeEntity) {
         Department department = mapToDepartment(employeeEntity.get部門());
-        DepartmentId departmentId = DepartmentId.of(employeeEntity.get部門コード(), employeeEntity.get開始日());
         EmployeeCode employeeCode = EmployeeCode.of(employeeEntity.get社員コード());
         EmployeeName employeeName = EmployeeName.of(employeeEntity.get社員名(), employeeEntity.get社員名カナ());
         PhoneNumber phoneNumber = PhoneNumber.of(employeeEntity.get電話番号());
         FaxNumber faxNumber = FaxNumber.of(employeeEntity.getFax番号());
         JobCode jobCode = JobCode.of(employeeEntity.get職種コード());
-        UserId userId = UserId.of(employeeEntity.getUserId());
         User user = mapToUser(employeeEntity.getUser());
 
         return new Employee(

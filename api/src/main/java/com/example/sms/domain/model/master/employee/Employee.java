@@ -1,15 +1,11 @@
 package com.example.sms.domain.model.master.employee;
 
 import com.example.sms.domain.model.master.department.Department;
-import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.system.user.User;
-import com.example.sms.domain.model.system.user.UserId;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Value;
-
-import java.time.LocalDateTime;
 
 /**
  * 社員
@@ -29,22 +25,17 @@ public class Employee {
     Department department; // 部門
     User user; // ユーザ
 
-    public static Employee of(String empCode, String name, String kana, String password, String tel, String fax, String deptCode, LocalDateTime startDate, String occuCode, String approvalCode) {
+    public static Employee of(String empCode, String name, String kana, String tel, String fax, String occuCode) {
         EmployeeCode employeeCode = EmployeeCode.of(empCode);
-        DepartmentId departmentId = DepartmentId.of(deptCode, startDate);
         EmployeeName employeeName = EmployeeName.of(name, kana);
         PhoneNumber phoneNumber = PhoneNumber.of(tel);
         FaxNumber faxNumber = FaxNumber.of(fax);
         JobCode jobCode = JobCode.of(occuCode);
-        return new Employee(employeeCode, employeeName, password, phoneNumber, faxNumber, jobCode, approvalCode, null, null);
+        return new Employee(employeeCode, employeeName, null, phoneNumber, faxNumber, jobCode, "", null, null);
     }
 
     public static Employee of(Employee employee, Department department) {
-        return new Employee(employee.getEmpCode(), employee.getEmpName(), employee.getLoginPassword(), employee.getTel(), employee.getFax(), employee.getOccuCode(), employee.getApprovalCode(), department, null);
-    }
-
-    public static Employee of(Employee employee, UserId userId) {
-        return new Employee(employee.getEmpCode(), employee.getEmpName(), employee.getLoginPassword(), employee.getTel(), employee.getFax(), employee.getOccuCode(), employee.getApprovalCode(), employee.getDepartment(), null);
+        return new Employee(employee.getEmpCode(), employee.getEmpName(), employee.getLoginPassword(), employee.getTel(), employee.getFax(), employee.getOccuCode(), employee.getApprovalCode(), department, employee.getUser());
     }
 
     public static Employee of(Employee employee, User user) {

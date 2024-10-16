@@ -48,7 +48,7 @@ public class EmployeeServiceTest {
     void shouldEditEmployeeDetails() {
         Employee employee = testDataFactory.Employee();
         Employee updateEmployee = Employee.of(
-                Employee.of(employee.getEmpCode().getValue(), "edited EmployeeName", employee.getEmpName().NameKana(), employee.getLoginPassword(), employee.getTel().getValue(), employee.getFax().getValue(), employee.getDepartment().getDepartmentId().getDeptCode().getValue(), employee.getDepartment().getDepartmentId().getDepartmentStartDate().getValue(), employee.getOccuCode().getValue(), employee.getApprovalCode()),
+                Employee.of(employee.getEmpCode().getValue(), "edited EmployeeName", employee.getEmpName().NameKana(), employee.getTel().getValue(), employee.getFax().getValue(), employee.getOccuCode().getValue()),
                 employee.getDepartment()
         );
 

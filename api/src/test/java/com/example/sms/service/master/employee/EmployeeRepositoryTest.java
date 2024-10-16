@@ -1,7 +1,6 @@
 package com.example.sms.service.master.employee;
 
-import com.example.sms.domain.model.master.department.Department;
-import com.example.sms.domain.model.master.department.DepartmentId;
+import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.master.employee.Employee;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,14 +24,7 @@ public class EmployeeRepositoryTest {
     }
 
     private Employee getEmployee() {
-        String departmentCode = "10000";
-        String departmentName = "全社";
-        LocalDateTime startDate = LocalDateTime.of(2021, 1, 1, 0, 0);
-        Department department = Department.of(DepartmentId.of(departmentCode, startDate), LocalDateTime.of(9999, 12, 31, 0, 0), departmentName, 0, departmentCode + "~", 0, 1);
-        return Employee.of(
-                Employee.of("EMP999", "firstName lastName2", "firstKana lastKana2", "password", "090-1234-5678", "03-1234-5678", departmentCode, LocalDateTime.of(2021, 1, 1, 0, 0, 0), "", ""),
-                department
-        );
+        return TestDataFactoryImpl.employee("EMP999", "10000", LocalDateTime.of(2021, 1, 1, 0, 0));
     }
 
     @Test
@@ -73,7 +65,7 @@ public class EmployeeRepositoryTest {
 
         employee = repository.findById(employee.getEmpCode()).get();
         Employee updateEmployee = Employee.of(
-                Employee.of("EMP999", "firstName lastName2", "firstKana lastKana2", "password", "090-1234-5678", "03-1234-5678", "11101", LocalDateTime.of(2021, 1, 1, 0, 0, 0), "", ""),
+                Employee.of("EMP999", "firstName lastName2", "firstKana lastKana2", "090-1234-5678", "03-1234-5678", ""),
                 employee.getDepartment()
         );
         repository.save(updateEmployee);

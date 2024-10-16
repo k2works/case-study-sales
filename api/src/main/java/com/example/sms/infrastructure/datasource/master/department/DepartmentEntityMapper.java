@@ -45,13 +45,9 @@ public class DepartmentEntityMapper {
                 employeeEntity.get社員コード(),
                 employeeEntity.get社員名(),
                 employeeEntity.get社員名カナ(),
-                employeeEntity.getパスワード(),
                 employeeEntity.get電話番号(),
                 employeeEntity.getFax番号(),
-                employeeEntity.get部門コード(),
-                employeeEntity.get開始日(),
-                employeeEntity.get職種コード(),
-                employeeEntity.get承認権限コード()
+                employeeEntity.get職種コード()
         );
     }
 }

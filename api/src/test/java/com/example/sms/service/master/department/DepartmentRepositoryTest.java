@@ -1,5 +1,6 @@
 package com.example.sms.service.master.department;
 
+import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentId;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +25,7 @@ public class DepartmentRepositoryTest {
     }
 
     private Department getDepartment() {
-        return Department.of(DepartmentId.of("10000", LocalDateTime.of(2021, 1, 1, 0, 0, 0)), LocalDateTime.of(9999, 12, 31, 0, 0), "全社", 0, "10000~", 0, 1);
+        return TestDataFactoryImpl.department("10000", LocalDateTime.of(2021, 1, 1, 0, 0), "全社");
     }
 
     @Test

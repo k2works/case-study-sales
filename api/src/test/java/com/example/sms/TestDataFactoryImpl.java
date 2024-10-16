@@ -81,14 +81,14 @@ public class TestDataFactoryImpl implements TestDataFactory {
         return User.of("U888888", "$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK", "first", "last", RoleName.USER);
     }
 
-    private static Department department(String departmentId, LocalDateTime startDate, String departmentName) {
+    public static Department department(String departmentId, LocalDateTime startDate, String departmentName) {
         return Department.of(DepartmentId.of(departmentId, startDate), LocalDateTime.of(9999, 12, 31, 0, 0), departmentName, 0, departmentId + "~", 0, 1);
     }
 
-    private static Employee employee(String empCode, String departmentCode, LocalDateTime startDate) {
+    public static Employee employee(String empCode, String departmentCode, LocalDateTime startDate) {
         return Employee.of(
                 Employee.of(
-                        Employee.of(empCode, "firstName lastName", "firstNameKana lastNameKana", "password", "090-1234-5678", "03-1234-5678", departmentCode, startDate, "", ""),
+                        Employee.of(empCode, "firstName lastName", "firstNameKana lastNameKana", "090-1234-5678", "03-1234-5678", ""),
                         department(departmentCode, startDate, "部門1")
                 ),
                 user()
