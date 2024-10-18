@@ -20,9 +20,11 @@ public class EmployeeName {
     String lastNameKana;  // 姓カナ
 
     public static EmployeeName of(String name, String nameKana) {
+        name = name.replace("　", " ");
         if (!name.contains(" ")) {
             throw new IllegalArgumentException("名前は姓と名をスペースで区切ってください。");
         }
+        nameKana = nameKana.replace("　", " ");
         if (!nameKana.contains(" ")) {
             throw new IllegalArgumentException("名前カナは姓と名をスペースで区切ってください。");
         }
