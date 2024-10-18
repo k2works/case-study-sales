@@ -1,19 +1,25 @@
 package com.example.sms.stepdefinitions;
 
+import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.domain.model.system.user.User;
+import com.example.sms.presentation.api.master.department.DepartmentResource;
 import com.example.sms.presentation.api.system.user.UserResource;
+import com.example.sms.stepdefinitions.utils.DepartmentListResponse;
 import com.example.sms.stepdefinitions.utils.MessageResponse;
 import com.example.sms.stepdefinitions.utils.SpringAcceptanceTest;
 import com.example.sms.stepdefinitions.utils.UserListResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import io.cucumber.java.ja.かつ;
 import io.cucumber.java.ja.ならば;
 import io.cucumber.java.ja.もし;
 import io.cucumber.java.ja.前提;
 import org.springframework.http.HttpStatus;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class UserStepDefs extends SpringAcceptanceTest {
     String AUTH_API_URL = "http://localhost:8080/api/auth";
     String USER_API_URL = "http://localhost:8080/api/users";
+    String DEPARTMENT_API_URL = "http://localhost:8080/api/departments";
 
     @前提(": {string} である")
     public void login(String user) {
@@ -38,6 +45,9 @@ public class UserStepDefs extends SpringAcceptanceTest {
             case "ユーザー一覧":
                 executeGet(USER_API_URL);
                 break;
+            case "部門一覧":
+                executeGet(DEPARTMENT_API_URL);
+                break;
             default:
                 break;
         }
@@ -46,6 +56,7 @@ public class UserStepDefs extends SpringAcceptanceTest {
     @ならば(": {string} を取得できる")
     public void responseService(String service) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
         String result;
 
         switch (service) {
@@ -61,6 +72,18 @@ public class UserStepDefs extends SpringAcceptanceTest {
                 assertEquals("U000005", user.getUserId().Value());
                 assertEquals("山田 太郎", user.getName().FullName());
                 assertEquals(RoleName.ADMIN, user.getRoleName());
+                break;
+            case "部門一覧":
+                result = latestResponse.getBody();
+                DepartmentListResponse departmentResponse = objectMapper.readValue(result, DepartmentListResponse.class);
+                List<Department> departmentList = departmentResponse.getList();
+                assertEquals(10, departmentList.size());
+                break;
+            case "部門":
+                result = latestResponse.getBody();
+                Department department = objectMapper.readValue(result, Department.class);
+                assertEquals("90000", department.getDepartmentId().getDeptCode().getValue());
+                assertEquals("営業部", department.getDepartmentName());
                 break;
             default:
                 break;
@@ -126,6 +149,67 @@ public class UserStepDefs extends SpringAcceptanceTest {
     @もし(": ユーザーID {string} を削除する")
     public void delete(String userId) throws IOException {
         String url = USER_API_URL + "/" + userId;
+        executeDelete(url);
+    }
+
+    @もし(": 部門コード {string} 部門名 {string} で新規登録する")
+    public void createDepartment(String code, String name) throws IOException {
+        String url = DEPARTMENT_API_URL;
+        LocalDateTime from = LocalDateTime.of(2021, 1, 1, 0, 0, 0);
+        LocalDateTime to = LocalDateTime.of(2021, 12, 31, 23, 59, 59);
+        DepartmentResource departmentResource = new DepartmentResource();
+        departmentResource.setDepartmentCode(code);
+        departmentResource.setStartDate(from.toString());
+        departmentResource.setEndDate(to.toString());
+        departmentResource.setDepartmentName(name);
+        departmentResource.setLayer("1");
+        departmentResource.setPath(code + "~");
+        departmentResource.setLowerType("1");
+        departmentResource.setSlitYn("1");
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(departmentResource);
+        executePost(url, json);
+    }
+
+    @もし(": 部門コード {string} で検索する")
+    public void searchDepartment(String code) throws IOException {
+        LocalDateTime from = LocalDateTime.of(2021, 1, 1, 0, 0, 0);
+        String url = DEPARTMENT_API_URL + "/" + code + "/" + from;
+        executeGet(url);
+    }
+
+    @かつ(": 部門コード {string} の情報を更新する \\(部門名 {string})")
+    public void updateDepartment(String code, String name) throws IOException {
+        LocalDateTime from = LocalDateTime.of(2021, 1, 1, 0, 0, 0);
+        LocalDateTime to = LocalDateTime.of(2021, 12, 31, 23, 59, 59);
+        String url = DEPARTMENT_API_URL + "/" + code + "/" + from;
+        DepartmentResource departmentResource = new DepartmentResource();
+        departmentResource.setEndDate(to.toString());
+        departmentResource.setDepartmentName(name);
+        departmentResource.setLayer("1");
+        departmentResource.setPath(code + "~");
+        departmentResource.setLowerType("1");
+        departmentResource.setSlitYn("1");
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(departmentResource);
+        executePut(url, json);
+    }
+
+    @ならば(": {string} の部門が取得できる")
+    public void findDepartment(String name) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        String result = latestResponse.getBody();
+        Department department = objectMapper.readValue(result, Department.class);
+        assertEquals(name, department.getDepartmentName());
+    }
+
+    @かつ(": 部門コード {string} を削除する")
+    public void deleteDepartment(String code) throws IOException {
+        LocalDateTime from = LocalDateTime.of(2021, 1, 1, 0, 0, 0);
+        String url = DEPARTMENT_API_URL + "/" + code + "/" + from;
         executeDelete(url);
     }
 }

@@ -66,8 +66,8 @@ public class DepartmentApiController {
     public ResponseEntity<?> create(@RequestBody @Validated DepartmentResource resource) {
         try {
             Department department = Department.of(
-                    DepartmentId.of(resource.getDepartmentCode(), resource.getStartDate()),
-                    resource.getEndDate(),
+                    DepartmentId.of(resource.getDepartmentCode(), LocalDateTime.parse(resource.getStartDate())),
+                    LocalDateTime.parse(resource.getEndDate()),
                     resource.getDepartmentName(),
                     Integer.parseInt(resource.getLayer()),
                     resource.getPath(),
@@ -92,7 +92,7 @@ public class DepartmentApiController {
             DepartmentId departmentId = DepartmentId.of(departmentCode, LocalDateTime.parse(departmentStartDate));
             Department department = Department.of(
                     departmentId,
-                    departmentResource.getEndDate(),
+                    LocalDateTime.parse(departmentResource.getEndDate()),
                     departmentResource.getDepartmentName(),
                     Integer.parseInt(departmentResource.getLayer()),
                     departmentResource.getPath(),
