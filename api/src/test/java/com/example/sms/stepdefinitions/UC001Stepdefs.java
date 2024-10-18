@@ -11,18 +11,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 
-public class AuthStepdefs extends SpringAcceptanceTest {
+public class UC001Stepdefs extends SpringAcceptanceTest {
     @Autowired
     UserRepository userRepository;
 
-    @前提(": ユーザーが登録されている")
+    @前提(":UC001 ユーザーが登録されている")
     public void initial() {
         userRepository.deleteAll();
         userRepository.save(User.of("U999999", "$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK", "first", "last", RoleName.USER));
         userRepository.save(User.of("U888888", "$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK", "first", "last", RoleName.ADMIN));
     }
 
-    @もし(": {string} でログインする")
+    @もし(":UC001 {string} でログインする")
     public void login(String user) {
         String url = "http://localhost:8080/api/auth/signin";
         if (user.equals("管理者権限")) {
@@ -32,7 +32,7 @@ public class AuthStepdefs extends SpringAcceptanceTest {
         }
     }
 
-    @ならば(": {string} として認証される")
+    @ならば(":UC001 {string} として認証される")
     public void authentication(String user) throws IOException {
         if (user.equals("管理者")) {
             executeGet("http://localhost:8080/api/test/admin");
