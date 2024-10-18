@@ -74,6 +74,7 @@ dependencies {
 	testImplementation 'com.tngtech.archunit:archunit:1.2.2'
 	testImplementation 'com.tngtech.archunit:archunit-junit5:1.2.2'
 	implementation 'com.github.pagehelper:pagehelper-spring-boot-starter:1.4.7'
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.2'
 }
 
 tasks.named('test') {
