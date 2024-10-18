@@ -1,6 +1,5 @@
 package com.example.sms.stepdefinitions.utils;
 
-import com.example.sms.domain.model.master.department.Department;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -11,10 +10,10 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class DepartmentListResponse implements Serializable {
+public class ListResponse<T> implements Serializable {
     private Integer total;
     @JsonProperty
-    private List<Department> list;
+    private List<T> list;
 
     private Integer pageNum;
     private Integer pageSize;

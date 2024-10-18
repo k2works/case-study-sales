@@ -1,14 +1,12 @@
 package com.example.sms.stepdefinitions;
 
 import com.example.sms.domain.model.master.department.Department;
-import com.example.sms.domain.model.system.user.RoleName;
-import com.example.sms.domain.model.system.user.User;
 import com.example.sms.presentation.api.master.department.DepartmentResource;
-import com.example.sms.stepdefinitions.utils.DepartmentListResponse;
+import com.example.sms.stepdefinitions.utils.ListResponse;
 import com.example.sms.stepdefinitions.utils.MessageResponse;
 import com.example.sms.stepdefinitions.utils.SpringAcceptanceTest;
-import com.example.sms.stepdefinitions.utils.UserListResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.cucumber.java.ja.かつ;
@@ -58,22 +56,10 @@ public class UC003StepDefs extends SpringAcceptanceTest {
         String result;
 
         switch (service) {
-            case "ユーザー一覧":
-                result = latestResponse.getBody();
-                UserListResponse response = objectMapper.readValue(result, UserListResponse.class);
-                List<User> list = response.getList();
-                assertEquals(2, list.size());
-                break;
-            case "ユーザー":
-                result = latestResponse.getBody();
-                User user = objectMapper.readValue(result, User.class);
-                assertEquals("U000005", user.getUserId().Value());
-                assertEquals("山田 太郎", user.getName().FullName());
-                assertEquals(RoleName.ADMIN, user.getRoleName());
-                break;
             case "部門一覧":
                 result = latestResponse.getBody();
-                DepartmentListResponse departmentResponse = objectMapper.readValue(result, DepartmentListResponse.class);
+                ListResponse<Department> departmentResponse = objectMapper.readValue(result, new TypeReference<>() {
+                });
                 List<Department> departmentList = departmentResponse.getList();
                 assertEquals(10, departmentList.size());
                 break;

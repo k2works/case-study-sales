@@ -1,14 +1,13 @@
 package com.example.sms.stepdefinitions;
 
-import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.presentation.api.system.user.UserResource;
-import com.example.sms.stepdefinitions.utils.DepartmentListResponse;
+import com.example.sms.stepdefinitions.utils.ListResponse;
 import com.example.sms.stepdefinitions.utils.MessageResponse;
 import com.example.sms.stepdefinitions.utils.SpringAcceptanceTest;
-import com.example.sms.stepdefinitions.utils.UserListResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.cucumber.java.ja.ならば;
@@ -59,7 +58,8 @@ public class UC002StepDefs extends SpringAcceptanceTest {
         switch (service) {
             case "ユーザー一覧":
                 result = latestResponse.getBody();
-                UserListResponse response = objectMapper.readValue(result, UserListResponse.class);
+                ListResponse<User> response = objectMapper.readValue(result, new TypeReference<>() {
+                });
                 List<User> list = response.getList();
                 assertEquals(2, list.size());
                 break;
@@ -69,18 +69,6 @@ public class UC002StepDefs extends SpringAcceptanceTest {
                 assertEquals("U000005", user.getUserId().Value());
                 assertEquals("山田 太郎", user.getName().FullName());
                 assertEquals(RoleName.ADMIN, user.getRoleName());
-                break;
-            case "部門一覧":
-                result = latestResponse.getBody();
-                DepartmentListResponse departmentResponse = objectMapper.readValue(result, DepartmentListResponse.class);
-                List<Department> departmentList = departmentResponse.getList();
-                assertEquals(10, departmentList.size());
-                break;
-            case "部門":
-                result = latestResponse.getBody();
-                Department department = objectMapper.readValue(result, Department.class);
-                assertEquals("90000", department.getDepartmentId().getDeptCode().getValue());
-                assertEquals("営業部", department.getDepartmentName());
                 break;
             default:
                 break;
