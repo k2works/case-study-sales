@@ -1,5 +1,6 @@
 package com.example.sms.stepdefinitions;
 
+import com.example.sms.TestDataFactory;
 import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.presentation.api.master.department.DepartmentResource;
 import com.example.sms.stepdefinitions.utils.ListResponse;
@@ -13,6 +14,7 @@ import io.cucumber.java.ja.かつ;
 import io.cucumber.java.ja.ならば;
 import io.cucumber.java.ja.もし;
 import io.cucumber.java.ja.前提;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -21,13 +23,15 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UC003StepDefs extends SpringAcceptanceTest {
+    @Autowired
+    TestDataFactory testDataFactory;
     String AUTH_API_URL = "http://localhost:8080/api/auth";
-    String USER_API_URL = "http://localhost:8080/api/users";
     String DEPARTMENT_API_URL = "http://localhost:8080/api/departments";
 
     @前提(":UC003 {string} である")
     public void login(String user) {
         String url = AUTH_API_URL + "/" + "signin";
+
         if (user.equals("管理者")) {
             signin("U888888", "demo", url);
         } else {
@@ -35,17 +39,15 @@ public class UC003StepDefs extends SpringAcceptanceTest {
         }
     }
 
+    @前提(":UC003 {string} が登録されている")
+    public void init(String data) {
+        testDataFactory.setUpForDepartmentService();
+    }
+
     @もし(":UC003 {string} を取得する")
     public void request(String service) throws IOException {
-        switch (service) {
-            case "ユーザー一覧":
-                executeGet(USER_API_URL);
-                break;
-            case "部門一覧":
-                executeGet(DEPARTMENT_API_URL);
-                break;
-            default:
-                break;
+        if (service.equals("部門一覧")) {
+            executeGet(DEPARTMENT_API_URL);
         }
     }
 
@@ -61,7 +63,7 @@ public class UC003StepDefs extends SpringAcceptanceTest {
                 ListResponse<Department> departmentResponse = objectMapper.readValue(result, new TypeReference<>() {
                 });
                 List<Department> departmentList = departmentResponse.getList();
-                assertEquals(10, departmentList.size());
+                assertEquals(2, departmentList.size());
                 break;
             case "部門":
                 result = latestResponse.getBody();

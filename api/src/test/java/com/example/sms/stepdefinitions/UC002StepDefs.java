@@ -23,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class UC002StepDefs extends SpringAcceptanceTest {
     String AUTH_API_URL = "http://localhost:8080/api/auth";
     String USER_API_URL = "http://localhost:8080/api/users";
-    String DEPARTMENT_API_URL = "http://localhost:8080/api/departments";
 
     @前提(":UC002 {string} である")
     public void login(String user) {
@@ -37,15 +36,8 @@ public class UC002StepDefs extends SpringAcceptanceTest {
 
     @もし(":UC002 {string} を取得する")
     public void request(String service) throws IOException {
-        switch (service) {
-            case "ユーザー一覧":
-                executeGet(USER_API_URL);
-                break;
-            case "部門一覧":
-                executeGet(DEPARTMENT_API_URL);
-                break;
-            default:
-                break;
+        if (service.equals("ユーザー一覧")) {
+            executeGet(USER_API_URL);
         }
     }
 
