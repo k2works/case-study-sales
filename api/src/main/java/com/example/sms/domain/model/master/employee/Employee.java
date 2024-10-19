@@ -28,13 +28,39 @@ public class Employee {
     public static Employee of(String empCode, String name, String kana, String tel, String fax, String occuCode) {
         EmployeeCode employeeCode = EmployeeCode.of(empCode);
         EmployeeName employeeName = EmployeeName.of(name, kana);
-        PhoneNumber phoneNumber = PhoneNumber.of(tel);
-        FaxNumber faxNumber = FaxNumber.of(fax);
-        JobCode jobCode = JobCode.of(occuCode);
+
+        PhoneNumber phoneNumber = null;
+        FaxNumber faxNumber = null;
+        JobCode jobCode = null;
+        if (tel != null) {
+            phoneNumber = PhoneNumber.of(tel);
+        }
+        if (fax != null) {
+            faxNumber = FaxNumber.of(fax);
+        }
+        if (occuCode != null) {
+            jobCode = JobCode.of(occuCode);
+        }
         return new Employee(employeeCode, employeeName, null, phoneNumber, faxNumber, jobCode, "", null, null);
     }
 
     public static Employee of(Employee employee, Department department, User user) {
         return new Employee(employee.getEmpCode(), employee.getEmpName(), employee.getLoginPassword(), employee.getTel(), employee.getFax(), employee.getOccuCode(), employee.getApprovalCode(), department, user);
+    }
+
+    public static Employee of(String empCod, String name, String nameKana, String password, String tel, String fax, String occuCode, String approvalCode, Department department, User user) {
+        PhoneNumber phoneNumber = null;
+        FaxNumber faxNumber = null;
+        JobCode jobCode = null;
+        if (tel != null) {
+            phoneNumber = PhoneNumber.of(tel);
+        }
+        if (fax != null) {
+            faxNumber = FaxNumber.of(fax);
+        }
+        if (occuCode != null) {
+            jobCode = JobCode.of(occuCode);
+        }
+        return new Employee(EmployeeCode.of(empCod), EmployeeName.of(name, nameKana), password, phoneNumber, faxNumber, jobCode, approvalCode, department, user);
     }
 }

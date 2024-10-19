@@ -2,7 +2,7 @@ package com.example.sms.infrastructure.datasource.master.employee;
 
 import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentId;
-import com.example.sms.domain.model.master.employee.*;
+import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.infrastructure.datasource.master.department.部門マスタ;
@@ -17,13 +17,19 @@ public class EmployeeEntityMapper {
         employeeEntity.set社員名(employee.getEmpName().Name());
         employeeEntity.set社員名カナ(employee.getEmpName().NameKana());
         employeeEntity.setパスワード(employee.getLoginPassword());
-        employeeEntity.set電話番号(employee.getTel().getValue());
-        employeeEntity.setFax番号(employee.getFax().getValue());
+        if (employee.getTel() != null) {
+            employeeEntity.set電話番号(employee.getTel().getValue());
+        }
+        if (employee.getFax() != null) {
+            employeeEntity.setFax番号(employee.getFax().getValue());
+        }
         if (employee.getDepartment() != null) {
             employeeEntity.set部門コード(employee.getDepartment().getDepartmentId().getDeptCode().getValue());
             employeeEntity.set開始日(employee.getDepartment().getDepartmentId().getDepartmentStartDate().getValue());
         }
-        employeeEntity.set職種コード(employee.getOccuCode().getValue());
+        if (employee.getOccuCode() != null) {
+            employeeEntity.set職種コード(employee.getOccuCode().getValue());
+        }
         employeeEntity.set承認権限コード(employee.getApprovalCode());
         if (employee.getUser() != null) {
             employeeEntity.setUserId(employee.getUser().getUserId().getValue());
@@ -33,20 +39,16 @@ public class EmployeeEntityMapper {
 
     public Employee mapToDomainModel(社員マスタ employeeEntity) {
         Department department = mapToDepartment(employeeEntity.get部門());
-        EmployeeCode employeeCode = EmployeeCode.of(employeeEntity.get社員コード());
-        EmployeeName employeeName = EmployeeName.of(employeeEntity.get社員名(), employeeEntity.get社員名カナ());
-        PhoneNumber phoneNumber = PhoneNumber.of(employeeEntity.get電話番号());
-        FaxNumber faxNumber = FaxNumber.of(employeeEntity.getFax番号());
-        JobCode jobCode = JobCode.of(employeeEntity.get職種コード());
         User user = mapToUser(employeeEntity.getUser());
 
-        return new Employee(
-                employeeCode,
-                employeeName,
+        return Employee.of(
+                employeeEntity.get社員コード(),
+                employeeEntity.get社員名(),
+                employeeEntity.get社員名カナ(),
                 employeeEntity.getパスワード(),
-                phoneNumber,
-                faxNumber,
-                jobCode,
+                employeeEntity.get電話番号(),
+                employeeEntity.getFax番号(),
+                employeeEntity.get職種コード(),
                 employeeEntity.get承認権限コード(),
                 department,
                 user

@@ -45,14 +45,14 @@ public class UC003StepDefs extends SpringAcceptanceTest {
     }
 
     @もし(":UC003 {string} を取得する")
-    public void request(String service) throws IOException {
+    public void get(String service) throws IOException {
         if (service.equals("部門一覧")) {
             executeGet(DEPARTMENT_API_URL);
         }
     }
 
     @ならば(":UC003 {string} を取得できる")
-    public void responseService(String service) throws JsonProcessingException {
+    public void list(String service) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         String result;
