@@ -45,39 +45,29 @@ public class UC003StepDefs extends SpringAcceptanceTest {
     }
 
     @もし(":UC003 {string} を取得する")
-    public void get(String service) throws IOException {
-        if (service.equals("部門一覧")) {
+    public void toGet(String list) throws IOException {
+        if (list.equals("部門一覧")) {
             executeGet(DEPARTMENT_API_URL);
         }
     }
 
     @ならば(":UC003 {string} を取得できる")
-    public void list(String service) throws JsonProcessingException {
+    public void catGet(String list) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         String result;
 
-        switch (service) {
-            case "部門一覧":
-                result = latestResponse.getBody();
-                ListResponse<Department> departmentResponse = objectMapper.readValue(result, new TypeReference<>() {
-                });
-                List<Department> departmentList = departmentResponse.getList();
-                assertEquals(2, departmentList.size());
-                break;
-            case "部門":
-                result = latestResponse.getBody();
-                Department department = objectMapper.readValue(result, Department.class);
-                assertEquals("90000", department.getDepartmentId().getDeptCode().getValue());
-                assertEquals("営業部", department.getDepartmentName());
-                break;
-            default:
-                break;
+        if (list.equals("部門一覧")) {
+            result = latestResponse.getBody();
+            ListResponse<Department> departmentResponse = objectMapper.readValue(result, new TypeReference<>() {
+            });
+            List<Department> departmentList = departmentResponse.getList();
+            assertEquals(2, departmentList.size());
         }
     }
 
     @ならば(":UC003 {string} が表示される")
-    public void responseMessage(String message) throws JsonProcessingException {
+    public void toShow(String message) throws JsonProcessingException {
         String result = latestResponse.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
         MessageResponse response = objectMapper.readValue(result, MessageResponse.class);
@@ -85,7 +75,7 @@ public class UC003StepDefs extends SpringAcceptanceTest {
     }
 
     @もし(":UC003 部門コード {string} 部門名 {string} で新規登録する")
-    public void createDepartment(String code, String name) throws IOException {
+    public void toRegist(String code, String name) throws IOException {
         String url = DEPARTMENT_API_URL;
         LocalDateTime from = LocalDateTime.of(2021, 1, 1, 0, 0, 0);
         LocalDateTime to = LocalDateTime.of(2021, 12, 31, 23, 59, 59);
@@ -105,14 +95,14 @@ public class UC003StepDefs extends SpringAcceptanceTest {
     }
 
     @もし(":UC003 部門コード {string} で検索する")
-    public void searchDepartment(String code) throws IOException {
+    public void toFind(String code) throws IOException {
         LocalDateTime from = LocalDateTime.of(2021, 1, 1, 0, 0, 0);
         String url = DEPARTMENT_API_URL + "/" + code + "/" + from;
         executeGet(url);
     }
 
     @かつ(":UC003 部門コード {string} の情報を更新する \\(部門名 {string})")
-    public void updateDepartment(String code, String name) throws IOException {
+    public void toUpdate(String code, String name) throws IOException {
         LocalDateTime from = LocalDateTime.of(2021, 1, 1, 0, 0, 0);
         LocalDateTime to = LocalDateTime.of(2021, 12, 31, 23, 59, 59);
         String url = DEPARTMENT_API_URL + "/" + code + "/" + from;
@@ -130,7 +120,7 @@ public class UC003StepDefs extends SpringAcceptanceTest {
     }
 
     @ならば(":UC003 {string} の部門が取得できる")
-    public void findDepartment(String name) throws JsonProcessingException {
+    public void canFind(String name) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         String result = latestResponse.getBody();
@@ -139,7 +129,7 @@ public class UC003StepDefs extends SpringAcceptanceTest {
     }
 
     @かつ(":UC003 部門コード {string} を削除する")
-    public void deleteDepartment(String code) throws IOException {
+    public void toDelete(String code) throws IOException {
         LocalDateTime from = LocalDateTime.of(2021, 1, 1, 0, 0, 0);
         String url = DEPARTMENT_API_URL + "/" + code + "/" + from;
         executeDelete(url);

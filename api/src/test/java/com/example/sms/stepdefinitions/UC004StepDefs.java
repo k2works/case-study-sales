@@ -54,14 +54,14 @@ public class UC004StepDefs extends SpringAcceptanceTest {
     }
 
     @もし(":UC004 {string} を取得する")
-    public void get(String employees) throws IOException {
-        if (employees.equals("社員一覧")) {
+    public void toGet(String list) throws IOException {
+        if (list.equals("社員一覧")) {
             executeGet(EMPLOYEE_API_URL);
         }
     }
 
     @ならば(":UC004 {string} を取得できる")
-    public void list(String list) throws JsonProcessingException {
+    public void catGet(String list) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
 
@@ -71,16 +71,11 @@ public class UC004StepDefs extends SpringAcceptanceTest {
             });
             List<Employee> employeeList = employeeResponse.getList();
             assertEquals(2, employeeList.size());
-        } else {
-            String result = latestResponse.getBody();
-            Employee employee = objectMapper.readValue(result, Employee.class);
-            assertEquals("EMP999", employee.getEmpCode().getValue());
-            assertEquals("山田 太郎", employee.getEmpName().Name());
         }
     }
 
     @もし(":UC004 社員コード {string} 社員名 {string} 社員名カナ {string} で新規登録する")
-    public void regist(String code, String name, String nameKana) throws IOException {
+    public void toRegist(String code, String name, String nameKana) throws IOException {
         String url = EMPLOYEE_API_URL;
         EmployeeResource resource = new EmployeeResource();
         resource.setEmpCode(code);
@@ -98,7 +93,7 @@ public class UC004StepDefs extends SpringAcceptanceTest {
     }
 
     @ならば(":UC004 {string} が表示される")
-    public void show(String message) throws JsonProcessingException {
+    public void toShow(String message) throws JsonProcessingException {
         String result = latestResponse.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
         MessageResponse response = objectMapper.readValue(result, MessageResponse.class);
@@ -106,13 +101,13 @@ public class UC004StepDefs extends SpringAcceptanceTest {
     }
 
     @もし(":UC004 社員コード {string} で検索する")
-    public void search(String code) throws IOException {
+    public void toFind(String code) throws IOException {
         String url = EMPLOYEE_API_URL + "/" + code;
         executeGet(url);
     }
 
     @かつ(":UC004 社員コード {string} の情報を更新する \\(社員名 {string} 社員名カナ {string})")
-    public void update(String code, String name, String nameKana) throws IOException {
+    public void toUpdate(String code, String name, String nameKana) throws IOException {
         String url = EMPLOYEE_API_URL + "/" + code;
 
         EmployeeResource resource = new EmployeeResource();
@@ -130,7 +125,7 @@ public class UC004StepDefs extends SpringAcceptanceTest {
     }
 
     @ならば(":UC004 社員 {string} を取得できる")
-    public void find(String name) throws JsonProcessingException {
+    public void canFind(String name) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
 
@@ -139,7 +134,7 @@ public class UC004StepDefs extends SpringAcceptanceTest {
         assertEquals(name, employee.getEmpName().Name());
     }
     @かつ(":UC004 社員コード {string} を削除する")
-    public void delete(String code) throws IOException {
+    public void toDelete(String code) throws IOException {
         String url = EMPLOYEE_API_URL + "/" + code;
         executeDelete(url);
     }

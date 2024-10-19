@@ -33,7 +33,7 @@ public class UC001Stepdefs extends SpringAcceptanceTest {
     }
 
     @ならば(":UC001 {string} として認証される")
-    public void authentication(String user) throws IOException {
+    public void toAuth(String user) throws IOException {
         if (user.equals("管理者")) {
             executeGet("http://localhost:8080/api/test/admin");
         } else {

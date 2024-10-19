@@ -35,40 +35,29 @@ public class UC002StepDefs extends SpringAcceptanceTest {
     }
 
     @もし(":UC002 {string} を取得する")
-    public void request(String service) throws IOException {
-        if (service.equals("ユーザー一覧")) {
+    public void toGet(String list) throws IOException {
+        if (list.equals("ユーザー一覧")) {
             executeGet(USER_API_URL);
         }
     }
 
     @ならば(":UC002 {string} を取得できる")
-    public void responseService(String service) throws JsonProcessingException {
+    public void canGet(String service) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         String result;
 
-        switch (service) {
-            case "ユーザー一覧":
-                result = latestResponse.getBody();
-                ListResponse<User> response = objectMapper.readValue(result, new TypeReference<>() {
-                });
-                List<User> list = response.getList();
-                assertEquals(2, list.size());
-                break;
-            case "ユーザー":
-                result = latestResponse.getBody();
-                User user = objectMapper.readValue(result, User.class);
-                assertEquals("U000005", user.getUserId().Value());
-                assertEquals("山田 太郎", user.getName().FullName());
-                assertEquals(RoleName.ADMIN, user.getRoleName());
-                break;
-            default:
-                break;
+        if (service.equals("ユーザー一覧")) {
+            result = latestResponse.getBody();
+            ListResponse<User> response = objectMapper.readValue(result, new TypeReference<>() {
+            });
+            List<User> list = response.getList();
+            assertEquals(2, list.size());
         }
     }
 
     @もし(":UC002 ユーザーID {string} パスワード {string} で新規登録する")
-    public void regist(String userId, String password) throws IOException {
+    public void toRegist(String userId, String password) throws IOException {
         String url = USER_API_URL;
         UserResource user = new UserResource();
         user.setUserId(userId);
@@ -83,7 +72,7 @@ public class UC002StepDefs extends SpringAcceptanceTest {
     }
 
     @ならば(":UC002 {string} が表示される")
-    public void responseMessage(String message) throws JsonProcessingException {
+    public void toShow(String message) throws JsonProcessingException {
         String result = latestResponse.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
         MessageResponse response = objectMapper.readValue(result, MessageResponse.class);
@@ -91,25 +80,33 @@ public class UC002StepDefs extends SpringAcceptanceTest {
     }
 
     @もし(":UC002 ユーザーID {string} パスワード {string} で認証する")
-    public void auth(String userId, String password) {
+    public void toAuth(String userId, String password) {
         String url = AUTH_API_URL + "/" + "signin";
         signin(userId, password, url);
     }
 
     @ならば(":UC002 ユーザーが認証される")
-    public void statusOK() throws IOException {
+    public void canAuth() throws IOException {
         HttpStatus currentStatusCode = (HttpStatus) latestResponse.getTheResponse().getStatusCode();
         assertEquals(HttpStatus.OK, currentStatusCode);
     }
 
     @もし(":UC002 ユーザーID {string} で検索する")
-    public void find(String userId) throws IOException {
+    public void toFind(String userId) throws IOException {
         String url = USER_API_URL + "/" + userId;
         executeGet(url);
     }
 
+    @ならば(":UC002 ユーザー {string} を取得できる")
+    public void canFind(String userId) throws JsonProcessingException {
+        String result = latestResponse.getBody();
+        ObjectMapper objectMapper = new ObjectMapper();
+        User user = objectMapper.readValue(result, User.class);
+        assertEquals(userId, user.getUserId().Value());
+    }
+
     @もし(":UC002 ユーザーID {string} の情報を更新する")
-    public void save(String userId) throws IOException {
+    public void toUpdate(String userId) throws IOException {
         String url = USER_API_URL + "/" + userId;
         UserResource user = new UserResource();
         user.setUserId(userId);
@@ -124,7 +121,7 @@ public class UC002StepDefs extends SpringAcceptanceTest {
     }
 
     @もし(":UC002 ユーザーID {string} を削除する")
-    public void delete(String userId) throws IOException {
+    public void toDelete(String userId) throws IOException {
         String url = USER_API_URL + "/" + userId;
         executeDelete(url);
     }
