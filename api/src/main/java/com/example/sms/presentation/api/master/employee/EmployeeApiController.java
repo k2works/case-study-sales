@@ -6,12 +6,12 @@ import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.master.employee.EmployeeCode;
 import com.example.sms.domain.model.master.employee.EmployeeList;
 import com.example.sms.domain.model.system.user.User;
+import com.example.sms.domain.model.system.user.UserId;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
 import com.example.sms.service.master.department.DepartmentService;
 import com.example.sms.service.master.employee.EmployeeService;
-import com.example.sms.service.system.auth.AuthApiService;
 import com.example.sms.service.system.user.UserManagementService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,6 +22,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 /**
  * 社員API
@@ -119,6 +120,15 @@ public class EmployeeApiController {
     }
 
     private Employee createEmployee(String employeeCode, EmployeeResource resource) {
+        Department department = Optional.ofNullable(resource.getDepartmentCode())
+                .flatMap(code -> Optional.ofNullable(resource.getDepartmentStartDate())
+                        .map(date -> departmentService.find(DepartmentId.of(code, LocalDateTime.parse(date)))))
+                .orElse(null);
+
+        User user = Optional.ofNullable(resource.getUserId())
+                .map(id -> userManagementService.find(UserId.of(id)))
+                .orElse(null);
+
         Employee employee = Employee.of(
                 employeeCode,
                 resource.getEmpName(),
@@ -126,8 +136,7 @@ public class EmployeeApiController {
                 resource.getTel(),
                 resource.getFax(),
                 resource.getOccuCode());
-        Department department = departmentService.find(DepartmentId.of(resource.getDepartmentCode(), LocalDateTime.parse(resource.getDepartmentStartDate())));
-        User user = userManagementService.find(AuthApiService.getCurrentUserId());
+
         return Employee.of(employee, department, user);
     }
 }
