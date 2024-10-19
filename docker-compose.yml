@@ -12,7 +12,7 @@ services:
     hostname: mysql
     volumes:
       - mysql8-data:/var/lib/mysql
-      - ./docker/mysql:/docker-entrypoint-initdb.d
+      - ./ops/docker/mysql:/docker-entrypoint-initdb.d
     ports:
       - "3306:3306"
     command: --sql_mode=""
@@ -23,7 +23,7 @@ services:
       - "5432:5432"
     volumes:
       - postgresql-data:/var/lib/postgresql/data
-      - ./docker/postgres/init:/docker-entrypoint-initdb.d
+      - ./ops/docker/postgres/init:/docker-entrypoint-initdb.d
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: password
@@ -40,11 +40,11 @@ services:
     environment:
       - ACCEPT_EULA=Y
     env_file:
-      - ./docker/mssql/sql-server-2019.env
+      - ./ops/docker/mssql/sql-server-2019.env
     volumes:
-      - ./docker/mssql/data:/var/opt/mssql/data
-      - ./docker/mssql/log:/var/opt/mssql/log
-      - ./docker/mssql/secrets:/var/opt/mssql/sec
+      - ./ops/docker/mssql/data:/var/opt/mssql/data
+      - ./ops/docker/mssql/log:/var/opt/mssql/log
+      - ./ops/docker/mssql/secrets:/var/opt/mssql/sec
 
   dynamodb-local:
     image: instructure/dynamo-local-admin
@@ -52,27 +52,27 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - "./docker/dynamodb/data:/home/dynamodblocal/data"
+      - "./ops/docker/dynamodb/data:/home/dynamodblocal/data"
     working_dir: /home/dynamodblocal
 
   schemaspy_mysql:
     build:
-      context: docker
+      context: ops/docker
       dockerfile: ./schemaspy/Dockerfile
     volumes:
-      - ./docker/schemaspy/output/mysql:/output
-      - ./docker/schemaspy/config:/config
+      - ./ops/docker/schemaspy/output/mysql:/output
+      - ./ops/docker/schemaspy/config:/config
     container_name: "schemaspy_local_mysql"
     command: [ "-all", "-configFile", "/config/mysql/schemaspy.properties" ]
     links:
       - db_mysql
   schemaspy_postgresql:
     build:
-      context: docker
+      context: ops/docker
       dockerfile: ./schemaspy/Dockerfile
     volumes:
-      - ./docker/schemaspy/output/postgresql:/output
-      - ./docker/schemaspy/config:/config
+      - ./ops/docker/schemaspy/output/postgresql:/output
+      - ./ops/docker/schemaspy/config:/config
     container_name: "schemaspy_local_postgresql"
     command: [ "-all", "-configFile", "/config/postgresql/schemaspy.properties" ]
     links:
