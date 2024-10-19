@@ -53,14 +53,14 @@ admin --> UC5
 
 [source,yml]
 ----
-include::./assets/Auth.feature[]
+include::./assets/system/Auth.feature[]
 ----
 
 ### ユーザー管理
 
 [source,yml]
 ----
-include::./assets/User.feature[]
+include::./assets/system/User.feature[]
 ----
 
 ## アーキテクチャ
