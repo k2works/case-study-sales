@@ -6,7 +6,6 @@ import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.master.employee.EmployeeCode;
 import com.example.sms.domain.model.master.employee.EmployeeList;
 import com.example.sms.domain.model.system.user.User;
-import com.example.sms.domain.model.system.user.UserId;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
@@ -76,21 +75,8 @@ public class EmployeeApiController {
     @PostMapping
     public ResponseEntity<?> create(@RequestBody @Validated EmployeeResource resource) {
         try {
-            Employee employee = Employee.of(
-                    resource.getEmpCode(),
-                    resource.getEmpName(),
-                    resource.getEmpNameKana(),
-                    resource.getTel(),
-                    resource.getFax(),
-                    resource.getOccuCode()
-            );
-            DepartmentId departmentId = DepartmentId.of(resource.getDepartmentCode(), LocalDateTime.parse(resource.getDepartmentStartDate()));
-            Department department = departmentService.find(departmentId);
-            UserId userId = AuthApiService.getCurrentUserId();
-            User user = userManagementService.find(userId);
-            employee = Employee.of(employee, department, user);
-            Employee employeeOptional = employeeManagementService.find(employee.getEmpCode());
-            if (employeeOptional != null) {
+            Employee employee = createEmployee(resource);
+            if (employeeManagementService.find(employee.getEmpCode()) != null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.employee.already.exist")));
             }
             employeeManagementService.register(employee);
@@ -104,19 +90,7 @@ public class EmployeeApiController {
     @PutMapping("/{employeeCode}")
     public ResponseEntity<?> update(@PathVariable String employeeCode, @RequestBody EmployeeResource resource) {
         try {
-            Employee employee = Employee.of(
-                    employeeCode,
-                    resource.getEmpName(),
-                    resource.getEmpNameKana(),
-                    resource.getTel(),
-                    resource.getFax(),
-                    resource.getOccuCode()
-            );
-            DepartmentId departmentId = DepartmentId.of(resource.getDepartmentCode(), LocalDateTime.parse(resource.getDepartmentStartDate()));
-            Department department = departmentService.find(departmentId);
-            UserId userId = AuthApiService.getCurrentUserId();
-            User user = userManagementService.find(userId);
-            employee = Employee.of(employee, department, user);
+            Employee employee = createEmployee(employeeCode, resource);
             employeeManagementService.save(employee);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.employee.updated")));
         } catch (Exception e) {
@@ -138,5 +112,22 @@ public class EmployeeApiController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
+    }
+
+    private Employee createEmployee(EmployeeResource resource) {
+        return createEmployee(resource.getEmpCode(), resource);
+    }
+
+    private Employee createEmployee(String employeeCode, EmployeeResource resource) {
+        Employee employee = Employee.of(
+                employeeCode,
+                resource.getEmpName(),
+                resource.getEmpNameKana(),
+                resource.getTel(),
+                resource.getFax(),
+                resource.getOccuCode());
+        Department department = departmentService.find(DepartmentId.of(resource.getDepartmentCode(), LocalDateTime.parse(resource.getDepartmentStartDate())));
+        User user = userManagementService.find(AuthApiService.getCurrentUserId());
+        return Employee.of(employee, department, user);
     }
 }
