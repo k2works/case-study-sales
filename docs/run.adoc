@@ -34,7 +34,7 @@ npm install --save-dev gulp
 +
 . Gulpタスクを作成します
 +
-. `gulp/tasks/core.js`
+. `ops/gulp/tasks/core.js`
 +
 [sources, javascript]
 ----
@@ -53,7 +53,7 @@ exports.tasks = tasks;
 [sources, javascript]
 ----
 const { series, parallel } = require('gulp');
-const core = require('./gulp/tasks/core');
+const core = require('./ops/gulp/tasks/core');
 
 exports.default = core.tasks;
 ----
@@ -484,7 +484,7 @@ npx gulp slides
 +
 [sources, javascript]
 ----
-const webpackConfig = require("../../webpack.config");
+const webpackConfig = require("../../../webpack.config");
 const webpack = {
     clean: async (cb) => {
         await fs.remove("./public");

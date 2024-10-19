@@ -102,7 +102,7 @@ exports.marpBuildTasks = () => {
     return series(marp.clean, marp.build);
 }
 
-const webpackConfig = require("../../webpack.config");
+const webpackConfig = require("../../../webpack.config");
 const webpack = {
     clean: async (cb) => {
         await fs.remove("./public");

@@ -133,8 +133,8 @@ dist
 public
 
 .vercel
-docker/schemaspy/output
-docker/mssql/data
-docker/mssql/log
+ops/docker/schemaspy/output
+ops/docker/mssql/data
+ops/docker/mssql/log
 
 tmp

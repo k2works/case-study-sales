@@ -1,6 +1,6 @@
 const { series, parallel } = require('gulp');
-const core = require('./gulp/tasks/core');
-const custom = require('./gulp/tasks/custom');
+const core = require('./ops/gulp/tasks/core');
+const custom = require('./ops/gulp/tasks/custom');
 
 exports.default = series(
     core.webpackBuildTasks(),
