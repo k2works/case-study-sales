@@ -2,7 +2,8 @@ package com.example.sms.presentation.api.system.user;
 
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.user.UserId;
-import com.example.sms.domain.model.system.user.UserList;
+import com.example.sms.infrastructure.datasource.system.user.UserObjMapper;
+import com.example.sms.infrastructure.datasource.system.user.Usr;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
@@ -15,6 +16,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * ユーザーAPI
@@ -31,10 +34,13 @@ public class UserApiController {
 
     final Message message;
 
-    public UserApiController(PasswordEncoder passwordEncoder, UserManagementService userManagementService, Message message) {
+    final UserObjMapper userObjMapper;
+
+    public UserApiController(PasswordEncoder passwordEncoder, UserManagementService userManagementService, Message message, UserObjMapper userObjMapper) {
         this.passwordEncoder = passwordEncoder;
         this.userManagementService = userManagementService;
         this.message = message;
+        this.userObjMapper = userObjMapper;
     }
     @Operation(summary = "ユーザー一覧を取得する", description = "ユーザー一覧を取得する")
     @GetMapping
@@ -43,8 +49,28 @@ public class UserApiController {
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
             PageNation.startPage(page, pageSize);
-            UserList users = userManagementService.selectAll();
-            return ResponseEntity.ok(new PageInfo<>(users.asList()));
+            List<Usr> userWithPageNation = userManagementService.selectAllWithPageNation();
+            PageInfo<Usr> pageInfo = new PageInfo<>(userWithPageNation);
+            PageInfo<User> result = new PageInfo<>(pageInfo.getList().stream().map(userObjMapper::mapToDomainEntity).toList());
+            result.setTotal(pageInfo.getTotal());
+            result.setPageNum(pageInfo.getPageNum());
+            result.setPageSize(pageInfo.getPageSize());
+            result.setPages(pageInfo.getPages());
+            result.setHasNextPage(pageInfo.isHasNextPage());
+            result.setHasPreviousPage(pageInfo.isHasPreviousPage());
+            result.setIsFirstPage(pageInfo.isIsFirstPage());
+            result.setIsLastPage(pageInfo.isIsLastPage());
+            result.setNavigateFirstPage(pageInfo.getNavigateFirstPage());
+            result.setNavigateLastPage(pageInfo.getNavigateLastPage());
+            result.setNavigatepageNums(pageInfo.getNavigatepageNums());
+            result.setNavigatePages(pageInfo.getNavigatePages());
+            result.setNavigatePages(pageInfo.getNavigatePages());
+            result.setNextPage(pageInfo.getNextPage());
+            result.setPrePage(pageInfo.getPrePage());
+            result.setSize(pageInfo.getSize());
+            result.setStartRow(pageInfo.getStartRow());
+            result.setEndRow(pageInfo.getEndRow());
+            return ResponseEntity.ok(result);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }

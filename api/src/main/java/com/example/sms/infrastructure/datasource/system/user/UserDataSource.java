@@ -33,6 +33,11 @@ public class UserDataSource implements UserRepository {
     }
 
     @Override
+    public List<Usr> selectAllWithPageNation() {
+        return userMapper.selectAll();
+    }
+
+    @Override
     public void save(User user) {
         Usr userEntity = userObjMapper.mapToEntity(user);
         if (userMapper.selectByPrimaryKey(user.getUserId().Value()) != null) {
