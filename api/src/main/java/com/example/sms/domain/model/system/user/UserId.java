@@ -21,6 +21,11 @@ public class UserId {
         this.value = value;
     }
 
+    public static UserId of(String userId) {
+        if (userId == null) return null;
+        return new UserId(userId);
+    }
+
     /**
      * ユーザーID
      */

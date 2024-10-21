@@ -1,6 +1,10 @@
 package com.example.sms.service.system.auth;
 
+import com.example.sms.domain.model.system.auth.AuthUserDetails;
+import com.example.sms.domain.model.system.user.UserId;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,5 +46,25 @@ public class AuthApiService {
      */
     public String getUserNameFromJwtToke(String jwt) {
         return authRepository.getUserNameFromJwtToke(jwt);
+    }
+
+    /**
+     * 現在のユーザーIDの取得
+     */
+    public static UserId getCurrentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new UsernameNotFoundException("User not found");
+        }
+
+        Object principal = authentication.getPrincipal();
+
+        if (principal instanceof AuthUserDetails) {
+            String userId = ((AuthUserDetails) principal).getUsername();
+            return UserId.of(userId);
+        } else {
+            throw new UsernameNotFoundException("User details not found");
+        }
     }
 }

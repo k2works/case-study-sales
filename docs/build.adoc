@@ -1674,7 +1674,7 @@ npm run test
 +
 [source,bash]
 ----
-npm install react-router-dom react-modal @types/react-modal react-spinners react-tab react-icons
+npm install react-router-dom react-modal @types/react-modal react-spinners react-tabs react-icons
 ----
 
 ## データベース開発環境の構築
