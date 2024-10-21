@@ -38,3 +38,48 @@ export type UserAccountType = {
     };
     roleName?: string;
 }
+
+export type DepartmentIdType = {
+    deptCode: { value: string };
+    departmentStartDate: { value: string };
+}
+
+export type DepartmentType = {
+    departmentId: DepartmentIdType;
+    endDate: { value: string }
+    departmentName: string;
+    layer: number;
+    path: { value: string };
+    lowerType: number;
+    slitYn: number;
+    employees: EmployeeType[];
+}
+
+export type EmployeeType = {
+    empCode: { value: string };
+    empName: {
+        firstName: string;
+        lastName: string;
+        firstNameKana: string;
+        lastNameKana: string;
+    }
+    loginPassword: string;
+    tel: {
+        value: string;
+        areaCode: string;
+        localExchange: string;
+        subscriberNumber: string;
+    };
+    fax: {
+        value: string;
+        areaCode: string;
+        localExchange: string;
+        subscriberNumber: string;
+    };
+    occuCode: {
+        value: string;
+    };
+    approvalCode: string;
+    department: DepartmentType;
+    user: UserAccountType;
+}
