@@ -42,10 +42,25 @@ const NaveItems: React.FC = () => {
     return (
         <ul>
             <NavItem id="side-nav-home-nav" to="/"
-                     className={`${NAV_ITEM_CLASS} ${NAV_SUB_ITEM_CLASS} ${ACTIVE_CLASS}`}>ホーム</NavItem>
+                     className={`${NAV_ITEM_CLASS} ${ACTIVE_CLASS}`}>ホーム</NavItem>
             {role === RoleType.ADMIN && (
-                <NavItem id="side-nav-user-nav" to="/User" className={NAV_ITEM_CLASS}>ユーザー</NavItem>
-            )}
+                <>
+                    <li className={NAV_ITEM_CLASS}>
+                        システム
+                        <ul className={NAV_SUB_LIST_CLASS}>
+                            <SubNavItem id="side-nav-user-nav" to="/User">ユーザー</SubNavItem>
+                        </ul>
+                    </li>
+                    <li className={NAV_ITEM_CLASS}>
+                        マスタ
+                        <ul className={NAV_SUB_LIST_CLASS}>
+                            <SubNavItem id="side-nav-department-nav" to="/Department">部門</SubNavItem>
+                            <SubNavItem id="side-nav-department-nav" to="/Employee">社員</SubNavItem>
+                        </ul>
+                    </li>
+                </>
+            )
+            }
             <NavItem id="side-nav-logout-nav" to="/Logout" className={NAV_ITEM_CLASS}>ログアウト</NavItem>
         </ul>
     )
