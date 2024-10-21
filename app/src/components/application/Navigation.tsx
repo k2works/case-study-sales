@@ -48,20 +48,20 @@ const NaveItems: React.FC = () => {
                     <li className={NAV_ITEM_CLASS}>
                         システム
                         <ul className={NAV_SUB_LIST_CLASS}>
-                            <SubNavItem id="side-nav-user-nav" to="/User">ユーザー</SubNavItem>
+                            <SubNavItem id="side-nav-user-nav" to="/user">ユーザー</SubNavItem>
                         </ul>
                     </li>
                     <li className={NAV_ITEM_CLASS}>
                         マスタ
                         <ul className={NAV_SUB_LIST_CLASS}>
-                            <SubNavItem id="side-nav-department-nav" to="/Department">部門</SubNavItem>
-                            <SubNavItem id="side-nav-department-nav" to="/Employee">社員</SubNavItem>
+                            <SubNavItem id="side-nav-department-nav" to="/department">部門</SubNavItem>
+                            <SubNavItem id="side-nav-department-nav" to="/employee">社員</SubNavItem>
                         </ul>
                     </li>
                 </>
             )
             }
-            <NavItem id="side-nav-logout-nav" to="/Logout" className={NAV_ITEM_CLASS}>ログアウト</NavItem>
+            <NavItem id="side-nav-logout-nav" to="/logout" className={NAV_ITEM_CLASS}>ログアウト</NavItem>
         </ul>
     )
 };
