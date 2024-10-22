@@ -16,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * 部門API
@@ -65,14 +66,15 @@ public class DepartmentApiController {
     @PostMapping
     public ResponseEntity<?> create(@RequestBody @Validated DepartmentResource resource) {
         try {
+            DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
             Department department = Department.of(
-                    DepartmentId.of(resource.getDepartmentCode(), LocalDateTime.parse(resource.getStartDate())),
-                    LocalDateTime.parse(resource.getEndDate()),
+                    DepartmentId.of(resource.getDepartmentCode(), LocalDateTime.parse(resource.getStartDate(), formatter)),
+                    LocalDateTime.parse(resource.getEndDate(), formatter),
                     resource.getDepartmentName(),
                     Integer.parseInt(resource.getLayer()),
                     resource.getPath(),
-                    Integer.parseInt(resource.getLowerType()),
-                    Integer.parseInt(resource.getSlitYn())
+                    resource.getLowerType().getValue(),
+                    resource.getSlitYn().getValue()
             );
             Department departmentOptional = departmentManagementService.find(department.getDepartmentId());
             if (departmentOptional != null) {
@@ -89,15 +91,16 @@ public class DepartmentApiController {
     @PutMapping("/{departmentCode}/{departmentStartDate}")
     public ResponseEntity<?> update(@PathVariable String departmentCode, @PathVariable String departmentStartDate, @RequestBody DepartmentResource departmentResource) {
         try {
-            DepartmentId departmentId = DepartmentId.of(departmentCode, LocalDateTime.parse(departmentStartDate));
+            DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
+            DepartmentId departmentId = DepartmentId.of(departmentCode, LocalDateTime.parse(departmentStartDate, formatter));
             Department department = Department.of(
                     departmentId,
-                    LocalDateTime.parse(departmentResource.getEndDate()),
+                    LocalDateTime.parse(departmentResource.getEndDate(), formatter),
                     departmentResource.getDepartmentName(),
                     Integer.parseInt(departmentResource.getLayer()),
                     departmentResource.getPath(),
-                    Integer.parseInt(departmentResource.getLowerType()),
-                    Integer.parseInt(departmentResource.getSlitYn())
+                    departmentResource.getLowerType().getValue(),
+                    departmentResource.getSlitYn().getValue()
             );
             departmentManagementService.save(department);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.department.updated")));

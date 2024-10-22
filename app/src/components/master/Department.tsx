@@ -4,7 +4,7 @@ import {PageNation, usePageNation} from "../application/PageNation.tsx";
 import {useModal} from "../application/hooks.ts";
 import {useDepartment} from "./hooks.ts";
 import {showErrorMessage} from "../application/utils.ts";
-import {DepartmentIdType, DepartmentType} from "../../types";
+import {DepartmentIdType, DepartmentType, LowerType, SlitYnType} from "../../types";
 import Modal from "react-modal";
 import BeatLoader from "react-spinners/BeatLoader";
 import {SiteLayout} from "../application/SiteLayout.tsx";
@@ -185,8 +185,8 @@ export const Department: React.FC = () => {
                         departmentName: "",
                         layer: 0,
                         path: {value: ""},
-                        lowerType: 0,
-                        slitYn: 0,
+                        lowerType: LowerType.NO,
+                        slitYn: SlitYnType.NO,
                         employees: []
                     });
                     await fetchDepartments();
@@ -195,6 +195,14 @@ export const Department: React.FC = () => {
                 } catch (error: any) {
                     showErrorMessage(`部門の保存に失敗しました: ${error?.message}`, setError);
                 }
+            };
+
+            const convertToDateInputFormat = (dateString: string): string => {
+                const date = new Date(dateString);
+                const year = date.getFullYear();
+                const month = ("0" + (date.getMonth() + 1)).slice(-2);
+                const day = ("0" + date.getDate()).slice(-2);
+                return `${year}-${month}-${day}`;
             };
 
             return (
@@ -250,11 +258,27 @@ export const Department: React.FC = () => {
                                         />
                                     </div>
                                     <div className="single-view-content-item-form-item">
+                                        <label className="single-view-content-item-form-item-label">開始日</label>
+                                        <input
+                                            type="date"
+                                            className="single-view-content-item-form-item-input"
+                                            value={convertToDateInputFormat(newDepartment.departmentId.departmentStartDate.value)}
+                                            onChange={(e) => setNewDepartment({
+                                                ...newDepartment,
+                                                departmentId: {
+                                                    ...newDepartment.departmentId,
+                                                    departmentStartDate: {value: e.target.value}
+                                                }
+                                            })}
+                                            disabled={isEditing}
+                                        />
+                                    </div>
+                                    <div className="single-view-content-item-form-item">
                                         <label className="single-view-content-item-form-item-label">終了日</label>
                                         <input
                                             type="date"
                                             className="single-view-content-item-form-item-input"
-                                            value={newDepartment.endDate.value}
+                                            value={convertToDateInputFormat(newDepartment.endDate.value)}
                                             onChange={(e) => setNewDepartment({
                                                 ...newDepartment,
                                                 endDate: {value: e.target.value}
@@ -262,7 +286,7 @@ export const Department: React.FC = () => {
                                         />
                                     </div>
                                     <div className="single-view-content-item-form-item">
-                                        <label className="single-view-content-item-form-item-label">層</label>
+                                        <label className="single-view-content-item-form-item-label">組織階層</label>
                                         <input
                                             type="number"
                                             className="single-view-content-item-form-item-input"
@@ -274,11 +298,11 @@ export const Department: React.FC = () => {
                                         />
                                     </div>
                                     <div className="single-view-content-item-form-item">
-                                        <label className="single-view-content-item-form-item-label">パス</label>
+                                        <label className="single-view-content-item-form-item-label">部門パス</label>
                                         <input
                                             type="text"
                                             className="single-view-content-item-form-item-input"
-                                            placeholder="パス"
+                                            placeholder="部門パス"
                                             value={newDepartment.path.value}
                                             onChange={(e) => setNewDepartment({
                                                 ...newDepartment,
@@ -287,28 +311,66 @@ export const Department: React.FC = () => {
                                         />
                                     </div>
                                     <div className="single-view-content-item-form-item">
-                                        <label className="single-view-content-item-form-item-label">下位タイプ</label>
-                                        <input
-                                            type="number"
-                                            className="single-view-content-item-form-item-input"
-                                            value={newDepartment.lowerType}
-                                            onChange={(e) => setNewDepartment({
-                                                ...newDepartment,
-                                                lowerType: +e.target.value
-                                            })}
-                                        />
+                                        <label className="single-view-content-item-form-item-label">最下層区分</label>
+                                        <div className="single-view-content-item-form-radios">
+                                            <label>
+                                                <input
+                                                    type="radio"
+                                                    name="lowerType"
+                                                    value="LOWER"
+                                                    checked={newDepartment.lowerType === LowerType.YES}
+                                                    onChange={(e) => setNewDepartment({
+                                                        ...newDepartment,
+                                                        lowerType: e.target.value
+                                                    })}
+                                                />
+                                                YES
+                                            </label>
+                                            <label>
+                                                <input
+                                                    type="radio"
+                                                    name="lowerType"
+                                                    value="NOT_LOWER"
+                                                    checked={newDepartment.lowerType === LowerType.NO}
+                                                    onChange={(e) => setNewDepartment({
+                                                        ...newDepartment,
+                                                        lowerType: e.target.value
+                                                    })}
+                                                />
+                                                NO
+                                            </label>
+                                        </div>
                                     </div>
                                     <div className="single-view-content-item-form-item">
-                                        <label className="single-view-content-item-form-item-label">立ち入り線</label>
-                                        <input
-                                            type="number"
-                                            className="single-view-content-item-form-item-input"
-                                            value={newDepartment.slitYn}
-                                            onChange={(e) => setNewDepartment({
-                                                ...newDepartment,
-                                                slitYn: +e.target.value
-                                            })}
-                                        />
+                                        <label className="single-view-content-item-form-item-label">伝票入力可否</label>
+                                        <div className="single-view-content-item-form-radios">
+                                            <label>
+                                                <input
+                                                    type="radio"
+                                                    name="slitType"
+                                                    value="SLIT"
+                                                    checked={newDepartment.slitYn === SlitYnType.YES}
+                                                    onChange={(e) => setNewDepartment({
+                                                        ...newDepartment,
+                                                        slitYn: e.target.value
+                                                    })}
+                                                />
+                                                YES
+                                            </label>
+                                            <label>
+                                                <input
+                                                    type="radio"
+                                                    name="slitType"
+                                                    value="NOT_SLIT"
+                                                    checked={newDepartment.slitYn === SlitYnType.NO}
+                                                    onChange={(e) => setNewDepartment({
+                                                        ...newDepartment,
+                                                        slitYn: e.target.value
+                                                    })}
+                                                />
+                                                NO
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

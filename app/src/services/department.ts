@@ -10,8 +10,8 @@ export const DepartmentService = () => {
     const mapToDepartmentResource = (department: DepartmentType): DepartmentResourceType => {
         return {
             departmentCode: department.departmentId.deptCode.value,
-            startDate: department.departmentId.departmentStartDate.value,
-            endDate: department.endDate.value,
+            startDate: new Date(department.departmentId.departmentStartDate.value),
+            endDate: new Date(department.endDate.value),
             departmentName: department.departmentName,
             layer: department.layer.toString(),
             path: department.path.value,
@@ -42,7 +42,8 @@ export const DepartmentService = () => {
     };
 
     const update = async (department: DepartmentType) => {
-        const url = `${endPoint}/${department.departmentId.deptCode.value}/${department.departmentId.departmentStartDate.value}`;
+        const startDate = new Date(department.departmentId.departmentStartDate.value);
+        const url = `${endPoint}/${department.departmentId.deptCode.value}/${startDate.toISOString()}`;
         return await apiUtils.fetchPut(url, mapToDepartmentResource(department));
     };
 

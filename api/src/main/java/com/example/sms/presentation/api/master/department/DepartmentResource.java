@@ -1,5 +1,7 @@
 package com.example.sms.presentation.api.master.department;
 
+import com.example.sms.domain.model.master.department.DepartmentLowerType;
+import com.example.sms.domain.model.master.department.SlitYnType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -24,6 +26,6 @@ public class DepartmentResource implements Serializable {
     private String departmentName;
     private String layer;
     private String path;
-    private String lowerType;
-    private String slitYn;
+    private DepartmentLowerType lowerType;
+    private SlitYnType slitYn;
 }

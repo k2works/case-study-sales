@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {DepartmentIdType, DepartmentType} from "../../types";
+import {DepartmentIdType, DepartmentType, LowerType, SlitYnType} from "../../types";
 import {DepartmentService} from "../../services/department.ts";
 
 export const useDepartment = () => {
@@ -9,8 +9,8 @@ export const useDepartment = () => {
         departmentName: "",
         layer: 0,
         path: {value: ""},
-        lowerType: 0,
-        slitYn: 0,
+        lowerType: LowerType.NO,
+        slitYn: SlitYnType.NO,
         employees: []
     };
 

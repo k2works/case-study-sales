@@ -39,6 +39,18 @@ export type UserAccountType = {
     roleName?: string;
 }
 
+export const LowerType = {
+    YES: "LOWER",
+    NO: "NOT_LOWER",
+}
+export type LowerType = typeof LowerType[keyof typeof LowerType];
+
+export const SlitYnType = {
+    YES: "SLIT",
+    NO: "NOT_SLIT",
+}
+export type SlitYnType = typeof SlitYnType[keyof typeof SlitYnType];
+
 export type DepartmentIdType = {
     deptCode: { value: string };
     departmentStartDate: { value: string };
@@ -50,15 +62,15 @@ export type DepartmentType = {
     departmentName: string;
     layer: number;
     path: { value: string };
-    lowerType: number;
-    slitYn: number;
+    lowerType: LowerType;
+    slitYn: SlitYnType;
     employees: EmployeeType[];
 }
 
 export type DepartmentResourceType = {
     departmentCode: string;
-    startDate: string;
-    endDate: string;
+    startDate: Date;
+    endDate: Date;
     departmentName: string;
     layer: string;
     path: string;
