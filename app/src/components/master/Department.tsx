@@ -2,9 +2,9 @@ import React, {useEffect, useState} from "react";
 import {Message, useMessage} from "../application/Message.tsx";
 import {PageNation, usePageNation} from "../application/PageNation.tsx";
 import {useModal} from "../application/hooks.ts";
-import {useUser} from "../system/hooks.ts";
+import {useDepartment} from "./hooks.ts";
 import {showErrorMessage} from "../application/utils.ts";
-import {UserAccountType} from "../../types";
+import {DepartmentIdType, DepartmentType} from "../../types";
 import Modal from "react-modal";
 import BeatLoader from "react-spinners/BeatLoader";
 import {SiteLayout} from "../application/SiteLayout.tsx";
@@ -16,15 +16,15 @@ export const Department: React.FC = () => {
         const {pageNation, setPageNation} = usePageNation();
         const {modalIsOpen, setModalIsOpen, isEditing, setIsEditing, editId, setEditId} = useModal();
         const {
-            initialUser,
-            users,
-            setUsers,
-            newUser,
-            setNewUser,
-            searchUserId,
-            setSearchUserId,
-            userService
-        } = useUser();
+            initialDepartment,
+            departments,
+            setDepartments,
+            newDepartment,
+            setNewDepartment,
+            searchDepartmentId,
+            setSearchDepartmentId,
+            departmentService
+        } = useDepartment();
 
         useEffect(() => {
             fetchDepartments().then(() => {
@@ -34,27 +34,26 @@ export const Department: React.FC = () => {
         const fetchDepartments = async (page: number = 1) => {
             setLoading(true);
             try {
-                const fetchedUsers = await userService.select(page);
-                setUsers(fetchedUsers.list);
-                setPageNation({...fetchedUsers});
+                const fetchedDepartments = await departmentService.select(page);
+                setDepartments(fetchedDepartments.list);
+                setPageNation({...fetchedDepartments});
                 setError("");
             } catch (error: any) {
-                showErrorMessage(`ユーザー情報の取得に失敗しました: ${error?.message}`, setError);
+                showErrorMessage(`部門情報の取得に失敗しました: ${error?.message}`, setError);
             } finally {
                 setLoading(false);
             }
         };
 
-        const handleOpenModal = (user?: UserAccountType) => {
+        const handleOpenModal = (department?: DepartmentType) => {
             setMessage("");
             setError("");
-            if (user) {
-                user.password = {value: ""};
-                setNewUser(user);
-                setEditId(user.userId.value);
+            if (department) {
+                setNewDepartment(department);
+                setEditId(department.departmentId.deptCode.value);
                 setIsEditing(true);
             } else {
-                setNewUser(initialUser);
+                setNewDepartment(initialDepartment);
                 setIsEditing(false);
             }
             setModalIsOpen(true);
@@ -67,30 +66,30 @@ export const Department: React.FC = () => {
         };
 
         const collectionView = () => {
-            const handleSearchUser = async () => {
-                if (!searchUserId.trim()) {
+            const handleSearchDepartment = async () => {
+                if (!searchDepartmentId.deptCode.value.trim() && !searchDepartmentId.departmentStartDate.value.trim()) {
                     return;
                 }
                 setLoading(true);
                 try {
-                    const fetchedUser = await userService.find(searchUserId.trim());
-                    setUsers(fetchedUser ? [fetchedUser] : []);
+                    const fetchedDepartment = await departmentService.find(searchDepartmentId.deptCode.value, searchDepartmentId.departmentStartDate.value);
+                    setDepartments(fetchedDepartment ? [fetchedDepartment] : []);
                     setMessage("");
                     setError("");
                 } catch (error: any) {
-                    showErrorMessage(`ユーザーの検索に失敗しました: ${error?.message}`, setError);
+                    showErrorMessage(`部門の検索に失敗しました: ${error?.message}`, setError);
                 } finally {
                     setLoading(false);
                 }
             };
 
-            const handleDeleteUser = async (userId: string) => {
+            const handleDeleteDepartment = async (departmentId: DepartmentIdType) => {
                 try {
-                    await userService.destroy(userId);
+                    await departmentService.destroy(departmentId.deptCode.value, departmentId.departmentStartDate.value);
                     await fetchDepartments();
-                    setMessage("ユーザーを削除しました。");
+                    setMessage("部門を削除しました。");
                 } catch (error: any) {
-                    showErrorMessage(`ユーザーの削除に失敗しました: ${error?.message}`, setError);
+                    showErrorMessage(`部門の削除に失敗しました: ${error?.message}`, setError);
                 }
             };
 
@@ -107,105 +106,97 @@ export const Department: React.FC = () => {
                         </div>
                         <div className="collection-view-content">
                             <div className="search-container">
-                                <input type="text" id="search-input" placeholder="ユーザーIDで検索"
-                                       value={searchUserId} onChange={(e) => setSearchUserId(e.target.value)}/>
+                                <input type="text" id="search-input" placeholder="部門コードで検索"
+                                       value={searchDepartmentId.deptCode.value}
+                                       onChange={(e) => setSearchDepartmentId({
+                                           ...searchDepartmentId,
+                                           deptCode: {value: e.target.value}
+                                       })}/>
                                 <button className="action-button" id="search-all"
-                                        onClick={handleSearchUser}>検索
+                                        onClick={handleSearchDepartment}>検索
                                 </button>
                             </div>
                             <div className="button-container">
-                                <button className="action-button" onClick={() => handleOpenModal()}>新規
-                                </button>
+                                <button className="action-button" onClick={() => handleOpenModal()}>新規作成</button>
                             </div>
                             <div className="collection-object-container">
                                 <ul className="collection-object-list">
-                                    {users.map((user) => (
-                                        <li className="collection-object-item" key={user.userId.value}>
+                                    {departments.map((department) => (
+                                        <li className="collection-object-item"
+                                            key={department.departmentId.deptCode.value}>
                                             <div className="collection-object-item-content"
-                                                 data-id={user.userId.value}>
+                                                 data-id={department.departmentId.deptCode.value}>
+                                                <div className="collection-object-item-content-details">部門コード</div>
                                                 <div
-                                                    className="collection-object-item-content-details">ユーザーID
-                                                </div>
-                                                <div
-                                                    className="collection-object-item-content-name">{user.userId.value}</div>
+                                                    className="collection-object-item-content-name">{department.departmentId.deptCode.value}</div>
                                             </div>
                                             <div className="collection-object-item-content"
-                                                 data-id={user.userId.value}>
-                                                <div className="collection-object-item-content-details">名</div>
+                                                 data-id={department.departmentId.deptCode.value}>
+                                                <div className="collection-object-item-content-details">部門名</div>
                                                 <div
-                                                    className="collection-object-item-content-name">{user.name.firstName}</div>
-                                            </div>
-                                            <div className="collection-object-item-content"
-                                                 data-id={user.userId.value}>
-                                                <div className="collection-object-item-content-details">姓</div>
-                                                <div
-                                                    className="collection-object-item-content-name">{user.name.lastName}</div>
-                                            </div>
-                                            <div className="collection-object-item-content"
-                                                 data-id={user.userId.value}>
-                                                <div className="collection-object-item-content-details">役割
-                                                </div>
-                                                <div
-                                                    className="collection-object-item-content-name">{user.roleName}</div>
+                                                    className="collection-object-item-content-name">{department.departmentName}</div>
                                             </div>
                                             <div className="collection-object-item-actions"
-                                                 data-id={user.userId.value}>
+                                                 data-id={department.departmentId.deptCode.value}>
                                                 <button className="action-button"
-                                                        onClick={() => handleOpenModal(user)}>編集
+                                                        onClick={() => handleOpenModal(department)}>編集
                                                 </button>
                                             </div>
                                             <div className="collection-object-item-actions"
-                                                 data-id={user.userId.value}>
+                                                 data-id={department.departmentId.deptCode.value}>
                                                 <button className="action-button"
-                                                        onClick={() => handleDeleteUser(user.userId.value)}>削除
+                                                        onClick={() => handleDeleteDepartment(department.departmentId)}>削除
                                                 </button>
                                             </div>
                                         </li>
                                     ))}
                                 </ul>
                             </div>
-                            <PageNation
-                                pageNation={pageNation}
-                                callBack={fetchDepartments}
-                            />
+                            <PageNation pageNation={pageNation} callBack={fetchDepartments}/>
                         </div>
                     </div>
                 </div>
-            )
-        }
+            );
+        };
 
         const singleView = () => {
-            const handleCreateOrUpdateUser = async () => {
-                const validateUser = (): boolean => {
-                    if (!newUser.userId.value.trim() || !newUser.name?.firstName?.trim() || !newUser.name?.lastName?.trim() || !newUser.roleName?.trim()) {
-                        setError("ユーザーID、姓、名、役割は必須項目です。");
+            const handleCreateOrUpdateDepartment = async () => {
+                const validateDepartment = (): boolean => {
+                    if (!newDepartment.departmentId.deptCode.value.trim() || !newDepartment.departmentName.trim()) {
+                        setError("部門コード、部門名は必須項目です。");
                         return false;
                     }
                     return true;
                 };
 
-                if (!validateUser()) {
+                if (!validateDepartment()) {
                     return;
                 }
+
                 try {
                     if (isEditing && editId) {
-                        await userService.update(newUser);
+                        await departmentService.update(newDepartment);
                     } else {
-                        await userService.create(newUser);
+                        await departmentService.create(newDepartment);
                     }
-                    setNewUser({
-                        userId: {value: ""},
-                        name: {firstName: "", lastName: ""},
-                        password: {value: ""},
-                        roleName: ""
+                    setNewDepartment({
+                        departmentId: {deptCode: {value: ""}, departmentStartDate: {value: ""}},
+                        endDate: {value: ""},
+                        departmentName: "",
+                        layer: 0,
+                        path: {value: ""},
+                        lowerType: 0,
+                        slitYn: 0,
+                        employees: []
                     });
                     await fetchDepartments();
-                    setMessage("ユーザーを保存しました。");
+                    setMessage("部門を保存しました。");
                     handleCloseModal();
                 } catch (error: any) {
-                    showErrorMessage(`ユーザーの保存に失敗しました: ${error?.message}`, setError);
+                    showErrorMessage(`部門の保存に失敗しました: ${error?.message}`, setError);
                 }
             };
+
             return (
                 <div className="single-view-object-container">
                     <div className="view-message-container" id="message">
@@ -214,15 +205,14 @@ export const Department: React.FC = () => {
                     <div className="single-view-container">
                         <div className="single-view-header">
                             <div className="single-view-header-item">
-                                <h1 className="single-view-title">ユーザー</h1>
+                                <h1 className="single-view-title">部門</h1>
                                 <p className="single-view-subtitle">{isEditing ? "編集" : "新規作成"}</p>
                             </div>
                             <div className="collection-object-item-actions">
                                 <div className="button-container">
                                     <button className="action-button"
-                                            onClick={handleCreateOrUpdateUser}>{isEditing ? "更新" : "作成"}</button>
-                                    <button className="action-button" onClick={handleCloseModal}>キャンセル
-                                    </button>
+                                            onClick={handleCreateOrUpdateDepartment}>{isEditing ? "更新" : "作成"}</button>
+                                    <button className="action-button" onClick={handleCloseModal}>キャンセル</button>
                                 </div>
                             </div>
                         </div>
@@ -230,71 +220,93 @@ export const Department: React.FC = () => {
                             <div className="single-view-content-item">
                                 <div className="single-view-content-item-form">
                                     <div className="single-view-content-item-form-item">
-                                        <label
-                                            className="single-view-content-item-form-item-label">ユーザーID</label>
+                                        <label className="single-view-content-item-form-item-label">部門コード</label>
                                         <input
                                             type="text"
                                             className="single-view-content-item-form-item-input"
-                                            placeholder="ユーザーID"
-                                            value={newUser.userId.value}
-                                            onChange={(e) => setNewUser({
-                                                ...newUser,
-                                                userId: {value: e.target.value}
+                                            placeholder="部門コード"
+                                            value={newDepartment.departmentId.deptCode.value}
+                                            onChange={(e) => setNewDepartment({
+                                                ...newDepartment,
+                                                departmentId: {
+                                                    ...newDepartment.departmentId,
+                                                    deptCode: {value: e.target.value}
+                                                }
                                             })}
                                             disabled={isEditing}
                                         />
                                     </div>
                                     <div className="single-view-content-item-form-item">
-                                        <label className="single-view-content-item-form-item-label">姓</label>
+                                        <label className="single-view-content-item-form-item-label">部門名</label>
                                         <input
                                             type="text"
                                             className="single-view-content-item-form-item-input"
-                                            placeholder="姓"
-                                            value={newUser.name?.lastName || ""}
-                                            onChange={(e) => setNewUser({
-                                                ...newUser,
-                                                name: {...newUser.name, lastName: e.target.value}
+                                            placeholder="部門名"
+                                            value={newDepartment.departmentName}
+                                            onChange={(e) => setNewDepartment({
+                                                ...newDepartment,
+                                                departmentName: e.target.value
                                             })}
                                         />
                                     </div>
                                     <div className="single-view-content-item-form-item">
-                                        <label className="single-view-content-item-form-item-label">名</label>
+                                        <label className="single-view-content-item-form-item-label">終了日</label>
                                         <input
-                                            type="text"
+                                            type="date"
                                             className="single-view-content-item-form-item-input"
-                                            placeholder="名"
-                                            value={newUser.name?.firstName || ""}
-                                            onChange={(e) => setNewUser({
-                                                ...newUser,
-                                                name: {...newUser.name, firstName: e.target.value}
+                                            value={newDepartment.endDate.value}
+                                            onChange={(e) => setNewDepartment({
+                                                ...newDepartment,
+                                                endDate: {value: e.target.value}
                                             })}
                                         />
                                     </div>
                                     <div className="single-view-content-item-form-item">
-                                        <label className="single-view-content-item-form-item-label">役割</label>
-                                        <select
-                                            className="single-view-content-item-form-item"
-                                            name="roleNameList"
-                                            id="roleName"
-                                            value={newUser.roleName}
-                                            onChange={(e) => setNewUser({...newUser, roleName: e.target.value})}
-                                        >
-                                            <option value="">選択してください</option>
-                                            <option value="USER">ユーザー</option>
-                                            <option value="ADMIN">管理者</option>
-                                        </select>
+                                        <label className="single-view-content-item-form-item-label">層</label>
+                                        <input
+                                            type="number"
+                                            className="single-view-content-item-form-item-input"
+                                            value={newDepartment.layer}
+                                            onChange={(e) => setNewDepartment({
+                                                ...newDepartment,
+                                                layer: +e.target.value
+                                            })}
+                                        />
                                     </div>
                                     <div className="single-view-content-item-form-item">
-                                        <label
-                                            className="single-view-content-item-form-item-label">パスワード</label>
+                                        <label className="single-view-content-item-form-item-label">パス</label>
                                         <input
-                                            type="password"
+                                            type="text"
                                             className="single-view-content-item-form-item-input"
-                                            placeholder="パスワード"
-                                            value={newUser.password?.value || ""}
-                                            onChange={(e) => setNewUser({
-                                                ...newUser,
-                                                password: {value: e.target.value}
+                                            placeholder="パス"
+                                            value={newDepartment.path.value}
+                                            onChange={(e) => setNewDepartment({
+                                                ...newDepartment,
+                                                path: {value: e.target.value}
+                                            })}
+                                        />
+                                    </div>
+                                    <div className="single-view-content-item-form-item">
+                                        <label className="single-view-content-item-form-item-label">下位タイプ</label>
+                                        <input
+                                            type="number"
+                                            className="single-view-content-item-form-item-input"
+                                            value={newDepartment.lowerType}
+                                            onChange={(e) => setNewDepartment({
+                                                ...newDepartment,
+                                                lowerType: +e.target.value
+                                            })}
+                                        />
+                                    </div>
+                                    <div className="single-view-content-item-form-item">
+                                        <label className="single-view-content-item-form-item-label">立ち入り線</label>
+                                        <input
+                                            type="number"
+                                            className="single-view-content-item-form-item-input"
+                                            value={newDepartment.slitYn}
+                                            onChange={(e) => setNewDepartment({
+                                                ...newDepartment,
+                                                slitYn: +e.target.value
                                             })}
                                         />
                                     </div>
@@ -303,23 +315,23 @@ export const Department: React.FC = () => {
                         </div>
                     </div>
                 </div>
-            )
-        }
+            );
+        };
 
         const modalView = () => {
             return (
                 <Modal
                     isOpen={modalIsOpen}
                     onRequestClose={handleCloseModal}
-                    contentLabel="ユーザー情報を入力"
+                    contentLabel="部門情報を入力"
                     className="modal"
                     overlayClassName="modal-overlay"
                     bodyOpenClassName="modal-open"
                 >
                     {singleView()}
                 </Modal>
-            )
-        }
+            );
+        };
 
         return (
             <>
@@ -335,11 +347,11 @@ export const Department: React.FC = () => {
                 )}
             </>
         );
-    }
+    };
 
     return (
         <SiteLayout>
             <Content/>
         </SiteLayout>
-    )
-}
+    );
+};

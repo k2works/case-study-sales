@@ -55,6 +55,17 @@ export type DepartmentType = {
     employees: EmployeeType[];
 }
 
+export type DepartmentResourceType = {
+    departmentCode: string;
+    startDate: string;
+    endDate: string;
+    departmentName: string;
+    layer: string;
+    path: string;
+    lowerType: string;
+    slitYn: string;
+}
+
 export type EmployeeType = {
     empCode: { value: string };
     empName: {

@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {DepartmentIdType, DepartmentType} from "../../types";
-import {DepartmentService} from "../../services/DepartmentService.ts";
+import {DepartmentService} from "../../services/department.ts";
 
 export const useDepartment = () => {
     const initialDepartment = {
@@ -26,7 +26,10 @@ export const useDepartment = () => {
         initialDepartment,
         departments,
         newDepartment,
+        setNewDepartment,
         searchDepartmentId,
+        setSearchDepartmentId,
         setDepartments,
+        departmentService,
     }
 }
