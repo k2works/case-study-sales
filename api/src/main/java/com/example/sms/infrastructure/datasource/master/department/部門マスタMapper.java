@@ -59,4 +59,6 @@ public interface 部門マスタMapper {
     void deleteAll();
 
     List<部門マスタ> selectAll();
+
+    List<部門マスタ> selectByDepartmentCode(String departmentCode);
 }

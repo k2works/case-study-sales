@@ -10,6 +10,8 @@ import java.util.Optional;
 public interface DepartmentRepository {
     Optional<Department> findById(DepartmentId departmentId);
 
+    DepartmentList findByCode(String departmentCode);
+
     DepartmentList selectAll();
 
     PageInfo<Department> selectAllWithPageInfo();

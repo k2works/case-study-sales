@@ -57,4 +57,7 @@ public class DepartmentService {
         return departmentRepository.findById(departmentId).orElse(null);
     }
 
+    public DepartmentList findByCode(DepartmentId departmentId) {
+        return departmentRepository.findByCode(departmentId.getDeptCode().getValue());
+    }
 }

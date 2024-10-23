@@ -98,7 +98,7 @@ public class UC003StepDefs extends SpringAcceptanceTest {
 
     @もし(":UC003 部門コード {string} で検索する")
     public void toFind(String code) throws IOException {
-        LocalDateTime from = LocalDateTime.of(2021, 1, 1, 0, 0, 0);
+        String from = "2021-01-01T00:00:00+09:00";
         String url = DEPARTMENT_API_URL + "/" + code + "/" + from;
         executeGet(url);
     }
@@ -125,8 +125,8 @@ public class UC003StepDefs extends SpringAcceptanceTest {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         String result = latestResponse.getBody();
-        Department department = objectMapper.readValue(result, Department.class);
-        assertEquals(name, department.getDepartmentName());
+        Department[] department = objectMapper.readValue(result, Department[].class);
+        assertEquals(name, department[0].getDepartmentName());
     }
 
     @かつ(":UC003 部門コード {string} を削除する")

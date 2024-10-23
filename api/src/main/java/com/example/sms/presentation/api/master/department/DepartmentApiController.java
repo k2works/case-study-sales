@@ -2,6 +2,7 @@ package com.example.sms.presentation.api.master.department;
 
 import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentId;
+import com.example.sms.domain.model.master.department.DepartmentList;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
@@ -53,9 +54,10 @@ public class DepartmentApiController {
     @GetMapping("/{departmentCode}/{departmentStartDate}")
     public ResponseEntity<?> find(@PathVariable String departmentCode, @PathVariable String departmentStartDate) {
         try {
-            DepartmentId departmentId = DepartmentId.of(departmentCode, LocalDateTime.parse(departmentStartDate));
-            Department department = departmentManagementService.find(departmentId);
-            return ResponseEntity.ok(department);
+            DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
+            DepartmentId departmentId = DepartmentId.of(departmentCode, LocalDateTime.parse(departmentStartDate, formatter));
+            DepartmentList department = departmentManagementService.findByCode(departmentId);
+            return ResponseEntity.ok(department.asList());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }

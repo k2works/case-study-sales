@@ -234,4 +234,13 @@
         <include refid="Base_Column_List"/>
         from public.部門マスタ
     </select>
+
+    <select id="selectByDepartmentCode"
+            parameterType="java.lang.String"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from public.部門マスタ
+        where 部門コード = #{departmentCode,jdbcType=VARCHAR}
+    </select>
 </mapper>

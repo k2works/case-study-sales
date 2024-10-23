@@ -37,6 +37,14 @@ public class DepartmentDataSource implements DepartmentRepository {
     }
 
     @Override
+    public DepartmentList findByCode(String departmentCode) {
+        List<部門マスタ> departmentEntities = departmentMapper.selectByDepartmentCode(departmentCode);
+        return new DepartmentList(departmentEntities.stream()
+                .map(departmentEntityMapper::mapToDomainModel)
+                .toList());
+    }
+
+    @Override
     public DepartmentList selectAll() {
         List<部門マスタ> departmentEntities = departmentMapper.selectAll();
         return new DepartmentList(departmentEntities.stream()
