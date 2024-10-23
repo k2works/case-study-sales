@@ -69,8 +69,8 @@ export type DepartmentType = {
 
 export type DepartmentResourceType = {
     departmentCode: string;
-    startDate: Date;
-    endDate: Date;
+    startDate: string;
+    endDate: string;
     departmentName: string;
     layer: string;
     path: string;

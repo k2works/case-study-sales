@@ -1,6 +1,7 @@
 import Config from "./config";
 import Utils from "./utils";
 import {DepartmentResourceType, DepartmentType} from "../types";
+import {toISOStringWithTimezone} from "../components/application/utils.ts";
 
 export const DepartmentService = () => {
     const config = Config();
@@ -10,8 +11,8 @@ export const DepartmentService = () => {
     const mapToDepartmentResource = (department: DepartmentType): DepartmentResourceType => {
         return {
             departmentCode: department.departmentId.deptCode.value,
-            startDate: new Date(department.departmentId.departmentStartDate.value),
-            endDate: new Date(department.endDate.value),
+            startDate: toISOStringWithTimezone(new Date(department.departmentId.departmentStartDate.value)),
+            endDate: toISOStringWithTimezone(new Date(department.endDate.value)),
             departmentName: department.departmentName,
             layer: department.layer.toString(),
             path: department.path.value,
@@ -42,8 +43,8 @@ export const DepartmentService = () => {
     };
 
     const update = async (department: DepartmentType) => {
-        const startDate = new Date(department.departmentId.departmentStartDate.value);
-        const url = `${endPoint}/${department.departmentId.deptCode.value}/${startDate.toISOString()}`;
+        const startDate = toISOStringWithTimezone(new Date(department.departmentId.departmentStartDate.value));
+        const url = `${endPoint}/${department.departmentId.deptCode.value}/${startDate}`;
         return await apiUtils.fetchPut(url, mapToDepartmentResource(department));
     };
 
@@ -53,7 +54,8 @@ export const DepartmentService = () => {
     };
 
     const destroy = async (deptCode: string, departmentStartDate: string): Promise<void> => {
-        const url = `${endPoint}/${deptCode}/${departmentStartDate}`;
+        const startDate = toISOStringWithTimezone(new Date(departmentStartDate));
+        const url = `${endPoint}/${deptCode}/${startDate}`;
         await apiUtils.fetchDelete(url);
     };
 

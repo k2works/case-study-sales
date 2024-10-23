@@ -3,7 +3,7 @@ import {Message, useMessage} from "../application/Message.tsx";
 import {PageNation, usePageNation} from "../application/PageNation.tsx";
 import {useModal} from "../application/hooks.ts";
 import {useDepartment} from "./hooks.ts";
-import {showErrorMessage} from "../application/utils.ts";
+import {convertToDateInputFormat, showErrorMessage} from "../application/utils.ts";
 import {DepartmentIdType, DepartmentType, LowerType, SlitYnType} from "../../types";
 import Modal from "react-modal";
 import BeatLoader from "react-spinners/BeatLoader";
@@ -195,14 +195,6 @@ export const Department: React.FC = () => {
                 } catch (error: any) {
                     showErrorMessage(`部門の保存に失敗しました: ${error?.message}`, setError);
                 }
-            };
-
-            const convertToDateInputFormat = (dateString: string): string => {
-                const date = new Date(dateString);
-                const year = date.getFullYear();
-                const month = ("0" + (date.getMonth() + 1)).slice(-2);
-                const day = ("0" + date.getDate()).slice(-2);
-                return `${year}-${month}-${day}`;
             };
 
             return (
