@@ -2,9 +2,8 @@ package com.example.sms.service.system.user;
 
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.user.UserList;
-import com.example.sms.infrastructure.datasource.system.user.Usr;
+import com.github.pagehelper.PageInfo;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -15,7 +14,7 @@ public interface UserRepository {
 
     UserList selectAll();
 
-    List<Usr> selectAllWithPageNation();
+    PageInfo<User> selectAllWithPageInfo();
 
     void save(User user);
 
