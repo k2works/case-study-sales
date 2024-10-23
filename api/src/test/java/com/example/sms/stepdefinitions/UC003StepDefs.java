@@ -2,6 +2,8 @@ package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
 import com.example.sms.domain.model.master.department.Department;
+import com.example.sms.domain.model.master.department.DepartmentLowerType;
+import com.example.sms.domain.model.master.department.SlitYnType;
 import com.example.sms.presentation.api.master.department.DepartmentResource;
 import com.example.sms.stepdefinitions.utils.ListResponse;
 import com.example.sms.stepdefinitions.utils.MessageResponse;
@@ -81,13 +83,13 @@ public class UC003StepDefs extends SpringAcceptanceTest {
         LocalDateTime to = LocalDateTime.of(2021, 12, 31, 23, 59, 59);
         DepartmentResource departmentResource = new DepartmentResource();
         departmentResource.setDepartmentCode(code);
-        departmentResource.setStartDate(from.toString());
-        departmentResource.setEndDate(to.toString());
+        departmentResource.setStartDate("2021-01-01T00:00:00+09:00");
+        departmentResource.setEndDate("9999-12-29T12:00:00+09:00");
         departmentResource.setDepartmentName(name);
         departmentResource.setLayer("1");
         departmentResource.setPath(code + "~");
-        departmentResource.setLowerType("1");
-        departmentResource.setSlitYn("1");
+        departmentResource.setLowerType(DepartmentLowerType.LOWER);
+        departmentResource.setSlitYn(SlitYnType.SLIT);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(departmentResource);
@@ -103,16 +105,15 @@ public class UC003StepDefs extends SpringAcceptanceTest {
 
     @かつ(":UC003 部門コード {string} の情報を更新する \\(部門名 {string})")
     public void toUpdate(String code, String name) throws IOException {
-        LocalDateTime from = LocalDateTime.of(2021, 1, 1, 0, 0, 0);
-        LocalDateTime to = LocalDateTime.of(2021, 12, 31, 23, 59, 59);
+        String from = "2021-01-01T00:00:00+09:00";
         String url = DEPARTMENT_API_URL + "/" + code + "/" + from;
         DepartmentResource departmentResource = new DepartmentResource();
-        departmentResource.setEndDate(to.toString());
+        departmentResource.setEndDate("9999-12-29T12:00:00+09:00");
         departmentResource.setDepartmentName(name);
         departmentResource.setLayer("1");
         departmentResource.setPath(code + "~");
-        departmentResource.setLowerType("1");
-        departmentResource.setSlitYn("1");
+        departmentResource.setLowerType(DepartmentLowerType.LOWER);
+        departmentResource.setSlitYn(SlitYnType.SLIT);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(departmentResource);
@@ -130,7 +131,7 @@ public class UC003StepDefs extends SpringAcceptanceTest {
 
     @かつ(":UC003 部門コード {string} を削除する")
     public void toDelete(String code) throws IOException {
-        LocalDateTime from = LocalDateTime.of(2021, 1, 1, 0, 0, 0);
+        String from = "2021-01-01T00:00:00+09:00";
         String url = DEPARTMENT_API_URL + "/" + code + "/" + from;
         executeDelete(url);
     }

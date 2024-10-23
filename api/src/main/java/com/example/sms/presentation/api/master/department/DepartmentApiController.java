@@ -113,7 +113,8 @@ public class DepartmentApiController {
     @DeleteMapping("/{departmentCode}/{departmentStartDate}")
     public ResponseEntity<?> delete(@PathVariable String departmentCode, @PathVariable String departmentStartDate) {
         try {
-            DepartmentId departmentId = DepartmentId.of(departmentCode, LocalDateTime.parse(departmentStartDate));
+            DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
+            DepartmentId departmentId = DepartmentId.of(departmentCode, LocalDateTime.parse(departmentStartDate, formatter));
             Department department = departmentManagementService.find(departmentId);
             if (department == null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.department.not.exist")));
