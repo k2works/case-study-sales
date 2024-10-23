@@ -3,7 +3,9 @@ package com.example.sms.infrastructure.datasource.master.department;
 import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.department.DepartmentList;
+import com.example.sms.infrastructure.PageInfoHelper;
 import com.example.sms.service.master.department.DepartmentRepository;
+import com.github.pagehelper.PageInfo;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
@@ -40,6 +42,14 @@ public class DepartmentDataSource implements DepartmentRepository {
         return new DepartmentList(departmentEntities.stream()
                 .map(departmentEntityMapper::mapToDomainModel)
                 .toList());
+    }
+
+    @Override
+    public PageInfo<Department> selectAllWithPageInfo() {
+        List<部門マスタ> departmentEntities = departmentMapper.selectAll();
+        PageInfo<部門マスタ> pageInfo = new PageInfo<>(departmentEntities);
+
+        return PageInfoHelper.of(pageInfo, departmentEntityMapper::mapToDomainModel);
     }
 
     @Override

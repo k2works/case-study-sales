@@ -3,6 +3,7 @@ package com.example.sms.service.master.department;
 import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.department.DepartmentList;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +26,9 @@ public class DepartmentService {
         return departmentRepository.selectAll();
     }
 
+    public PageInfo<Department> selectAllWithPageInfo() {
+        return departmentRepository.selectAllWithPageInfo();
+    }
     /**
      * 部門新規登録
      */
@@ -52,4 +56,5 @@ public class DepartmentService {
     public Department find(DepartmentId departmentId) {
         return departmentRepository.findById(departmentId).orElse(null);
     }
+
 }

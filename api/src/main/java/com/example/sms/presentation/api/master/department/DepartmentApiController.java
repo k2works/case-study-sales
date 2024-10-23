@@ -2,7 +2,6 @@ package com.example.sms.presentation.api.master.department;
 
 import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentId;
-import com.example.sms.domain.model.master.department.DepartmentList;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
@@ -43,8 +42,8 @@ public class DepartmentApiController {
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
             PageNation.startPage(page, pageSize);
-            DepartmentList departments = departmentManagementService.selectAll();
-            return ResponseEntity.ok(new PageInfo<>(departments.asList()));
+            PageInfo<Department> result = departmentManagementService.selectAllWithPageInfo();
+            return ResponseEntity.ok(result);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }

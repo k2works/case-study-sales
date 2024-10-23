@@ -3,6 +3,7 @@ package com.example.sms.service.system.user;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.user.UserId;
 import com.example.sms.domain.model.system.user.UserList;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +26,9 @@ public class UserManagementService {
         return userRepository.selectAll();
     }
 
+    public PageInfo<User> selectAllWithPageInfo() {
+        return userRepository.selectAllWithPageInfo();
+    }
     /**
      * ユーザー新規登録
      */
@@ -52,4 +56,5 @@ public class UserManagementService {
     public User find(UserId userId) {
         return userRepository.findById(userId.Value()).orElse(null);
     }
+
 }
