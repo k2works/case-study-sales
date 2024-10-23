@@ -71,9 +71,19 @@ export const Department: React.FC = () => {
                     return;
                 }
                 setLoading(true);
+                let fetchedDepartment: DepartmentType[] = [];
+
                 try {
-                    const fetchedDepartment = await departmentService.find(searchDepartmentId.deptCode.value, searchDepartmentId.departmentStartDate.value);
-                    setDepartments(fetchedDepartment ? [fetchedDepartment] : []);
+                    if (searchDepartmentId.deptCode.value === "") {
+                        setError("部門コードは必須項目です。");
+                        return;
+                    }
+                    if (searchDepartmentId.departmentStartDate.value === "") {
+                        fetchedDepartment = await departmentService.find(searchDepartmentId.deptCode.value, "9999-12-29T12:00:00+09:00");
+                    } else {
+                        fetchedDepartment = await departmentService.find(searchDepartmentId.deptCode.value, searchDepartmentId.departmentStartDate.value);
+                    }
+                    setDepartments(fetchedDepartment ? [...fetchedDepartment] : []);
                     setMessage("");
                     setError("");
                 } catch (error: any) {

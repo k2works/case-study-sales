@@ -33,8 +33,9 @@ export const DepartmentService = () => {
         return await apiUtils.fetchGet(url);
     };
 
-    const find = async (deptCode: string, departmentStartDate: string): Promise<DepartmentType> => {
-        const url = `${endPoint}/${deptCode}/${departmentStartDate}`;
+    const find = async (deptCode: string, departmentStartDate: string): Promise<DepartmentType[]> => {
+        const startDate = toISOStringWithTimezone(new Date(departmentStartDate));
+        const url = `${endPoint}/${deptCode}/${startDate}`;
         return await apiUtils.fetchGet(url);
     };
 
