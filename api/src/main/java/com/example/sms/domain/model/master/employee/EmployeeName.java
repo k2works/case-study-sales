@@ -20,6 +20,12 @@ public class EmployeeName {
     String lastNameKana;  // 姓カナ
 
     public static EmployeeName of(String name, String nameKana) {
+        if (name == null || name.isEmpty()) {
+            name = " ";
+        }
+        if (nameKana == null || nameKana.isEmpty()) {
+            nameKana = " ";
+        }
         name = name.replace("　", " ");
         if (!name.contains(" ")) {
             throw new IllegalArgumentException("名前は姓と名をスペースで区切ってください。");
@@ -29,12 +35,21 @@ public class EmployeeName {
             throw new IllegalArgumentException("名前カナは姓と名をスペースで区切ってください。");
         }
 
-        String[] names = name.split(" ");
-        String[] namesKana = nameKana.split(" ");
-        String firstName = names[0];
-        String lastName = names[1];
-        String firstNameKana = namesKana[0];
-        String lastNameKana = namesKana[1];
+        String firstName = "";
+        String lastName = "";
+        if (!name.equals(" ")) {
+            String[] names = name.split(" ");
+            firstName = names[0];
+            lastName = names[1];
+        }
+
+        String firstNameKana = "";
+        String lastNameKana = "";
+        if (!nameKana.equals(" ")) {
+            String[] namesKana = nameKana.split(" ");
+            firstNameKana = namesKana[0];
+            lastNameKana = namesKana[1];
+        }
         return new EmployeeName(firstName, lastName, firstNameKana, lastNameKana);
     }
 

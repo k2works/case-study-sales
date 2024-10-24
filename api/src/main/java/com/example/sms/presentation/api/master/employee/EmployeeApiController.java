@@ -21,6 +21,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 /**
@@ -75,6 +76,11 @@ public class EmployeeApiController {
     @PostMapping
     public ResponseEntity<?> create(@RequestBody @Validated EmployeeResource resource) {
         try {
+            DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
+            resource.setDepartmentStartDate(Optional.ofNullable(resource.getDepartmentStartDate())
+                    .map(date -> LocalDateTime.parse(date, formatter))
+                    .map(date -> date.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
+                    .orElse(null));
             Employee employee = createEmployee(resource);
             if (employeeManagementService.find(employee.getEmpCode()) != null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.employee.already.exist")));
@@ -90,6 +96,11 @@ public class EmployeeApiController {
     @PutMapping("/{employeeCode}")
     public ResponseEntity<?> update(@PathVariable String employeeCode, @RequestBody EmployeeResource resource) {
         try {
+            DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
+            resource.setDepartmentStartDate(Optional.ofNullable(resource.getDepartmentStartDate())
+                    .map(date -> LocalDateTime.parse(date, formatter))
+                    .map(date -> date.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
+                    .orElse(null));
             Employee employee = createEmployee(employeeCode, resource);
             employeeManagementService.save(employee);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.employee.updated")));
@@ -123,10 +134,16 @@ public class EmployeeApiController {
                 .flatMap(code -> Optional.ofNullable(resource.getDepartmentStartDate())
                         .map(date -> departmentService.find(DepartmentId.of(code, LocalDateTime.parse(date)))))
                 .orElse(null);
+        if (department == null) {
+            throw new IllegalArgumentException("部門が存在しません。");
+        }
 
-        User user = Optional.ofNullable(resource.getUserId())
-                .map(id -> userManagementService.find(UserId.of(id)))
-                .orElse(null);
+        User user = null;
+        if (resource.getUserId() != null && !resource.getUserId().isEmpty()) {
+            user = Optional.of(resource.getUserId())
+                    .map(id -> userManagementService.find(UserId.of(id)))
+                    .orElseThrow(() -> new IllegalArgumentException("ユーザが存在しません。"));
+        }
 
         Employee employee = Employee.of(
                 employeeCode,

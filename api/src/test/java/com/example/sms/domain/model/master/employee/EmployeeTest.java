@@ -43,6 +43,7 @@ public class EmployeeTest {
         @Test
         @DisplayName("社員名は姓と名をスペース区切りで作成できる")
         void shouldCreateEmployeeName() {
+            assertDoesNotThrow(() -> EmployeeName.of("", ""));
             assertDoesNotThrow(() -> EmployeeName.of("山田 太郎", "ヤマダ タロウ"));
             assertDoesNotThrow(() -> EmployeeName.of("山田　太郎", "ヤマダ　タロウ"));
             assertThrows(IllegalArgumentException.class, () -> EmployeeName.of("山田", "ヤマダ タロウ"));

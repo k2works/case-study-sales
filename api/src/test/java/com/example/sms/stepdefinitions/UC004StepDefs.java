@@ -17,7 +17,6 @@ import io.cucumber.java.ja.前提;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -84,7 +83,7 @@ public class UC004StepDefs extends SpringAcceptanceTest {
         resource.setTel(null);
         resource.setFax(null);
         resource.setDepartmentCode("10000");
-        resource.setDepartmentStartDate(LocalDateTime.of(2021, 1, 1, 0, 0).toString());
+        resource.setDepartmentStartDate("2021-01-01T00:00:00+09:00");
         resource.setOccuCode("");
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -116,7 +115,7 @@ public class UC004StepDefs extends SpringAcceptanceTest {
         resource.setTel(null);
         resource.setFax(null);
         resource.setDepartmentCode("10000");
-        resource.setDepartmentStartDate(LocalDateTime.of(2021, 1, 1, 0, 0).toString());
+        resource.setDepartmentStartDate("2021-01-01T00:00:00+09:00");
         resource.setOccuCode("");
 
         ObjectMapper objectMapper = new ObjectMapper();
