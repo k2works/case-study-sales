@@ -106,3 +106,15 @@ export type EmployeeType = {
     department: DepartmentType;
     user: UserAccountType;
 }
+
+export type EmployeeResourceType = {
+    empCode: string;
+    empName: string;
+    empNameKana: string;
+    tel: string;
+    fax: string;
+    occuCode: string;
+    departmentCode: string;
+    departmentStartDate: string;
+    userId: string;
+}
