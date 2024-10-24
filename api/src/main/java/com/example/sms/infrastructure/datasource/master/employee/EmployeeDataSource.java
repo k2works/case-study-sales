@@ -3,7 +3,9 @@ package com.example.sms.infrastructure.datasource.master.employee;
 import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.master.employee.EmployeeCode;
 import com.example.sms.domain.model.master.employee.EmployeeList;
+import com.example.sms.infrastructure.PageInfoHelper;
 import com.example.sms.service.master.employee.EmployeeRepository;
+import com.github.pagehelper.PageInfo;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
@@ -37,6 +39,14 @@ public class EmployeeDataSource implements EmployeeRepository {
         return new EmployeeList(employeeEntities.stream()
                 .map(employeeEntityMapper::mapToDomainModel)
                 .toList());
+    }
+
+    @Override
+    public PageInfo<Employee> selectAllWithPageInfo() {
+        List<社員マスタ> employeeEntities = employeeMapper.selectAll();
+        PageInfo<社員マスタ> pageInfo = new PageInfo<>(employeeEntities);
+
+        return PageInfoHelper.of(pageInfo, employeeEntityMapper::mapToDomainModel);
     }
 
     @Override

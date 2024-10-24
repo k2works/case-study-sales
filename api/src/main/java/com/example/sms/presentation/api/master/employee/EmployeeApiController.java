@@ -4,7 +4,6 @@ import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.master.employee.EmployeeCode;
-import com.example.sms.domain.model.master.employee.EmployeeList;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.user.UserId;
 import com.example.sms.presentation.Message;
@@ -53,8 +52,8 @@ public class EmployeeApiController {
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
             PageNation.startPage(page, pageSize);
-            EmployeeList employees = employeeManagementService.selectAll();
-            return ResponseEntity.ok(new PageInfo<>(employees.asList()));
+            PageInfo<Employee> result = employeeManagementService.selectAllWithPageInfo();
+            return ResponseEntity.ok(result);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }

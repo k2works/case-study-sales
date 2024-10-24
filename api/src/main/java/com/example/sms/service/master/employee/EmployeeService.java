@@ -3,6 +3,7 @@ package com.example.sms.service.master.employee;
 import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.master.employee.EmployeeCode;
 import com.example.sms.domain.model.master.employee.EmployeeList;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +26,9 @@ public class EmployeeService {
         return employeeRepository.selectAll();
     }
 
+    public PageInfo<Employee> selectAllWithPageInfo() {
+        return employeeRepository.selectAllWithPageInfo();
+    }
     /**
      * 社員新規登録
      */
@@ -52,4 +56,5 @@ public class EmployeeService {
     public Employee find(EmployeeCode empCode) {
         return employeeRepository.findById(empCode).orElse(null);
     }
+
 }
