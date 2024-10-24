@@ -26,6 +26,9 @@ public class UserManagementService {
         return userRepository.selectAll();
     }
 
+    /**
+     * ユーザー一覧（ページング）
+     */
     public PageInfo<User> selectAllWithPageInfo() {
         return userRepository.selectAllWithPageInfo();
     }

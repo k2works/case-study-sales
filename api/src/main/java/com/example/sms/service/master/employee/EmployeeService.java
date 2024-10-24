@@ -26,6 +26,9 @@ public class EmployeeService {
         return employeeRepository.selectAll();
     }
 
+    /**
+     * 社員一覧（ページング）
+     */
     public PageInfo<Employee> selectAllWithPageInfo() {
         return employeeRepository.selectAllWithPageInfo();
     }

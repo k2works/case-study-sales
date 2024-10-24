@@ -26,6 +26,9 @@ public class DepartmentService {
         return departmentRepository.selectAll();
     }
 
+    /**
+     * 部門一覧（ページング）
+     */
     public PageInfo<Department> selectAllWithPageInfo() {
         return departmentRepository.selectAllWithPageInfo();
     }
@@ -51,12 +54,15 @@ public class DepartmentService {
     }
 
     /**
-     * 部門検索
+     * 部門検索 (部門ID)
      */
     public Department find(DepartmentId departmentId) {
         return departmentRepository.findById(departmentId).orElse(null);
     }
 
+    /**
+     * 部門検索（部門コード）
+     */
     public DepartmentList findByCode(DepartmentId departmentId) {
         return departmentRepository.findByCode(departmentId.getDeptCode().getValue());
     }
