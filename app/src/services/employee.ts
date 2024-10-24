@@ -11,14 +11,14 @@ export const EmployeeService = () => {
     const mapToEmployeeResource = (employee: EmployeeType): EmployeeResourceType => {
         return {
             empCode: employee.empCode.value,
-            empName: `${employee.empName.lastName} ${employee.empName.firstName}`,
-            empNameKana: `${employee.empName.lastNameKana} ${employee.empName.firstNameKana}`,
+            empName: `${employee.empName.firstName} ${employee.empName.lastName}`,
+            empNameKana: `${employee.empName.firstNameKana} ${employee.empName.lastNameKana}`,
             tel: employee.tel.value,
             fax: employee.fax.value,
             occuCode: employee.occuCode.value,
-            departmentCode: employee.department.departmentId.deptCode.value,
-            departmentStartDate: toISOStringWithTimezone(new Date(employee.department.departmentId.departmentStartDate.value)),
-            userId: employee.user.userId.value
+            departmentCode: employee.department?.departmentId.deptCode.value,
+            departmentStartDate: toISOStringWithTimezone(new Date(employee.department?.departmentId.departmentStartDate.value)),
+            userId: employee.user?.userId.value
         };
     };
 

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import BeatLoader from "react-spinners/BeatLoader";
 import {SiteLayout} from "../application/SiteLayout.tsx";
 import Modal from "react-modal";
-import {showErrorMessage} from "../application/utils.ts";
+import {convertToDateInputFormat, showErrorMessage} from "../application/utils.ts";
 import {Message, useMessage} from "../application/Message.tsx";
 import {PageNation, usePageNation} from "../application/PageNation.tsx";
 import {useModal} from "../application/hooks.ts";
@@ -39,7 +39,7 @@ export const Employee: React.FC = () => {
                 setPageNation({...fetchedEmployees});
                 setError("");
             } catch (error: any) {
-                showErrorMessage(`従業員情報の取得に失敗しました: ${error?.message}`, setError);
+                showErrorMessage(`社員情報の取得に失敗しました: ${error?.message}`, setError);
             } finally {
                 setLoading(false);
             }
@@ -76,7 +76,7 @@ export const Employee: React.FC = () => {
                     setMessage("");
                     setError("");
                 } catch (error: any) {
-                    showErrorMessage(`従業員の検索に失敗しました: ${error?.message}`, setError);
+                    showErrorMessage(`社員の検索に失敗しました: ${error?.message}`, setError);
                 } finally {
                     setLoading(false);
                 }
@@ -86,9 +86,9 @@ export const Employee: React.FC = () => {
                 try {
                     await employeeService.destroy(empCode);
                     await fetchEmployees();
-                    setMessage("従業員を削除しました。");
+                    setMessage("社員を削除しました。");
                 } catch (error: any) {
-                    showErrorMessage(`従業員の削除に失敗しました: ${error?.message}`, setError);
+                    showErrorMessage(`社員の削除に失敗しました: ${error?.message}`, setError);
                 }
             };
 
@@ -100,12 +100,12 @@ export const Employee: React.FC = () => {
                     <div className="collection-view-container">
                         <div className="collection-view-header">
                             <div className="single-view-header-item">
-                                <h1 className="single-view-title">従業員</h1>
+                                <h1 className="single-view-title">社員</h1>
                             </div>
                         </div>
                         <div className="collection-view-content">
                             <div className="search-container">
-                                <input type="text" id="search-input" placeholder="従業員コードで検索"
+                                <input type="text" id="search-input" placeholder="社員コードで検索"
                                        value={searchEmployeeCode}
                                        onChange={(e) => setSearchEmployeeCode(e.target.value)}/>
                                 <button className="action-button" id="search-all" onClick={handleSearchEmployee}>検索
@@ -120,7 +120,7 @@ export const Employee: React.FC = () => {
                                         <li className="collection-object-item" key={employee.empCode.value}>
                                             <div className="collection-object-item-content"
                                                  data-id={employee.empCode.value}>
-                                                <div className="collection-object-item-content-details">従業員コード
+                                                <div className="collection-object-item-content-details">社員コード
                                                 </div>
                                                 <div
                                                     className="collection-object-item-content-name">{employee.empCode.value}</div>
@@ -136,6 +136,24 @@ export const Employee: React.FC = () => {
                                                 <div className="collection-object-item-content-details">姓</div>
                                                 <div
                                                     className="collection-object-item-content-name">{employee.empName.lastName}</div>
+                                            </div>
+                                            <div className="collection-object-item-content"
+                                                 data-id={employee.empCode.value}>
+                                                <div className="collection-object-item-content-details">電話番号</div>
+                                                <div
+                                                    className="collection-object-item-content-name">{employee.tel.value}</div>
+                                            </div>
+                                            <div className="collection-object-item-content"
+                                                 data-id={employee.empCode.value}>
+                                                <div className="collection-object-item-content-details">FAX番号</div>
+                                                <div
+                                                    className="collection-object-item-content-name">{employee.fax.value}</div>
+                                            </div>
+                                            <div className="collection-object-item-content"
+                                                 data-id={employee.empCode.value}>
+                                                <div className="collection-object-item-content-details">部門</div>
+                                                <div
+                                                    className="collection-object-item-content-name">{employee.department?.departmentName}</div>
                                             </div>
                                             <div className="collection-object-item-actions"
                                                  data-id={employee.empCode.value}>
@@ -164,7 +182,7 @@ export const Employee: React.FC = () => {
             const handleCreateOrUpdateEmployee = async () => {
                 const validateEmployee = (): boolean => {
                     if (!newEmployee.empCode.value.trim() || !newEmployee.empName.firstName.trim() || !newEmployee.empName.lastName.trim()) {
-                        setError("従業員コード、姓、名は必須項目です。");
+                        setError("社員コード、姓、名は必須項目です。");
                         return false;
                     }
                     return true;
@@ -180,10 +198,10 @@ export const Employee: React.FC = () => {
                     }
                     setNewEmployee({...initialEmployee});
                     await fetchEmployees();
-                    setMessage("従業員を保存しました。");
+                    setMessage("社員を保存しました。");
                     handleCloseModal();
                 } catch (error: any) {
-                    showErrorMessage(`従業員の保存に失敗しました: ${error?.message}`, setError);
+                    showErrorMessage(`社員の保存に失敗しました: ${error?.message}`, setError);
                 }
             };
 
@@ -195,7 +213,7 @@ export const Employee: React.FC = () => {
                     <div className="single-view-container">
                         <div className="single-view-header">
                             <div className="single-view-header-item">
-                                <h1 className="single-view-title">従業員</h1>
+                                <h1 className="single-view-title">社員</h1>
                                 <p className="single-view-subtitle">{isEditing ? "編集" : "新規作成"}</p>
                             </div>
                             <div className="collection-object-item-actions">
@@ -210,19 +228,21 @@ export const Employee: React.FC = () => {
                             <div className="single-view-content-item">
                                 <div className="single-view-content-item-form">
                                     <div className="single-view-content-item-form-item">
-                                        <label className="single-view-content-item-form-item-label">従業員コード</label>
+                                        <label className="single-view-content-item-form-item-label">社員コード</label>
                                         <input type="text" className="single-view-content-item-form-item-input"
-                                               placeholder="従業員コード"
+                                               placeholder="社員コード"
                                                value={newEmployee.empCode.value}
                                                onChange={(e) => setNewEmployee({
                                                    ...newEmployee,
                                                    empCode: {value: e.target.value}
-                                               })}/>
+                                               })}
+                                               disabled={isEditing}
+                                        />
                                     </div>
                                     <div className="single-view-content-item-form-item">
-                                        <label className="single-view-content-item-form-item-label">名</label>
+                                        <label className="single-view-content-item-form-item-label">姓</label>
                                         <input type="text" className="single-view-content-item-form-item-input"
-                                               placeholder="名"
+                                               placeholder="姓"
                                                value={newEmployee.empName.firstName}
                                                onChange={(e) => setNewEmployee({
                                                    ...newEmployee,
@@ -230,13 +250,108 @@ export const Employee: React.FC = () => {
                                                })}/>
                                     </div>
                                     <div className="single-view-content-item-form-item">
-                                        <label className="single-view-content-item-form-item-label">姓</label>
+                                        <label className="single-view-content-item-form-item-label">名</label>
                                         <input type="text" className="single-view-content-item-form-item-input"
-                                               placeholder="姓"
+                                               placeholder="名"
                                                value={newEmployee.empName.lastName}
                                                onChange={(e) => setNewEmployee({
                                                    ...newEmployee,
                                                    empName: {...newEmployee.empName, lastName: e.target.value}
+                                               })}/>
+                                    </div>
+                                    <div className="single-view-content-item-form-item">
+                                        <label className="single-view-content-item-form-item-label">姓カナ</label>
+                                        <input type="text" className="single-view-content-item-form-item-input"
+                                               placeholder="姓カナ"
+                                               value={newEmployee.empName.firstNameKana}
+                                               onChange={(e) => setNewEmployee({
+                                                   ...newEmployee,
+                                                   empName: {...newEmployee.empName, firstNameKana: e.target.value}
+                                               })}/>
+                                    </div>
+                                    <div className="single-view-content-item-form-item">
+                                        <label className="single-view-content-item-form-item-label">名カナ</label>
+                                        <input type="text" className="single-view-content-item-form-item-input"
+                                               placeholder="名カナ"
+                                               value={newEmployee.empName.lastNameKana}
+                                               onChange={(e) => setNewEmployee({
+                                                   ...newEmployee,
+                                                   empName: {...newEmployee.empName, lastNameKana: e.target.value}
+                                               })}/>
+                                    </div>
+                                    <div className="single-view-content-item-form-item">
+                                        <label className="single-view-content-item-form-item-label">電話番号</label>
+                                        <input type="text" className="single-view-content-item-form-item-input"
+                                               placeholder="電話番号"
+                                               value={newEmployee.tel.value}
+                                               onChange={(e) => setNewEmployee({
+                                                   ...newEmployee,
+                                                   tel: {...newEmployee.tel, value: e.target.value}
+                                               })}/>
+                                    </div>
+                                    <div className="single-view-content-item-form-item">
+                                        <label className="single-view-content-item-form-item-label">FAX番号</label>
+                                        <input type="text" className="single-view-content-item-form-item-input"
+                                               placeholder="FAX番号"
+                                               value={newEmployee.fax.value}
+                                               onChange={(e) => setNewEmployee({
+                                                   ...newEmployee,
+                                                   fax: {...newEmployee.fax, value: e.target.value}
+                                               })}/>
+                                    </div>
+                                    <div className="single-view-content-item-form-item">
+                                        <label className="single-view-content-item-form-item-label">職種コード</label>
+                                        <input type="text" className="single-view-content-item-form-item-input"
+                                               placeholder="職種コード"
+                                               value={newEmployee.occuCode.value}
+                                               onChange={(e) => setNewEmployee({
+                                                   ...newEmployee,
+                                                   occuCode: {...newEmployee.occuCode, value: e.target.value}
+                                               })}/>
+                                    </div>
+                                    <div className="single-view-content-item-form-item">
+                                        <label className="single-view-content-item-form-item-label">部門コード</label>
+                                        <input type="text" className="single-view-content-item-form-item-input"
+                                               placeholder="部門コード"
+                                               value={newEmployee.department?.departmentId.deptCode.value}
+                                               onChange={(e) => setNewEmployee({
+                                                   ...newEmployee,
+                                                   department: {
+                                                       ...newEmployee.department,
+                                                       departmentId: {
+                                                           ...newEmployee.department?.departmentId,
+                                                           deptCode: {value: e.target.value}
+                                                       }
+                                                   }
+                                               })}/>
+                                    </div>
+                                    <div className="single-view-content-item-form-item">
+                                        <label className="single-view-content-item-form-item-label">開始日</label>
+                                        <input
+                                            type="date"
+                                            className="single-view-content-item-form-item-input"
+                                            placeholder="開始日"
+                                            value={convertToDateInputFormat(newEmployee.department?.departmentId.departmentStartDate.value)}
+                                            onChange={(e) => setNewEmployee({
+                                                ...newEmployee,
+                                                department: {
+                                                    ...newEmployee.department,
+                                                    departmentId: {
+                                                        ...newEmployee.department?.departmentId,
+                                                        departmentStartDate: {value: e.target.value}
+                                                    }
+                                                }
+                                            })}
+                                        />
+                                    </div>
+                                    <div className="single-view-content-item-form-item">
+                                        <label className="single-view-content-item-form-item-label">ユーザーID</label>
+                                        <input type="text" className="single-view-content-item-form-item-input"
+                                               placeholder="ユーザーID"
+                                               value={newEmployee.user?.userId.value}
+                                               onChange={(e) => setNewEmployee({
+                                                   ...newEmployee,
+                                                   user: {...newEmployee.user, userId: {value: e.target.value}}
                                                })}/>
                                     </div>
                                 </div>
