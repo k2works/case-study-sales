@@ -2,7 +2,6 @@ package com.example.sms.presentation.api.system.user;
 
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.user.UserId;
-import com.example.sms.domain.model.system.user.UserList;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
@@ -43,8 +42,8 @@ public class UserApiController {
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
             PageNation.startPage(page, pageSize);
-            UserList users = userManagementService.selectAll();
-            return ResponseEntity.ok(new PageInfo<>(users.asList()));
+            PageInfo<User> result = userManagementService.selectAllWithPageInfo();
+            return ResponseEntity.ok(result);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }

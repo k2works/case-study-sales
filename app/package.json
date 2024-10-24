@@ -18,7 +18,7 @@
     "react-modal": "^3.16.1",
     "react-router-dom": "^6.26.2",
     "react-spinners": "^0.14.1",
-    "react-tab": "^1.0.0"
+    "react-tabs": "^6.0.2"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.25.7",
