@@ -16,6 +16,7 @@ export const useModal = () => {
         setIsEditing,
         editId,
         setEditId,
+        Modal,
     }
 }
 
