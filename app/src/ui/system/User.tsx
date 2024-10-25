@@ -1,7 +1,7 @@
 import React from "react";
 import {UserAccountType} from "../../types";
 import {Message} from "../../components/application/Message.tsx";
-import {PageNation} from "../../components/application/PageNation.tsx";
+import {PageNation} from "../application/PageNation.tsx";
 
 interface SearchInputProps {
     searchUserId: string;

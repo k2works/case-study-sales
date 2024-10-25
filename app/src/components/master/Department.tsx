@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from "react";
 import {Message, useMessage} from "../application/Message.tsx";
-import {PageNation, usePageNation} from "../application/PageNation.tsx";
 import {useModal} from "../application/hooks.ts";
 import {useDepartment} from "./hooks.ts";
 import {convertToDateInputFormat, showErrorMessage} from "../application/utils.ts";
 import {DepartmentIdType, DepartmentType, LowerType, SlitYnType} from "../../types";
 import Modal from "react-modal";
 import BeatLoader from "react-spinners/BeatLoader";
-import {SiteLayout} from "../application/SiteLayout.tsx";
+import {PageNation, usePageNation} from "../../ui/application/PageNation.tsx";
+import {SiteLayout} from "../../ui/application/SiteLayout.tsx";
 
 export const Department: React.FC = () => {
     const Content: React.FC = () => {

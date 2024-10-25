@@ -1,5 +1,5 @@
 import React, {Component, ReactNode} from "react";
-import {ErrorScreen} from "./ErrorScreen"; // 拡張子は不要
+import {ErrorScreen} from "../../ui/application/ErrorScreen.tsx";
 
 interface ErrorBoundaryProps {
     children: ReactNode;

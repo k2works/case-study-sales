@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import BeatLoader from "react-spinners/BeatLoader";
-import {SiteLayout} from "../application/SiteLayout.tsx";
 import Modal from "react-modal";
 import {convertToDateInputFormat, showErrorMessage} from "../application/utils.ts";
 import {Message, useMessage} from "../application/Message.tsx";
-import {PageNation, usePageNation} from "../application/PageNation.tsx";
 import {useModal} from "../application/hooks.ts";
 import {useEmployee} from "./hooks.ts";
-import {EmployeeType} from "../../types"; // カスタムフックのインポート
+import {EmployeeType} from "../../types";
+import {PageNation, usePageNation} from "../../ui/application/PageNation.tsx";
+import {SiteLayout} from "../../ui/application/SiteLayout.tsx"; // カスタムフックのインポート
 
 export const Employee: React.FC = () => {
     const Content: React.FC = () => {

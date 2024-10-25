@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from "react";
-import {SiteLayout} from "../application/SiteLayout";
 import {UserAccountType} from "../../types";
 import {useMessage} from "../application/Message";
-import {usePageNation} from "../application/PageNation";
 import {useModal} from "../application/hooks";
 import {useUser} from "./hooks";
 import {UserCollectionView, UserSingleView} from "../../ui/system/User";
-import LoadingIndicator from "../application/LoadingIndicatior.tsx";
+import {usePageNation} from "../../ui/application/PageNation.tsx";
+import LoadingIndicator from "../../ui/application/LoadingIndicatior.tsx";
+import {SiteLayout} from "../../ui/application/SiteLayout.tsx";
 
 export const User: React.FC = () => {
     const Content: React.FC = () => {

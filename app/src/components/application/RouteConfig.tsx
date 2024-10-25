@@ -1,14 +1,14 @@
 import {Route, Routes} from "react-router-dom";
 import React from "react";
 import {RouteAuthGuard} from "./RouteAuthGuard";
-import {NotFound} from "./NotFound";
 import {Login} from "../system/Login.tsx";
 import {Logout} from "../system/Logout.tsx";
-import {Home} from "./Home.tsx";
 import {User} from "../system/User.tsx";
 import {RoleType} from "../../types";
 import {Department} from "../master/Department.tsx";
 import {Employee} from "../master/Employee.tsx";
+import {NotFound} from "../../ui/application/NotFound.tsx";
+import {Home} from "./Home.tsx";
 
 export const RouteConfig: React.FC = () => {
     return (
