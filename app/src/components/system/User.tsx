@@ -128,12 +128,7 @@ export const User: React.FC = () => {
                     } else {
                         await userService.create(newUser);
                     }
-                    setNewUser({
-                        userId: {value: ""},
-                        name: {firstName: "", lastName: ""},
-                        password: {value: ""},
-                        roleName: ""
-                    });
+                    setNewUser(initialUser);
                     await fetchUsers();
                     setMessage("ユーザーを保存しました。");
                     handleCloseModal();

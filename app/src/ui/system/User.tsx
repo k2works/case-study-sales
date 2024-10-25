@@ -1,7 +1,7 @@
 import React from "react";
 import {UserAccountType} from "../../types";
 import {Message} from "../../components/application/Message.tsx";
-import {PageNation} from "../application/PageNation.tsx";
+import {PageNation, PageNationType} from "../application/PageNation.tsx";
 
 interface SearchInputProps {
     searchUserId: string;
@@ -97,42 +97,6 @@ const UserList: React.FC<UserListProps> = ({users, handleOpenModal, handleDelete
     );
 };
 
-export const UserCollectionView = ({
-                                       error,
-                                       message,
-                                       searchUserId,
-                                       setSearchUserId,
-                                       handleSearchUser,
-                                       handleOpenModal,
-                                       users,
-                                       handleDeleteUser,
-                                       fetchUsers,
-                                       pageNation
-                                   }: any) => {
-    return (
-        <div className="collection-view-object-container">
-            <Message error={error} message={message}/>
-            <div className="collection-view-container">
-                <div className="collection-view-header">
-                    <div className="single-view-header-item">
-                        <h1 className="single-view-title">ユーザー</h1>
-                    </div>
-                </div>
-                <div className="collection-view-content">
-                    <SearchInput searchUserId={searchUserId} setSearchUserId={setSearchUserId}
-                                 handleSearchUser={handleSearchUser}/>
-                    <div className="button-container">
-                        <Button text="新規" onClick={() => handleOpenModal()}/>
-                    </div>
-                    <UserList users={users} handleOpenModal={handleOpenModal}
-                              handleDeleteUser={handleDeleteUser}/>
-                    <PageNation pageNation={pageNation} callBack={fetchUsers}/>
-                </div>
-            </div>
-        </div>
-    )
-}
-
 interface SingleViewHeaderItemProps {
     title: string;
     subtitle: string;
@@ -179,11 +143,13 @@ const UserViewHeader: React.FC<SingleViewHeaderItemProps> = ({
     </div>
 );
 
-const UserForm = ({newUser, setNewUser, isEditing}: {
-    newUser: any,
-    setNewUser: React.Dispatch<React.SetStateAction<any>>,
-    isEditing: boolean
-}) => {
+interface UserFormProps {
+    newUser: UserAccountType;
+    setNewUser: React.Dispatch<React.SetStateAction<UserAccountType>>;
+    isEditing: boolean;
+}
+
+const UserForm = ({newUser, setNewUser, isEditing}: UserFormProps) => {
     return (
         <div className="single-view-content-item-form">
             <div className="single-view-content-item-form-item">
@@ -245,6 +211,64 @@ const UserForm = ({newUser, setNewUser, isEditing}: {
     );
 };
 
+interface UserCollectionViewProps {
+    error: string | null;
+    message: string | null;
+    searchUserId: string;
+    setSearchUserId: (value: string) => void;
+    handleSearchUser: () => void;
+    handleOpenModal: (user?: UserAccountType) => void;
+    users: UserAccountType[];
+    handleDeleteUser: (userId: string) => void;
+    fetchUsers: () => void;
+    pageNation: PageNationType | null;
+}
+
+export const UserCollectionView = ({
+                                       error,
+                                       message,
+                                       searchUserId,
+                                       setSearchUserId,
+                                       handleSearchUser,
+                                       handleOpenModal,
+                                       users,
+                                       handleDeleteUser,
+                                       fetchUsers,
+                                       pageNation
+                                   }: UserCollectionViewProps) => {
+    return (
+        <div className="collection-view-object-container">
+            <Message error={error} message={message}/>
+            <div className="collection-view-container">
+                <div className="collection-view-header">
+                    <div className="single-view-header-item">
+                        <h1 className="single-view-title">ユーザー</h1>
+                    </div>
+                </div>
+                <div className="collection-view-content">
+                    <SearchInput searchUserId={searchUserId} setSearchUserId={setSearchUserId}
+                                 handleSearchUser={handleSearchUser}/>
+                    <div className="button-container">
+                        <Button text="新規" onClick={() => handleOpenModal()}/>
+                    </div>
+                    <UserList users={users} handleOpenModal={handleOpenModal}
+                              handleDeleteUser={handleDeleteUser}/>
+                    <PageNation pageNation={pageNation} callBack={fetchUsers}/>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+interface UserSingleViewProps {
+    error: string | null;
+    message: string | null;
+    isEditing: boolean;
+    handleCreateOrUpdateUser: () => void;
+    handleCloseModal: () => void;
+    newUser: UserAccountType;
+    setNewUser: React.Dispatch<React.SetStateAction<UserAccountType>>;
+}
 export const UserSingleView = ({
                                    error,
                                    message,
@@ -253,7 +277,7 @@ export const UserSingleView = ({
                                    handleCloseModal,
                                    newUser,
                                    setNewUser
-                               }: any) => {
+                               }: UserSingleViewProps) => {
     return (
         <div className="single-view-object-container">
             <Message error={error} message={message}/>
