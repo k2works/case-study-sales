@@ -7,7 +7,7 @@ import {useModal} from "../application/hooks.ts";
 import {useEmployee} from "./hooks.ts";
 import {EmployeeType} from "../../types";
 import {PageNation, usePageNation} from "../../ui/application/PageNation.tsx";
-import {SiteLayout} from "../../ui/application/SiteLayout.tsx"; // カスタムフックのインポート
+import {SiteLayout} from "../../ui/SiteLayout.tsx";
 
 export const Employee: React.FC = () => {
     const Content: React.FC = () => {

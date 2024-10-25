@@ -1,8 +1,8 @@
 import React, {ReactNode} from 'react';
-import '../index.css'
-import {Header} from "./Header";
-import {Footer} from "./Footer";
-import {HeaderNavigation, SideNavigation} from "./Navigation";
+import './index.css'
+import {Header} from "./application/Header.tsx";
+import {HeaderNavigation, SideNavigation} from "./application/Navigation.tsx";
+import {Footer} from "./application/Footer.tsx";
 
 interface SiteLayoutProps {
     children: ReactNode;

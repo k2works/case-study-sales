@@ -6,7 +6,7 @@ import {useUser} from "./hooks";
 import {UserCollectionView, UserSingleView} from "../../ui/system/User";
 import {usePageNation} from "../../ui/application/PageNation.tsx";
 import LoadingIndicator from "../../ui/application/LoadingIndicatior.tsx";
-import {SiteLayout} from "../../ui/application/SiteLayout.tsx";
+import {SiteLayout} from "../../ui/SiteLayout.tsx";
 
 export const User: React.FC = () => {
     const Content: React.FC = () => {

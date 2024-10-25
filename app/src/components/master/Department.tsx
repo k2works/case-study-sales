@@ -7,7 +7,7 @@ import {DepartmentIdType, DepartmentType, LowerType, SlitYnType} from "../../typ
 import Modal from "react-modal";
 import BeatLoader from "react-spinners/BeatLoader";
 import {PageNation, usePageNation} from "../../ui/application/PageNation.tsx";
-import {SiteLayout} from "../../ui/application/SiteLayout.tsx";
+import {SiteLayout} from "../../ui/SiteLayout.tsx";
 
 export const Department: React.FC = () => {
     const Content: React.FC = () => {
