@@ -94,18 +94,31 @@ export const User: React.FC = () => {
             };
 
             return (
-                <UserCollectionView
-                    error={error}
-                    message={message}
-                    searchUserId={searchUserId}
-                    setSearchUserId={setSearchUserId}
-                    handleSearchUser={handleSearchUser}
-                    handleOpenModal={handleOpenModal}
-                    users={users}
-                    handleDeleteUser={handleDeleteUser}
-                    fetchUsers={fetchUsers}
-                    pageNation={pageNation}
-                />
+                <>
+                    <Modal
+                        isOpen={modalIsOpen}
+                        onRequestClose={handleCloseModal}
+                        contentLabel="ユーザー情報を入力"
+                        className="modal"
+                        overlayClassName="modal-overlay"
+                        bodyOpenClassName="modal-open"
+                    >
+                        {singleView()}
+                    </Modal>
+
+                    <UserCollectionView
+                        error={error}
+                        message={message}
+                        searchUserId={searchUserId}
+                        setSearchUserId={setSearchUserId}
+                        handleSearchUser={handleSearchUser}
+                        handleOpenModal={handleOpenModal}
+                        users={users}
+                        handleDeleteUser={handleDeleteUser}
+                        fetchUsers={fetchUsers}
+                        pageNation={pageNation}
+                    />
+                </>
             )
         }
 
@@ -149,30 +162,12 @@ export const User: React.FC = () => {
             )
         }
 
-        const modalView = () => {
-            return (
-                <Modal
-                    isOpen={modalIsOpen}
-                    onRequestClose={handleCloseModal}
-                    contentLabel="ユーザー情報を入力"
-                    className="modal"
-                    overlayClassName="modal-overlay"
-                    bodyOpenClassName="modal-open"
-                >
-                    {singleView()}
-                </Modal>
-            )
-        }
-
         return (
             <>
                 {loading ? (
                     <LoadingIndicator/>
                 ) : (
-                    <>
-                        {!modalIsOpen && collectionView()}
-                        {modalIsOpen && modalView()}
-                    </>
+                    collectionView()
                 )}
             </>
         );
