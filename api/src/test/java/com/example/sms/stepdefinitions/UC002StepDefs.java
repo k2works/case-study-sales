@@ -21,8 +21,11 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UC002StepDefs extends SpringAcceptanceTest {
-    String AUTH_API_URL = "http://localhost:8080/api/auth";
-    String USER_API_URL = "http://localhost:8080/api/users";
+    private static final String PORT = "8079";
+    private static final String HOST = "http://localhost:" + PORT;
+    private static final String AUTH_API_URL = HOST + "/api/auth";
+    private static final String USER_API_URL = HOST + "/api/users";
+    ;
 
     @前提(":UC002 {string} である")
     public void login(String user) {

@@ -25,10 +25,13 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UC003StepDefs extends SpringAcceptanceTest {
+    private static final String PORT = "8079";
+    private static final String HOST = "http://localhost:" + PORT;
+    private static final String AUTH_API_URL = HOST + "/api/auth";
+    private static final String DEPARTMENT_API_URL = HOST + "/api/departments";
+
     @Autowired
     TestDataFactory testDataFactory;
-    String AUTH_API_URL = "http://localhost:8080/api/auth";
-    String DEPARTMENT_API_URL = "http://localhost:8080/api/departments";
 
     @前提(":UC003 {string} である")
     public void login(String user) {
