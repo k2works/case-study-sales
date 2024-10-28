@@ -17,8 +17,11 @@ const Utils = (() => {
                     });
                 }
                 return await res.json();
-            } catch (err) {
+            } catch (err: any) {
                 console.log(err);
+                if (err.message && err.message.includes("Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON")) {
+                    throw new Error("認証期限が切れました。再度ログインしてください。");
+                }
                 throw err;
             }
         };
