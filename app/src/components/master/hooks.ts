@@ -81,7 +81,9 @@ export const useEmployee = () => {
                 value: ""
             },
             roleName: ""
-        }
+        },
+        addFlag: false,
+        deleteFlag: false
     };
 
     const [employees, setEmployees] = useState<EmployeeType[]>([]);

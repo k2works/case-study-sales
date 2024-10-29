@@ -105,6 +105,8 @@ export type EmployeeType = {
     approvalCode: string;
     department: DepartmentType;
     user: UserAccountType;
+    addFlag: boolean;
+    deleteFlag: boolean;
 }
 
 export type EmployeeResourceType = {

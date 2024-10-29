@@ -221,6 +221,12 @@ img {
     margin-bottom: 1rem;
 }
 
+.collection-object-container-modal {
+    margin-bottom: 1rem;
+    max-height: 400px; /* 表示される最大高さを設定 */
+    overflow-y: auto; /* 要素がこの高さを超えた場合は垂直スクロールバーを表示 */
+}
+
 .collection-object-list {
     list-style-type: none;
     padding: 0;

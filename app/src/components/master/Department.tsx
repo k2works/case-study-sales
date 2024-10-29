@@ -1,21 +1,36 @@
 import React, {useEffect, useState} from "react";
 import {useMessage} from "../application/Message.tsx";
 import {useModal} from "../application/hooks.ts";
-import {useDepartment} from "./hooks.ts";
+import {useDepartment, useEmployee} from "./hooks.ts";
 import {showErrorMessage} from "../application/utils.ts";
-import {DepartmentIdType, DepartmentType, LowerType, SlitYnType} from "../../types";
+import {DepartmentIdType, DepartmentType, EmployeeType} from "../../types";
 import Modal from "react-modal";
-import BeatLoader from "react-spinners/BeatLoader";
 import {usePageNation} from "../../ui/application/PageNation.tsx";
 import {SiteLayout} from "../../ui/SiteLayout.tsx";
-import {DepartmentCollectionView, DepartmentSingleView} from "../../ui/master/Department.tsx";
+import {
+    DepartmentCollectionView,
+    DepartmentSingleView,
+    EmployeeCollectionSelectView,
+    EmployeeCollectionView
+} from "../../ui/master/Department.tsx";
+import LoadingIndicator from "../../ui/application/LoadingIndicatior.tsx";
 
 export const Department: React.FC = () => {
     const Content: React.FC = () => {
         const [loading, setLoading] = useState<boolean>(false);
         const {message, setMessage, error, setError} = useMessage();
         const {pageNation, setPageNation} = usePageNation();
+        const {pageNation: employeePageNation, setPageNation: setEmployeePageNation} = usePageNation();
         const {modalIsOpen, setModalIsOpen, isEditing, setIsEditing, editId, setEditId} = useModal();
+        const {
+            modalIsOpen: employeeModalIsOpen,
+            setModalIsOpen: setEmployeeModalIsOpen,
+            isEditing: isEmployeeEditing,
+            setIsEditing: setEmployeeIsEditing,
+            editId: EmployeeEditId,
+            setEditId: setEmployeeEditId
+        } = useModal();
+
         const {
             initialDepartment,
             departments,
@@ -27,8 +42,21 @@ export const Department: React.FC = () => {
             departmentService
         } = useDepartment();
 
+        const {
+            initialEmployee,
+            employees,
+            setEmployees,
+            newEmployee,
+            setNewEmployee,
+            searchEmployeeCode,
+            setSearchEmployeeCode,
+            employeeService
+        } = useEmployee();
+
         useEffect(() => {
             fetchDepartments().then(() => {
+                fetchEmployees().then(() => {
+                });
             });
         }, []);
 
@@ -41,6 +69,20 @@ export const Department: React.FC = () => {
                 setError("");
             } catch (error: any) {
                 showErrorMessage(`部門情報の取得に失敗しました: ${error?.message}`, setError);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        const fetchEmployees = async (page: number = 1) => {
+            setLoading(true);
+            try {
+                const fetchedEmployees = await employeeService.select(page);
+                setEmployees(fetchedEmployees.list);
+                setEmployeePageNation({...fetchedEmployees});
+                setError("");
+            } catch (error: any) {
+                showErrorMessage(`社員情報の取得に失敗しました: ${error?.message}`, setError);
             } finally {
                 setLoading(false);
             }
@@ -105,22 +147,79 @@ export const Department: React.FC = () => {
             };
 
             return (
-                <DepartmentCollectionView
-                    error={error}
-                    message={message}
-                    searchDepartmentId={searchDepartmentId}
-                    setSearchDepartmentId={setSearchDepartmentId}
-                    handleSearchDepartment={handleSearchDepartment}
-                    handleOpenModal={handleOpenModal}
-                    departments={departments}
-                    handleDeleteDepartment={handleDeleteDepartment}
-                    pageNation={pageNation}
-                    fetchDepartments={fetchDepartments}
-                />
+                <>
+                    <Modal
+                        isOpen={modalIsOpen}
+                        onRequestClose={handleCloseModal}
+                        contentLabel="部門情報を入力"
+                        className="modal"
+                        overlayClassName="modal-overlay"
+                        bodyOpenClassName="modal-open"
+                    >
+                        {singleView()}
+                    </Modal>
+
+                    <DepartmentCollectionView
+                        error={error}
+                        message={message}
+                        searchDepartmentId={searchDepartmentId}
+                        setSearchDepartmentId={setSearchDepartmentId}
+                        handleSearchDepartment={handleSearchDepartment}
+                        handleOpenModal={handleOpenModal}
+                        departments={departments}
+                        handleDeleteDepartment={handleDeleteDepartment}
+                        pageNation={pageNation}
+                        fetchDepartments={fetchDepartments}
+                    />
+                </>
             );
         };
 
         const singleView = () => {
+            const handleOpenEmployeeModal = () => {
+                setMessage("");
+                setError("");
+                setEmployeeIsEditing(true);
+                setEmployeeModalIsOpen(true);
+            };
+
+            const handleCloseEmployeeModal = () => {
+                setError("");
+                setEmployeeModalIsOpen(false);
+                setEmployeeEditId(null);
+            };
+
+            const handleDeleteEmployee = (employee: EmployeeType) => {
+                const newEmployees = newDepartment.employees.filter((e) => e.empCode.value !== employee.empCode.value);
+                if (employee.empCode.value) {
+                    newEmployees.push({
+                        ...employee,
+                        addFlag: false,
+                        deleteFlag: true
+                    });
+                }
+                setNewDepartment({
+                    ...newDepartment,
+                    employees: newEmployees
+                });
+            }
+
+            const handleEmployeeCollectionSelect = (employee: EmployeeType) => {
+                const newEmployees = newDepartment.employees.filter((e) => e.empCode.value !== employee.empCode.value);
+                if (employee.empCode.value) {
+                    newEmployees.push({
+                        ...employee,
+                        addFlag: true,
+                        deleteFlag: false
+                    });
+                }
+                setNewDepartment({
+                    ...newDepartment,
+                    employees: newEmployees
+                });
+                handleCloseEmployeeModal();
+            }
+
             const handleCreateOrUpdateDepartment = async () => {
                 const validateDepartment = (): boolean => {
                     if (!newDepartment.departmentId.deptCode.value.trim() || !newDepartment.departmentName.trim()) {
@@ -140,16 +239,7 @@ export const Department: React.FC = () => {
                     } else {
                         await departmentService.create(newDepartment);
                     }
-                    setNewDepartment({
-                        departmentId: {deptCode: {value: ""}, departmentStartDate: {value: ""}},
-                        endDate: {value: ""},
-                        departmentName: "",
-                        layer: 0,
-                        path: {value: ""},
-                        lowerType: LowerType.NO,
-                        slitYn: SlitYnType.NO,
-                        employees: []
-                    });
+                    setNewDepartment(initialDepartment);
                     await fetchDepartments();
                     setMessage("部門を保存しました。");
                     handleCloseModal();
@@ -159,44 +249,50 @@ export const Department: React.FC = () => {
             };
 
             return (
-                <DepartmentSingleView
-                    error={error}
-                    message={message}
-                    newDepartment={newDepartment}
-                    setNewDepartment={setNewDepartment}
-                    isEditing={isEditing}
-                    handleCreateOrUpdateDepartment={handleCreateOrUpdateDepartment}
-                    handleCloseModal={handleCloseModal}
-                />
-            );
-        };
+                <>
+                    <Modal
+                        isOpen={employeeModalIsOpen}
+                        onRequestClose={handleCloseEmployeeModal}
+                        contentLabel="社員情報を入力"
+                        className="modal"
+                        overlayClassName="modal-overlay"
+                        bodyOpenClassName="modal-open"
+                    >
+                        {
+                            <EmployeeCollectionSelectView
+                                employees={employees}
+                                handleSelect={handleEmployeeCollectionSelect}
+                                pageNation={employeePageNation}
+                                fetchEmployees={fetchEmployees}
+                            />
+                        }
+                    </Modal>
 
-        const modalView = () => {
-            return (
-                <Modal
-                    isOpen={modalIsOpen}
-                    onRequestClose={handleCloseModal}
-                    contentLabel="部門情報を入力"
-                    className="modal"
-                    overlayClassName="modal-overlay"
-                    bodyOpenClassName="modal-open"
-                >
-                    {singleView()}
-                </Modal>
+                    <DepartmentSingleView
+                        error={error}
+                        message={message}
+                        newDepartment={newDepartment}
+                        setNewDepartment={setNewDepartment}
+                        isEditing={isEditing}
+                        handleCreateOrUpdateDepartment={handleCreateOrUpdateDepartment}
+                        handleCloseModal={handleCloseModal}
+                    />
+
+                    <EmployeeCollectionView
+                        employees={newDepartment.employees.filter((e) => !e.deleteFlag)}
+                        handleAdd={handleOpenEmployeeModal}
+                        handleDelete={handleDeleteEmployee}
+                    />
+                </>
             );
         };
 
         return (
             <>
                 {loading ? (
-                    <div className="loading">
-                        <BeatLoader color="#36D7B7"/>
-                    </div>
+                    <LoadingIndicator/>
                 ) : (
-                    <>
-                        {!modalIsOpen && collectionView()}
-                        {modalIsOpen && modalView()}
-                    </>
+                    collectionView()
                 )}
             </>
         );
