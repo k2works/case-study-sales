@@ -75,7 +75,7 @@ const contents = `
 - [ ] 初期データの日付がUTCなのでJSTに変換する
 - [ ] 削除実行時に確認ダイアログを表示する
 - [ ] 一括削除機能を追加する
-
+- [ ] uiからviewsに名前変更
 `;
 
 const usecase = `
