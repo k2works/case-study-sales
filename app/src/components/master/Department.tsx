@@ -274,11 +274,14 @@ export const Department: React.FC = () => {
                         handleCloseModal={handleCloseModal}
                     />
 
-                    <EmployeeCollectionListView
-                        employees={newDepartment.employees.filter((e) => !e.deleteFlag)}
-                        handleAdd={handleOpenEmployeeModal}
-                        handleDelete={handleDeleteEmployee}
-                    />
+                    {isEditing && (
+                        <EmployeeCollectionListView
+                            employees={newDepartment.employees.filter((e) => !e.deleteFlag)}
+                            handleAdd={handleOpenEmployeeModal}
+                            handleDelete={handleDeleteEmployee}
+                        />
+                    )
+                    }
                 </>
             );
         };

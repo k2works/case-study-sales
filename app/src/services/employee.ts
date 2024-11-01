@@ -18,7 +18,9 @@ export const EmployeeService = () => {
             occuCode: employee.occuCode.value,
             departmentCode: employee.department?.departmentId.deptCode.value,
             departmentStartDate: toISOStringWithTimezone(new Date(employee.department?.departmentId.departmentStartDate.value)),
-            userId: employee.user?.userId.value
+            userId: employee.user?.userId.value,
+            addFlag: employee.addFlag,
+            deleteFlag: employee.deleteFlag
         };
     };
 

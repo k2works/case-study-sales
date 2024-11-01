@@ -76,6 +76,7 @@ export type DepartmentResourceType = {
     path: string;
     lowerType: string;
     slitYn: string;
+    employees: EmployeeResourceType[];
 }
 
 export type EmployeeType = {
@@ -119,4 +120,6 @@ export type EmployeeResourceType = {
     departmentCode: string;
     departmentStartDate: string;
     userId: string;
+    addFlag: boolean;
+    deleteFlag: boolean;
 }

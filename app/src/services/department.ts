@@ -17,7 +17,20 @@ export const DepartmentService = () => {
             layer: department.layer.toString(),
             path: department.path.value,
             lowerType: department.lowerType.toString(),
-            slitYn: department.slitYn.toString()
+            slitYn: department.slitYn.toString(),
+            employees: department.employees.map(employee => ({
+                empCode: employee.empCode.value,
+                empName: employee.empName.firstName + " " + employee.empName.lastName,
+                empNameKana: employee.empName.firstNameKana + " " + employee.empName.lastNameKana,
+                tel: employee.tel.value,
+                fax: employee.fax.value,
+                occuCode: employee.occuCode.value,
+                departmentCode: department.departmentId.deptCode.value,
+                departmentStartDate: toISOStringWithTimezone(new Date(department.departmentId.departmentStartDate.value)),
+                userId: employee.user?.userId.value,
+                addFlag: employee.addFlag,
+                deleteFlag: employee.deleteFlag
+            }))
         };
     };
 
