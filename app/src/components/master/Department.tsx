@@ -7,13 +7,9 @@ import {DepartmentIdType, DepartmentType, EmployeeType} from "../../types";
 import Modal from "react-modal";
 import {usePageNation} from "../../ui/application/PageNation.tsx";
 import {SiteLayout} from "../../ui/SiteLayout.tsx";
-import {
-    DepartmentCollectionView,
-    DepartmentSingleView,
-    EmployeeCollectionSelectView,
-    EmployeeCollectionView
-} from "../../ui/master/Department.tsx";
+import {DepartmentCollectionView, DepartmentSingleView,} from "../../ui/master/Department.tsx";
 import LoadingIndicator from "../../ui/application/LoadingIndicatior.tsx";
+import {EmployeeCollectionListView, EmployeeCollectionSelectView} from "../../ui/master/EmployeeSelect.tsx";
 
 export const Department: React.FC = () => {
     const Content: React.FC = () => {
@@ -278,7 +274,7 @@ export const Department: React.FC = () => {
                         handleCloseModal={handleCloseModal}
                     />
 
-                    <EmployeeCollectionView
+                    <EmployeeCollectionListView
                         employees={newDepartment.employees.filter((e) => !e.deleteFlag)}
                         handleAdd={handleOpenEmployeeModal}
                         handleDelete={handleDeleteEmployee}
