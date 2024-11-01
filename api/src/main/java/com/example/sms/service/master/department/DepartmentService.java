@@ -3,9 +3,14 @@ package com.example.sms.service.master.department;
 import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.department.DepartmentList;
+import com.example.sms.domain.model.master.employee.Employee;
+import com.example.sms.service.master.employee.EmployeeRepository;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * 部門サービス
@@ -14,9 +19,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class DepartmentService {
     final DepartmentRepository departmentRepository;
+    final EmployeeRepository employeeRepository;
 
-    public DepartmentService(DepartmentRepository departmentRepository) {
+    public DepartmentService(DepartmentRepository departmentRepository, EmployeeRepository employeeRepository) {
         this.departmentRepository = departmentRepository;
+        this.employeeRepository = employeeRepository;
     }
 
     /**
@@ -47,6 +54,26 @@ public class DepartmentService {
     }
 
     /**
+     * 部門情報編集(社員追加・削除)
+     */
+    public void save(Department department, List<Employee> addFilteredEmployees, List<Employee> deleteFilteredEmployees) {
+        departmentRepository.save(department);
+        addFilteredEmployees.forEach(employee -> {
+            Optional<Employee> emp = employeeRepository.findById(employee.getEmpCode());
+            emp.ifPresent(value -> {
+                Employee updateEmp = Employee.of(value, department, value.getUser());
+                employeeRepository.save(updateEmp);
+            });
+        });
+        deleteFilteredEmployees.forEach(employee -> {
+            Optional<Employee> emp = employeeRepository.findById(employee.getEmpCode());
+            emp.ifPresent(value -> {
+                Employee updateEmp = Employee.of(value, null, value.getUser());
+                employeeRepository.save(updateEmp);
+            });
+        });
+    }
+    /**
      * 部門削除
      */
     public void delete(DepartmentId departmentId) {
@@ -66,4 +93,5 @@ public class DepartmentService {
     public DepartmentList findByCode(DepartmentId departmentId) {
         return departmentRepository.findByCode(departmentId.getDeptCode().getValue());
     }
+
 }

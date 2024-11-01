@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
+import java.util.Objects;
+
 /**
  * 社員
  */
@@ -45,7 +47,7 @@ public class Employee {
     }
 
     public static Employee of(Employee employee, Department department, User user) {
-        return new Employee(employee.getEmpCode(), employee.getEmpName(), employee.getLoginPassword(), employee.getTel(), employee.getFax(), employee.getOccuCode(), employee.getApprovalCode(), department, user);
+        return new Employee(employee.getEmpCode(), employee.getEmpName(), employee.getLoginPassword(), employee.getTel(), employee.getFax(), employee.getOccuCode(), employee.getApprovalCode(), Objects.requireNonNullElseGet(department, Department::of), user);
     }
 
     public static Employee of(String empCod, String name, String nameKana, String password, String tel, String fax, String occuCode, String approvalCode, Department department, User user) {

@@ -3,8 +3,10 @@ package com.example.sms.presentation.api.master.department;
 import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.department.DepartmentList;
+import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
+import com.example.sms.presentation.api.master.employee.EmployeeResource;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
 import com.example.sms.service.master.department.DepartmentService;
 import com.github.pagehelper.PageInfo;
@@ -17,6 +19,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 部門API
@@ -103,7 +108,10 @@ public class DepartmentApiController {
                     departmentResource.getLowerType().getValue(),
                     departmentResource.getSlitYn().getValue()
             );
-            departmentManagementService.save(department);
+            List<Employee> addEmployees = getAddFilteredEmployees(departmentResource);
+            List<Employee> deleteEmployees = getDeleteFilteredEmployees(departmentResource);
+
+            departmentManagementService.save(department, addEmployees, deleteEmployees);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.department.updated")));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
@@ -126,4 +134,35 @@ public class DepartmentApiController {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
+
+    private static List<Employee> getAddFilteredEmployees(DepartmentResource departmentResource) {
+        return departmentResource.getEmployees() == null ? Collections.emptyList() :
+                departmentResource.getEmployees().stream()
+                        .filter(EmployeeResource::isAddFlag)
+                        .map(employeeResource -> Employee.of(
+                                employeeResource.getEmpCode(),
+                                employeeResource.getEmpName(),
+                                employeeResource.getEmpNameKana(),
+                                employeeResource.getTel(),
+                                employeeResource.getFax(),
+                                employeeResource.getOccuCode()
+                        ))
+                        .collect(Collectors.toList());
+    }
+
+    private static List<Employee> getDeleteFilteredEmployees(DepartmentResource departmentResource) {
+        return departmentResource.getEmployees() == null ? Collections.emptyList() :
+                departmentResource.getEmployees().stream()
+                        .filter(EmployeeResource::isDeleteFlag)
+                        .map(employeeResource -> Employee.of(
+                                employeeResource.getEmpCode(),
+                                employeeResource.getEmpName(),
+                                employeeResource.getEmpNameKana(),
+                                employeeResource.getTel(),
+                                employeeResource.getFax(),
+                                employeeResource.getOccuCode()
+                        ))
+                        .collect(Collectors.toList());
+    }
 }
+

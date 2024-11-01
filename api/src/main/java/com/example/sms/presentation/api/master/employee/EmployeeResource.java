@@ -27,4 +27,6 @@ public class EmployeeResource implements Serializable {
     private String departmentCode;
     private String departmentStartDate;
     private String userId;
+    private boolean addFlag;
+    private boolean deleteFlag;
 }

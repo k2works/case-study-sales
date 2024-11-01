@@ -46,4 +46,11 @@ public class Department {
         SlitYnType slitYnType = SlitYnType.of(slitYn);
         return new Department(departmentId, departmentEndDate, departmentName, layer, departmentPath, lowerType, slitYnType, List.of());
     }
+
+    public static Department of() {
+        DepartmentId departmentId = DepartmentId.of("99999", LocalDateTime.of(9999, 12, 31, 23, 59, 59));
+        DepartmentEndDate departmentEndDate = DepartmentEndDate.of(LocalDateTime.of(9999, 12, 31, 23, 59, 59));
+        DepartmentPath departmentPath = DepartmentPath.of("99999~");
+        return new Department(departmentId, departmentEndDate, null, 0, departmentPath, null, null, null);
+    }
 }
