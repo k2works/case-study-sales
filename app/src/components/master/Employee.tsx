@@ -5,13 +5,13 @@ import {useMessage} from "../application/Message.tsx";
 import {useModal} from "../application/hooks.ts";
 import {useDepartment, useEmployee} from "./hooks.ts";
 import {EmployeeType} from "../../types";
-import {PageNation, usePageNation} from "../../ui/application/PageNation.tsx";
+import {usePageNation} from "../../ui/application/PageNation.tsx";
 import {SiteLayout} from "../../ui/SiteLayout.tsx";
 import {EmployeeCollectionView, SingleEmployeeView} from "../../ui/master/Employee.tsx";
 import LoadingIndicator from "../../ui/application/LoadingIndicatior.tsx";
-import {FaTimes} from "react-icons/fa";
 import {useUser} from "../system/hooks.ts";
 import {DepartmentCollectionSelectView, DepartmentSelectView} from "../../ui/master/DepartmentSelect.tsx";
+import {UserCollectionSelectView, UserSelectView} from "../../ui/system/UserSelect.tsx";
 
 export const Employee: React.FC = () => {
     const Content: React.FC = () => {
@@ -278,87 +278,26 @@ export const Employee: React.FC = () => {
                         overlayClassName="modal-overlay"
                         bodyOpenClassName="modal-open"
                     >
-
-                        <div className="collection-view-object-container">
-                            <div className="collection-view-container">
-                                <button className="close-modal-button" onClick={() => setUserModalIsOpen(false)}>
-                                    <FaTimes aria-hidden="true"/>
-                                </button>
-                                <div className="collection-view-header">
-                                    <div className="single-view-header-item">
-                                        <h2 className="single-view-title">ユーザー</h2>
-                                    </div>
-                                </div>
-                                <div className="collection-view-content">
-                                    <div className="collection-object-container-modal">
-                                        <ul className="collection-object-list">
-                                            {users.map(user => (
-                                                <li className="collection-object-item"
-                                                    key={user.userId.value}>
-                                                    <div className="collection-object-item-content"
-                                                         data-id={user.userId.value}>
-                                                        <div
-                                                            className="collection-object-item-content-details">ユーザーID
-                                                        </div>
-                                                        <div
-                                                            className="collection-object-item-content-name">{user.userId.value}</div>
-                                                    </div>
-                                                    <div className="collection-object-item-content"
-                                                         data-id={user.userId.value}>
-                                                        <div
-                                                            className="collection-object-item-content-details">ユーザー名
-                                                        </div>
-                                                        <div
-                                                            className="collection-object-item-content-name">{user.name.firstName + " " + user.name.lastName}</div>
-                                                    </div>
-                                                    <div className="collection-object-item-content"
-                                                         data-id={user.userId.value}>
-                                                        <div
-                                                            className="collection-object-item-content-details">権限
-                                                        </div>
-                                                        <div
-                                                            className="collection-object-item-content-name">{user.roleName}</div>
-                                                    </div>
-                                                    <div className="collection-object-item-actions"
-                                                         data-id={user.userId.value}>
-                                                        <button className="action-button"
-                                                                onClick={() => {
-                                                                    setNewEmployee({
-                                                                        ...newEmployee,
-                                                                        user: user
-                                                                    });
-                                                                    setUserModalIsOpen(false);
-                                                                }}>選択
-                                                        </button>
-                                                    </div>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                </div>
-                                <PageNation pageNation={userPageNation} callBack={fetchUsers}/>
-                            </div>
-                        </div>
+                        {
+                            <UserCollectionSelectView
+                                users={users}
+                                handleSelect={(user) => {
+                                    setNewEmployee({
+                                        ...newEmployee,
+                                        user: user
+                                    });
+                                    setUserModalIsOpen(false);
+                                }}
+                                handleClose={() => setUserModalIsOpen(false)}
+                                pageNation={userPageNation}
+                                fetchUsers={fetchUsers}
+                            />
+                        }
                     </Modal>
 
-                    <div className="collection-view-object-container">
-                        <div className="collection-view-container">
-                            <div className="collection-view-header">
-                                <div className="single-view-header-item">
-                                    <h2 className="single-view-title">ユーザー</h2>
-                                </div>
-                            </div>
-                            <div className="collection-view-content">
-                                <div className="button-container">
-                                    <button className="action-button" onClick={
-                                        () => {
-                                            setUserModalIsOpen(true)
-                                        }}>選択
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <UserSelectView
+                        handleSelect={() => setUserModalIsOpen(true)}
+                    />
                 </>
             )
         };
