@@ -40,10 +40,11 @@ const DepartmentItem: React.FC<DepartmentItemProps> = ({department, onEdit, onDe
             <div className="collection-object-item-content-name">{department.departmentName}</div>
         </div>
         <div className="collection-object-item-actions" data-id={department.departmentId.deptCode.value}>
-            <button className="action-button" onClick={() => onEdit(department)}>編集</button>
+            <button className="action-button" onClick={() => onEdit(department)} id="edit">編集</button>
         </div>
         <div className="collection-object-item-actions" data-id={department.departmentId.deptCode.value}>
-            <button className="action-button" onClick={() => onDelete(department.departmentId)}>削除</button>
+            <button className="action-button" onClick={() => onDelete(department.departmentId)} id="delete">削除
+            </button>
         </div>
     </li>
 );
@@ -121,13 +122,13 @@ export const DepartmentCollectionView: React.FC<DepartmentCollectionViewProps> =
                     onSearch={handleSearchDepartment}
                 />
                 <div className="button-container">
-                    <button className="action-button" onClick={() => handleOpenModal()}>
+                    <button className="action-button" onClick={() => handleOpenModal()} id="new">
                         新規
                     </button>
-                    <button className="action-button" onClick={() => handleCheckToggleCollection()}>
+                    <button className="action-button" onClick={() => handleCheckToggleCollection()} id="checkAll">
                         一括選択
                     </button>
-                    <button className="action-button" onClick={() => handleDeleteCheckedCollection()}>
+                    <button className="action-button" onClick={() => handleDeleteCheckedCollection()} id="deleteAll">
                         一括削除
                     </button>
                 </div>

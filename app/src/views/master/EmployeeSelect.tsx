@@ -20,7 +20,7 @@ export const EmployeeCollectionListView: React.FC<EmployeeCollectionProps> = ({e
                 </div>
                 <div className="collection-view-content">
                     <div className="button-container">
-                        <button className="action-button" onClick={handleAdd}>追加</button>
+                        <button className="action-button" onClick={handleAdd} id="add">追加</button>
                     </div>
                     <div className="collection-object-container-modal">
                         <ul className="collection-object-list">
@@ -99,7 +99,8 @@ export const EmployeeCollectionSelectView: React.FC<EmployeeCollectionSelectProp
                                         </div>
                                     </div>
                                     <div className="collection-object-item-actions" data-id={employee.empCode.value}>
-                                        <button className="action-button" onClick={() => handleSelect(employee)}>選択
+                                        <button className="action-button" onClick={() => handleSelect(employee)}
+                                                id="select">選択
                                         </button>
                                     </div>
                                 </li>

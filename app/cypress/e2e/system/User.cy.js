@@ -150,14 +150,12 @@ describe('ユーザー管理', () => {
         it('一般ユーザー削除', () => {
             userPage();
             cy.get(':nth-child(4) > .collection-object-item-actions > #delete').click();
-            //TODO:メッセージが取得できない
             cy.get('#message').contains('ユーザーを削除しました。');
         })
 
         it('管理ユーザー削除', () => {
             userPage();
             cy.get(':nth-child(4) > .collection-object-item-actions > #delete').click();
-            //TODO:メッセージが取得できない
             cy.get('#message').contains('ユーザーを削除しました。');
         });
     });

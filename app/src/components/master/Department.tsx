@@ -266,10 +266,14 @@ export const Department: React.FC = () => {
                     }
                     setNewDepartment(initialDepartment);
                     await fetchDepartments.load();
-                    setMessage("部門を保存しました。");
+                    if (isEditing) {
+                        setMessage("部門を更新しました。");
+                    } else {
+                        setMessage("部門を作成しました。");
+                    }
                     handleCloseModal();
                 } catch (error: any) {
-                    showErrorMessage(`部門の保存に失敗しました: ${error?.message}`, setError);
+                    showErrorMessage(`部門の作成に失敗しました: ${error?.message}`, setError);
                 }
             };
 

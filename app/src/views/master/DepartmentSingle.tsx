@@ -41,6 +41,7 @@ const Form = ({isEditing, newDepartment, setNewDepartment}: FormProps) => (
             {/* 部門コードフィールド */}
             <FormItem label="部門コード">
                 <input
+                    id="deptCode"
                     type="text"
                     className="single-view-content-item-form-item-input"
                     placeholder="部門コード"
@@ -59,6 +60,7 @@ const Form = ({isEditing, newDepartment, setNewDepartment}: FormProps) => (
             {/* 部門名フィールド */}
             <FormItem label="部門名">
                 <input
+                    id="deptName"
                     type="text"
                     className="single-view-content-item-form-item-input"
                     placeholder="部門名"
@@ -73,6 +75,7 @@ const Form = ({isEditing, newDepartment, setNewDepartment}: FormProps) => (
             {/* 開始日フィールド */}
             <FormItem label="開始日">
                 <input
+                    id="startDate"
                     type="date"
                     className="single-view-content-item-form-item-input"
                     value={convertToDateInputFormat(newDepartment.departmentId.departmentStartDate.value)}
@@ -90,6 +93,7 @@ const Form = ({isEditing, newDepartment, setNewDepartment}: FormProps) => (
             {/* 終了日フィールド */}
             <FormItem label="終了日">
                 <input
+                    id="endDate"
                     type="date"
                     className="single-view-content-item-form-item-input"
                     value={convertToDateInputFormat(newDepartment.endDate.value)}
@@ -103,6 +107,7 @@ const Form = ({isEditing, newDepartment, setNewDepartment}: FormProps) => (
             {/* 組織階層フィールド */}
             <FormItem label="組織階層">
                 <input
+                    id="layer"
                     type="number"
                     className="single-view-content-item-form-item-input"
                     value={newDepartment.layer}
@@ -116,6 +121,7 @@ const Form = ({isEditing, newDepartment, setNewDepartment}: FormProps) => (
             {/* 部門パスフィールド */}
             <FormItem label="部門パス">
                 <input
+                    id="path"
                     type="text"
                     className="single-view-content-item-form-item-input"
                     placeholder="部門パス"
