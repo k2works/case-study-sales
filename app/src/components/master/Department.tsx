@@ -129,6 +129,46 @@ export const Department: React.FC = () => {
                 }
             };
 
+            const handleCheckDepartment = (department: DepartmentType) => {
+                const newDepartments = departments.map((d) => {
+                    if (d.departmentId.deptCode.value === department.departmentId.deptCode.value && d.departmentId.departmentStartDate.value === department.departmentId.departmentStartDate.value) {
+                        return {
+                            ...d,
+                            checked: !d.checked
+                        };
+                    }
+                    return d;
+                });
+                setDepartments(newDepartments);
+            }
+
+            const handleCheckAllDepartment = () => {
+                const newDepartments = departments.map((d) => {
+                    return {
+                        ...d,
+                        checked: !departments.every((d) => d.checked)
+                    };
+                });
+                setDepartments(newDepartments);
+            }
+
+            const handleDeleteCheckedCollection = async () => {
+                const checkedDepartments = departments.filter((d) => d.checked);
+                if (!checkedDepartments.length) {
+                    setError("削除する部門を選択してください。");
+                    return;
+                }
+
+                try {
+                    if (!window.confirm("選択した部門を削除しますか？")) return;
+                    await Promise.all(checkedDepartments.map((d) => departmentService.destroy(d.departmentId.deptCode.value, d.departmentId.departmentStartDate.value)));
+                    await fetchDepartments.load();
+                    setMessage("選択した部門を削除しました。");
+                } catch (error: any) {
+                    showErrorMessage(`選択した部門の削除に失敗しました: ${error?.message}`, setError);
+                }
+            }
+
             return (
                 <>
                     <Modal
@@ -151,6 +191,9 @@ export const Department: React.FC = () => {
                         handleOpenModal={handleOpenModal}
                         departments={departments}
                         handleDeleteDepartment={handleDeleteDepartment}
+                        handleCheckDepartment={handleCheckDepartment}
+                        handleCheckToggleCollection={handleCheckAllDepartment}
+                        handleDeleteCheckedCollection={handleDeleteCheckedCollection}
                         pageNation={pageNation}
                         fetchDepartments={fetchDepartments.load}
                     />

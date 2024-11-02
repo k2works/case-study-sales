@@ -15,6 +15,7 @@ export type DepartmentType = {
     lowerType: LowerType;
     slitYn: SlitYnType;
     employees: EmployeeType[];
+    checked: boolean;
 }
 
 export type DepartmentResourceType = {

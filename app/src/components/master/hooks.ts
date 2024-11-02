@@ -13,7 +13,8 @@ export const useDepartment = () => {
         path: {value: ""},
         lowerType: LowerType.NO,
         slitYn: SlitYnType.NO,
-        employees: []
+        employees: [],
+        checked: false
     };
 
     const [departments, setDepartments] = useState<DepartmentType[]>([]);
@@ -99,7 +100,8 @@ export const useEmployee = () => {
             path: {value: ""},
             lowerType: LowerType.NO,
             slitYn: SlitYnType.NO,
-            employees: []
+            employees: [],
+            checked: false
         },
         user: {
             userId: {value: ""},

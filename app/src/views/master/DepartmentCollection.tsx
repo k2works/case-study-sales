@@ -22,10 +22,15 @@ interface DepartmentItemProps {
     department: DepartmentType;
     onEdit: (department: DepartmentType) => void;
     onDelete: (departmentId: DepartmentType['departmentId']) => void;
+    onCheck: (department: DepartmentType) => void;
 }
 
-const DepartmentItem: React.FC<DepartmentItemProps> = ({department, onEdit, onDelete}) => (
+const DepartmentItem: React.FC<DepartmentItemProps> = ({department, onEdit, onDelete, onCheck}) => (
     <li className="collection-object-item" key={department.departmentId.deptCode.value}>
+        <div className="collection-object-item-content" data-id={department.departmentId.deptCode.value}>
+            <input type="checkbox" className="collection-object-item-checkbox" checked={department.checked}
+                   onChange={() => onCheck(department)}/>
+        </div>
         <div className="collection-object-item-content" data-id={department.departmentId.deptCode.value}>
             <div className="collection-object-item-content-details">部門コード</div>
             <div className="collection-object-item-content-name">{department.departmentId.deptCode.value}</div>
@@ -47,9 +52,10 @@ interface DepartmentListProps {
     departments: DepartmentType[];
     onEdit: (department: DepartmentType) => void;
     onDelete: (departmentId: DepartmentType['departmentId']) => void;
+    onCheck: (department: DepartmentType) => void;
 }
 
-const DepartmentList: React.FC<DepartmentListProps> = ({departments, onEdit, onDelete}) => (
+const DepartmentList: React.FC<DepartmentListProps> = ({departments, onEdit, onDelete, onCheck}) => (
     <div className="collection-object-container">
         <ul className="collection-object-list">
             {departments.map(department => (
@@ -58,6 +64,7 @@ const DepartmentList: React.FC<DepartmentListProps> = ({departments, onEdit, onD
                     department={department}
                     onEdit={onEdit}
                     onDelete={onDelete}
+                    onCheck={onCheck}
                 />
             ))}
         </ul>
@@ -73,6 +80,9 @@ interface DepartmentCollectionViewProps {
     handleOpenModal: (department?: DepartmentType) => void;
     departments: DepartmentType[];
     handleDeleteDepartment: (departmentId: DepartmentType['departmentId']) => void;
+    handleCheckDepartment: (department: DepartmentType) => void;
+    handleCheckToggleCollection: () => void;
+    handleDeleteCheckedCollection: () => void;
     pageNation: any; // 適切な型を使用してください
     fetchDepartments: () => void;
 }
@@ -86,6 +96,9 @@ export const DepartmentCollectionView: React.FC<DepartmentCollectionViewProps> =
                                                                                       handleOpenModal,
                                                                                       departments,
                                                                                       handleDeleteDepartment,
+                                                                                      handleCheckDepartment,
+                                                                                      handleCheckToggleCollection,
+                                                                                      handleDeleteCheckedCollection,
                                                                                       pageNation,
                                                                                       fetchDepartments
                                                                                   }) => (
@@ -111,11 +124,18 @@ export const DepartmentCollectionView: React.FC<DepartmentCollectionViewProps> =
                     <button className="action-button" onClick={() => handleOpenModal()}>
                         新規
                     </button>
+                    <button className="action-button" onClick={() => handleCheckToggleCollection()}>
+                        一括選択
+                    </button>
+                    <button className="action-button" onClick={() => handleDeleteCheckedCollection()}>
+                        一括削除
+                    </button>
                 </div>
                 <DepartmentList
                     departments={departments}
                     onEdit={handleOpenModal}
                     onDelete={handleDeleteDepartment}
+                    onCheck={handleCheckDepartment}
                 />
                 <PageNation pageNation={pageNation} callBack={fetchDepartments}/>
             </div>
