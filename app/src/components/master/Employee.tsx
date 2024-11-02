@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Modal from "react-modal";
-import {convertToDateInputFormat, showErrorMessage} from "../application/utils.ts";
+import {showErrorMessage} from "../application/utils.ts";
 import {useMessage} from "../application/Message.tsx";
 import {useModal} from "../application/hooks.ts";
 import {useDepartment, useEmployee} from "./hooks.ts";
@@ -11,6 +11,7 @@ import {EmployeeCollectionView, SingleEmployeeView} from "../../ui/master/Employ
 import LoadingIndicator from "../../ui/application/LoadingIndicatior.tsx";
 import {FaTimes} from "react-icons/fa";
 import {useUser} from "../system/hooks.ts";
+import {DepartmentCollectionSelectView, DepartmentSelectView} from "../../ui/master/DepartmentSelect.tsx";
 
 export const Employee: React.FC = () => {
     const Content: React.FC = () => {
@@ -249,87 +250,25 @@ export const Employee: React.FC = () => {
                         bodyOpenClassName="modal-open"
                     >
                         {
-                            <div className="collection-view-object-container">
-                                <div className="collection-view-container">
-                                    <button className="close-modal-button"
-                                            onClick={() => setDepartmentModalIsOpen(false)}>
-                                        <FaTimes aria-hidden="true"/>
-                                    </button>
-                                    <div className="collection-view-header">
-                                        <div className="single-view-header-item">
-                                            <h2 className="single-view-title">部門</h2>
-                                        </div>
-                                    </div>
-                                    <div className="collection-view-content">
-                                        <div className="collection-object-container-modal">
-                                            <ul className="collection-object-list">
-                                                {departments.map(department => (
-                                                    <li className="collection-object-item"
-                                                        key={department.departmentId.deptCode.value + "-" + department.departmentId.departmentStartDate.value}>
-                                                        <div className="collection-object-item-content"
-                                                             data-id={department.departmentId.deptCode.value}>
-                                                            <div
-                                                                className="collection-object-item-content-details">部門コード
-                                                            </div>
-                                                            <div
-                                                                className="collection-object-item-content-name">{department.departmentId.deptCode.value}</div>
-                                                        </div>
-                                                        <div className="collection-object-item-content"
-                                                             data-id={department.departmentId.departmentStartDate.value}>
-                                                            <div
-                                                                className="collection-object-item-content-details">開始日
-                                                            </div>
-                                                            <div
-                                                                className="collection-object-item-content-name">{convertToDateInputFormat(department.departmentId.departmentStartDate.value)}</div>
-                                                        </div>
-                                                        <div className="collection-object-item-content"
-                                                             data-id={department.departmentId.deptCode.value}>
-                                                            <div
-                                                                className="collection-object-item-content-details">部門名
-                                                            </div>
-                                                            <div
-                                                                className="collection-object-item-content-name">{department.departmentName}</div>
-                                                        </div>
-                                                        <div className="collection-object-item-actions"
-                                                             data-id={department.departmentId.deptCode.value}>
-                                                            <button className="action-button"
-                                                                    onClick={() => {
-                                                                        setNewEmployee({
-                                                                            ...newEmployee,
-                                                                            department: department
-                                                                        });
-                                                                        setDepartmentModalIsOpen(false);
-                                                                    }}>選択
-                                                            </button>
-                                                        </div>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <PageNation pageNation={departmentPageNation} callBack={fetchDepartments}/>
-                                </div>
-                            </div>
+                            <DepartmentCollectionSelectView
+                                departments={departments}
+                                handleSelect={(department) => {
+                                    setNewEmployee({
+                                        ...newEmployee,
+                                        department: department
+                                    });
+                                    setDepartmentModalIsOpen(false);
+                                }}
+                                handleClose={() => setDepartmentModalIsOpen(false)}
+                                pageNation={departmentPageNation}
+                                fetchDepartments={fetchDepartments}
+                            />
                         }
                     </Modal>
 
-                    <div className="collection-view-object-container">
-                        <div className="collection-view-container">
-                            <div className="collection-view-header">
-                                <div className="single-view-header-item">
-                                    <h2 className="single-view-title">部門一覧</h2>
-                                </div>
-                            </div>
-                            <div className="collection-view-content">
-                                <div className="button-container">
-                                    <button className="action-button" onClick={
-                                        () => setDepartmentModalIsOpen(true)
-                                    }>選択
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <DepartmentSelectView
+                        handleSelect={() => setDepartmentModalIsOpen(true)}
+                    />
 
                     <Modal
                         isOpen={userModalIsOpen}
@@ -406,7 +345,7 @@ export const Employee: React.FC = () => {
                         <div className="collection-view-container">
                             <div className="collection-view-header">
                                 <div className="single-view-header-item">
-                                    <h2 className="single-view-title">ユーザー一覧</h2>
+                                    <h2 className="single-view-title">ユーザー</h2>
                                 </div>
                             </div>
                             <div className="collection-view-content">
