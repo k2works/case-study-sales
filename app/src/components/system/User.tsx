@@ -3,10 +3,11 @@ import {UserAccountType} from "../../models";
 import {useMessage} from "../application/Message";
 import {useModal} from "../application/hooks";
 import {useUser} from "./hooks";
-import {UserCollectionView, UserSingleView} from "../../views/system/User";
 import {usePageNation} from "../../views/application/PageNation.tsx";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
 import {SiteLayout} from "../../views/SiteLayout.tsx";
+import {UserCollectionView} from "../../views/system/UserCollection.tsx";
+import {UserSingleView} from "../../views/system/UserSingle.tsx";
 
 export const User: React.FC = () => {
     const Content: React.FC = () => {
