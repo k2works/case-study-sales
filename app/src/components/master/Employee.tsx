@@ -137,6 +137,7 @@ export const Employee: React.FC = () => {
 
             const handleDeleteEmployee = async (empCode: string) => {
                 try {
+                    if (!window.confirm(`社員コード:${empCode} を削除しますか？`)) return;
                     await employeeService.destroy(empCode);
                     await fetchEmployees.load();
                     setMessage("社員を削除しました。");

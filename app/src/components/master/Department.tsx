@@ -120,6 +120,7 @@ export const Department: React.FC = () => {
 
             const handleDeleteDepartment = async (departmentId: DepartmentIdType) => {
                 try {
+                    if (!window.confirm(`部門コード:${departmentId.deptCode.value} を削除しますか？`)) return;
                     await departmentService.destroy(departmentId.deptCode.value, departmentId.departmentStartDate.value);
                     await fetchDepartments.load();
                     setMessage("部門を削除しました。");

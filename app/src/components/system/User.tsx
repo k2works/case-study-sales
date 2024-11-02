@@ -81,6 +81,7 @@ export const User: React.FC = () => {
 
             const handleDeleteUser = async (userId: string) => {
                 try {
+                    if (!window.confirm(`ユーザーID:${userId} を削除しますか？`)) return;
                     await userService.destroy(userId);
                     await fetchUsers.load();
                     setMessage("ユーザーを削除しました。");
