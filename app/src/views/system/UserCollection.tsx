@@ -40,11 +40,11 @@ const UserListItem: React.FC<UserListItemProps> = ({user, handleOpenModal, handl
                 <div className="collection-object-item-content-name">{user.userId.value}</div>
             </div>
             <div className="collection-object-item-content" data-id={user.userId.value}>
-                <div className="collection-object-item-content-details">名</div>
+                <div className="collection-object-item-content-details">姓</div>
                 <div className="collection-object-item-content-name">{user.name.firstName}</div>
             </div>
             <div className="collection-object-item-content" data-id={user.userId.value}>
-                <div className="collection-object-item-content-details">姓</div>
+                <div className="collection-object-item-content-details">名</div>
                 <div className="collection-object-item-content-name">{user.name.lastName}</div>
             </div>
             <div className="collection-object-item-content" data-id={user.userId.value}>
@@ -52,10 +52,11 @@ const UserListItem: React.FC<UserListItemProps> = ({user, handleOpenModal, handl
                 <div className="collection-object-item-content-name">{user.roleName}</div>
             </div>
             <div className="collection-object-item-actions" data-id={user.userId.value}>
-                <button className="action-button" onClick={() => handleOpenModal(user)}>編集</button>
+                <button className="action-button" onClick={() => handleOpenModal(user)} id="edit">編集</button>
             </div>
             <div className="collection-object-item-actions" data-id={user.userId.value}>
-                <button className="action-button" onClick={() => handleDeleteUser(user.userId.value)}>削除</button>
+                <button className="action-button" onClick={() => handleDeleteUser(user.userId.value)} id="delete">削除
+                </button>
             </div>
         </li>
     );
@@ -121,7 +122,7 @@ export const UserCollectionView = ({
                 <SearchInput searchUserId={searchUserId} setSearchUserId={setSearchUserId}
                              handleSearchUser={handleSearchUser}/>
                 <div className="button-container">
-                    <button className="action-button" onClick={() => handleOpenModal()}>
+                    <button className="action-button" onClick={() => handleOpenModal()} id="new">
                         新規
                     </button>
                 </div>

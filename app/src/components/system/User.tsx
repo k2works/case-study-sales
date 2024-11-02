@@ -140,10 +140,14 @@ export const User: React.FC = () => {
                     }
                     setNewUser(initialUser);
                     await fetchUsers.load();
-                    setMessage("ユーザーを保存しました。");
+                    if (isEditing) {
+                        setMessage("ユーザーを更新しました。");
+                    } else {
+                        setMessage("ユーザーを作成しました。");
+                    }
                     handleCloseModal();
                 } catch (error: any) {
-                    showErrorMessage(`ユーザーの保存に失敗しました: ${error?.message}`, setError);
+                    showErrorMessage(`ユーザーの作成に失敗しました: ${error?.message}`, setError);
                 }
             };
             return (

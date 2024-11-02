@@ -14,10 +14,10 @@ export const SingleViewHeaderActions: React.FC<{
 }> = ({isEditing, handleCreateOrUpdateUser, handleCloseModal}) => (
     <div className="single-view-header-item">
         <div className="button-container">
-            <button className="action-button" onClick={handleCreateOrUpdateUser}>
+            <button className="action-button" onClick={handleCreateOrUpdateUser} id="save">
                 {isEditing ? "更新" : "作成"}
             </button>
-            <button className="action-button" onClick={handleCloseModal}>キャンセル</button>
+            <button className="action-button" onClick={handleCloseModal} id="cancel">キャンセル</button>
         </div>
     </div>
 );

@@ -37,13 +37,13 @@ const EmployeeListItem: React.FC<EmployeeListItemProps> = ({employee, onEdit, on
                 <input type="checkbox" className="collection-object-item-checkbox" checked={employee.checked}
                        onChange={() => onCheck(employee)}/>
             </div>
-            {['社員コード', '名', '姓', '電話番号', 'FAX番号', '部門'].map((label, idx) => (
+            {['社員コード', '姓', '名', '電話番号', 'FAX番号', '部門'].map((label, idx) => (
                 <div className="collection-object-item-content" data-id={employee.empCode.value} key={idx}>
                     <div className="collection-object-item-content-details">{label}</div>
                     <div className="collection-object-item-content-name">
                         {label === '社員コード' ? employee.empCode.value :
-                            label === '名' ? employee.empName.firstName :
-                                label === '姓' ? employee.empName.lastName :
+                            label === '姓' ? employee.empName.firstName :
+                                label === '名' ? employee.empName.lastName :
                                     label === '電話番号' ? employee.tel.value :
                                         label === 'FAX番号' ? employee.fax.value :
                                             employee.department?.departmentName}

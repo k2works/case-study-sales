@@ -47,17 +47,18 @@ const Form = ({isEditing, newUser, setNewUser}: UserFormProps) => {
                     value={newUser.userId.value}
                     onChange={(e) => setNewUser({...newUser, userId: {value: e.target.value}})}
                     disabled={isEditing}
+                    id="userId"
                 />
             </div>
-            {/* 以下の項目は同様にして追加する */}
             <div className="single-view-content-item-form-item">
                 <label className="single-view-content-item-form-item-label">姓</label>
                 <input
                     type="text"
                     className="single-view-content-item-form-item-input"
                     placeholder="姓"
-                    value={newUser.name?.lastName || ""}
-                    onChange={(e) => setNewUser({...newUser, name: {...newUser.name, lastName: e.target.value}})}
+                    value={newUser.name?.firstName || ""}
+                    onChange={(e) => setNewUser({...newUser, name: {...newUser.name, firstName: e.target.value}})}
+                    id="firstName"
                 />
             </div>
             <div className="single-view-content-item-form-item">
@@ -66,8 +67,9 @@ const Form = ({isEditing, newUser, setNewUser}: UserFormProps) => {
                     type="text"
                     className="single-view-content-item-form-item-input"
                     placeholder="名"
-                    value={newUser.name?.firstName || ""}
-                    onChange={(e) => setNewUser({...newUser, name: {...newUser.name, firstName: e.target.value}})}
+                    value={newUser.name?.lastName || ""}
+                    onChange={(e) => setNewUser({...newUser, name: {...newUser.name, lastName: e.target.value}})}
+                    id="lastName"
                 />
             </div>
             <div className="single-view-content-item-form-item">
@@ -75,8 +77,8 @@ const Form = ({isEditing, newUser, setNewUser}: UserFormProps) => {
                 <select
                     className="single-view-content-item-form-item"
                     name="roleNameList"
-                    id="roleName"
                     value={newUser.roleName}
+                    id="roleName"
                     onChange={(e) => setNewUser({...newUser, roleName: e.target.value})}>
                     <option value="">選択してください</option>
                     <option value="USER">ユーザー</option>
@@ -91,6 +93,7 @@ const Form = ({isEditing, newUser, setNewUser}: UserFormProps) => {
                     placeholder="パスワード"
                     value={newUser.password?.value || ""}
                     onChange={(e) => setNewUser({...newUser, password: {value: e.target.value}})}
+                    id="password"
                 />
             </div>
         </div>
