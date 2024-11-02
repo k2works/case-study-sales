@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import BeatLoader from "react-spinners/BeatLoader";
 import Modal from "react-modal";
 import {showErrorMessage} from "../application/utils.ts";
 import {useMessage} from "../application/Message.tsx";
@@ -9,6 +8,7 @@ import {EmployeeType} from "../../types";
 import {usePageNation} from "../../ui/application/PageNation.tsx";
 import {SiteLayout} from "../../ui/SiteLayout.tsx";
 import {EmployeeCollectionView, SingleEmployeeView} from "../../ui/master/Employee.tsx";
+import LoadingIndicator from "../../ui/application/LoadingIndicatior.tsx";
 
 export const Employee: React.FC = () => {
     const Content: React.FC = () => {
@@ -94,18 +94,31 @@ export const Employee: React.FC = () => {
             };
 
             return (
-                <EmployeeCollectionView
-                    error={error}
-                    message={message}
-                    searchEmployeeCode={searchEmployeeCode}
-                    setSearchEmployeeCode={setSearchEmployeeCode}
-                    handleSearchEmployee={handleSearchEmployee}
-                    handleOpenModal={handleOpenModal}
-                    employees={employees}
-                    handleDeleteEmployee={handleDeleteEmployee}
-                    pageNation={pageNation}
-                    fetchEmployees={fetchEmployees}
-                />
+                <>
+                    <Modal
+                        isOpen={modalIsOpen}
+                        onRequestClose={handleCloseModal}
+                        contentLabel="部門情報を入力"
+                        className="modal"
+                        overlayClassName="modal-overlay"
+                        bodyOpenClassName="modal-open"
+                    >
+                        {singleView()}
+                    </Modal>
+
+                    <EmployeeCollectionView
+                        error={error}
+                        message={message}
+                        searchEmployeeCode={searchEmployeeCode}
+                        setSearchEmployeeCode={setSearchEmployeeCode}
+                        handleSearchEmployee={handleSearchEmployee}
+                        handleOpenModal={handleOpenModal}
+                        employees={employees}
+                        handleDeleteEmployee={handleDeleteEmployee}
+                        pageNation={pageNation}
+                        fetchEmployees={fetchEmployees}
+                    />
+                </>
             )
         };
 
@@ -137,45 +150,26 @@ export const Employee: React.FC = () => {
             };
 
             return (
-                <SingleEmployeeView
-                    error={error}
-                    message={message}
-                    newEmployee={newEmployee}
-                    setNewEmployee={setNewEmployee}
-                    isEditing={isEditing}
-                    handleCreateOrUpdateEmployee={handleCreateOrUpdateEmployee}
-                    handleCloseModal={handleCloseModal}
-                />
+                <>
+                    <SingleEmployeeView
+                        error={error}
+                        message={message}
+                        newEmployee={newEmployee}
+                        setNewEmployee={setNewEmployee}
+                        isEditing={isEditing}
+                        handleCreateOrUpdateEmployee={handleCreateOrUpdateEmployee}
+                        handleCloseModal={handleCloseModal}
+                    />
+                </>
             )
         };
-
-        const modalView = () => {
-            return (
-                <Modal
-                    isOpen={modalIsOpen}
-                    onRequestClose={handleCloseModal}
-                    contentLabel="部門情報を入力"
-                    className="modal"
-                    overlayClassName="modal-overlay"
-                    bodyOpenClassName="modal-open"
-                >
-                    {singleView()}
-                </Modal>
-            );
-        };
-
 
         return (
             <>
                 {loading ? (
-                    <div className="loading">
-                        <BeatLoader color="#36D7B7"/>
-                    </div>
+                    <LoadingIndicator/>
                 ) : (
-                    <>
-                        {!modalIsOpen && collectionView()}
-                        {modalIsOpen && modalView()}
-                    </>
+                    collectionView()
                 )}
             </>
         );
