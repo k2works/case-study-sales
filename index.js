@@ -76,6 +76,7 @@ const contents = `
 - [ ] 削除実行時に確認ダイアログを表示する
 - [ ] 一括削除機能を追加する
 - [ ] uiからviewsに名前変更
+- [ ] typesからmodelsに名前変更
 `;
 
 const usecase = `

@@ -213,7 +213,6 @@ export const Department: React.FC = () => {
                     ...newDepartment,
                     employees: newEmployees
                 });
-                handleCloseEmployeeModal();
             }
 
             const handleCreateOrUpdateDepartment = async () => {
@@ -258,6 +257,7 @@ export const Department: React.FC = () => {
                             <EmployeeCollectionSelectView
                                 employees={employees}
                                 handleSelect={handleEmployeeCollectionSelect}
+                                handleClose={handleCloseEmployeeModal}
                                 pageNation={employeePageNation}
                                 fetchEmployees={fetchEmployees}
                             />

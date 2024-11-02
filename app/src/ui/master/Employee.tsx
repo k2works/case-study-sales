@@ -24,17 +24,9 @@ const SearchBar: React.FC<SearchBarProps> = ({searchValue, onSearchChange, onSea
     );
 };
 
-interface Employee {
-    empCode: { value: string };
-    empName: { firstName: string; lastName: string };
-    tel: { value: string };
-    fax: { value: string };
-    department?: { departmentName: string };
-}
-
 interface EmployeeListItemProps {
-    employee: Employee;
-    onEdit: (employee: Employee) => void;
+    employee: EmployeeType;
+    onEdit: (employee: EmployeeType) => void;
     onDelete: (empCode: string) => void;
 }
 
@@ -65,8 +57,8 @@ const EmployeeListItem: React.FC<EmployeeListItemProps> = ({employee, onEdit, on
 };
 
 interface EmployeeListProps {
-    employees: Employee[];
-    onEdit: (employee: Employee) => void;
+    employees: EmployeeType[];
+    onEdit: (employee: EmployeeType) => void;
     onDelete: (empCode: string) => void;
 }
 

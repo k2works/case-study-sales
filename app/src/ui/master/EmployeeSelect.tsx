@@ -1,6 +1,7 @@
 import {EmployeeType} from "../../types";
 import React from "react";
 import {PageNation} from "../application/PageNation.tsx";
+import {FaTimes} from "react-icons/fa";
 
 interface EmployeeCollectionProps {
     employees: EmployeeType[];
@@ -53,6 +54,7 @@ export const EmployeeCollectionListView: React.FC<EmployeeCollectionProps> = ({e
 interface EmployeeCollectionSelectProps {
     employees: EmployeeType[];
     handleSelect: (employee: EmployeeType) => void;
+    handleClose: () => void;
     pageNation: any; // 適切な型を使用してください
     fetchEmployees: () => void;
 }
@@ -60,12 +62,16 @@ interface EmployeeCollectionSelectProps {
 export const EmployeeCollectionSelectView: React.FC<EmployeeCollectionSelectProps> = ({
                                                                                           employees,
                                                                                           handleSelect,
+                                                                                          handleClose,
                                                                                           pageNation,
                                                                                           fetchEmployees
                                                                                       }) => {
     return (
         <div className="collection-view-object-container">
             <div className="collection-view-container">
+                <button className="close-modal-button" onClick={handleClose}>
+                    <FaTimes aria-hidden="true"/>
+                </button>
                 <div className="collection-view-header">
                     <div className="single-view-header-item">
                         <h2 className="single-view-title">社員</h2>
