@@ -1,6 +1,6 @@
 import Config from "./config";
 import Utils from "./utils";
-import {UserAccountType} from "../types";
+import {UserAccountType} from "../models";
 
 export const UserService = () => {
     const config = Config();

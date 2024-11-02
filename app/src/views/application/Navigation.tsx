@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {FaBars, FaTimes} from "react-icons/fa";
-import {RoleType} from "../../types";
+import {RoleType} from "../../models";
 import {getRoleFromUser} from "../../components/application/RouteAuthGuard.tsx";
 
 interface NavItemProps {

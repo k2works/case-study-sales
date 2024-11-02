@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {DepartmentIdType, DepartmentType, EmployeeType, LowerType, SlitYnType} from "../../types";
+import {DepartmentIdType, DepartmentType, EmployeeType, LowerType, SlitYnType} from "../../models";
 import {DepartmentService} from "../../services/department.ts";
 import {EmployeeService} from "../../services/employee.ts";
 

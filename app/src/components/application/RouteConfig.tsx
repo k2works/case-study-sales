@@ -4,7 +4,7 @@ import {RouteAuthGuard} from "./RouteAuthGuard";
 import {Login} from "../system/Login.tsx";
 import {Logout} from "../system/Logout.tsx";
 import {User} from "../system/User.tsx";
-import {RoleType} from "../../types";
+import {RoleType} from "../../models";
 import {Department} from "../master/Department.tsx";
 import {Employee} from "../master/Employee.tsx";
 import {NotFound} from "../../views/application/NotFound.tsx";

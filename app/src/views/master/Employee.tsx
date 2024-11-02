@@ -2,7 +2,7 @@ import {Message} from "../../components/application/Message.tsx";
 import {PageNation} from "../application/PageNation.tsx";
 import React from "react";
 import {convertToDateInputFormat} from "../../components/application/utils.ts";
-import {EmployeeType} from "../../types";
+import {EmployeeType} from "../../models";
 import {SingleViewHeaderActions, SingleViewHeaderItem} from "../Common.tsx";
 
 interface SearchBarProps {

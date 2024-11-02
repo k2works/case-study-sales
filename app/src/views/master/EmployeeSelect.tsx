@@ -1,4 +1,4 @@
-import {EmployeeType} from "../../types";
+import {EmployeeType} from "../../models";
 import React from "react";
 import {PageNation} from "../application/PageNation.tsx";
 import {FaTimes} from "react-icons/fa";

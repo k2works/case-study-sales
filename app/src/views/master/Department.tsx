@@ -1,7 +1,7 @@
 import React from 'react';
 import {Message} from "../../components/application/Message.tsx";
 import {PageNation} from "../application/PageNation.tsx";
-import {DepartmentIdType, DepartmentType, LowerType, SlitYnType} from "../../types";
+import {DepartmentIdType, DepartmentType, LowerType, SlitYnType} from "../../models";
 import {convertToDateInputFormat} from "../../components/application/utils.ts";
 import {SingleViewHeaderActions, SingleViewHeaderItem} from "../Common.tsx";
 

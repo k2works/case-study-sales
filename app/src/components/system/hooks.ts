@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {UserAccountType} from "../../types";
+import {UserAccountType} from "../../models";
 import {UserService} from "../../services/user";
 
 export const useUser = () => {

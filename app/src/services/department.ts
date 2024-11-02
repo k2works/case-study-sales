@@ -1,6 +1,6 @@
 import Config from "./config";
 import Utils from "./utils";
-import {DepartmentResourceType, DepartmentType} from "../types";
+import {DepartmentResourceType, DepartmentType} from "../models";
 import {toISOStringWithTimezone} from "../components/application/utils.ts";
 
 export const DepartmentService = () => {

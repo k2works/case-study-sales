@@ -1,6 +1,6 @@
 import Config from "./config";
 import Utils from "./utils";
-import {EmployeeResourceType, EmployeeType} from "../types";
+import {EmployeeResourceType, EmployeeType} from "../models";
 import {toISOStringWithTimezone} from "../components/application/utils.ts";
 
 export const EmployeeService = () => {

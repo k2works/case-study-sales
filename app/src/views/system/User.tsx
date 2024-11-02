@@ -1,5 +1,5 @@
 import React from "react";
-import {UserAccountType} from "../../types";
+import {UserAccountType} from "../../models";
 import {Message} from "../../components/application/Message.tsx";
 import {PageNation, PageNationType} from "../application/PageNation.tsx";
 import {SingleViewHeaderActions, SingleViewHeaderItem} from "../Common.tsx";

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {UserAccountType} from "../../types";
+import {UserAccountType} from "../../models";
 import {useMessage} from "../application/Message";
 import {useModal} from "../application/hooks";
 import {useUser} from "./hooks";
