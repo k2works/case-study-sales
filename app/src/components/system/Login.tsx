@@ -3,7 +3,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {CustomLocation, DataType, RoleType, UserType} from "../../types";
 import {AuthUserContextType, useAuthUserContext} from "../../providers/AuthUser";
 import AuthService from "../../services/auth";
-import {LoginSingleView} from "../../ui/application/Login.tsx";
+import {LoginSingleView} from "../../views/application/Login.tsx";
 
 const DEFAULT_USER_ID = "U000001";
 const DEFAULT_PASSWORD = "a234567Z";

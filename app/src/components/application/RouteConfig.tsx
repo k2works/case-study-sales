@@ -7,7 +7,7 @@ import {User} from "../system/User.tsx";
 import {RoleType} from "../../types";
 import {Department} from "../master/Department.tsx";
 import {Employee} from "../master/Employee.tsx";
-import {NotFound} from "../../ui/application/NotFound.tsx";
+import {NotFound} from "../../views/application/NotFound.tsx";
 import {Home} from "./Home.tsx";
 
 export const RouteConfig: React.FC = () => {

@@ -5,11 +5,11 @@ import {useDepartment, useEmployee} from "./hooks.ts";
 import {showErrorMessage} from "../application/utils.ts";
 import {DepartmentIdType, DepartmentType, EmployeeType} from "../../types";
 import Modal from "react-modal";
-import {usePageNation} from "../../ui/application/PageNation.tsx";
-import {SiteLayout} from "../../ui/SiteLayout.tsx";
-import {DepartmentCollectionView, DepartmentSingleView,} from "../../ui/master/Department.tsx";
-import LoadingIndicator from "../../ui/application/LoadingIndicatior.tsx";
-import {EmployeeCollectionListView, EmployeeCollectionSelectView} from "../../ui/master/EmployeeSelect.tsx";
+import {usePageNation} from "../../views/application/PageNation.tsx";
+import {SiteLayout} from "../../views/SiteLayout.tsx";
+import {DepartmentCollectionView, DepartmentSingleView,} from "../../views/master/Department.tsx";
+import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
+import {EmployeeCollectionListView, EmployeeCollectionSelectView} from "../../views/master/EmployeeSelect.tsx";
 
 export const Department: React.FC = () => {
     const Content: React.FC = () => {

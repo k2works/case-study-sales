@@ -3,10 +3,10 @@ import {UserAccountType} from "../../types";
 import {useMessage} from "../application/Message";
 import {useModal} from "../application/hooks";
 import {useUser} from "./hooks";
-import {UserCollectionView, UserSingleView} from "../../ui/system/User";
-import {usePageNation} from "../../ui/application/PageNation.tsx";
-import LoadingIndicator from "../../ui/application/LoadingIndicatior.tsx";
-import {SiteLayout} from "../../ui/SiteLayout.tsx";
+import {UserCollectionView, UserSingleView} from "../../views/system/User";
+import {usePageNation} from "../../views/application/PageNation.tsx";
+import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
+import {SiteLayout} from "../../views/SiteLayout.tsx";
 
 export const User: React.FC = () => {
     const Content: React.FC = () => {

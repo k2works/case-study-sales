@@ -1,5 +1,5 @@
 import React, {Component, ReactNode} from "react";
-import {ErrorScreen} from "../../ui/application/ErrorScreen.tsx";
+import {ErrorScreen} from "../../views/application/ErrorScreen.tsx";
 
 interface ErrorBoundaryProps {
     children: ReactNode;

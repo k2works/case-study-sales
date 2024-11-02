@@ -5,13 +5,13 @@ import {useMessage} from "../application/Message.tsx";
 import {useModal} from "../application/hooks.ts";
 import {useDepartment, useEmployee} from "./hooks.ts";
 import {EmployeeType} from "../../types";
-import {usePageNation} from "../../ui/application/PageNation.tsx";
-import {SiteLayout} from "../../ui/SiteLayout.tsx";
-import {EmployeeCollectionView, EmployeeSingleView} from "../../ui/master/Employee.tsx";
-import LoadingIndicator from "../../ui/application/LoadingIndicatior.tsx";
+import {usePageNation} from "../../views/application/PageNation.tsx";
+import {SiteLayout} from "../../views/SiteLayout.tsx";
+import {EmployeeCollectionView, EmployeeSingleView} from "../../views/master/Employee.tsx";
+import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
 import {useUser} from "../system/hooks.ts";
-import {DepartmentCollectionSelectView, DepartmentSelectView} from "../../ui/master/DepartmentSelect.tsx";
-import {UserCollectionSelectView, UserSelectView} from "../../ui/system/UserSelect.tsx";
+import {DepartmentCollectionSelectView, DepartmentSelectView} from "../../views/master/DepartmentSelect.tsx";
+import {UserCollectionSelectView, UserSelectView} from "../../views/system/UserSelect.tsx";
 
 export const Employee: React.FC = () => {
     const Content: React.FC = () => {
