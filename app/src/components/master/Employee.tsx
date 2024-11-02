@@ -7,11 +7,12 @@ import {useDepartment, useEmployee} from "./hooks.ts";
 import {EmployeeType} from "../../models";
 import {usePageNation} from "../../views/application/PageNation.tsx";
 import {SiteLayout} from "../../views/SiteLayout.tsx";
-import {EmployeeCollectionView, EmployeeSingleView} from "../../views/master/Employee.tsx";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
 import {useUser} from "../system/hooks.ts";
 import {DepartmentCollectionSelectView, DepartmentSelectView} from "../../views/master/DepartmentSelect.tsx";
 import {UserCollectionSelectView, UserSelectView} from "../../views/system/UserSelect.tsx";
+import {EmployeeCollectionView} from "../../views/master/EmployeeCollection.tsx";
+import {EmployeeSingleView} from "../../views/master/EmployeeSingle.tsx";
 
 export const Employee: React.FC = () => {
     const Content: React.FC = () => {
