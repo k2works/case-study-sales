@@ -7,7 +7,7 @@ import {useDepartment, useEmployee} from "./hooks.ts";
 import {EmployeeType} from "../../types";
 import {usePageNation} from "../../ui/application/PageNation.tsx";
 import {SiteLayout} from "../../ui/SiteLayout.tsx";
-import {EmployeeCollectionView, SingleEmployeeView} from "../../ui/master/Employee.tsx";
+import {EmployeeCollectionView, EmployeeSingleView} from "../../ui/master/Employee.tsx";
 import LoadingIndicator from "../../ui/application/LoadingIndicatior.tsx";
 import {useUser} from "../system/hooks.ts";
 import {DepartmentCollectionSelectView, DepartmentSelectView} from "../../ui/master/DepartmentSelect.tsx";
@@ -231,7 +231,7 @@ export const Employee: React.FC = () => {
 
             return (
                 <>
-                    <SingleEmployeeView
+                    <EmployeeSingleView
                         error={error}
                         message={message}
                         newEmployee={newEmployee}

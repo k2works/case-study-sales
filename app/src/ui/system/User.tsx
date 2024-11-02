@@ -90,7 +90,7 @@ interface HeaderProps {
     title: string;
     subtitle: string;
     isEditing: boolean;
-    handleCreateOrUpdateUser: () => void;
+    handleCreateOrUpdate: () => void;
     handleCloseModal: () => void;
 }
 
@@ -98,14 +98,14 @@ const Header: React.FC<HeaderProps> = ({
                                                                  title,
                                            subtitle,
                                                                  isEditing,
-                                                                 handleCreateOrUpdateUser,
+                                           handleCreateOrUpdate,
                                                                  handleCloseModal
                                                              }) => (
     <div>
         <SingleViewHeaderItem title={title} subtitle={subtitle}/>
         <SingleViewHeaderActions
             isEditing={isEditing}
-            handleCreateOrUpdateUser={handleCreateOrUpdateUser}
+            handleCreateOrUpdateUser={handleCreateOrUpdate}
             handleCloseModal={handleCloseModal}
         />
     </div>
@@ -253,7 +253,7 @@ export const UserSingleView = ({
                     title="ユーザー"
                     subtitle={isEditing ? "編集" : "新規作成"}
                     isEditing={isEditing}
-                    handleCreateOrUpdateUser={handleCreateOrUpdateUser}
+                    handleCreateOrUpdate={handleCreateOrUpdateUser}
                     handleCloseModal={handleCloseModal}
                 />
             </div>
