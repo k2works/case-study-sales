@@ -13,6 +13,8 @@ import java.util.List;
 @Value
 @NoArgsConstructor(force = true)
 public class Department {
+    public static final String TERMINAL_CODE = "99999";
+
     DepartmentId departmentId; // 部門ID
     DepartmentEndDate endDate; // 終了日
     String departmentName; // 部門名
@@ -47,10 +49,10 @@ public class Department {
         return new Department(departmentId, departmentEndDate, departmentName, layer, departmentPath, lowerType, slitYnType, List.of());
     }
 
-    public static Department of() {
-        DepartmentId departmentId = DepartmentId.of("99999", LocalDateTime.of(9999, 12, 31, 23, 59, 59));
+    public static Department from() {
+        DepartmentId departmentId = DepartmentId.of(TERMINAL_CODE, LocalDateTime.of(9999, 12, 31, 23, 59, 59));
         DepartmentEndDate departmentEndDate = DepartmentEndDate.of(LocalDateTime.of(9999, 12, 31, 23, 59, 59));
-        DepartmentPath departmentPath = DepartmentPath.of("99999~");
+        DepartmentPath departmentPath = DepartmentPath.of(TERMINAL_CODE + "~");
         return new Department(departmentId, departmentEndDate, null, 0, departmentPath, null, null, null);
     }
 }
