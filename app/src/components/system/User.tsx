@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {UserAccountType} from "../../models";
 import {useMessage} from "../application/Message";
 import {useModal} from "../application/hooks";
-import {useUser} from "./hooks";
+import {useFetchUsers, useUser} from "./hooks";
 import {usePageNation} from "../../views/application/PageNation.tsx";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
 import {SiteLayout} from "../../views/SiteLayout.tsx";
@@ -26,24 +26,19 @@ export const User: React.FC = () => {
             userService
         } = useUser();
 
+        const fetchUsers = useFetchUsers(
+            setLoading,
+            setUsers,
+            setPageNation,
+            setError,
+            showErrorMessage,
+            userService
+        );
+
         useEffect(() => {
-            fetchUsers().then(() => {
+            fetchUsers.load().then(() => {
             });
         }, []);
-
-        const fetchUsers = async (page: number = 1) => {
-            setLoading(true);
-            try {
-                const fetchedUsers = await userService.select(page);
-                setUsers(fetchedUsers.list);
-                setPageNation({...fetchedUsers});
-                setError("");
-            } catch (error: any) {
-                showErrorMessage(`ユーザー情報の取得に失敗しました: ${error?.message}`, setError);
-            } finally {
-                setLoading(false);
-            }
-        };
 
         const handleOpenModal = (user?: UserAccountType) => {
             setMessage("");
@@ -87,7 +82,7 @@ export const User: React.FC = () => {
             const handleDeleteUser = async (userId: string) => {
                 try {
                     await userService.destroy(userId);
-                    await fetchUsers();
+                    await fetchUsers.load();
                     setMessage("ユーザーを削除しました。");
                 } catch (error: any) {
                     showErrorMessage(`ユーザーの削除に失敗しました: ${error?.message}`, setError);
@@ -116,7 +111,7 @@ export const User: React.FC = () => {
                         handleOpenModal={handleOpenModal}
                         users={users}
                         handleDeleteUser={handleDeleteUser}
-                        fetchUsers={fetchUsers}
+                        fetchUsers={fetchUsers.load}
                         pageNation={pageNation}
                     />
                 </>
@@ -143,7 +138,7 @@ export const User: React.FC = () => {
                         await userService.create(newUser);
                     }
                     setNewUser(initialUser);
-                    await fetchUsers();
+                    await fetchUsers.load();
                     setMessage("ユーザーを保存しました。");
                     handleCloseModal();
                 } catch (error: any) {

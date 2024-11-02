@@ -8,7 +8,7 @@ import {EmployeeType} from "../../models";
 import {usePageNation} from "../../views/application/PageNation.tsx";
 import {SiteLayout} from "../../views/SiteLayout.tsx";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
-import {useUser} from "../system/hooks.ts";
+import {useFetchUsers, useUser} from "../system/hooks.ts";
 import {DepartmentCollectionSelectView, DepartmentSelectView} from "../../views/master/DepartmentSelect.tsx";
 import {UserCollectionSelectView, UserSelectView} from "../../views/system/UserSelect.tsx";
 import {EmployeeCollectionView} from "../../views/master/EmployeeCollection.tsx";
@@ -62,20 +62,24 @@ export const Employee: React.FC = () => {
         } = useDepartment();
 
         const {
-            initialUser,
             users,
             setUsers,
-            newUser,
-            setNewUser,
-            searchUserId,
-            setSearchUserId,
             userService
         } = useUser();
+
+        const fetchUsers = useFetchUsers(
+            setLoading,
+            setUsers,
+            setUserPageNation,
+            setError,
+            showErrorMessage,
+            userService
+        );
 
         useEffect(() => {
             fetchEmployees().then(() => {
                 fetchDepartments().then(() => {
-                    fetchUsers().then(() => {
+                    fetchUsers.load().then(() => {
                     });
                 });
             });
@@ -104,20 +108,6 @@ export const Employee: React.FC = () => {
                 setError("");
             } catch (error: any) {
                 showErrorMessage(`部門情報の取得に失敗しました: ${error?.message}`, setError);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        const fetchUsers = async (page: number = 1) => {
-            setLoading(true);
-            try {
-                const fetchedUsers = await userService.select(page);
-                setUsers(fetchedUsers.list);
-                setUserPageNation({...fetchedUsers});
-                setError("");
-            } catch (error: any) {
-                showErrorMessage(`ユーザー情報の取得に失敗しました: ${error?.message}`, setError);
             } finally {
                 setLoading(false);
             }
@@ -291,7 +281,7 @@ export const Employee: React.FC = () => {
                                 }}
                                 handleClose={() => setUserModalIsOpen(false)}
                                 pageNation={userPageNation}
-                                fetchUsers={fetchUsers}
+                                fetchUsers={fetchUsers.load}
                             />
                         }
                     </Modal>
