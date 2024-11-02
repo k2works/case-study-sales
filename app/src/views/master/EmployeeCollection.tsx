@@ -27,11 +27,16 @@ interface EmployeeListItemProps {
     employee: EmployeeType;
     onEdit: (employee: EmployeeType) => void;
     onDelete: (empCode: string) => void;
+    onCheck: (employee: EmployeeType) => void;
 }
 
-const EmployeeListItem: React.FC<EmployeeListItemProps> = ({employee, onEdit, onDelete}) => {
+const EmployeeListItem: React.FC<EmployeeListItemProps> = ({employee, onEdit, onDelete, onCheck}) => {
     return (
         <li className="collection-object-item" key={employee.empCode.value}>
+            <div className="collection-object-item-actions" data-id={employee.empCode.value}>
+                <input type="checkbox" className="collection-object-item-checkbox" checked={employee.checked}
+                       onChange={() => onCheck(employee)}/>
+            </div>
             {['社員コード', '名', '姓', '電話番号', 'FAX番号', '部門'].map((label, idx) => (
                 <div className="collection-object-item-content" data-id={employee.empCode.value} key={idx}>
                     <div className="collection-object-item-content-details">{label}</div>
@@ -59,17 +64,19 @@ interface EmployeeListProps {
     employees: EmployeeType[];
     onEdit: (employee: EmployeeType) => void;
     onDelete: (empCode: string) => void;
+    onCheck: (employee: EmployeeType) => void;
 }
 
-const EmployeeList: React.FC<EmployeeListProps> = ({employees, onEdit, onDelete}) => {
+const EmployeeList: React.FC<EmployeeListProps> = ({employees, onEdit, onDelete, onCheck}) => {
     return (
         <ul className="collection-object-list">
             {employees.map((employee) => (
                 <EmployeeListItem
+                    key={employee.empCode.value}
                     employee={employee}
                     onEdit={onEdit}
                     onDelete={onDelete}
-                    key={employee.empCode.value}
+                    onCheck={onCheck}
                 />
             ))}
         </ul>
@@ -85,6 +92,9 @@ interface EmployeeCollectionViewProps {
     handleOpenModal: () => void;
     employees: any[];
     handleDeleteEmployee: (empCode: string) => void;
+    handleCheckEmployee: (employee: EmployeeType) => void;
+    handleCheckToggleCollection: () => void;
+    handleDeleteCheckedCollection: () => void;
     pageNation: any;
     fetchEmployees: (page: number) => void;
 }
@@ -98,6 +108,9 @@ export const EmployeeCollectionView: React.FC<EmployeeCollectionViewProps> = ({
                                                                                   handleOpenModal,
                                                                                   employees,
                                                                                   handleDeleteEmployee,
+                                                                                  handleCheckEmployee,
+                                                                                  handleCheckToggleCollection,
+                                                                                  handleDeleteCheckedCollection,
                                                                                   pageNation,
                                                                                   fetchEmployees
                                                                               }) => {
@@ -120,11 +133,14 @@ export const EmployeeCollectionView: React.FC<EmployeeCollectionViewProps> = ({
                     />
                     <div className="button-container">
                         <button className="action-button" onClick={() => handleOpenModal()}>新規</button>
+                        <button className="action-button" onClick={handleCheckToggleCollection}>一括選択</button>
+                        <button className="action-button" onClick={handleDeleteCheckedCollection}>一括削除</button>
                     </div>
                     <EmployeeList
                         employees={employees}
                         onEdit={handleOpenModal}
                         onDelete={handleDeleteEmployee}
+                        onCheck={handleCheckEmployee}
                     />
                     <PageNation pageNation={pageNation} callBack={fetchEmployees}/>
                 </div>

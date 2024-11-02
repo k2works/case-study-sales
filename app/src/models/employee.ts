@@ -31,6 +31,7 @@ export type EmployeeType = {
     user: UserAccountType;
     addFlag: boolean;
     deleteFlag: boolean;
+    checked: boolean;
 }
 
 export type EmployeeResourceType = {

@@ -146,6 +146,46 @@ export const Employee: React.FC = () => {
                 }
             };
 
+            const handleCheckEmployee = (employee: EmployeeType) => {
+                const newEmployee = employees.map((emp) => {
+                    if (emp.empCode.value === employee.empCode.value) {
+                        return {
+                            ...emp,
+                            checked: !emp.checked
+                        };
+                    }
+                    return emp;
+                });
+                setEmployees(newEmployee);
+            }
+
+            const handleCheckAllEmployees = () => {
+                const newEmployee = employees.map((emp) => {
+                    return {
+                        ...emp,
+                        checked: !employees.every((emp) => emp.checked)
+                    };
+                });
+                setEmployees(newEmployee);
+            }
+
+            const handleDeleteCheckedEmployees = async () => {
+                if (!employees.some((emp) => emp.checked)) {
+                    setError("削除する社員を選択してください。");
+                    return;
+                }
+
+                try {
+                    if (!window.confirm(`選択した社員を削除しますか？`)) return;
+                    const checkedEmployees = employees.filter((emp) => emp.checked);
+                    await Promise.all(checkedEmployees.map((emp) => employeeService.destroy(emp.empCode.value)));
+                    await fetchEmployees.load();
+                    setMessage("選択した社員を削除しました。");
+                } catch (error: any) {
+                    showErrorMessage(`社員の削除に失敗しました: ${error?.message}`, setError);
+                }
+            }
+
             return (
                 <>
                     <Modal
@@ -168,6 +208,9 @@ export const Employee: React.FC = () => {
                         handleOpenModal={handleOpenModal}
                         employees={employees}
                         handleDeleteEmployee={handleDeleteEmployee}
+                        handleCheckEmployee={handleCheckEmployee}
+                        handleCheckToggleCollection={handleCheckAllEmployees}
+                        handleDeleteCheckedCollection={handleDeleteCheckedEmployees}
                         pageNation={pageNation}
                         fetchEmployees={fetchEmployees.load}
                     />
