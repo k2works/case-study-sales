@@ -1,28 +1,12 @@
 import Config from "./config";
 import Utils from "./utils";
-import {EmployeeResourceType, EmployeeType} from "../models";
-import {toISOStringWithTimezone} from "../components/application/utils.ts";
+import {EmployeeType, mapToEmployeeResource} from "../models";
 
 export const EmployeeService = () => {
     const config = Config();
     const apiUtils = Utils.apiUtils;
     const endPoint = `${config.apiUrl}/employees`;
 
-    const mapToEmployeeResource = (employee: EmployeeType): EmployeeResourceType => {
-        return {
-            empCode: employee.empCode.value,
-            empName: `${employee.empName.firstName} ${employee.empName.lastName}`,
-            empNameKana: `${employee.empName.firstNameKana} ${employee.empName.lastNameKana}`,
-            tel: employee.tel.value,
-            fax: employee.fax.value,
-            occuCode: employee.occuCode.value,
-            departmentCode: employee.department?.departmentId.deptCode.value,
-            departmentStartDate: toISOStringWithTimezone(new Date(employee.department?.departmentId.departmentStartDate.value)),
-            userId: employee.user?.userId.value,
-            addFlag: employee.addFlag,
-            deleteFlag: employee.deleteFlag
-        };
-    };
 
     const select = async (page?: number, pageSize?: number): Promise<any> => {
         let url = endPoint;

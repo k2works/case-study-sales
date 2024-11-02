@@ -1,6 +1,6 @@
 import Config from "./config";
 import Utils from "./utils";
-import {UserAccountType} from "../models";
+import {mapToUserAccountResource, UserAccountType} from "../models";
 
 export const UserService = () => {
     const config = Config();
@@ -26,24 +26,12 @@ export const UserService = () => {
     };
 
     const create = async (user: UserAccountType) => {
-        return await apiUtils.fetchPost(endPoint, {
-            userId: user.userId.value,
-            password: user.password?.value,
-            firstName: user.name.firstName,
-            lastName: user.name.lastName,
-            roleName: user.roleName
-        });
+        return await apiUtils.fetchPost(endPoint, mapToUserAccountResource(user));
     };
 
     const update = async (user: UserAccountType) => {
         const url = `${endPoint}/${user.userId.value}`;
-        return await apiUtils.fetchPut(url, {
-            userId: user.userId.value,
-            password: user.password?.value,
-            firstName: user.name.firstName,
-            lastName: user.name.lastName,
-            roleName: user.roleName
-        });
+        return await apiUtils.fetchPut(url, mapToUserAccountResource(user));
     };
 
     const search = async (pageSize = 10, code: string, page = 1): Promise<any> => {

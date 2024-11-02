@@ -1,38 +1,12 @@
 import Config from "./config";
 import Utils from "./utils";
-import {DepartmentResourceType, DepartmentType} from "../models";
+import {DepartmentType, mapToDepartmentResource} from "../models";
 import {toISOStringWithTimezone} from "../components/application/utils.ts";
 
 export const DepartmentService = () => {
     const config = Config();
     const apiUtils = Utils.apiUtils;
     const endPoint = `${config.apiUrl}/departments`;
-
-    const mapToDepartmentResource = (department: DepartmentType): DepartmentResourceType => {
-        return {
-            departmentCode: department.departmentId.deptCode.value,
-            startDate: toISOStringWithTimezone(new Date(department.departmentId.departmentStartDate.value)),
-            endDate: toISOStringWithTimezone(new Date(department.endDate.value)),
-            departmentName: department.departmentName,
-            layer: department.layer.toString(),
-            path: department.path.value,
-            lowerType: department.lowerType.toString(),
-            slitYn: department.slitYn.toString(),
-            employees: department.employees.map(employee => ({
-                empCode: employee.empCode.value,
-                empName: employee.empName.firstName + " " + employee.empName.lastName,
-                empNameKana: employee.empName.firstNameKana + " " + employee.empName.lastNameKana,
-                tel: employee.tel.value,
-                fax: employee.fax.value,
-                occuCode: employee.occuCode.value,
-                departmentCode: department.departmentId.deptCode.value,
-                departmentStartDate: toISOStringWithTimezone(new Date(department.departmentId.departmentStartDate.value)),
-                userId: employee.user?.userId.value,
-                addFlag: employee.addFlag,
-                deleteFlag: employee.deleteFlag
-            }))
-        };
-    };
 
     const select = async (page?: number, pageSize?: number): Promise<any> => {
         let url = endPoint;

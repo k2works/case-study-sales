@@ -1,5 +1,6 @@
 import {DepartmentType} from './department';
 import {UserAccountType} from './user';
+import {toISOStringWithTimezone} from "../components/application/utils.ts";
 
 export type EmployeeType = {
     empCode: { value: string };
@@ -46,3 +47,18 @@ export type EmployeeResourceType = {
     deleteFlag: boolean;
 }
 
+export const mapToEmployeeResource = (employee: EmployeeType): EmployeeResourceType => {
+    return {
+        empCode: employee.empCode.value,
+        empName: `${employee.empName.firstName} ${employee.empName.lastName}`,
+        empNameKana: `${employee.empName.firstNameKana} ${employee.empName.lastNameKana}`,
+        tel: employee.tel.value,
+        fax: employee.fax.value,
+        occuCode: employee.occuCode.value,
+        departmentCode: employee.department?.departmentId.deptCode.value,
+        departmentStartDate: toISOStringWithTimezone(new Date(employee.department?.departmentId.departmentStartDate.value)),
+        userId: employee.user?.userId.value,
+        addFlag: employee.addFlag,
+        deleteFlag: employee.deleteFlag
+    };
+};

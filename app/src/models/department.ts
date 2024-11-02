@@ -1,4 +1,5 @@
 import {EmployeeResourceType, EmployeeType} from './employee';
+import {toISOStringWithTimezone} from "../components/application/utils.ts";
 
 export type DepartmentIdType = {
     deptCode: { value: string };
@@ -40,3 +41,28 @@ export const SlitYnType = {
 }
 export type SlitYnType = typeof SlitYnType[keyof typeof SlitYnType];
 
+export const mapToDepartmentResource = (department: DepartmentType): DepartmentResourceType => {
+    return {
+        departmentCode: department.departmentId.deptCode.value,
+        startDate: toISOStringWithTimezone(new Date(department.departmentId.departmentStartDate.value)),
+        endDate: toISOStringWithTimezone(new Date(department.endDate.value)),
+        departmentName: department.departmentName,
+        layer: department.layer.toString(),
+        path: department.path.value,
+        lowerType: department.lowerType.toString(),
+        slitYn: department.slitYn.toString(),
+        employees: department.employees.map(employee => ({
+            empCode: employee.empCode.value,
+            empName: employee.empName.firstName + " " + employee.empName.lastName,
+            empNameKana: employee.empName.firstNameKana + " " + employee.empName.lastNameKana,
+            tel: employee.tel.value,
+            fax: employee.fax.value,
+            occuCode: employee.occuCode.value,
+            departmentCode: department.departmentId.deptCode.value,
+            departmentStartDate: toISOStringWithTimezone(new Date(department.departmentId.departmentStartDate.value)),
+            userId: employee.user?.userId.value,
+            addFlag: employee.addFlag,
+            deleteFlag: employee.deleteFlag
+        }))
+    };
+};

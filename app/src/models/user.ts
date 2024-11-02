@@ -23,3 +23,20 @@ export type UserAccountType = {
     roleName?: string;
 }
 
+export type UserAccountResourceType = {
+    userId: string;
+    password: string | undefined;
+    firstName: string | undefined;
+    lastName: string | undefined;
+    roleName: string | undefined;
+}
+
+export const mapToUserAccountResource = (user: UserAccountType): UserAccountResourceType => {
+    return {
+        userId: user.userId.value,
+        password: user.password?.value,
+        firstName: user.name.firstName,
+        lastName: user.name.lastName,
+        roleName: user.roleName
+    };
+}
