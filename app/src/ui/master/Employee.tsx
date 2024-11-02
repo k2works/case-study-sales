@@ -134,6 +134,32 @@ export const EmployeeCollectionView: React.FC<EmployeeSingleViewProps> = ({
     );
 };
 
+interface HeaderProps {
+    title: string;
+    subtitle: string;
+    isEditing: boolean;
+    onCreateOrUpdate: () => void;
+    onClose: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({title, subtitle, isEditing, onCreateOrUpdate, onClose}) => {
+    return (
+        <div className="single-view-header">
+            <div className="single-view-header-item">
+                <h1 className="single-view-title">{title}</h1>
+                <p className="single-view-subtitle">{subtitle}</p>
+            </div>
+            <div className="collection-object-item-actions">
+                <div className="button-container">
+                    <button className="action-button" onClick={onCreateOrUpdate}>
+                        {isEditing ? "更新" : "作成"}
+                    </button>
+                    <button className="action-button" onClick={onClose}>キャンセル</button>
+                </div>
+            </div>
+        </div>
+    );
+};
 
 interface EmployeeFormProps {
     newEmployee: any;  // 適切な型を設定してください
@@ -141,81 +167,83 @@ interface EmployeeFormProps {
     isEditing: boolean;
 }
 
-const EmployeeForm: React.FC<EmployeeFormProps> = ({newEmployee, setNewEmployee, isEditing}) => {
+const Form: React.FC<EmployeeFormProps> = ({newEmployee, setNewEmployee, isEditing}) => {
     return (
-        <div className="single-view-content-item-form">
-            <InputField label="社員コード" value={newEmployee.empCode.value} placeholder="社員コード"
-                        onChange={(value) => setNewEmployee({
-                            ...newEmployee,
-                            empCode: {value}
-                        })} disabled={isEditing}/>
-            <InputField label="姓" value={newEmployee.empName.firstName} placeholder="姓"
-                        onChange={(value) => setNewEmployee({
-                            ...newEmployee,
-                            empName: {...newEmployee.empName, firstName: value}
-                        })}/>
-            <InputField label="名" value={newEmployee.empName.lastName} placeholder="名"
-                        onChange={(value) => setNewEmployee({
-                            ...newEmployee,
-                            empName: {...newEmployee.empName, lastName: value}
-                        })}/>
-            <InputField label="姓カナ" value={newEmployee.empName.firstNameKana} placeholder="姓カナ"
-                        onChange={(value) => setNewEmployee({
-                            ...newEmployee,
-                            empName: {...newEmployee.empName, firstNameKana: value}
-                        })}/>
-            <InputField label="名カナ" value={newEmployee.empName.lastNameKana} placeholder="名カナ"
-                        onChange={(value) => setNewEmployee({
-                            ...newEmployee,
-                            empName: {...newEmployee.empName, lastNameKana: value}
-                        })}/>
-            <InputField label="電話番号" value={newEmployee.tel.value} placeholder="電話番号"
-                        onChange={(value) => setNewEmployee({
-                            ...newEmployee,
-                            tel: {...newEmployee.tel, value}
-                        })}/>
-            <InputField label="FAX番号" value={newEmployee.fax.value} placeholder="FAX番号"
-                        onChange={(value) => setNewEmployee({
-                            ...newEmployee,
-                            fax: {...newEmployee.fax, value}
-                        })}/>
-            <InputField label="職種コード" value={newEmployee.occuCode.value} placeholder="職種コード"
-                        onChange={(value) => setNewEmployee({
-                            ...newEmployee,
-                            occuCode: {...newEmployee.occuCode, value}
-                        })}/>
-            <InputField label="部門コード" value={newEmployee.department?.departmentId.deptCode.value}
-                        placeholder="部門コード" onChange={(value) => setNewEmployee({
-                ...newEmployee,
-                department: {
-                    ...newEmployee.department,
-                    departmentId: {
-                        ...newEmployee.department?.departmentId,
-                        deptCode: {value}
-                    }
-                }
-            })}/>
-            <InputField
-                label="開始日"
-                type="date"
-                value={convertToDateInputFormat(newEmployee.department?.departmentId.departmentStartDate.value)}
-                placeholder="開始日"
-                onChange={(value) => setNewEmployee({
+        <div className="single-view-content-item">
+            <div className="single-view-content-item-form">
+                <InputField label="社員コード" value={newEmployee.empCode.value} placeholder="社員コード"
+                            onChange={(value) => setNewEmployee({
+                                ...newEmployee,
+                                empCode: {value}
+                            })} disabled={isEditing}/>
+                <InputField label="姓" value={newEmployee.empName.firstName} placeholder="姓"
+                            onChange={(value) => setNewEmployee({
+                                ...newEmployee,
+                                empName: {...newEmployee.empName, firstName: value}
+                            })}/>
+                <InputField label="名" value={newEmployee.empName.lastName} placeholder="名"
+                            onChange={(value) => setNewEmployee({
+                                ...newEmployee,
+                                empName: {...newEmployee.empName, lastName: value}
+                            })}/>
+                <InputField label="姓カナ" value={newEmployee.empName.firstNameKana} placeholder="姓カナ"
+                            onChange={(value) => setNewEmployee({
+                                ...newEmployee,
+                                empName: {...newEmployee.empName, firstNameKana: value}
+                            })}/>
+                <InputField label="名カナ" value={newEmployee.empName.lastNameKana} placeholder="名カナ"
+                            onChange={(value) => setNewEmployee({
+                                ...newEmployee,
+                                empName: {...newEmployee.empName, lastNameKana: value}
+                            })}/>
+                <InputField label="電話番号" value={newEmployee.tel.value} placeholder="電話番号"
+                            onChange={(value) => setNewEmployee({
+                                ...newEmployee,
+                                tel: {...newEmployee.tel, value}
+                            })}/>
+                <InputField label="FAX番号" value={newEmployee.fax.value} placeholder="FAX番号"
+                            onChange={(value) => setNewEmployee({
+                                ...newEmployee,
+                                fax: {...newEmployee.fax, value}
+                            })}/>
+                <InputField label="職種コード" value={newEmployee.occuCode.value} placeholder="職種コード"
+                            onChange={(value) => setNewEmployee({
+                                ...newEmployee,
+                                occuCode: {...newEmployee.occuCode, value}
+                            })}/>
+                <InputField label="部門コード" value={newEmployee.department?.departmentId.deptCode.value}
+                            placeholder="部門コード" onChange={(value) => setNewEmployee({
                     ...newEmployee,
                     department: {
                         ...newEmployee.department,
                         departmentId: {
                             ...newEmployee.department?.departmentId,
-                            departmentStartDate: {value}
+                            deptCode: {value}
                         }
                     }
-                })}
-            />
-            <InputField label="ユーザーID" value={newEmployee.user?.userId.value} placeholder="ユーザーID"
-                        onChange={(value) => setNewEmployee({
-                            ...newEmployee,
-                            user: {...newEmployee.user, userId: {value}}
-                        })}/>
+                })}/>
+                <InputField
+                    label="開始日"
+                    type="date"
+                    value={convertToDateInputFormat(newEmployee.department?.departmentId.departmentStartDate.value)}
+                    placeholder="開始日"
+                    onChange={(value) => setNewEmployee({
+                        ...newEmployee,
+                        department: {
+                            ...newEmployee.department,
+                            departmentId: {
+                                ...newEmployee.department?.departmentId,
+                                departmentStartDate: {value}
+                            }
+                        }
+                    })}
+                />
+                <InputField label="ユーザーID" value={newEmployee.user?.userId.value} placeholder="ユーザーID"
+                            onChange={(value) => setNewEmployee({
+                                ...newEmployee,
+                                user: {...newEmployee.user, userId: {value}}
+                            })}/>
+            </div>
         </div>
     );
 };
@@ -271,23 +299,15 @@ export const SingleEmployeeView: React.FC<SingleEmployeeViewProps> = ({
                 <Message error={error} message={message}/>
             </div>
             <div className="single-view-container">
-                <div className="single-view-header">
-                    <div className="single-view-header-item">
-                        <h1 className="single-view-title">社員</h1>
-                        <p className="single-view-subtitle">{isEditing ? "編集" : "新規作成"}</p>
-                    </div>
-                    <div className="collection-object-item-actions">
-                        <div className="button-container">
-                            <button className="action-button"
-                                    onClick={handleCreateOrUpdateEmployee}>{isEditing ? "更新" : "作成"}</button>
-                            <button className="action-button" onClick={handleCloseModal}>キャンセル</button>
-                        </div>
-                    </div>
-                </div>
+                <Header
+                    title="社員"
+                    subtitle={isEditing ? "編集" : "新規作成"}
+                    isEditing={isEditing}
+                    onCreateOrUpdate={handleCreateOrUpdateEmployee}
+                    onClose={handleCloseModal}
+                />
                 <div className="single-view-content">
-                    <div className="single-view-content-item">
-                        <EmployeeForm newEmployee={newEmployee} setNewEmployee={setNewEmployee} isEditing={isEditing}/>
-                    </div>
+                    <Form newEmployee={newEmployee} setNewEmployee={setNewEmployee} isEditing={isEditing}/>
                 </div>
             </div>
         </div>

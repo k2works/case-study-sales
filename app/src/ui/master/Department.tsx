@@ -3,6 +3,7 @@ import {Message} from "../../components/application/Message.tsx";
 import {PageNation} from "../application/PageNation.tsx";
 import {DepartmentIdType, DepartmentType, LowerType, SlitYnType} from "../../types";
 import {convertToDateInputFormat} from "../../components/application/utils.ts";
+import {SingleViewHeaderActions, SingleViewHeaderItem} from "../Common.tsx";
 
 interface SearchBarProps {
     searchValue: string;
@@ -65,85 +66,28 @@ const DepartmentList: React.FC<DepartmentListProps> = ({departments, onEdit, onD
     </div>
 );
 
-interface DepartmentViewProps {
-    error: string | null;
-    message: string | null;
-    searchDepartmentId: { deptCode: { value: string } };
-    setSearchDepartmentId: React.Dispatch<React.SetStateAction<DepartmentIdType>>;
-    handleSearchDepartment: () => void;
-    handleOpenModal: (department?: DepartmentType) => void;
-    departments: DepartmentType[];
-    handleDeleteDepartment: (departmentId: DepartmentType['departmentId']) => void;
-    pageNation: any; // 適切な型を使用してください
-    fetchDepartments: () => void;
-}
-
-export const DepartmentCollectionView: React.FC<DepartmentViewProps> = ({
-                                                                            error,
-                                                                            message,
-                                                                            searchDepartmentId,
-                                                                            setSearchDepartmentId,
-                                                                            handleSearchDepartment,
-                                                                            handleOpenModal,
-                                                                            departments,
-                                                                            handleDeleteDepartment,
-                                                                            pageNation,
-                                                                            fetchDepartments
-                                                                        }) => (
-    <div className="collection-view-object-container">
-        <div className="view-message-container" id="message">
-            <Message error={error} message={message}/>
-        </div>
-        <div className="collection-view-container">
-            <div className="collection-view-header">
-                <div className="single-view-header-item">
-                    <h1 className="single-view-title">部門</h1>
-                </div>
-            </div>
-            <div className="collection-view-content">
-                <SearchBar
-                    searchValue={searchDepartmentId.deptCode.value}
-                    onChange={(e) => setSearchDepartmentId({
-                        ...searchDepartmentId,
-                        deptCode: {value: e.target.value},
-                        departmentStartDate: {value: ""}
-                    })}
-                    onSearch={handleSearchDepartment}
-                />
-                <div className="button-container">
-                    <button className="action-button" onClick={() => handleOpenModal()}>新規作成</button>
-                </div>
-                <DepartmentList
-                    departments={departments}
-                    onEdit={handleOpenModal}
-                    onDelete={handleDeleteDepartment}
-                />
-                <PageNation pageNation={pageNation} callBack={fetchDepartments}/>
-            </div>
-        </div>
-    </div>
-);
-
 interface HeaderProps {
+    title: string;
+    subtitle: string;
     isEditing: boolean;
     handleCreateOrUpdateDepartment: () => void;
     handleCloseModal: () => void;
 }
 
-const Header = ({isEditing, handleCreateOrUpdateDepartment, handleCloseModal}: HeaderProps) => (
-    <div className="single-view-header">
-        <div className="single-view-header-item">
-            <h1 className="single-view-title">部門</h1>
-            <p className="single-view-subtitle">{isEditing ? "編集" : "新規作成"}</p>
-        </div>
-        <div className="collection-object-item-actions">
-            <div className="button-container">
-                <button className="action-button" onClick={handleCreateOrUpdateDepartment}>
-                    {isEditing ? "更新" : "作成"}
-                </button>
-                <button className="action-button" onClick={handleCloseModal}>キャンセル</button>
-            </div>
-        </div>
+const Header = ({
+                    title,
+                    subtitle,
+                    isEditing,
+                    handleCreateOrUpdateDepartment,
+                    handleCloseModal
+                }: HeaderProps) => (
+    <div>
+        <SingleViewHeaderItem title={title} subtitle={subtitle}/>
+        <SingleViewHeaderActions
+            isEditing={isEditing}
+            handleCreateOrUpdateUser={handleCreateOrUpdateDepartment}
+            handleCloseModal={handleCloseModal}
+        />
     </div>
 );
 
@@ -154,7 +98,6 @@ interface FormProps {
 }
 
 const Form = ({isEditing, newDepartment, setNewDepartment}: FormProps) => (
-    <div className="single-view-content-item">
         <div className="single-view-content-item-form">
 
             {/* 部門コードフィールド */}
@@ -311,8 +254,8 @@ const Form = ({isEditing, newDepartment, setNewDepartment}: FormProps) => (
             </FormItem>
 
         </div>
-    </div>
-);
+    )
+;
 
 interface FormItemProps {
     label: string;
@@ -326,13 +269,72 @@ const FormItem = ({label, children}: FormItemProps) => (
     </div>
 );
 
+interface DepartmentCollectionViewProps {
+    error: string | null;
+    message: string | null;
+    searchDepartmentId: { deptCode: { value: string } };
+    setSearchDepartmentId: React.Dispatch<React.SetStateAction<DepartmentIdType>>;
+    handleSearchDepartment: () => void;
+    handleOpenModal: (department?: DepartmentType) => void;
+    departments: DepartmentType[];
+    handleDeleteDepartment: (departmentId: DepartmentType['departmentId']) => void;
+    pageNation: any; // 適切な型を使用してください
+    fetchDepartments: () => void;
+}
+
+export const DepartmentCollectionView: React.FC<DepartmentCollectionViewProps> = ({
+                                                                                      error,
+                                                                                      message,
+                                                                                      searchDepartmentId,
+                                                                                      setSearchDepartmentId,
+                                                                                      handleSearchDepartment,
+                                                                                      handleOpenModal,
+                                                                                      departments,
+                                                                                      handleDeleteDepartment,
+                                                                                      pageNation,
+                                                                                      fetchDepartments
+                                                                                  }) => (
+    <div className="collection-view-object-container">
+        <Message error={error} message={message}/>
+        <div className="collection-view-container">
+            <div className="collection-view-header">
+                <div className="single-view-header-item">
+                    <h1 className="single-view-title">部門</h1>
+                </div>
+            </div>
+            <div className="collection-view-content">
+                <SearchBar
+                    searchValue={searchDepartmentId.deptCode.value}
+                    onChange={(e) => setSearchDepartmentId({
+                        ...searchDepartmentId,
+                        deptCode: {value: e.target.value},
+                        departmentStartDate: {value: ""}
+                    })}
+                    onSearch={handleSearchDepartment}
+                />
+                <div className="button-container">
+                    <button className="action-button" onClick={() => handleOpenModal()}>
+                        新規
+                    </button>
+                </div>
+                <DepartmentList
+                    departments={departments}
+                    onEdit={handleOpenModal}
+                    onDelete={handleDeleteDepartment}
+                />
+                <PageNation pageNation={pageNation} callBack={fetchDepartments}/>
+            </div>
+        </div>
+    </div>
+);
+
 interface DepartmentSingleViewProps {
     error: string | null;
     message: string | null;
     isEditing: boolean;
-    newDepartment: DepartmentType;
     handleCreateOrUpdateDepartment: () => void;
     handleCloseModal: () => void;
+    newDepartment: DepartmentType;
     setNewDepartment: React.Dispatch<React.SetStateAction<DepartmentType>>;
 }
 
@@ -341,24 +343,31 @@ export const DepartmentSingleView = ({
                                          error,
                                          message,
                                          isEditing,
-                                         newDepartment,
                                          handleCreateOrUpdateDepartment,
                                          handleCloseModal,
+                                         newDepartment,
                                          setNewDepartment
                                      }: DepartmentSingleViewProps) => (
     <div className="single-view-object-container">
-        <div className="view-message-container" id="message">
-            <Message error={error} message={message}/>
+        <Message error={error} message={message}/>
+        <div className="single-view-header">
+            <Header
+                title="部門"
+                subtitle={isEditing ? "編集" : "新規作成"}
+                isEditing={isEditing}
+                handleCreateOrUpdateDepartment={handleCreateOrUpdateDepartment}
+                handleCloseModal={handleCloseModal}
+            />
         </div>
         <div className="single-view-container">
-            <Header isEditing={isEditing} handleCreateOrUpdateDepartment={handleCreateOrUpdateDepartment}
-                    handleCloseModal={handleCloseModal}/>
             <div className="single-view-content">
-                <Form
-                    isEditing={isEditing}
-                    newDepartment={newDepartment}
-                    setNewDepartment={setNewDepartment}
-                />
+                <div className="single-view-content-item">
+                    <Form
+                        isEditing={isEditing}
+                        newDepartment={newDepartment}
+                        setNewDepartment={setNewDepartment}
+                    />
+                </div>
             </div>
         </div>
     </div>

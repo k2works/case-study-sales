@@ -2,6 +2,7 @@ import React from "react";
 import {UserAccountType} from "../../types";
 import {Message} from "../../components/application/Message.tsx";
 import {PageNation, PageNationType} from "../application/PageNation.tsx";
+import {SingleViewHeaderActions, SingleViewHeaderItem} from "../Common.tsx";
 
 interface SearchInputProps {
     searchUserId: string;
@@ -23,19 +24,6 @@ const SearchInput: React.FC<SearchInputProps> = ({searchUserId, setSearchUserId,
                 検索
             </button>
         </div>
-    );
-};
-
-interface ButtonProps {
-    text: string;
-    onClick: () => void;
-}
-
-const Button: React.FC<ButtonProps> = ({text, onClick}) => {
-    return (
-        <button className="action-button" onClick={onClick}>
-            {text}
-        </button>
     );
 };
 
@@ -97,7 +85,8 @@ const UserList: React.FC<UserListProps> = ({users, handleOpenModal, handleDelete
     );
 };
 
-interface SingleViewHeaderItemProps {
+
+interface HeaderProps {
     title: string;
     subtitle: string;
     isEditing: boolean;
@@ -105,36 +94,15 @@ interface SingleViewHeaderItemProps {
     handleCloseModal: () => void;
 }
 
-const SingleViewHeaderItem: React.FC<{ title: string, subtitle: string }> = ({title, subtitle}) => (
-    <div className="single-view-header-item">
-        <h1 className="single-view-title">{title}</h1>
-        <p className="single-view-subtitle">{subtitle}</p>
-    </div>
-);
-
-const SingleViewHeaderActions: React.FC<{
-    isEditing: boolean,
-    handleCreateOrUpdateUser: () => void,
-    handleCloseModal: () => void
-}> = ({isEditing, handleCreateOrUpdateUser, handleCloseModal}) => (
-    <div className="single-view-header-item">
-        <div className="button-container">
-            <button className="action-button" onClick={handleCreateOrUpdateUser}>
-                {isEditing ? "更新" : "作成"}
-            </button>
-            <button className="action-button" onClick={handleCloseModal}>キャンセル</button>
-        </div>
-    </div>
-);
-
-const UserViewHeader: React.FC<SingleViewHeaderItemProps> = ({
+const Header: React.FC<HeaderProps> = ({
                                                                  title,
+                                           subtitle,
                                                                  isEditing,
                                                                  handleCreateOrUpdateUser,
                                                                  handleCloseModal
                                                              }) => (
     <div>
-        <SingleViewHeaderItem title={title} subtitle={isEditing ? "編集" : "新規作成"}/>
+        <SingleViewHeaderItem title={title} subtitle={subtitle}/>
         <SingleViewHeaderActions
             isEditing={isEditing}
             handleCreateOrUpdateUser={handleCreateOrUpdateUser}
@@ -144,12 +112,12 @@ const UserViewHeader: React.FC<SingleViewHeaderItemProps> = ({
 );
 
 interface UserFormProps {
+    isEditing: boolean;
     newUser: UserAccountType;
     setNewUser: React.Dispatch<React.SetStateAction<UserAccountType>>;
-    isEditing: boolean;
 }
 
-const UserForm = ({newUser, setNewUser, isEditing}: UserFormProps) => {
+const Form = ({isEditing, newUser, setNewUser}: UserFormProps) => {
     return (
         <div className="single-view-content-item-form">
             <div className="single-view-content-item-form-item">
@@ -235,8 +203,7 @@ export const UserCollectionView = ({
                                        handleDeleteUser,
                                        fetchUsers,
                                        pageNation
-                                   }: UserCollectionViewProps) => {
-    return (
+                                   }: UserCollectionViewProps) => (
         <div className="collection-view-object-container">
             <Message error={error} message={message}/>
             <div className="collection-view-container">
@@ -249,7 +216,9 @@ export const UserCollectionView = ({
                     <SearchInput searchUserId={searchUserId} setSearchUserId={setSearchUserId}
                                  handleSearchUser={handleSearchUser}/>
                     <div className="button-container">
-                        <Button text="新規" onClick={() => handleOpenModal()}/>
+                        <button className="action-button" onClick={() => handleOpenModal()}>
+                            新規
+                        </button>
                     </div>
                     <UserList users={users} handleOpenModal={handleOpenModal}
                               handleDeleteUser={handleDeleteUser}/>
@@ -257,8 +226,7 @@ export const UserCollectionView = ({
                 </div>
             </div>
         </div>
-    )
-}
+);
 
 interface UserSingleViewProps {
     error: string | null;
@@ -277,12 +245,11 @@ export const UserSingleView = ({
                                    handleCloseModal,
                                    newUser,
                                    setNewUser
-                               }: UserSingleViewProps) => {
-    return (
+                               }: UserSingleViewProps) => (
         <div className="single-view-object-container">
             <Message error={error} message={message}/>
             <div className="single-view-header">
-                <UserViewHeader
+                <Header
                     title="ユーザー"
                     subtitle={isEditing ? "編集" : "新規作成"}
                     isEditing={isEditing}
@@ -293,11 +260,14 @@ export const UserSingleView = ({
             <div className="single-view-container">
                 <div className="single-view-content">
                     <div className="single-view-content-item">
-                        <UserForm newUser={newUser} setNewUser={setNewUser} isEditing={isEditing}/>
+                        <Form
+                            isEditing={isEditing}
+                            newUser={newUser}
+                            setNewUser={setNewUser}
+                        />
                     </div>
                 </div>
             </div>
         </div>
     );
-};
 
