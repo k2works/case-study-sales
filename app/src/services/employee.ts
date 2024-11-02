@@ -2,6 +2,14 @@ import Config from "./config";
 import Utils from "./utils";
 import {EmployeeType, mapToEmployeeResource} from "../models";
 
+export interface EmployeeServiceType {
+    select: (page?: number, pageSize?: number) => Promise<any>;
+    find: (empCode: string) => Promise<EmployeeType>;
+    create: (employee: EmployeeType) => Promise<void>;
+    update: (employee: EmployeeType) => Promise<void>;
+    destroy: (empCode: string) => Promise<void>;
+    search: (pageSize: number, empName: string, page: number) => Promise<EmployeeType[]>;
+}
 export const EmployeeService = () => {
     const config = Config();
     const apiUtils = Utils.apiUtils;

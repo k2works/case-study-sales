@@ -3,6 +3,14 @@ import Utils from "./utils";
 import {DepartmentType, mapToDepartmentResource} from "../models";
 import {toISOStringWithTimezone} from "../components/application/utils.ts";
 
+export interface DepartmentServiceType {
+    select: (page?: number, pageSize?: number) => Promise<any>;
+    find: (deptCode: string, departmentStartDate: string) => Promise<DepartmentType[]>;
+    create: (department: DepartmentType) => Promise<void>;
+    update: (department: DepartmentType) => Promise<void>;
+    destroy: (deptCode: string, departmentStartDate: string) => Promise<void>;
+    search: (pageSize: number, code: string, page: number) => Promise<DepartmentType[]>;
+}
 export const DepartmentService = () => {
     const config = Config();
     const apiUtils = Utils.apiUtils;

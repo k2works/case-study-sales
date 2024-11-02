@@ -1,7 +1,8 @@
 import {useState} from "react";
 import {DepartmentIdType, DepartmentType, EmployeeType, LowerType, SlitYnType} from "../../models";
-import {DepartmentService} from "../../services/department.ts";
-import {EmployeeService} from "../../services/employee.ts";
+import {DepartmentService, DepartmentServiceType} from "../../services/department.ts";
+import {EmployeeService, EmployeeServiceType} from "../../services/employee.ts";
+import {PageNationType} from "../../views/application/PageNation.tsx";
 
 export const useDepartment = () => {
     const initialDepartment = {
@@ -34,6 +35,35 @@ export const useDepartment = () => {
         departmentService,
     }
 }
+
+export const useFetchDepartments = (
+    setLoading: (loading: boolean) => void,
+    setList: (list: DepartmentType[]) => void,
+    setPageNation: (pageNation: PageNationType) => void,
+    setError: (error: string) => void,
+    showErrorMessage: (message: string, callback: (error: string) => void) => void, service: DepartmentServiceType) => {
+    const load = async (page: number = 1): Promise<void> => {
+        const ERROR_MESSAGE = "部門情報の取得に失敗しました:";
+        setLoading(true);
+
+        try {
+            const fetchedUsers = await service.select(page);
+            const {list, ...pagination} = fetchedUsers;
+
+            setList(list);
+            setPageNation(pagination);
+            setError("");
+        } catch (error: any) {
+            showErrorMessage(`${ERROR_MESSAGE} ${error?.message}`, setError);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return {
+        load
+    };
+};
 
 export const useEmployee = () => {
     const initialEmployee: EmployeeType = {
@@ -103,3 +133,32 @@ export const useEmployee = () => {
         employeeService,
     };
 }
+
+export const useFetchEmployees = (
+    setLoading: (loading: boolean) => void,
+    setList: (list: EmployeeType[]) => void,
+    setPageNation: (pageNation: PageNationType) => void,
+    setError: (error: string) => void,
+    showErrorMessage: (message: string, callback: (error: string) => void) => void, service: EmployeeServiceType) => {
+    const load = async (page: number = 1): Promise<void> => {
+        const ERROR_MESSAGE = "社員情報の取得に失敗しました:";
+        setLoading(true);
+
+        try {
+            const fetchedUsers = await service.select(page);
+            const {list, ...pagination} = fetchedUsers;
+
+            setList(list);
+            setPageNation(pagination);
+            setError("");
+        } catch (error: any) {
+            showErrorMessage(`${ERROR_MESSAGE} ${error?.message}`, setError);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return {
+        load
+    };
+};

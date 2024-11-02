@@ -3,7 +3,7 @@ import Modal from "react-modal";
 import {showErrorMessage} from "../application/utils.ts";
 import {useMessage} from "../application/Message.tsx";
 import {useModal} from "../application/hooks.ts";
-import {useDepartment, useEmployee} from "./hooks.ts";
+import {useDepartment, useEmployee, useFetchDepartments, useFetchEmployees} from "./hooks.ts";
 import {EmployeeType} from "../../models";
 import {usePageNation} from "../../views/application/PageNation.tsx";
 import {SiteLayout} from "../../views/SiteLayout.tsx";
@@ -50,16 +50,29 @@ export const Employee: React.FC = () => {
             employeeService
         } = useEmployee();
 
+        const fetchEmployees = useFetchEmployees(
+            setLoading,
+            setEmployees,
+            setPageNation,
+            setError,
+            showErrorMessage,
+            employeeService
+        );
+
         const {
-            initialDepartment,
             departments,
             setDepartments,
-            newDepartment,
-            setNewDepartment,
-            searchDepartmentId,
-            setSearchDepartmentId,
             departmentService
         } = useDepartment();
+
+        const fetchDepartments = useFetchDepartments(
+            setLoading,
+            setDepartments,
+            setDepartmentPageNation,
+            setError,
+            showErrorMessage,
+            departmentService
+        );
 
         const {
             users,
@@ -77,41 +90,13 @@ export const Employee: React.FC = () => {
         );
 
         useEffect(() => {
-            fetchEmployees().then(() => {
-                fetchDepartments().then(() => {
+            fetchEmployees.load().then(() => {
+                fetchDepartments.load().then(() => {
                     fetchUsers.load().then(() => {
                     });
                 });
             });
         }, []);
-
-        const fetchEmployees = async (page: number = 1) => {
-            setLoading(true);
-            try {
-                const fetchedEmployees = await employeeService.select(page);
-                setEmployees(fetchedEmployees.list);
-                setPageNation({...fetchedEmployees});
-                setError("");
-            } catch (error: any) {
-                showErrorMessage(`社員情報の取得に失敗しました: ${error?.message}`, setError);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        const fetchDepartments = async (page: number = 1) => {
-            setLoading(true);
-            try {
-                const fetchedDepartments = await departmentService.select(page);
-                setDepartments(fetchedDepartments.list);
-                setDepartmentPageNation({...fetchedDepartments});
-                setError("");
-            } catch (error: any) {
-                showErrorMessage(`部門情報の取得に失敗しました: ${error?.message}`, setError);
-            } finally {
-                setLoading(false);
-            }
-        };
 
         const handleOpenModal = (employee?: EmployeeType) => {
             setMessage("");
@@ -153,7 +138,7 @@ export const Employee: React.FC = () => {
             const handleDeleteEmployee = async (empCode: string) => {
                 try {
                     await employeeService.destroy(empCode);
-                    await fetchEmployees();
+                    await fetchEmployees.load();
                     setMessage("社員を削除しました。");
                 } catch (error: any) {
                     showErrorMessage(`社員の削除に失敗しました: ${error?.message}`, setError);
@@ -183,7 +168,7 @@ export const Employee: React.FC = () => {
                         employees={employees}
                         handleDeleteEmployee={handleDeleteEmployee}
                         pageNation={pageNation}
-                        fetchEmployees={fetchEmployees}
+                        fetchEmployees={fetchEmployees.load}
                     />
                 </>
             )
@@ -212,7 +197,7 @@ export const Employee: React.FC = () => {
                         await employeeService.create(newEmployee);
                     }
                     setNewEmployee({...initialEmployee});
-                    await fetchEmployees();
+                    await fetchEmployees.load();
                     setMessage("社員を保存しました。");
                     handleCloseModal();
                 } catch (error: any) {
@@ -252,7 +237,7 @@ export const Employee: React.FC = () => {
                                 }}
                                 handleClose={() => setDepartmentModalIsOpen(false)}
                                 pageNation={departmentPageNation}
-                                fetchDepartments={fetchDepartments}
+                                fetchDepartments={fetchDepartments.load}
                             />
                         }
                     </Modal>

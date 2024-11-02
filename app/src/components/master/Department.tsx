@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useMessage} from "../application/Message.tsx";
 import {useModal} from "../application/hooks.ts";
-import {useDepartment, useEmployee} from "./hooks.ts";
+import {useDepartment, useEmployee, useFetchDepartments, useFetchEmployees} from "./hooks.ts";
 import {showErrorMessage} from "../application/utils.ts";
 import {DepartmentIdType, DepartmentType, EmployeeType} from "../../models";
 import Modal from "react-modal";
@@ -39,51 +39,36 @@ export const Department: React.FC = () => {
             departmentService
         } = useDepartment();
 
+        const fetchDepartments = useFetchDepartments(
+            setLoading,
+            setDepartments,
+            setPageNation,
+            setError,
+            showErrorMessage,
+            departmentService
+        );
+
         const {
-            initialEmployee,
             employees,
             setEmployees,
-            newEmployee,
-            setNewEmployee,
-            searchEmployeeCode,
-            setSearchEmployeeCode,
             employeeService
         } = useEmployee();
 
+        const fetchEmployees = useFetchEmployees(
+            setLoading,
+            setEmployees,
+            setEmployeePageNation,
+            setError,
+            showErrorMessage,
+            employeeService
+        );
+
         useEffect(() => {
-            fetchDepartments().then(() => {
-                fetchEmployees().then(() => {
+            fetchDepartments.load().then(() => {
+                fetchEmployees.load().then(() => {
                 });
             });
         }, []);
-
-        const fetchDepartments = async (page: number = 1) => {
-            setLoading(true);
-            try {
-                const fetchedDepartments = await departmentService.select(page);
-                setDepartments(fetchedDepartments.list);
-                setPageNation({...fetchedDepartments});
-                setError("");
-            } catch (error: any) {
-                showErrorMessage(`部門情報の取得に失敗しました: ${error?.message}`, setError);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        const fetchEmployees = async (page: number = 1) => {
-            setLoading(true);
-            try {
-                const fetchedEmployees = await employeeService.select(page);
-                setEmployees(fetchedEmployees.list);
-                setEmployeePageNation({...fetchedEmployees});
-                setError("");
-            } catch (error: any) {
-                showErrorMessage(`社員情報の取得に失敗しました: ${error?.message}`, setError);
-            } finally {
-                setLoading(false);
-            }
-        };
 
         const handleOpenModal = (department?: DepartmentType) => {
             setMessage("");
@@ -136,7 +121,7 @@ export const Department: React.FC = () => {
             const handleDeleteDepartment = async (departmentId: DepartmentIdType) => {
                 try {
                     await departmentService.destroy(departmentId.deptCode.value, departmentId.departmentStartDate.value);
-                    await fetchDepartments();
+                    await fetchDepartments.load();
                     setMessage("部門を削除しました。");
                 } catch (error: any) {
                     showErrorMessage(`部門の削除に失敗しました: ${error?.message}`, setError);
@@ -166,7 +151,7 @@ export const Department: React.FC = () => {
                         departments={departments}
                         handleDeleteDepartment={handleDeleteDepartment}
                         pageNation={pageNation}
-                        fetchDepartments={fetchDepartments}
+                        fetchDepartments={fetchDepartments.load}
                     />
                 </>
             );
@@ -236,7 +221,7 @@ export const Department: React.FC = () => {
                         await departmentService.create(newDepartment);
                     }
                     setNewDepartment(initialDepartment);
-                    await fetchDepartments();
+                    await fetchDepartments.load();
                     setMessage("部門を保存しました。");
                     handleCloseModal();
                 } catch (error: any) {
@@ -260,7 +245,7 @@ export const Department: React.FC = () => {
                                 handleSelect={handleEmployeeCollectionSelect}
                                 handleClose={handleCloseEmployeeModal}
                                 pageNation={employeePageNation}
-                                fetchEmployees={fetchEmployees}
+                                fetchEmployees={fetchEmployees.load}
                             />
                         }
                     </Modal>

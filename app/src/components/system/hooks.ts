@@ -30,19 +30,19 @@ export const useUser = () => {
 
 export const useFetchUsers = (
     setLoading: (loading: boolean) => void,
-    setUsers: (users: UserAccountType[]) => void,
+    setList: (list: UserAccountType[]) => void,
     setPageNation: (pageNation: PageNationType) => void,
     setError: (error: string) => void,
-    showErrorMessage: (message: string, callback: (error: string) => void) => void, userService: UserServiceType) => {
+    showErrorMessage: (message: string, callback: (error: string) => void) => void, service: UserServiceType) => {
     const load = async (page: number = 1): Promise<void> => {
         const ERROR_MESSAGE = "ユーザー情報の取得に失敗しました:";
         setLoading(true);
 
         try {
-            const fetchedUsers = await userService.select(page);
+            const fetchedUsers = await service.select(page);
             const {list, ...pagination} = fetchedUsers;
 
-            setUsers(list);
+            setList(list);
             setPageNation(pagination);
             setError("");
         } catch (error: any) {
