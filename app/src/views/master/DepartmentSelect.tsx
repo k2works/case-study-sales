@@ -19,7 +19,7 @@ export const DepartmentSelectView: React.FC<DepartmentSelectProps> = ({handleSel
                 </div>
                 <div className="collection-view-content">
                     <div className="button-container">
-                        <button className="action-button" onClick={handleSelect}>選択
+                        <button className="action-button" onClick={handleSelect} id="select-department">選択
                         </button>
                     </div>
                 </div>

@@ -18,7 +18,7 @@ export const UserSelectView: React.FC<UserSelectProps> = ({handleSelect}) => {
                 </div>
                 <div className="collection-view-content">
                     <div className="button-container">
-                        <button className="action-button" onClick={handleSelect}>選択</button>
+                        <button className="action-button" onClick={handleSelect} id="select-user">選択</button>
                     </div>
                 </div>
             </div>

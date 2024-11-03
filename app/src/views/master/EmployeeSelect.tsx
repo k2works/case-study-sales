@@ -100,7 +100,7 @@ export const EmployeeCollectionSelectView: React.FC<EmployeeCollectionSelectProp
                                     </div>
                                     <div className="collection-object-item-actions" data-id={employee.empCode.value}>
                                         <button className="action-button" onClick={() => handleSelect(employee)}
-                                                id="select">選択
+                                                id="select-employee">選択
                                         </button>
                                     </div>
                                 </li>

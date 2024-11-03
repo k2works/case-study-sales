@@ -13,12 +13,13 @@ const SearchBar: React.FC<SearchBarProps> = ({searchValue, onSearchChange, onSea
     return (
         <div className="search-container">
             <input
+                id="search-input"
                 type="text"
                 placeholder="社員コードで検索"
                 value={searchValue}
                 onChange={onSearchChange}
             />
-            <button className="action-button" onClick={onSearchClick}>検索</button>
+            <button className="action-button" id="search-all" onClick={onSearchClick}>検索</button>
         </div>
     );
 };
@@ -51,10 +52,11 @@ const EmployeeListItem: React.FC<EmployeeListItemProps> = ({employee, onEdit, on
                 </div>
             ))}
             <div className="collection-object-item-actions" data-id={employee.empCode.value}>
-                <button className="action-button" onClick={() => onEdit(employee)}>編集</button>
+                <button className="action-button" onClick={() => onEdit(employee)} id="edit">編集</button>
             </div>
             <div className="collection-object-item-actions" data-id={employee.empCode.value}>
-                <button className="action-button" onClick={() => onDelete(employee.empCode.value)}>削除</button>
+                <button className="action-button" onClick={() => onDelete(employee.empCode.value)} id="delete">削除
+                </button>
             </div>
         </li>
     );
@@ -132,9 +134,13 @@ export const EmployeeCollectionView: React.FC<EmployeeCollectionViewProps> = ({
                         onSearchClick={handleSearchEmployee}
                     />
                     <div className="button-container">
-                        <button className="action-button" onClick={() => handleOpenModal()}>新規</button>
-                        <button className="action-button" onClick={handleCheckToggleCollection}>一括選択</button>
-                        <button className="action-button" onClick={handleDeleteCheckedCollection}>一括削除</button>
+                        <button className="action-button" onClick={() => handleOpenModal()} id="new">新規</button>
+                        <button className="action-button" onClick={handleCheckToggleCollection}
+                                id="selectAll">一括選択
+                        </button>
+                        <button className="action-button" onClick={handleDeleteCheckedCollection}
+                                id="deleteAll">一括削除
+                        </button>
                     </div>
                     <EmployeeList
                         employees={employees}

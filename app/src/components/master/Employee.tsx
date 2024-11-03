@@ -242,10 +242,14 @@ export const Employee: React.FC = () => {
                     }
                     setNewEmployee({...initialEmployee});
                     await fetchEmployees.load();
-                    setMessage("社員を保存しました。");
+                    if (isEditing) {
+                        setMessage("社員を更新しました。");
+                    } else {
+                        setMessage("社員を作成しました。");
+                    }
                     handleCloseModal();
                 } catch (error: any) {
-                    showErrorMessage(`社員の保存に失敗しました: ${error?.message}`, setError);
+                    showErrorMessage(`社員の作成に失敗しました: ${error?.message}`, setError);
                 }
             };
 

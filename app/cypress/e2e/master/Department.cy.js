@@ -54,7 +54,7 @@ describe('部門管理', () => {
             cy.get(':nth-child(7) > .single-view-content-item-form-radios > :nth-child(2)').click();
             cy.get(':nth-child(8) > .single-view-content-item-form-radios > :nth-child(2)').click();
             cy.get('#add').click();
-            cy.get(':nth-child(1) > .collection-object-item-actions > #select').click();
+            cy.get(':nth-child(1) > .collection-object-item-actions > #select-employee').click();
             cy.get('.close-modal-button').click();
             cy.get('#save').click();
 

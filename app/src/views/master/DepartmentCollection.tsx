@@ -11,7 +11,9 @@ interface SearchBarProps {
 
 const SearchBar: React.FC<SearchBarProps> = ({searchValue, onChange, onSearch}) => (
     <div className="search-container">
-        <input type="text" id="search-input" placeholder="部門コードで検索"
+        <input id="search-input"
+               type="text"
+               placeholder="部門コードで検索"
                value={searchValue}
                onChange={onChange}/>
         <button className="action-button" id="search-all" onClick={onSearch}>検索</button>

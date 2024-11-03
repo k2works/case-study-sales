@@ -44,42 +44,58 @@ const Form: React.FC<EmployeeFormProps> = ({newEmployee, setNewEmployee, isEditi
                         onChange={(value) => setNewEmployee({
                             ...newEmployee,
                             empCode: {value}
-                        })} disabled={isEditing}/>
+                        })} disabled={isEditing}
+                        id="empCode"
+            />
             <InputField label="姓" value={newEmployee.empName.firstName} placeholder="姓"
                         onChange={(value) => setNewEmployee({
                             ...newEmployee,
                             empName: {...newEmployee.empName, firstName: value}
-                        })}/>
+                        })}
+                        id="firstName"
+            />
             <InputField label="名" value={newEmployee.empName.lastName} placeholder="名"
                         onChange={(value) => setNewEmployee({
                             ...newEmployee,
                             empName: {...newEmployee.empName, lastName: value}
-                        })}/>
+                        })}
+                        id="lastName"
+            />
             <InputField label="姓カナ" value={newEmployee.empName.firstNameKana} placeholder="姓カナ"
                         onChange={(value) => setNewEmployee({
                             ...newEmployee,
                             empName: {...newEmployee.empName, firstNameKana: value}
-                        })}/>
+                        })}
+                        id="firstNameKana"
+            />
             <InputField label="名カナ" value={newEmployee.empName.lastNameKana} placeholder="名カナ"
                         onChange={(value) => setNewEmployee({
                             ...newEmployee,
                             empName: {...newEmployee.empName, lastNameKana: value}
-                        })}/>
+                        })}
+                        id="lastNameKana"
+            />
             <InputField label="電話番号" value={newEmployee.tel.value} placeholder="電話番号"
                         onChange={(value) => setNewEmployee({
                             ...newEmployee,
                             tel: {...newEmployee.tel, value}
-                        })}/>
+                        })}
+                        id="tel"
+            />
             <InputField label="FAX番号" value={newEmployee.fax.value} placeholder="FAX番号"
                         onChange={(value) => setNewEmployee({
                             ...newEmployee,
                             fax: {...newEmployee.fax, value}
-                        })}/>
+                        })}
+                        id="fax"
+            />
             <InputField label="職種コード" value={newEmployee.occuCode.value} placeholder="職種コード"
                         onChange={(value) => setNewEmployee({
                             ...newEmployee,
                             occuCode: {...newEmployee.occuCode, value}
-                        })}/>
+                        })}
+                        id="occuCode"
+            />
             <InputField label="部門コード" value={newEmployee.department?.departmentId.deptCode.value}
                         placeholder="部門コード" onChange={(value) => setNewEmployee({
                 ...newEmployee,
@@ -90,7 +106,9 @@ const Form: React.FC<EmployeeFormProps> = ({newEmployee, setNewEmployee, isEditi
                         deptCode: {value}
                     }
                 }
-            })}/>
+            })}
+                        id="deptCode"
+            />
             <InputField
                 label="開始日"
                 type="date"
@@ -106,12 +124,15 @@ const Form: React.FC<EmployeeFormProps> = ({newEmployee, setNewEmployee, isEditi
                         }
                     }
                 })}
+                id="departmentStartDate"
             />
             <InputField label="ユーザーID" value={newEmployee.user?.userId.value} placeholder="ユーザーID"
                         onChange={(value) => setNewEmployee({
                             ...newEmployee,
                             user: {...newEmployee.user, userId: {value}}
-                        })}/>
+                        })}
+                        id="userId"
+            />
         </div>
     );
 };
@@ -122,14 +143,16 @@ interface InputFieldProps {
     placeholder: string;
     onChange: (value: string) => void;
     disabled?: boolean;
+    id?: string;
     type?: string;
 }
 
-const InputField: React.FC<InputFieldProps> = ({label, value, placeholder, onChange, disabled, type = "text"}) => {
+const InputField: React.FC<InputFieldProps> = ({label, value, placeholder, onChange, disabled, id, type = "text"}) => {
     return (
         <div className="single-view-content-item-form-item">
             <label className="single-view-content-item-form-item-label">{label}</label>
             <input
+                id={id}
                 type={type}
                 className="single-view-content-item-form-item-input"
                 placeholder={placeholder}
