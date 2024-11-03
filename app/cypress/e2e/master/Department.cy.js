@@ -4,7 +4,7 @@ describe('部門管理', () => {
     })
 
     const userPage = () => {
-        cy.get('#side-nav-menu > :nth-child(1) > :nth-child(3) > .nav-sub-list > :nth-child(1) > a').click();
+        cy.get('#side-nav-menu > :nth-child(1) > :nth-child(3) > .nav-sub-list > :nth-child(1) > #side-nav-department-nav').click();
     }
 
     context('部門一覧', () => {

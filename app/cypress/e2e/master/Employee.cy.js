@@ -4,7 +4,7 @@ describe('社員管理', () => {
     })
 
     const userPage = () => {
-        cy.get('#side-nav-menu > :nth-child(1) > :nth-child(3) > .nav-sub-list > :nth-child(2) > a').click();
+        cy.get('#side-nav-menu > :nth-child(1) > :nth-child(3) > .nav-sub-list > :nth-child(2) > #side-nav-employee-nav').click();
     }
 
     context('社員一覧', () => {

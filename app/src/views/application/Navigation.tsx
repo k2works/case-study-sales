@@ -22,8 +22,8 @@ interface SubNavItemProps {
     children: React.ReactNode;
 }
 const SubNavItem: React.FC<SubNavItemProps> = ({id, to, children}) => (
-    <li className="nav-sub-item" id={id}>
-        <Link to={to}>{children}</Link>
+    <li className="nav-sub-item">
+        <Link to={to} id={id}>{children}</Link>
     </li>
 );
 
@@ -45,7 +45,7 @@ const NaveItems: React.FC = () => {
                         マスタ
                         <ul className="nav-sub-list">
                             <SubNavItem id="side-nav-department-nav" to="/department">部門</SubNavItem>
-                            <SubNavItem id="side-nav-department-nav" to="/employee">社員</SubNavItem>
+                            <SubNavItem id="side-nav-employee-nav" to="/employee">社員</SubNavItem>
                         </ul>
                     </li>
                 </>
