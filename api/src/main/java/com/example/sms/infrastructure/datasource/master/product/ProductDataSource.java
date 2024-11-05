@@ -48,6 +48,17 @@ public class ProductDataSource implements ProductRepository {
             newProductEntity.set更新日時(LocalDateTime.now());
             newProductEntity.set更新者名(username);
             productMapper.insert(newProductEntity);
+
+            if (product.getSubstituteProduct() != null) {
+                product.getSubstituteProduct().forEach(substituteProduct -> {
+                    代替商品 substituteProductEntity = productEntityMapper.mapToEntity(substituteProduct);
+                    substituteProductEntity.set作成日時(LocalDateTime.now());
+                    substituteProductEntity.set作成者名(username);
+                    substituteProductEntity.set更新日時(LocalDateTime.now());
+                    substituteProductEntity.set更新者名(username);
+                    substituteProductMapper.insert(substituteProductEntity);
+                });
+            }
         } else {
             商品マスタ updateProductEntity = productEntityMapper.mapToEntity(product);
             updateProductEntity.set作成日時(productEntity.get().get作成日時());
@@ -55,6 +66,22 @@ public class ProductDataSource implements ProductRepository {
             updateProductEntity.set更新日時(LocalDateTime.now());
             updateProductEntity.set更新者名(username);
             productMapper.updateByPrimaryKey(updateProductEntity);
+
+            if (product.getSubstituteProduct() != null) {
+                product.getSubstituteProduct().forEach(substituteProduct -> {
+                    代替商品Key key = new 代替商品Key();
+                    key.set代替商品コード(substituteProduct.getSubstituteProductKey().getSubstituteProductCode());
+                    key.set商品コード(substituteProduct.getSubstituteProductKey().getProductCode());
+                    substituteProductMapper.deleteByPrimaryKey(key);
+
+                    代替商品 substituteProductEntity = productEntityMapper.mapToEntity(substituteProduct);
+                    substituteProductEntity.set作成日時(LocalDateTime.now());
+                    substituteProductEntity.set作成者名(username);
+                    substituteProductEntity.set更新日時(LocalDateTime.now());
+                    substituteProductEntity.set更新者名(username);
+                    substituteProductMapper.insert(substituteProductEntity);
+                });
+            }
         }
     }
 
@@ -77,7 +104,16 @@ public class ProductDataSource implements ProductRepository {
     }
 
     @Override
-    public void deleteById(String productCode) {
-        productMapper.deleteByPrimaryKey(productCode);
+    public void deleteById(Product product) {
+        if (!product.getSubstituteProduct().isEmpty()) {
+            product.getSubstituteProduct().forEach(substituteProduct -> {
+                代替商品Key key = new 代替商品Key();
+                key.set商品コード(substituteProduct.getSubstituteProductKey().getProductCode());
+                key.set代替商品コード(substituteProduct.getSubstituteProductKey().getSubstituteProductCode());
+                substituteProductMapper.deleteByPrimaryKey(key);
+            });
+        }
+
+        productMapper.deleteByPrimaryKey(product.getProductCode());
     }
 }

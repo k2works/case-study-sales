@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
+import java.util.List;
+
 /**
  * 商品
  */
@@ -28,8 +30,13 @@ public class Product {
     Integer stockAllocationCategory; // 在庫引当区分
     String supplierCode; // 仕入先コード
     Integer supplierBranchNumber; // 仕入先枝番
+    List<SubstituteProduct> substituteProduct; // 代替商品
 
     public static Product of(String productCode, String productFormalName, String productAbbreviation, String productNameKana, String productCategory, Integer sellingPrice, Integer purchasePrice, Integer costOfSales, Integer taxCategory, String productClassificationCode, Integer miscellaneousCategory, Integer stockManagementTargetCategory, Integer stockAllocationCategory, String supplierCode, Integer supplierBranchNumber) {
-        return new Product(productCode, productFormalName, productAbbreviation, productNameKana, productCategory, sellingPrice, purchasePrice, costOfSales, taxCategory, productClassificationCode, miscellaneousCategory, stockManagementTargetCategory, stockAllocationCategory, supplierCode, supplierBranchNumber);
+        return new Product(productCode, productFormalName, productAbbreviation, productNameKana, productCategory, sellingPrice, purchasePrice, costOfSales, taxCategory, productClassificationCode, miscellaneousCategory, stockManagementTargetCategory, stockAllocationCategory, supplierCode, supplierBranchNumber, List.of());
+    }
+
+    public static Product of(Product product, List<SubstituteProduct> substituteProduct) {
+        return new Product(product.productCode, product.productFormalName, product.productAbbreviation, product.productNameKana, product.productCategory, product.sellingPrice, product.purchasePrice, product.costOfSales, product.taxCategory, product.productClassificationCode, product.miscellaneousCategory, product.stockManagementTargetCategory, product.stockAllocationCategory, product.supplierCode, product.supplierBranchNumber, substituteProduct);
     }
 }

@@ -4,6 +4,7 @@ import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.master.product.Product;
+import com.example.sms.domain.model.master.product.SubstituteProduct;
 import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.service.master.department.DepartmentRepository;
@@ -94,5 +95,9 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
     public static Product product(String productCode, String productFormalName, String productAbbreviation, String productNameKana, String productCategory, Integer sellingPrice, Integer purchasePrice, Integer costOfSales, Integer taxCategory, String productClassificationCode, Integer miscellaneousCategory, Integer stockManagementTargetCategory, Integer stockAllocationCategory, String supplierCode, Integer supplierBranchNumber) {
         return Product.of(productCode, productFormalName, productAbbreviation, productNameKana, productCategory, sellingPrice, purchasePrice, costOfSales, taxCategory, productClassificationCode, miscellaneousCategory, stockManagementTargetCategory, stockAllocationCategory, supplierCode, supplierBranchNumber);
+    }
+
+    public static SubstituteProduct substituteProduct(String productCode, String substituteProductCode, Integer priority) {
+        return SubstituteProduct.of(productCode, substituteProductCode, priority);
     }
 }

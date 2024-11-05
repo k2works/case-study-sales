@@ -1,7 +1,10 @@
 package com.example.sms.infrastructure.datasource.master.product;
 
 import com.example.sms.domain.model.master.product.Product;
+import com.example.sms.domain.model.master.product.SubstituteProduct;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class ProductEntityMapper {
@@ -26,8 +29,17 @@ public class ProductEntityMapper {
         return productEntity;
     }
 
+    public 代替商品 mapToEntity(SubstituteProduct substituteProduct) {
+        代替商品 substituteProductEntity = new 代替商品();
+        substituteProductEntity.set商品コード(substituteProduct.getSubstituteProductKey().getProductCode());
+        substituteProductEntity.set代替商品コード(substituteProduct.getSubstituteProductKey().getSubstituteProductCode());
+        substituteProductEntity.set優先順位(substituteProduct.getPriority());
+
+        return substituteProductEntity;
+    }
+
     public Product mapToDomainModel(商品マスタ productEntity) {
-        return Product.of(
+        Product product = Product.of(
                 productEntity.get商品コード(),
                 productEntity.get商品正式名(),
                 productEntity.get商品略称(),
@@ -43,6 +55,23 @@ public class ProductEntityMapper {
                 productEntity.get在庫引当区分(),
                 productEntity.get仕入先コード(),
                 productEntity.get仕入先枝番()
+        );
+
+        List<SubstituteProduct> substituteProducts = productEntity.get代替商品().stream()
+                .map(this::mapToSubstituteProduct)
+                .toList();
+        if (!substituteProducts.isEmpty()) {
+            product = Product.of(product, substituteProducts);
+        }
+
+        return product;
+    }
+
+    private SubstituteProduct mapToSubstituteProduct(代替商品 substituteProductEntity) {
+        return SubstituteProduct.of(
+                substituteProductEntity.get商品コード(),
+                substituteProductEntity.get代替商品コード(),
+                substituteProductEntity.get優先順位()
         );
     }
 }

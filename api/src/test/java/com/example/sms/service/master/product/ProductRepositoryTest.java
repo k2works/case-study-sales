@@ -2,11 +2,18 @@ package com.example.sms.service.master.product;
 
 import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.master.product.Product;
+import com.example.sms.domain.model.master.product.ProductList;
+import com.example.sms.domain.model.master.product.SubstituteProduct;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertEquals;
 
@@ -21,67 +28,140 @@ public class ProductRepositoryTest {
         repository.deleteAll();
     }
 
-    private Product getProduct() {
-        return TestDataFactoryImpl.product("99999999", "商品正式名", "商品略称", "商品名カナ", "0", 1000, 2000, 3000, 1, "00000000", 2, 3, 4, "00000000", 5);
+    private Product getProduct(String productCode) {
+        return TestDataFactoryImpl.product(productCode, "商品正式名", "商品略称", "商品名カナ", "0", 1000, 2000, 3000, 1, "00000000", 2, 3, 4, "00000000", 5);
     }
 
-    @Test
-    @DisplayName("商品一覧を取得できる")
-    void shouldRetrieveAllProducts() {
-        Product product = getProduct();
-
-        repository.save(product);
-
-        assertEquals(1, repository.selectAll().size());
+    private SubstituteProduct getSubstituteProduct(String productCode, String substituteProductCode) {
+        return TestDataFactoryImpl.substituteProduct(productCode, substituteProductCode, 1);
     }
 
-    @Test
-    @DisplayName("商品を登録できる")
-    void shouldRegisterProduct() {
-        Product product = getProduct();
 
-        repository.save(product);
+    @Nested
+    @DisplayName("商品")
+    class ProductTest {
+        @Test
+        @DisplayName("商品一覧を取得できる")
+        void shouldRetrieveAllProducts() {
+            IntStream.range(0, 10).forEach(i -> {
+                Product product = getProduct(String.format("%08d", i));
+                repository.save(product);
+            });
 
-        Product actual = repository.findById(product.getProductCode()).get();
-        assertEquals(product.getProductCode(), actual.getProductCode());
-        assertEquals(product.getProductFormalName(), actual.getProductFormalName());
-        assertEquals(product.getProductAbbreviation(), actual.getProductAbbreviation());
-        assertEquals(product.getProductNameKana(), actual.getProductNameKana());
-        assertEquals(product.getProductCategory(), actual.getProductCategory());
-        assertEquals(product.getSellingPrice(), actual.getSellingPrice());
-        assertEquals(product.getPurchasePrice(), actual.getPurchasePrice());
-        assertEquals(product.getCostOfSales(), actual.getCostOfSales());
-        assertEquals(product.getTaxCategory(), actual.getTaxCategory());
-        assertEquals(product.getProductClassificationCode(), actual.getProductClassificationCode());
-        assertEquals(product.getMiscellaneousCategory(), actual.getMiscellaneousCategory());
-        assertEquals(product.getStockManagementTargetCategory(), actual.getStockManagementTargetCategory());
-        assertEquals(product.getStockAllocationCategory(), actual.getStockAllocationCategory());
-        assertEquals(product.getSupplierCode(), actual.getSupplierCode());
-        assertEquals(product.getSupplierBranchNumber(), actual.getSupplierBranchNumber());
+            assertEquals(10, repository.selectAll().size());
+        }
+
+        @Test
+        @DisplayName("商品を登録できる")
+        void shouldRegisterProduct() {
+            Product product = getProduct("99999999");
+
+            repository.save(product);
+
+            Product actual = repository.findById(product.getProductCode()).get();
+            assertEquals(product.getProductCode(), actual.getProductCode());
+            assertEquals(product.getProductFormalName(), actual.getProductFormalName());
+            assertEquals(product.getProductAbbreviation(), actual.getProductAbbreviation());
+            assertEquals(product.getProductNameKana(), actual.getProductNameKana());
+            assertEquals(product.getProductCategory(), actual.getProductCategory());
+            assertEquals(product.getSellingPrice(), actual.getSellingPrice());
+            assertEquals(product.getPurchasePrice(), actual.getPurchasePrice());
+            assertEquals(product.getCostOfSales(), actual.getCostOfSales());
+            assertEquals(product.getTaxCategory(), actual.getTaxCategory());
+            assertEquals(product.getProductClassificationCode(), actual.getProductClassificationCode());
+            assertEquals(product.getMiscellaneousCategory(), actual.getMiscellaneousCategory());
+            assertEquals(product.getStockManagementTargetCategory(), actual.getStockManagementTargetCategory());
+            assertEquals(product.getStockAllocationCategory(), actual.getStockAllocationCategory());
+            assertEquals(product.getSupplierCode(), actual.getSupplierCode());
+            assertEquals(product.getSupplierBranchNumber(), actual.getSupplierBranchNumber());
+        }
+
+        @Test
+        @DisplayName("商品を更新できる")
+        void shouldUpdateProduct() {
+            Product product = getProduct("99999999");
+            repository.save(product);
+
+            product = repository.findById(product.getProductCode()).get();
+            Product updatedProduct = Product.of(product.getProductCode(), "更新後商品正式名", "更新後商品略称", "更新後商品名カナ", "1", 2000, 3000, 4000, 2, "99999999", 3, 4, 5, "99999999", 6);
+            repository.save(updatedProduct);
+
+            Product actual = repository.findById(product.getProductCode()).get();
+            assertEquals(updatedProduct, actual);
+        }
+
+        @Test
+        @DisplayName("商品を削除できる")
+        void shouldDeleteProduct() {
+            Product product = getProduct("99999999");
+            repository.save(product);
+
+            repository.deleteById(product);
+
+            assertEquals(0, repository.selectAll().size());
+        }
     }
 
-    @Test
-    @DisplayName("商品を更新できる")
-    void shouldUpdateProduct() {
-        Product product = getProduct();
-        repository.save(product);
+    @Nested
+    @DisplayName("代替商品")
+    class SubstituteProductTest {
+        @Test
+        @DisplayName("代替商品一覧を取得できる")
+        void shouldRetrieveAllSubstituteProducts() {
+            Product product = getProduct("99999999");
+            List<SubstituteProduct> substituteProducts = IntStream.range(0, 10).mapToObj(i -> getSubstituteProduct(product.getProductCode(), String.format("%08d", i))).toList();
+            Product newProduct = Product.of(product, substituteProducts);
+            repository.save(newProduct);
 
-        product = repository.findById(product.getProductCode()).get();
-        Product updatedProduct = Product.of(product.getProductCode(), "更新後商品正式名", "更新後商品略称", "更新後商品名カナ", "1", 2000, 3000, 4000, 2, "99999999", 3, 4, 5, "99999999", 6);
-        repository.save(updatedProduct);
+            ProductList actual = repository.selectAll();
+            assertEquals(10, actual.asList().getFirst().getSubstituteProduct().size());
+        }
 
-        Product actual = repository.findById(product.getProductCode()).get();
-        assertEquals(updatedProduct, actual);
+        @Test
+        @DisplayName("代替商品を登録できる")
+        void shouldRegisterSubstituteProduct() {
+            Product product = getProduct("99999999");
+            SubstituteProduct substituteProduct = getSubstituteProduct(product.getProductCode(), "00000000");
+            Product newProduct = Product.of(product, List.of(substituteProduct));
+            repository.save(newProduct);
+
+            Product actual = repository.findById(product.getProductCode()).get();
+            assertEquals(1, actual.getSubstituteProduct().size());
+            assertEquals(substituteProduct, actual.getSubstituteProduct().get(0));
+        }
+
+        @Test
+        @DisplayName("代替商品を更新できる")
+        void shouldUpdateSubstituteProduct() {
+            Product product = getProduct("99999999");
+            SubstituteProduct substituteProduct = getSubstituteProduct(product.getProductCode(), "00000000");
+            Product newProduct = Product.of(product, List.of(substituteProduct));
+            repository.save(newProduct);
+
+            newProduct = repository.findById(product.getProductCode()).get();
+            SubstituteProduct updatedSubstituteProduct = SubstituteProduct.of(product.getProductCode(), "00000000", 2);
+            newProduct = Product.of(newProduct, List.of(updatedSubstituteProduct));
+            repository.save(newProduct);
+
+            Product actual = repository.findById(product.getProductCode()).get();
+            assertEquals(1, actual.getSubstituteProduct().size());
+            assertEquals(updatedSubstituteProduct, actual.getSubstituteProduct().get(0));
+        }
+
+        @Test
+        @DisplayName("代替商品を削除できる")
+        void shouldDeleteSubstituteProduct() {
+            Product product = getProduct("99999999");
+            SubstituteProduct substituteProduct = getSubstituteProduct(product.getProductCode(), "00000000");
+            Product newProduct = Product.of(product, List.of(substituteProduct));
+            repository.save(newProduct);
+
+            Product deleteProduct = repository.findById(product.getProductCode()).get();
+            repository.deleteById(deleteProduct);
+
+            Optional<Product> actual = repository.findById(product.getProductCode());
+            assertEquals(Optional.empty(), actual);
+        }
     }
 
-    @Test
-    @DisplayName("商品を削除できる")
-    void shouldDeleteProduct() {
-        Product product = getProduct();
-        repository.save(product);
-
-        repository.deleteById(product.getProductCode());
-
-        assertEquals(0, repository.selectAll().size());
-    }
 }

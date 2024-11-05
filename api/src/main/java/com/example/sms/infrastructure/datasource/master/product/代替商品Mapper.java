@@ -55,4 +55,6 @@ public interface 代替商品Mapper {
 
     @Delete("DELETE FROM 代替商品")
     void deleteAll();
+
+    代替商品 selectByProductCode(String productCode);
 }
