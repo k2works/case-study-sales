@@ -4,6 +4,7 @@ import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.master.product.Bom;
+import com.example.sms.domain.model.master.product.CustomerSpecificSellingPrice;
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.SubstituteProduct;
 import com.example.sms.domain.model.system.user.RoleName;
@@ -104,6 +105,10 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
     public static Bom bom(String productCode, String componentCode, int i) {
         return Bom.of(productCode, componentCode, i);
+    }
+
+    public static CustomerSpecificSellingPrice customerSpecificSellingPrice(String productCode, String format, int i) {
+        return CustomerSpecificSellingPrice.of(productCode, format, i);
     }
 
 }

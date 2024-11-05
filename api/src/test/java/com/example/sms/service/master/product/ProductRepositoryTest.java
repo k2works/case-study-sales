@@ -1,10 +1,7 @@
 package com.example.sms.service.master.product;
 
 import com.example.sms.TestDataFactoryImpl;
-import com.example.sms.domain.model.master.product.Bom;
-import com.example.sms.domain.model.master.product.Product;
-import com.example.sms.domain.model.master.product.ProductList;
-import com.example.sms.domain.model.master.product.SubstituteProduct;
+import com.example.sms.domain.model.master.product.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -41,6 +38,9 @@ public class ProductRepositoryTest {
         return TestDataFactoryImpl.bom(productCode, componentCode, 1);
     }
 
+    private CustomerSpecificSellingPrice getCustomerSpecificSellingPrice(String productCode, String format) {
+        return TestDataFactoryImpl.customerSpecificSellingPrice(productCode, format, 1);
+    }
 
     @Nested
     @DisplayName("商品")
@@ -115,7 +115,7 @@ public class ProductRepositoryTest {
         void shouldRetrieveAllSubstituteProducts() {
             Product product = getProduct("99999999");
             List<SubstituteProduct> substituteProducts = IntStream.range(0, 10).mapToObj(i -> getSubstituteProduct(product.getProductCode(), String.format("%08d", i))).toList();
-            Product newProduct = Product.of(product, substituteProducts, List.of());
+            Product newProduct = Product.of(product, substituteProducts, List.of(), List.of());
             repository.save(newProduct);
 
             ProductList actual = repository.selectAll();
@@ -127,7 +127,7 @@ public class ProductRepositoryTest {
         void shouldRegisterSubstituteProduct() {
             Product product = getProduct("99999999");
             SubstituteProduct substituteProduct = getSubstituteProduct(product.getProductCode(), "00000000");
-            Product newProduct = Product.of(product, List.of(substituteProduct), List.of());
+            Product newProduct = Product.of(product, List.of(substituteProduct), List.of(), List.of());
             repository.save(newProduct);
 
             Product actual = repository.findById(product.getProductCode()).get();
@@ -140,12 +140,12 @@ public class ProductRepositoryTest {
         void shouldUpdateSubstituteProduct() {
             Product product = getProduct("99999999");
             SubstituteProduct substituteProduct = getSubstituteProduct(product.getProductCode(), "00000000");
-            Product newProduct = Product.of(product, List.of(substituteProduct), List.of());
+            Product newProduct = Product.of(product, List.of(substituteProduct), List.of(), List.of());
             repository.save(newProduct);
 
             newProduct = repository.findById(product.getProductCode()).get();
             SubstituteProduct updatedSubstituteProduct = SubstituteProduct.of(product.getProductCode(), "00000000", 2);
-            newProduct = Product.of(newProduct, List.of(updatedSubstituteProduct), List.of());
+            newProduct = Product.of(newProduct, List.of(updatedSubstituteProduct), List.of(), List.of());
             repository.save(newProduct);
 
             Product actual = repository.findById(product.getProductCode()).get();
@@ -158,7 +158,7 @@ public class ProductRepositoryTest {
         void shouldDeleteSubstituteProduct() {
             Product product = getProduct("99999999");
             SubstituteProduct substituteProduct = getSubstituteProduct(product.getProductCode(), "00000000");
-            Product newProduct = Product.of(product, List.of(substituteProduct), List.of());
+            Product newProduct = Product.of(product, List.of(substituteProduct), List.of(), List.of());
             repository.save(newProduct);
 
             Product deleteProduct = repository.findById(product.getProductCode()).get();
@@ -177,7 +177,7 @@ public class ProductRepositoryTest {
         void shouldRetrieveAllBoms() {
             Product product = getProduct("99999999");
             List<Bom> boms = IntStream.range(0, 10).mapToObj(i -> getBom(product.getProductCode(), String.format("%08d", i))).toList();
-            Product newProduct = Product.of(product, List.of(), boms);
+            Product newProduct = Product.of(product, List.of(), boms, List.of());
             repository.save(newProduct);
 
             ProductList actual = repository.selectAll();
@@ -189,7 +189,7 @@ public class ProductRepositoryTest {
         void shouldRegisterBom() {
             Product product = getProduct("99999999");
             Bom bom = getBom(product.getProductCode(), "00000000");
-            Product newProduct = Product.of(product, List.of(), List.of(bom));
+            Product newProduct = Product.of(product, List.of(), List.of(bom), List.of());
             repository.save(newProduct);
 
             Product actual = repository.findById(product.getProductCode()).get();
@@ -202,12 +202,12 @@ public class ProductRepositoryTest {
         void shouldUpdateBom() {
             Product product = getProduct("99999999");
             Bom bom = getBom(product.getProductCode(), "00000000");
-            Product newProduct = Product.of(product, List.of(), List.of(bom));
+            Product newProduct = Product.of(product, List.of(), List.of(bom), List.of());
             repository.save(newProduct);
 
             newProduct = repository.findById(product.getProductCode()).get();
             Bom updatedBom = Bom.of(product.getProductCode(), "00000000", 2);
-            newProduct = Product.of(newProduct, List.of(), List.of(updatedBom));
+            newProduct = Product.of(newProduct, List.of(), List.of(updatedBom), List.of());
             repository.save(newProduct);
 
             Product actual = repository.findById(product.getProductCode()).get();
@@ -220,7 +220,69 @@ public class ProductRepositoryTest {
         void shouldDeleteBom() {
             Product product = getProduct("99999999");
             Bom bom = getBom(product.getProductCode(), "00000000");
-            Product newProduct = Product.of(product, List.of(), List.of(bom));
+            Product newProduct = Product.of(product, List.of(), List.of(bom), List.of());
+            repository.save(newProduct);
+
+            Product deleteProduct = repository.findById(product.getProductCode()).get();
+            repository.deleteById(deleteProduct);
+
+            Optional<Product> actual = repository.findById(product.getProductCode());
+            assertEquals(Optional.empty(), actual);
+        }
+    }
+
+    @Nested
+    @DisplayName("顧客別販売単価")
+    class CustomerSpecificSellingPriceTest {
+        @Test
+        @DisplayName("顧客別販売単価一覧を取得できる")
+        void shouldRetrieveAllCustomerSpecificSellingPrices() {
+            Product product = getProduct("99999999");
+            List<CustomerSpecificSellingPrice> customerSpecificSellingPrices = IntStream.range(0, 10).mapToObj(i -> getCustomerSpecificSellingPrice(product.getProductCode(), String.format("%08d", i))).toList();
+            Product newProduct = Product.of(product, List.of(), List.of(), customerSpecificSellingPrices);
+            repository.save(newProduct);
+
+            ProductList actual = repository.selectAll();
+            assertEquals(10, actual.asList().getFirst().getCustomerSpecificSellingPrices().size());
+        }
+
+        @Test
+        @DisplayName("顧客別販売単価を登録できる")
+        void shouldRegisterCustomerSpecificSellingPrice() {
+            Product product = getProduct("99999999");
+            CustomerSpecificSellingPrice customerSpecificSellingPrice = getCustomerSpecificSellingPrice(product.getProductCode(), "00000000");
+            Product newProduct = Product.of(product, List.of(), List.of(), List.of(customerSpecificSellingPrice));
+            repository.save(newProduct);
+
+            Product actual = repository.findById(product.getProductCode()).get();
+            assertEquals(1, actual.getCustomerSpecificSellingPrices().size());
+            assertEquals(customerSpecificSellingPrice, actual.getCustomerSpecificSellingPrices().get(0));
+        }
+
+        @Test
+        @DisplayName("顧客別販売単価を更新できる")
+        void shouldUpdateCustomerSpecificSellingPrice() {
+            Product product = getProduct("99999999");
+            CustomerSpecificSellingPrice customerSpecificSellingPrice = getCustomerSpecificSellingPrice(product.getProductCode(), "00000000");
+            Product newProduct = Product.of(product, List.of(), List.of(), List.of(customerSpecificSellingPrice));
+            repository.save(newProduct);
+
+            newProduct = repository.findById(product.getProductCode()).get();
+            CustomerSpecificSellingPrice updatedCustomerSpecificSellingPrice = CustomerSpecificSellingPrice.of(product.getProductCode(), "00000000", 2);
+            newProduct = Product.of(newProduct, List.of(), List.of(), List.of(updatedCustomerSpecificSellingPrice));
+            repository.save(newProduct);
+
+            Product actual = repository.findById(product.getProductCode()).get();
+            assertEquals(1, actual.getCustomerSpecificSellingPrices().size());
+            assertEquals(updatedCustomerSpecificSellingPrice, actual.getCustomerSpecificSellingPrices().get(0));
+        }
+
+        @Test
+        @DisplayName("顧客別販売単価を削除できる")
+        void shouldDeleteCustomerSpecificSellingPrice() {
+            Product product = getProduct("99999999");
+            CustomerSpecificSellingPrice customerSpecificSellingPrice = getCustomerSpecificSellingPrice(product.getProductCode(), "00000000");
+            Product newProduct = Product.of(product, List.of(), List.of(), List.of(customerSpecificSellingPrice));
             repository.save(newProduct);
 
             Product deleteProduct = repository.findById(product.getProductCode()).get();

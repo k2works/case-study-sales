@@ -3,6 +3,8 @@ package com.example.sms.infrastructure.datasource.master.product;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface 顧客別販売単価Mapper {
     /**
@@ -55,4 +57,8 @@ public interface 顧客別販売単価Mapper {
 
     @Delete("DELETE FROM public.顧客別販売単価")
     void deleteAll();
+
+    List<顧客別販売単価> selectAll();
+
+    List<顧客別販売単価> selectByProductCode(String productCode);
 }

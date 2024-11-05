@@ -70,6 +70,17 @@ public class ProductDataSource implements ProductRepository {
                     bomMapper.insert(bomEntity);
                 });
             }
+
+            if (product.getCustomerSpecificSellingPrices() != null) {
+                product.getCustomerSpecificSellingPrices().forEach(customerSpecificSellingPrice -> {
+                    顧客別販売単価 customerSellingPriceEntity = productEntityMapper.mapToEntity(customerSpecificSellingPrice);
+                    customerSellingPriceEntity.set作成日時(LocalDateTime.now());
+                    customerSellingPriceEntity.set作成者名(username);
+                    customerSellingPriceEntity.set更新日時(LocalDateTime.now());
+                    customerSellingPriceEntity.set更新者名(username);
+                    customerSellingPriceMapper.insert(customerSellingPriceEntity);
+                });
+            }
         } else {
             商品マスタ updateProductEntity = productEntityMapper.mapToEntity(product);
             updateProductEntity.set作成日時(productEntity.get().get作成日時());
@@ -107,6 +118,22 @@ public class ProductDataSource implements ProductRepository {
                     bomEntity.set更新日時(LocalDateTime.now());
                     bomEntity.set更新者名(username);
                     bomMapper.insert(bomEntity);
+                });
+            }
+
+            if (product.getCustomerSpecificSellingPrices() != null) {
+                product.getCustomerSpecificSellingPrices().forEach(customerSpecificSellingPrice -> {
+                    顧客別販売単価Key key = new 顧客別販売単価Key();
+                    key.set商品コード(customerSpecificSellingPrice.getCustomerSpecificSellingPriceKey().getProductCode());
+                    key.set取引先コード(customerSpecificSellingPrice.getCustomerSpecificSellingPriceKey().getCustomerCode());
+                    customerSellingPriceMapper.deleteByPrimaryKey(key);
+
+                    顧客別販売単価 customerSellingPriceEntity = productEntityMapper.mapToEntity(customerSpecificSellingPrice);
+                    customerSellingPriceEntity.set作成日時(LocalDateTime.now());
+                    customerSellingPriceEntity.set作成者名(username);
+                    customerSellingPriceEntity.set更新日時(LocalDateTime.now());
+                    customerSellingPriceEntity.set更新者名(username);
+                    customerSellingPriceMapper.insert(customerSellingPriceEntity);
                 });
             }
         }
@@ -147,6 +174,15 @@ public class ProductDataSource implements ProductRepository {
                 key.set商品コード(bom.getBomKey().getProductCode());
                 key.set部品コード(bom.getBomKey().getComponentCode());
                 bomMapper.deleteByPrimaryKey(key);
+            });
+        }
+
+        if (!product.getCustomerSpecificSellingPrices().isEmpty()) {
+            product.getCustomerSpecificSellingPrices().forEach(customerSpecificSellingPrice -> {
+                顧客別販売単価Key key = new 顧客別販売単価Key();
+                key.set商品コード(customerSpecificSellingPrice.getCustomerSpecificSellingPriceKey().getProductCode());
+                key.set取引先コード(customerSpecificSellingPrice.getCustomerSpecificSellingPriceKey().getCustomerCode());
+                customerSellingPriceMapper.deleteByPrimaryKey(key);
             });
         }
 

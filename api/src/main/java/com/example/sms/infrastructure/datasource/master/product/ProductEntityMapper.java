@@ -1,6 +1,7 @@
 package com.example.sms.infrastructure.datasource.master.product;
 
 import com.example.sms.domain.model.master.product.Bom;
+import com.example.sms.domain.model.master.product.CustomerSpecificSellingPrice;
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.SubstituteProduct;
 import org.springframework.stereotype.Component;
@@ -48,6 +49,15 @@ public class ProductEntityMapper {
         return bomEntity;
     }
 
+    public 顧客別販売単価 mapToEntity(CustomerSpecificSellingPrice customerSpecificSellingPrice) {
+        顧客別販売単価 customerSellingPriceEntity = new 顧客別販売単価();
+        customerSellingPriceEntity.set商品コード(customerSpecificSellingPrice.getCustomerSpecificSellingPriceKey().getProductCode());
+        customerSellingPriceEntity.set取引先コード(customerSpecificSellingPrice.getCustomerSpecificSellingPriceKey().getCustomerCode());
+        customerSellingPriceEntity.set販売単価(customerSpecificSellingPrice.getSellingPrice());
+
+        return customerSellingPriceEntity;
+    }
+
     public Product mapToDomainModel(商品マスタ productEntity) {
         Product product = Product.of(
                 productEntity.get商品コード(),
@@ -73,10 +83,14 @@ public class ProductEntityMapper {
         List<Bom> boms = productEntity.get部品表().stream()
                 .map(this::mapToBom)
                 .toList();
-        product = Product.of(product, substituteProducts, boms);
+        List<CustomerSpecificSellingPrice> customerSpecificSellingPrices = productEntity.get顧客別販売単価().stream()
+                .map(this::mapToCustomerSpecificSellingPrice)
+                .toList();
+        product = Product.of(product, substituteProducts, boms, customerSpecificSellingPrices);
 
         return product;
     }
+
 
     private SubstituteProduct mapToSubstituteProduct(代替商品 substituteProductEntity) {
         return SubstituteProduct.of(
@@ -91,6 +105,14 @@ public class ProductEntityMapper {
                 bomEntity.get商品コード(),
                 bomEntity.get部品コード(),
                 bomEntity.get部品数量()
+        );
+    }
+
+    private CustomerSpecificSellingPrice mapToCustomerSpecificSellingPrice(顧客別販売単価 顧客別販売単価) {
+        return CustomerSpecificSellingPrice.of(
+                顧客別販売単価.get商品コード(),
+                顧客別販売単価.get取引先コード(),
+                顧客別販売単価.get販売単価()
         );
     }
 }

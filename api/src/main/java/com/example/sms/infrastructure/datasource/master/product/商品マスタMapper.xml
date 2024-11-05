@@ -41,6 +41,13 @@
                     select="com.example.sms.infrastructure.datasource.master.product.部品表Mapper.selectByProductCode"
                     fetchType="eager"
         />
+
+        <collection property="顧客別販売単価"
+                    javaType="ArrayList"
+                    column="商品コード"
+                    select="com.example.sms.infrastructure.datasource.master.product.顧客別販売単価Mapper.selectByProductCode"
+                    fetchType="eager"
+        />
     </resultMap>
     <sql id="Base_Column_List">
         <!--

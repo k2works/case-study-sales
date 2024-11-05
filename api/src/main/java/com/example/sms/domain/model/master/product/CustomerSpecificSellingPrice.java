@@ -15,4 +15,9 @@ import lombok.Value;
 public class CustomerSpecificSellingPrice {
     CustomerSpecificSellingPriceKey customerSpecificSellingPriceKey; // 顧客別販売単価キー
     Integer sellingPrice; // 販売単価
+
+    public static CustomerSpecificSellingPrice of(String productCode, String format, int i) {
+        CustomerSpecificSellingPriceKey customerSpecificSellingPriceKey = new CustomerSpecificSellingPriceKey(productCode, format);
+        return new CustomerSpecificSellingPrice(customerSpecificSellingPriceKey, i);
+    }
 }

@@ -32,12 +32,13 @@ public class Product {
     Integer supplierBranchNumber; // 仕入先枝番
     List<SubstituteProduct> substituteProduct; // 代替商品
     List<Bom> boms; // 部品表
+    List<CustomerSpecificSellingPrice> customerSpecificSellingPrices; // 顧客別販売単価
 
     public static Product of(String productCode, String productFormalName, String productAbbreviation, String productNameKana, String productCategory, Integer sellingPrice, Integer purchasePrice, Integer costOfSales, Integer taxCategory, String productClassificationCode, Integer miscellaneousCategory, Integer stockManagementTargetCategory, Integer stockAllocationCategory, String supplierCode, Integer supplierBranchNumber) {
-        return new Product(productCode, productFormalName, productAbbreviation, productNameKana, productCategory, sellingPrice, purchasePrice, costOfSales, taxCategory, productClassificationCode, miscellaneousCategory, stockManagementTargetCategory, stockAllocationCategory, supplierCode, supplierBranchNumber, List.of(), List.of());
+        return new Product(productCode, productFormalName, productAbbreviation, productNameKana, productCategory, sellingPrice, purchasePrice, costOfSales, taxCategory, productClassificationCode, miscellaneousCategory, stockManagementTargetCategory, stockAllocationCategory, supplierCode, supplierBranchNumber, List.of(), List.of(), List.of());
     }
 
-    public static Product of(Product product, List<SubstituteProduct> substituteProduct, List<Bom> boms) {
-        return new Product(product.productCode, product.productFormalName, product.productAbbreviation, product.productNameKana, product.productCategory, product.sellingPrice, product.purchasePrice, product.costOfSales, product.taxCategory, product.productClassificationCode, product.miscellaneousCategory, product.stockManagementTargetCategory, product.stockAllocationCategory, product.supplierCode, product.supplierBranchNumber, substituteProduct, boms);
+    public static Product of(Product product, List<SubstituteProduct> substituteProduct, List<Bom> boms, List<CustomerSpecificSellingPrice> customerSpecificSellingPrices) {
+        return new Product(product.productCode, product.productFormalName, product.productAbbreviation, product.productNameKana, product.productCategory, product.sellingPrice, product.purchasePrice, product.costOfSales, product.taxCategory, product.productClassificationCode, product.miscellaneousCategory, product.stockManagementTargetCategory, product.stockAllocationCategory, product.supplierCode, product.supplierBranchNumber, substituteProduct, boms, customerSpecificSellingPrices);
     }
 }
