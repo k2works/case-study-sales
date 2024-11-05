@@ -156,4 +156,17 @@
         where 商品コード = #{商品コード,jdbcType=VARCHAR}
         and 部品コード = #{部品コード,jdbcType=VARCHAR}
     </update>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from public.部品表
+    </select>
+
+    <select id="selectByProductCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from public.部品表
+        where 商品コード = #{商品コード,jdbcType=VARCHAR}
+    </select>
 </mapper>

@@ -59,6 +59,17 @@ public class ProductDataSource implements ProductRepository {
                     substituteProductMapper.insert(substituteProductEntity);
                 });
             }
+
+            if (product.getBoms() != null) {
+                product.getBoms().forEach(bom -> {
+                    部品表 bomEntity = productEntityMapper.mapToEntity(bom);
+                    bomEntity.set作成日時(LocalDateTime.now());
+                    bomEntity.set作成者名(username);
+                    bomEntity.set更新日時(LocalDateTime.now());
+                    bomEntity.set更新者名(username);
+                    bomMapper.insert(bomEntity);
+                });
+            }
         } else {
             商品マスタ updateProductEntity = productEntityMapper.mapToEntity(product);
             updateProductEntity.set作成日時(productEntity.get().get作成日時());
@@ -80,6 +91,22 @@ public class ProductDataSource implements ProductRepository {
                     substituteProductEntity.set更新日時(LocalDateTime.now());
                     substituteProductEntity.set更新者名(username);
                     substituteProductMapper.insert(substituteProductEntity);
+                });
+            }
+
+            if (product.getBoms() != null) {
+                product.getBoms().forEach(bom -> {
+                    部品表Key key = new 部品表Key();
+                    key.set商品コード(bom.getBomKey().getProductCode());
+                    key.set部品コード(bom.getBomKey().getComponentCode());
+                    bomMapper.deleteByPrimaryKey(key);
+
+                    部品表 bomEntity = productEntityMapper.mapToEntity(bom);
+                    bomEntity.set作成日時(LocalDateTime.now());
+                    bomEntity.set作成者名(username);
+                    bomEntity.set更新日時(LocalDateTime.now());
+                    bomEntity.set更新者名(username);
+                    bomMapper.insert(bomEntity);
                 });
             }
         }
@@ -111,6 +138,15 @@ public class ProductDataSource implements ProductRepository {
                 key.set商品コード(substituteProduct.getSubstituteProductKey().getProductCode());
                 key.set代替商品コード(substituteProduct.getSubstituteProductKey().getSubstituteProductCode());
                 substituteProductMapper.deleteByPrimaryKey(key);
+            });
+        }
+
+        if (!product.getBoms().isEmpty()) {
+            product.getBoms().forEach(bom -> {
+                部品表Key key = new 部品表Key();
+                key.set商品コード(bom.getBomKey().getProductCode());
+                key.set部品コード(bom.getBomKey().getComponentCode());
+                bomMapper.deleteByPrimaryKey(key);
             });
         }
 

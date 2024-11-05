@@ -1,6 +1,7 @@
 package com.example.sms.service.master.product;
 
 import com.example.sms.TestDataFactoryImpl;
+import com.example.sms.domain.model.master.product.Bom;
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.ProductList;
 import com.example.sms.domain.model.master.product.SubstituteProduct;
@@ -34,6 +35,10 @@ public class ProductRepositoryTest {
 
     private SubstituteProduct getSubstituteProduct(String productCode, String substituteProductCode) {
         return TestDataFactoryImpl.substituteProduct(productCode, substituteProductCode, 1);
+    }
+
+    private Bom getBom(String productCode, String componentCode) {
+        return TestDataFactoryImpl.bom(productCode, componentCode, 1);
     }
 
 
@@ -110,7 +115,7 @@ public class ProductRepositoryTest {
         void shouldRetrieveAllSubstituteProducts() {
             Product product = getProduct("99999999");
             List<SubstituteProduct> substituteProducts = IntStream.range(0, 10).mapToObj(i -> getSubstituteProduct(product.getProductCode(), String.format("%08d", i))).toList();
-            Product newProduct = Product.of(product, substituteProducts);
+            Product newProduct = Product.of(product, substituteProducts, List.of());
             repository.save(newProduct);
 
             ProductList actual = repository.selectAll();
@@ -122,7 +127,7 @@ public class ProductRepositoryTest {
         void shouldRegisterSubstituteProduct() {
             Product product = getProduct("99999999");
             SubstituteProduct substituteProduct = getSubstituteProduct(product.getProductCode(), "00000000");
-            Product newProduct = Product.of(product, List.of(substituteProduct));
+            Product newProduct = Product.of(product, List.of(substituteProduct), List.of());
             repository.save(newProduct);
 
             Product actual = repository.findById(product.getProductCode()).get();
@@ -135,12 +140,12 @@ public class ProductRepositoryTest {
         void shouldUpdateSubstituteProduct() {
             Product product = getProduct("99999999");
             SubstituteProduct substituteProduct = getSubstituteProduct(product.getProductCode(), "00000000");
-            Product newProduct = Product.of(product, List.of(substituteProduct));
+            Product newProduct = Product.of(product, List.of(substituteProduct), List.of());
             repository.save(newProduct);
 
             newProduct = repository.findById(product.getProductCode()).get();
             SubstituteProduct updatedSubstituteProduct = SubstituteProduct.of(product.getProductCode(), "00000000", 2);
-            newProduct = Product.of(newProduct, List.of(updatedSubstituteProduct));
+            newProduct = Product.of(newProduct, List.of(updatedSubstituteProduct), List.of());
             repository.save(newProduct);
 
             Product actual = repository.findById(product.getProductCode()).get();
@@ -153,7 +158,69 @@ public class ProductRepositoryTest {
         void shouldDeleteSubstituteProduct() {
             Product product = getProduct("99999999");
             SubstituteProduct substituteProduct = getSubstituteProduct(product.getProductCode(), "00000000");
-            Product newProduct = Product.of(product, List.of(substituteProduct));
+            Product newProduct = Product.of(product, List.of(substituteProduct), List.of());
+            repository.save(newProduct);
+
+            Product deleteProduct = repository.findById(product.getProductCode()).get();
+            repository.deleteById(deleteProduct);
+
+            Optional<Product> actual = repository.findById(product.getProductCode());
+            assertEquals(Optional.empty(), actual);
+        }
+    }
+
+    @Nested
+    @DisplayName("部品表")
+    class BomTest {
+        @Test
+        @DisplayName("部品表一覧を取得できる")
+        void shouldRetrieveAllBoms() {
+            Product product = getProduct("99999999");
+            List<Bom> boms = IntStream.range(0, 10).mapToObj(i -> getBom(product.getProductCode(), String.format("%08d", i))).toList();
+            Product newProduct = Product.of(product, List.of(), boms);
+            repository.save(newProduct);
+
+            ProductList actual = repository.selectAll();
+            assertEquals(10, actual.asList().getFirst().getBoms().size());
+        }
+
+        @Test
+        @DisplayName("部品表を登録できる")
+        void shouldRegisterBom() {
+            Product product = getProduct("99999999");
+            Bom bom = getBom(product.getProductCode(), "00000000");
+            Product newProduct = Product.of(product, List.of(), List.of(bom));
+            repository.save(newProduct);
+
+            Product actual = repository.findById(product.getProductCode()).get();
+            assertEquals(1, actual.getBoms().size());
+            assertEquals(bom, actual.getBoms().get(0));
+        }
+
+        @Test
+        @DisplayName("部品表を更新できる")
+        void shouldUpdateBom() {
+            Product product = getProduct("99999999");
+            Bom bom = getBom(product.getProductCode(), "00000000");
+            Product newProduct = Product.of(product, List.of(), List.of(bom));
+            repository.save(newProduct);
+
+            newProduct = repository.findById(product.getProductCode()).get();
+            Bom updatedBom = Bom.of(product.getProductCode(), "00000000", 2);
+            newProduct = Product.of(newProduct, List.of(), List.of(updatedBom));
+            repository.save(newProduct);
+
+            Product actual = repository.findById(product.getProductCode()).get();
+            assertEquals(1, actual.getBoms().size());
+            assertEquals(updatedBom, actual.getBoms().get(0));
+        }
+
+        @Test
+        @DisplayName("部品表を削除できる")
+        void shouldDeleteBom() {
+            Product product = getProduct("99999999");
+            Bom bom = getBom(product.getProductCode(), "00000000");
+            Product newProduct = Product.of(product, List.of(), List.of(bom));
             repository.save(newProduct);
 
             Product deleteProduct = repository.findById(product.getProductCode()).get();

@@ -3,6 +3,7 @@ package com.example.sms;
 import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.employee.Employee;
+import com.example.sms.domain.model.master.product.Bom;
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.SubstituteProduct;
 import com.example.sms.domain.model.system.user.RoleName;
@@ -100,4 +101,9 @@ public class TestDataFactoryImpl implements TestDataFactory {
     public static SubstituteProduct substituteProduct(String productCode, String substituteProductCode, Integer priority) {
         return SubstituteProduct.of(productCode, substituteProductCode, priority);
     }
+
+    public static Bom bom(String productCode, String componentCode, int i) {
+        return Bom.of(productCode, componentCode, i);
+    }
+
 }

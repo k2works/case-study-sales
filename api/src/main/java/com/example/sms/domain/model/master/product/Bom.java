@@ -15,4 +15,9 @@ import lombok.Value;
 public class Bom {
     BomKey bomKey; // 部品表キー
     Integer componentQuantity; // 部品数量
+
+    public static Bom of(String productCode, String componentCode, Integer componentQuantity) {
+        BomKey bomKey = new BomKey(productCode, componentCode);
+        return new Bom(bomKey, componentQuantity);
+    }
 }

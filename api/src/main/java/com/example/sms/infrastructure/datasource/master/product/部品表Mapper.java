@@ -3,6 +3,8 @@ package com.example.sms.infrastructure.datasource.master.product;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface 部品表Mapper {
     /**
@@ -55,4 +57,8 @@ public interface 部品表Mapper {
 
     @Delete("DELETE FROM public.部品表")
     void deleteAll();
+
+    List<部品表> selectAll();
+
+    部品表 selectByProductCode(String productCode);
 }

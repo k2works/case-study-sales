@@ -158,6 +158,12 @@
         and 代替商品コード = #{代替商品コード,jdbcType=VARCHAR}
     </update>
 
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from public.代替商品
+    </select>
+
     <select id="selectByProductCode" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

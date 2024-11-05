@@ -1,5 +1,6 @@
 package com.example.sms.infrastructure.datasource.master.product;
 
+import com.example.sms.domain.model.master.product.Bom;
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.SubstituteProduct;
 import org.springframework.stereotype.Component;
@@ -38,6 +39,15 @@ public class ProductEntityMapper {
         return substituteProductEntity;
     }
 
+    public 部品表 mapToEntity(Bom bom) {
+        部品表 bomEntity = new 部品表();
+        bomEntity.set商品コード(bom.getBomKey().getProductCode());
+        bomEntity.set部品コード(bom.getBomKey().getComponentCode());
+        bomEntity.set部品数量(bom.getComponentQuantity());
+
+        return bomEntity;
+    }
+
     public Product mapToDomainModel(商品マスタ productEntity) {
         Product product = Product.of(
                 productEntity.get商品コード(),
@@ -60,9 +70,10 @@ public class ProductEntityMapper {
         List<SubstituteProduct> substituteProducts = productEntity.get代替商品().stream()
                 .map(this::mapToSubstituteProduct)
                 .toList();
-        if (!substituteProducts.isEmpty()) {
-            product = Product.of(product, substituteProducts);
-        }
+        List<Bom> boms = productEntity.get部品表().stream()
+                .map(this::mapToBom)
+                .toList();
+        product = Product.of(product, substituteProducts, boms);
 
         return product;
     }
@@ -72,6 +83,14 @@ public class ProductEntityMapper {
                 substituteProductEntity.get商品コード(),
                 substituteProductEntity.get代替商品コード(),
                 substituteProductEntity.get優先順位()
+        );
+    }
+
+    private Bom mapToBom(部品表 bomEntity) {
+        return Bom.of(
+                bomEntity.get商品コード(),
+                bomEntity.get部品コード(),
+                bomEntity.get部品数量()
         );
     }
 }
