@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 public class Product {
-    String productCode; // 商品コード
+    ProductCode productCode; // 商品コード
     String productFormalName; // 商品正式名
     String productAbbreviation; // 商品略称
     String productNameKana; // 商品名カナ
@@ -35,7 +35,7 @@ public class Product {
     List<CustomerSpecificSellingPrice> customerSpecificSellingPrices; // 顧客別販売単価
 
     public static Product of(String productCode, String productFormalName, String productAbbreviation, String productNameKana, String productCategory, Integer sellingPrice, Integer purchasePrice, Integer costOfSales, Integer taxCategory, String productClassificationCode, Integer miscellaneousCategory, Integer stockManagementTargetCategory, Integer stockAllocationCategory, String supplierCode, Integer supplierBranchNumber) {
-        return new Product(productCode, productFormalName, productAbbreviation, productNameKana, productCategory, sellingPrice, purchasePrice, costOfSales, taxCategory, productClassificationCode, miscellaneousCategory, stockManagementTargetCategory, stockAllocationCategory, supplierCode, supplierBranchNumber, List.of(), List.of(), List.of());
+        return new Product(ProductCode.of(productCode), productFormalName, productAbbreviation, productNameKana, productCategory, sellingPrice, purchasePrice, costOfSales, taxCategory, productClassificationCode, miscellaneousCategory, stockManagementTargetCategory, stockAllocationCategory, supplierCode, supplierBranchNumber, List.of(), List.of(), List.of());
     }
 
     public static Product of(Product product, List<SubstituteProduct> substituteProduct, List<Bom> boms, List<CustomerSpecificSellingPrice> customerSpecificSellingPrices) {

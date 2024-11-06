@@ -42,7 +42,7 @@ public class ProductDataSource implements ProductRepository {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication != null && authentication.getName() != null ? authentication.getName() : "system";
 
-        Optional<商品マスタ> productEntity = Optional.ofNullable(productMapper.selectByPrimaryKey(product.getProductCode()));
+        Optional<商品マスタ> productEntity = Optional.ofNullable(productMapper.selectByPrimaryKey(product.getProductCode().getValue()));
         if (productEntity.isEmpty()) {
             商品マスタ newProductEntity = productEntityMapper.mapToEntity(product);
             newProductEntity.set作成日時(LocalDateTime.now());
@@ -196,6 +196,6 @@ public class ProductDataSource implements ProductRepository {
             });
         }
 
-        productMapper.deleteByPrimaryKey(product.getProductCode());
+        productMapper.deleteByPrimaryKey(product.getProductCode().getValue());
     }
 }

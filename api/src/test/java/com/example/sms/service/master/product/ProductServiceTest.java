@@ -47,7 +47,7 @@ public class ProductServiceTest {
 
             ProductList result = productService.selectAll();
             assertEquals(4, result.asList().size());
-            Product product = productService.find(newProduct.getProductCode());
+            Product product = productService.find(newProduct.getProductCode().getValue());
             assertEquals(newProduct, product);
         }
 
@@ -57,10 +57,10 @@ public class ProductServiceTest {
             Product product = testDataFactory.Product();
             productService.register(product);
 
-            Product updateProduct = Product.of(product.getProductCode(), "更新後商品正式名", "更新後商品略称", "更新後商品名カナ", "1", 2000, 3000, 4000, 2, "99999999", 3, 4, 5, "99999999", 6);
+            Product updateProduct = Product.of(product.getProductCode().getValue(), "更新後商品正式名", "更新後商品略称", "更新後商品名カナ", "1", 2000, 3000, 4000, 2, "99999999", 3, 4, 5, "99999999", 6);
             productService.save(updateProduct);
 
-            Product result = productService.find(product.getProductCode());
+            Product result = productService.find(product.getProductCode().getValue());
             assertEquals("更新後商品正式名", result.getProductFormalName());
             assertEquals(updateProduct, result);
         }

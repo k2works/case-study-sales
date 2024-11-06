@@ -60,7 +60,7 @@ public class ProductApiController {
     public ResponseEntity<?> create(@RequestBody ProductResource productResource) {
         try {
             Product product = createProduct(productResource.getProductCode(), productResource);
-            if (productService.find(product.getProductCode()) != null) {
+            if (productService.find(product.getProductCode().getValue()) != null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.product.already.exist")));
             }
             productService.register(product);
@@ -75,7 +75,7 @@ public class ProductApiController {
     public ResponseEntity<?> update(@PathVariable String productCode, @RequestBody ProductResource productResource) {
         try {
             Product product = createProduct(productCode, productResource);
-            if (productService.find(product.getProductCode()) == null) {
+            if (productService.find(product.getProductCode().getValue()) == null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.product.not.exist")));
             }
             productService.save(product);
