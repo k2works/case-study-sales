@@ -2,7 +2,9 @@ package com.example.sms.infrastructure.datasource.master.product;
 
 import com.example.sms.domain.model.master.product.ProductCategory;
 import com.example.sms.domain.model.master.product.ProductCategoryList;
+import com.example.sms.infrastructure.PageInfoHelper;
 import com.example.sms.service.master.product.ProductCategoryRepository;
+import com.github.pagehelper.PageInfo;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
@@ -55,6 +57,14 @@ public class ProductCategoryDataSource implements ProductCategoryRepository {
         return new ProductCategoryList(productCategoryEntities.stream()
                 .map(productCategoryEntityMapper::mapToDomainModel)
                 .toList());
+    }
+
+    @Override
+    public PageInfo<ProductCategory> selectAllWithPageInfo() {
+        List<商品分類マスタ> productEntities = productCategoryMapper.selectAll();
+        PageInfo<商品分類マスタ> pageInfo = new PageInfo<>(productEntities);
+
+        return PageInfoHelper.of(pageInfo, productCategoryEntityMapper::mapToDomainModel);
     }
 
     @Override

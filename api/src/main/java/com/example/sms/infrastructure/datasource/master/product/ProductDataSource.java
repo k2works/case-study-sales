@@ -2,7 +2,9 @@ package com.example.sms.infrastructure.datasource.master.product;
 
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.ProductList;
+import com.example.sms.infrastructure.PageInfoHelper;
 import com.example.sms.service.master.product.ProductRepository;
+import com.github.pagehelper.PageInfo;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
@@ -146,6 +148,14 @@ public class ProductDataSource implements ProductRepository {
         return new ProductList(productEntities.stream()
                 .map(productEntityMapper::mapToDomainModel)
                 .toList());
+    }
+
+    @Override
+    public PageInfo<Product> selectAllWithPageInfo() {
+        List<商品マスタ> productEntities = productMapper.selectAll();
+        PageInfo<商品マスタ> pageInfo = new PageInfo<>(productEntities);
+
+        return PageInfoHelper.of(pageInfo, productEntityMapper::mapToDomainModel);
     }
 
     @Override

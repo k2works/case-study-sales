@@ -8,6 +8,8 @@ import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.service.master.department.DepartmentRepository;
 import com.example.sms.service.master.employee.EmployeeRepository;
+import com.example.sms.service.master.product.ProductCategoryRepository;
+import com.example.sms.service.master.product.ProductRepository;
 import com.example.sms.service.system.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,6 +24,10 @@ public class TestDataFactoryImpl implements TestDataFactory {
     DepartmentRepository departmentRepository;
     @Autowired
     EmployeeRepository employeeRepository;
+    @Autowired
+    ProductRepository productRepository;
+    @Autowired
+    ProductCategoryRepository productCategoryRepository;
 
     @Override
     public void setUpForAuthApiService() {
@@ -43,6 +49,16 @@ public class TestDataFactoryImpl implements TestDataFactory {
     @Override
     public Employee Employee() {
         return employee("EMP999", "10000", LocalDateTime.of(2021, 1, 1, 0, 0));
+    }
+
+    @Override
+    public Product Product() {
+        return product("P99999", "商品9", "商品9", "しょうひん9", "9", 900, 810, 90, 9, "カテゴリ9", 9, 9, 9, "サプライヤ9", 9);
+    }
+
+    @Override
+    public ProductCategory ProductCategory() {
+        return getProductCategory("カテゴリ9", "カテゴリ9", 1, "2", 3);
     }
 
     @Override
@@ -70,6 +86,18 @@ public class TestDataFactoryImpl implements TestDataFactory {
         employeeRepository.deleteAll();
         employeeRepository.save(employee("EMP001", "10000", startDate));
         employeeRepository.save(employee("EMP002", "10000", startDate));
+    }
+
+    @Override
+    public void setUpForProductService() {
+        productRepository.deleteAll();
+        productRepository.save(product("P00001", "商品1", "商品1", "しょうひん1", "1", 100, 90, 10, 1, "カテゴリ1", 1, 1, 1, "サプライヤ1", 1));
+        productRepository.save(product("P00002", "商品2", "商品2", "しょうひん2", "2", 200, 180, 20, 2, "カテゴリ1", 2, 2, 2, "サプライヤ2", 2));
+        productRepository.save(product("P00003", "商品3", "商品3", "しょうひん3", "3", 300, 270, 30, 3, "カテゴリ2", 3, 3, 3, "サプライヤ3", 3));
+
+        productCategoryRepository.deleteAll();
+        productCategoryRepository.save(getProductCategory("カテゴリ1", "カテゴリ1", 1, "カテゴリ1", 1));
+        productCategoryRepository.save(getProductCategory("カテゴリ2", "カテゴリ2", 2, "カテゴリ2", 2));
     }
 
     private static User user() {

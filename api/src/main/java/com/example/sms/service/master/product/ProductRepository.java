@@ -2,6 +2,7 @@ package com.example.sms.service.master.product;
 
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.ProductList;
+import com.github.pagehelper.PageInfo;
 
 import java.util.Optional;
 
@@ -15,4 +16,6 @@ public interface ProductRepository {
     Optional<Product> findById(String productCode);
 
     void deleteById(Product productCode);
+
+    PageInfo<Product> selectAllWithPageInfo();
 }
