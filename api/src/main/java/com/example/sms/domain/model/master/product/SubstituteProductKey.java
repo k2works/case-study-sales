@@ -11,10 +11,10 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 public class SubstituteProductKey {
-    String productCode; // 商品コード
+    ProductCode productCode; // 商品コード
     String substituteProductCode; // 代替商品コード
 
     public static SubstituteProductKey of(String productCode, String substituteProductCode) {
-        return new SubstituteProductKey(productCode, substituteProductCode);
+        return new SubstituteProductKey(ProductCode.of(productCode), substituteProductCode);
     }
 }

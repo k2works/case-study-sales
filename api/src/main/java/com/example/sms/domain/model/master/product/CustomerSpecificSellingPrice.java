@@ -17,7 +17,7 @@ public class CustomerSpecificSellingPrice {
     Integer sellingPrice; // 販売単価
 
     public static CustomerSpecificSellingPrice of(String productCode, String format, int i) {
-        CustomerSpecificSellingPriceKey customerSpecificSellingPriceKey = new CustomerSpecificSellingPriceKey(productCode, format);
+        CustomerSpecificSellingPriceKey customerSpecificSellingPriceKey = CustomerSpecificSellingPriceKey.of(productCode, format);
         return new CustomerSpecificSellingPrice(customerSpecificSellingPriceKey, i);
     }
 }

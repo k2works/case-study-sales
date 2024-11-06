@@ -33,7 +33,7 @@ public class ProductEntityMapper {
 
     public 代替商品 mapToEntity(SubstituteProduct substituteProduct) {
         代替商品 substituteProductEntity = new 代替商品();
-        substituteProductEntity.set商品コード(substituteProduct.getSubstituteProductKey().getProductCode());
+        substituteProductEntity.set商品コード(substituteProduct.getSubstituteProductKey().getProductCode().getValue());
         substituteProductEntity.set代替商品コード(substituteProduct.getSubstituteProductKey().getSubstituteProductCode());
         substituteProductEntity.set優先順位(substituteProduct.getPriority());
 
@@ -42,7 +42,7 @@ public class ProductEntityMapper {
 
     public 部品表 mapToEntity(Bom bom) {
         部品表 bomEntity = new 部品表();
-        bomEntity.set商品コード(bom.getBomKey().getProductCode());
+        bomEntity.set商品コード(bom.getBomKey().getProductCode().getValue());
         bomEntity.set部品コード(bom.getBomKey().getComponentCode());
         bomEntity.set部品数量(bom.getComponentQuantity());
 
@@ -51,7 +51,7 @@ public class ProductEntityMapper {
 
     public 顧客別販売単価 mapToEntity(CustomerSpecificSellingPrice customerSpecificSellingPrice) {
         顧客別販売単価 customerSellingPriceEntity = new 顧客別販売単価();
-        customerSellingPriceEntity.set商品コード(customerSpecificSellingPrice.getCustomerSpecificSellingPriceKey().getProductCode());
+        customerSellingPriceEntity.set商品コード(customerSpecificSellingPrice.getCustomerSpecificSellingPriceKey().getProductCode().getValue());
         customerSellingPriceEntity.set取引先コード(customerSpecificSellingPrice.getCustomerSpecificSellingPriceKey().getCustomerCode());
         customerSellingPriceEntity.set販売単価(customerSpecificSellingPrice.getSellingPrice());
 

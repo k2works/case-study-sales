@@ -95,7 +95,7 @@ public class ProductDataSource implements ProductRepository {
                 product.getSubstituteProduct().forEach(substituteProduct -> {
                     代替商品Key key = new 代替商品Key();
                     key.set代替商品コード(substituteProduct.getSubstituteProductKey().getSubstituteProductCode());
-                    key.set商品コード(substituteProduct.getSubstituteProductKey().getProductCode());
+                    key.set商品コード(substituteProduct.getSubstituteProductKey().getProductCode().getValue());
                     substituteProductMapper.deleteByPrimaryKey(key);
 
                     代替商品 substituteProductEntity = productEntityMapper.mapToEntity(substituteProduct);
@@ -110,7 +110,7 @@ public class ProductDataSource implements ProductRepository {
             if (product.getBoms() != null) {
                 product.getBoms().forEach(bom -> {
                     部品表Key key = new 部品表Key();
-                    key.set商品コード(bom.getBomKey().getProductCode());
+                    key.set商品コード(bom.getBomKey().getProductCode().getValue());
                     key.set部品コード(bom.getBomKey().getComponentCode());
                     bomMapper.deleteByPrimaryKey(key);
 
@@ -126,7 +126,7 @@ public class ProductDataSource implements ProductRepository {
             if (product.getCustomerSpecificSellingPrices() != null) {
                 product.getCustomerSpecificSellingPrices().forEach(customerSpecificSellingPrice -> {
                     顧客別販売単価Key key = new 顧客別販売単価Key();
-                    key.set商品コード(customerSpecificSellingPrice.getCustomerSpecificSellingPriceKey().getProductCode());
+                    key.set商品コード(customerSpecificSellingPrice.getCustomerSpecificSellingPriceKey().getProductCode().getValue());
                     key.set取引先コード(customerSpecificSellingPrice.getCustomerSpecificSellingPriceKey().getCustomerCode());
                     customerSellingPriceMapper.deleteByPrimaryKey(key);
 
@@ -172,7 +172,7 @@ public class ProductDataSource implements ProductRepository {
         if (!product.getSubstituteProduct().isEmpty()) {
             product.getSubstituteProduct().forEach(substituteProduct -> {
                 代替商品Key key = new 代替商品Key();
-                key.set商品コード(substituteProduct.getSubstituteProductKey().getProductCode());
+                key.set商品コード(substituteProduct.getSubstituteProductKey().getProductCode().getValue());
                 key.set代替商品コード(substituteProduct.getSubstituteProductKey().getSubstituteProductCode());
                 substituteProductMapper.deleteByPrimaryKey(key);
             });
@@ -181,7 +181,7 @@ public class ProductDataSource implements ProductRepository {
         if (!product.getBoms().isEmpty()) {
             product.getBoms().forEach(bom -> {
                 部品表Key key = new 部品表Key();
-                key.set商品コード(bom.getBomKey().getProductCode());
+                key.set商品コード(bom.getBomKey().getProductCode().getValue());
                 key.set部品コード(bom.getBomKey().getComponentCode());
                 bomMapper.deleteByPrimaryKey(key);
             });
@@ -190,7 +190,7 @@ public class ProductDataSource implements ProductRepository {
         if (!product.getCustomerSpecificSellingPrices().isEmpty()) {
             product.getCustomerSpecificSellingPrices().forEach(customerSpecificSellingPrice -> {
                 顧客別販売単価Key key = new 顧客別販売単価Key();
-                key.set商品コード(customerSpecificSellingPrice.getCustomerSpecificSellingPriceKey().getProductCode());
+                key.set商品コード(customerSpecificSellingPrice.getCustomerSpecificSellingPriceKey().getProductCode().getValue());
                 key.set取引先コード(customerSpecificSellingPrice.getCustomerSpecificSellingPriceKey().getCustomerCode());
                 customerSellingPriceMapper.deleteByPrimaryKey(key);
             });
