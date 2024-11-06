@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Component
 public class TestDataFactoryImpl implements TestDataFactory {
@@ -91,7 +92,13 @@ public class TestDataFactoryImpl implements TestDataFactory {
     @Override
     public void setUpForProductService() {
         productRepository.deleteAll();
-        productRepository.save(product("P00001", "商品1", "商品1", "しょうひん1", "1", 100, 90, 10, 1, "カテゴリ1", 1, 1, 1, "サプライヤ1", 1));
+
+        SubstituteProduct substituteProduct = substituteProduct("P00001", "000001", 1);
+        Bom bom = bom("P00001", "000001", 1);
+        CustomerSpecificSellingPrice customerSpecificSellingPrice = customerSpecificSellingPrice("P00001", "1", 1);
+        Product product = product("P00001", "商品1", "商品1", "しょうひん1", "1", 100, 90, 10, 1, "カテゴリ1", 1, 1, 1, "サプライヤ1", 1);
+
+        productRepository.save(Product.of(product, List.of(substituteProduct), List.of(bom), List.of(customerSpecificSellingPrice)));
         productRepository.save(product("P00002", "商品2", "商品2", "しょうひん2", "2", 200, 180, 20, 2, "カテゴリ1", 2, 2, 2, "サプライヤ2", 2));
         productRepository.save(product("P00003", "商品3", "商品3", "しょうひん3", "3", 300, 270, 30, 3, "カテゴリ2", 3, 3, 3, "サプライヤ3", 3));
 
