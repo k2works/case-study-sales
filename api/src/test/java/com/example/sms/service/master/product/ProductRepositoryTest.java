@@ -68,15 +68,15 @@ public class ProductRepositoryTest {
             assertEquals(product.getProductFormalName(), actual.getProductFormalName());
             assertEquals(product.getProductAbbreviation(), actual.getProductAbbreviation());
             assertEquals(product.getProductNameKana(), actual.getProductNameKana());
-            assertEquals(product.getProductCategory(), actual.getProductCategory());
+            assertEquals(product.getProductType(), actual.getProductType());
             assertEquals(product.getSellingPrice(), actual.getSellingPrice());
             assertEquals(product.getPurchasePrice(), actual.getPurchasePrice());
             assertEquals(product.getCostOfSales(), actual.getCostOfSales());
             assertEquals(product.getTaxCategory(), actual.getTaxCategory());
-            assertEquals(product.getProductClassificationCode(), actual.getProductClassificationCode());
-            assertEquals(product.getMiscellaneousCategory(), actual.getMiscellaneousCategory());
-            assertEquals(product.getStockManagementTargetCategory(), actual.getStockManagementTargetCategory());
-            assertEquals(product.getStockAllocationCategory(), actual.getStockAllocationCategory());
+            assertEquals(product.getProductCategoryCode(), actual.getProductCategoryCode());
+            assertEquals(product.getMiscellaneousType(), actual.getMiscellaneousType());
+            assertEquals(product.getStockManagementTargetType(), actual.getStockManagementTargetType());
+            assertEquals(product.getStockAllocationType(), actual.getStockAllocationType());
             assertEquals(product.getSupplierCode(), actual.getSupplierCode());
             assertEquals(product.getSupplierBranchNumber(), actual.getSupplierBranchNumber());
         }

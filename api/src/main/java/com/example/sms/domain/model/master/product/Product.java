@@ -19,15 +19,15 @@ public class Product {
     String productFormalName; // 商品正式名
     String productAbbreviation; // 商品略称
     String productNameKana; // 商品名カナ
-    String productCategory; // 商品区分
+    String productType; // 商品区分
     Integer sellingPrice; // 販売単価
     Integer purchasePrice; // 仕入単価
     Integer costOfSales; // 売上原価
     Integer taxCategory; // 税区分
-    String productClassificationCode; // 商品分類コード
-    Integer miscellaneousCategory; // 雑区分
-    Integer stockManagementTargetCategory; // 在庫管理対象区分
-    Integer stockAllocationCategory; // 在庫引当区分
+    String productCategoryCode; // 商品分類コード
+    Integer miscellaneousType; // 雑区分
+    Integer stockManagementTargetType; // 在庫管理対象区分
+    Integer stockAllocationType; // 在庫引当区分
     String supplierCode; // 仕入先コード
     Integer supplierBranchNumber; // 仕入先枝番
     List<SubstituteProduct> substituteProduct; // 代替商品
@@ -39,6 +39,6 @@ public class Product {
     }
 
     public static Product of(Product product, List<SubstituteProduct> substituteProduct, List<Bom> boms, List<CustomerSpecificSellingPrice> customerSpecificSellingPrices) {
-        return new Product(product.productCode, product.productFormalName, product.productAbbreviation, product.productNameKana, product.productCategory, product.sellingPrice, product.purchasePrice, product.costOfSales, product.taxCategory, product.productClassificationCode, product.miscellaneousCategory, product.stockManagementTargetCategory, product.stockAllocationCategory, product.supplierCode, product.supplierBranchNumber, substituteProduct, boms, customerSpecificSellingPrices);
+        return new Product(product.productCode, product.productFormalName, product.productAbbreviation, product.productNameKana, product.productType, product.sellingPrice, product.purchasePrice, product.costOfSales, product.taxCategory, product.productCategoryCode, product.miscellaneousType, product.stockManagementTargetType, product.stockAllocationType, product.supplierCode, product.supplierBranchNumber, substituteProduct, boms, customerSpecificSellingPrices);
     }
 }
