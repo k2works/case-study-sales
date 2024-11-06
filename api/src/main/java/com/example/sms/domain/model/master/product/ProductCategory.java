@@ -20,7 +20,7 @@ public class ProductCategory {
     Integer productCategoryHierarchy; // 商品分類階層
     String productCategoryPath; // 商品分類パス
     Integer lowestLevelDivision; // 最下層区分
-    List<Product> Products; // 商品
+    List<Product> products; // 商品
 
     public static ProductCategory of(String productCategoryCode, String productCategoryName, int productCategoryHierarchy, String productCategoryPath, int lowestLevelDivision) {
         return new ProductCategory(productCategoryCode, productCategoryName, productCategoryHierarchy, productCategoryPath, lowestLevelDivision, List.of());

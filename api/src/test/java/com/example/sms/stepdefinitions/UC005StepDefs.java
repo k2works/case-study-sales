@@ -2,6 +2,8 @@ package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
 import com.example.sms.domain.model.master.product.Product;
+import com.example.sms.domain.model.master.product.ProductCategory;
+import com.example.sms.presentation.api.master.product.ProductCategoryResource;
 import com.example.sms.presentation.api.master.product.ProductResource;
 import com.example.sms.stepdefinitions.utils.ListResponse;
 import com.example.sms.stepdefinitions.utils.MessageResponse;
@@ -27,6 +29,7 @@ public class UC005StepDefs extends SpringAcceptanceTest {
     private static final String HOST = "http://localhost:" + PORT;
     private static final String AUTH_API_URL = HOST + "/api/auth";
     private static final String PRODUCTS_API_URL = HOST + "/api/products";
+    private static final String PRODUCT_CATEGORIES_API_URL = HOST + "/api/product/categories";
     @Autowired
     TestDataFactory testDataFactory;
 
@@ -56,6 +59,8 @@ public class UC005StepDefs extends SpringAcceptanceTest {
     public void toGet(String list) throws IOException {
         if (list.equals("商品一覧")) {
             executeGet(PRODUCTS_API_URL);
+        } else if (list.equals("商品分類一覧")) {
+            executeGet(PRODUCT_CATEGORIES_API_URL);
         }
     }
 
@@ -70,6 +75,12 @@ public class UC005StepDefs extends SpringAcceptanceTest {
             });
             List<Product> actual = response.getList();
             assertEquals(3, actual.size());
+        } else if (list.equals("商品分類一覧")) {
+            String result = latestResponse.getBody();
+            ListResponse<ProductCategory> response = objectMapper.readValue(result, new TypeReference<>() {
+            });
+            List<ProductCategory> actual = response.getList();
+            assertEquals(2, actual.size());
         }
     }
 
@@ -149,6 +160,57 @@ public class UC005StepDefs extends SpringAcceptanceTest {
     @かつ(":UC005 商品コード {string} を削除する")
     public void toDelete(String code) throws IOException {
         String url = PRODUCTS_API_URL + "/" + code;
+        executeDelete(url);
+    }
+
+    @もし(":UC005 商品分類コード {string} 商品分類名 {string} で新規登録する")
+    public void toRegistCategory(String code, String name) throws IOException {
+        ProductCategoryResource productCategoryResource = new ProductCategoryResource();
+        productCategoryResource.setProductCategoryCode(code);
+        productCategoryResource.setProductCategoryName(name);
+        productCategoryResource.setProductCategoryHierarchy(0);
+        productCategoryResource.setProductCategoryPath("");
+        productCategoryResource.setLowestLevelDivision(0);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(productCategoryResource);
+        executePost(PRODUCT_CATEGORIES_API_URL, json);
+    }
+
+    @もし(":UC005 商品分離コード {string} で検索する")
+    public void toFindCategory(String code) throws IOException {
+        String url = PRODUCT_CATEGORIES_API_URL + "/" + code;
+        executeGet(url);
+    }
+
+    @ならば(":UC005 {string} の商品分類が取得できる")
+    public void canGetCategory(String name) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
+        String result = latestResponse.getBody();
+        ProductCategory productCategory = objectMapper.readValue(result, ProductCategory.class);
+        Assertions.assertEquals(name, productCategory.getProductCategoryName());
+    }
+
+    @かつ(":UC005 商品分類コード {string} の情報を更新する \\(商品分類名 {string})")
+    public void toUpdateCategory(String code, String name) throws IOException {
+        String url = PRODUCT_CATEGORIES_API_URL + "/" + code;
+
+        ProductCategoryResource productCategoryResource = new ProductCategoryResource();
+        productCategoryResource.setProductCategoryName(name);
+        productCategoryResource.setProductCategoryHierarchy(0);
+        productCategoryResource.setProductCategoryPath("");
+        productCategoryResource.setLowestLevelDivision(0);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(productCategoryResource);
+        executePut(url, json);
+    }
+
+    @かつ(":UC005 商品分類コード {string} を削除する")
+    public void toDeleteCategory(String code) throws IOException {
+        String url = PRODUCT_CATEGORIES_API_URL + "/" + code;
         executeDelete(url);
     }
 }

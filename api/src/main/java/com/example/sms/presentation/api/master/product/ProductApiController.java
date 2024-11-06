@@ -75,6 +75,9 @@ public class ProductApiController {
     public ResponseEntity<?> update(@PathVariable String productCode, @RequestBody ProductResource productResource) {
         try {
             Product product = createProduct(productCode, productResource);
+            if (productService.find(product.getProductCode()) == null) {
+                return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.product.not.exist")));
+            }
             productService.save(product);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.product.updated")));
         } catch (Exception e) {
