@@ -59,4 +59,6 @@ public interface 商品マスタMapper {
 
     @Delete("DELETE FROM public.商品マスタ")
     void deleteAll();
+
+    List<商品マスタ> selectByProductCategoryCode(String 商品分類コード);
 }

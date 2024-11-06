@@ -16,6 +16,14 @@
         <result column="作成者名" jdbcType="VARCHAR" property="作成者名"/>
         <result column="更新日時" jdbcType="TIMESTAMP" property="更新日時"/>
         <result column="更新者名" jdbcType="VARCHAR" property="更新者名"/>
+
+
+        <collection property="商品マスタ"
+                    javaType="ArrayList"
+                    column="商品分類コード"
+                    select="com.example.sms.infrastructure.datasource.master.product.商品マスタMapper.selectByProductCategoryCode"
+                    fetchType="eager"
+        />
     </resultMap>
     <sql id="Base_Column_List">
         <!--
@@ -179,4 +187,10 @@
         更新者名 = #{更新者名,jdbcType=VARCHAR}
         where 商品分類コード = #{商品分類コード,jdbcType=VARCHAR}
     </update>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from public.商品分類マスタ
+    </select>
 </mapper>

@@ -3,10 +3,7 @@ package com.example.sms;
 import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.employee.Employee;
-import com.example.sms.domain.model.master.product.Bom;
-import com.example.sms.domain.model.master.product.CustomerSpecificSellingPrice;
-import com.example.sms.domain.model.master.product.Product;
-import com.example.sms.domain.model.master.product.SubstituteProduct;
+import com.example.sms.domain.model.master.product.*;
 import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.service.master.department.DepartmentRepository;
@@ -109,6 +106,10 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
     public static CustomerSpecificSellingPrice customerSpecificSellingPrice(String productCode, String format, int i) {
         return CustomerSpecificSellingPrice.of(productCode, format, i);
+    }
+
+    public static ProductCategory getProductCategory(String productCategoryCode, String productCategoryName, int productCategoryHierarchy, String productCategoryPath, int lowestLevelDivision) {
+        return ProductCategory.of(productCategoryCode, productCategoryName, productCategoryHierarchy, productCategoryPath, lowestLevelDivision);
     }
 
 }

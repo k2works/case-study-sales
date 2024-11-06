@@ -336,4 +336,11 @@
         <include refid="Base_Column_List"/>
         from public.商品マスタ
     </select>
+
+    <select id="selectByProductCategoryCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from public.商品マスタ
+        where 商品分類コード = #{商品分類コード,jdbcType=VARCHAR}
+    </select>
 </mapper>
