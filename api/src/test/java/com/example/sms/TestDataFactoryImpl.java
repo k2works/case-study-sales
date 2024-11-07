@@ -128,9 +128,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
         );
     }
 
-    // TODO:CategoryからTypeに変更
-    public static Product product(String productCode, String productFormalName, String productAbbreviation, String productNameKana, String productCategory, Integer sellingPrice, Integer purchasePrice, Integer costOfSales, Integer taxCategory, String productClassificationCode, Integer miscellaneousCategory, Integer stockManagementTargetCategory, Integer stockAllocationCategory, String supplierCode, Integer supplierBranchNumber) {
-        return Product.of(productCode, productFormalName, productAbbreviation, productNameKana, productCategory, sellingPrice, purchasePrice, costOfSales, taxCategory, productClassificationCode, miscellaneousCategory, stockManagementTargetCategory, stockAllocationCategory, supplierCode, supplierBranchNumber);
+    public static Product product(String productCode, String productFormalName, String productAbbreviation, String productNameKana, String productType, Integer sellingPrice, Integer purchasePrice, Integer costOfSales, Integer taxCategory, String productClassificationCode, Integer miscellaneousType, Integer stockManagementTargetType, Integer stockAllocationType, String supplierCode, Integer supplierBranchNumber) {
+        return Product.of(productCode, productFormalName, productAbbreviation, productNameKana, productType, sellingPrice, purchasePrice, costOfSales, taxCategory, productClassificationCode, miscellaneousType, stockManagementTargetType, stockAllocationType, supplierCode, supplierBranchNumber);
     }
 
     public static SubstituteProduct substituteProduct(String productCode, String substituteProductCode, Integer priority) {
