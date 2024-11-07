@@ -3,6 +3,7 @@ package com.example.sms.presentation.api.master.product;
 import com.example.sms.domain.model.master.product.Bom;
 import com.example.sms.domain.model.master.product.CustomerSpecificSellingPrice;
 import com.example.sms.domain.model.master.product.SubstituteProduct;
+import com.example.sms.domain.type.product.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -27,18 +28,18 @@ public class ProductResource implements Serializable {
     String productAbbreviation; // 商品略称
     @NotNull
     String productNameKana; // 商品名カナ
-    String productType; // 商品区分
+    ProductType productType; // 商品区分
     @NotNull
     Integer sellingPrice; // 販売単価
     Integer purchasePrice; // 仕入単価
     @NotNull
     Integer costOfSales; // 売上原価
     @NotNull
-    Integer taxType; // 税区分
+    TaxType taxType; // 税区分
     String productClassificationCode; // 商品分類コード
-    Integer miscellaneousType; // 雑区分
-    Integer stockManagementTargetType; // 在庫管理対象区分
-    Integer stockAllocationType; // 在庫引当区分
+    MiscellaneousType miscellaneousType; // 雑区分
+    StockManagementTargetType stockManagementTargetType; // 在庫管理対象区分
+    StockAllocationType stockAllocationType; // 在庫引当区分
     @NotNull
     String supplierCode; // 仕入先コード
     Integer supplierBranchNumber; // 仕入先枝番

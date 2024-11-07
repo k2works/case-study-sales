@@ -92,15 +92,15 @@ public class UC005StepDefs extends SpringAcceptanceTest {
         productResource.setProductFormalName(name);
         productResource.setProductAbbreviation("");
         productResource.setProductNameKana("");
-        productResource.setProductType(ProductType.その他.getCode());
+        productResource.setProductType(ProductType.その他);
         productResource.setSellingPrice(0);
         productResource.setPurchasePrice(0);
         productResource.setCostOfSales(0);
-        productResource.setTaxType(TaxType.その他.getCode());
+        productResource.setTaxType(TaxType.その他);
         productResource.setProductClassificationCode("");
-        productResource.setMiscellaneousType(MiscellaneousType.適用.getCode());
-        productResource.setStockManagementTargetType(StockManagementTargetType.対象.getCode());
-        productResource.setStockAllocationType(StockAllocationType.引当済.getCode());
+        productResource.setMiscellaneousType(MiscellaneousType.適用);
+        productResource.setStockManagementTargetType(StockManagementTargetType.対象);
+        productResource.setStockAllocationType(StockAllocationType.引当済);
         productResource.setSupplierCode("");
         productResource.setSupplierBranchNumber(0);
 
@@ -141,15 +141,15 @@ public class UC005StepDefs extends SpringAcceptanceTest {
         productResource.setProductFormalName(name);
         productResource.setProductAbbreviation("");
         productResource.setProductNameKana("");
-        productResource.setProductType(ProductType.その他.getCode());
+        productResource.setProductType(ProductType.その他);
         productResource.setSellingPrice(0);
         productResource.setPurchasePrice(0);
         productResource.setCostOfSales(0);
-        productResource.setTaxType(TaxType.その他.getCode());
+        productResource.setTaxType(TaxType.その他);
         productResource.setProductClassificationCode("");
-        productResource.setMiscellaneousType(MiscellaneousType.適用.getCode());
-        productResource.setStockManagementTargetType(StockManagementTargetType.対象.getCode());
-        productResource.setStockAllocationType(StockAllocationType.引当済.getCode());
+        productResource.setMiscellaneousType(MiscellaneousType.適用);
+        productResource.setStockManagementTargetType(StockManagementTargetType.対象);
+        productResource.setStockAllocationType(StockAllocationType.引当済);
         productResource.setSupplierCode("");
         productResource.setSupplierBranchNumber(0);
 
