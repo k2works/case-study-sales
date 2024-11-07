@@ -5,6 +5,7 @@ import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.ProductCategory;
 import com.example.sms.domain.type.MiscellaneousType;
 import com.example.sms.domain.type.ProductType;
+import com.example.sms.domain.type.StockManagementTargetType;
 import com.example.sms.domain.type.TaxType;
 import com.example.sms.presentation.api.master.product.ProductCategoryResource;
 import com.example.sms.presentation.api.master.product.ProductResource;
@@ -101,7 +102,7 @@ public class UC005StepDefs extends SpringAcceptanceTest {
         productResource.setTaxCategory(TaxType.その他.getCode());
         productResource.setProductClassificationCode("");
         productResource.setMiscellaneousCategory(MiscellaneousType.適用.getCode());
-        productResource.setStockManagementTargetCategory(0);
+        productResource.setStockManagementTargetCategory(StockManagementTargetType.対象.getCode());
         productResource.setStockAllocationCategory(0);
         productResource.setSupplierCode("");
         productResource.setSupplierBranchNumber(0);
@@ -150,7 +151,7 @@ public class UC005StepDefs extends SpringAcceptanceTest {
         productResource.setTaxCategory(TaxType.その他.getCode());
         productResource.setProductClassificationCode("");
         productResource.setMiscellaneousCategory(MiscellaneousType.適用.getCode());
-        productResource.setStockManagementTargetCategory(0);
+        productResource.setStockManagementTargetCategory(StockManagementTargetType.対象.getCode());
         productResource.setStockAllocationCategory(0);
         productResource.setSupplierCode("");
         productResource.setSupplierBranchNumber(0);

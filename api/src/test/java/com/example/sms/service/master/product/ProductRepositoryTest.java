@@ -27,7 +27,7 @@ public class ProductRepositoryTest {
     }
 
     private Product getProduct(String productCode) {
-        return TestDataFactoryImpl.product(productCode, "商品正式名", "商品略称", "商品名カナ", "9", 1000, 2000, 3000, 1, "00000000", 0, 3, 4, "00000000", 5);
+        return TestDataFactoryImpl.product(productCode, "商品正式名", "商品略称", "商品名カナ", "9", 1000, 2000, 3000, 1, "00000000", 0, 1, 4, "00000000", 5);
     }
 
     private SubstituteProduct getSubstituteProduct(String productCode, String substituteProductCode) {
@@ -87,7 +87,7 @@ public class ProductRepositoryTest {
             repository.save(product);
 
             product = repository.findById(product.getProductCode().getValue()).get();
-            Product updatedProduct = Product.of(product.getProductCode().getValue(), "更新後商品正式名", "更新後商品略称", "更新後商品名カナ", "1", 2000, 3000, 4000, 2, "99999999", 0, 4, 5, "99999999", 6);
+            Product updatedProduct = Product.of(product.getProductCode().getValue(), "更新後商品正式名", "更新後商品略称", "更新後商品名カナ", "1", 2000, 3000, 4000, 2, "99999999", 0, 1, 5, "99999999", 6);
             repository.save(updatedProduct);
 
             Product actual = repository.findById(product.getProductCode().getValue()).get();

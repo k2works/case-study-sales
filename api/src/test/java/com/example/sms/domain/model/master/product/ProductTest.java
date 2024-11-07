@@ -28,7 +28,7 @@ public class ProductTest {
         assertEquals(TaxType.外税, product.getTaxType(), "Mismatch in taxCategory");
         assertEquals("100", product.getProductCategoryCode().getValue(), "Mismatch in productCategoryCode");
         assertEquals(MiscellaneousType.適用, product.getMiscellaneousType(), "Mismatch in miscellaneousCategory");
-        assertEquals(1, product.getStockManagementTargetType(), "Mismatch in stockManagementTargetCategory");
+        assertEquals(StockManagementTargetType.対象, product.getStockManagementTargetType(), "Mismatch in stockManagementTargetCategory");
         assertEquals(1, product.getStockAllocationType(), "Mismatch in stockAllocationCategory");
         assertEquals("1000", product.getSupplierCode().getValue(), "Mismatch in supplierCode");
         assertEquals(1, product.getSupplierCode().getBranchNumber(), "Mismatch in supplierBranchNumber");

@@ -2,6 +2,7 @@ package com.example.sms.domain.model.master.product;
 
 import com.example.sms.domain.type.MiscellaneousType;
 import com.example.sms.domain.type.ProductType;
+import com.example.sms.domain.type.StockManagementTargetType;
 import com.example.sms.domain.type.TaxType;
 import com.example.sms.domain.type.money.Money;
 import lombok.AllArgsConstructor;
@@ -26,16 +27,16 @@ public class Product {
     TaxType taxType; // 税区分
     ProductCategoryCode productCategoryCode; // 商品分類コード
     MiscellaneousType miscellaneousType; // 雑区分
-    Integer stockManagementTargetType; // 在庫管理対象区分
+    StockManagementTargetType stockManagementTargetType; // 在庫管理対象区分
     Integer stockAllocationType; // 在庫引当区分
     SupplierCode supplierCode; // 仕入先コード
     List<SubstituteProduct> substituteProduct; // 代替商品
     List<Bom> boms; // 部品表
     List<CustomerSpecificSellingPrice> customerSpecificSellingPrices; // 顧客別販売単価
 
-    public static Product of(String productCode, String productFormalName, String productAbbreviation, String productNameKana, String productType, Integer sellingPrice, Integer purchasePrice, Integer costOfSales, Integer taxType, String productClassificationCode, Integer miscellaneousType, Integer stockManagementTargetCategory, Integer stockAllocationCategory, String supplierCode, Integer supplierBranchNumber) {
+    public static Product of(String productCode, String productFormalName, String productAbbreviation, String productNameKana, String productType, Integer sellingPrice, Integer purchasePrice, Integer costOfSales, Integer taxType, String productClassificationCode, Integer miscellaneousType, Integer stockManagementTargetType, Integer stockAllocationCategory, String supplierCode, Integer supplierBranchNumber) {
         ProductName productName = ProductName.of(productFormalName, productAbbreviation, productNameKana);
-        return new Product(ProductCode.of(productCode), productName, ProductType.fromCode(productType), Money.of(sellingPrice), Money.of(purchasePrice), Money.of(costOfSales), TaxType.fromCode(taxType), ProductCategoryCode.of(productClassificationCode), MiscellaneousType.fromCode(miscellaneousType), stockManagementTargetCategory, stockAllocationCategory, SupplierCode.of(supplierCode, supplierBranchNumber), List.of(), List.of(), List.of());
+        return new Product(ProductCode.of(productCode), productName, ProductType.fromCode(productType), Money.of(sellingPrice), Money.of(purchasePrice), Money.of(costOfSales), TaxType.fromCode(taxType), ProductCategoryCode.of(productClassificationCode), MiscellaneousType.fromCode(miscellaneousType), StockManagementTargetType.fromCode(stockManagementTargetType), stockAllocationCategory, SupplierCode.of(supplierCode, supplierBranchNumber), List.of(), List.of(), List.of());
     }
 
     public static Product of(Product product, List<SubstituteProduct> substituteProduct, List<Bom> boms, List<CustomerSpecificSellingPrice> customerSpecificSellingPrices) {
