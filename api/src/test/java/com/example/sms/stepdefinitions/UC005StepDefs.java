@@ -3,6 +3,7 @@ package com.example.sms.stepdefinitions;
 import com.example.sms.TestDataFactory;
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.ProductCategory;
+import com.example.sms.domain.type.MiscellaneousType;
 import com.example.sms.domain.type.ProductType;
 import com.example.sms.domain.type.TaxType;
 import com.example.sms.presentation.api.master.product.ProductCategoryResource;
@@ -99,7 +100,7 @@ public class UC005StepDefs extends SpringAcceptanceTest {
         productResource.setCostOfSales(0);
         productResource.setTaxCategory(TaxType.その他.getCode());
         productResource.setProductClassificationCode("");
-        productResource.setMiscellaneousCategory(0);
+        productResource.setMiscellaneousCategory(MiscellaneousType.適用.getCode());
         productResource.setStockManagementTargetCategory(0);
         productResource.setStockAllocationCategory(0);
         productResource.setSupplierCode("");
@@ -148,7 +149,7 @@ public class UC005StepDefs extends SpringAcceptanceTest {
         productResource.setCostOfSales(0);
         productResource.setTaxCategory(TaxType.その他.getCode());
         productResource.setProductClassificationCode("");
-        productResource.setMiscellaneousCategory(0);
+        productResource.setMiscellaneousCategory(MiscellaneousType.適用.getCode());
         productResource.setStockManagementTargetCategory(0);
         productResource.setStockAllocationCategory(0);
         productResource.setSupplierCode("");

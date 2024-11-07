@@ -22,7 +22,7 @@ public class ProductEntityMapper {
         productEntity.set売上原価(product.getCostOfSales().getAmount());
         productEntity.set税区分(product.getTaxType().getCode());
         productEntity.set商品分類コード(product.getProductCategoryCode().getValue());
-        productEntity.set雑区分(product.getMiscellaneousType());
+        productEntity.set雑区分(product.getMiscellaneousType().getCode());
         productEntity.set在庫管理対象区分(product.getStockManagementTargetType());
         productEntity.set在庫引当区分(product.getStockAllocationType());
         productEntity.set仕入先コード(product.getSupplierCode().getValue());
