@@ -49,7 +49,7 @@ public class ProductRepositoryTest {
         @DisplayName("商品一覧を取得できる")
         void shouldRetrieveAllProducts() {
             IntStream.range(0, 10).forEach(i -> {
-                Product product = getProduct(String.format("%08d", i));
+                Product product = getProduct(String.format("9%07d", i));
                 repository.save(product);
             });
 

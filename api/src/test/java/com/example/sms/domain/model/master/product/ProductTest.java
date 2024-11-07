@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.master.product;
 
+import com.example.sms.domain.type.BusinessType;
 import com.example.sms.domain.type.money.Money;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -55,7 +56,7 @@ public class ProductTest {
         @DisplayName("商品コードの事業区分は最初の1文字")
         void shouldExtractBusinessTypeFromProductCode() {
             Product product = Product.of("12345678", "Test Product", "TP", "テストプロダクト", "1", 100, 50, 60, 1, "100", 1, 1, 1, "1000", 1);
-            assertEquals("1", product.getProductCode().getBusinessType(), "Mismatch in businessType");
+            assertEquals(BusinessType.生鮮食料品, product.getProductCode().getBusinessType(), "Mismatch in businessType");
         }
 
         @Test

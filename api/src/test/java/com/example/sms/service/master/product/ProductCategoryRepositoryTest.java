@@ -54,7 +54,7 @@ public class ProductCategoryRepositoryTest {
         @DisplayName("商品一覧を取得できる")
         void shouldRetrieveAllProducts() {
             ProductCategory productCategory = getProductCategory("99999999");
-            List<Product> products = IntStream.range(0, 10).mapToObj(i -> getProduct("0000000" + i)).toList();
+            List<Product> products = IntStream.range(0, 10).mapToObj(i -> getProduct("9000000" + i)).toList();
             products.forEach(productRepository::save);
             ProductCategory newProductCategory = ProductCategory.of(productCategory, products);
 
