@@ -11,11 +11,11 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 public class Bom {
-    BomKey bomKey; // 部品表キー
+    ProductCode productCode; // 商品コード
+    String componentCode; // 部品コード
     Integer componentQuantity; // 部品数量
 
     public static Bom of(String productCode, String componentCode, Integer componentQuantity) {
-        BomKey bomKey = BomKey.of(productCode, componentCode);
-        return new Bom(bomKey, componentQuantity);
+        return new Bom(ProductCode.of(productCode), componentCode, componentQuantity);
     }
 }

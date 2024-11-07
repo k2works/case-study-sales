@@ -110,8 +110,8 @@ public class ProductDataSource implements ProductRepository {
             if (product.getBoms() != null) {
                 product.getBoms().forEach(bom -> {
                     部品表Key key = new 部品表Key();
-                    key.set商品コード(bom.getBomKey().getProductCode().getValue());
-                    key.set部品コード(bom.getBomKey().getComponentCode());
+                    key.set商品コード(bom.getProductCode().getValue());
+                    key.set部品コード(bom.getComponentCode());
                     bomMapper.deleteByPrimaryKey(key);
 
                     部品表 bomEntity = productEntityMapper.mapToEntity(bom);
@@ -181,8 +181,8 @@ public class ProductDataSource implements ProductRepository {
         if (!product.getBoms().isEmpty()) {
             product.getBoms().forEach(bom -> {
                 部品表Key key = new 部品表Key();
-                key.set商品コード(bom.getBomKey().getProductCode().getValue());
-                key.set部品コード(bom.getBomKey().getComponentCode());
+                key.set商品コード(bom.getProductCode().getValue());
+                key.set部品コード(bom.getComponentCode());
                 bomMapper.deleteByPrimaryKey(key);
             });
         }
