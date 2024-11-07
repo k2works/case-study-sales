@@ -19,7 +19,6 @@ public class ProductResource implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    //TODO:CategoryからTypeに変更
     @NotNull
     String productCode; // 商品コード
     @NotNull
@@ -28,18 +27,18 @@ public class ProductResource implements Serializable {
     String productAbbreviation; // 商品略称
     @NotNull
     String productNameKana; // 商品名カナ
-    String productCategory; // 商品区分
+    String productType; // 商品区分
     @NotNull
     Integer sellingPrice; // 販売単価
     Integer purchasePrice; // 仕入単価
     @NotNull
     Integer costOfSales; // 売上原価
     @NotNull
-    Integer taxCategory; // 税区分
+    Integer taxType; // 税区分
     String productClassificationCode; // 商品分類コード
-    Integer miscellaneousCategory; // 雑区分
-    Integer stockManagementTargetCategory; // 在庫管理対象区分
-    Integer stockAllocationCategory; // 在庫引当区分
+    Integer miscellaneousType; // 雑区分
+    Integer stockManagementTargetType; // 在庫管理対象区分
+    Integer stockAllocationType; // 在庫引当区分
     @NotNull
     String supplierCode; // 仕入先コード
     Integer supplierBranchNumber; // 仕入先枝番
