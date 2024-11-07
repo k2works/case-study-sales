@@ -3,6 +3,7 @@ package com.example.sms.domain.model.master.product;
 import com.example.sms.domain.type.BusinessType;
 import com.example.sms.domain.type.ItemType;
 import com.example.sms.domain.type.LiveStockType;
+import com.example.sms.domain.type.ProductType;
 import com.example.sms.domain.type.money.Money;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -23,7 +24,7 @@ public class ProductTest {
         assertEquals("Test Product", product.getProductName().getProductFormalName(), "Mismatch in productFormalName");
         assertEquals("TP", product.getProductName().getProductAbbreviation(), "Mismatch in productAbbreviation");
         assertEquals("テストプロダクト", product.getProductName().getProductNameKana(), "Mismatch in productNameKana");
-        assertEquals("1", product.getProductType(), "Mismatch in productType");
+        assertEquals(ProductType.商品, product.getProductType(), "Mismatch in productType");
         assertEquals(Money.of(100), product.getSellingPrice(), "Mismatch in sellingPrice");
         assertEquals(Money.of(50), product.getPurchasePrice(), "Mismatch in purchasePrice");
         assertEquals(Money.of(60), product.getCostOfSales(), "Mismatch in costOfSales");

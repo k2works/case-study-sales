@@ -97,11 +97,11 @@ public class TestDataFactoryImpl implements TestDataFactory {
         SubstituteProduct substituteProduct = substituteProduct(productCode, "000001", 1);
         Bom bom = bom(productCode, "000001", 1);
         CustomerSpecificSellingPrice customerSpecificSellingPrice = customerSpecificSellingPrice(productCode, "1", 1);
-        Product product = product(productCode, "商品1", "商品1", "しょうひん1", "1", 100, 90, 10, 1, "カテゴリ1", 1, 1, 1, "サプライヤ1", 1);
+        Product product = product(productCode, "商品1", "商品1", "しょうひん1", "9", 100, 90, 10, 1, "カテゴリ1", 1, 1, 1, "サプライヤ1", 1);
 
         productRepository.save(Product.of(product, List.of(substituteProduct), List.of(bom), List.of(customerSpecificSellingPrice)));
-        productRepository.save(product("99999002", "商品2", "商品2", "しょうひん2", "2", 200, 180, 20, 2, "カテゴリ1", 2, 2, 2, "サプライヤ2", 2));
-        productRepository.save(product("99999003", "商品3", "商品3", "しょうひん3", "3", 300, 270, 30, 3, "カテゴリ2", 3, 3, 3, "サプライヤ3", 3));
+        productRepository.save(product("99999002", "商品2", "商品2", "しょうひん2", "9", 200, 180, 20, 2, "カテゴリ1", 2, 2, 2, "サプライヤ2", 2));
+        productRepository.save(product("99999003", "商品3", "商品3", "しょうひん3", "9", 300, 270, 30, 3, "カテゴリ2", 3, 3, 3, "サプライヤ3", 3));
 
         productCategoryRepository.deleteAll();
         productCategoryRepository.save(getProductCategory("カテゴリ1", "カテゴリ1", 1, "カテゴリ1", 1));

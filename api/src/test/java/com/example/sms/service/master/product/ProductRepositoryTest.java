@@ -27,7 +27,7 @@ public class ProductRepositoryTest {
     }
 
     private Product getProduct(String productCode) {
-        return TestDataFactoryImpl.product(productCode, "商品正式名", "商品略称", "商品名カナ", "0", 1000, 2000, 3000, 1, "00000000", 2, 3, 4, "00000000", 5);
+        return TestDataFactoryImpl.product(productCode, "商品正式名", "商品略称", "商品名カナ", "9", 1000, 2000, 3000, 1, "00000000", 2, 3, 4, "00000000", 5);
     }
 
     private SubstituteProduct getSubstituteProduct(String productCode, String substituteProductCode) {
