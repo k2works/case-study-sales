@@ -1,6 +1,7 @@
 package com.example.sms.domain.model.master.product;
 
 import com.example.sms.domain.type.ProductType;
+import com.example.sms.domain.type.TaxType;
 import com.example.sms.domain.type.money.Money;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,7 @@ public class Product {
     Money sellingPrice; // 販売単価
     Money purchasePrice; // 仕入単価
     Money costOfSales; // 売上原価
-    Integer taxType; // 税区分
+    TaxType taxType; // 税区分
     ProductCategoryCode productCategoryCode; // 商品分類コード
     Integer miscellaneousType; // 雑区分
     Integer stockManagementTargetType; // 在庫管理対象区分
@@ -33,7 +34,7 @@ public class Product {
 
     public static Product of(String productCode, String productFormalName, String productAbbreviation, String productNameKana, String productType, Integer sellingPrice, Integer purchasePrice, Integer costOfSales, Integer taxType, String productClassificationCode, Integer miscellaneousCategory, Integer stockManagementTargetCategory, Integer stockAllocationCategory, String supplierCode, Integer supplierBranchNumber) {
         ProductName productName = ProductName.of(productFormalName, productAbbreviation, productNameKana);
-        return new Product(ProductCode.of(productCode), productName, ProductType.fromCode(productType), Money.of(sellingPrice), Money.of(purchasePrice), Money.of(costOfSales), taxType, ProductCategoryCode.of(productClassificationCode), miscellaneousCategory, stockManagementTargetCategory, stockAllocationCategory, SupplierCode.of(supplierCode, supplierBranchNumber), List.of(), List.of(), List.of());
+        return new Product(ProductCode.of(productCode), productName, ProductType.fromCode(productType), Money.of(sellingPrice), Money.of(purchasePrice), Money.of(costOfSales), TaxType.fromCode(taxType), ProductCategoryCode.of(productClassificationCode), miscellaneousCategory, stockManagementTargetCategory, stockAllocationCategory, SupplierCode.of(supplierCode, supplierBranchNumber), List.of(), List.of(), List.of());
     }
 
     public static Product of(Product product, List<SubstituteProduct> substituteProduct, List<Bom> boms, List<CustomerSpecificSellingPrice> customerSpecificSellingPrices) {

@@ -4,6 +4,7 @@ import com.example.sms.TestDataFactory;
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.ProductCategory;
 import com.example.sms.domain.type.ProductType;
+import com.example.sms.domain.type.TaxType;
 import com.example.sms.presentation.api.master.product.ProductCategoryResource;
 import com.example.sms.presentation.api.master.product.ProductResource;
 import com.example.sms.stepdefinitions.utils.ListResponse;
@@ -96,7 +97,7 @@ public class UC005StepDefs extends SpringAcceptanceTest {
         productResource.setSellingPrice(0);
         productResource.setPurchasePrice(0);
         productResource.setCostOfSales(0);
-        productResource.setTaxCategory(0);
+        productResource.setTaxCategory(TaxType.その他.getCode());
         productResource.setProductClassificationCode("");
         productResource.setMiscellaneousCategory(0);
         productResource.setStockManagementTargetCategory(0);
@@ -145,7 +146,7 @@ public class UC005StepDefs extends SpringAcceptanceTest {
         productResource.setSellingPrice(0);
         productResource.setPurchasePrice(0);
         productResource.setCostOfSales(0);
-        productResource.setTaxCategory(0);
+        productResource.setTaxCategory(TaxType.その他.getCode());
         productResource.setProductClassificationCode("");
         productResource.setMiscellaneousCategory(0);
         productResource.setStockManagementTargetCategory(0);

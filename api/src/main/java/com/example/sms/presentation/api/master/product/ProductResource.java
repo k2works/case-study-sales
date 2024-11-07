@@ -19,6 +19,7 @@ public class ProductResource implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    //TODO:CategoryからTypeに変更
     @NotNull
     String productCode; // 商品コード
     @NotNull
