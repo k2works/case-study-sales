@@ -126,8 +126,8 @@ public class ProductDataSource implements ProductRepository {
             if (product.getCustomerSpecificSellingPrices() != null) {
                 product.getCustomerSpecificSellingPrices().forEach(customerSpecificSellingPrice -> {
                     顧客別販売単価Key key = new 顧客別販売単価Key();
-                    key.set商品コード(customerSpecificSellingPrice.getCustomerSpecificSellingPriceKey().getProductCode().getValue());
-                    key.set取引先コード(customerSpecificSellingPrice.getCustomerSpecificSellingPriceKey().getCustomerCode());
+                    key.set商品コード(customerSpecificSellingPrice.getProductCode().getValue());
+                    key.set取引先コード(customerSpecificSellingPrice.getCustomerCode());
                     customerSellingPriceMapper.deleteByPrimaryKey(key);
 
                     顧客別販売単価 customerSellingPriceEntity = productEntityMapper.mapToEntity(customerSpecificSellingPrice);
@@ -190,8 +190,8 @@ public class ProductDataSource implements ProductRepository {
         if (!product.getCustomerSpecificSellingPrices().isEmpty()) {
             product.getCustomerSpecificSellingPrices().forEach(customerSpecificSellingPrice -> {
                 顧客別販売単価Key key = new 顧客別販売単価Key();
-                key.set商品コード(customerSpecificSellingPrice.getCustomerSpecificSellingPriceKey().getProductCode().getValue());
-                key.set取引先コード(customerSpecificSellingPrice.getCustomerSpecificSellingPriceKey().getCustomerCode());
+                key.set商品コード(customerSpecificSellingPrice.getProductCode().getValue());
+                key.set取引先コード(customerSpecificSellingPrice.getCustomerCode());
                 customerSellingPriceMapper.deleteByPrimaryKey(key);
             });
         }

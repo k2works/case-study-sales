@@ -11,11 +11,11 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 public class CustomerSpecificSellingPrice {
-    CustomerSpecificSellingPriceKey customerSpecificSellingPriceKey; // 顧客別販売単価キー
+    ProductCode productCode; // 商品コード
+    String customerCode; // 顧客コード
     Integer sellingPrice; // 販売単価
 
     public static CustomerSpecificSellingPrice of(String productCode, String format, int i) {
-        CustomerSpecificSellingPriceKey customerSpecificSellingPriceKey = CustomerSpecificSellingPriceKey.of(productCode, format);
-        return new CustomerSpecificSellingPrice(customerSpecificSellingPriceKey, i);
+        return new CustomerSpecificSellingPrice(ProductCode.of(productCode), format, i);
     }
 }
