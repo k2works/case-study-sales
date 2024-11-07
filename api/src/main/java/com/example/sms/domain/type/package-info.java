@@ -1,4 +1,4 @@
 /**
- * 共通
+ * 共有タイプ
  */
 package com.example.sms.domain.type;

@@ -1,7 +1,7 @@
 package com.example.sms.presentation.api.master.department;
 
-import com.example.sms.domain.model.master.department.DepartmentLowerType;
-import com.example.sms.domain.model.master.department.SlitYnType;
+import com.example.sms.domain.type.department.DepartmentLowerType;
+import com.example.sms.domain.type.department.SlitYnType;
 import com.example.sms.presentation.api.master.employee.EmployeeResource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;

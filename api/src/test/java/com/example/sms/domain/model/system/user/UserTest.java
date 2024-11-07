@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.system.user;
 
+import com.example.sms.domain.type.user.RoleName;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -3,7 +3,7 @@ package com.example.sms.stepdefinitions;
 import com.example.sms.TestDataFactory;
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.ProductCategory;
-import com.example.sms.domain.type.*;
+import com.example.sms.domain.type.product.*;
 import com.example.sms.presentation.api.master.product.ProductCategoryResource;
 import com.example.sms.presentation.api.master.product.ProductResource;
 import com.example.sms.stepdefinitions.utils.ListResponse;

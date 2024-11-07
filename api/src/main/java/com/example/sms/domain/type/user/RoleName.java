@@ -1,4 +1,4 @@
-package com.example.sms.domain.model.system.user;
+package com.example.sms.domain.type.user;
 
 /**
  * 役割

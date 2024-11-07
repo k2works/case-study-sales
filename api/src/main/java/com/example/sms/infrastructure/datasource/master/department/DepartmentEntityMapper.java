@@ -1,7 +1,12 @@
 package com.example.sms.infrastructure.datasource.master.department;
 
-import com.example.sms.domain.model.master.department.*;
+import com.example.sms.domain.model.master.department.Department;
+import com.example.sms.domain.model.master.department.DepartmentEndDate;
+import com.example.sms.domain.model.master.department.DepartmentId;
+import com.example.sms.domain.model.master.department.DepartmentPath;
 import com.example.sms.domain.model.master.employee.Employee;
+import com.example.sms.domain.type.department.DepartmentLowerType;
+import com.example.sms.domain.type.department.SlitYnType;
 import com.example.sms.infrastructure.datasource.master.employee.社員マスタ;
 import org.springframework.stereotype.Component;
 

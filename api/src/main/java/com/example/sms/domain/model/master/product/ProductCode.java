@@ -1,8 +1,8 @@
 package com.example.sms.domain.model.master.product;
 
-import com.example.sms.domain.type.BusinessType;
-import com.example.sms.domain.type.ItemType;
-import com.example.sms.domain.type.LiveStockType;
+import com.example.sms.domain.type.product.BusinessType;
+import com.example.sms.domain.type.product.ItemType;
+import com.example.sms.domain.type.product.LiveStockType;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 

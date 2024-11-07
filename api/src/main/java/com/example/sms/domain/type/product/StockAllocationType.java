@@ -1,4 +1,4 @@
-package com.example.sms.domain.type;
+package com.example.sms.domain.type.product;
 
 import lombok.Getter;
 

@@ -1,4 +1,4 @@
-package com.example.sms.domain.model.master.department;
+package com.example.sms.domain.type.department;
 
 import lombok.Getter;
 

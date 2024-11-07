@@ -1,7 +1,7 @@
 package com.example.sms.domain.model.master.product;
 
-import com.example.sms.domain.type.*;
 import com.example.sms.domain.type.money.Money;
+import com.example.sms.domain.type.product.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;

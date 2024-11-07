@@ -2,8 +2,8 @@ package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
 import com.example.sms.domain.model.master.department.Department;
-import com.example.sms.domain.model.master.department.DepartmentLowerType;
-import com.example.sms.domain.model.master.department.SlitYnType;
+import com.example.sms.domain.type.department.DepartmentLowerType;
+import com.example.sms.domain.type.department.SlitYnType;
 import com.example.sms.presentation.api.master.department.DepartmentResource;
 import com.example.sms.stepdefinitions.utils.ListResponse;
 import com.example.sms.stepdefinitions.utils.MessageResponse;
