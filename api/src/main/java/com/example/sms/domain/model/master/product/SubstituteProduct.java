@@ -11,11 +11,11 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 public class SubstituteProduct {
-    SubstituteProductKey substituteProductKey; // 代替商品キー
+    ProductCode productCode; // 商品コード
+    String substituteProductCode; // 代替商品コード
     Integer priority; // 優先順位
 
     public static SubstituteProduct of(String productCode, String substituteProductCode, Integer priority) {
-        SubstituteProductKey substituteProductKey = SubstituteProductKey.of(productCode, substituteProductCode);
-        return new SubstituteProduct(substituteProductKey, priority);
+        return new SubstituteProduct(ProductCode.of(productCode), substituteProductCode, priority);
     }
 }

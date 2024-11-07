@@ -94,8 +94,8 @@ public class ProductDataSource implements ProductRepository {
             if (product.getSubstituteProduct() != null) {
                 product.getSubstituteProduct().forEach(substituteProduct -> {
                     代替商品Key key = new 代替商品Key();
-                    key.set代替商品コード(substituteProduct.getSubstituteProductKey().getSubstituteProductCode());
-                    key.set商品コード(substituteProduct.getSubstituteProductKey().getProductCode().getValue());
+                    key.set代替商品コード(substituteProduct.getSubstituteProductCode());
+                    key.set商品コード(substituteProduct.getProductCode().getValue());
                     substituteProductMapper.deleteByPrimaryKey(key);
 
                     代替商品 substituteProductEntity = productEntityMapper.mapToEntity(substituteProduct);
@@ -172,8 +172,8 @@ public class ProductDataSource implements ProductRepository {
         if (!product.getSubstituteProduct().isEmpty()) {
             product.getSubstituteProduct().forEach(substituteProduct -> {
                 代替商品Key key = new 代替商品Key();
-                key.set商品コード(substituteProduct.getSubstituteProductKey().getProductCode().getValue());
-                key.set代替商品コード(substituteProduct.getSubstituteProductKey().getSubstituteProductCode());
+                key.set商品コード(substituteProduct.getProductCode().getValue());
+                key.set代替商品コード(substituteProduct.getSubstituteProductCode());
                 substituteProductMapper.deleteByPrimaryKey(key);
             });
         }
