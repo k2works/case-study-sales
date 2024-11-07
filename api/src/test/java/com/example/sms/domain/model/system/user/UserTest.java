@@ -1,6 +1,5 @@
-package com.example.sms.domain.system.user;
+package com.example.sms.domain.model.system.user;
 
-import com.example.sms.domain.model.system.user.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
