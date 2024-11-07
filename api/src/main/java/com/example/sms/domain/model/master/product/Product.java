@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.master.product;
 
+import com.example.sms.domain.type.money.Money;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;
@@ -16,9 +17,9 @@ public class Product {
     ProductCode productCode; // 商品コード
     ProductName productName; // 商品名
     String productType; // 商品区分
-    Integer sellingPrice; // 販売単価
-    Integer purchasePrice; // 仕入単価
-    Integer costOfSales; // 売上原価
+    Money sellingPrice; // 販売単価
+    Money purchasePrice; // 仕入単価
+    Money costOfSales; // 売上原価
     Integer taxCategory; // 税区分
     String productCategoryCode; // 商品分類コード
     Integer miscellaneousType; // 雑区分
@@ -32,7 +33,7 @@ public class Product {
 
     public static Product of(String productCode, String productFormalName, String productAbbreviation, String productNameKana, String productCategory, Integer sellingPrice, Integer purchasePrice, Integer costOfSales, Integer taxCategory, String productClassificationCode, Integer miscellaneousCategory, Integer stockManagementTargetCategory, Integer stockAllocationCategory, String supplierCode, Integer supplierBranchNumber) {
         ProductName productName = ProductName.of(productFormalName, productAbbreviation, productNameKana);
-        return new Product(ProductCode.of(productCode), productName, productCategory, sellingPrice, purchasePrice, costOfSales, taxCategory, productClassificationCode, miscellaneousCategory, stockManagementTargetCategory, stockAllocationCategory, supplierCode, supplierBranchNumber, List.of(), List.of(), List.of());
+        return new Product(ProductCode.of(productCode), productName, productCategory, Money.of(sellingPrice), Money.of(purchasePrice), Money.of(costOfSales), taxCategory, productClassificationCode, miscellaneousCategory, stockManagementTargetCategory, stockAllocationCategory, supplierCode, supplierBranchNumber, List.of(), List.of(), List.of());
     }
 
     public static Product of(Product product, List<SubstituteProduct> substituteProduct, List<Bom> boms, List<CustomerSpecificSellingPrice> customerSpecificSellingPrices) {

@@ -17,9 +17,9 @@ public class ProductEntityMapper {
         productEntity.set商品略称(product.getProductName().getProductAbbreviation());
         productEntity.set商品名カナ(product.getProductName().getProductNameKana());
         productEntity.set商品区分(product.getProductType());
-        productEntity.set販売単価(product.getSellingPrice());
-        productEntity.set仕入単価(product.getPurchasePrice());
-        productEntity.set売上原価(product.getCostOfSales());
+        productEntity.set販売単価(product.getSellingPrice().getAmount());
+        productEntity.set仕入単価(product.getPurchasePrice().getAmount());
+        productEntity.set売上原価(product.getCostOfSales().getAmount());
         productEntity.set税区分(product.getTaxCategory());
         productEntity.set商品分類コード(product.getProductCategoryCode());
         productEntity.set雑区分(product.getMiscellaneousType());

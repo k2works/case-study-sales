@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.master.product;
 
+import com.example.sms.domain.type.money.Money;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -20,9 +21,9 @@ public class ProductTest {
         assertEquals("TP", product.getProductName().getProductAbbreviation(), "Mismatch in productAbbreviation");
         assertEquals("テストプロダクト", product.getProductName().getProductNameKana(), "Mismatch in productNameKana");
         assertEquals("1", product.getProductType(), "Mismatch in productType");
-        assertEquals(100, product.getSellingPrice(), "Mismatch in sellingPrice");
-        assertEquals(50, product.getPurchasePrice(), "Mismatch in purchasePrice");
-        assertEquals(60, product.getCostOfSales(), "Mismatch in costOfSales");
+        assertEquals(Money.of(100), product.getSellingPrice(), "Mismatch in sellingPrice");
+        assertEquals(Money.of(50), product.getPurchasePrice(), "Mismatch in purchasePrice");
+        assertEquals(Money.of(60), product.getCostOfSales(), "Mismatch in costOfSales");
         assertEquals(1, product.getTaxCategory(), "Mismatch in taxCategory");
         assertEquals("100", product.getProductCategoryCode(), "Mismatch in productCategoryCode");
         assertEquals(1, product.getMiscellaneousType(), "Mismatch in miscellaneousCategory");
