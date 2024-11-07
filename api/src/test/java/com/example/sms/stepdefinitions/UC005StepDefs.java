@@ -129,7 +129,7 @@ public class UC005StepDefs extends SpringAcceptanceTest {
 
         String result = latestResponse.getBody();
         Product product = objectMapper.readValue(result, Product.class);
-        Assertions.assertEquals(name, product.getProductFormalName());
+        Assertions.assertEquals(name, product.getProductName().getProductFormalName());
     }
 
     @かつ(":UC005 商品コード {string} の情報を更新する \\(商品名 {string})")

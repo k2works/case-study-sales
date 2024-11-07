@@ -61,7 +61,7 @@ public class ProductServiceTest {
             productService.save(updateProduct);
 
             Product result = productService.find(product.getProductCode().getValue());
-            assertEquals("更新後商品正式名", result.getProductFormalName());
+            assertEquals("更新後商品正式名", result.getProductName().getProductFormalName());
             assertEquals(updateProduct, result);
         }
 

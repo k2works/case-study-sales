@@ -65,9 +65,9 @@ public class ProductRepositoryTest {
 
             Product actual = repository.findById(product.getProductCode().getValue()).get();
             assertEquals(product.getProductCode(), actual.getProductCode());
-            assertEquals(product.getProductFormalName(), actual.getProductFormalName());
-            assertEquals(product.getProductAbbreviation(), actual.getProductAbbreviation());
-            assertEquals(product.getProductNameKana(), actual.getProductNameKana());
+            assertEquals(product.getProductName().getProductFormalName(), actual.getProductName().getProductFormalName());
+            assertEquals(product.getProductName().getProductAbbreviation(), actual.getProductName().getProductAbbreviation());
+            assertEquals(product.getProductName().getProductNameKana(), actual.getProductName().getProductNameKana());
             assertEquals(product.getProductType(), actual.getProductType());
             assertEquals(product.getSellingPrice(), actual.getSellingPrice());
             assertEquals(product.getPurchasePrice(), actual.getPurchasePrice());

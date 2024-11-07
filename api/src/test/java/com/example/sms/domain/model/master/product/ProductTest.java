@@ -16,9 +16,9 @@ public class ProductTest {
 
         assertNotNull(product, "Product creation resulted in Null");
         assertEquals("12345678", product.getProductCode().getValue(), "Mismatch in productCode");
-        assertEquals("Test Product", product.getProductFormalName(), "Mismatch in productFormalName");
-        assertEquals("TP", product.getProductAbbreviation(), "Mismatch in productAbbreviation");
-        assertEquals("テストプロダクト", product.getProductNameKana(), "Mismatch in productNameKana");
+        assertEquals("Test Product", product.getProductName().getProductFormalName(), "Mismatch in productFormalName");
+        assertEquals("TP", product.getProductName().getProductAbbreviation(), "Mismatch in productAbbreviation");
+        assertEquals("テストプロダクト", product.getProductName().getProductNameKana(), "Mismatch in productNameKana");
         assertEquals("1", product.getProductType(), "Mismatch in productType");
         assertEquals(100, product.getSellingPrice(), "Mismatch in sellingPrice");
         assertEquals(50, product.getPurchasePrice(), "Mismatch in purchasePrice");

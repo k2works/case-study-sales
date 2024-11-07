@@ -13,9 +13,9 @@ public class ProductEntityMapper {
     public 商品マスタ mapToEntity(Product product) {
         商品マスタ productEntity = new 商品マスタ();
         productEntity.set商品コード(product.getProductCode().getValue());
-        productEntity.set商品正式名(product.getProductFormalName());
-        productEntity.set商品略称(product.getProductAbbreviation());
-        productEntity.set商品名カナ(product.getProductNameKana());
+        productEntity.set商品正式名(product.getProductName().getProductFormalName());
+        productEntity.set商品略称(product.getProductName().getProductAbbreviation());
+        productEntity.set商品名カナ(product.getProductName().getProductNameKana());
         productEntity.set商品区分(product.getProductType());
         productEntity.set販売単価(product.getSellingPrice());
         productEntity.set仕入単価(product.getPurchasePrice());

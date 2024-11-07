@@ -14,9 +14,7 @@ import java.util.List;
 @NoArgsConstructor(force = true)
 public class Product {
     ProductCode productCode; // 商品コード
-    String productFormalName; // 商品正式名
-    String productAbbreviation; // 商品略称
-    String productNameKana; // 商品名カナ
+    ProductName productName; // 商品名
     String productType; // 商品区分
     Integer sellingPrice; // 販売単価
     Integer purchasePrice; // 仕入単価
@@ -33,10 +31,12 @@ public class Product {
     List<CustomerSpecificSellingPrice> customerSpecificSellingPrices; // 顧客別販売単価
 
     public static Product of(String productCode, String productFormalName, String productAbbreviation, String productNameKana, String productCategory, Integer sellingPrice, Integer purchasePrice, Integer costOfSales, Integer taxCategory, String productClassificationCode, Integer miscellaneousCategory, Integer stockManagementTargetCategory, Integer stockAllocationCategory, String supplierCode, Integer supplierBranchNumber) {
-        return new Product(ProductCode.of(productCode), productFormalName, productAbbreviation, productNameKana, productCategory, sellingPrice, purchasePrice, costOfSales, taxCategory, productClassificationCode, miscellaneousCategory, stockManagementTargetCategory, stockAllocationCategory, supplierCode, supplierBranchNumber, List.of(), List.of(), List.of());
+        ProductName productName = ProductName.of(productFormalName, productAbbreviation, productNameKana);
+        return new Product(ProductCode.of(productCode), productName, productCategory, sellingPrice, purchasePrice, costOfSales, taxCategory, productClassificationCode, miscellaneousCategory, stockManagementTargetCategory, stockAllocationCategory, supplierCode, supplierBranchNumber, List.of(), List.of(), List.of());
     }
 
     public static Product of(Product product, List<SubstituteProduct> substituteProduct, List<Bom> boms, List<CustomerSpecificSellingPrice> customerSpecificSellingPrices) {
-        return new Product(product.productCode, product.productFormalName, product.productAbbreviation, product.productNameKana, product.productType, product.sellingPrice, product.purchasePrice, product.costOfSales, product.taxCategory, product.productCategoryCode, product.miscellaneousType, product.stockManagementTargetType, product.stockAllocationType, product.supplierCode, product.supplierBranchNumber, substituteProduct, boms, customerSpecificSellingPrices);
+        ProductName productName = ProductName.of(product.productName.getProductFormalName(), product.productName.getProductAbbreviation(), product.productName.getProductNameKana());
+        return new Product(product.productCode, productName, product.productType, product.sellingPrice, product.purchasePrice, product.costOfSales, product.taxCategory, product.productCategoryCode, product.miscellaneousType, product.stockManagementTargetType, product.stockAllocationType, product.supplierCode, product.supplierBranchNumber, substituteProduct, boms, customerSpecificSellingPrices);
     }
 }
