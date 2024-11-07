@@ -2,6 +2,7 @@ package com.example.sms.infrastructure.datasource.master.product;
 
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.ProductCategory;
+import com.example.sms.domain.type.product.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -31,15 +32,15 @@ public class ProductCategoryEntityMapper {
                 productEntity.get商品正式名(),
                 productEntity.get商品略称(),
                 productEntity.get商品名カナ(),
-                productEntity.get商品区分(),
+                ProductType.fromCode(productEntity.get商品区分()),
                 productEntity.get販売単価(),
                 productEntity.get仕入単価(),
                 productEntity.get売上原価(),
-                productEntity.get税区分(),
+                TaxType.fromCode(productEntity.get税区分()),
                 productEntity.get商品分類コード(),
-                productEntity.get雑区分(),
-                productEntity.get在庫管理対象区分(),
-                productEntity.get在庫引当区分(),
+                MiscellaneousType.fromCode(productEntity.get雑区分()),
+                StockManagementTargetType.fromCode(productEntity.get在庫管理対象区分()),
+                StockAllocationType.fromCode(productEntity.get在庫引当区分()),
                 productEntity.get仕入先コード(),
                 productEntity.get仕入先枝番()
         );

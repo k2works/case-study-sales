@@ -31,13 +31,43 @@ public class Product {
     List<Bom> boms; // 部品表
     List<CustomerSpecificSellingPrice> customerSpecificSellingPrices; // 顧客別販売単価
 
-    public static Product of(String productCode, String productFormalName, String productAbbreviation, String productNameKana, String productType, Integer sellingPrice, Integer purchasePrice, Integer costOfSales, Integer taxType, String productClassificationCode, Integer miscellaneousType, Integer stockManagementTargetType, Integer stockAllocationType, String supplierCode, Integer supplierBranchNumber) {
-        ProductName productName = ProductName.of(productFormalName, productAbbreviation, productNameKana);
-        return new Product(ProductCode.of(productCode), productName, ProductType.fromCode(productType), Money.of(sellingPrice), Money.of(purchasePrice), Money.of(costOfSales), TaxType.fromCode(taxType), ProductCategoryCode.of(productClassificationCode), MiscellaneousType.fromCode(miscellaneousType), StockManagementTargetType.fromCode(stockManagementTargetType), StockAllocationType.fromCode(stockAllocationType), SupplierCode.of(supplierCode, supplierBranchNumber), List.of(), List.of(), List.of());
+    public static Product of(String productCode, String productFormalName, String productAbbreviation, String productNameKana, ProductType productType, Integer sellingPrice, Integer purchasePrice, Integer costOfSales, TaxType taxType, String productClassificationCode, MiscellaneousType miscellaneousType, StockManagementTargetType stockManagementTargetType, StockAllocationType stockAllocationType, String supplierCode, Integer supplierBranchNumber) {
+        return new Product(
+                ProductCode.of(productCode),
+                ProductName.of(productFormalName, productAbbreviation, productNameKana),
+                productType,
+                Money.of(sellingPrice),
+                Money.of(purchasePrice),
+                Money.of(costOfSales),
+                taxType,
+                ProductCategoryCode.of(productClassificationCode),
+                miscellaneousType,
+                stockManagementTargetType,
+                stockAllocationType,
+                SupplierCode.of(supplierCode, supplierBranchNumber),
+                List.of(),
+                List.of(),
+                List.of()
+        );
     }
 
     public static Product of(Product product, List<SubstituteProduct> substituteProduct, List<Bom> boms, List<CustomerSpecificSellingPrice> customerSpecificSellingPrices) {
-        ProductName productName = ProductName.of(product.productName.getProductFormalName(), product.productName.getProductAbbreviation(), product.productName.getProductNameKana());
-        return new Product(product.productCode, productName, product.productType, product.sellingPrice, product.purchasePrice, product.costOfSales, product.taxType, product.productCategoryCode, product.miscellaneousType, product.stockManagementTargetType, product.stockAllocationType, product.supplierCode, substituteProduct, boms, customerSpecificSellingPrices);
+        return new Product(
+                product.productCode,
+                ProductName.of(product.productName.getProductFormalName(), product.productName.getProductAbbreviation(), product.productName.getProductNameKana()),
+                product.productType,
+                product.sellingPrice,
+                product.purchasePrice,
+                product.costOfSales,
+                product.taxType,
+                product.productCategoryCode,
+                product.miscellaneousType,
+                product.stockManagementTargetType,
+                product.stockAllocationType,
+                product.supplierCode,
+                substituteProduct,
+                boms,
+                customerSpecificSellingPrices
+        );
     }
 }

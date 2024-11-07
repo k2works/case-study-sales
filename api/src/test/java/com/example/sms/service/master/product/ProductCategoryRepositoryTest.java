@@ -4,6 +4,7 @@ import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.ProductCategory;
 import com.example.sms.domain.model.master.product.ProductCategoryList;
+import com.example.sms.domain.type.product.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -35,7 +36,7 @@ public class ProductCategoryRepositoryTest {
     }
 
     private Product getProduct(String productCode) {
-        return TestDataFactoryImpl.product(productCode, "商品正式名", "商品略称", "商品名カナ", "9", 1000, 2000, 3000, 1, "99999999", 0, 1, 1, "00000000", 5);
+        return TestDataFactoryImpl.product(productCode, "商品正式名", "商品略称", "商品名カナ", ProductType.その他, 1000, 2000, 3000, TaxType.外税, "99999999", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "00000000", 5);
     }
 
     @Nested

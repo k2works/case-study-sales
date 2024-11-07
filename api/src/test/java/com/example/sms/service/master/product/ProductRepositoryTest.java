@@ -2,6 +2,7 @@ package com.example.sms.service.master.product;
 
 import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.master.product.*;
+import com.example.sms.domain.type.product.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -27,7 +28,7 @@ public class ProductRepositoryTest {
     }
 
     private Product getProduct(String productCode) {
-        return TestDataFactoryImpl.product(productCode, "商品正式名", "商品略称", "商品名カナ", "9", 1000, 2000, 3000, 1, "00000000", 0, 1, 1, "00000000", 5);
+        return TestDataFactoryImpl.product(productCode, "商品正式名", "商品略称", "商品名カナ", ProductType.その他, 1000, 2000, 3000, TaxType.外税, "00000000", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "00000000", 5);
     }
 
     private SubstituteProduct getSubstituteProduct(String productCode, String substituteProductCode) {
@@ -87,7 +88,7 @@ public class ProductRepositoryTest {
             repository.save(product);
 
             product = repository.findById(product.getProductCode().getValue()).get();
-            Product updatedProduct = Product.of(product.getProductCode().getValue(), "更新後商品正式名", "更新後商品略称", "更新後商品名カナ", "1", 2000, 3000, 4000, 2, "99999999", 0, 1, 1, "99999999", 6);
+            Product updatedProduct = Product.of(product.getProductCode().getValue(), "更新後商品正式名", "更新後商品略称", "更新後商品名カナ", ProductType.商品, 2000, 3000, 4000, TaxType.内税, "99999999", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "99999999", 6);
             repository.save(updatedProduct);
 
             Product actual = repository.findById(product.getProductCode().getValue()).get();

@@ -5,6 +5,7 @@ import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.master.product.*;
 import com.example.sms.domain.model.system.user.User;
+import com.example.sms.domain.type.product.*;
 import com.example.sms.domain.type.user.RoleName;
 import com.example.sms.service.master.department.DepartmentRepository;
 import com.example.sms.service.master.employee.EmployeeRepository;
@@ -54,7 +55,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
     @Override
     public Product Product() {
-        return product("99999999", "商品9", "商品9", "しょうひん9", "9", 900, 810, 90, 9, "カテゴリ9", 0, 1, 1, "サプライヤ9", 9);
+        return product("99999999", "商品9", "商品9", "しょうひん9", ProductType.その他, 900, 810, 90, TaxType.その他, "カテゴリ9", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "サプライヤ9", 9);
     }
 
     @Override
@@ -97,11 +98,11 @@ public class TestDataFactoryImpl implements TestDataFactory {
         SubstituteProduct substituteProduct = substituteProduct(productCode, "000001", 1);
         Bom bom = bom(productCode, "000001", 1);
         CustomerSpecificSellingPrice customerSpecificSellingPrice = customerSpecificSellingPrice(productCode, "1", 1);
-        Product product = product(productCode, "商品1", "商品1", "しょうひん1", "9", 100, 90, 10, 1, "カテゴリ1", 0, 1, 1, "サプライヤ1", 1);
+        Product product = product(productCode, "商品1", "商品1", "しょうひん1", ProductType.その他, 100, 90, 10, TaxType.外税, "カテゴリ1", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "サプライヤ1", 1);
 
         productRepository.save(Product.of(product, List.of(substituteProduct), List.of(bom), List.of(customerSpecificSellingPrice)));
-        productRepository.save(product("99999002", "商品2", "商品2", "しょうひん2", "9", 200, 180, 20, 2, "カテゴリ1", 0, 1, 1, "サプライヤ2", 2));
-        productRepository.save(product("99999003", "商品3", "商品3", "しょうひん3", "9", 300, 270, 30, 3, "カテゴリ2", 0, 1, 1, "サプライヤ3", 3));
+        productRepository.save(product("99999002", "商品2", "商品2", "しょうひん2", ProductType.その他, 200, 180, 20, TaxType.内税, "カテゴリ1", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "サプライヤ2", 2));
+        productRepository.save(product("99999003", "商品3", "商品3", "しょうひん3", ProductType.その他, 300, 270, 30, TaxType.非課税, "カテゴリ2", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "サプライヤ3", 3));
 
         productCategoryRepository.deleteAll();
         productCategoryRepository.save(getProductCategory("カテゴリ1", "カテゴリ1", 1, "カテゴリ1", 1));
@@ -128,8 +129,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
         );
     }
 
-    public static Product product(String productCode, String productFormalName, String productAbbreviation, String productNameKana, String productType, Integer sellingPrice, Integer purchasePrice, Integer costOfSales, Integer taxCategory, String productClassificationCode, Integer miscellaneousType, Integer stockManagementTargetType, Integer stockAllocationType, String supplierCode, Integer supplierBranchNumber) {
-        return Product.of(productCode, productFormalName, productAbbreviation, productNameKana, productType, sellingPrice, purchasePrice, costOfSales, taxCategory, productClassificationCode, miscellaneousType, stockManagementTargetType, stockAllocationType, supplierCode, supplierBranchNumber);
+    public static Product product(String productCode, String productFormalName, String productAbbreviation, String productNameKana, ProductType productType, Integer sellingPrice, Integer purchasePrice, Integer costOfSales, TaxType taxType, String productClassificationCode, MiscellaneousType miscellaneousType, StockManagementTargetType stockManagementTargetType, StockAllocationType stockAllocationType, String supplierCode, Integer supplierBranchNumber) {
+        return Product.of(productCode, productFormalName, productAbbreviation, productNameKana, productType, sellingPrice, purchasePrice, costOfSales, taxType, productClassificationCode, miscellaneousType, stockManagementTargetType, stockAllocationType, supplierCode, supplierBranchNumber);
     }
 
     public static SubstituteProduct substituteProduct(String productCode, String substituteProductCode, Integer priority) {
