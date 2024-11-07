@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/product/categories")
-@Tag(name = "Employee", description = "商品分類")
+@Tag(name = "ProductCategory", description = "商品分類")
 @PreAuthorize("hasRole('ADMIN')")
 public class ProductCategoryApiController {
     final ProductService productService;
