@@ -72,7 +72,7 @@ public class ProductRepositoryTest {
             assertEquals(product.getSellingPrice(), actual.getSellingPrice());
             assertEquals(product.getPurchasePrice(), actual.getPurchasePrice());
             assertEquals(product.getCostOfSales(), actual.getCostOfSales());
-            assertEquals(product.getTaxCategory(), actual.getTaxCategory());
+            assertEquals(product.getTaxType(), actual.getTaxType());
             assertEquals(product.getProductCategoryCode(), actual.getProductCategoryCode());
             assertEquals(product.getMiscellaneousType(), actual.getMiscellaneousType());
             assertEquals(product.getStockManagementTargetType(), actual.getStockManagementTargetType());
