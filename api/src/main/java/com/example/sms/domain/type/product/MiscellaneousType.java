@@ -7,7 +7,7 @@ import lombok.Getter;
  */
 @Getter
 public enum MiscellaneousType {
-    適用(1), 適用外(0);
+    適用外(0), 適用(1);
 
     private final Integer code;
 
