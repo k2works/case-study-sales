@@ -22,8 +22,16 @@ public class ProductCode {
         if (productCode == null) {
             throw new IllegalArgumentException("商品コードは必須です");
         }
-        if (!productCode.matches("[0-9]{8}")) {
-            throw new IllegalArgumentException("商品コードは8桁の数字である必要があります");
+        if (!productCode.matches("^[0-9]{3}$|^[0-9]{8}$")) {
+            throw new IllegalArgumentException("商品コードは3桁または8桁の数字である必要があります");
+        }
+        if (productCode.length() == 3) {
+            this.value = productCode;
+            this.businessType = BusinessType.その他;
+            this.itemType = ItemType.その他;
+            this.livestockType = LiveStockType.その他;
+            this.serialNumber = 0;
+            return;
         }
         this.businessType = BusinessType.fromCode(productCode.substring(0, 1));
         this.itemType = ItemType.fromCode(productCode.substring(1, 3));
