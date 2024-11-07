@@ -60,7 +60,7 @@ public class ProductCategoryApiController {
     public ResponseEntity<?> create(@RequestBody ProductCategoryResource productCategoryResource) {
         try {
             ProductCategory productCategory = ProductCategory.of(productCategoryResource.getProductCategoryCode(), productCategoryResource.getProductCategoryName(), productCategoryResource.getProductCategoryHierarchy(), productCategoryResource.getProductCategoryPath(), productCategoryResource.getLowestLevelDivision());
-            if (productService.findCategory(productCategory.getProductCategoryCode()) != null) {
+            if (productService.findCategory(productCategory.getProductCategoryCode().getValue()) != null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.product_category.already.exist")));
             }
             productService.registerCategory(productCategory);
@@ -76,7 +76,7 @@ public class ProductCategoryApiController {
         try {
 
             ProductCategory productCategory = ProductCategory.of(productCategoryCode, productCategoryResource.getProductCategoryName(), productCategoryResource.getProductCategoryHierarchy(), productCategoryResource.getProductCategoryPath(), productCategoryResource.getLowestLevelDivision());
-            if (productService.findCategory(productCategory.getProductCategoryCode()) == null) {
+            if (productService.findCategory(productCategory.getProductCategoryCode().getValue()) == null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.product_category.not.exist")));
             }
             productService.saveCategory(productCategory);

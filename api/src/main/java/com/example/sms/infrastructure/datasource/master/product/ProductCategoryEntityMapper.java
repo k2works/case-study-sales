@@ -47,7 +47,7 @@ public class ProductCategoryEntityMapper {
 
     public 商品分類マスタ mapToEntity(ProductCategory product) {
         商品分類マスタ productCategoryEntity = new 商品分類マスタ();
-        productCategoryEntity.set商品分類コード(product.getProductCategoryCode());
+        productCategoryEntity.set商品分類コード(product.getProductCategoryCode().getValue());
         productCategoryEntity.set商品分類名(product.getProductCategoryName());
         productCategoryEntity.set商品分類階層(product.getProductCategoryHierarchy());
         productCategoryEntity.set商品分類パス(product.getProductCategoryPath());

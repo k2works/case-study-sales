@@ -21,7 +21,7 @@ public class ProductEntityMapper {
         productEntity.set仕入単価(product.getPurchasePrice().getAmount());
         productEntity.set売上原価(product.getCostOfSales().getAmount());
         productEntity.set税区分(product.getTaxCategory());
-        productEntity.set商品分類コード(product.getProductCategoryCode());
+        productEntity.set商品分類コード(product.getProductCategoryCode().getValue());
         productEntity.set雑区分(product.getMiscellaneousType());
         productEntity.set在庫管理対象区分(product.getStockManagementTargetType());
         productEntity.set在庫引当区分(product.getStockAllocationType());

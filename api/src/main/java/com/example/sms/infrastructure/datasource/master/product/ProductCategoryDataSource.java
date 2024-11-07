@@ -33,7 +33,7 @@ public class ProductCategoryDataSource implements ProductCategoryRepository {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication != null && authentication.getName() != null ? authentication.getName() : "system";
 
-        Optional<商品分類マスタ> productCategoryEntity = Optional.ofNullable(productCategoryMapper.selectByPrimaryKey(product.getProductCategoryCode()));
+        Optional<商品分類マスタ> productCategoryEntity = Optional.ofNullable(productCategoryMapper.selectByPrimaryKey(product.getProductCategoryCode().getValue()));
         商品分類マスタ newProductCategoryEntity = productCategoryEntityMapper.mapToEntity(product);
         if (productCategoryEntity.isEmpty()) {
             newProductCategoryEntity.set作成日時(LocalDateTime.now());
@@ -78,6 +78,6 @@ public class ProductCategoryDataSource implements ProductCategoryRepository {
 
     @Override
     public void deleteById(ProductCategory productCategory) {
-        productCategoryMapper.deleteByPrimaryKey(productCategory.getProductCategoryCode());
+        productCategoryMapper.deleteByPrimaryKey(productCategory.getProductCategoryCode().getValue());
     }
 }

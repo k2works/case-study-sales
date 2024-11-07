@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 public class ProductCategory {
-    String productCategoryCode; // 商品分類コード
+    ProductCategoryCode productCategoryCode; // 商品分類コード
     String productCategoryName; // 商品分類名
     Integer productCategoryHierarchy; // 商品分類階層
     String productCategoryPath; // 商品分類パス
@@ -21,7 +21,7 @@ public class ProductCategory {
     List<Product> products; // 商品
 
     public static ProductCategory of(String productCategoryCode, String productCategoryName, int productCategoryHierarchy, String productCategoryPath, int lowestLevelDivision) {
-        return new ProductCategory(productCategoryCode, productCategoryName, productCategoryHierarchy, productCategoryPath, lowestLevelDivision, List.of());
+        return new ProductCategory(ProductCategoryCode.of(productCategoryCode), productCategoryName, productCategoryHierarchy, productCategoryPath, lowestLevelDivision, List.of());
     }
 
     public static ProductCategory of(ProductCategory productCategory, List<Product> products) {

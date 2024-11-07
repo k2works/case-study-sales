@@ -81,7 +81,7 @@ public class ProductCategoryRepositoryTest {
             ProductCategory productCategory = getProductCategory("99999999");
             repository.save(productCategory);
 
-            ProductCategory newProductCategory = ProductCategory.of(productCategory.getProductCategoryCode(), "商品分類名2", productCategory.getProductCategoryHierarchy(), productCategory.getProductCategoryPath(), productCategory.getLowestLevelDivision());
+            ProductCategory newProductCategory = ProductCategory.of(productCategory.getProductCategoryCode().getValue(), "商品分類名2", productCategory.getProductCategoryHierarchy(), productCategory.getProductCategoryPath(), productCategory.getLowestLevelDivision());
             repository.save(newProductCategory);
 
             ProductCategory actual = repository.findById("99999999").get();

@@ -21,7 +21,7 @@ public class Product {
     Money purchasePrice; // 仕入単価
     Money costOfSales; // 売上原価
     Integer taxCategory; // 税区分
-    String productCategoryCode; // 商品分類コード
+    ProductCategoryCode productCategoryCode; // 商品分類コード
     Integer miscellaneousType; // 雑区分
     Integer stockManagementTargetType; // 在庫管理対象区分
     Integer stockAllocationType; // 在庫引当区分
@@ -33,7 +33,7 @@ public class Product {
 
     public static Product of(String productCode, String productFormalName, String productAbbreviation, String productNameKana, String productCategory, Integer sellingPrice, Integer purchasePrice, Integer costOfSales, Integer taxCategory, String productClassificationCode, Integer miscellaneousCategory, Integer stockManagementTargetCategory, Integer stockAllocationCategory, String supplierCode, Integer supplierBranchNumber) {
         ProductName productName = ProductName.of(productFormalName, productAbbreviation, productNameKana);
-        return new Product(ProductCode.of(productCode), productName, productCategory, Money.of(sellingPrice), Money.of(purchasePrice), Money.of(costOfSales), taxCategory, productClassificationCode, miscellaneousCategory, stockManagementTargetCategory, stockAllocationCategory, supplierCode, supplierBranchNumber, List.of(), List.of(), List.of());
+        return new Product(ProductCode.of(productCode), productName, productCategory, Money.of(sellingPrice), Money.of(purchasePrice), Money.of(costOfSales), taxCategory, ProductCategoryCode.of(productClassificationCode), miscellaneousCategory, stockManagementTargetCategory, stockAllocationCategory, supplierCode, supplierBranchNumber, List.of(), List.of(), List.of());
     }
 
     public static Product of(Product product, List<SubstituteProduct> substituteProduct, List<Bom> boms, List<CustomerSpecificSellingPrice> customerSpecificSellingPrices) {

@@ -96,7 +96,7 @@ public class ProductServiceTest {
 
             ProductCategoryList result = productService.selectAllCategory();
             assertEquals(3, result.asList().size());
-            ProductCategory productCategory = productService.findCategory(newProductCategory.getProductCategoryCode());
+            ProductCategory productCategory = productService.findCategory(newProductCategory.getProductCategoryCode().getValue());
             assertEquals(newProductCategory, productCategory);
         }
 
@@ -106,10 +106,10 @@ public class ProductServiceTest {
             ProductCategory productCategory = testDataFactory.ProductCategory();
             productService.registerCategory(productCategory);
 
-            ProductCategory updateProductCategory = ProductCategory.of(productCategory.getProductCategoryCode(), "更新後商品分類名", productCategory.getProductCategoryHierarchy(), productCategory.getProductCategoryPath(), productCategory.getLowestLevelDivision());
+            ProductCategory updateProductCategory = ProductCategory.of(productCategory.getProductCategoryCode().getValue(), "更新後商品分類名", productCategory.getProductCategoryHierarchy(), productCategory.getProductCategoryPath(), productCategory.getLowestLevelDivision());
             productService.saveCategory(updateProductCategory);
 
-            ProductCategory result = productService.findCategory(productCategory.getProductCategoryCode());
+            ProductCategory result = productService.findCategory(productCategory.getProductCategoryCode().getValue());
             assertEquals("更新後商品分類名", result.getProductCategoryName());
             assertEquals(updateProductCategory, result);
         }
