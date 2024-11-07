@@ -22,8 +22,8 @@ public class Money implements Expression {
         return new Sum(this, addend);
     }
 
-    public Money reduce(Bank bank, String to) {
-        int rate = bank.rate(currency, to);
+    public Money reduce(Exchange exchange, String to) {
+        int rate = exchange.rate(currency, to);
         return new Money(amount / rate, to);
     }
 

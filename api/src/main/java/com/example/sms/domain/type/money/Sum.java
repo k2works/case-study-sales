@@ -20,8 +20,8 @@ class Sum implements Expression {
         return new Sum(this, addend);
     }
 
-    public Money reduce(Bank bank, String to) {
-        int amount = augend.reduce(bank, to).amount + addend.reduce(bank, to).amount;
+    public Money reduce(Exchange exchange, String to) {
+        int amount = augend.reduce(exchange, to).amount + addend.reduce(exchange, to).amount;
         return new Money(amount, to);
     }
 }

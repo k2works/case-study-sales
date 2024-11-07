@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * 為替
  */
-class Bank {
+class Exchange {
     private Map<Pair, Integer> rates = new HashMap<>();
 
     Money reduce(Expression source, String to) {
