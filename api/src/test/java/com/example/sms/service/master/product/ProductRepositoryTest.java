@@ -78,7 +78,6 @@ public class ProductRepositoryTest {
             assertEquals(product.getStockManagementTargetType(), actual.getStockManagementTargetType());
             assertEquals(product.getStockAllocationType(), actual.getStockAllocationType());
             assertEquals(product.getSupplierCode(), actual.getSupplierCode());
-            assertEquals(product.getSupplierBranchNumber(), actual.getSupplierBranchNumber());
         }
 
         @Test

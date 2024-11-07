@@ -25,8 +25,8 @@ public class ProductEntityMapper {
         productEntity.set雑区分(product.getMiscellaneousType());
         productEntity.set在庫管理対象区分(product.getStockManagementTargetType());
         productEntity.set在庫引当区分(product.getStockAllocationType());
-        productEntity.set仕入先コード(product.getSupplierCode());
-        productEntity.set仕入先枝番(product.getSupplierBranchNumber());
+        productEntity.set仕入先コード(product.getSupplierCode().getValue());
+        productEntity.set仕入先枝番(product.getSupplierCode().getBranchNumber());
 
         return productEntity;
     }
