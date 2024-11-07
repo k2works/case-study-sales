@@ -1,6 +1,7 @@
 package com.example.sms.domain.model.master.product;
 
 import com.example.sms.domain.type.BusinessType;
+import com.example.sms.domain.type.ItemType;
 import com.example.sms.domain.type.money.Money;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -14,10 +15,10 @@ public class ProductTest {
     @Test
     @DisplayName("商品を作成できる")
     void shouldCreateProduct() {
-        Product product = Product.of("12345678", "Test Product", "TP", "テストプロダクト", "1", 100, 50, 60, 1, "100", 1, 1, 1, "1000", 1);
+        Product product = Product.of("99945678", "Test Product", "TP", "テストプロダクト", "1", 100, 50, 60, 1, "100", 1, 1, 1, "1000", 1);
 
         assertNotNull(product, "Product creation resulted in Null");
-        assertEquals("12345678", product.getProductCode().getValue(), "Mismatch in productCode");
+        assertEquals("99945678", product.getProductCode().getValue(), "Mismatch in productCode");
         assertEquals("Test Product", product.getProductName().getProductFormalName(), "Mismatch in productFormalName");
         assertEquals("TP", product.getProductName().getProductAbbreviation(), "Mismatch in productAbbreviation");
         assertEquals("テストプロダクト", product.getProductName().getProductNameKana(), "Mismatch in productNameKana");
@@ -55,28 +56,28 @@ public class ProductTest {
         @Test
         @DisplayName("商品コードの事業区分は最初の1文字")
         void shouldExtractBusinessTypeFromProductCode() {
-            Product product = Product.of("12345678", "Test Product", "TP", "テストプロダクト", "1", 100, 50, 60, 1, "100", 1, 1, 1, "1000", 1);
-            assertEquals(BusinessType.生鮮食料品, product.getProductCode().getBusinessType(), "Mismatch in businessType");
+            Product product = Product.of("99945678", "Test Product", "TP", "テストプロダクト", "1", 100, 50, 60, 1, "100", 1, 1, 1, "1000", 1);
+            assertEquals(BusinessType.その他, product.getProductCode().getBusinessType(), "Mismatch in businessType");
         }
 
         @Test
         @DisplayName("商品コードの品目区分は2文字目から3文字")
         void shouldExtractItemTypeFromProductCode() {
-            Product product = Product.of("12345678", "Test Product", "TP", "テストプロダクト", "1", 100, 50, 60, 1, "100", 1, 1, 1, "1000", 1);
-            assertEquals("23", product.getProductCode().getItemType(), "Mismatch in itemType");
+            Product product = Product.of("99945678", "Test Product", "TP", "テストプロダクト", "1", 100, 50, 60, 1, "100", 1, 1, 1, "1000", 1);
+            assertEquals(ItemType.その他, product.getProductCode().getItemType(), "Mismatch in itemType");
         }
 
         @Test
         @DisplayName("商品コードの畜産区分は4文字目から5文字")
         void shouldExtractLivestockTypeFromProductCode() {
-            Product product = Product.of("12345678", "Test Product", "TP", "テストプロダクト", "1", 100, 50, 60, 1, "100", 1, 1, 1, "1000", 1);
+            Product product = Product.of("99945678", "Test Product", "TP", "テストプロダクト", "1", 100, 50, 60, 1, "100", 1, 1, 1, "1000", 1);
             assertEquals("45", product.getProductCode().getLivestockType(), "Mismatch in livestockType");
         }
 
         @Test
         @DisplayName("商品コードの連番は6文字目から8文字")
         void shouldExtractSerialNumberFromProductCode() {
-            Product product = Product.of("12345678", "Test Product", "TP", "テストプロダクト", "1", 100, 50, 60, 1, "100", 1, 1, 1, "1000", 1);
+            Product product = Product.of("99945678", "Test Product", "TP", "テストプロダクト", "1", 100, 50, 60, 1, "100", 1, 1, 1, "1000", 1);
             assertEquals(678, product.getProductCode().getSerialNumber(), "Mismatch in serialNumber");
         }
     }
