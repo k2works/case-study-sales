@@ -57,7 +57,7 @@ public class ProductServiceTest {
             Product product = testDataFactory.Product();
             productService.register(product);
 
-            Product updateProduct = Product.of(product.getProductCode().getValue(), "更新後商品正式名", "更新後商品略称", "更新後商品名カナ", "1", 2000, 3000, 4000, 2, "99999999", 0, 1, 5, "99999999", 6);
+            Product updateProduct = Product.of(product.getProductCode().getValue(), "更新後商品正式名", "更新後商品略称", "更新後商品名カナ", "1", 2000, 3000, 4000, 2, "99999999", 0, 1, 1, "99999999", 6);
             productService.save(updateProduct);
 
             Product result = productService.find(product.getProductCode().getValue());

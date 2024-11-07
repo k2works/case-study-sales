@@ -3,10 +3,7 @@ package com.example.sms.stepdefinitions;
 import com.example.sms.TestDataFactory;
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.ProductCategory;
-import com.example.sms.domain.type.MiscellaneousType;
-import com.example.sms.domain.type.ProductType;
-import com.example.sms.domain.type.StockManagementTargetType;
-import com.example.sms.domain.type.TaxType;
+import com.example.sms.domain.type.*;
 import com.example.sms.presentation.api.master.product.ProductCategoryResource;
 import com.example.sms.presentation.api.master.product.ProductResource;
 import com.example.sms.stepdefinitions.utils.ListResponse;
@@ -103,7 +100,7 @@ public class UC005StepDefs extends SpringAcceptanceTest {
         productResource.setProductClassificationCode("");
         productResource.setMiscellaneousCategory(MiscellaneousType.適用.getCode());
         productResource.setStockManagementTargetCategory(StockManagementTargetType.対象.getCode());
-        productResource.setStockAllocationCategory(0);
+        productResource.setStockAllocationCategory(StockAllocationType.引当済.getCode());
         productResource.setSupplierCode("");
         productResource.setSupplierBranchNumber(0);
 
@@ -152,7 +149,7 @@ public class UC005StepDefs extends SpringAcceptanceTest {
         productResource.setProductClassificationCode("");
         productResource.setMiscellaneousCategory(MiscellaneousType.適用.getCode());
         productResource.setStockManagementTargetCategory(StockManagementTargetType.対象.getCode());
-        productResource.setStockAllocationCategory(0);
+        productResource.setStockAllocationCategory(StockAllocationType.引当済.getCode());
         productResource.setSupplierCode("");
         productResource.setSupplierBranchNumber(0);
 

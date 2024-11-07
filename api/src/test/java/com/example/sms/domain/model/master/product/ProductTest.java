@@ -29,7 +29,7 @@ public class ProductTest {
         assertEquals("100", product.getProductCategoryCode().getValue(), "Mismatch in productCategoryCode");
         assertEquals(MiscellaneousType.適用, product.getMiscellaneousType(), "Mismatch in miscellaneousCategory");
         assertEquals(StockManagementTargetType.対象, product.getStockManagementTargetType(), "Mismatch in stockManagementTargetCategory");
-        assertEquals(1, product.getStockAllocationType(), "Mismatch in stockAllocationCategory");
+        assertEquals(StockAllocationType.引当済, product.getStockAllocationType(), "Mismatch in stockAllocationCategory");
         assertEquals("1000", product.getSupplierCode().getValue(), "Mismatch in supplierCode");
         assertEquals(1, product.getSupplierCode().getBranchNumber(), "Mismatch in supplierBranchNumber");
         assertTrue(product.getSubstituteProduct().isEmpty(), "SubstituteProduct list is not empty");

@@ -35,7 +35,7 @@ public class ProductCategoryRepositoryTest {
     }
 
     private Product getProduct(String productCode) {
-        return TestDataFactoryImpl.product(productCode, "商品正式名", "商品略称", "商品名カナ", "9", 1000, 2000, 3000, 1, "99999999", 0, 1, 4, "00000000", 5);
+        return TestDataFactoryImpl.product(productCode, "商品正式名", "商品略称", "商品名カナ", "9", 1000, 2000, 3000, 1, "99999999", 0, 1, 1, "00000000", 5);
     }
 
     @Nested
