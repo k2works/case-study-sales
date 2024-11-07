@@ -1,7 +1,6 @@
 package com.example.sms.domain.model.master.product;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
@@ -11,7 +10,6 @@ import java.util.List;
  * 商品分類
  */
 @Value
-@Getter
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 public class ProductCategory {
