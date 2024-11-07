@@ -3,7 +3,7 @@ import render from "@k2works/full-stack-lab";
 
 const mindmap = `
 @startmindmap
-* マスタ管理
+* マスタ管理機能
 -- ユースケース
 --- マスタ管理
 ---- 部門
@@ -150,14 +150,25 @@ class 社員一覧
 class 社員
 class ユーザー
 
+class 商品分類一覧
+class 商品分類
 class 商品一覧
 class 商品
+class 代替商品
+class 部品表
+class 顧客別販売単価
 
 部門一覧 *-- 部門
 部門 *-- 社員
 社員一覧 *-- 社員
 社員 o- ユーザー
+商品分類一覧 *-- 商品分類
+商品分類 o- 商品
 商品一覧 *-- 商品
+商品 o-- 代替商品
+商品 o-- 部品表
+商品 o-- 顧客別販売単価
+
 @enduml
 `;
 
@@ -192,6 +203,12 @@ entity "ユーザーマスタ" as user {
     役割 : text
 }
 
+entity "商品分類マスタ" as product_category {
+    *商品分類コード : text
+    --
+    商品分類名 : text
+}
+
 entity "商品マスタ" as product {
     *商品コード : text
     --
@@ -199,10 +216,32 @@ entity "商品マスタ" as product {
     販売単価 : number
     仕入単価 : number
     売上原価: number
+    商品分類コード : text
+}
+
+entity "代替商品マスタ" as alternative_product {
+    *商品コード : text
+    *代替商品コード : text
+}
+
+entity "部品表マスタ" as bill_of_materials {
+    *商品コード : text
+    *部品コード : text
+    数量 : number
+}
+
+entity "顧客別販売単価マスタ" as customer_price {
+    *商品コード : text
+    *顧客コード : text
+    販売単価 : number
 }
 
 department ||--o{ employee
 employee ||-o user
+product_category ||--o{ product
+product ||-- alternative_product
+product ||-- bill_of_materials
+product ||-- customer_price
 @enduml
 `;
 
@@ -329,6 +368,50 @@ const ui = `
       Uxxxxxx | User3    | [ 選択  ]
     }
   }
+  ----------------
+  商品分類一覧画面（コレクション）
+  {+
+     {
+      ホーム
+      ユーザー
+      マスタ
+      ログアウト
+      } |
+      {
+        {
+          <b>商品分類一覧</b>
+        }
+        
+        [  新規登録  ] | [ 一括削除  ]
+        ---------------------
+        {
+          1xxxxxx | 商品分類1    | [  編集  ] | [  削除  ]
+          1xxxxxx | 商品分類2    | [  編集  ] | [  削除  ]
+          1xxxxxx | 商品分類3    | [  編集  ] | [  削除  ]
+        }
+      } 
+  }
+  ----------------
+  商品分類画面（シングル）
+  {+
+      {
+        [  保存   ]
+        ---------------------
+        商品分類コード    | "1xxxxxx"   "
+        商品分類名        | "商品分類1    "
+      }
+  
+      <b>商品一覧</b>
+      [ 追加 ]
+      ---------------------
+      {
+        1xxxxxx | 商品1    | [  削除  ]
+        1xxxxxx | 商品2    | [  削除  ]
+        1xxxxxx | 商品3    | [  削除  ]
+      }
+    
+  }
+  ----------------
   商品一覧画面（コレクション）
   {+
      {
@@ -363,7 +446,15 @@ const ui = `
         仕入単価      | 1000
         売上原価      | 1000
       }
-  
+      {+
+        {/ <b>代替商品 | 部品表 | 顧客別販売単価 }
+        {
+            1xxxxxx | 1xxxxxx | 1xxxxxx | [  削除  ]
+            1xxxxxx | 1xxxxxx | 1xxxxxx | [  削除  ]
+            1xxxxxx | 1xxxxxx | 1xxxxxx | [  削除  ]
+        }
+        [ 追加 ]
+      }
   }
 }
 @endsalt
@@ -408,6 +499,23 @@ const uiModel = `
     選択()
   }
   
+  class 商品分類一覧 {
+    新規作成()
+    編集()
+    削除()
+    一括削除()
+  }
+  
+  class 商品分類 {
+    保存()
+    追加()
+    削除()
+  }
+  
+  class 商品一覧選択 {
+    選択()
+  }
+  
   class 商品一覧 {
     新規作成()
     編集()
@@ -417,6 +525,21 @@ const uiModel = `
   
   class 商品 {
     保存()
+  }
+  
+  class 代替商品 {
+    追加()
+    削除()
+  }
+  
+  class 部品表 {
+    追加()
+    削除()
+  }
+
+  class 顧客別販売単価 {
+    追加()
+    削除()
   }
   
   class ナビゲーション {
@@ -433,8 +556,14 @@ const uiModel = `
   社員一覧 *-- 社員
   社員 *-- ユーザー一覧選択
   社員 *-- 部門一覧選択
+  ナビゲーション --* 商品分類一覧
+  商品分類一覧 *-- 商品分類
+  商品分類 o-- 商品一覧選択
   ナビゲーション --* 商品一覧
   商品一覧 *-- 商品
+  商品 o-- 代替商品
+  商品 o-- 部品表
+  商品 o-- 顧客別販売単価
     
 @enduml
 `;
@@ -460,6 +589,12 @@ const uiInteraction = `
     ナビゲーション_シングル --> 商品_コレクション
     商品_コレクション --> 商品_シングル
     商品_シングル --> 商品_コレクション
+    商品_シングル --> 代替商品_コレクション
+    代替商品_コレクション --> 商品_シングル
+    商品_シングル --> 部品表_コレクション
+    部品表_コレクション --> 商品_シングル
+    商品_シングル --> 顧客別販売単価_コレクション
+    顧客別販売単価_コレクション --> 商品_シングル
   ログイン_シングル <-- ナビゲーション_シングル
   
 @enduml
