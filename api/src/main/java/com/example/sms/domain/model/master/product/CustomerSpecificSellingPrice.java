@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.master.product;
 
+import com.example.sms.domain.type.money.Money;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;
@@ -13,9 +14,9 @@ import lombok.Value;
 public class CustomerSpecificSellingPrice {
     ProductCode productCode; // 商品コード
     String customerCode; // 顧客コード
-    Integer sellingPrice; // 販売単価
+    Money sellingPrice; // 販売単価
 
     public static CustomerSpecificSellingPrice of(String productCode, String format, int i) {
-        return new CustomerSpecificSellingPrice(ProductCode.of(productCode), format, i);
+        return new CustomerSpecificSellingPrice(ProductCode.of(productCode), format, Money.of(i));
     }
 }

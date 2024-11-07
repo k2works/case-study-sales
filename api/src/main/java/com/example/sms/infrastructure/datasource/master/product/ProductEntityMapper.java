@@ -54,7 +54,7 @@ public class ProductEntityMapper {
         顧客別販売単価 customerSellingPriceEntity = new 顧客別販売単価();
         customerSellingPriceEntity.set商品コード(customerSpecificSellingPrice.getProductCode().getValue());
         customerSellingPriceEntity.set取引先コード(customerSpecificSellingPrice.getCustomerCode());
-        customerSellingPriceEntity.set販売単価(customerSpecificSellingPrice.getSellingPrice());
+        customerSellingPriceEntity.set販売単価(customerSpecificSellingPrice.getSellingPrice().getAmount());
 
         return customerSellingPriceEntity;
     }
