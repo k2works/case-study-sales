@@ -80,6 +80,8 @@ export type ProductResourceType = {
     substituteProduct?: SubstituteProductType[];
     boms?: BomType[];
     customerSpecificSellingPrices?: CustomerSpecificSellingPriceType[];
+    addFlag: boolean;
+    deleteFlag: boolean;
 }
 
 type ProductCategoryCode = {
@@ -102,7 +104,7 @@ export type ProductCategoryResourceType = {
     productCategoryHierarchy: number;
     productCategoryPath?: string;
     lowestLevelDivision?: number;
-    products?: ProductType[];
+    products?: ProductResourceType[];
 };
 
 export const mapToProductResource = (product: ProductType): ProductResourceType => {
@@ -124,7 +126,9 @@ export const mapToProductResource = (product: ProductType): ProductResourceType 
         supplierBranchNumber: product.supplierCode.branchNumber,
         substituteProduct: product.substituteProduct,
         boms: product.boms,
-        customerSpecificSellingPrices: product.customerSpecificSellingPrices
+        customerSpecificSellingPrices: product.customerSpecificSellingPrices,
+        addFlag: product.addFlag,
+        deleteFlag: product.deleteFlag
     };
 }
 
@@ -135,6 +139,6 @@ export const mapToProductCategoryResource = (productCategory: ProductCategoryTyp
         productCategoryHierarchy: productCategory.productCategoryHierarchy,
         productCategoryPath: productCategory.productCategoryPath,
         lowestLevelDivision: productCategory.lowestLevelDivision,
-        products: productCategory.products
+        products: productCategory.products.map(product => mapToProductResource(product))
     };
 }

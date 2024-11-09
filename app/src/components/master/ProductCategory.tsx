@@ -5,12 +5,13 @@ import {useModal} from "../application/hooks.ts";
 import {usePageNation} from "../../views/application/PageNation.tsx";
 import {SiteLayout} from "../../views/SiteLayout.tsx";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
-import {ProductCategoryType} from "../../models";
+import {ProductCategoryType, ProductType} from "../../models";
 
-import {useFetchProductCategories, useProductCategory} from "./hooks.ts";
+import {useFetchProductCategories, useFetchProducts, useProduct, useProductCategory} from "./hooks.ts";
 import Modal from "react-modal";
 import {ProductCategoryCollectionView} from "../../views/master/ProductCategoryCollection.tsx";
 import {ProductCategorySingleView} from "../../views/master/ProductCategorySingle.tsx";
+import {ProductCollectionListView, ProductCollectionSelectView} from "../../views/master/ProductSelect.tsx";
 
 export const ProductCategory: React.FC = () => {
     const Content: React.FC = () => {
@@ -25,6 +26,13 @@ export const ProductCategory: React.FC = () => {
             setIsEditing,
             editId,
             setEditId
+        } = useModal();
+
+        const {
+            modalIsOpen: productModalIsOpen,
+            setModalIsOpen: setProductModalIsOpen,
+            setIsEditing: setProductIsEditing,
+            setEditId: setProductEditId
         } = useModal();
 
         const {
@@ -46,9 +54,26 @@ export const ProductCategory: React.FC = () => {
             showErrorMessage,
             productCategoryService
         );
+        const {
+            products,
+            setProducts,
+            productService
+        } = useProduct();
+
+        const fetchProducts = useFetchProducts(
+            setLoading,
+            setProducts,
+            setPageNation,
+            setError,
+            showErrorMessage,
+            productService
+        );
 
         useEffect(() => {
-            fetchProductCategories.load();
+            fetchProductCategories.load().then(() => {
+                    fetchProducts.load().then();
+                }
+            );
         }, []);
 
         const handleOpenModal = (productCategory?: ProductCategoryType) => {
@@ -197,8 +222,46 @@ export const ProductCategory: React.FC = () => {
                 }
             };
 
+            const handleCloseProductModal = () => {
+                setError("");
+                setProductModalIsOpen(false);
+                setProductEditId(null);
+            }
+
             return (
                 <>
+                    <Modal
+                        isOpen={productModalIsOpen}
+                        onRequestClose={handleCloseProductModal}
+                        contentLabel="商品情報を入力"
+                        className="modal"
+                        overlayClassName="modal-overlay"
+                        bodyOpenClassName="modal-open"
+                    >
+                        {
+                            <ProductCollectionSelectView
+                                products={products}
+                                handleSelect={(product) => {
+                                    const newProducts = newProductCategory.products.filter((e) => e.productCode.value !== product.productCode.value);
+                                    if (product.productCode.value) {
+                                        newProducts.push({
+                                            ...product,
+                                            addFlag: true,
+                                            deleteFlag: false
+                                        });
+                                    }
+                                    setNewProductCategory({
+                                        ...newProductCategory,
+                                        products: newProducts
+                                    });
+                                }}
+                                handleClose={handleCloseProductModal}
+                                pageNation={pageNation}
+                                fetchProducts={fetchProducts.load}
+                            />
+                        }
+                    </Modal>
+
                     <ProductCategorySingleView
                         error={error}
                         message={message}
@@ -208,6 +271,33 @@ export const ProductCategory: React.FC = () => {
                         handleCreateOrUpdateProductCategory={handleCreateOrUpdateProductCategory}
                         handleCloseModal={handleCloseModal}
                     />
+
+                    {isEditing && (
+                        <ProductCollectionListView
+                            products={newProductCategory.products.filter((e) => !e.deleteFlag)}
+                            handleAdd={() => {
+                                setMessage("");
+                                setError("");
+                                setProductIsEditing(true);
+                                setProductModalIsOpen(true);
+                            }}
+                            handleDelete={(product: ProductType) => {
+                                const newProducts = newProductCategory.products.filter((e) => e.productCode.value !== product.productCode.value);
+                                if (product.productCode.value) {
+                                    newProducts.push({
+                                        ...product,
+                                        addFlag: false,
+                                        deleteFlag: true
+                                    });
+                                }
+                                setNewProductCategory({
+                                    ...newProductCategory,
+                                    products: newProducts
+                                });
+                            }}
+                        />
+                    )
+                    }
                 </>
             );
         };
