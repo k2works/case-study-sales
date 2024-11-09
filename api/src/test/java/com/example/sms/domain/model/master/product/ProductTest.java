@@ -5,6 +5,8 @@ import com.example.sms.domain.type.product.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -127,6 +129,16 @@ public class ProductTest {
             void shouldSetSerialNumberToZeroWhenProductCodeIs3DigitNumber() {
                 Product product = Product.of("999", "Test Product", "TP", "テストプロダクト", ProductType.商品, 100, 50, 60, TaxType.外税, "100", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "1000", 1);
                 assertEquals(0, product.getProductCode().getSerialNumber(), "Mismatch in serialNumber");
+            }
+
+            @ParameterizedTest
+            @DisplayName("商品コードの先頭がアルファベットの場合は登録される")
+            @ValueSource(chars = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'})
+            void shouldCreateProductCodeWhenProductCodeStartsWithAlphabet(char initialChar) {
+                String productCode = initialChar + "99";
+                Product product = Product.of(productCode, "Test Product", "TP", "テストプロダクト", ProductType.商品, 100, 50, 60, TaxType.外税, "100", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "1000", 1);
+
+                assertEquals(productCode, product.getProductCode().getValue(), "Mismatch in productCode");
             }
         }
 
