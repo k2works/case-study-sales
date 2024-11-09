@@ -10,6 +10,7 @@ import {useFetchProducts, useProduct} from "./hooks.ts";
 import {ProductType} from "../../models";
 import {ProductCollectionView} from "../../views/master/ProductCollection.tsx";
 import {ProductSingleView} from "../../views/master/ProductSingle.tsx";
+import {SubstituteProductCollectionView} from "../../views/master/SubstituteProductSelect.tsx";
 
 export const Product: React.FC = () => {
     const Content: React.FC = () => {
@@ -202,6 +203,31 @@ export const Product: React.FC = () => {
                         handleCreateOrUpdateProduct={handleCreateOrUpdateProduct}
                         handleCloseModal={handleCloseModal}
                     />
+
+                    {isEditing && (
+                        <SubstituteProductCollectionView
+                            substituteProducts={newProduct.substituteProduct}
+                            handleAdd={() => {
+                                setNewProduct({
+                                    ...newProduct,
+                                    substituteProduct: newProduct.substituteProduct.concat({
+                                        productCode: newProduct.productCode,
+                                        substituteProductCode: "",
+                                        priority: 0
+                                    })
+                                });
+                            }}
+                            handleDelete={(product) => {
+                                setNewProduct({
+                                    ...newProduct,
+                                    substituteProduct: newProduct.substituteProduct.filter(
+                                        (substituteProduct) => substituteProduct.substituteProductCode !== product.substituteProductCode
+                                    )
+                                });
+                            }}
+                        />
+                    )
+                    }
                 </>
             );
         };
