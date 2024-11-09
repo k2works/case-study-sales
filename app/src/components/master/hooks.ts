@@ -1,8 +1,9 @@
 import {useState} from "react";
-import {DepartmentIdType, DepartmentType, EmployeeType, LowerType, SlitYnType} from "../../models";
+import {DepartmentIdType, DepartmentType, EmployeeType, LowerType, ProductCategoryType, SlitYnType} from "../../models";
 import {DepartmentService, DepartmentServiceType} from "../../services/department.ts";
 import {EmployeeService, EmployeeServiceType} from "../../services/employee.ts";
 import {PageNationType} from "../../views/application/PageNation.tsx";
+import {ProductCategoryService, ProductCategoryServiceType} from "../../services/product_category.ts";
 
 export const useDepartment = () => {
     const initialDepartment = {
@@ -161,6 +162,60 @@ export const useFetchEmployees = (
         }
     };
 
+    return {
+        load
+    };
+};
+
+export const useProductCategory = () => {
+    const initialProductCategory: ProductCategoryType = {
+        productCategoryCode: {value: ""},
+        productCategoryName: "",
+        productCategoryHierarchy: 0,
+        productCategoryPath: "",
+        lowestLevelDivision: 0,
+        products: [],
+        checked: false
+    };
+
+    const [productCategories, setProductCategories] = useState<ProductCategoryType[]>([]);
+    const [newProductCategory, setNewProductCategory] = useState<ProductCategoryType>(initialProductCategory);
+    const [searchProductCategoryCode, setSearchProductCategoryCode] = useState<string>("");
+    const productCategoryService = ProductCategoryService();
+
+    return {
+        initialProductCategory,
+        productCategories,
+        newProductCategory,
+        setNewProductCategory,
+        setProductCategories,
+        searchProductCategoryCode,
+        setSearchProductCategoryCode,
+        productCategoryService
+    };
+};
+
+export const useFetchProductCategories = (
+    setLoading: (loading: boolean) => void,
+    setList: (list: ProductCategoryType[]) => void,
+    setPageNation: (pageNation: PageNationType) => void,
+    setError: (error: string) => void,
+    showErrorMessage: (message: string, callback: (error: string) => void) => void, service: ProductCategoryServiceType) => {
+    const load = async (page: number = 1): Promise<void> => {
+        const ERROR_MESSAGE = "製品カテゴリ情報の取得に失敗しました:";
+        setLoading(true);
+        try {
+            const fetchedCategories = await service.select(page);
+            const {list, ...pagination} = fetchedCategories;
+            setList(list);
+            setPageNation(pagination);
+            setError("");
+        } catch (error: any) {
+            showErrorMessage(`${ERROR_MESSAGE} ${error?.message}`, setError);
+        } finally {
+            setLoading(false);
+        }
+    };
     return {
         load
     };

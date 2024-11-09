@@ -14,7 +14,7 @@ export interface ProductCategoryServiceType {
 export const ProductCategoryService = (): ProductCategoryServiceType => {
     const config = Config();
     const apiUtils = Utils.apiUtils;
-    const endPoint = `${config.apiUrl}/product-categories`;
+    const endPoint = `${config.apiUrl}/product/categories`;
 
     const select = async (page?: number, pageSize?: number): Promise<any> => {
         let url = endPoint;

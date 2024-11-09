@@ -54,8 +54,10 @@ export type ProductType = {
     stockAllocationType: string;
     supplierCode: SupplierCodeType;
     substituteProduct: SubstituteProductType[];
-    boms: any[];
+    boms: BomType[];
     customerSpecificSellingPrices: CustomerSpecificSellingPriceType[];
+    addFlag: boolean;
+    deleteFlag: boolean;
 };
 
 export type ProductResourceType = {
@@ -90,6 +92,7 @@ export type ProductCategoryType = {
     productCategoryPath: string;
     lowestLevelDivision: number;
     products: ProductType[];
+    checked: boolean;
 };
 
 export type ProductCategoryResourceType = {
