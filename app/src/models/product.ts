@@ -56,6 +56,7 @@ export type ProductType = {
     substituteProduct: SubstituteProductType[];
     boms: BomType[];
     customerSpecificSellingPrices: CustomerSpecificSellingPriceType[];
+    checked: boolean;
     addFlag: boolean;
     deleteFlag: boolean;
 };

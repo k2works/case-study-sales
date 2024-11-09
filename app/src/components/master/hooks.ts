@@ -1,9 +1,18 @@
 import {useState} from "react";
-import {DepartmentIdType, DepartmentType, EmployeeType, LowerType, ProductCategoryType, SlitYnType} from "../../models";
+import {
+    DepartmentIdType,
+    DepartmentType,
+    EmployeeType,
+    LowerType,
+    ProductCategoryType,
+    ProductType,
+    SlitYnType
+} from "../../models";
 import {DepartmentService, DepartmentServiceType} from "../../services/department.ts";
 import {EmployeeService, EmployeeServiceType} from "../../services/employee.ts";
 import {PageNationType} from "../../views/application/PageNation.tsx";
 import {ProductCategoryService, ProductCategoryServiceType} from "../../services/product_category.ts";
+import {ProductService, ProductServiceType} from "../../services/product.ts";
 
 export const useDepartment = () => {
     const initialDepartment = {
@@ -202,11 +211,91 @@ export const useFetchProductCategories = (
     setError: (error: string) => void,
     showErrorMessage: (message: string, callback: (error: string) => void) => void, service: ProductCategoryServiceType) => {
     const load = async (page: number = 1): Promise<void> => {
-        const ERROR_MESSAGE = "製品カテゴリ情報の取得に失敗しました:";
+        const ERROR_MESSAGE = "商品分類情報の取得に失敗しました:";
         setLoading(true);
         try {
             const fetchedCategories = await service.select(page);
             const {list, ...pagination} = fetchedCategories;
+            setList(list);
+            setPageNation(pagination);
+            setError("");
+        } catch (error: any) {
+            showErrorMessage(`${ERROR_MESSAGE} ${error?.message}`, setError);
+        } finally {
+            setLoading(false);
+        }
+    };
+    return {
+        load
+    };
+};
+
+export const useProduct = () => {
+    const initialProduct: ProductType = {
+        productCode: {
+            value: "",
+            businessType: "",
+            itemType: "",
+            livestockType: "",
+            serialNumber: 0,
+        },
+        productName: {
+            productFormalName: "",
+            productAbbreviation: "",
+            productNameKana: "",
+        },
+        productType: "",
+        sellingPrice: {amount: 0, currency: ""},
+        purchasePrice: {amount: 0, currency: ""},
+        costOfSales: {amount: 0, currency: ""},
+        taxType: "",
+        productCategoryCode: {value: ""},
+        miscellaneousType: "",
+        stockManagementTargetType: "",
+        stockAllocationType: "",
+        supplierCode: {
+            value: "",
+            branchNumber: 0,
+        },
+        substituteProduct: [],
+        boms: [],
+        customerSpecificSellingPrices: [],
+        checked: false,
+        addFlag: false,
+        deleteFlag: false,
+    };
+
+    const [products, setProducts] = useState<ProductType[]>([]);
+    const [newProduct, setNewProduct] = useState<ProductType>(initialProduct);
+    const [searchProductCode, setSearchProductCode] = useState<string>("");
+    const productService = ProductService();
+
+    return {
+        initialProduct,
+        products,
+        newProduct,
+        setNewProduct,
+        setProducts,
+        searchProductCode,
+        setSearchProductCode,
+        productService
+    };
+};
+
+export const useFetchProducts = (
+    setLoading: (loading: boolean) => void,
+    setList: (list: ProductType[]) => void,
+    setPageNation: (pageNation: PageNationType) => void,
+    setError: (error: string) => void,
+    showErrorMessage: (message: string, callback: (error: string) => void) => void,
+    service: ProductServiceType
+) => {
+    const load = async (page: number = 1): Promise<void> => {
+        const ERROR_MESSAGE = "商品情報の取得に失敗しました:";
+        setLoading(true);
+        try {
+            const fetchedProducts = await service.select(page);
+            const {list, ...pagination} = fetchedProducts;
             setList(list);
             setPageNation(pagination);
             setError("");

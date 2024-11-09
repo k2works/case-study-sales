@@ -10,6 +10,7 @@ import {Employee} from "../master/Employee.tsx";
 import {NotFound} from "../../views/application/NotFound.tsx";
 import {Home} from "./Home.tsx";
 import {ProductCategory} from "../master/ProductCategory.tsx";
+import {Product} from "../master/Product.tsx";
 
 export const RouteConfig: React.FC = () => {
     return (
@@ -23,6 +24,8 @@ export const RouteConfig: React.FC = () => {
                 <Route path="/employee" element={<RouteAuthGuard component={<Employee/>} redirectPath="/"
                                                                  allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/product-category" element={<RouteAuthGuard component={<ProductCategory/>} redirectPath="/"
+                                                                         allowedRoles={[RoleType.ADMIN]}/>}/>
+                <Route path="/product" element={<RouteAuthGuard component={<Product/>} redirectPath="/"
                                                                          allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/logout" element={<Logout/>}/>
