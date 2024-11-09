@@ -1,6 +1,5 @@
 package com.example.sms.presentation.api.master.product;
 
-import com.example.sms.domain.model.master.product.Product;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -24,5 +23,5 @@ public class ProductCategoryResource implements Serializable {
     Integer productCategoryHierarchy; // 商品分類階層
     String productCategoryPath; // 商品分類パス
     Integer lowestLevelDivision; // 最下層区分
-    List<Product> Products; // 商品
+    List<ProductResource> Products; // 商品
 }

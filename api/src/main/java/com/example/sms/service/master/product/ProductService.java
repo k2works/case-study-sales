@@ -8,6 +8,9 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Optional;
+
 /**
  * 商品サービス
  */
@@ -93,6 +96,27 @@ public class ProductService {
     }
 
     /**
+     * 商品分類情報編集(商品追加、削除)
+     */
+    public void saveCategory(ProductCategory productCategory, List<Product> addProducts, List<Product> deleteProducts) {
+        productCategoryRepository.save(productCategory);
+        addProducts.forEach(product -> {
+            Optional<Product> pro = productRepository.findById(product.getProductCode().getValue());
+            pro.ifPresent(value -> {
+                Product updatePro = Product.of(value, productCategory);
+                productRepository.save(updatePro);
+            });
+        });
+        deleteProducts.forEach(product -> {
+            Optional<Product> pro = productRepository.findById(product.getProductCode().getValue());
+            pro.ifPresent(value -> {
+                Product updatePro = Product.of(value, ProductCategory.of());
+                productRepository.save(updatePro);
+            });
+        });
+    }
+
+    /**
      * 商品分類検索
      */
     public ProductCategory findCategory(String productCategoryCode) {
@@ -103,6 +127,14 @@ public class ProductService {
      * 商品分類削除
      */
     public void deleteCategory(ProductCategory productCategory) {
+        productCategory.getProducts().forEach(product -> {
+            Optional<Product> pro = productRepository.findById(product.getProductCode().getValue());
+            pro.ifPresent(value -> {
+                Product updatePro = Product.of(value, ProductCategory.of());
+                productRepository.save(updatePro);
+            });
+        });
         productCategoryRepository.deleteById(productCategory);
     }
+
 }

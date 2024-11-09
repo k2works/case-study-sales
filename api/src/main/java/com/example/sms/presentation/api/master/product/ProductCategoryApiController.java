@@ -1,5 +1,6 @@
 package com.example.sms.presentation.api.master.product;
 
+import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.ProductCategory;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
@@ -11,6 +12,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 商品分類API
@@ -74,12 +79,13 @@ public class ProductCategoryApiController {
     @PutMapping("/{productCategoryCode}")
     public ResponseEntity<?> update(@PathVariable String productCategoryCode, @RequestBody ProductCategoryResource productCategoryResource) {
         try {
-
             ProductCategory productCategory = ProductCategory.of(productCategoryCode, productCategoryResource.getProductCategoryName(), productCategoryResource.getProductCategoryHierarchy(), productCategoryResource.getProductCategoryPath(), productCategoryResource.getLowestLevelDivision());
             if (productService.findCategory(productCategory.getProductCategoryCode().getValue()) == null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.product_category.not.exist")));
             }
-            productService.saveCategory(productCategory);
+            List<Product> addProducts = getAddFilteredProducts(productCategoryResource);
+            List<Product> deleteProducts = getDeleteFilteredProducts(productCategoryResource);
+            productService.saveCategory(productCategory, addProducts, deleteProducts);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.product_category.updated")));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
@@ -100,4 +106,53 @@ public class ProductCategoryApiController {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
+
+    private static List<Product> getAddFilteredProducts(ProductCategoryResource productCategoryResource) {
+        return productCategoryResource.getProducts() == null ? Collections.emptyList() :
+                productCategoryResource.getProducts().stream()
+                        .filter(ProductResource::isAddFlag)
+                        .map(resource -> Product.of(
+                                resource.getProductCode(),
+                                resource.getProductFormalName(),
+                                resource.getProductAbbreviation(),
+                                resource.getProductNameKana(),
+                                resource.getProductType(),
+                                resource.getSellingPrice(),
+                                resource.getPurchasePrice(),
+                                resource.getCostOfSales(),
+                                resource.getTaxType(),
+                                resource.getProductClassificationCode(),
+                                resource.getMiscellaneousType(),
+                                resource.getStockManagementTargetType(),
+                                resource.getStockAllocationType(),
+                                resource.getSupplierCode(),
+                                resource.getSupplierBranchNumber()
+                        ))
+                        .collect(Collectors.toList());
+    }
+
+    private static List<Product> getDeleteFilteredProducts(ProductCategoryResource productCategoryResource) {
+        return productCategoryResource.getProducts() == null ? Collections.emptyList() :
+                productCategoryResource.getProducts().stream()
+                        .filter(ProductResource::isDeleteFlag)
+                        .map(resource -> Product.of(
+                                resource.getProductCode(),
+                                resource.getProductFormalName(),
+                                resource.getProductAbbreviation(),
+                                resource.getProductNameKana(),
+                                resource.getProductType(),
+                                resource.getSellingPrice(),
+                                resource.getPurchasePrice(),
+                                resource.getCostOfSales(),
+                                resource.getTaxType(),
+                                resource.getProductClassificationCode(),
+                                resource.getMiscellaneousType(),
+                                resource.getStockManagementTargetType(),
+                                resource.getStockAllocationType(),
+                                resource.getSupplierCode(),
+                                resource.getSupplierBranchNumber()
+                        ))
+                        .collect(Collectors.toList());
+    }
+
 }

@@ -70,4 +70,24 @@ public class Product {
                 customerSpecificSellingPrices
         );
     }
+
+    public static Product of(Product value, ProductCategory productCategory) {
+        return new Product(
+                value.productCode,
+                ProductName.of(value.productName.getProductFormalName(), value.productName.getProductAbbreviation(), value.productName.getProductNameKana()),
+                value.productType,
+                value.sellingPrice,
+                value.purchasePrice,
+                value.costOfSales,
+                value.taxType,
+                productCategory.getProductCategoryCode(),
+                value.miscellaneousType,
+                value.stockManagementTargetType,
+                value.stockAllocationType,
+                value.supplierCode,
+                value.substituteProduct,
+                value.boms,
+                value.customerSpecificSellingPrices
+        );
+    }
 }

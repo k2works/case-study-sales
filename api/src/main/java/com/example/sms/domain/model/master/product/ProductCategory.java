@@ -27,4 +27,8 @@ public class ProductCategory {
     public static ProductCategory of(ProductCategory productCategory, List<Product> products) {
         return new ProductCategory(productCategory.getProductCategoryCode(), productCategory.getProductCategoryName(), productCategory.getProductCategoryHierarchy(), productCategory.getProductCategoryPath(), productCategory.getLowestLevelDivision(), products);
     }
+
+    public static ProductCategory of() {
+        return new ProductCategory(ProductCategoryCode.of(""), null, null, null, null, null);
+    }
 }

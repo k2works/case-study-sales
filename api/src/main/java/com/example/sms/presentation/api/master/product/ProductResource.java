@@ -46,4 +46,7 @@ public class ProductResource implements Serializable {
     List<SubstituteProduct> substituteProduct; // 代替商品
     List<Bom> boms; // 部品表
     List<CustomerSpecificSellingPrice> customerSpecificSellingPrices; // 顧客別販売単価
+
+    boolean addFlag;
+    boolean deleteFlag;
 }
