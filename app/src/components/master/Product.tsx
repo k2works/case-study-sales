@@ -13,6 +13,9 @@ import {ProductSingleView} from "../../views/master/ProductSingle.tsx";
 import {ProductCollectionSelectView} from "../../views/master/ProductSelect.tsx";
 import {SubstituteProductCollectionView} from "../../views/master/SubstituteProductCollection.tsx";
 import {BomCollectionView} from "../../views/master/BomCollection.tsx";
+import {
+    CustomerSpecificSellingPriceCollectionView
+} from "../../views/master/CustomerSpecificSellingPriceCollection.tsx";
 
 export const Product: React.FC = () => {
     const Content: React.FC = () => {
@@ -104,6 +107,7 @@ export const Product: React.FC = () => {
             setEditId(null);
         };
 
+        // TODO:顧客マスタの作成後に実装
         const collectionView = () => {
             const handleSearchProduct = async () => {
                 if (!searchProductCode.trim()) return;
@@ -347,6 +351,31 @@ export const Product: React.FC = () => {
                                         ...newProduct,
                                         boms: newProduct.boms.filter(
                                             (bomProduct) => bomProduct.componentCode !== product.componentCode
+                                        )
+                                    });
+                                }}
+                            />
+
+                            <CustomerSpecificSellingPriceCollectionView
+                                prices={newProduct.customerSpecificSellingPrices}
+                                handleAdd={() => {
+                                    setNewProduct({
+                                        ...newProduct,
+                                        customerSpecificSellingPrices: newProduct.customerSpecificSellingPrices.concat({
+                                            productCode: newProduct.productCode,
+                                            customerCode: "XXXX",
+                                            sellingPrice: {
+                                                amount: 0,
+                                                currency: "JPY"
+                                            }
+                                        })
+                                    });
+                                }}
+                                handleDelete={(price) => {
+                                    setNewProduct({
+                                        ...newProduct,
+                                        customerSpecificSellingPrices: newProduct.customerSpecificSellingPrices.filter(
+                                            (sellingPrice) => sellingPrice.customerCode !== price.customerCode
                                         )
                                     });
                                 }}
