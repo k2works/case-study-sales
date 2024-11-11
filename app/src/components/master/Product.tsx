@@ -286,7 +286,10 @@ export const Product: React.FC = () => {
                                     newProducts.push({
                                         productCode: newProduct.productCode,
                                         componentCode: bom.productCode,
-                                        componentQuantity: 1
+                                        componentQuantity: {
+                                            amount: 1,
+                                            unit: "個"
+                                        }
                                     });
                                     setNewProduct({
                                         ...newProduct,

@@ -17,6 +17,11 @@ type PriceType = {
     currency: string;
 };
 
+type QuantityType = {
+    amount: number;
+    unit: string;
+}
+
 type SupplierCodeType = {
     value: string;
     branchNumber: number;
@@ -31,7 +36,7 @@ export type SubstituteProductType = {
 export type BomType = {
     productCode: ProductCodeType;
     componentCode: ProductCodeType;
-    componentQuantity: number;
+    componentQuantity: QuantityType;
 }
 
 export type CustomerSpecificSellingPriceType = {

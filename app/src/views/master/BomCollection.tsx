@@ -22,7 +22,7 @@ export const BomCollectionView: React.FC<BomCollectionProps> = ({
 
     const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setCurrentQuantity(event.target.value);
-        boms[editingQuantity!].componentQuantity = parseInt(event.target.value);
+        boms[editingQuantity!].componentQuantity.amount = parseInt(event.target.value);
     };
 
     const handleQuantityBlur = () => {
@@ -65,7 +65,7 @@ export const BomCollectionView: React.FC<BomCollectionProps> = ({
                                                 />
                                             ) : (
                                                 <span
-                                                    onClick={() => handleQuantityClick(index, bom.componentQuantity.toString())}>{bom.componentQuantity}</span>
+                                                    onClick={() => handleQuantityClick(index, bom.componentQuantity.amount.toString())}>{bom.componentQuantity.amount}</span>
                                             )}
                                         </div>
                                     </div>
