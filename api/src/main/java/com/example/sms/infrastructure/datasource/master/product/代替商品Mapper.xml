@@ -170,4 +170,10 @@
         from public.代替商品
         where 商品コード = #{商品コード,jdbcType=VARCHAR}
     </select>
+
+    <delete id="deleteByProductCode" parameterType="java.lang.String">
+        delete
+        from public.代替商品
+        where 商品コード = #{商品コード,jdbcType=VARCHAR}
+    </delete>
 </mapper>

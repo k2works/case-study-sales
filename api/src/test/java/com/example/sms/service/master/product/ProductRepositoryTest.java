@@ -114,7 +114,7 @@ public class ProductRepositoryTest {
         @DisplayName("代替商品一覧を取得できる")
         void shouldRetrieveAllSubstituteProducts() {
             Product product = getProduct("99999999");
-            List<SubstituteProduct> substituteProducts = IntStream.range(0, 10).mapToObj(i -> getSubstituteProduct(product.getProductCode().getValue(), String.format("%08d", i))).toList();
+            List<SubstituteProduct> substituteProducts = IntStream.range(0, 10).mapToObj(i -> getSubstituteProduct(product.getProductCode().getValue(), getProduct(String.format("99999%03d", i)).getProductCode().getValue())).toList();
             Product newProduct = Product.of(product, substituteProducts, List.of(), List.of());
             repository.save(newProduct);
 
@@ -126,7 +126,7 @@ public class ProductRepositoryTest {
         @DisplayName("代替商品を登録できる")
         void shouldRegisterSubstituteProduct() {
             Product product = getProduct("99999999");
-            SubstituteProduct substituteProduct = getSubstituteProduct(product.getProductCode().getValue(), "00000000");
+            SubstituteProduct substituteProduct = getSubstituteProduct(product.getProductCode().getValue(), getProduct("99999000").getProductCode().getValue());
             Product newProduct = Product.of(product, List.of(substituteProduct), List.of(), List.of());
             repository.save(newProduct);
 
@@ -139,12 +139,12 @@ public class ProductRepositoryTest {
         @DisplayName("代替商品を更新できる")
         void shouldUpdateSubstituteProduct() {
             Product product = getProduct("99999999");
-            SubstituteProduct substituteProduct = getSubstituteProduct(product.getProductCode().getValue(), "00000000");
+            SubstituteProduct substituteProduct = getSubstituteProduct(product.getProductCode().getValue(), getProduct("99999000").getProductCode().getValue());
             Product newProduct = Product.of(product, List.of(substituteProduct), List.of(), List.of());
             repository.save(newProduct);
 
             newProduct = repository.findById(product.getProductCode().getValue()).get();
-            SubstituteProduct updatedSubstituteProduct = SubstituteProduct.of(product.getProductCode().getValue(), "00000000", 2);
+            SubstituteProduct updatedSubstituteProduct = SubstituteProduct.of(product.getProductCode().getValue(), getProduct("99999000").getProductCode().getValue(), 2);
             newProduct = Product.of(newProduct, List.of(updatedSubstituteProduct), List.of(), List.of());
             repository.save(newProduct);
 
@@ -157,7 +157,7 @@ public class ProductRepositoryTest {
         @DisplayName("代替商品を削除できる")
         void shouldDeleteSubstituteProduct() {
             Product product = getProduct("99999999");
-            SubstituteProduct substituteProduct = getSubstituteProduct(product.getProductCode().getValue(), "00000000");
+            SubstituteProduct substituteProduct = getSubstituteProduct(product.getProductCode().getValue(), getProduct("99999000").getProductCode().getValue());
             Product newProduct = Product.of(product, List.of(substituteProduct), List.of(), List.of());
             repository.save(newProduct);
 

@@ -61,4 +61,6 @@ public interface 代替商品Mapper {
     List<代替商品> selectAll();
 
     代替商品 selectByProductCode(String productCode);
+
+    void deleteByProductCode(String value);
 }

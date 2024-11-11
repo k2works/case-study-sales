@@ -12,10 +12,10 @@ import lombok.Value;
 @NoArgsConstructor(force = true)
 public class SubstituteProduct {
     ProductCode productCode; // 商品コード
-    String substituteProductCode; // 代替商品コード
+    ProductCode substituteProductCode; // 代替商品コード
     Integer priority; // 優先順位
 
     public static SubstituteProduct of(String productCode, String substituteProductCode, Integer priority) {
-        return new SubstituteProduct(ProductCode.of(productCode), substituteProductCode, priority);
+        return new SubstituteProduct(ProductCode.of(productCode), ProductCode.of(substituteProductCode), priority);
     }
 }

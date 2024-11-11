@@ -35,7 +35,7 @@ public class ProductEntityMapper {
     public 代替商品 mapToEntity(SubstituteProduct substituteProduct) {
         代替商品 substituteProductEntity = new 代替商品();
         substituteProductEntity.set商品コード(substituteProduct.getProductCode().getValue());
-        substituteProductEntity.set代替商品コード(substituteProduct.getSubstituteProductCode());
+        substituteProductEntity.set代替商品コード(substituteProduct.getSubstituteProductCode().getValue());
         substituteProductEntity.set優先順位(substituteProduct.getPriority());
 
         return substituteProductEntity;
