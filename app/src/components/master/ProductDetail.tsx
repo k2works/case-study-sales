@@ -5,7 +5,7 @@ import {useMessage} from "../application/Message.tsx";
 import {useModal, useTab} from "../application/hooks.ts";
 import {usePageNation} from "../../views/application/PageNation.tsx";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
-import {useFetchBoms, useFetchProducts, useProduct} from "./hooks.ts";
+import {useFetchBoms, useFetchProducts, useFetchSubstitutes, useProduct} from "./hooks.ts";
 import {ProductType} from "../../models";
 import {ProductCollectionView} from "../../views/master/ProductCollection.tsx";
 import {ProductSingleView} from "../../views/master/ProductSingle.tsx";
@@ -22,6 +22,7 @@ export const ProductDetail: React.FC = () => {
         const [loading, setLoading] = useState<boolean>(false);
         const {message, setMessage, error, setError} = useMessage();
         const {pageNation, setPageNation} = usePageNation();
+        const {pageNation: substitutePageNation, setPageNation: setSubstitutePageNation} = usePageNation();
         const {pageNation: bomPageNation, setPageNation: setBomPageNation} = usePageNation();
 
         const {
@@ -68,6 +69,21 @@ export const ProductDetail: React.FC = () => {
         );
 
         const {
+            products: substitutes,
+            setProducts: setSubstitutes,
+            productService: substituteService
+        } = useProduct();
+
+        const fetchSubstitutes = useFetchSubstitutes(
+            setLoading,
+            setSubstitutes,
+            setSubstitutePageNation,
+            setError,
+            showErrorMessage,
+            substituteService
+        );
+
+        const {
             products: boms,
             setProducts: setBoms,
             productService: bomService
@@ -83,8 +99,17 @@ export const ProductDetail: React.FC = () => {
         );
 
         useEffect(() => {
-            fetchProducts.load();
-            fetchBoms.load();
+            (async () => {
+                try {
+                    await Promise.all([
+                        fetchProducts.load(),
+                        fetchSubstitutes.load(),
+                        fetchBoms.load()
+                    ]);
+                } catch (error: any) {
+                    showErrorMessage(`商品情報の取得に失敗しました: ${error?.message}`, setError);
+                }
+            })();
         }, []);
 
         const {
@@ -260,14 +285,14 @@ export const ProductDetail: React.FC = () => {
                     <Modal
                         isOpen={productModalIsOpen}
                         onRequestClose={handleCloseProductModal}
-                        contentLabel="商品情報を入力"
+                        contentLabel="代替商品情報を入力"
                         className="modal"
                         overlayClassName="modal-overlay"
                         bodyOpenClassName="modal-open"
                     >
                         {
                             <ProductCollectionSelectView
-                                products={products}
+                                products={substitutes}
                                 handleSelect={(product) => {
                                     const newProducts = newProduct.substituteProduct.filter((e) => e.substituteProductCode.value !== product.productCode.value);
                                     newProducts.push({
@@ -281,8 +306,8 @@ export const ProductDetail: React.FC = () => {
                                     });
                                 }}
                                 handleClose={handleCloseProductModal}
-                                pageNation={pageNation}
-                                fetchProducts={fetchProducts.load}
+                                pageNation={substitutePageNation}
+                                fetchProducts={fetchSubstitutes.load}
                             />
                         }
                     </Modal>

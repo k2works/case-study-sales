@@ -337,3 +337,31 @@ export const useFetchBoms = (
         load
     };
 }
+
+export const useFetchSubstitutes = (
+    setLoading: (loading: boolean) => void,
+    setList: (list: ProductType[]) => void,
+    setPageNation: (pageNation: PageNationType) => void,
+    setError: (error: string) => void,
+    showErrorMessage: (message: string, callback: (error: string) => void) => void,
+    service: ProductServiceType
+) => {
+    const load = async (page: number = 1): Promise<void> => {
+        const ERROR_MESSAGE = "代替商品情報の取得に失敗しました:";
+        setLoading(true);
+        try {
+            const fetchedProducts = await service.select(page);
+            const {list, ...pagination} = fetchedProducts;
+            setList(list);
+            setPageNation(pagination);
+            setError("");
+        } catch (error: any) {
+            showErrorMessage(`${ERROR_MESSAGE} ${error?.message}`, setError);
+        } finally {
+            setLoading(false);
+        }
+    };
+    return {
+        load
+    };
+}
