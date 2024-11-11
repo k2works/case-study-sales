@@ -94,28 +94,28 @@ export const ProductDetail: React.FC = () => {
             Tabs,
         } = useTab();
 
-        const handleOpenModal = (product?: ProductType) => {
-            setMessage("");
-            setError("");
-            if (product) {
-                setNewProduct(product);
-                setEditId(product.productCode.value);
-                setIsEditing(true);
-            } else {
-                setNewProduct(initialProduct);
-                setIsEditing(false);
-            }
-            setModalIsOpen(true);
-        };
-
-        const handleCloseModal = () => {
-            setError("");
-            setModalIsOpen(false);
-            setEditId(null);
-        };
-
         // TODO:顧客マスタの作成後に実装
         const collectionView = () => {
+            const handleOpenModal = (product?: ProductType) => {
+                setMessage("");
+                setError("");
+                if (product) {
+                    setNewProduct(product);
+                    setEditId(product.productCode.value);
+                    setIsEditing(true);
+                } else {
+                    setNewProduct(initialProduct);
+                    setIsEditing(false);
+                }
+                setModalIsOpen(true);
+            };
+
+            const handleCloseModal = () => {
+                setError("");
+                setModalIsOpen(false);
+                setEditId(null);
+            };
+
             const handleSearchProduct = async () => {
                 if (!searchProductCode.trim()) return;
                 setLoading(true);
@@ -235,6 +235,12 @@ export const ProductDetail: React.FC = () => {
                 } catch (error: any) {
                     showErrorMessage(`商品の作成に失敗しました: ${error?.message}`, setError);
                 }
+            };
+
+            const handleCloseModal = () => {
+                setError("");
+                setModalIsOpen(false);
+                setEditId(null);
             };
 
             const handleCloseProductModal = () => {

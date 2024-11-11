@@ -75,27 +75,27 @@ export const ProductCategory: React.FC = () => {
             );
         }, []);
 
-        const handleOpenModal = (productCategory?: ProductCategoryType) => {
-            setMessage("");
-            setError("");
-            if (productCategory) {
-                setNewProductCategory(productCategory);
-                setEditId(productCategory.productCategoryCode.value);
-                setIsEditing(true);
-            } else {
-                setNewProductCategory(initialProductCategory);
-                setIsEditing(false);
-            }
-            setModalIsOpen(true);
-        };
-
-        const handleCloseModal = () => {
-            setError("");
-            setModalIsOpen(false);
-            setEditId(null);
-        };
-
         const collectionView = () => {
+            const handleOpenModal = (productCategory?: ProductCategoryType) => {
+                setMessage("");
+                setError("");
+                if (productCategory) {
+                    setNewProductCategory(productCategory);
+                    setEditId(productCategory.productCategoryCode.value);
+                    setIsEditing(true);
+                } else {
+                    setNewProductCategory(initialProductCategory);
+                    setIsEditing(false);
+                }
+                setModalIsOpen(true);
+            };
+
+            const handleCloseModal = () => {
+                setError("");
+                setModalIsOpen(false);
+                setEditId(null);
+            };
+
             const handleSearchProductCategory = async () => {
                 if (!searchProductCategoryCode.trim()) return;
                 setLoading(true);
@@ -219,6 +219,12 @@ export const ProductCategory: React.FC = () => {
                 } catch (error: any) {
                     showErrorMessage(`製品カテゴリの作成に失敗しました: ${error?.message}`, setError);
                 }
+            };
+
+            const handleCloseModal = () => {
+                setError("");
+                setModalIsOpen(false);
+                setEditId(null);
             };
 
             const handleCloseProductModal = () => {
