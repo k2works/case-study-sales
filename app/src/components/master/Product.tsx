@@ -6,7 +6,7 @@ import {useModal} from "../application/hooks.ts";
 import {usePageNation} from "../../views/application/PageNation.tsx";
 import {SiteLayout} from "../../views/SiteLayout.tsx";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
-import {useFetchProducts, useProduct} from "./hooks.ts";
+import {useFetchBoms, useFetchProducts, useProduct} from "./hooks.ts";
 import {ProductType} from "../../models";
 import {ProductCollectionView} from "../../views/master/ProductCollection.tsx";
 import {ProductSingleView} from "../../views/master/ProductSingle.tsx";
@@ -70,7 +70,7 @@ export const Product: React.FC = () => {
             productService: bomService
         } = useProduct();
 
-        const fetchBoms = useFetchProducts(
+        const fetchBoms = useFetchBoms(
             setLoading,
             setBoms,
             setBomPageNation,
@@ -78,7 +78,6 @@ export const Product: React.FC = () => {
             showErrorMessage,
             bomService
         );
-
 
         useEffect(() => {
             fetchProducts.load();

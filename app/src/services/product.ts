@@ -4,6 +4,7 @@ import {mapToProductResource, ProductType} from "../models";
 
 export interface ProductServiceType {
     select: (page?: number, pageSize?: number) => Promise<any>;
+    selectBoms: (page?: number, pageSize?: number) => Promise<any>;
     find: (productCode: string) => Promise<ProductType>;
     create: (product: ProductType) => Promise<void>;
     update: (product: ProductType) => Promise<void>;
@@ -18,6 +19,18 @@ export const ProductService = (): ProductServiceType => {
 
     const select = async (page?: number, pageSize?: number): Promise<any> => {
         let url = endPoint;
+        if (pageSize && page) {
+            url = url + "?pageSize=" + pageSize + "&page=" + page;
+        } else if (pageSize) {
+            url = url + "?pageSize=" + pageSize;
+        } else if (page) {
+            url = url + "?page=" + page;
+        }
+        return await apiUtils.fetchGet(url);
+    };
+
+    const selectBoms = async (page?: number, pageSize?: number): Promise<any> => {
+        let url = endPoint + "/boms";
         if (pageSize && page) {
             url = url + "?pageSize=" + pageSize + "&page=" + page;
         } else if (pageSize) {
@@ -54,6 +67,7 @@ export const ProductService = (): ProductServiceType => {
 
     return {
         select,
+        selectBoms,
         find,
         create,
         update,

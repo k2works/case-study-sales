@@ -322,7 +322,7 @@ export const useFetchBoms = (
         const ERROR_MESSAGE = "部品情報の取得に失敗しました:";
         setLoading(true);
         try {
-            const fetchedProducts = await service.select(page);
+            const fetchedProducts = await service.selectBoms(page);
             const {list, ...pagination} = fetchedProducts;
             setList(list);
             setPageNation(pagination);
