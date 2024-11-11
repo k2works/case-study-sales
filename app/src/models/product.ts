@@ -30,7 +30,7 @@ export type SubstituteProductType = {
 
 export type BomType = {
     productCode: ProductCodeType;
-    componentCode: string;
+    componentCode: ProductCodeType;
     componentQuantity: number;
 }
 

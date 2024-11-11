@@ -12,12 +12,14 @@ import {ProductCollectionView} from "../../views/master/ProductCollection.tsx";
 import {ProductSingleView} from "../../views/master/ProductSingle.tsx";
 import {ProductCollectionSelectView} from "../../views/master/ProductSelect.tsx";
 import {SubstituteProductCollectionView} from "../../views/master/SubstituteProductCollection.tsx";
+import {BomCollectionView} from "../../views/master/BomCollection.tsx";
 
 export const Product: React.FC = () => {
     const Content: React.FC = () => {
         const [loading, setLoading] = useState<boolean>(false);
         const {message, setMessage, error, setError} = useMessage();
         const {pageNation, setPageNation} = usePageNation();
+        const {pageNation: bomPageNation, setPageNation: setBomPageNation} = usePageNation();
 
         const {
             modalIsOpen,
@@ -33,6 +35,13 @@ export const Product: React.FC = () => {
             setModalIsOpen: setProductModalIsOpen,
             setIsEditing: setProductIsEditing,
             setEditId: setProductEditId
+        } = useModal();
+
+        const {
+            modalIsOpen: bomModalIsOpen,
+            setModalIsOpen: setBomModalIsOpen,
+            setIsEditing: setBomIsEditing,
+            setEditId: setBomEditId
         } = useModal();
 
         const {
@@ -55,8 +64,25 @@ export const Product: React.FC = () => {
             productService
         );
 
+        const {
+            products: boms,
+            setProducts: setBoms,
+            productService: bomService
+        } = useProduct();
+
+        const fetchBoms = useFetchProducts(
+            setLoading,
+            setBoms,
+            setBomPageNation,
+            setError,
+            showErrorMessage,
+            bomService
+        );
+
+
         useEffect(() => {
             fetchProducts.load();
+            fetchBoms.load();
         }, []);
 
         const handleOpenModal = (product?: ProductType) => {
@@ -207,6 +233,12 @@ export const Product: React.FC = () => {
                 setProductEditId(null);
             }
 
+            const handleCloseBomModal = () => {
+                setError("");
+                setBomModalIsOpen(false);
+                setBomEditId(null);
+            }
+
             return (
                 <>
                     <Modal
@@ -239,6 +271,36 @@ export const Product: React.FC = () => {
                         }
                     </Modal>
 
+                    <Modal
+                        isOpen={bomModalIsOpen}
+                        onRequestClose={handleCloseBomModal}
+                        contentLabel="部品情報を入力"
+                        className="modal"
+                        overlayClassName="modal-overlay"
+                        bodyOpenClassName="modal-open"
+                    >
+                        {
+                            <ProductCollectionSelectView
+                                products={boms}
+                                handleSelect={(bom) => {
+                                    const newProducts = newProduct.boms.filter((e) => e.productCode.value !== bom.productCode.value);
+                                    newProducts.push({
+                                        productCode: newProduct.productCode,
+                                        componentCode: bom.productCode,
+                                        componentQuantity: 1
+                                    });
+                                    setNewProduct({
+                                        ...newProduct,
+                                        boms: newProducts
+                                    });
+                                }}
+                                handleClose={handleCloseBomModal}
+                                pageNation={bomPageNation}
+                                fetchProducts={fetchBoms.load}
+                            />
+                        }
+                    </Modal>
+
                     <ProductSingleView
                         error={error}
                         message={message}
@@ -250,6 +312,8 @@ export const Product: React.FC = () => {
                     />
 
                     {isEditing && (
+                        <>
+
                         <SubstituteProductCollectionView
                             substituteProducts={newProduct.substituteProduct}
                             handleAdd={() => {
@@ -267,6 +331,26 @@ export const Product: React.FC = () => {
                                 });
                             }}
                         />
+
+                            <BomCollectionView
+                                boms={newProduct.boms}
+                                handleAdd={() => {
+                                    setMessage("");
+                                    setError("");
+                                    setBomIsEditing(true);
+                                    setBomModalIsOpen(true);
+                                }}
+                                handleDelete={(product) => {
+                                    setNewProduct({
+                                        ...newProduct,
+                                        boms: newProduct.boms.filter(
+                                            (bomProduct) => bomProduct.componentCode !== product.componentCode
+                                        )
+                                    });
+                                }}
+                            />
+
+                        </>
                     )
                     }
                 </>
