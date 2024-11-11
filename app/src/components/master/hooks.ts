@@ -13,6 +13,7 @@ import {EmployeeService, EmployeeServiceType} from "../../services/employee.ts";
 import {PageNationType} from "../../views/application/PageNation.tsx";
 import {ProductCategoryService, ProductCategoryServiceType} from "../../services/product_category.ts";
 import {ProductService, ProductServiceType} from "../../services/product.ts";
+import {useFetchEntities} from "../application/hooks.ts";
 
 export const useDepartment = () => {
     const initialDepartment = {
@@ -52,29 +53,10 @@ export const useFetchDepartments = (
     setList: (list: DepartmentType[]) => void,
     setPageNation: (pageNation: PageNationType) => void,
     setError: (error: string) => void,
-    showErrorMessage: (message: string, callback: (error: string) => void) => void, service: DepartmentServiceType) => {
-    const load = async (page: number = 1): Promise<void> => {
-        const ERROR_MESSAGE = "部門情報の取得に失敗しました:";
-        setLoading(true);
+    showErrorMessage: (message: string, callback: (error: string) => void) => void,
+    service: DepartmentServiceType
+) => useFetchEntities(setLoading, setList, setPageNation, setError, showErrorMessage, service, "部門情報の取得に失敗しました:");
 
-        try {
-            const fetchedUsers = await service.select(page);
-            const {list, ...pagination} = fetchedUsers;
-
-            setList(list);
-            setPageNation(pagination);
-            setError("");
-        } catch (error: any) {
-            showErrorMessage(`${ERROR_MESSAGE} ${error?.message}`, setError);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    return {
-        load
-    };
-};
 
 export const useEmployee = () => {
     const initialEmployee: EmployeeType = {
@@ -152,29 +134,9 @@ export const useFetchEmployees = (
     setList: (list: EmployeeType[]) => void,
     setPageNation: (pageNation: PageNationType) => void,
     setError: (error: string) => void,
-    showErrorMessage: (message: string, callback: (error: string) => void) => void, service: EmployeeServiceType) => {
-    const load = async (page: number = 1): Promise<void> => {
-        const ERROR_MESSAGE = "社員情報の取得に失敗しました:";
-        setLoading(true);
-
-        try {
-            const fetchedUsers = await service.select(page);
-            const {list, ...pagination} = fetchedUsers;
-
-            setList(list);
-            setPageNation(pagination);
-            setError("");
-        } catch (error: any) {
-            showErrorMessage(`${ERROR_MESSAGE} ${error?.message}`, setError);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    return {
-        load
-    };
-};
+    showErrorMessage: (message: string, callback: (error: string) => void) => void,
+    service: EmployeeServiceType
+) => useFetchEntities(setLoading, setList, setPageNation, setError, showErrorMessage, service, "社員情報の取得に失敗しました:");
 
 export const useProductCategory = () => {
     const initialProductCategory: ProductCategoryType = {
@@ -209,26 +171,9 @@ export const useFetchProductCategories = (
     setList: (list: ProductCategoryType[]) => void,
     setPageNation: (pageNation: PageNationType) => void,
     setError: (error: string) => void,
-    showErrorMessage: (message: string, callback: (error: string) => void) => void, service: ProductCategoryServiceType) => {
-    const load = async (page: number = 1): Promise<void> => {
-        const ERROR_MESSAGE = "商品分類情報の取得に失敗しました:";
-        setLoading(true);
-        try {
-            const fetchedCategories = await service.select(page);
-            const {list, ...pagination} = fetchedCategories;
-            setList(list);
-            setPageNation(pagination);
-            setError("");
-        } catch (error: any) {
-            showErrorMessage(`${ERROR_MESSAGE} ${error?.message}`, setError);
-        } finally {
-            setLoading(false);
-        }
-    };
-    return {
-        load
-    };
-};
+    showErrorMessage: (message: string, callback: (error: string) => void) => void,
+    service: ProductCategoryServiceType
+) => useFetchEntities(setLoading, setList, setPageNation, setError, showErrorMessage, service, "商品分類情報の取得に失敗しました:");
 
 export const useProduct = () => {
     const initialProduct: ProductType = {
@@ -289,26 +234,7 @@ export const useFetchProducts = (
     setError: (error: string) => void,
     showErrorMessage: (message: string, callback: (error: string) => void) => void,
     service: ProductServiceType
-) => {
-    const load = async (page: number = 1): Promise<void> => {
-        const ERROR_MESSAGE = "商品情報の取得に失敗しました:";
-        setLoading(true);
-        try {
-            const fetchedProducts = await service.select(page);
-            const {list, ...pagination} = fetchedProducts;
-            setList(list);
-            setPageNation(pagination);
-            setError("");
-        } catch (error: any) {
-            showErrorMessage(`${ERROR_MESSAGE} ${error?.message}`, setError);
-        } finally {
-            setLoading(false);
-        }
-    };
-    return {
-        load
-    };
-};
+) => useFetchEntities(setLoading, setList, setPageNation, setError, showErrorMessage, service, "商品情報の取得に失敗しました:");
 
 export const useFetchBoms = (
     setLoading: (loading: boolean) => void,
@@ -317,26 +243,7 @@ export const useFetchBoms = (
     setError: (error: string) => void,
     showErrorMessage: (message: string, callback: (error: string) => void) => void,
     service: ProductServiceType
-) => {
-    const load = async (page: number = 1): Promise<void> => {
-        const ERROR_MESSAGE = "部品情報の取得に失敗しました:";
-        setLoading(true);
-        try {
-            const fetchedProducts = await service.selectBoms(page);
-            const {list, ...pagination} = fetchedProducts;
-            setList(list);
-            setPageNation(pagination);
-            setError("");
-        } catch (error: any) {
-            showErrorMessage(`${ERROR_MESSAGE} ${error?.message}`, setError);
-        } finally {
-            setLoading(false);
-        }
-    };
-    return {
-        load
-    };
-}
+) => useFetchEntities(setLoading, setList, setPageNation, setError, showErrorMessage, {select: service.selectBoms}, "部品情報の取得に失敗しました:");
 
 export const useFetchSubstitutes = (
     setLoading: (loading: boolean) => void,
@@ -345,23 +252,5 @@ export const useFetchSubstitutes = (
     setError: (error: string) => void,
     showErrorMessage: (message: string, callback: (error: string) => void) => void,
     service: ProductServiceType
-) => {
-    const load = async (page: number = 1): Promise<void> => {
-        const ERROR_MESSAGE = "代替商品情報の取得に失敗しました:";
-        setLoading(true);
-        try {
-            const fetchedProducts = await service.select(page);
-            const {list, ...pagination} = fetchedProducts;
-            setList(list);
-            setPageNation(pagination);
-            setError("");
-        } catch (error: any) {
-            showErrorMessage(`${ERROR_MESSAGE} ${error?.message}`, setError);
-        } finally {
-            setLoading(false);
-        }
-    };
-    return {
-        load
-    };
-}
+) => useFetchEntities(setLoading, setList, setPageNation, setError, showErrorMessage, service, "代替商品情報の取得に失敗しました:");
+
