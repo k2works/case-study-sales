@@ -10,8 +10,8 @@ import {useFetchProducts, useProduct} from "./hooks.ts";
 import {ProductType} from "../../models";
 import {ProductCollectionView} from "../../views/master/ProductCollection.tsx";
 import {ProductSingleView} from "../../views/master/ProductSingle.tsx";
-import {SubstituteProductCollectionView} from "../../views/master/SubstituteProductSelect.tsx";
 import {ProductCollectionSelectView} from "../../views/master/ProductSelect.tsx";
+import {SubstituteProductCollectionView} from "../../views/master/SubstituteProductCollection.tsx";
 
 export const Product: React.FC = () => {
     const Content: React.FC = () => {
