@@ -98,28 +98,28 @@ export const Employee: React.FC = () => {
             });
         }, []);
 
-        const handleOpenModal = (employee?: EmployeeType) => {
-            setMessage("");
-            setError("");
-            if (employee) {
-                employee.loginPassword = "";
-                setNewEmployee(employee);
-                setEditId(employee.empCode.value);
-                setIsEditing(true);
-            } else {
-                setNewEmployee(initialEmployee);
-                setIsEditing(false);
-            }
-            setModalIsOpen(true);
-        };
-
-        const handleCloseModal = () => {
-            setError("");
-            setModalIsOpen(false);
-            setEditId(null);
-        };
-
         const collectionView = () => {
+            const handleOpenModal = (employee?: EmployeeType) => {
+                setMessage("");
+                setError("");
+                if (employee) {
+                    employee.loginPassword = "";
+                    setNewEmployee(employee);
+                    setEditId(employee.empCode.value);
+                    setIsEditing(true);
+                } else {
+                    setNewEmployee(initialEmployee);
+                    setIsEditing(false);
+                }
+                setModalIsOpen(true);
+            };
+
+            const handleCloseModal = () => {
+                setError("");
+                setModalIsOpen(false);
+                setEditId(null);
+            };
+
             const handleSearchEmployee = async () => {
                 if (!searchEmployeeCode.trim()) return;
                 setLoading(true);
@@ -219,6 +219,12 @@ export const Employee: React.FC = () => {
         };
 
         const singleView = () => {
+            const handleCloseModal = () => {
+                setError("");
+                setModalIsOpen(false);
+                setEditId(null);
+            };
+
             const handleCreateOrUpdateEmployee = async () => {
                 const validateEmployee = (): boolean => {
                     if (!newEmployee.empCode.value.trim() || !newEmployee.empName.firstName.trim() || !newEmployee.empName.lastName.trim()) {

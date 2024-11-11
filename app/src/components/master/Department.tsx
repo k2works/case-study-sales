@@ -70,27 +70,27 @@ export const Department: React.FC = () => {
             });
         }, []);
 
-        const handleOpenModal = (department?: DepartmentType) => {
-            setMessage("");
-            setError("");
-            if (department) {
-                setNewDepartment(department);
-                setEditId(department.departmentId.deptCode.value);
-                setIsEditing(true);
-            } else {
-                setNewDepartment(initialDepartment);
-                setIsEditing(false);
-            }
-            setModalIsOpen(true);
-        };
-
-        const handleCloseModal = () => {
-            setError("");
-            setModalIsOpen(false);
-            setEditId(null);
-        };
-
         const collectionView = () => {
+            const handleOpenModal = (department?: DepartmentType) => {
+                setMessage("");
+                setError("");
+                if (department) {
+                    setNewDepartment(department);
+                    setEditId(department.departmentId.deptCode.value);
+                    setIsEditing(true);
+                } else {
+                    setNewDepartment(initialDepartment);
+                    setIsEditing(false);
+                }
+                setModalIsOpen(true);
+            };
+
+            const handleCloseModal = () => {
+                setError("");
+                setModalIsOpen(false);
+                setEditId(null);
+            };
+
             const handleSearchDepartment = async () => {
                 if (!searchDepartmentId.deptCode.value.trim() && !searchDepartmentId.departmentStartDate.value.trim()) {
                     return;
@@ -202,6 +202,12 @@ export const Department: React.FC = () => {
         };
 
         const singleView = () => {
+            const handleCloseModal = () => {
+                setError("");
+                setModalIsOpen(false);
+                setEditId(null);
+            };
+
             const handleOpenEmployeeModal = () => {
                 setMessage("");
                 setError("");

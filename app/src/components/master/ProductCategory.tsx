@@ -193,6 +193,18 @@ export const ProductCategory: React.FC = () => {
         };
 
         const singleView = () => {
+            const handleCloseModal = () => {
+                setError("");
+                setModalIsOpen(false);
+                setEditId(null);
+            };
+
+            const handleCloseProductModal = () => {
+                setError("");
+                setProductModalIsOpen(false);
+                setProductEditId(null);
+            }
+
             const handleCreateOrUpdateProductCategory = async () => {
                 const validateProductCategory = (): boolean => {
                     if (!newProductCategory.productCategoryCode.value.trim() || !newProductCategory.productCategoryName.trim()) {
@@ -220,18 +232,6 @@ export const ProductCategory: React.FC = () => {
                     showErrorMessage(`製品カテゴリの作成に失敗しました: ${error?.message}`, setError);
                 }
             };
-
-            const handleCloseModal = () => {
-                setError("");
-                setModalIsOpen(false);
-                setEditId(null);
-            };
-
-            const handleCloseProductModal = () => {
-                setError("");
-                setProductModalIsOpen(false);
-                setProductEditId(null);
-            }
 
             return (
                 <>

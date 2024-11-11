@@ -213,6 +213,24 @@ export const ProductDetail: React.FC = () => {
         };
 
         const singleView = () => {
+            const handleCloseModal = () => {
+                setError("");
+                setModalIsOpen(false);
+                setEditId(null);
+            };
+
+            const handleCloseProductModal = () => {
+                setError("");
+                setProductModalIsOpen(false);
+                setProductEditId(null);
+            }
+
+            const handleCloseBomModal = () => {
+                setError("");
+                setBomModalIsOpen(false);
+                setBomEditId(null);
+            }
+
             const handleCreateOrUpdateProduct = async () => {
                 const validateProduct = (): boolean => {
                     if (!newProduct.productCode.value.trim() || !newProduct.productName.productFormalName.trim()) {
@@ -236,24 +254,6 @@ export const ProductDetail: React.FC = () => {
                     showErrorMessage(`商品の作成に失敗しました: ${error?.message}`, setError);
                 }
             };
-
-            const handleCloseModal = () => {
-                setError("");
-                setModalIsOpen(false);
-                setEditId(null);
-            };
-
-            const handleCloseProductModal = () => {
-                setError("");
-                setProductModalIsOpen(false);
-                setProductEditId(null);
-            }
-
-            const handleCloseBomModal = () => {
-                setError("");
-                setBomModalIsOpen(false);
-                setBomEditId(null);
-            }
 
             return (
                 <>
