@@ -61,4 +61,6 @@ public interface 顧客別販売単価Mapper {
     List<顧客別販売単価> selectAll();
 
     List<顧客別販売単価> selectByProductCode(String productCode);
+
+    void deleteByProductCode(String value);
 }

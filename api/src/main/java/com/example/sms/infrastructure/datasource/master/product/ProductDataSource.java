@@ -129,6 +129,8 @@ public class ProductDataSource implements ProductRepository {
             }
 
             if (product.getCustomerSpecificSellingPrices() != null) {
+                customerSellingPriceMapper.deleteByProductCode(product.getProductCode().getValue());
+
                 product.getCustomerSpecificSellingPrices().forEach(customerSpecificSellingPrice -> {
                     顧客別販売単価Key key = new 顧客別販売単価Key();
                     key.set商品コード(customerSpecificSellingPrice.getProductCode().getValue());
