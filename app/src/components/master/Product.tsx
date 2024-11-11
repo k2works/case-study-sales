@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import Modal from "react-modal";
 import {showErrorMessage} from "../application/utils.ts";
 import {useMessage} from "../application/Message.tsx";
-import {useModal} from "../application/hooks.ts";
+import {useModal, useTab} from "../application/hooks.ts";
 import {usePageNation} from "../../views/application/PageNation.tsx";
 import {SiteLayout} from "../../views/SiteLayout.tsx";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
@@ -16,6 +16,7 @@ import {BomCollectionView} from "../../views/master/BomCollection.tsx";
 import {
     CustomerSpecificSellingPriceCollectionView
 } from "../../views/master/CustomerSpecificSellingPriceCollection.tsx";
+import {Tab, TabList, TabPanel, Tabs} from "react-tabs";
 
 export const Product: React.FC = () => {
     const Content: React.FC = () => {
@@ -86,6 +87,13 @@ export const Product: React.FC = () => {
             fetchProducts.load();
             fetchBoms.load();
         }, []);
+
+        const {
+            Tab,
+            TabList,
+            TabPanel,
+            Tabs,
+        } = useTab();
 
         const handleOpenModal = (product?: ProductType) => {
             setMessage("");
@@ -319,68 +327,77 @@ export const Product: React.FC = () => {
 
                     {isEditing && (
                         <>
-
-                        <SubstituteProductCollectionView
-                            substituteProducts={newProduct.substituteProduct}
-                            handleAdd={() => {
-                                setMessage("");
-                                setError("");
-                                setProductIsEditing(true);
-                                setProductModalIsOpen(true);
-                            }}
-                            handleDelete={(product) => {
-                                setNewProduct({
-                                    ...newProduct,
-                                    substituteProduct: newProduct.substituteProduct.filter(
-                                        (substituteProduct) => substituteProduct.substituteProductCode !== product.substituteProductCode
-                                    )
-                                });
-                            }}
-                        />
-
-                            <BomCollectionView
-                                boms={newProduct.boms}
-                                handleAdd={() => {
-                                    setMessage("");
-                                    setError("");
-                                    setBomIsEditing(true);
-                                    setBomModalIsOpen(true);
-                                }}
-                                handleDelete={(product) => {
-                                    setNewProduct({
-                                        ...newProduct,
-                                        boms: newProduct.boms.filter(
-                                            (bomProduct) => bomProduct.componentCode !== product.componentCode
-                                        )
-                                    });
-                                }}
-                            />
-
-                            <CustomerSpecificSellingPriceCollectionView
-                                prices={newProduct.customerSpecificSellingPrices}
-                                handleAdd={() => {
-                                    setNewProduct({
-                                        ...newProduct,
-                                        customerSpecificSellingPrices: newProduct.customerSpecificSellingPrices.concat({
-                                            productCode: newProduct.productCode,
-                                            customerCode: "XXXX",
-                                            sellingPrice: {
-                                                amount: 0,
-                                                currency: "JPY"
-                                            }
-                                        })
-                                    });
-                                }}
-                                handleDelete={(price) => {
-                                    setNewProduct({
-                                        ...newProduct,
-                                        customerSpecificSellingPrices: newProduct.customerSpecificSellingPrices.filter(
-                                            (sellingPrice) => sellingPrice.customerCode !== price.customerCode
-                                        )
-                                    });
-                                }}
-                            />
-
+                            <Tabs>
+                                <TabList>
+                                    <Tab>代替品</Tab>
+                                    <Tab>部品表</Tab>
+                                    <Tab>顧客別販売単価</Tab>
+                                </TabList>
+                                <TabPanel>
+                                    <SubstituteProductCollectionView
+                                        substituteProducts={newProduct.substituteProduct}
+                                        handleAdd={() => {
+                                            setMessage("");
+                                            setError("");
+                                            setProductIsEditing(true);
+                                            setProductModalIsOpen(true);
+                                        }}
+                                        handleDelete={(product) => {
+                                            setNewProduct({
+                                                ...newProduct,
+                                                substituteProduct: newProduct.substituteProduct.filter(
+                                                    (substituteProduct) => substituteProduct.substituteProductCode !== product.substituteProductCode
+                                                )
+                                            });
+                                        }}
+                                    />
+                                </TabPanel>
+                                <TabPanel>
+                                    <BomCollectionView
+                                        boms={newProduct.boms}
+                                        handleAdd={() => {
+                                            setMessage("");
+                                            setError("");
+                                            setBomIsEditing(true);
+                                            setBomModalIsOpen(true);
+                                        }}
+                                        handleDelete={(product) => {
+                                            setNewProduct({
+                                                ...newProduct,
+                                                boms: newProduct.boms.filter(
+                                                    (bomProduct) => bomProduct.componentCode !== product.componentCode
+                                                )
+                                            });
+                                        }}
+                                    />
+                                </TabPanel>
+                                <TabPanel>
+                                    <CustomerSpecificSellingPriceCollectionView
+                                        prices={newProduct.customerSpecificSellingPrices}
+                                        handleAdd={() => {
+                                            setNewProduct({
+                                                ...newProduct,
+                                                customerSpecificSellingPrices: newProduct.customerSpecificSellingPrices.concat({
+                                                    productCode: newProduct.productCode,
+                                                    customerCode: "XXXX",
+                                                    sellingPrice: {
+                                                        amount: 0,
+                                                        currency: "JPY"
+                                                    }
+                                                })
+                                            });
+                                        }}
+                                        handleDelete={(price) => {
+                                            setNewProduct({
+                                                ...newProduct,
+                                                customerSpecificSellingPrices: newProduct.customerSpecificSellingPrices.filter(
+                                                    (sellingPrice) => sellingPrice.customerCode !== price.customerCode
+                                                )
+                                            });
+                                        }}
+                                    />
+                                </TabPanel>
+                            </Tabs>
                         </>
                     )
                     }
