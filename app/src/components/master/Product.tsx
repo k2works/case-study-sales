@@ -11,6 +11,7 @@ import {ProductType} from "../../models";
 import {ProductCollectionView} from "../../views/master/ProductCollection.tsx";
 import {ProductSingleView} from "../../views/master/ProductSingle.tsx";
 import {SubstituteProductCollectionView} from "../../views/master/SubstituteProductSelect.tsx";
+import {ProductCollectionSelectView} from "../../views/master/ProductSelect.tsx";
 
 export const Product: React.FC = () => {
     const Content: React.FC = () => {
@@ -26,6 +27,14 @@ export const Product: React.FC = () => {
             editId,
             setEditId
         } = useModal();
+
+        const {
+            modalIsOpen: productModalIsOpen,
+            setModalIsOpen: setProductModalIsOpen,
+            setIsEditing: setProductIsEditing,
+            setEditId: setProductEditId
+        } = useModal();
+
         const {
             initialProduct,
             products,
@@ -192,8 +201,44 @@ export const Product: React.FC = () => {
                 }
             };
 
+            const handleCloseProductModal = () => {
+                setError("");
+                setProductModalIsOpen(false);
+                setProductEditId(null);
+            }
+
             return (
                 <>
+                    <Modal
+                        isOpen={productModalIsOpen}
+                        onRequestClose={handleCloseProductModal}
+                        contentLabel="商品情報を入力"
+                        className="modal"
+                        overlayClassName="modal-overlay"
+                        bodyOpenClassName="modal-open"
+                    >
+                        {
+                            <ProductCollectionSelectView
+                                products={products}
+                                handleSelect={(product) => {
+                                    const newProducts = newProduct.substituteProduct.filter((e) => e.substituteProductCode.value !== product.productCode.value);
+                                    newProducts.push({
+                                        productCode: newProduct.productCode,
+                                        substituteProductCode: product.productCode,
+                                        priority: 0
+                                    });
+                                    setNewProduct({
+                                        ...newProduct,
+                                        substituteProduct: newProducts
+                                    });
+                                }}
+                                handleClose={handleCloseProductModal}
+                                pageNation={pageNation}
+                                fetchProducts={fetchProducts.load}
+                            />
+                        }
+                    </Modal>
+
                     <ProductSingleView
                         error={error}
                         message={message}
@@ -208,14 +253,10 @@ export const Product: React.FC = () => {
                         <SubstituteProductCollectionView
                             substituteProducts={newProduct.substituteProduct}
                             handleAdd={() => {
-                                setNewProduct({
-                                    ...newProduct,
-                                    substituteProduct: newProduct.substituteProduct.concat({
-                                        productCode: newProduct.productCode,
-                                        substituteProductCode: "",
-                                        priority: 0
-                                    })
-                                });
+                                setMessage("");
+                                setError("");
+                                setProductIsEditing(true);
+                                setProductModalIsOpen(true);
                             }}
                             handleDelete={(product) => {
                                 setNewProduct({

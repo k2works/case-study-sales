@@ -24,7 +24,7 @@ type SupplierCodeType = {
 
 export type SubstituteProductType = {
     productCode: ProductCodeType;
-    substituteProductCode: string;
+    substituteProductCode: ProductCodeType;
     priority: number;
 };
 
