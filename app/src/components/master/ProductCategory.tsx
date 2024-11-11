@@ -3,7 +3,6 @@ import {showErrorMessage} from "../application/utils.ts";
 import {useMessage} from "../application/Message.tsx";
 import {useModal} from "../application/hooks.ts";
 import {usePageNation} from "../../views/application/PageNation.tsx";
-import {SiteLayout} from "../../views/SiteLayout.tsx";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
 import {ProductCategoryType, ProductType} from "../../models";
 
@@ -314,8 +313,6 @@ export const ProductCategory: React.FC = () => {
     };
 
     return (
-        <SiteLayout>
-            <Content/>
-        </SiteLayout>
+        <Content/>
     );
 };
