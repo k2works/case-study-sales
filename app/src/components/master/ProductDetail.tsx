@@ -262,6 +262,27 @@ export const ProductDetail: React.FC = () => {
                         setError("商品コード、商品名は必須項目です。");
                         return false;
                     }
+                    //販売区分を選択してください
+                    if (!newProduct.productType) {
+                        setError("販売区分を選択してください。");
+                        return false;
+                    }
+                    if (!newProduct.taxType) {
+                        setError("税区分を選択してください。");
+                        return false;
+                    }
+                    if (!newProduct.miscellaneousType) {
+                        setError("雑区分を選択してください。");
+                        return false;
+                    }
+                    if (!newProduct.stockManagementTargetType) {
+                        setError("在庫管理対象区分を選択してください。");
+                        return false;
+                    }
+                    if (!newProduct.stockAllocationType) {
+                        setError("在庫引当区分を選択してください。");
+                        return false;
+                    }
                     return true;
                 };
                 if (!validateProduct()) return;

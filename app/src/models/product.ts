@@ -66,6 +66,26 @@ export type ProductType = {
     deleteFlag: boolean;
 };
 
+export enum ProductEnumType {
+    商品 = "商品", 製品 = "製品", 部品 = "部品", 包材 = "包材", その他 = "その他"
+}
+
+export enum TaxEnumType {
+    外税 = "外税", 内税 = "内税", 非課税 = "非課税", その他 = "その他"
+}
+
+export enum MiscellaneousEnumType {
+    適用外 = "適用外", 適用 = "適用"
+}
+
+export enum StockManagementTargetEnumType {
+    対象外 = "対象外", 対象 = "対象"
+}
+
+export enum StockAllocationEnumType {
+    未引当 = "未引当", 引当済 = "引当済"
+}
+
 export type ProductResourceType = {
     productCode: string;
     productFormalName: string;
