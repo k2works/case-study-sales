@@ -96,7 +96,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
         String productCode = "99999001";
         SubstituteProduct substituteProduct = substituteProduct(productCode, "99999002", 1);
-        Bom bom = bom(productCode, "000001", 1);
+        Bom bom = bom(productCode, "X99", 1);
         CustomerSpecificSellingPrice customerSpecificSellingPrice = customerSpecificSellingPrice(productCode, "1", 1);
         Product product = product(productCode, "商品1", "商品1", "しょうひん1", ProductType.その他, 100, 90, 10, TaxType.外税, "カテゴリ1", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "サプライヤ1", 1);
 

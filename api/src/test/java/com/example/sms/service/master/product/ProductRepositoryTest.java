@@ -176,7 +176,7 @@ public class ProductRepositoryTest {
         @DisplayName("部品表一覧を取得できる")
         void shouldRetrieveAllBoms() {
             Product product = getProduct("99999999");
-            List<Bom> boms = IntStream.range(0, 10).mapToObj(i -> getBom(product.getProductCode().getValue(), String.format("%08d", i))).toList();
+            List<Bom> boms = IntStream.range(0, 10).mapToObj(i -> getBom(product.getProductCode().getValue(), "X" + String.format("%02d", i))).toList();
             Product newProduct = Product.of(product, List.of(), boms, List.of());
             repository.save(newProduct);
 
@@ -188,7 +188,7 @@ public class ProductRepositoryTest {
         @DisplayName("部品表を登録できる")
         void shouldRegisterBom() {
             Product product = getProduct("99999999");
-            Bom bom = getBom(product.getProductCode().getValue(), "00000000");
+            Bom bom = getBom(product.getProductCode().getValue(), "X99");
             Product newProduct = Product.of(product, List.of(), List.of(bom), List.of());
             repository.save(newProduct);
 
@@ -201,12 +201,12 @@ public class ProductRepositoryTest {
         @DisplayName("部品表を更新できる")
         void shouldUpdateBom() {
             Product product = getProduct("99999999");
-            Bom bom = getBom(product.getProductCode().getValue(), "00000000");
+            Bom bom = getBom(product.getProductCode().getValue(), "X99");
             Product newProduct = Product.of(product, List.of(), List.of(bom), List.of());
             repository.save(newProduct);
 
             newProduct = repository.findById(product.getProductCode().getValue()).get();
-            Bom updatedBom = Bom.of(product.getProductCode().getValue(), "00000000", 2);
+            Bom updatedBom = Bom.of(product.getProductCode().getValue(), "X99", 2);
             newProduct = Product.of(newProduct, List.of(), List.of(updatedBom), List.of());
             repository.save(newProduct);
 
@@ -219,7 +219,7 @@ public class ProductRepositoryTest {
         @DisplayName("部品表を削除できる")
         void shouldDeleteBom() {
             Product product = getProduct("99999999");
-            Bom bom = getBom(product.getProductCode().getValue(), "00000000");
+            Bom bom = getBom(product.getProductCode().getValue(), "X99");
             Product newProduct = Product.of(product, List.of(), List.of(bom), List.of());
             repository.save(newProduct);
 

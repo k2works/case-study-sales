@@ -113,7 +113,7 @@ public class ProductDataSource implements ProductRepository {
                 product.getBoms().forEach(bom -> {
                     部品表Key key = new 部品表Key();
                     key.set商品コード(bom.getProductCode().getValue());
-                    key.set部品コード(bom.getComponentCode());
+                    key.set部品コード(bom.getComponentCode().getValue());
                     bomMapper.deleteByPrimaryKey(key);
 
                     部品表 bomEntity = productEntityMapper.mapToEntity(bom);
@@ -184,7 +184,7 @@ public class ProductDataSource implements ProductRepository {
             product.getBoms().forEach(bom -> {
                 部品表Key key = new 部品表Key();
                 key.set商品コード(bom.getProductCode().getValue());
-                key.set部品コード(bom.getComponentCode());
+                key.set部品コード(bom.getComponentCode().getValue());
                 bomMapper.deleteByPrimaryKey(key);
             });
         }

@@ -44,7 +44,7 @@ public class ProductEntityMapper {
     public 部品表 mapToEntity(Bom bom) {
         部品表 bomEntity = new 部品表();
         bomEntity.set商品コード(bom.getProductCode().getValue());
-        bomEntity.set部品コード(bom.getComponentCode());
+        bomEntity.set部品コード(bom.getComponentCode().getValue());
         bomEntity.set部品数量(bom.getComponentQuantity());
 
         return bomEntity;
