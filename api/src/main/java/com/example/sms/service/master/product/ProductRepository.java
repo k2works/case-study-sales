@@ -18,4 +18,6 @@ public interface ProductRepository {
     void deleteById(Product productCode);
 
     PageInfo<Product> selectAllWithPageInfo();
+
+    PageInfo<Product> selectAllBoms();
 }

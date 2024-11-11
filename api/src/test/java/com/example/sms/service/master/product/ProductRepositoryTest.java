@@ -3,6 +3,7 @@ package com.example.sms.service.master.product;
 import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.master.product.*;
 import com.example.sms.domain.type.product.*;
+import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -29,6 +30,10 @@ public class ProductRepositoryTest {
 
     private Product getProduct(String productCode) {
         return TestDataFactoryImpl.product(productCode, "商品正式名", "商品略称", "商品名カナ", ProductType.その他, 1000, 2000, 3000, TaxType.外税, "00000000", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "00000000", 5);
+    }
+
+    private Product getProductForBom(String productCode, ProductType productType) {
+        return TestDataFactoryImpl.product(productCode, "商品正式名", "商品略称", "商品名カナ", productType, 1000, 2000, 3000, TaxType.外税, "00000000", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "00000000", 5);
     }
 
     private SubstituteProduct getSubstituteProduct(String productCode, String substituteProductCode) {
@@ -182,6 +187,27 @@ public class ProductRepositoryTest {
 
             ProductList actual = repository.selectAll();
             assertEquals(10, actual.asList().getFirst().getBoms().size());
+        }
+
+        @Test
+        @DisplayName("部品表一覧を取得できる")
+        void shouldRetrieveAllBomsBySelectAllBoms() {
+            List<Product> products = List.of(
+                    getProductForBom("99999999", ProductType.商品),
+                    getProductForBom("99999998", ProductType.製品),
+                    getProductForBom("99999997", ProductType.部品),
+                    getProductForBom("99999996", ProductType.包材),
+
+                    getProductForBom("99999995", ProductType.その他)
+            );
+            products.forEach(product -> {
+                List<Bom> boms = IntStream.range(0, 10).mapToObj(i -> getBom(product.getProductCode().getValue(), "X" + String.format("%02d", i))).toList();
+                Product newProduct = Product.of(product, List.of(), boms, List.of());
+                repository.save(newProduct);
+            });
+
+            PageInfo<Product> actual = repository.selectAllBoms();
+            assertEquals(3, actual.getList().size());
         }
 
         @Test

@@ -343,4 +343,16 @@
         from public.商品マスタ
         where 商品分類コード = #{商品分類コード,jdbcType=VARCHAR}
     </select>
+
+    <select id="selectAllBoms" parameterType="java.util.List" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from public.商品マスタ
+        where
+        商品区分 IN
+        <foreach item="item" index="index" collection="商品区分リスト"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
 </mapper>

@@ -44,6 +44,20 @@ public class ProductApiController {
         }
     }
 
+    @Operation(summary = "部品一覧を取得する")
+    @GetMapping("/boms")
+    public ResponseEntity<?> selectBoms(
+            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(value = "page", defaultValue = "1") int... page) {
+        try {
+            PageNation.startPage(page, pageSize);
+            PageInfo<Product> result = productService.selectAllBomsWithPageInfo();
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
+    }
+
     @Operation(summary = "商品を取得する")
     @GetMapping("/{productCode}")
     public ResponseEntity<?> select(@PathVariable String productCode) {

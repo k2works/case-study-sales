@@ -40,6 +40,13 @@ public class ProductService {
     }
 
     /**
+     * 部品一覧（ページング)
+     */
+    public PageInfo<Product> selectAllBomsWithPageInfo() {
+        return productRepository.selectAllBoms();
+    }
+
+    /**
      * 商品新規登録
      */
     public void register(Product product) {

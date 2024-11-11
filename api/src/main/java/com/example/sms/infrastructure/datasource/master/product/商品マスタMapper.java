@@ -61,4 +61,6 @@ public interface 商品マスタMapper {
     void deleteAll();
 
     List<商品マスタ> selectByProductCategoryCode(String 商品分類コード);
+
+    List<商品マスタ> selectAllBoms(List<String> 商品区分リスト);
 }

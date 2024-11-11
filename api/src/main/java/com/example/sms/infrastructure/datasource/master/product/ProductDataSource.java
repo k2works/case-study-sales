@@ -2,6 +2,7 @@ package com.example.sms.infrastructure.datasource.master.product;
 
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.ProductList;
+import com.example.sms.domain.type.product.ProductType;
 import com.example.sms.infrastructure.PageInfoHelper;
 import com.example.sms.service.master.product.ProductRepository;
 import com.github.pagehelper.PageInfo;
@@ -157,6 +158,14 @@ public class ProductDataSource implements ProductRepository {
     @Override
     public PageInfo<Product> selectAllWithPageInfo() {
         List<商品マスタ> productEntities = productMapper.selectAll();
+        PageInfo<商品マスタ> pageInfo = new PageInfo<>(productEntities);
+
+        return PageInfoHelper.of(pageInfo, productEntityMapper::mapToDomainModel);
+    }
+
+    @Override
+    public PageInfo<Product> selectAllBoms() {
+        List<商品マスタ> productEntities = productMapper.selectAllBoms(List.of(ProductType.製品.getCode(), ProductType.部品.getCode(), ProductType.包材.getCode()));
         PageInfo<商品マスタ> pageInfo = new PageInfo<>(productEntities);
 
         return PageInfoHelper.of(pageInfo, productEntityMapper::mapToDomainModel);
