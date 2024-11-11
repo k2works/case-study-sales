@@ -110,6 +110,8 @@ public class ProductDataSource implements ProductRepository {
             }
 
             if (product.getBoms() != null) {
+                bomMapper.deleteByProductCode(product.getProductCode().getValue());
+
                 product.getBoms().forEach(bom -> {
                     部品表Key key = new 部品表Key();
                     key.set商品コード(bom.getProductCode().getValue());

@@ -61,4 +61,6 @@ public interface 部品表Mapper {
     List<部品表> selectAll();
 
     部品表 selectByProductCode(String productCode);
+
+    void deleteByProductCode(String value);
 }

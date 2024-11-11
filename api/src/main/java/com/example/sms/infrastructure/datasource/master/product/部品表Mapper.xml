@@ -169,4 +169,10 @@
         from public.部品表
         where 商品コード = #{商品コード,jdbcType=VARCHAR}
     </select>
+
+    <delete id="deleteByProductCode" parameterType="java.lang.String">
+        delete
+        from public.部品表
+        where 商品コード = #{商品コード,jdbcType=VARCHAR}
+    </delete>
 </mapper>
