@@ -47,10 +47,14 @@ const NaveItems: React.FC = () => {
                             <SubNavItem id="side-nav-department-nav" to="/department">部門</SubNavItem>
                             <SubNavItem id="side-nav-employee-nav" to="/employee">社員</SubNavItem>
                             <SubNavItem id="side-nav-product-nav" to="/product">商品</SubNavItem>
+                            <ul className="nav-sub-list">
+                                <SubNavItem id="side-nav-product-nav" to="/product-category">分類</SubNavItem>
+                                <SubNavItem id="side-nav-product-nav" to="/product-detail">詳細</SubNavItem>
+                            </ul>
                         </ul>
                     </li>
                 </>
-            )
+                )
             }
             <NavItem id="side-nav-logout-nav" to="/logout" className="nav-item">ログアウト</NavItem>
         </ul>

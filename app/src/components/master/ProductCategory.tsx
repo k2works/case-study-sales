@@ -105,7 +105,7 @@ export const ProductCategory: React.FC = () => {
                     setMessage("");
                     setError("");
                 } catch (error: any) {
-                    showErrorMessage(`製品カテゴリの検索に失敗しました: ${error?.message}`, setError);
+                    showErrorMessage(`商品分類の検索に失敗しました: ${error?.message}`, setError);
                 } finally {
                     setLoading(false);
                 }
@@ -113,12 +113,12 @@ export const ProductCategory: React.FC = () => {
 
             const handleDeleteProductCategory = async (productCategoryCode: string) => {
                 try {
-                    if (!window.confirm(`製品カテゴリコード:${productCategoryCode} を削除しますか？`)) return;
+                    if (!window.confirm(`商品分類コード:${productCategoryCode} を削除しますか？`)) return;
                     await productCategoryService.destroy(productCategoryCode);
                     await fetchProductCategories.load();
-                    setMessage("製品カテゴリを削除しました。");
+                    setMessage("商品分類を削除しました。");
                 } catch (error: any) {
-                    showErrorMessage(`製品カテゴリの削除に失敗しました: ${error?.message}`, setError);
+                    showErrorMessage(`商品分類の削除に失敗しました: ${error?.message}`, setError);
                 }
             };
 
@@ -147,17 +147,17 @@ export const ProductCategory: React.FC = () => {
 
             const handleDeleteCheckedProductCategories = async () => {
                 if (!productCategories.some((cat) => cat.checked)) {
-                    setError("削除する製品カテゴリを選択してください。");
+                    setError("削除する商品分類を選択してください。");
                     return;
                 }
                 try {
-                    if (!window.confirm(`選択した製品カテゴリを削除しますか？`)) return;
+                    if (!window.confirm(`選択した商品分類を削除しますか？`)) return;
                     const checkedProductCategories = productCategories.filter((cat) => cat.checked);
                     await Promise.all(checkedProductCategories.map((cat) => productCategoryService.destroy(cat.productCategoryCode.value)));
                     await fetchProductCategories.load();
-                    setMessage("選択した製品カテゴリを削除しました。");
+                    setMessage("選択した商品分類を削除しました。");
                 } catch (error: any) {
-                    showErrorMessage(`製品カテゴリの削除に失敗しました: ${error?.message}`, setError);
+                    showErrorMessage(`商品分類の削除に失敗しました: ${error?.message}`, setError);
                 }
             }
 
@@ -166,7 +166,7 @@ export const ProductCategory: React.FC = () => {
                     <Modal
                         isOpen={modalIsOpen}
                         onRequestClose={handleCloseModal}
-                        contentLabel="製品カテゴリ情報を入力"
+                        contentLabel="商品分類情報を入力"
                         className="modal"
                         overlayClassName="modal-overlay"
                         bodyOpenClassName="modal-open"
@@ -208,7 +208,7 @@ export const ProductCategory: React.FC = () => {
             const handleCreateOrUpdateProductCategory = async () => {
                 const validateProductCategory = (): boolean => {
                     if (!newProductCategory.productCategoryCode.value.trim() || !newProductCategory.productCategoryName.trim()) {
-                        setError("製品カテゴリコード、カテゴリ名は必須項目です。");
+                        setError("商品分類コード、カテゴリ名は必須項目です。");
                         return false;
                     }
                     return true;
@@ -223,13 +223,13 @@ export const ProductCategory: React.FC = () => {
                     setNewProductCategory({...initialProductCategory});
                     await fetchProductCategories.load();
                     if (isEditing) {
-                        setMessage("製品カテゴリを更新しました。");
+                        setMessage("商品分類を更新しました。");
                     } else {
-                        setMessage("製品カテゴリを作成しました。");
+                        setMessage("商品分類を作成しました。");
                     }
                     handleCloseModal();
                 } catch (error: any) {
-                    showErrorMessage(`製品カテゴリの作成に失敗しました: ${error?.message}`, setError);
+                    showErrorMessage(`商品分類の作成に失敗しました: ${error?.message}`, setError);
                 }
             };
 

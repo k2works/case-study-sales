@@ -10,8 +10,27 @@ import {Employee} from "../master/Employee.tsx";
 import {NotFound} from "../../views/application/NotFound.tsx";
 import {Home} from "./Home.tsx";
 import {Product} from "../master/Product.tsx";
+import {SiteLayout} from "../../views/SiteLayout.tsx";
+import {ProductCategory} from "../master/ProductCategory.tsx";
+import {ProductDetail} from "../master/ProductDetail.tsx";
 
 export const RouteConfig: React.FC = () => {
+    const ProductCategoryPage = () => {
+        return (
+            <SiteLayout>
+                <ProductCategory/>
+            </SiteLayout>
+        );
+    }
+
+    const ProductDetailPage = () => {
+        return (
+            <SiteLayout>
+                <ProductDetail/>
+            </SiteLayout>
+        );
+    }
+
     return (
         <>
             <Routes>
@@ -23,6 +42,10 @@ export const RouteConfig: React.FC = () => {
                 <Route path="/employee" element={<RouteAuthGuard component={<Employee/>} redirectPath="/"
                                                                  allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/product" element={<RouteAuthGuard component={<Product/>} redirectPath="/"
+                                                                allowedRoles={[RoleType.ADMIN]}/>}/>
+                <Route path="/product-category" element={<RouteAuthGuard component={<ProductCategoryPage/>} redirectPath="/"
+                                                                allowedRoles={[RoleType.ADMIN]}/>}/>
+                <Route path="/product-detail" element={<RouteAuthGuard component={<ProductDetailPage/>} redirectPath="/"
                                                                 allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/logout" element={<Logout/>}/>
