@@ -12,7 +12,7 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 public class Money implements Expression {
-    protected Integer amount;
+    protected int amount;
     protected CurrencyType currency;
 
     public Expression times(int multiplier) {

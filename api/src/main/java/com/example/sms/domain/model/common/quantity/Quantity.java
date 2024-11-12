@@ -12,11 +12,11 @@ import lombok.Value;
 @NoArgsConstructor(force = true)
 public class Quantity {
     @NotNull
-    Integer amount;
+    int amount;
     @NotNull
     UnitType unit;
 
-    public Quantity(@NotNull Integer amount, @NotNull UnitType unit) {
+    public Quantity(@NotNull int amount, @NotNull UnitType unit) {
         if (amount < 0) {
             throw new IllegalArgumentException("数量は0以上である必要があります:" + amount);
         }
@@ -24,7 +24,7 @@ public class Quantity {
         this.unit = unit;
     }
 
-    public Quantity times(Integer multiplier) {
+    public Quantity times(int multiplier) {
         return new Quantity(amount * multiplier, unit);
     }
 
@@ -36,7 +36,7 @@ public class Quantity {
         return new Quantity(amount - subtrahend.amount, unit);
     }
 
-    public static Quantity of(Integer amount) {
+    public static Quantity of(int amount) {
         return new Quantity(amount, UnitType.個);
     }
 }
