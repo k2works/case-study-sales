@@ -50,64 +50,55 @@ const Form = ({isEditing, newProduct, setNewProduct}: FormProps) => {
 
     return (
         <div className="single-view-content-item-form">
-            {/* 商品コードフィールド */}
-            <FormItem label="商品コード">
-                <input
-                    id="productCode"
-                    type="text"
-                    className="single-view-content-item-form-item-input"
-                    placeholder="商品コード"
-                    value={newProduct.productCode.value}
-                    onChange={(e) => setNewProduct({
-                        ...newProduct,
-                        productCode: {...newProduct.productCode, value: e.target.value}
-                    })}
-                    disabled={isEditing}
-                />
-            </FormItem>
-            {/* 商品名フィールド */}
-            <FormItem label="商品正式名">
-                <input
-                    id="productFormalName"
-                    type="text"
-                    className="single-view-content-item-form-item-input"
-                    placeholder="商品名"
-                    value={newProduct.productName.productFormalName}
-                    onChange={(e) => setNewProduct({
-                        ...newProduct,
-                        productName: {...newProduct.productName, productFormalName: e.target.value}
-                    })}
-                />
-            </FormItem>
-            {/* 商品名フィールド */}
-            <FormItem label="商品名略称">
-                <input
-                    id="productAbbreviation"
-                    type="text"
-                    className="single-view-content-item-form-item-input"
-                    placeholder="商品名略称"
-                    value={newProduct.productName.productAbbreviation}
-                    onChange={(e) => setNewProduct({
-                        ...newProduct,
-                        productName: {...newProduct.productName, productAbbreviation: e.target.value}
-                    })}
-                />
-            </FormItem>
-            {/* 商品名フィールド */}
-            <FormItem label="商品名カナ">
-                <input
-                    id="productNameKana"
-                    type="text"
-                    className="single-view-content-item-form-item-input"
-                    placeholder="商品名略称"
-                    value={newProduct.productName.productNameKana}
-                    onChange={(e) => setNewProduct({
-                        ...newProduct,
-                        productName: {...newProduct.productName, productNameKana: e.target.value}
-                    })}
-                />
-            </FormItem>
-            {/* 商品区分フィールド */}
+            <FormInput
+                label="商品コード"
+                id="productCode"
+                type="text"
+                className="single-view-content-item-form-item-input"
+                placeholder="商品コード"
+                value={newProduct.productCode.value}
+                onChange={(e) => setNewProduct({
+                    ...newProduct,
+                    productCode: { ...newProduct.productCode, value: e.target.value }
+                })}
+                disabled={isEditing}
+            />
+            <FormInput
+                label="商品正式名"
+                id="productFormalName"
+                type="text"
+                className="single-view-content-item-form-item-input"
+                placeholder="商品名"
+                value={newProduct.productName.productFormalName}
+                onChange={(e) => setNewProduct({
+                    ...newProduct,
+                    productName: { ...newProduct.productName, productFormalName: e.target.value }
+                })}
+            />
+            <FormInput
+                label="商品名略称"
+                id="productAbbreviation"
+                type="text"
+                className="single-view-content-item-form-item-input"
+                placeholder="商品名略称"
+                value={newProduct.productName.productAbbreviation}
+                onChange={(e) => setNewProduct({
+                    ...newProduct,
+                    productName: { ...newProduct.productName, productAbbreviation: e.target.value }
+                })}
+            />
+            <FormInput
+                label="商品名カナ"
+                id="productNameKana"
+                type="text"
+                className="single-view-content-item-form-item-input"
+                placeholder="商品名カナ"
+                value={newProduct.productName.productNameKana}
+                onChange={(e) => setNewProduct({
+                    ...newProduct,
+                    productName: { ...newProduct.productName, productNameKana: e.target.value }
+                })}
+            />
             <FormSelect
                 id="productType"
                 label="商品区分"
@@ -118,37 +109,31 @@ const Form = ({isEditing, newProduct, setNewProduct}: FormProps) => {
                     setNewProduct({
                         ...newProduct,
                         productType: e
-                    })
-                }
-                }
+                    });
+                }}
             />
-            {/* 売価フィールド */}
-            <FormItem label="売価">
-                <input
-                    id="sellingPrice"
-                    type="number"
-                    className="single-view-content-item-form-item-input"
-                    value={newProduct.sellingPrice.amount}
-                    onChange={(e) => setNewProduct({
-                        ...newProduct,
-                        sellingPrice: {...newProduct.sellingPrice, amount: +e.target.value}
-                    })}
-                />
-            </FormItem>
-            {/* 原価フィールド */}
-            <FormItem label="原価">
-                <input
-                    id="costOfSales"
-                    type="number"
-                    className="single-view-content-item-form-item-input"
-                    value={newProduct.costOfSales.amount}
-                    onChange={(e) => setNewProduct({
-                        ...newProduct,
-                        costOfSales: {...newProduct.costOfSales, amount: +e.target.value}
-                    })}
-                />
-            </FormItem>
-            {/* 税区分フィールド */}
+            <FormInput
+                label="売価"
+                id="sellingPrice"
+                type="number"
+                className="single-view-content-item-form-item-input"
+                value={newProduct.sellingPrice.amount}
+                onChange={(e) => setNewProduct({
+                    ...newProduct,
+                    sellingPrice: { ...newProduct.sellingPrice, amount: +e.target.value }
+                })}
+            />
+            <FormInput
+                label="原価"
+                id="costOfSales"
+                type="number"
+                className="single-view-content-item-form-item-input"
+                value={newProduct.costOfSales.amount}
+                onChange={(e) => setNewProduct({
+                    ...newProduct,
+                    costOfSales: { ...newProduct.costOfSales, amount: +e.target.value }
+                })}
+            />
             <FormSelect
                 id="taxType"
                 label="税区分"
@@ -159,26 +144,22 @@ const Form = ({isEditing, newProduct, setNewProduct}: FormProps) => {
                     setNewProduct({
                         ...newProduct,
                         taxType: e
-                    })
-                }
-                }
+                    });
+                }}
             />
-            {/* 商品分類コードフィールド */}
-            <FormItem label="商品分類コード">
-                <input
-                    id="productCategoryCode"
-                    type="text"
-                    className="single-view-content-item-form-item-input"
-                    placeholder="商品分類コード"
-                    value={newProduct.productCategoryCode.value}
-                    onChange={(e) => setNewProduct({
-                        ...newProduct,
-                        productCategoryCode: {...newProduct.productCategoryCode, value: e.target.value}
-                    })}
-                    disabled={isEditing}
-                />
-            </FormItem>
-            {/* 雑区分フィールド */}
+            <FormInput
+                label="商品分類コード"
+                id="productCategoryCode"
+                type="text"
+                className="single-view-content-item-form-item-input"
+                placeholder="商品分類コード"
+                value={newProduct.productCategoryCode.value}
+                onChange={(e) => setNewProduct({
+                    ...newProduct,
+                    productCategoryCode: { ...newProduct.productCategoryCode, value: e.target.value }
+                })}
+                disabled={isEditing}
+            />
             <FormSelect
                 id="miscellaneousType"
                 label="雑区分"
@@ -189,11 +170,9 @@ const Form = ({isEditing, newProduct, setNewProduct}: FormProps) => {
                     setNewProduct({
                         ...newProduct,
                         miscellaneousType: e
-                    })
-                }
-                }
+                    });
+                }}
             />
-            {/* 在庫管理対象区分分フィールド */}
             <FormSelect
                 id="stockManagementTargetType"
                 label="在庫管理対象区分"
@@ -204,11 +183,9 @@ const Form = ({isEditing, newProduct, setNewProduct}: FormProps) => {
                     setNewProduct({
                         ...newProduct,
                         stockManagementTargetType: e
-                    })
-                }
-                }
+                    });
+                }}
             />
-            {/* 在庫引当区分分フィールド */}
             <FormSelect
                 id="stockAllocationType"
                 label="在庫引当区分"
@@ -219,24 +196,21 @@ const Form = ({isEditing, newProduct, setNewProduct}: FormProps) => {
                     setNewProduct({
                         ...newProduct,
                         stockAllocationType: e
-                    })
-                }
-                }
+                    });
+                }}
             />
-            {/* 仕入先コードフィールド */}
-            <FormItem label="仕入先コード">
-                <input
-                    id="supplierCode"
-                    type="text"
-                    className="single-view-content-item-form-item-input"
-                    placeholder="仕入先コード"
-                    value={newProduct.supplierCode.value}
-                    onChange={(e) => setNewProduct({
-                        ...newProduct,
-                        supplierCode: {...newProduct.supplierCode, value: e.target.value}
-                    })}
-                />
-            </FormItem>
+            <FormInput
+                label="仕入先コード"
+                id="supplierCode"
+                type="text"
+                className="single-view-content-item-form-item-input"
+                placeholder="仕入先コード"
+                value={newProduct.supplierCode.value}
+                onChange={(e) => setNewProduct({
+                    ...newProduct,
+                    supplierCode: { ...newProduct.supplierCode, value: e.target.value }
+                })}
+            />
         </div>
     )
 };
@@ -277,6 +251,42 @@ const FormSelect = <T extends string>({id, label, className, value, options, onC
         </select>
     </FormItem>
 );
+
+interface FormInputProps {
+    label: string;
+    id: string;
+    type: string;
+    className: string;
+    placeholder?: string;
+    value: string | number;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    disabled?: boolean;
+}
+
+const FormInput: React.FC<FormInputProps> = ({
+                                                 label,
+                                                 id,
+                                                 type,
+                                                 className,
+                                                 placeholder,
+                                                 value,
+                                                 onChange,
+                                                 disabled,
+                                             }) => {
+    return (
+        <FormItem label={label}>
+            <input
+                id={id}
+                type={type}
+                className={className}
+                placeholder={placeholder}
+                value={value}
+                onChange={onChange}
+                disabled={disabled}
+            />
+        </FormItem>
+    );
+};
 
 interface ProductSingleViewProps {
     error: string | null;
