@@ -1,7 +1,7 @@
 import React from 'react';
 import {Message} from "../../components/application/Message.tsx";
 import {ProductCategoryType} from "../../models";
-import {SingleViewHeaderActions, SingleViewHeaderItem} from "../Common.tsx";
+import {FormInput, SingleViewHeaderActions, SingleViewHeaderItem} from "../Common.tsx";
 
 interface HeaderProps {
     title: string;
@@ -36,87 +36,65 @@ interface FormProps {
 
 const Form = ({isEditing, newProductCategory, setNewProductCategory}: FormProps) => (
     <div className="single-view-content-item-form">
-        {/* 商品分類コードフィールド */}
-        <FormItem label="商品分類コード">
-            <input
-                id="productCategoryCode"
-                type="text"
-                className="single-view-content-item-form-item-input"
-                placeholder="商品分類コード"
-                value={newProductCategory.productCategoryCode.value}
-                onChange={(e) => setNewProductCategory({
-                    ...newProductCategory,
-                    productCategoryCode: {value: e.target.value}
-                })}
-                disabled={isEditing}
-            />
-        </FormItem>
-        {/* 商品分類名フィールド */}
-        <FormItem label="商品分類名">
-            <input
-                id="productCategoryName"
-                type="text"
-                className="single-view-content-item-form-item-input"
-                placeholder="商品分類名"
-                value={newProductCategory.productCategoryName}
-                onChange={(e) => setNewProductCategory({
-                    ...newProductCategory,
-                    productCategoryName: e.target.value
-                })}
-            />
-        </FormItem>
-        {/* カテゴリ階層フィールド */}
-        <FormItem label="カテゴリ階層">
-            <input
-                id="productCategoryHierarchy"
-                type="number"
-                className="single-view-content-item-form-item-input"
-                value={newProductCategory.productCategoryHierarchy}
-                onChange={(e) => setNewProductCategory({
-                    ...newProductCategory,
-                    productCategoryHierarchy: +e.target.value
-                })}
-            />
-        </FormItem>
-        {/* カテゴリパスフィールド */}
-        <FormItem label="カテゴリパス">
-            <input
-                id="productCategoryPath"
-                type="text"
-                className="single-view-content-item-form-item-input"
-                placeholder="カテゴリパス"
-                value={newProductCategory.productCategoryPath}
-                onChange={(e) => setNewProductCategory({
-                    ...newProductCategory,
-                    productCategoryPath: e.target.value
-                })}
-            />
-        </FormItem>
-        {/* 最下層区分フィールド */}
-        <FormItem label="最下層区分">
-            <input
-                id="lowestLevelDivision"
-                type="number"
-                className="single-view-content-item-form-item-input"
-                value={newProductCategory.lowestLevelDivision}
-                onChange={(e) => setNewProductCategory({
-                    ...newProductCategory,
-                    lowestLevelDivision: +e.target.value
-                })}
-            />
-        </FormItem>
-    </div>
-);
-
-interface FormItemProps {
-    label: string;
-    children: React.ReactNode;
-}
-
-const FormItem = ({label, children}: FormItemProps) => (
-    <div className="single-view-content-item-form-item">
-        <label className="single-view-content-item-form-item-label">{label}</label>
-        {children}
+        <FormInput
+            label="商品分類コード"
+            id="productCategoryCode"
+            type="text"
+            className="single-view-content-item-form-item-input"
+            placeholder="商品分類コード"
+            value={newProductCategory.productCategoryCode.value}
+            onChange={(e) => setNewProductCategory({
+                ...newProductCategory,
+                productCategoryCode: { value: e.target.value }
+            })}
+            disabled={isEditing}
+        />
+        <FormInput
+            label="商品分類名"
+            id="productCategoryName"
+            type="text"
+            className="single-view-content-item-form-item-input"
+            placeholder="商品分類名"
+            value={newProductCategory.productCategoryName}
+            onChange={(e) => setNewProductCategory({
+                ...newProductCategory,
+                productCategoryName: e.target.value
+            })}
+        />
+        <FormInput
+            label="カテゴリ階層"
+            id="productCategoryHierarchy"
+            type="number"
+            className="single-view-content-item-form-item-input"
+            value={newProductCategory.productCategoryHierarchy}
+            onChange={(e) => setNewProductCategory({
+                ...newProductCategory,
+                productCategoryHierarchy: +e.target.value
+            })}
+        />
+        <FormInput
+            label="カテゴリパス"
+            id="productCategoryPath"
+            type="text"
+            className="single-view-content-item-form-item-input"
+            placeholder="カテゴリパス"
+            value={newProductCategory.productCategoryPath}
+            onChange={(e) => setNewProductCategory({
+                ...newProductCategory,
+                productCategoryPath: e.target.value
+            })}
+        />
+        <FormInput
+            label="最下層区分"
+            id="lowestLevelDivision"
+            type="number"
+            className="single-view-content-item-form-item-input"
+            value={newProductCategory.lowestLevelDivision}
+            onChange={(e) => setNewProductCategory({
+                ...newProductCategory,
+                lowestLevelDivision: +e.target.value
+            })}
+        />
     </div>
 );
 
