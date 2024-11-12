@@ -1,5 +1,6 @@
-package com.example.sms.domain.type.quantity;
+package com.example.sms.domain.model.common.quantity;
 
+import com.example.sms.domain.type.quantity.UnitType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

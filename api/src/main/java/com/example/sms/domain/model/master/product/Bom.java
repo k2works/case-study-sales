@@ -1,6 +1,6 @@
 package com.example.sms.domain.model.master.product;
 
-import com.example.sms.domain.type.quantity.Quantity;
+import com.example.sms.domain.model.common.quantity.Quantity;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;

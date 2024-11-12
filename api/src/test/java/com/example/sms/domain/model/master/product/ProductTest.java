@@ -1,6 +1,6 @@
 package com.example.sms.domain.model.master.product;
 
-import com.example.sms.domain.type.money.Money;
+import com.example.sms.domain.model.common.money.Money;
 import com.example.sms.domain.type.product.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

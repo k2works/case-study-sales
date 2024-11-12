@@ -1,4 +1,4 @@
-package com.example.sms.domain.type.money;
+package com.example.sms.domain.model.common.money;
 
 /**
  * 通貨ペア
