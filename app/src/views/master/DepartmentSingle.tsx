@@ -2,7 +2,7 @@ import React from 'react';
 import {Message} from "../../components/application/Message.tsx";
 import {DepartmentType, LowerType, SlitYnType} from "../../models";
 import {convertToDateInputFormat} from "../../components/application/utils.ts";
-import {SingleViewHeaderActions, SingleViewHeaderItem} from "../Common.tsx";
+import {FormInput, SingleViewHeaderActions, SingleViewHeaderItem} from "../Common.tsx";
 
 interface HeaderProps {
     title: string;
@@ -35,106 +35,89 @@ interface FormProps {
     setNewDepartment: React.Dispatch<React.SetStateAction<DepartmentType>>;
 }
 
-const Form = ({isEditing, newDepartment, setNewDepartment}: FormProps) => (
+const Form = ({isEditing, newDepartment, setNewDepartment}: FormProps) => {
+    return (
         <div className="single-view-content-item-form">
-
-            {/* 部門コードフィールド */}
-            <FormItem label="部門コード">
-                <input
-                    id="deptCode"
-                    type="text"
-                    className="single-view-content-item-form-item-input"
-                    placeholder="部門コード"
-                    value={newDepartment.departmentId.deptCode.value}
-                    onChange={(e) => setNewDepartment({
-                        ...newDepartment,
-                        departmentId: {
-                            ...newDepartment.departmentId,
-                            deptCode: {value: e.target.value}
-                        }
-                    })}
-                    disabled={isEditing}
-                />
-            </FormItem>
-
-            {/* 部門名フィールド */}
-            <FormItem label="部門名">
-                <input
-                    id="deptName"
-                    type="text"
-                    className="single-view-content-item-form-item-input"
-                    placeholder="部門名"
-                    value={newDepartment.departmentName}
-                    onChange={(e) => setNewDepartment({
-                        ...newDepartment,
-                        departmentName: e.target.value
-                    })}
-                />
-            </FormItem>
-
-            {/* 開始日フィールド */}
-            <FormItem label="開始日">
-                <input
-                    id="startDate"
-                    type="date"
-                    className="single-view-content-item-form-item-input"
-                    value={convertToDateInputFormat(newDepartment.departmentId.departmentStartDate.value)}
-                    onChange={(e) => setNewDepartment({
-                        ...newDepartment,
-                        departmentId: {
-                            ...newDepartment.departmentId,
-                            departmentStartDate: {value: e.target.value}
-                        }
-                    })}
-                    disabled={isEditing}
-                />
-            </FormItem>
-
-            {/* 終了日フィールド */}
-            <FormItem label="終了日">
-                <input
-                    id="endDate"
-                    type="date"
-                    className="single-view-content-item-form-item-input"
-                    value={convertToDateInputFormat(newDepartment.endDate.value)}
-                    onChange={(e) => setNewDepartment({
-                        ...newDepartment,
-                        endDate: {value: e.target.value}
-                    })}
-                />
-            </FormItem>
-
-            {/* 組織階層フィールド */}
-            <FormItem label="組織階層">
-                <input
-                    id="layer"
-                    type="number"
-                    className="single-view-content-item-form-item-input"
-                    value={newDepartment.layer}
-                    onChange={(e) => setNewDepartment({
-                        ...newDepartment,
-                        layer: +e.target.value
-                    })}
-                />
-            </FormItem>
-
-            {/* 部門パスフィールド */}
-            <FormItem label="部門パス">
-                <input
-                    id="path"
-                    type="text"
-                    className="single-view-content-item-form-item-input"
-                    placeholder="部門パス"
-                    value={newDepartment.path.value}
-                    onChange={(e) => setNewDepartment({
-                        ...newDepartment,
-                        path: {value: e.target.value}
-                    })}
-                />
-            </FormItem>
-
+            <FormInput
+                label="部門コード"
+                id="deptCode"
+                type="text"
+                className="single-view-content-item-form-item-input"
+                placeholder="部門コード"
+                value={newDepartment.departmentId.deptCode.value}
+                onChange={(e) => setNewDepartment({
+                    ...newDepartment,
+                    departmentId: {
+                        ...newDepartment.departmentId,
+                        deptCode: { value: e.target.value }
+                    }
+                })}
+                disabled={isEditing}
+            />
+            <FormInput
+                label="部門名"
+                id="deptName"
+                type="text"
+                className="single-view-content-item-form-item-input"
+                placeholder="部門名"
+                value={newDepartment.departmentName}
+                onChange={(e) => setNewDepartment({
+                    ...newDepartment,
+                    departmentName: e.target.value
+                })}
+            />
+            <FormInput
+                label="開始日"
+                id="startDate"
+                type="date"
+                className="single-view-content-item-form-item-input"
+                value={convertToDateInputFormat(newDepartment.departmentId.departmentStartDate.value)}
+                onChange={(e) => setNewDepartment({
+                    ...newDepartment,
+                    departmentId: {
+                        ...newDepartment.departmentId,
+                        departmentStartDate: { value: e.target.value }
+                    }
+                })}
+                disabled={isEditing}
+            />
+            <FormInput
+                label="終了日"
+                id="endDate"
+                type="date"
+                className="single-view-content-item-form-item-input"
+                value={convertToDateInputFormat(newDepartment.endDate.value)}
+                onChange={(e) => setNewDepartment({
+                    ...newDepartment,
+                    endDate: { value: e.target.value }
+                })}
+            />
+            <FormInput
+                label="組織階層"
+                id="layer"
+                type="number"
+                className="single-view-content-item-form-item-input"
+                value={newDepartment.layer}
+                onChange={(e) => setNewDepartment({
+                    ...newDepartment,
+                    layer: +e.target.value
+                })}
+            />
+            <FormInput
+                label="部門パス"
+                id="path"
+                type="text"
+                className="single-view-content-item-form-item-input"
+                placeholder="部門パス"
+                value={newDepartment.path.value}
+                onChange={(e) => setNewDepartment({
+                    ...newDepartment,
+                    path: { value: e.target.value }
+                })}
+            />
             {/* 最下層区分フィールド */}
-            <FormItem label="最下層区分">
+            <div className="form-item">
+                <label>最下層区分</label>
                 <div className="single-view-content-item-form-radios">
                     <label>
                         <input
@@ -163,10 +146,10 @@ const Form = ({isEditing, newDepartment, setNewDepartment}: FormProps) => (
                         NO
                     </label>
                 </div>
-            </FormItem>
-
+            </div>
             {/* 伝票入力可否フィールド */}
-            <FormItem label="伝票入力可否">
+            <div className="form-item">
+                <label>伝票入力可否</label>
                 <div className="single-view-content-item-form-radios">
                     <label>
                         <input
@@ -195,23 +178,10 @@ const Form = ({isEditing, newDepartment, setNewDepartment}: FormProps) => (
                         NO
                     </label>
                 </div>
-            </FormItem>
-
+            </div>
         </div>
-    )
-;
-
-interface FormItemProps {
-    label: string;
-    children: React.ReactNode;
-}
-
-const FormItem = ({label, children}: FormItemProps) => (
-    <div className="single-view-content-item-form-item">
-        <label className="single-view-content-item-form-item-label">{label}</label>
-        {children}
-    </div>
-);
+    );
+};
 
 interface DepartmentSingleViewProps {
     error: string | null;
