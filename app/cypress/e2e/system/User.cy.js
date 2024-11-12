@@ -21,7 +21,7 @@ describe('ユーザー管理', () => {
             cy.get('#userId').type('U000004');
             cy.get('#firstName').type('テスト');
             cy.get('#lastName').type('太郎');
-            cy.get('#roleName').select('ユーザー')
+            cy.get('#roleName').select('USER')
             cy.get('#password').type('a234567Z');
             cy.get('#save').click();
 
@@ -34,7 +34,7 @@ describe('ユーザー管理', () => {
             cy.get('#userId').type('U000005');
             cy.get('#firstName').type('管理');
             cy.get('#lastName').type('太郎');
-            cy.get('#roleName').select('管理者')
+            cy.get('#roleName').select('ADMIN')
             cy.get('#password').type('a234567Z');
             cy.get('#save').click();
 
@@ -56,7 +56,7 @@ describe('ユーザー管理', () => {
             cy.get('#userId').type('U000001');
             cy.get('#firstName').type('管理');
             cy.get('#lastName').type('太郎');
-            cy.get('#roleName').select('ユーザー')
+            cy.get('#roleName').select('USER')
             cy.get('#password').type('a234567Z');
             cy.get('#save').click();
 
@@ -70,7 +70,7 @@ describe('ユーザー管理', () => {
             cy.get('#userId').type('X000004');
             cy.get('#firstName').type('テスト');
             cy.get('#lastName').type('太郎');
-            cy.get('#roleName').select('ユーザー')
+            cy.get('#roleName').select('USER')
             cy.get('#password').type('a234567Z');
             cy.get('#save').click();
 
@@ -83,7 +83,7 @@ describe('ユーザー管理', () => {
             cy.get('#userId').type('U1234567');
             cy.get('#firstName').type('テスト');
             cy.get('#lastName').type('太郎');
-            cy.get('#roleName').select('ユーザー')
+            cy.get('#roleName').select('USER')
             cy.get('#password').type('a234567Z');
             cy.get('#save').click();
 
@@ -96,7 +96,7 @@ describe('ユーザー管理', () => {
             cy.get('#userId').type('U12345');
             cy.get('#firstName').type('テスト');
             cy.get('#lastName').type('太郎');
-            cy.get('#roleName').select('ユーザー')
+            cy.get('#roleName').select('USER')
             cy.get('#password').type('a234567Z');
             cy.get('#save').click();
 
@@ -121,7 +121,7 @@ describe('ユーザー管理', () => {
             userPage();
             cy.get(':nth-child(5) > :nth-child(5) > #edit').click();
             cy.get('#firstName').clear();
-            cy.get('#firstName').type('管理');
+            cy.get('#firstName').type('ADMIN');
             cy.get('#lastName').clear();
             cy.get('#lastName').type('花子');
             cy.get('#save').click();
@@ -142,7 +142,7 @@ describe('ユーザー管理', () => {
             userPage();
             cy.get('#search-input').type('U000005');
             cy.get('#search-all').click();
-            cy.get(':nth-child(2) > .collection-object-item-content-name').contains('管理');
+            cy.get(':nth-child(2) > .collection-object-item-content-name').contains('ADMIN');
         });
     })
 

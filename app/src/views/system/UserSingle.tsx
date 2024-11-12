@@ -1,7 +1,7 @@
 import React from "react";
-import {UserAccountType} from "../../models";
+import {RoleNameEnumType, UserAccountType} from "../../models";
 import {Message} from "../../components/application/Message.tsx";
-import {FormInput, SingleViewHeaderActions, SingleViewHeaderItem} from "../Common.tsx";
+import {FormInput, FormSelect, SingleViewHeaderActions, SingleViewHeaderItem} from "../Common.tsx";
 
 
 interface HeaderProps {
@@ -36,6 +36,8 @@ interface UserFormProps {
 }
 
 const Form = ({isEditing, newUser, setNewUser}: UserFormProps) => {
+    const [roleType, setRoleType] = React.useState<RoleNameEnumType>(newUser.roleName as RoleNameEnumType);
+
     return (
         <div className="single-view-content-item-form">
             <FormInput
@@ -75,23 +77,17 @@ const Form = ({isEditing, newUser, setNewUser}: UserFormProps) => {
                     name: { ...newUser.name, lastName: e.target.value }
                 })}
             />
-            <div className="single-view-content-item-form-item">
-                <label className="single-view-content-item-form-item-label">役割</label>
-                <select
-                    className="single-view-content-item-form-item-input"
-                    name="roleNameList"
-                    id="roleName"
-                    value={newUser.roleName}
-                    onChange={(e) => setNewUser({
-                        ...newUser,
-                        roleName: e.target.value
-                    })}
-                >
-                    <option value="">選択してください</option>
-                    <option value="USER">ユーザー</option>
-                    <option value="ADMIN">管理者</option>
-                </select>
-            </div>
+            <FormSelect
+                label="役割"
+                id="roleName"
+                className="single-view-content-item-form-item-input"
+                value={roleType}
+                options={RoleNameEnumType}
+                onChange={(e) => {
+                    setRoleType(e);
+                    setNewUser({ ...newUser, roleName: e })
+                }}
+            />
             <FormInput
                 label="パスワード"
                 id="password"

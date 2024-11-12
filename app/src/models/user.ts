@@ -23,6 +23,11 @@ export type UserAccountType = {
     roleName?: string;
 }
 
+export enum RoleNameEnumType {
+    ROLE_ADMIN = 'ADMIN',
+    ROLE_USER = 'USER'
+}
+
 export type UserAccountResourceType = {
     userId: string;
     password: string | undefined;
