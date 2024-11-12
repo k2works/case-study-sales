@@ -1,13 +1,15 @@
 package com.example.sms.domain.model.common.money;
 
+import com.example.sms.domain.type.money.CurrencyType;
+
 /**
  * 通貨ペア
  */
 class Pair {
-    private String from;
-    private String to;
+    private CurrencyType from;
+    private CurrencyType to;
 
-    Pair(String from, String to) {
+    Pair(CurrencyType from, CurrencyType to) {
         this.from = from;
         this.to = to;
     }

@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.common.money;
 
+import com.example.sms.domain.type.money.CurrencyType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -37,9 +38,9 @@ public class MoneyTest {
     @Test
     @DisplayName("通貨をテストする")
     public void testCurrency() {
-        assertEquals("JPY", Money.of(1).getCurrency());
-        assertEquals("USD", Money.dollar(1).getCurrency());
-        assertEquals("CHF", Money.franc(1).getCurrency());
+        assertEquals(CurrencyType.JPY, Money.of(1).getCurrency());
+        assertEquals(CurrencyType.USD, Money.dollar(1).getCurrency());
+        assertEquals(CurrencyType.CHF, Money.franc(1).getCurrency());
     }
 
     @Test
@@ -48,7 +49,7 @@ public class MoneyTest {
         Money five = Money.of(5);
         Expression sum = five.plus(five);
         Exchange exchange = new Exchange();
-        Money reduced = exchange.reduce(sum, "JPY");
+        Money reduced = exchange.reduce(sum, CurrencyType.JPY);
         assertEquals(Money.of(10), reduced);
     }
 
@@ -67,7 +68,7 @@ public class MoneyTest {
     public void testReduceSum() {
         Expression sum = new Sum(Money.of(3), Money.of(4));
         Exchange exchange = new Exchange();
-        Money result = exchange.reduce(sum, "JPY");
+        Money result = exchange.reduce(sum, CurrencyType.JPY);
         assertEquals(Money.of(7), result);
     }
 
@@ -75,7 +76,7 @@ public class MoneyTest {
     @DisplayName("お金の減算をテストする")
     public void testReduceMoney() {
         Exchange exchange = new Exchange();
-        Money result = exchange.reduce(Money.of(1), "JPY");
+        Money result = exchange.reduce(Money.of(1), CurrencyType.JPY);
         assertEquals(Money.of(1), result);
     }
 
@@ -83,16 +84,16 @@ public class MoneyTest {
     @DisplayName("異なる通貨のお金の減算をテストする")
     public void testReduceMoneyDifferentCurrency() {
         Exchange exchange = new Exchange();
-        exchange.addRate("JPY", "USD", 2);
-        Money result = exchange.reduce(Money.of(2), "USD");
+        exchange.addRate(CurrencyType.JPY, CurrencyType.USD, 2);
+        Money result = exchange.reduce(Money.of(2), CurrencyType.USD);
         assertEquals(Money.dollar(1), result);
     }
 
     @Test
     @DisplayName("同一レートをテストする")
     public void testIdentityRate() {
-        assertEquals(1, new Exchange().rate("USD", "USD"));
-        assertEquals(1, new Exchange().rate("JPY", "JPY"));
+        assertEquals(1, new Exchange().rate(CurrencyType.USD, CurrencyType.USD));
+        assertEquals(1, new Exchange().rate(CurrencyType.JPY, CurrencyType.JPY));
     }
 
     @Test
@@ -101,8 +102,8 @@ public class MoneyTest {
         Expression fiveBucks = Money.dollar(5);
         Expression oneHundredFiftyYens = Money.of(150);
         Exchange exchange = new Exchange();
-        exchange.addRate("JPY", "USD", 150);
-        Money result = exchange.reduce(fiveBucks.plus(oneHundredFiftyYens), "USD");
+        exchange.addRate(CurrencyType.JPY, CurrencyType.USD, 150);
+        Money result = exchange.reduce(fiveBucks.plus(oneHundredFiftyYens), CurrencyType.USD);
         assertEquals(Money.dollar(6), result);
     }
 
@@ -112,9 +113,9 @@ public class MoneyTest {
         Expression fiveBucks = Money.dollar(5);
         Expression oneHundredFiftyYens = Money.of(150);
         Exchange exchange = new Exchange();
-        exchange.addRate("JPY", "USD", 150);
+        exchange.addRate(CurrencyType.JPY, CurrencyType.USD, 150);
         Expression sum = new Sum(fiveBucks, oneHundredFiftyYens).plus(oneHundredFiftyYens);
-        Money result = exchange.reduce(sum, "USD");
+        Money result = exchange.reduce(sum, CurrencyType.USD);
         assertEquals(Money.dollar(7), result);
     }
 
@@ -124,9 +125,9 @@ public class MoneyTest {
         Expression fiveBucks = Money.dollar(5);
         Expression oneHundredFiftyYens = Money.of(150);
         Exchange exchange = new Exchange();
-        exchange.addRate("JPY", "USD", 150);
+        exchange.addRate(CurrencyType.JPY, CurrencyType.USD, 150);
         Expression sum = new Sum(fiveBucks, oneHundredFiftyYens).times(2);
-        Money result = exchange.reduce(sum, "USD");
+        Money result = exchange.reduce(sum, CurrencyType.USD);
         assertEquals(Money.dollar(12), result);
     }
 }

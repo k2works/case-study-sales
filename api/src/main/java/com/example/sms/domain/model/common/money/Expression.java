@@ -1,5 +1,7 @@
 package com.example.sms.domain.model.common.money;
 
+import com.example.sms.domain.type.money.CurrencyType;
+
 /**
  * 式
  */
@@ -8,5 +10,5 @@ interface Expression {
 
     Expression plus(Expression added);
 
-    Money reduce(Exchange exchange, String to);
+    Money reduce(Exchange exchange, CurrencyType to);
 }

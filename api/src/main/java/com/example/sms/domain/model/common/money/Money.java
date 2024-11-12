@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.common.money;
 
+import com.example.sms.domain.type.money.CurrencyType;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;
@@ -12,7 +13,7 @@ import lombok.Value;
 @NoArgsConstructor(force = true)
 public class Money implements Expression {
     protected Integer amount;
-    protected String currency;
+    protected CurrencyType currency;
 
     public Expression times(int multiplier) {
         return new Money(amount * multiplier, currency);
@@ -22,20 +23,20 @@ public class Money implements Expression {
         return new Sum(this, addend);
     }
 
-    public Money reduce(Exchange exchange, String to) {
+    public Money reduce(Exchange exchange, CurrencyType to) {
         int rate = exchange.rate(currency, to);
         return new Money(amount / rate, to);
     }
 
     static Money dollar(int amount) {
-        return new Money(amount, "USD");
+        return new Money(amount, CurrencyType.USD);
     }
 
     static Money franc(int amount) {
-        return new Money(amount, "CHF");
+        return new Money(amount, CurrencyType.CHF);
     }
 
     public static Money of(int amount) {
-        return new Money(amount, "JPY");
+        return new Money(amount, CurrencyType.JPY);
     }
 }

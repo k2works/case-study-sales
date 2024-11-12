@@ -1,5 +1,7 @@
 package com.example.sms.domain.model.common.money;
 
+import com.example.sms.domain.type.money.CurrencyType;
+
 /**
  * 集計
  */
@@ -20,7 +22,7 @@ class Sum implements Expression {
         return new Sum(this, addend);
     }
 
-    public Money reduce(Exchange exchange, String to) {
+    public Money reduce(Exchange exchange, CurrencyType to) {
         int amount = augend.reduce(exchange, to).amount + addend.reduce(exchange, to).amount;
         return new Money(amount, to);
     }
