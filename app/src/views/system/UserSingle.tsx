@@ -1,7 +1,7 @@
 import React from "react";
 import {UserAccountType} from "../../models";
 import {Message} from "../../components/application/Message.tsx";
-import {SingleViewHeaderActions, SingleViewHeaderItem} from "../Common.tsx";
+import {FormInput, SingleViewHeaderActions, SingleViewHeaderItem} from "../Common.tsx";
 
 
 interface HeaderProps {
@@ -38,64 +38,72 @@ interface UserFormProps {
 const Form = ({isEditing, newUser, setNewUser}: UserFormProps) => {
     return (
         <div className="single-view-content-item-form">
-            <div className="single-view-content-item-form-item">
-                <label className="single-view-content-item-form-item-label">ユーザーID</label>
-                <input
-                    type="text"
-                    className="single-view-content-item-form-item-input"
-                    placeholder="ユーザーID"
-                    value={newUser.userId.value}
-                    onChange={(e) => setNewUser({...newUser, userId: {value: e.target.value}})}
-                    disabled={isEditing}
-                    id="userId"
-                />
-            </div>
-            <div className="single-view-content-item-form-item">
-                <label className="single-view-content-item-form-item-label">姓</label>
-                <input
-                    type="text"
-                    className="single-view-content-item-form-item-input"
-                    placeholder="姓"
-                    value={newUser.name?.firstName || ""}
-                    onChange={(e) => setNewUser({...newUser, name: {...newUser.name, firstName: e.target.value}})}
-                    id="firstName"
-                />
-            </div>
-            <div className="single-view-content-item-form-item">
-                <label className="single-view-content-item-form-item-label">名</label>
-                <input
-                    type="text"
-                    className="single-view-content-item-form-item-input"
-                    placeholder="名"
-                    value={newUser.name?.lastName || ""}
-                    onChange={(e) => setNewUser({...newUser, name: {...newUser.name, lastName: e.target.value}})}
-                    id="lastName"
-                />
-            </div>
+            <FormInput
+                label="ユーザーID"
+                id="userId"
+                type="text"
+                className="single-view-content-item-form-item-input"
+                placeholder="ユーザーID"
+                value={newUser.userId.value}
+                onChange={(e) => setNewUser({
+                    ...newUser,
+                    userId: { value: e.target.value }
+                })}
+                disabled={isEditing}
+            />
+            <FormInput
+                label="姓"
+                id="firstName"
+                type="text"
+                className="single-view-content-item-form-item-input"
+                placeholder="姓"
+                value={newUser.name?.firstName || ""}
+                onChange={(e) => setNewUser({
+                    ...newUser,
+                    name: { ...newUser.name, firstName: e.target.value }
+                })}
+            />
+            <FormInput
+                label="名"
+                id="lastName"
+                type="text"
+                className="single-view-content-item-form-item-input"
+                placeholder="名"
+                value={newUser.name?.lastName || ""}
+                onChange={(e) => setNewUser({
+                    ...newUser,
+                    name: { ...newUser.name, lastName: e.target.value }
+                })}
+            />
             <div className="single-view-content-item-form-item">
                 <label className="single-view-content-item-form-item-label">役割</label>
                 <select
-                    className="single-view-content-item-form-item"
+                    className="single-view-content-item-form-item-input"
                     name="roleNameList"
-                    value={newUser.roleName}
                     id="roleName"
-                    onChange={(e) => setNewUser({...newUser, roleName: e.target.value})}>
+                    value={newUser.roleName}
+                    onChange={(e) => setNewUser({
+                        ...newUser,
+                        roleName: e.target.value
+                    })}
+                >
                     <option value="">選択してください</option>
                     <option value="USER">ユーザー</option>
                     <option value="ADMIN">管理者</option>
                 </select>
             </div>
-            <div className="single-view-content-item-form-item">
-                <label className="single-view-content-item-form-item-label">パスワード</label>
-                <input
-                    type="password"
-                    className="single-view-content-item-form-item-input"
-                    placeholder="パスワード"
-                    value={newUser.password?.value || ""}
-                    onChange={(e) => setNewUser({...newUser, password: {value: e.target.value}})}
-                    id="password"
-                />
-            </div>
+            <FormInput
+                label="パスワード"
+                id="password"
+                type="password"
+                className="single-view-content-item-form-item-input"
+                placeholder="パスワード"
+                value={newUser.password?.value || ""}
+                onChange={(e) => setNewUser({
+                    ...newUser,
+                    password: { value: e.target.value }
+                })}
+            />
         </div>
     );
 };
