@@ -114,7 +114,7 @@ export const User: React.FC = () => {
                                 </button>
                             </div>
                             <div className="button-container">
-                                <button className="action-button" onClick={() => handleOpenModal()}>新規
+                                <button id="new" className="action-button" onClick={() => handleOpenModal()}>新規
                                 </button>
                             </div>
                             <div className="collection-object-container">
@@ -151,13 +151,13 @@ export const User: React.FC = () => {
                                             <div className="collection-object-item-actions"
                                                  data-id={user.userId.value}>
                                                 <button className="action-button"
-                                                        onClick={() => handleOpenModal(user)}>編集
+                                                        onClick={() => handleOpenModal(user)} id="edit">編集
                                                 </button>
                                             </div>
                                             <div className="collection-object-item-actions"
                                                  data-id={user.userId.value}>
                                                 <button className="action-button"
-                                                        onClick={() => handleDeleteUser(user.userId.value)}>削除
+                                                        onClick={() => handleDeleteUser(user.userId.value)} id="delete">削除
                                                 </button>
                                             </div>
                                         </li>
@@ -200,10 +200,14 @@ export const User: React.FC = () => {
                         roleName: ""
                     });
                     await fetchUsers();
-                    setMessage("ユーザーを保存しました。");
+                    if (isEditing) {
+                        setMessage("ユーザーを更新しました。");
+                    } else {
+                        setMessage("ユーザーを作成しました。");
+                    }
                     handleCloseModal();
                 } catch (error: any) {
-                    showErrorMessage(`ユーザーの保存に失敗しました: ${error?.message}`, setError);
+                    showErrorMessage(`ユーザーの作成に失敗しました: ${error?.message}`, setError);
                 }
             };
             return (
@@ -220,8 +224,8 @@ export const User: React.FC = () => {
                             <div className="collection-object-item-actions">
                                 <div className="button-container">
                                     <button className="action-button"
-                                            onClick={handleCreateOrUpdateUser}>{isEditing ? "更新" : "作成"}</button>
-                                    <button className="action-button" onClick={handleCloseModal}>キャンセル
+                                            onClick={handleCreateOrUpdateUser} id="save">{isEditing ? "更新" : "作成"}</button>
+                                    <button className="action-button" onClick={handleCloseModal} id="cancel">キャンセル
                                     </button>
                                 </div>
                             </div>
@@ -242,6 +246,7 @@ export const User: React.FC = () => {
                                                 userId: {value: e.target.value}
                                             })}
                                             disabled={isEditing}
+                                            id="userId"
                                         />
                                     </div>
                                     <div className="single-view-content-item-form-item">
@@ -255,6 +260,7 @@ export const User: React.FC = () => {
                                                 ...newUser,
                                                 name: {...newUser.name, lastName: e.target.value}
                                             })}
+                                            id="lastName"
                                         />
                                     </div>
                                     <div className="single-view-content-item-form-item">
@@ -268,6 +274,7 @@ export const User: React.FC = () => {
                                                 ...newUser,
                                                 name: {...newUser.name, firstName: e.target.value}
                                             })}
+                                            id="firstName"
                                         />
                                     </div>
                                     <div className="single-view-content-item-form-item">
@@ -296,6 +303,7 @@ export const User: React.FC = () => {
                                                 ...newUser,
                                                 password: {value: e.target.value}
                                             })}
+                                            id="password"
                                         />
                                     </div>
                                 </div>
