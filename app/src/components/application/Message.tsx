@@ -2,6 +2,7 @@ import ErrorBoundary from "./ErrorBoundary";
 import React from "react";
 import {MessageScreen} from "../../views/application/MessageScreen.tsx";
 import {ErrorScreen} from "../../views/application/ErrorScreen.tsx";
+import {showErrorMessage} from "./utils.ts";
 
 interface MessageProps {
     message: string | null;
@@ -17,6 +18,7 @@ export const useMessage = () => {
         setMessage,
         error,
         setError,
+        showErrorMessage
     }
 }
 

@@ -2,6 +2,15 @@ import Config from "./config";
 import Utils from "./utils";
 import {UserAccountType} from "../types";
 
+export interface UserServiceType {
+    select: (page?: number, pageSize?: number) => Promise<any>;
+    find: (userId: String) => Promise<any>;
+    create: (user: UserAccountType) => Promise<any>;
+    update: (user: UserAccountType) => Promise<any>;
+    destroy: (userId: String) => Promise<any>;
+    search: (pageSize: number, code: string, page: number) => Promise<any>;
+}
+
 export const UserService = () => {
     const config = Config();
     const apiUtils = Utils.apiUtils;
