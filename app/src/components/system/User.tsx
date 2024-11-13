@@ -6,8 +6,8 @@ import {SiteLayout} from "../../views/SiteLayout.tsx";
 import {UserCollectionView} from "../../views/system/UserCollection.tsx";
 import {UserSingleView} from "../../views/system/UserSingle.tsx";
 import React, {useEffect, useState} from "react";
-import {UserAccountType} from "../../types";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
+import {UserAccountType} from "../../models";
 
 export const User: React.FC = () => {
     const Content: React.FC = () => {

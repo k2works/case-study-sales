@@ -1,6 +1,6 @@
 import Config from "./config";
 import Utils from "./utils";
-import {UserAccountType} from "../types";
+import {UserAccountType} from "../models";
 
 export interface UserServiceType {
     select: (page?: number, pageSize?: number) => Promise<any>;

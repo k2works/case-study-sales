@@ -1,6 +1,6 @@
 import React from "react";
 import {Message} from "../../components/application/Message.tsx";
-import {UserAccountType} from "../../types";
+import {UserAccountType} from "../../models";
 
 const SingleViewHeaderItem: React.FC<{ title: string, subtitle: string }> = ({title, subtitle}) => (
     <div className="single-view-header-item">

@@ -1,8 +1,8 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {FaBars, FaTimes} from "react-icons/fa";
-import {RoleType} from "../../types";
 import {getRoleFromUser} from "../../components/application/RouteAuthGuard.tsx";
+import {RoleType} from "../../models";
 
 const NAV_CONTAINER_CLASS = "nav-container";
 const SIDE_NAV_CLASS = "side-nav";

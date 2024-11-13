@@ -4,9 +4,9 @@ import {RouteAuthGuard} from "./RouteAuthGuard";
 import {Login} from "../system/Login.tsx";
 import {Logout} from "../system/Logout.tsx";
 import {User} from "../system/User.tsx";
-import {RoleType} from "../../types";
 import {Home} from "../../views/application/Home.tsx";
 import {NotFound} from "../../views/application/NotFound.tsx";
+import {RoleType} from "../../models";
 
 export const RouteConfig: React.FC = () => {
     return (
