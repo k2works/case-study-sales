@@ -5,22 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "npx gulp",
-    "test": "echo \"Error: no test specified\" && exit 0",
+    "test": "npm-run-all build",
     "build": "npx gulp build",
-    "build:slides": "npx gulp slides",
-    "build:docs": "npx gulp buildDocs",
-    "docs": "npx gulp docs",
-    "heroku-postbuild": "webpack --config ./webpack.config.js --progress",
-    "deploy": "npm-run-all deploy:*",
-    "deploy:api": "git subtree push --prefix api heroku main",
-    "deploy:app": "cd app && vercel",
-    "deploy:docs": "vercel",
-    "jig": "npm-run-all jig:*",
-    "jig:api": "npx gulp jig",
-    "jig:db": "npx gulp jig_erd",
-    "erd": "npx gulp erd",
-    "db:schemaspy:mysql": "docker-compose run --rm schemaspy_mysql",
-    "db:schemaspy:postresql": "docker-compose run --rm schemaspy_postgresql"
+    "slides": "npx gulp slides",
+    "docs": "npx gulp docs"
   },
   "author": "",
   "license": "ISC",
@@ -44,7 +32,8 @@
     "webpack-dev-server": "^5.1.0"
   },
   "dependencies": {
-    "@k2works/full-stack-lab": "^1.7.0",
+    "@k2works/adr": "^1.7.0",
+    "@k2works/full-stack-lab": "^1.8.0",
     "fs-extra": "^11.2.0",
     "gulp-exec": "^5.0.0",
     "gulp-rename": "^2.0.0",

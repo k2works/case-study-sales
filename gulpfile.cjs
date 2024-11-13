@@ -7,6 +7,7 @@ exports.default = series(
     parallel(
         core.asciidoctorBuildTasks(),
         core.marpBuildTasks(),
+        core.adrBuildTasks(),
     ),
     series(
         parallel(core.webpack.server, core.asciidoctor.server),
@@ -19,14 +20,15 @@ exports.build = series(
     parallel(
         core.asciidoctorBuildTasks(),
         core.marpBuildTasks(),
+        core.adrBuildTasks(),
     )
 );
 
 exports.docs = series(
     parallel(core.asciidoctorBuildTasks(), core.marpBuildTasks()),
+    core.adrBuildTasks(),
     parallel(core.asciidoctor.server, core.asciidoctor.watch, core.marp.watch),
 );
-
 exports.slides = series(core.marp.build);
 
 exports.jig = custom.jigBuildTasks();
