@@ -31,6 +31,11 @@ export type UserAccountResourceType = {
     roleName: string | undefined;
 }
 
+export enum RoleNameEnumType {
+    ROLE_ADMIN = 'ADMIN',
+    ROLE_USER = 'USER'
+}
+
 export const mapToUserAccountResource = (user: UserAccountType): UserAccountResourceType => {
     return {
         userId: user.userId.value,
