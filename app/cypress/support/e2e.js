@@ -18,3 +18,28 @@ import './commands'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+Cypress.Commands.add('login', (username, password) => {
+    cy.visit('http://localhost:5173/login');
+    cy.get('#userId').clear();
+    cy.get('#userId').type(username);
+    cy.get('#password').clear();
+    cy.get('#password').type(password);
+    cy.get('#login').click();
+});
+
+Cypress.Commands.add('loginWithSession', (username, password) => {
+    cy.session(
+        username,
+        () => {
+            cy.visit('http://localhost:5173/login');
+            cy.get('#userId').clear();
+            cy.get('#userId').type(username);
+            cy.get('#password').clear();
+            cy.get('#password').type(password);
+            cy.get('#login').click();
+
+            cy.contains('HOME').should('be.visible');
+        }
+    )
+});
