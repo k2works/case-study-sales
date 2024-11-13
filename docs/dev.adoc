@@ -114,7 +114,26 @@ image::./images/relationships.implied.compact.png[]
 
 ## ドメインモデル
 
-image::./images/business-rule-relation.svg[]
+[plantuml]
+----
+@startuml
+class ユーザー一覧
+class ユーザー
+class ユーザーID
+class パスワード
+class 役割
+class 名前 {
+    + 姓
+    + 名
+}
+
+ユーザー一覧 *- ユーザー
+ユーザー *-- ユーザーID
+ユーザー *-- パスワード
+ユーザー *-- 役割
+ユーザー *-- 名前
+@enduml
+----
 
 ## ユーザーインターフェース
 

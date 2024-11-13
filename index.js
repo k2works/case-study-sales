@@ -1,18 +1,6 @@
 import "./style.css";
 import render from "@k2works/full-stack-lab";
 
-const contents = `
-## ユーザー管理機能
-
-## 仕様
-
-- 管理者はユーザーを管理できる
-
-## TODOリスト
-- [x] ユーザー管理APIを作成する
-- [x] ユーザー管理画面を作成する
-`;
-
 const mindmap = `
 @startmindmap
 * ユーザー管理
@@ -23,18 +11,37 @@ const mindmap = `
 --- 登録済みユーザーを更新登録する
 --- 登録済みユーザーを削除する
 -- ドメインモデル
---- ユーザー管理APIを作成する
+--- ユーザー一覧
+---- ユーザー
 -- データモデル
---- ユーザーDBを作成する
+--- ユーザー
 ** ユーザーインターフェース
-*** ユーザー管理画面を作成する
-** モデル
-*** ログイン
-*** ナビゲーション
-*** ユーザー一覧
-**** ユーザー
-** インタラクション
+*** ビュー
+**** ユーザー一覧
+***** ユーザー
+*** モデル
+**** ログイン
+**** ナビゲーション
+**** ユーザー一覧
+***** ユーザー
+*** インタラクション
+**** ログイン
+**** ナビゲーション
+***** ユーザー
+**** ログアウト
 @endmindmap
+`;
+
+const contents = `
+## ユーザー管理機能
+
+## 仕様
+
+- 管理者はユーザーを管理できる
+
+## TODOリスト
+- [x] ユーザー管理APIを作成する
+- [x] ユーザー管理画面を作成する
 `;
 
 const usecase = `
@@ -53,6 +60,43 @@ admin --> UC2
 admin --> UC3
 admin --> UC4
 admin --> UC5
+@enduml
+`;
+
+const uml = `
+@startuml
+class ユーザー一覧
+class ユーザー
+class ユーザーID
+class パスワード
+class 役割
+class 名前 {
+    + 姓
+    + 名
+}
+
+ユーザー一覧 *- ユーザー
+ユーザー *-- ユーザーID
+ユーザー *-- パスワード
+ユーザー *-- 役割
+ユーザー *-- 名前
+@enduml
+`;
+
+const erd = `
+@startuml
+' hide the spot
+hide circle
+' avoid problems with angled crows feet
+skinparam linetype ortho
+entity "ユーザー" as usr {
+    *ユーザーID : text
+    --
+    姓 : text
+    名 : text
+    パスワード : text
+    役割 : text
+}
 @enduml
 `;
 
@@ -130,43 +174,6 @@ const uiInteraction = `
     ユーザー_コレクション --> ユーザー_シングル
     ユーザー_シングル --> ユーザー_コレクション
   ログイン_シングル <-- ユーザー_コレクション
-@enduml
-`;
-
-const uml = `
-@startuml
-class ユーザー一覧
-class ユーザー
-class ユーザーID
-class パスワード
-class 役割
-class 名前 {
-    + 姓
-    + 名
-}
-
-ユーザー一覧 *- ユーザー
-ユーザー *-- ユーザーID
-ユーザー *-- パスワード
-ユーザー *-- 役割
-ユーザー *-- 名前
-@enduml
-`;
-
-const erd = `
-@startuml
-' hide the spot
-hide circle
-' avoid problems with angled crows feet
-skinparam linetype ortho
-entity "ユーザー" as usr {
-    *ユーザーID : text
-    --
-    姓 : text
-    名 : text
-    パスワード : text
-    役割 : text
-}
 @enduml
 `;
 
