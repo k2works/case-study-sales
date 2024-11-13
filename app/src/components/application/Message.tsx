@@ -1,7 +1,7 @@
-import {MessageScreen} from "./MessageScreen";
 import ErrorBoundary from "./ErrorBoundary";
-import {ErrorScreen} from "./ErrorScreen";
 import React from "react";
+import {MessageScreen} from "../../views/application/MessageScreen.tsx";
+import {ErrorScreen} from "../../views/application/ErrorScreen.tsx";
 
 interface MessageProps {
     message: string | null;

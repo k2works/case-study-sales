@@ -1,6 +1,6 @@
 import React from "react";
-import {SiteLayout} from "./SiteLayout";
-import ErrorBoundary from "./ErrorBoundary";
+import {SiteLayout} from "../SiteLayout.tsx";
+import ErrorBoundary from "../../components/application/ErrorBoundary.tsx";
 
 export const Home: React.FC = () => {
     return (

@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from "react";
 import Modal from 'react-modal';
-import {SiteLayout} from "../application/SiteLayout";
 import {UserAccountType} from "../../types";
 import BeatLoader from "react-spinners/BeatLoader";
 import {Message, useMessage} from "../application/Message";
 import {showErrorMessage} from "../application/utils";
-import {PageNation, usePageNation} from "../application/PageNation";
 import {useModal} from "../application/hooks";
 import {useUser} from "./hooks";
+import {PageNation, usePageNation} from "../../views/application/PageNation.tsx";
+import {SiteLayout} from "../../views/SiteLayout.tsx";
 
 export const User: React.FC = () => {
     const Content: React.FC = () => {
