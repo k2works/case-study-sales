@@ -39,7 +39,7 @@ const asciidoctor = {
                 mkdirs: true,
             });
         });
-        src(`${inputRootDir}/images/*.*`, {encoding: false}).pipe(dest(`${outputRootDir}/images`))
+        src(`${inputRootDir}/images/*.*`).pipe(dest(`${outputRootDir}/images`))
             .on('end', cb); // src.pipeの完了後にcb()を実行
     },
     watch: (cb) => {
@@ -83,7 +83,7 @@ const marp = {
             })
             .catch(console.error);
 
-        src(`${inputRootDir}/images/*.*` , {encoding: false}).pipe(dest(`${outputRootDir}/images`));
+        src(`${inputRootDir}/images/*.*`).pipe(dest(`${outputRootDir}/images`));
 
         cb();
     },
@@ -102,7 +102,7 @@ exports.marpBuildTasks = () => {
     return series(marp.clean, marp.build);
 }
 
-const webpackConfig = require("../../webpack.config");
+const webpackConfig = require("../../../webpack.config");
 const webpack = {
     clean: async (cb) => {
         await fs.remove("./public");
@@ -156,3 +156,25 @@ exports.webpackBuildTasks = () => {
 }
 
 exports.webpack = webpack;
+
+const adr = {
+    build: (cb) => {
+        const adr = require("@k2works/adr");
+        fs.ensureDir("./public/docs/adr").then(() => {
+            src("./docs/adr/images/**").pipe(dest("./public/docs/adr/images"));
+            const builder = new adr.default.HtmlBuilder("./docs/adr/", "./public/docs/adr/");
+            let output = builder.buildContent();
+            builder.output();
+            return output
+        });
+        cb();
+    },
+    clean: async (cb) => {
+        await fs.remove("./public/docs/adr");
+        cb();
+    },
+}
+
+exports.adrBuildTasks = () => {
+    return series(adr.clean, adr.build);
+}

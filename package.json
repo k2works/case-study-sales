@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npx gulp",
     "dev": "npx gulp dev",
-    "test": "echo \"Error: no test specified\" && exit 0",
+    "test": "npm-run-all build:*",
     "build": "npx gulp build",
     "build:slides": "npx gulp slides",
     "build:docs": "npx gulp buildDocs",
@@ -46,6 +46,7 @@
     "webpack-dev-server": "^5.1.0"
   },
   "dependencies": {
+    "@k2works/adr": "^1.7.0",
     "@k2works/full-stack-lab": "^1.8.0",
     "fs-extra": "^11.2.0",
     "gulp-exec": "^5.0.0",

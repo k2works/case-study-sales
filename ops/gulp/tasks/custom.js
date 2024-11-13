@@ -106,7 +106,7 @@ const jig_erd = {
     },
 };
 
-const DOCKER_OUTPUT_PATH = "./docker/schemaspy/output";
+const DOCKER_OUTPUT_PATH = "./ops/docker/schemaspy/output";
 const PUBLIC_ERD_PATH = "./public/erd";
 const BASE_SRC_PATH = "./";
 

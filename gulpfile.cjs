@@ -1,8 +1,14 @@
 const { series, parallel } = require('gulp');
-const core = require('./gulp/tasks/core');
-const custom = require('./gulp/tasks/custom');
+const core = require('./ops/gulp/tasks/core');
+const custom = require('./ops/gulp/tasks/custom');
 
 exports.default = series(
+    core.webpackBuildTasks(),
+    parallel(
+        core.asciidoctorBuildTasks(),
+        core.marpBuildTasks(),
+    ),
+    core.adrBuildTasks(),
     series(
         parallel(core.webpack.server, core.asciidoctor.server),
         parallel(core.webpack.watch, core.asciidoctor.watch, core.marp.watch),
@@ -15,11 +21,13 @@ exports.build = series(
         custom.assetsBuildTasks(),
         core.asciidoctorBuildTasks(),
         core.marpBuildTasks(),
-    )
+    ),
+    core.adrBuildTasks(),
 );
 
 exports.docs = series(
     parallel(custom.assetsBuildTasks(), core.asciidoctorBuildTasks(), core.marpBuildTasks()),
+    core.adrBuildTasks(),
     parallel(core.asciidoctor.server, core.asciidoctor.watch, core.marp.watch),
 );
 
@@ -32,7 +40,11 @@ exports.jig_erd = custom.jigErdBuildTasks();
 exports.erd = custom.erdBuildTasks();
 
 exports.buildDocs = series(
-    parallel(core.asciidoctorBuildTasks(), core.marpBuildTasks()),
+    parallel(
+        core.asciidoctorBuildTasks(),
+        core.marpBuildTasks(),
+    ),
+    core.adrBuildTasks(),
     custom.jigBuildTasks(),
     custom.jigErdBuildTasks(),
     custom.erdBuildTasks(),
@@ -43,8 +55,9 @@ exports.dev = series(
     parallel(
         custom.assetsBuildTasks(),
         core.asciidoctorBuildTasks(),
-        core.marpBuildTasks()
+        core.marpBuildTasks(),
     ),
+    core.adrBuildTasks(),
     custom.jigBuildTasks(),
     custom.jigErdBuildTasks(),
     custom.erdBuildTasks(),
