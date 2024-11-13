@@ -1,0 +1,452 @@
+<html lang="ja">
+<head>
+    <meta charset="UTF-8"/>
+    <link href="./assets/style.css" rel="stylesheet">
+    <link rel="icon" href="./assets/favicon.ico">
+    <title>用語集</title>
+</head>
+<body>
+<header class="top">
+    <a href="./index.html">[INDEX]</a>
+    <b>用語集</b>
+</header>
+<main class="terms">
+    <div>
+        表示切り替え:
+        <button onclick="toggleTableColumn('termTable', 0)">用語（物理名）</button>
+        <button onclick="toggleTableColumn('termTable', 3)">種類</button>
+        <button onclick="toggleTableColumn('termTable', 4)">識別子</button>
+    </div>
+    <div>
+        <label for="filterText">フィルタ: </label><input type="text" id="filterText" placeholder="部分一致" size="50">
+        <button onclick="filterTable('termTable', 'filterText')">実行</button>
+    </div>
+
+    <table id="termTable">
+        <thead>
+        <tr>
+            <th onclick="sortTable('termTable', 0)">用語（物理名）</th>
+            <th onclick="sortTable('termTable', 1)">用語</th>
+            <th>説明</th>
+            <th onclick="sortTable('termTable', 3)">種類</th>
+            <th onclick="sortTable('termTable', 4)">識別子</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td class="term">domain</td>
+            <td class="term">ドメイン層</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">パッケージ</td>
+            <td class="identifier">com.example.sms.domain</td>
+        </tr>
+        <tr>
+            <td class="term">auth</td>
+            <td class="term">認証</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">パッケージ</td>
+            <td class="identifier">com.example.sms.domain.model.system.auth</td>
+        </tr>
+        <tr>
+            <td class="term">user</td>
+            <td class="term">ユーザー</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">パッケージ</td>
+            <td class="identifier">com.example.sms.domain.model.system.user</td>
+        </tr>
+        <tr>
+            <td class="term">infrastructure</td>
+            <td class="term">インフラストラクチャ層</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">パッケージ</td>
+            <td class="identifier">com.example.sms.infrastructure</td>
+        </tr>
+        <tr>
+            <td class="term">datasource</td>
+            <td class="term">データソース</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">パッケージ</td>
+            <td class="identifier">com.example.sms.infrastructure.datasource</td>
+        </tr>
+        <tr>
+            <td class="term">repository</td>
+            <td class="term">レポジトリ</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">パッケージ</td>
+            <td class="identifier">com.example.sms.infrastructure.repository</td>
+        </tr>
+        <tr>
+            <td class="term">presentation</td>
+            <td class="term">プレゼンテーション層</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">パッケージ</td>
+            <td class="identifier">com.example.sms.presentation</td>
+        </tr>
+        <tr>
+            <td class="term">service</td>
+            <td class="term">サービス層</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">パッケージ</td>
+            <td class="identifier">com.example.sms.service</td>
+        </tr>
+        <tr>
+            <td class="term">AuthUserDetails</td>
+            <td class="term">認証ユーザー</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.domain.model.system.auth.AuthUserDetails</td>
+        </tr>
+        <tr>
+            <td class="term">Name</td>
+            <td class="term">名前</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.domain.model.system.user.Name</td>
+        </tr>
+        <tr>
+            <td class="term">Password</td>
+            <td class="term">パスワード</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.domain.model.system.user.Password</td>
+        </tr>
+        <tr>
+            <td class="term">PasswordException</td>
+            <td class="term">パスワード例外</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.domain.model.system.user.PasswordException</td>
+        </tr>
+        <tr>
+            <td class="term">RoleName</td>
+            <td class="term">役割</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.domain.model.system.user.RoleName</td>
+        </tr>
+        <tr>
+            <td class="term">User</td>
+            <td class="term">ユーザー</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.domain.model.system.user.User</td>
+        </tr>
+        <tr>
+            <td class="term">UserException</td>
+            <td class="term">ユーザー例外</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.domain.model.system.user.UserException</td>
+        </tr>
+        <tr>
+            <td class="term">UserId</td>
+            <td class="term">ユーザーID</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.domain.model.system.user.UserId</td>
+        </tr>
+        <tr>
+            <td class="term">UserIdException</td>
+            <td class="term">ユーザーID例外</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.domain.model.system.user.UserIdException</td>
+        </tr>
+        <tr>
+            <td class="term">UserList</td>
+            <td class="term">ユーザー一覧</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.domain.model.system.user.UserList</td>
+        </tr>
+        <tr>
+            <td class="term">AuthApiController</td>
+            <td class="term">認証API</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.presentation.api.system.auth.AuthApiController</td>
+        </tr>
+        <tr>
+            <td class="term">LoginRequest</td>
+            <td class="term">認証リクエスト</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.presentation.api.system.auth.payload.request.LoginRequest</td>
+        </tr>
+        <tr>
+            <td class="term">SignupRequest</td>
+            <td class="term">ユーザー登録リクエスト</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.presentation.api.system.auth.payload.request.SignupRequest</td>
+        </tr>
+        <tr>
+            <td class="term">UserApiController</td>
+            <td class="term">ユーザーAPI</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.presentation.api.system.user.UserApiController</td>
+        </tr>
+        <tr>
+            <td class="term">AuthApiService</td>
+            <td class="term">認証APIサービス</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.service.system.auth.AuthApiService</td>
+        </tr>
+        <tr>
+            <td class="term">AuthRepository</td>
+            <td class="term">認証リポジトリ</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.service.system.auth.AuthRepository</td>
+        </tr>
+        <tr>
+            <td class="term">AuthService</td>
+            <td class="term">認証サービス</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.service.system.auth.AuthService</td>
+        </tr>
+        <tr>
+            <td class="term">UserManagementService</td>
+            <td class="term">ユーザー管理サービス</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.service.system.user.UserManagementService</td>
+        </tr>
+        <tr>
+            <td class="term">UserRepository</td>
+            <td class="term">ユーザーレポジトリ</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.service.system.user.UserRepository</td>
+        </tr>
+        <tr>
+            <td class="term">FirstName</td>
+            <td class="term">姓</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">メソッド</td>
+            <td class="identifier">com.example.sms.domain.model.system.user.Name#FirstName()</td>
+        </tr>
+        <tr>
+            <td class="term">FullName</td>
+            <td class="term">フルネーム</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">メソッド</td>
+            <td class="identifier">com.example.sms.domain.model.system.user.Name#FullName()</td>
+        </tr>
+        <tr>
+            <td class="term">LastName</td>
+            <td class="term">名</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">メソッド</td>
+            <td class="identifier">com.example.sms.domain.model.system.user.Name#LastName()</td>
+        </tr>
+        <tr>
+            <td class="term">Value</td>
+            <td class="term">パスワード</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">メソッド</td>
+            <td class="identifier">com.example.sms.domain.model.system.user.Password#Value()</td>
+        </tr>
+        <tr>
+            <td class="term">Value</td>
+            <td class="term">ユーザーID</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">メソッド</td>
+            <td class="identifier">com.example.sms.domain.model.system.user.UserId#Value()</td>
+        </tr>
+        <tr>
+            <td class="term">getFirstName</td>
+            <td class="term">This method was generated by MyBatis Generator.</td>
+            <td class="markdown javadoc">This method returns the value of the database column system.usr.first_name</td>
+            <td class="kind">メソッド</td>
+            <td class="identifier">com.example.sms.infrastructure.datasource.system.user.Usr#getFirstName()</td>
+        </tr>
+        <tr>
+            <td class="term">getLastName</td>
+            <td class="term">This method was generated by MyBatis Generator.</td>
+            <td class="markdown javadoc">This method returns the value of the database column system.usr.last_name</td>
+            <td class="kind">メソッド</td>
+            <td class="identifier">com.example.sms.infrastructure.datasource.system.user.Usr#getLastName()</td>
+        </tr>
+        <tr>
+            <td class="term">getPassword</td>
+            <td class="term">This method was generated by MyBatis Generator.</td>
+            <td class="markdown javadoc">This method returns the value of the database column system.usr.password</td>
+            <td class="kind">メソッド</td>
+            <td class="identifier">com.example.sms.infrastructure.datasource.system.user.Usr#getPassword()</td>
+        </tr>
+        <tr>
+            <td class="term">getRoleName</td>
+            <td class="term">This method was generated by MyBatis Generator.</td>
+            <td class="markdown javadoc">This method returns the value of the database column system.usr.role_name</td>
+            <td class="kind">メソッド</td>
+            <td class="identifier">com.example.sms.infrastructure.datasource.system.user.Usr#getRoleName()</td>
+        </tr>
+        <tr>
+            <td class="term">getUserId</td>
+            <td class="term">This method was generated by MyBatis Generator.</td>
+            <td class="markdown javadoc">This method returns the value of the database column system.usr.user_id</td>
+            <td class="kind">メソッド</td>
+            <td class="identifier">com.example.sms.infrastructure.datasource.system.user.Usr#getUserId()</td>
+        </tr>
+        <tr>
+            <td class="term">setFirstName</td>
+            <td class="term">This method was generated by MyBatis Generator.</td>
+            <td class="markdown javadoc">This method sets the value of the database column system.usr.first_name</td>
+            <td class="kind">メソッド</td>
+            <td class="identifier">com.example.sms.infrastructure.datasource.system.user.Usr#setFirstName()</td>
+        </tr>
+        <tr>
+            <td class="term">setLastName</td>
+            <td class="term">This method was generated by MyBatis Generator.</td>
+            <td class="markdown javadoc">This method sets the value of the database column system.usr.last_name</td>
+            <td class="kind">メソッド</td>
+            <td class="identifier">com.example.sms.infrastructure.datasource.system.user.Usr#setLastName()</td>
+        </tr>
+        <tr>
+            <td class="term">setPassword</td>
+            <td class="term">This method was generated by MyBatis Generator.</td>
+            <td class="markdown javadoc">This method sets the value of the database column system.usr.password</td>
+            <td class="kind">メソッド</td>
+            <td class="identifier">com.example.sms.infrastructure.datasource.system.user.Usr#setPassword()</td>
+        </tr>
+        <tr>
+            <td class="term">setRoleName</td>
+            <td class="term">This method was generated by MyBatis Generator.</td>
+            <td class="markdown javadoc">This method sets the value of the database column system.usr.role_name</td>
+            <td class="kind">メソッド</td>
+            <td class="identifier">com.example.sms.infrastructure.datasource.system.user.Usr#setRoleName()</td>
+        </tr>
+        <tr>
+            <td class="term">setUserId</td>
+            <td class="term">This method was generated by MyBatis Generator.</td>
+            <td class="markdown javadoc">This method sets the value of the database column system.usr.user_id</td>
+            <td class="kind">メソッド</td>
+            <td class="identifier">com.example.sms.infrastructure.datasource.system.user.Usr#setUserId()</td>
+        </tr>
+        <tr>
+            <td class="term">deleteByPrimaryKey</td>
+            <td class="term">This method was generated by MyBatis Generator.</td>
+            <td class="markdown javadoc">This method corresponds to the database table system.usr</td>
+            <td class="kind">メソッド</td>
+            <td class="identifier">com.example.sms.infrastructure.datasource.system.user.UsrMapper#deleteByPrimaryKey()</td>
+        </tr>
+        <tr>
+            <td class="term">insert</td>
+            <td class="term">This method was generated by MyBatis Generator.</td>
+            <td class="markdown javadoc">This method corresponds to the database table system.usr</td>
+            <td class="kind">メソッド</td>
+            <td class="identifier">com.example.sms.infrastructure.datasource.system.user.UsrMapper#insert()</td>
+        </tr>
+        <tr>
+            <td class="term">insertSelective</td>
+            <td class="term">This method was generated by MyBatis Generator.</td>
+            <td class="markdown javadoc">This method corresponds to the database table system.usr</td>
+            <td class="kind">メソッド</td>
+            <td class="identifier">com.example.sms.infrastructure.datasource.system.user.UsrMapper#insertSelective()</td>
+        </tr>
+        <tr>
+            <td class="term">selectByPrimaryKey</td>
+            <td class="term">This method was generated by MyBatis Generator.</td>
+            <td class="markdown javadoc">This method corresponds to the database table system.usr</td>
+            <td class="kind">メソッド</td>
+            <td class="identifier">com.example.sms.infrastructure.datasource.system.user.UsrMapper#selectByPrimaryKey()</td>
+        </tr>
+        <tr>
+            <td class="term">updateByPrimaryKey</td>
+            <td class="term">This method was generated by MyBatis Generator.</td>
+            <td class="markdown javadoc">This method corresponds to the database table system.usr</td>
+            <td class="kind">メソッド</td>
+            <td class="identifier">com.example.sms.infrastructure.datasource.system.user.UsrMapper#updateByPrimaryKey()</td>
+        </tr>
+        <tr>
+            <td class="term">updateByPrimaryKeySelective</td>
+            <td class="term">This method was generated by MyBatis Generator.</td>
+            <td class="markdown javadoc">This method corresponds to the database table system.usr</td>
+            <td class="kind">メソッド</td>
+            <td class="identifier">com.example.sms.infrastructure.datasource.system.user.UsrMapper#updateByPrimaryKeySelective()</td>
+        </tr>
+        <tr>
+            <td class="term">authenticateUser</td>
+            <td class="term">ユーザーJWT認証</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">メソッド</td>
+            <td class="identifier">com.example.sms.service.system.auth.AuthApiService#authenticateUser()</td>
+        </tr>
+        <tr>
+            <td class="term">getUserNameFromJwtToke</td>
+            <td class="term">JWTトークンからユーザー名の取得</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">メソッド</td>
+            <td class="identifier">com.example.sms.service.system.auth.AuthApiService#getUserNameFromJwtToke()</td>
+        </tr>
+        <tr>
+            <td class="term">validateJwtToke</td>
+            <td class="term">JWTトークンの取得</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">メソッド</td>
+            <td class="identifier">com.example.sms.service.system.auth.AuthApiService#validateJwtToke()</td>
+        </tr>
+        <tr>
+            <td class="term">validateJwtToken</td>
+            <td class="term">JWTトークンの検証</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">メソッド</td>
+            <td class="identifier">com.example.sms.service.system.auth.AuthApiService#validateJwtToken()</td>
+        </tr>
+        <tr>
+            <td class="term">loadUserByUsername</td>
+            <td class="term">ユーザー認証</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">メソッド</td>
+            <td class="identifier">com.example.sms.service.system.auth.AuthService#loadUserByUsername()</td>
+        </tr>
+        <tr>
+            <td class="term">delete</td>
+            <td class="term">ユーザー削除</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">メソッド</td>
+            <td class="identifier">com.example.sms.service.system.user.UserManagementService#delete()</td>
+        </tr>
+        <tr>
+            <td class="term">find</td>
+            <td class="term">ユーザー検索</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">メソッド</td>
+            <td class="identifier">com.example.sms.service.system.user.UserManagementService#find()</td>
+        </tr>
+        <tr>
+            <td class="term">register</td>
+            <td class="term">ユーザー新規登録</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">メソッド</td>
+            <td class="identifier">com.example.sms.service.system.user.UserManagementService#register()</td>
+        </tr>
+        <tr>
+            <td class="term">save</td>
+            <td class="term">ユーザー情報編集</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">メソッド</td>
+            <td class="identifier">com.example.sms.service.system.user.UserManagementService#save()</td>
+        </tr>
+        <tr>
+            <td class="term">selectAll</td>
+            <td class="term">ユーザー一覧</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">メソッド</td>
+            <td class="identifier">com.example.sms.service.system.user.UserManagementService#selectAll()</td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/marked@5.1.0/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.2.3/dist/mermaid.min.js"></script>
+    <script src="./assets/jig.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,261 @@
+<html lang="ja">
+<head>
+    <meta charset="UTF-8"/>
+    <link href="./assets/style.css" rel="stylesheet">
+    <script src="./assets/marked.min.js"></script>
+    <link rel="icon" href="./assets/favicon.ico">
+    <title>ユースケース概要</title>
+</head>
+<body>
+<header class="top">
+    <a href="./index.html">[INDEX]</a>
+    <b>ユースケース概要</b>
+</header>
+<div class="sideNavMain">
+    <nav class="tree">
+        <details open>
+            <summary class="package">
+                <a href="#com.example.sms.service.system">system</a>
+            </summary>
+            <details open>
+            <summary class="package">
+                <a href="#com.example.sms.service.system.user">user</a>
+            </summary>
+            <div><a href="#com.example.sms.service.system.user.UserManagementService">ユーザー管理サービス</a></div>
+        </details><details open>
+            <summary class="package">
+                <a href="#com.example.sms.service.system.auth">auth</a>
+            </summary>
+            <div><a href="#com.example.sms.service.system.auth.AuthService">認証サービス</a></div><div><a href="#com.example.sms.service.system.auth.AuthApiService">認証APIサービス</a></div>
+        </details>
+        </details>
+        
+    </nav>
+
+    <main class="usecase">
+        <details open>
+            <summary>ユースケース複合図（ハンドラ）</summary>
+            <a href="./composite-usecase-handler.svg">
+                <img src="./composite-usecase-handler.svg">
+            </a>
+        </details>
+        <details>
+            <summary>ユースケース複合図</summary>
+            <a href="./composite-usecase.svg">
+                <img src="./composite-usecase.svg">
+            </a>
+        </details>
+
+        <!--
+        <th:block th:each="item : ${jigPackages}">
+            <section th:replace="fragment-package :: item">
+                パッケージ表示
+            </section>
+        </th:block>
+        -->
+
+        
+            <section class="type">
+                <h2><a name="com.example.sms.service.system.auth.AuthApiService">認証APIサービス</a></h2>
+                <div class="fully-qualified-name">com.example.sms.service.system.auth.AuthApiService</div>
+
+                
+                    
+                
+
+                <section class="method">
+                    <h3>ユーザーJWT認証</h3>
+                    <div class="fully-qualified-name">authenticateUser(Authentication, String, String):String</div>
+                    <dl class="depends">
+                        <dt>要求するもの（引数）</dt>
+                        <dd>
+                            <a class="method-argument-item" href="./domain.html#java.lang.String">String</a>
+                        </dd>
+                        <dd>
+                            <a class="method-argument-item" href="./domain.html#java.lang.String">String</a>
+                        </dd>
+                        <dd>
+                            <a class="method-argument-item" href="./domain.html#org.springframework.security.core.Authentication">Authentication</a>
+                        </dd>
+                        <dt>得られるもの（戻り値）</dt>
+                        <dd><span class="weak">String</span></dd>
+                    </dl>
+
+                    <section class="description markdown"></section>
+                </section>
+
+                <section class="method">
+                    <h3>JWTトークンからユーザー名の取得</h3>
+                    <div class="fully-qualified-name">getUserNameFromJwtToke(String):String</div>
+                    <dl class="depends">
+                        <dt>要求するもの（引数）</dt>
+                        <dd>
+                            <a class="method-argument-item" href="./domain.html#java.lang.String">String</a>
+                        </dd>
+                        <dt>得られるもの（戻り値）</dt>
+                        <dd><span class="weak">String</span></dd>
+                    </dl>
+
+                    <section class="description markdown"></section>
+                </section>
+
+                <section class="method">
+                    <h3>JWTトークンの取得</h3>
+                    <div class="fully-qualified-name">validateJwtToke(String):boolean</div>
+                    <dl class="depends">
+                        <dt>要求するもの（引数）</dt>
+                        <dd>
+                            <a class="method-argument-item" href="./domain.html#java.lang.String">String</a>
+                        </dd>
+                        <dt>得られるもの（戻り値）</dt>
+                        <dd><span class="weak">boolean</span></dd>
+                    </dl>
+
+                    <section class="description markdown"></section>
+                </section>
+
+                <section class="method">
+                    <h3>JWTトークンの検証</h3>
+                    <div class="fully-qualified-name">validateJwtToken(String):boolean</div>
+                    <dl class="depends">
+                        <dt>要求するもの（引数）</dt>
+                        <dd>
+                            <a class="method-argument-item" href="./domain.html#java.lang.String">String</a>
+                        </dd>
+                        <dt>得られるもの（戻り値）</dt>
+                        <dd><span class="weak">boolean</span></dd>
+                    </dl>
+
+                    <section class="description markdown"></section>
+                </section>
+            </section>
+        
+            <section class="type">
+                <h2><a name="com.example.sms.service.system.auth.AuthService">認証サービス</a></h2>
+                <div class="fully-qualified-name">com.example.sms.service.system.auth.AuthService</div>
+
+                
+                    
+                
+
+                <section class="method">
+                    <h3>ユーザー認証</h3>
+                    <div class="fully-qualified-name">loadUserByUsername(String):UserDetails</div>
+                    <dl class="depends">
+                        <dt>要求するもの（引数）</dt>
+                        <dd>
+                            <a class="method-argument-item" href="./domain.html#java.lang.String">String</a>
+                        </dd>
+                        <dt>得られるもの（戻り値）</dt>
+                        <dd><a href="./domain.html#org.springframework.security.core.userdetails.UserDetails">UserDetails</a></dd>
+                    </dl>
+
+                    <section class="description markdown"></section>
+                </section>
+            </section>
+        
+            <section class="type">
+                <h2><a name="com.example.sms.service.system.user.UserManagementService">ユーザー管理サービス</a></h2>
+                <div class="fully-qualified-name">com.example.sms.service.system.user.UserManagementService</div>
+
+                
+                    
+                
+
+                <section class="method">
+                    <h3>ユーザー削除</h3>
+                    <div class="fully-qualified-name">delete(UserId):void</div>
+                    <dl class="depends">
+                        <dt>要求するもの（引数）</dt>
+                        <dd>
+                            <a class="method-argument-item" href="./domain.html#com.example.sms.domain.model.system.user.UserId">ユーザーID</a>
+                        </dd>
+                        
+                        
+                    </dl>
+
+                    <section class="description markdown"></section>
+                </section>
+
+                <section class="method">
+                    <h3>ユーザー検索</h3>
+                    <div class="fully-qualified-name">find(UserId):User</div>
+                    <dl class="depends">
+                        <dt>要求するもの（引数）</dt>
+                        <dd>
+                            <a class="method-argument-item" href="./domain.html#com.example.sms.domain.model.system.user.UserId">ユーザーID</a>
+                        </dd>
+                        <dt>得られるもの（戻り値）</dt>
+                        <dd><a href="./domain.html#com.example.sms.domain.model.system.user.User">ユーザー</a></dd>
+                    </dl>
+
+                    <section class="description markdown"></section>
+                </section>
+
+                <section class="method">
+                    <h3>ユーザー新規登録</h3>
+                    <div class="fully-qualified-name">register(User):void</div>
+                    <dl class="depends">
+                        <dt>要求するもの（引数）</dt>
+                        <dd>
+                            <a class="method-argument-item" href="./domain.html#com.example.sms.domain.model.system.user.User">ユーザー</a>
+                        </dd>
+                        
+                        
+                    </dl>
+
+                    <section class="description markdown"></section>
+                </section>
+
+                <section class="method">
+                    <h3>ユーザー情報編集</h3>
+                    <div class="fully-qualified-name">save(User):void</div>
+                    <dl class="depends">
+                        <dt>要求するもの（引数）</dt>
+                        <dd>
+                            <a class="method-argument-item" href="./domain.html#com.example.sms.domain.model.system.user.User">ユーザー</a>
+                        </dd>
+                        
+                        
+                    </dl>
+
+                    <section class="description markdown"></section>
+                </section>
+
+                <section class="method">
+                    <h3>ユーザー一覧</h3>
+                    <div class="fully-qualified-name">selectAll():UserList</div>
+                    <dl class="depends">
+                        
+                        
+                        <dt>得られるもの（戻り値）</dt>
+                        <dd><a href="./domain.html#com.example.sms.domain.model.system.user.UserList">ユーザー一覧</a></dd>
+                    </dl>
+
+                    <section class="description markdown"></section>
+                </section>
+
+                <section class="method">
+                    <h3>selectAllWithPageInfo</h3>
+                    <div class="fully-qualified-name">selectAllWithPageInfo():PageInfo&lt;User&gt;</div>
+                    <dl class="depends">
+                        
+                        
+                        <dt>得られるもの（戻り値）</dt>
+                        <dd><a href="./domain.html#com.github.pagehelper.PageInfo">PageInfo</a>&lt;<a href="./domain.html#com.example.sms.domain.model.system.user.User">ユーザー</a>&gt;</dd>
+                    </dl>
+
+                    <section class="description markdown"></section>
+                </section>
+            </section>
+        
+    </main>
+</div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/marked@5.1.0/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.2.3/dist/mermaid.min.js"></script>
+    <script src="./assets/jig.js"></script>
+
+</body>
+</html>
