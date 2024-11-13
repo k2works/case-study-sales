@@ -4,8 +4,7 @@ describe('ユーザー管理', () => {
     })
 
     const userPage = () => {
-        cy.get('#side-nav-menu > ul > #side-nav-user-nav > a').click();
-
+        cy.get('#side-nav-menu > :nth-child(1) > :nth-child(2) > .nav-sub-list > .nav-sub-item > #side-nav-user-nav').click();
     }
 
     context('ユーザー一覧', () => {

@@ -1,15 +1,8 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {FaBars, FaTimes} from "react-icons/fa";
-import {getRoleFromUser} from "../../components/application/RouteAuthGuard.tsx";
 import {RoleType} from "../../models";
-
-const NAV_CONTAINER_CLASS = "nav-container";
-const SIDE_NAV_CLASS = "side-nav";
-const NAV_ITEM_CLASS = "nav-item";
-const NAV_SUB_ITEM_CLASS = "nav-sub-item";
-const NAV_SUB_LIST_CLASS = "nav-sub-list";
-const ACTIVE_CLASS = "active";
+import {getRoleFromUser} from "../../components/application/RouteAuthGuard.tsx";
 
 interface NavItemProps {
     id: string;
@@ -17,7 +10,6 @@ interface NavItemProps {
     className: string;
     children: React.ReactNode;
 }
-
 const NavItem: React.FC<NavItemProps> = ({id, to, className, children}) => (
     <li className={className} id={id}>
         <Link to={to}>{children}</Link>
@@ -29,35 +21,43 @@ interface SubNavItemProps {
     to: string;
     children: React.ReactNode;
 }
-
 const SubNavItem: React.FC<SubNavItemProps> = ({id, to, children}) => (
-    <li className={NAV_SUB_ITEM_CLASS} id={id}>
-        <Link to={to}>{children}</Link>
+    <li className="nav-sub-item">
+        <Link to={to} id={id}>{children}</Link>
     </li>
 );
 
 const NaveItems: React.FC = () => {
     const role = getRoleFromUser();
-
     return (
         <ul>
             <NavItem id="side-nav-home-nav" to="/"
-                     className={`${NAV_ITEM_CLASS} ${NAV_SUB_ITEM_CLASS} ${ACTIVE_CLASS}`}>ホーム</NavItem>
+                     className="nav-item active">ホーム</NavItem>
             {role === RoleType.ADMIN && (
-                <NavItem id="side-nav-user-nav" to="/User" className={NAV_ITEM_CLASS}>ユーザー</NavItem>
-            )}
-            <NavItem id="side-nav-logout-nav" to="/Logout" className={NAV_ITEM_CLASS}>ログアウト</NavItem>
+                <>
+                    <li className="nav-item">
+                        システム
+                        <ul className="nav-sub-list">
+                            <SubNavItem id="side-nav-user-nav" to="/user">ユーザー</SubNavItem>
+                        </ul>
+                    </li>
+                </>
+            )
+            }
+            <NavItem id="side-nav-logout-nav" to="/logout" className="nav-item">ログアウト</NavItem>
         </ul>
     )
 };
 
-export const SideNavigation: React.FC = () => (
-    <div className={NAV_CONTAINER_CLASS}>
-        <nav className={SIDE_NAV_CLASS} id="side-nav-menu">
-            <NaveItems/>
-        </nav>
-    </div>
-);
+export const SideNavigation: React.FC = () => {
+    return (
+        <div className="nav-container">
+            <nav className="side-nav" id="side-nav-menu">
+                <NaveItems/>
+            </nav>
+        </div>
+    )
+};
 
 export const HeaderNavigation: React.FC = () => {
     const toggleMenu = () => {
