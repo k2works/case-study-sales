@@ -65,10 +65,38 @@ include::./assets/User.feature[]
 
 ## アーキテクチャ
 
+### フロントエンド
+
 [plantuml]
 ----
 @startuml
-title: Apiアーキテクチャ
+title: App
+
+class Component {}
+
+class Model {}
+
+class View {}
+
+class App {}
+
+class Service {}
+
+App -> Component
+Component --> View
+View -> Model
+Component --> Model
+Component -> Service
+
+@enduml
+----
+
+### バックエンド
+
+[plantuml]
+----
+@startuml
+title: Api
 
 package "プレゼンテーション層" as UI {
 	class Controller
