@@ -3,9 +3,9 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {CustomLocation, DataType, RoleType, UserType} from "../../models";
 import {AuthUserContextType, useAuthUserContext} from "../../providers/AuthUser";
 import AuthService from "../../services/auth";
-import {LoginSingleView} from "../../views/application/Login.tsx";
+import {LoginSingleView} from "../../views/system/Login.tsx";
 
-const DEFAULT_USER_ID = "U000001";
+const DEFAULT_USER_ID = "U000003";
 const DEFAULT_PASSWORD = "a234567Z";
 
 export const Login: React.FC = () => {
