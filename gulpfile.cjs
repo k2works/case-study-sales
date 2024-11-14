@@ -11,7 +11,7 @@ exports.default = series(
     ),
     series(
         parallel(core.webpack.server, core.asciidoctor.server),
-        parallel(core.webpack.watch, core.asciidoctor.watch, core.marp.watch),
+        parallel(core.webpack.watch, core.asciidoctor.watch, core.marp.watch, core.adr.watch),
     ),
 );
 
