@@ -173,8 +173,13 @@ const adr = {
         await fs.remove("./public/docs/adr");
         cb();
     },
+    watch: (cb) => {
+        watch("./docs/adr/**/*.md", adr.build);
+        cb();
+    }
 }
 
+exports.adr = adr;
 exports.adrBuildTasks = () => {
     return series(adr.clean, adr.build);
 }
