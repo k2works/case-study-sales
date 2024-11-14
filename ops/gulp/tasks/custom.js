@@ -162,14 +162,44 @@ const assets = {
         mergedStreams.on('error', done);
     },
     move: async (done) => {
-        src(`./docs/assets/*.*`, {encoding: false}).pipe(dest(`./public/assets`))
+        src(`./docs/assets/**/*`, {encoding: false}).pipe(dest(`./public/assets`))
             .on('end', done);
-    }
+    },
+    publish: (cb) => {
+        const content = `
+        <!DOCTYPE html>
+        <html lang="ja">
+        <html>
+            <head>
+                <title>リリース</title>
+            </head>
+            <body>
+                <h1>リリース</h1>
+                <h2>v0.1.0</h2>
+
+                <div>
+                    <p><a href="./v0_1_0/jig/index.html">JIG</a></p>
+                    <img src="./v0_1_0/jig-erd/library-er-summary.svg" alt="Summary">
+                </div>
+
+                <p>Powered by <a href="https://github.com/dddjava/jig">Jig</a> </p>
+           </body>
+        </html>
+    `;
+        fs.writeFileSync('work.html', content);
+        src('work.html')
+            .pipe(gulpRename('index.html'))
+            .pipe(dest('public/assets/release'))
+            .on('end', () => {
+                fs.unlinkSync('work.html'); // Delete work.html after rename & move
+            });
+        cb();
+    },
 };
 
 exports.assets = assets;
 const assetsBuildTasks = () => {
-    return series(assets.copyDocs, assets.copyPublic);
+    return series(assets.copyDocs, assets.copyPublic, assets.move, assets.publish);
 }
 exports.assetsBuildTasks = assetsBuildTasks;
 

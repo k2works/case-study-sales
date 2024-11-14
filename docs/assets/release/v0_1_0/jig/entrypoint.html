@@ -1,0 +1,154 @@
+<html lang="ja">
+<head>
+    <meta charset="UTF-8"/>
+    <link href="./assets/style.css" rel="stylesheet">
+    <link rel="icon" href="./assets/favicon.ico">
+    <title>エントリーポイント概要</title>
+</head>
+<body>
+<header class="top">
+    <a href="./index.html">[INDEX]</a>
+    <b>エントリーポイント概要</b>
+</header>
+<div class="sideNavMain">
+    <nav class="tree">
+        <details open>
+            <summary class="package">
+                <a href="#com.example.sms.presentation.api">api</a>
+            </summary>
+            <div><a href="#com.example.sms.presentation.api.TestController">TestController</a></div><details open>
+            <summary class="package">
+                <a href="#com.example.sms.presentation.api.system">system</a>
+            </summary>
+            <details open>
+            <summary class="package">
+                <a href="#com.example.sms.presentation.api.system.user">user</a>
+            </summary>
+            <div><a href="#com.example.sms.presentation.api.system.user.UserApiController">ユーザーAPI</a></div>
+        </details><details open>
+            <summary class="package">
+                <a href="#com.example.sms.presentation.api.system.auth">auth</a>
+            </summary>
+            <div><a href="#com.example.sms.presentation.api.system.auth.AuthApiController">認証API</a></div>
+        </details>
+        </details>
+        </details>
+        
+    </nav>
+
+    <main class="usecase">
+
+        
+            <section class="type">
+                <h2><a name="com.example.sms.presentation.api.TestController">TestController</a></h2>
+                <div class="fully-qualified-name">com.example.sms.presentation.api.TestController</div>
+                <p>Description: JWT認証テスト</p>
+                <p>Path: /api/test</p>
+
+                
+                    
+                
+
+                <pre class="mermaid">graph LR
+    c_e_s_p_a_TestController_allAccess__{{"JWT認証テスト"}}
+    __c_e_s_p_a_TestController_allAccess__>"GET /all"] -.-> c_e_s_p_a_TestController_allAccess__
+    c_e_s_p_a_TestController_userAccess__{{"JWT認証テスト"}}
+    __c_e_s_p_a_TestController_userAccess__>"GET /user"] -.-> c_e_s_p_a_TestController_userAccess__
+    c_e_s_p_a_TestController_adminAccess__{{"JWT認証テスト"}}
+    __c_e_s_p_a_TestController_adminAccess__>"GET /admin"] -.-> c_e_s_p_a_TestController_adminAccess__</pre>
+
+            </section>
+        
+            <section class="type">
+                <h2><a name="com.example.sms.presentation.api.system.auth.AuthApiController">認証API</a></h2>
+                <div class="fully-qualified-name">com.example.sms.presentation.api.system.auth.AuthApiController</div>
+                <p>Description: JWT認証</p>
+                <p>Path: /api/auth</p>
+
+                
+                    
+                
+
+                <pre class="mermaid">graph LR
+    subgraph AuthApiService
+    c_e_s_s_s_a_AuthApiService_authenticateUser_o_s_s_c_Authentication__j_l_String__j_l_String_(["ユーザーJWT認証"])
+    click c_e_s_s_s_a_AuthApiService_authenticateUser_o_s_s_c_Authentication__j_l_String__j_l_String_ "./usecase.html#c_e_s_s_s_a_AuthApiService_authenticateUser_o_s_s_c_Authentication__j_l_String__j_l_String_"
+    end
+    subgraph UserManagementService
+    c_e_s_s_s_u_UserManagementService_find_c_e_s_d_m_s_u_UserId_(["ユーザー検索"])
+    click c_e_s_s_s_u_UserManagementService_find_c_e_s_d_m_s_u_UserId_ "./usecase.html#c_e_s_s_s_u_UserManagementService_find_c_e_s_d_m_s_u_UserId_"
+    c_e_s_s_s_u_UserManagementService_register_c_e_s_d_m_s_u_User_(["ユーザー新規登録"])
+    click c_e_s_s_s_u_UserManagementService_register_c_e_s_d_m_s_u_User_ "./usecase.html#c_e_s_s_s_u_UserManagementService_register_c_e_s_d_m_s_u_User_"
+    end
+    c_e_s_p_a_s_a_AuthApiController_authenticateUser_c_e_s_p_a_s_a_p_r_LoginRequest_{{"ユーザー認証"}}
+    __c_e_s_p_a_s_a_AuthApiController_authenticateUser_c_e_s_p_a_s_a_p_r_LoginRequest_>"POST /signin"] -.-> c_e_s_p_a_s_a_AuthApiController_authenticateUser_c_e_s_p_a_s_a_p_r_LoginRequest_
+c_e_s_p_a_s_a_AuthApiController_authenticateUser_c_e_s_p_a_s_a_p_r_LoginRequest_ --> c_e_s_s_s_u_UserManagementService_find_c_e_s_d_m_s_u_UserId_
+c_e_s_p_a_s_a_AuthApiController_authenticateUser_c_e_s_p_a_s_a_p_r_LoginRequest_ --> c_e_s_s_s_a_AuthApiService_authenticateUser_o_s_s_c_Authentication__j_l_String__j_l_String_
+    c_e_s_p_a_s_a_AuthApiController_registerUser_c_e_s_p_a_s_a_p_r_SignupRequest_{{"ユーザー登録"}}
+    __c_e_s_p_a_s_a_AuthApiController_registerUser_c_e_s_p_a_s_a_p_r_SignupRequest_>"POST /signup"] -.-> c_e_s_p_a_s_a_AuthApiController_registerUser_c_e_s_p_a_s_a_p_r_SignupRequest_
+c_e_s_p_a_s_a_AuthApiController_registerUser_c_e_s_p_a_s_a_p_r_SignupRequest_ --> c_e_s_s_s_u_UserManagementService_find_c_e_s_d_m_s_u_UserId_
+c_e_s_p_a_s_a_AuthApiController_registerUser_c_e_s_p_a_s_a_p_r_SignupRequest_ --> c_e_s_s_s_u_UserManagementService_register_c_e_s_d_m_s_u_User_</pre>
+
+            </section>
+        
+            <section class="type">
+                <h2><a name="com.example.sms.presentation.api.system.user.UserApiController">ユーザーAPI</a></h2>
+                <div class="fully-qualified-name">com.example.sms.presentation.api.system.user.UserApiController</div>
+                <p>Description: ユーザー</p>
+                <p>Path: /api/users</p>
+
+                
+                    
+                
+
+                <pre class="mermaid">graph LR
+    subgraph UserManagementService
+    c_e_s_s_s_u_UserManagementService_find_c_e_s_d_m_s_u_UserId_(["ユーザー検索"])
+    click c_e_s_s_s_u_UserManagementService_find_c_e_s_d_m_s_u_UserId_ "./usecase.html#c_e_s_s_s_u_UserManagementService_find_c_e_s_d_m_s_u_UserId_"
+    c_e_s_s_s_u_UserManagementService_delete_c_e_s_d_m_s_u_UserId_(["ユーザー削除"])
+    click c_e_s_s_s_u_UserManagementService_delete_c_e_s_d_m_s_u_UserId_ "./usecase.html#c_e_s_s_s_u_UserManagementService_delete_c_e_s_d_m_s_u_UserId_"
+    c_e_s_s_s_u_UserManagementService_selectAllWithPageInfo__(["ユーザー一覧（ページング）"])
+    click c_e_s_s_s_u_UserManagementService_selectAllWithPageInfo__ "./usecase.html#c_e_s_s_s_u_UserManagementService_selectAllWithPageInfo__"
+    c_e_s_s_s_u_UserManagementService_save_c_e_s_d_m_s_u_User_(["ユーザー情報編集"])
+    click c_e_s_s_s_u_UserManagementService_save_c_e_s_d_m_s_u_User_ "./usecase.html#c_e_s_s_s_u_UserManagementService_save_c_e_s_d_m_s_u_User_"
+    c_e_s_s_s_u_UserManagementService_register_c_e_s_d_m_s_u_User_(["ユーザー新規登録"])
+    click c_e_s_s_s_u_UserManagementService_register_c_e_s_d_m_s_u_User_ "./usecase.html#c_e_s_s_s_u_UserManagementService_register_c_e_s_d_m_s_u_User_"
+    end
+    c_e_s_p_Message_getMessage_j_l_String_[Message.getMessage]
+    c_e_s_p_a_s_u_UserApiController_select___int____int___{{"ユーザー一覧を取得する"}}
+    __c_e_s_p_a_s_u_UserApiController_select___int____int___>"GET /"] -.-> c_e_s_p_a_s_u_UserApiController_select___int____int___
+c_e_s_p_a_s_u_UserApiController_select___int____int___ --> c_e_s_s_s_u_UserManagementService_selectAllWithPageInfo__
+    c_e_s_p_a_s_u_UserApiController_find_j_l_String_{{"ユーザーを取得する"}}
+    __c_e_s_p_a_s_u_UserApiController_find_j_l_String_>"GET /{userId}"] -.-> c_e_s_p_a_s_u_UserApiController_find_j_l_String_
+c_e_s_p_a_s_u_UserApiController_find_j_l_String_ --> c_e_s_s_s_u_UserManagementService_find_c_e_s_d_m_s_u_UserId_
+    c_e_s_p_a_s_u_UserApiController_create_c_e_s_p_a_s_u_UserResource_{{"ユーザーを登録する"}}
+    __c_e_s_p_a_s_u_UserApiController_create_c_e_s_p_a_s_u_UserResource_>"POST /"] -.-> c_e_s_p_a_s_u_UserApiController_create_c_e_s_p_a_s_u_UserResource_
+c_e_s_p_a_s_u_UserApiController_create_c_e_s_p_a_s_u_UserResource_ --> c_e_s_s_s_u_UserManagementService_find_c_e_s_d_m_s_u_UserId_
+c_e_s_p_a_s_u_UserApiController_create_c_e_s_p_a_s_u_UserResource_ --> c_e_s_p_Message_getMessage_j_l_String_
+c_e_s_p_a_s_u_UserApiController_create_c_e_s_p_a_s_u_UserResource_ --> c_e_s_s_s_u_UserManagementService_register_c_e_s_d_m_s_u_User_
+c_e_s_p_a_s_u_UserApiController_create_c_e_s_p_a_s_u_UserResource_ --> c_e_s_p_Message_getMessage_j_l_String_
+    c_e_s_p_a_s_u_UserApiController_update_j_l_String__c_e_s_p_a_s_u_UserResource_{{"ユーザーを更新する"}}
+    __c_e_s_p_a_s_u_UserApiController_update_j_l_String__c_e_s_p_a_s_u_UserResource_>"PUT /{userId}"] -.-> c_e_s_p_a_s_u_UserApiController_update_j_l_String__c_e_s_p_a_s_u_UserResource_
+c_e_s_p_a_s_u_UserApiController_update_j_l_String__c_e_s_p_a_s_u_UserResource_ --> c_e_s_s_s_u_UserManagementService_find_c_e_s_d_m_s_u_UserId_
+c_e_s_p_a_s_u_UserApiController_update_j_l_String__c_e_s_p_a_s_u_UserResource_ --> c_e_s_p_Message_getMessage_j_l_String_
+c_e_s_p_a_s_u_UserApiController_update_j_l_String__c_e_s_p_a_s_u_UserResource_ --> c_e_s_s_s_u_UserManagementService_save_c_e_s_d_m_s_u_User_
+c_e_s_p_a_s_u_UserApiController_update_j_l_String__c_e_s_p_a_s_u_UserResource_ --> c_e_s_p_Message_getMessage_j_l_String_
+    c_e_s_p_a_s_u_UserApiController_delete_j_l_String_{{"ユーザーを削除する"}}
+    __c_e_s_p_a_s_u_UserApiController_delete_j_l_String_>"DELETE /{userId}"] -.-> c_e_s_p_a_s_u_UserApiController_delete_j_l_String_
+c_e_s_p_a_s_u_UserApiController_delete_j_l_String_ --> c_e_s_s_s_u_UserManagementService_find_c_e_s_d_m_s_u_UserId_
+c_e_s_p_a_s_u_UserApiController_delete_j_l_String_ --> c_e_s_p_Message_getMessage_j_l_String_
+c_e_s_p_a_s_u_UserApiController_delete_j_l_String_ --> c_e_s_s_s_u_UserManagementService_delete_c_e_s_d_m_s_u_UserId_
+c_e_s_p_a_s_u_UserApiController_delete_j_l_String_ --> c_e_s_p_Message_getMessage_j_l_String_</pre>
+
+            </section>
+        
+    </main>
+</div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/marked@5.1.0/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11.3.0/dist/mermaid.min.js"></script>
+    <script src="./assets/jig.js"></script>
+
+</body>
+</html>

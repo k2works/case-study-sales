@@ -5,13 +5,14 @@ const custom = require('./ops/gulp/tasks/custom');
 exports.default = series(
     core.webpackBuildTasks(),
     parallel(
+        custom.assetsBuildTasks(),
         core.asciidoctorBuildTasks(),
         core.marpBuildTasks(),
+        core.adrBuildTasks(),
     ),
-    core.adrBuildTasks(),
     series(
         parallel(core.webpack.server, core.asciidoctor.server),
-        parallel(core.webpack.watch, core.asciidoctor.watch, core.marp.watch),
+        parallel(core.webpack.watch, core.asciidoctor.watch, core.marp.watch, core.adr.watch),
     ),
 );
 
@@ -21,14 +22,14 @@ exports.build = series(
         custom.assetsBuildTasks(),
         core.asciidoctorBuildTasks(),
         core.marpBuildTasks(),
-    ),
-    core.adrBuildTasks(),
+        core.adrBuildTasks(),
+    )
 );
 
 exports.docs = series(
     parallel(custom.assetsBuildTasks(), core.asciidoctorBuildTasks(), core.marpBuildTasks()),
     core.adrBuildTasks(),
-    parallel(core.asciidoctor.server, core.asciidoctor.watch, core.marp.watch),
+    parallel(core.asciidoctor.server, core.asciidoctor.watch, core.marp.watch, core.adr.watch),
 );
 
 exports.slides = series(core.marp.build);
