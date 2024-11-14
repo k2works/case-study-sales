@@ -1,7 +1,7 @@
 import React from "react";
 import {Navigate, useLocation} from "react-router-dom";
 import {useAuthUserContext} from "../../providers/AuthUser";
-import {RoleType} from "../../types";
+import {RoleType} from "../../models";
 
 type Props = {
     component: React.ReactNode;

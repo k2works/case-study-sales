@@ -1,9 +1,9 @@
 package com.example.sms.presentation.api.system.auth;
 
 import com.example.sms.domain.model.system.auth.AuthUserDetails;
-import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.user.UserId;
+import com.example.sms.domain.type.user.RoleName;
 import com.example.sms.presentation.api.system.auth.payload.request.LoginRequest;
 import com.example.sms.presentation.api.system.auth.payload.request.SignupRequest;
 import com.example.sms.presentation.api.system.auth.payload.response.JwtResponse;

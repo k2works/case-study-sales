@@ -2,8 +2,8 @@ package com.example.sms.service.system.user;
 
 import com.example.sms.domain.model.system.user.Name;
 import com.example.sms.domain.model.system.user.Password;
-import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.domain.model.system.user.User;
+import com.example.sms.domain.type.user.RoleName;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -58,7 +58,7 @@ public class UserRepositoryTest {
         User user = getUser();
         repository.save(user);
         User updateUser = new User(user.getUserId(), new Password("b234567Z"), new Name("firstName2", "lastName2"), RoleName.ADMIN);
-        repository.update(updateUser);
+        repository.save(updateUser);
         Optional<User> actual = repository.findById(user.getUserId().Value());
         assertTrue(actual.isPresent());
         assertEquals(updateUser.getUserId(), actual.get().getUserId());
