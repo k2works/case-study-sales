@@ -31,3 +31,4 @@ public class SpringDocConfiguration {
         return new OpenAPI().servers(servers).info(new Info().title(TITLE).version(VERSION));
     }
 }
+
