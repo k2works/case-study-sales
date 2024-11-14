@@ -2,7 +2,6 @@
 <head>
     <meta charset="UTF-8"/>
     <link href="./assets/style.css" rel="stylesheet">
-    <script src="./assets/marked.min.js"></script>
     <link rel="icon" href="./assets/favicon.ico">
     <title>ユースケース概要</title>
 </head>
@@ -33,22 +32,10 @@
     </nav>
 
     <main class="usecase">
-        <details open>
-            <summary>ユースケース複合図（ハンドラ）</summary>
-            <a href="./composite-usecase-handler.svg">
-                <img src="./composite-usecase-handler.svg">
-            </a>
-        </details>
-        <details>
-            <summary>ユースケース複合図</summary>
-            <a href="./composite-usecase.svg">
-                <img src="./composite-usecase.svg">
-            </a>
-        </details>
 
         <!--
         <th:block th:each="item : ${jigPackages}">
-            <section th:replace="fragment-package :: item">
+            <section th:replace="~{fragment-package :: item}">
                 パッケージ表示
             </section>
         </th:block>
@@ -64,8 +51,17 @@
                 
 
                 <section class="method">
-                    <h3>ユーザーJWT認証</h3>
+                    <h3 id="c_e_s_s_s_a_AuthApiService_authenticateUser_o_s_s_c_Authentication__j_l_String__j_l_String_">ユーザーJWT認証</h3>
                     <div class="fully-qualified-name">authenticateUser(Authentication, String, String):String</div>
+
+                    <pre class="mermaid">graph LR
+c_e_s_s_s_a_AuthApiService_authenticateUser_o_s_s_c_Authentication__j_l_String__j_l_String_(["ユーザーJWT認証"])
+style c_e_s_s_s_a_AuthApiService_authenticateUser_o_s_s_c_Authentication__j_l_String__j_l_String_ font-weight:bold
+c_e_s_s_s_a_AuthApiService_authenticateUser_o_s_s_c_Authentication__j_l_String__j_l_String_ --> com_example_sms_service_system_auth_AuthRepository
+com_example_sms_service_system_auth_AuthRepository[AuthRepository]:::others
+classDef others fill:#AAA,font-size:90%;
+classDef lambda fill:#999,font-size:80%;</pre>
+
                     <dl class="depends">
                         <dt>要求するもの（引数）</dt>
                         <dd>
@@ -85,8 +81,17 @@
                 </section>
 
                 <section class="method">
-                    <h3>JWTトークンからユーザー名の取得</h3>
+                    <h3 id="c_e_s_s_s_a_AuthApiService_getUserNameFromJwtToke_j_l_String_">JWTトークンからユーザー名の取得</h3>
                     <div class="fully-qualified-name">getUserNameFromJwtToke(String):String</div>
+
+                    <pre class="mermaid">graph LR
+c_e_s_s_s_a_AuthApiService_getUserNameFromJwtToke_j_l_String_(["JWTトークンからユーザー名の取得"])
+style c_e_s_s_s_a_AuthApiService_getUserNameFromJwtToke_j_l_String_ font-weight:bold
+c_e_s_s_s_a_AuthApiService_getUserNameFromJwtToke_j_l_String_ --> com_example_sms_service_system_auth_AuthRepository
+com_example_sms_service_system_auth_AuthRepository[AuthRepository]:::others
+classDef others fill:#AAA,font-size:90%;
+classDef lambda fill:#999,font-size:80%;</pre>
+
                     <dl class="depends">
                         <dt>要求するもの（引数）</dt>
                         <dd>
@@ -100,8 +105,17 @@
                 </section>
 
                 <section class="method">
-                    <h3>JWTトークンの取得</h3>
+                    <h3 id="c_e_s_s_s_a_AuthApiService_validateJwtToke_j_l_String_">JWTトークンの取得</h3>
                     <div class="fully-qualified-name">validateJwtToke(String):boolean</div>
+
+                    <pre class="mermaid">graph LR
+c_e_s_s_s_a_AuthApiService_validateJwtToke_j_l_String_(["JWTトークンの取得"])
+style c_e_s_s_s_a_AuthApiService_validateJwtToke_j_l_String_ font-weight:bold
+c_e_s_s_s_a_AuthApiService_validateJwtToke_j_l_String_ --> com_example_sms_service_system_auth_AuthRepository
+com_example_sms_service_system_auth_AuthRepository[AuthRepository]:::others
+classDef others fill:#AAA,font-size:90%;
+classDef lambda fill:#999,font-size:80%;</pre>
+
                     <dl class="depends">
                         <dt>要求するもの（引数）</dt>
                         <dd>
@@ -115,8 +129,17 @@
                 </section>
 
                 <section class="method">
-                    <h3>JWTトークンの検証</h3>
+                    <h3 id="c_e_s_s_s_a_AuthApiService_validateJwtToken_j_l_String_">JWTトークンの検証</h3>
                     <div class="fully-qualified-name">validateJwtToken(String):boolean</div>
+
+                    <pre class="mermaid">graph LR
+c_e_s_s_s_a_AuthApiService_validateJwtToken_j_l_String_(["JWTトークンの検証"])
+style c_e_s_s_s_a_AuthApiService_validateJwtToken_j_l_String_ font-weight:bold
+c_e_s_s_s_a_AuthApiService_validateJwtToken_j_l_String_ --> com_example_sms_service_system_auth_AuthRepository
+com_example_sms_service_system_auth_AuthRepository[AuthRepository]:::others
+classDef others fill:#AAA,font-size:90%;
+classDef lambda fill:#999,font-size:80%;</pre>
+
                     <dl class="depends">
                         <dt>要求するもの（引数）</dt>
                         <dd>
@@ -139,8 +162,17 @@
                 
 
                 <section class="method">
-                    <h3>ユーザー認証</h3>
+                    <h3 id="c_e_s_s_s_a_AuthService_loadUserByUsername_j_l_String_">ユーザー認証</h3>
                     <div class="fully-qualified-name">loadUserByUsername(String):UserDetails</div>
+
+                    <pre class="mermaid">graph LR
+c_e_s_s_s_a_AuthService_loadUserByUsername_j_l_String_(["ユーザー認証"])
+style c_e_s_s_s_a_AuthService_loadUserByUsername_j_l_String_ font-weight:bold
+c_e_s_s_s_a_AuthService_loadUserByUsername_j_l_String_ --> com_example_sms_service_system_auth_AuthRepository
+com_example_sms_service_system_auth_AuthRepository[AuthRepository]:::others
+classDef others fill:#AAA,font-size:90%;
+classDef lambda fill:#999,font-size:80%;</pre>
+
                     <dl class="depends">
                         <dt>要求するもの（引数）</dt>
                         <dd>
@@ -163,8 +195,17 @@
                 
 
                 <section class="method">
-                    <h3>ユーザー削除</h3>
+                    <h3 id="c_e_s_s_s_u_UserManagementService_delete_c_e_s_d_m_s_u_UserId_">ユーザー削除</h3>
                     <div class="fully-qualified-name">delete(UserId):void</div>
+
+                    <pre class="mermaid">graph LR
+c_e_s_s_s_u_UserManagementService_delete_c_e_s_d_m_s_u_UserId_(["ユーザー削除"])
+style c_e_s_s_s_u_UserManagementService_delete_c_e_s_d_m_s_u_UserId_ font-weight:bold
+c_e_s_s_s_u_UserManagementService_delete_c_e_s_d_m_s_u_UserId_ --> com_example_sms_service_system_user_UserRepository
+com_example_sms_service_system_user_UserRepository[UserRepository]:::others
+classDef others fill:#AAA,font-size:90%;
+classDef lambda fill:#999,font-size:80%;</pre>
+
                     <dl class="depends">
                         <dt>要求するもの（引数）</dt>
                         <dd>
@@ -178,8 +219,17 @@
                 </section>
 
                 <section class="method">
-                    <h3>ユーザー検索</h3>
+                    <h3 id="c_e_s_s_s_u_UserManagementService_find_c_e_s_d_m_s_u_UserId_">ユーザー検索</h3>
                     <div class="fully-qualified-name">find(UserId):User</div>
+
+                    <pre class="mermaid">graph LR
+c_e_s_s_s_u_UserManagementService_find_c_e_s_d_m_s_u_UserId_(["ユーザー検索"])
+style c_e_s_s_s_u_UserManagementService_find_c_e_s_d_m_s_u_UserId_ font-weight:bold
+c_e_s_s_s_u_UserManagementService_find_c_e_s_d_m_s_u_UserId_ --> com_example_sms_service_system_user_UserRepository
+com_example_sms_service_system_user_UserRepository[UserRepository]:::others
+classDef others fill:#AAA,font-size:90%;
+classDef lambda fill:#999,font-size:80%;</pre>
+
                     <dl class="depends">
                         <dt>要求するもの（引数）</dt>
                         <dd>
@@ -193,8 +243,17 @@
                 </section>
 
                 <section class="method">
-                    <h3>ユーザー新規登録</h3>
+                    <h3 id="c_e_s_s_s_u_UserManagementService_register_c_e_s_d_m_s_u_User_">ユーザー新規登録</h3>
                     <div class="fully-qualified-name">register(User):void</div>
+
+                    <pre class="mermaid">graph LR
+c_e_s_s_s_u_UserManagementService_register_c_e_s_d_m_s_u_User_(["ユーザー新規登録"])
+style c_e_s_s_s_u_UserManagementService_register_c_e_s_d_m_s_u_User_ font-weight:bold
+c_e_s_s_s_u_UserManagementService_register_c_e_s_d_m_s_u_User_ --> com_example_sms_service_system_user_UserRepository
+com_example_sms_service_system_user_UserRepository[UserRepository]:::others
+classDef others fill:#AAA,font-size:90%;
+classDef lambda fill:#999,font-size:80%;</pre>
+
                     <dl class="depends">
                         <dt>要求するもの（引数）</dt>
                         <dd>
@@ -208,8 +267,17 @@
                 </section>
 
                 <section class="method">
-                    <h3>ユーザー情報編集</h3>
+                    <h3 id="c_e_s_s_s_u_UserManagementService_save_c_e_s_d_m_s_u_User_">ユーザー情報編集</h3>
                     <div class="fully-qualified-name">save(User):void</div>
+
+                    <pre class="mermaid">graph LR
+c_e_s_s_s_u_UserManagementService_save_c_e_s_d_m_s_u_User_(["ユーザー情報編集"])
+style c_e_s_s_s_u_UserManagementService_save_c_e_s_d_m_s_u_User_ font-weight:bold
+c_e_s_s_s_u_UserManagementService_save_c_e_s_d_m_s_u_User_ --> com_example_sms_service_system_user_UserRepository
+com_example_sms_service_system_user_UserRepository[UserRepository]:::others
+classDef others fill:#AAA,font-size:90%;
+classDef lambda fill:#999,font-size:80%;</pre>
+
                     <dl class="depends">
                         <dt>要求するもの（引数）</dt>
                         <dd>
@@ -223,8 +291,17 @@
                 </section>
 
                 <section class="method">
-                    <h3>ユーザー一覧</h3>
+                    <h3 id="c_e_s_s_s_u_UserManagementService_selectAll__">ユーザー一覧</h3>
                     <div class="fully-qualified-name">selectAll():UserList</div>
+
+                    <pre class="mermaid">graph LR
+c_e_s_s_s_u_UserManagementService_selectAll__(["ユーザー一覧"])
+style c_e_s_s_s_u_UserManagementService_selectAll__ font-weight:bold
+c_e_s_s_s_u_UserManagementService_selectAll__ --> com_example_sms_service_system_user_UserRepository
+com_example_sms_service_system_user_UserRepository[UserRepository]:::others
+classDef others fill:#AAA,font-size:90%;
+classDef lambda fill:#999,font-size:80%;</pre>
+
                     <dl class="depends">
                         
                         
@@ -236,8 +313,17 @@
                 </section>
 
                 <section class="method">
-                    <h3>selectAllWithPageInfo</h3>
+                    <h3 id="c_e_s_s_s_u_UserManagementService_selectAllWithPageInfo__">ユーザー一覧（ページング）</h3>
                     <div class="fully-qualified-name">selectAllWithPageInfo():PageInfo&lt;User&gt;</div>
+
+                    <pre class="mermaid">graph LR
+c_e_s_s_s_u_UserManagementService_selectAllWithPageInfo__(["ユーザー一覧（ページング）"])
+style c_e_s_s_s_u_UserManagementService_selectAllWithPageInfo__ font-weight:bold
+c_e_s_s_s_u_UserManagementService_selectAllWithPageInfo__ --> com_example_sms_service_system_user_UserRepository
+com_example_sms_service_system_user_UserRepository[UserRepository]:::others
+classDef others fill:#AAA,font-size:90%;
+classDef lambda fill:#999,font-size:80%;</pre>
+
                     <dl class="depends">
                         
                         
@@ -254,7 +340,7 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/marked@5.1.0/marked.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.2.3/dist/mermaid.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11.3.0/dist/mermaid.min.js"></script>
     <script src="./assets/jig.js"></script>
 
 </body>
