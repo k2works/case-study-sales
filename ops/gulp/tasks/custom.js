@@ -24,7 +24,7 @@ const api = {
 
 const app = {
     dev: () => {
-        const command = 'npm run dev';
+        const command = 'npm install && npm run dev';
         return src(apiGradlewPath, { read: false })
             .pipe(exec(command, { cwd: appCwd }));
     }
