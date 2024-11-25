@@ -6,8 +6,8 @@ const path = require('path');
 
 // プロジェクトルートのディレクトリを取得
 const projectRoot = process.cwd();
-const apiGradlewPath = path.join(projectRoot, 'api', 'gradlew');
-const apiCwd = path.join(projectRoot, 'api');
+const apiGradlewPath = path.join(projectRoot, 'app/backend/api', 'gradlew');
+const apiCwd = path.join(projectRoot, 'app/backend/api');
 
 // Windows環境かどうかをチェック
 const isWindows = process.platform === 'win32';
