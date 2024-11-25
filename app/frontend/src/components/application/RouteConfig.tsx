@@ -1,6 +1,6 @@
 import {Route, Routes} from "react-router-dom";
 import React from "react";
-import {RouteAuthGuard} from "./RouteAuthGuard";
+import {RouteAuthGuard} from "./RouteAuthGuard.tsx";
 import {Login} from "../system/Login.tsx";
 import {Logout} from "../system/Logout.tsx";
 import {User} from "../system/User.tsx";

@@ -1,5 +1,5 @@
-import Config from "./config";
-import Utils from "./utils";
+import Config from "./config.ts";
+import Utils from "./utils.ts";
 import {mapToUserAccountResource, UserAccountType} from "../models";
 
 export interface UserServiceType {

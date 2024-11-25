@@ -1,6 +1,6 @@
 import React from "react";
 import {Navigate, useLocation} from "react-router-dom";
-import {useAuthUserContext} from "../../providers/AuthUser";
+import {useAuthUserContext} from "../../providers/AuthUser.tsx";
 import {RoleType} from "../../models";
 
 type Props = {

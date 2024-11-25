@@ -25,4 +25,4 @@ dist-ssr
 
 .vercel
 
-cypress/screenshots
+frontend/cypress/screenshots

@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npx gulp",
+    "dev": "npx gulp dev",
     "test": "npm-run-all build",
     "build": "npx gulp build",
     "build:slides": "npx gulp slides",
@@ -12,7 +13,7 @@
     "docs": "npx gulp docs",
     "heroku-postbuild": "webpack --config ./webpack.config.js --progress",
     "deploy": "npm-run-all deploy:*",
-    "deploy:api": "git subtree push --prefix api heroku main",
+    "deploy:api": "git subtree push --prefix app/backend/api heroku main",
     "deploy:app": "cd app && vercel",
     "deploy:docs": "vercel",
     "jig": "npm-run-all jig:*",

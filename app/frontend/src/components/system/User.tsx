@@ -1,6 +1,6 @@
-import {useMessage} from "../application/Message";
-import {useModal} from "../application/hooks";
-import {useFetchUsers, useUser} from "./hooks";
+import {useMessage} from "../application/Message.tsx";
+import {useModal} from "../application/hooks.ts";
+import {useFetchUsers, useUser} from "./hooks.ts";
 import {usePageNation} from "../../views/application/PageNation.tsx";
 import {SiteLayout} from "../../views/SiteLayout.tsx";
 import {UserCollectionView} from "../../views/system/UserCollection.tsx";
