@@ -196,11 +196,22 @@ const assets = {
         cb();
     },
 };
-
+const prepareDirectories = async () => {
+    await fs.mkdirs('./ops/docker/allure/allure-reports');
+}
 const allure = {
     build: () => {
          console.log("See osp/docker/allure/allure-reports");
          runExecCommand('docker-compose run --rm allure');
+    },
+    build_gradle: () => {
+        const command = isWindows ? 'gradlew.bat allureReport' : './gradlew allureReport';
+        return src(apiGradlewPath, { read: false })
+            .pipe(exec(command, { cwd: apiCwd }));
+    },
+    copy_build_gradle: () => {
+        return src(path.join(apiCwd, 'build/reports/allure-report/**'))
+            .pipe(dest('./ops/docker/allure/allure-reports'));
     },
     clean: async (cb) => {
         await fs.remove('./ops/docker/allure');
@@ -212,7 +223,8 @@ const allure = {
             .pipe(src('./app/frontend/allure-results/**'))
             .pipe(dest('./ops/docker/allure/allure-results'));
     },
-    publish: () => {
+    publish: async () => {
+        await prepareDirectories();
         return src('./ops/docker/allure/allure-reports/**')
             .pipe(dest('./public/allure'));
     }
@@ -227,7 +239,8 @@ exports.assetsBuildTasks = assetsBuildTasks;
 const erdBuildTasks = () => {
     return series(
         parallel(
-            erd.buildMySQL, erd.buildPostgresql
+            //erd.buildMySQL,
+            erd.buildPostgresql
         ),
         erd.copy
     );
@@ -255,3 +268,7 @@ const allureBuildTasks = () => {
     return series(allure.clean, allure.copy, allure.build);
 }
 exports.allureBuildTasks = allureBuildTasks;
+const allureGradleBuildTasks = () => {
+    return series(allure.build_gradle, allure.copy_build_gradle, allure.publish);
+}
+exports.allureGradleBuildTasks = allureGradleBuildTasks;
