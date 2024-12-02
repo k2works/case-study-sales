@@ -1,7 +1,7 @@
 import React from 'react'
 import './App.css'
-import {Providers} from "./components/application/Providers";
-import {RouteConfig} from "./components/application/RouteConfig";
+import {Providers} from "./components/application/Providers.tsx";
+import {RouteConfig} from "./components/application/RouteConfig.tsx";
 
 export const App = () => {
     return (

@@ -136,5 +136,8 @@ public
 ops/docker/schemaspy/output
 ops/docker/mssql/data
 ops/docker/mssql/log
-
+ops/docker/allure
 tmp
+
+app/frontend/cypress/screenshots
+app/frontend/allure-results

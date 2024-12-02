@@ -1,5 +1,5 @@
 import React from "react";
-import {AuthUserProvider} from "../../providers/AuthUser";
+import {AuthUserProvider} from "../../providers/AuthUser.tsx";
 
 type Props = {
     children: React.ReactNode;

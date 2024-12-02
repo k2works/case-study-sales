@@ -1,4 +1,4 @@
-import Config from "./config";
+import Config from "./config.ts";
 import {APIResponse} from "../models";
 
 const AuthService = () => {
