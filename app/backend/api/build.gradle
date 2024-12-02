@@ -125,3 +125,9 @@ mybatisProperties = ['jdbcUrl'        : 'jdbc:postgresql://localhost:5432/mydb',
 					 'jdbcUsername'   : 'root',
 					 'jdbcPassword'   : 'password',]
 }
+
+allure {
+	adapter {
+		aspectjWeaver.set(false)
+	}
+}
