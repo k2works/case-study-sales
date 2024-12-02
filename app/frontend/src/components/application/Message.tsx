@@ -1,4 +1,4 @@
-import ErrorBoundary from "./ErrorBoundary";
+import ErrorBoundary from "./ErrorBoundary.tsx";
 import React from "react";
 import {showErrorMessage} from "./utils";
 import {ErrorScreen} from "../../views/application/ErrorScreen.tsx";

@@ -18,6 +18,7 @@ import './commands.js'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+import "allure-cypress";
 
 Cypress.Commands.add('login', (username, password) => {
     cy.visit('http://localhost:5173/login');

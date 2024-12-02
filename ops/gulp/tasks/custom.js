@@ -203,6 +203,27 @@ const assets = {
     },
 };
 
+const allure = {
+    build: () => {
+         console.log("See osp/docker/allure/allure-reports");
+         runExecCommand('docker-compose run --rm allure');
+    },
+    clean: async (cb) => {
+        await fs.remove('./ops/docker/allure');
+        cb();
+    },
+    copy: () => {
+        return src('./app/backend/api/build/allure-results/**')
+            .pipe(dest('./ops/docker/allure/allure-results'))
+            .pipe(src('./app/frontend/allure-results/**'))
+            .pipe(dest('./ops/docker/allure/allure-results'));
+    },
+    publish: () => {
+        return src('./ops/docker/allure/allure-reports/**')
+            .pipe(dest('./public/allure'));
+    }
+}
+
 exports.assets = assets;
 const assetsBuildTasks = () => {
     return series(assets.copyDocs, assets.copyPublic, assets.move, assets.publish);
@@ -234,3 +255,9 @@ exports.erd = erd;
 exports.erdBuildTasks = erdBuildTasks
 exports.jigBuildTasks = jigBuildTasks
 exports.jigErdBuildTasks = jigErdBuildTasks
+
+exports.allure = allure;
+const allureBuildTasks = () => {
+    return series(allure.clean, allure.copy, allure.build);
+}
+exports.allureBuildTasks = allureBuildTasks;

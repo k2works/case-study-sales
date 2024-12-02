@@ -62,7 +62,10 @@ exports.dev = series(
     custom.jigBuildTasks(),
     custom.jigErdBuildTasks(),
     custom.erdBuildTasks(),
+    custom.allure.publish,
     parallel(core.webpack.server, core.asciidoctor.server),
     parallel(core.webpack.watch, core.asciidoctor.watch, core.marp.watch),
     parallel(custom.app.dev, custom.api.dev),
 );
+
+exports.allure = custom.allureBuildTasks();

@@ -1,6 +1,6 @@
 import {useNavigate} from "react-router-dom";
 import React from "react";
-import {AuthUserContextType, useAuthUserContext} from "../../providers/AuthUser";
+import {AuthUserContextType, useAuthUserContext} from "../../providers/AuthUser.tsx";
 
 export const Logout: React.FC = () => {
     const authUser: AuthUserContextType = useAuthUserContext();
