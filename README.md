@@ -3,6 +3,13 @@
 [![Node.js CI](https://github.com/k2works/case-study-sales/actions/workflows/node.js.yml/badge.svg)](https://github.com/k2works/case-study-sales/actions/workflows/node.js.yml)
 [![Java CI](https://github.com/k2works/case-study-sales/actions/workflows/gradle.yml/badge.svg)](https://github.com/k2works/case-study-sales/actions/workflows/gradle.yml)
 
+[![Heroku Production](https://github.com/k2works/case-study-sales/actions/workflows/heroku_backend_production.yml/badge.svg)](https://github.com/k2works/case-study-sales/actions/workflows/heroku_backend_production.yml)
+[![Heroku Develop](https://github.com/k2works/case-study-sales/actions/workflows/heroku_backend_develop.yml/badge.svg)](https://github.com/k2works/case-study-sales/actions/workflows/heroku_backend_develop.yml)
+
+
+[![Vercel Production](https://github.com/k2works/case-study-sales/actions/workflows/vercel_frontend_production.yml/badge.svg)](https://github.com/k2works/case-study-sales/actions/workflows/vercel_frontend_production.yml)
+[![Vercel Develop](https://github.com/k2works/case-study-sales/actions/workflows/vercel_frontend_preview.yml/badge.svg)](https://github.com/k2works/case-study-sales/actions/workflows/vercel_frontend_preview.yml)
+
 ## 概要
 
 [ガイドライン](./docs/slides/PITCHME.md)

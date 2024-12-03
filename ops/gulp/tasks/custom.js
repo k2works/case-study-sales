@@ -202,21 +202,23 @@ const assets = {
         cb();
     },
 };
-const prepareDirectories = async () => {
-    await fs.mkdirs('./ops/docker/allure/allure-reports');
+const prepareDirectories = async (path) => {
+    await fs.mkdirs(path);
 }
 const allure = {
     build: () => {
-         console.log("See osp/docker/allure/allure-reports");
-         runExecCommand('docker-compose run --rm allure');
+        console.log("See osp/docker/allure/allure-reports");
+        runExecCommand('docker-compose run --rm allure');
     },
     build_gradle: () => {
         const command = isWindows ? 'gradlew.bat allureReport' : './gradlew allureReport';
         return src(apiGradlewPath, { read: false })
             .pipe(exec(command, { cwd: apiCwd }));
     },
-    copy_build_gradle: () => {
-        return src(path.join(apiCwd, 'build/reports/allure-report/**'))
+    copy_build_gradle: async () => {
+        const sourcePath = path.join(apiCwd, 'build/reports/allure-report');
+        await prepareDirectories(sourcePath);
+        return src(sourcePath + '/**')
             .pipe(dest('./ops/docker/allure/allure-reports'));
     },
     clean: async (cb) => {
@@ -230,7 +232,7 @@ const allure = {
             .pipe(dest('./ops/docker/allure/allure-results'));
     },
     publish: async () => {
-        await prepareDirectories();
+        await prepareDirectories('./ops/docker/allure/allure-reports');
         return src('./ops/docker/allure/allure-reports/**')
             .pipe(dest('./public/allure'));
     }
