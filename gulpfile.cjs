@@ -54,3 +54,5 @@ exports.dev = series(
 );
 
 exports.allure = custom.allureBuildTasks();
+
+exports.allureBuild = custom.allureGradleBuildTasks();
