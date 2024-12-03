@@ -19,12 +19,22 @@ const api = {
         const command = isWindows ? 'gradlew.bat bootRun' : './gradlew bootRun';
         return src(apiGradlewPath, { read: false })
             .pipe(exec(command, { cwd: apiCwd }));
+    },
+    build: () => {
+        const command = isWindows ? 'gradlew.bat build' : './gradlew build';
+        return src(apiGradlewPath, { read: false })
+            .pipe(exec(command, { cwd: apiCwd }));
     }
 }
 
 const app = {
     dev: () => {
         const command = 'npm run dev';
+        return src(apiGradlewPath, { read: false })
+            .pipe(exec(command, { cwd: appCwd }));
+    },
+    build: () => {
+        const command = 'npm install && npm run build';
         return src(apiGradlewPath, { read: false })
             .pipe(exec(command, { cwd: appCwd }));
     }
@@ -258,6 +268,11 @@ const jigErdBuildTasks = () => {
 
 exports.app = app;
 exports.api = api;
+
+const appBuildTasks = () => {
+    return series(app.build, api.build);
+}
+exports.appBuildTasks = appBuildTasks;
 exports.jig = jig;
 exports.jig_erd = jig_erd;
 exports.erd = erd;
@@ -271,6 +286,6 @@ const allureBuildTasks = () => {
 }
 exports.allureBuildTasks = allureBuildTasks;
 const allureGradleBuildTasks = () => {
-    return series(allure.build_gradle, allure.copy_build_gradle, allure.publish);
+    return series(api.build, allure.build_gradle, allure.copy_build_gradle, allure.publish);
 }
 exports.allureGradleBuildTasks = allureGradleBuildTasks;

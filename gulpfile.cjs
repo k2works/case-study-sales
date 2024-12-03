@@ -4,6 +4,7 @@ const custom = require('./ops/gulp/tasks/custom');
 
 const build = series(
     core.webpackBuildTasks(),
+    custom.appBuildTasks(),
     parallel(
         custom.assetsBuildTasks(),
         core.asciidoctorBuildTasks(),
