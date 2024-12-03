@@ -12,6 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.IOException;
 
 public class AuthStepdefs extends SpringAcceptanceTest {
+    private static final String PORT = "8079";
+    private static final String HOST = "http://localhost:" + PORT;
+    private static final String AUTH_API_URL = HOST + "/api/auth";
+    private static final String TEST_API_URL = HOST + "/api/test";
+
     @Autowired
     UserRepository userRepository;
 
@@ -24,7 +29,7 @@ public class AuthStepdefs extends SpringAcceptanceTest {
 
     @もし(": {string} でログインする")
     public void login(String user) {
-        String url = "http://localhost:8080/api/auth/signin";
+        String url = AUTH_API_URL + "/signin";
         if (user.equals("管理者権限")) {
             signin("U888888", "demo", url);
         } else {
@@ -35,9 +40,9 @@ public class AuthStepdefs extends SpringAcceptanceTest {
     @ならば(": {string} として認証される")
     public void authentication(String user) throws IOException {
         if (user.equals("管理者")) {
-            executeGet("http://localhost:8080/api/test/admin");
+            executeGet(TEST_API_URL + "/admin");
         } else {
-            executeGet("http://localhost:8080/api/test/user");
+            executeGet(TEST_API_URL + "/user");
         }
     }
 }
