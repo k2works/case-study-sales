@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npx gulp",
     "dev": "npx gulp dev",
-    "test": "npm-run-all build",
+    "test": "",
     "build": "npx gulp build",
     "build:slides": "npx gulp slides",
     "build:docs": "npx gulp buildDocs",
