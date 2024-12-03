@@ -207,8 +207,8 @@ const prepareDirectories = async (path) => {
 }
 const allure = {
     build: () => {
-         console.log("See osp/docker/allure/allure-reports");
-         runExecCommand('docker-compose run --rm allure');
+        console.log("See osp/docker/allure/allure-reports");
+        runExecCommand('docker-compose run --rm allure');
     },
     build_gradle: () => {
         const command = isWindows ? 'gradlew.bat allureReport' : './gradlew allureReport';
