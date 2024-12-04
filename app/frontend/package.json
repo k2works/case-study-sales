@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "stg": "vite --mode staging",
     "test": "jest",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
@@ -48,6 +49,8 @@
     "ts-jest": "^29.2.5",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.1",
-    "vite": "^5.4.1"
+    "vite": "^5.4.1",
+    "vite-plugin-env-compatible": "^2.0.1",
+    "wait-on": "^8.0.1"
   }
 }
