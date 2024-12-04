@@ -141,3 +141,5 @@ tmp
 
 app/frontend/cypress/screenshots
 app/frontend/allure-results
+
+my.secrets
