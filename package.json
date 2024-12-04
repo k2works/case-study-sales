@@ -5,11 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "npx gulp",
-    "dev": "npx gulp dev",
     "test": "",
     "build": "npx gulp build",
-    "build:slides": "npx gulp slides",
-    "build:docs": "npx gulp buildDocs",
+    "dev": "npx gulp dev",
     "docs": "npx gulp docs",
     "heroku-postbuild": "webpack --config ./webpack.config.js --progress",
     "deploy": "npm-run-all deploy:*",

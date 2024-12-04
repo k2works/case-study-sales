@@ -18,11 +18,18 @@ const build = series(
 );
 exports.build = build;
 
-exports.default = series(
+const start = series(
     series(
         parallel(core.webpack.server, core.asciidoctor.server),
         parallel(core.webpack.watch, core.asciidoctor.watch, core.marp.watch, core.adr.watch),
     ),
+    parallel(custom.app.dev, custom.api.dev),
+);
+exports.default = start;
+
+exports.dev = series(
+    build,
+    start,
 );
 
 exports.docs = series(
@@ -38,24 +45,6 @@ exports.jig = custom.jigBuildTasks();
 exports.jig_erd = custom.jigErdBuildTasks();
 
 exports.erd = custom.erdBuildTasks();
-
-exports.buildDocs = series(
-    parallel(
-        core.asciidoctorBuildTasks(),
-        core.marpBuildTasks(),
-    ),
-    core.adrBuildTasks(),
-    custom.jigBuildTasks(),
-    custom.jigErdBuildTasks(),
-    custom.erdBuildTasks(),
-);
-
-exports.dev = series(
-    build,
-    parallel(core.webpack.server, core.asciidoctor.server),
-    parallel(core.webpack.watch, core.asciidoctor.watch, core.marp.watch),
-    parallel(custom.app.dev, custom.api.dev),
-);
 
 exports.allure = custom.allureBuildTasks();
 
