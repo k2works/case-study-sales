@@ -21,6 +21,7 @@
     "jig:db": "npx gulp jig_erd",
     "erd": "npx gulp erd",
     "allure": "npx gulp allure",
+    "allure:build": "npx gulp allureBuild",
     "db:schemaspy:mysql": "docker compose run --rm schemaspy_mysql",
     "db:schemaspy:postresql": "docker compose run --rm schemaspy_postgresql"
   },
