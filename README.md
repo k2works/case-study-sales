@@ -27,6 +27,7 @@
 
 ```bash
 npm install
+npm run build
 npm start
 ```
 ## 構成
