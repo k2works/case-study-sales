@@ -56,7 +56,7 @@ jobs:
       - name: Build with Gradle in api directory
         run: ./gradlew build -x test
         working-directory: app/backend/api
-      - name: Build with Gradle in api directory
+      - name: Run with Gradle in api directory
         run: ./gradlew bootRun &
         working-directory: app/backend/api
 
