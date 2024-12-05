@@ -12,7 +12,8 @@ plugins {
 	id "org.flywaydb.flyway" version "10.7.2"
 	id 'de.undercouch.download' version '4.0.1'
 	id "com.thinkimi.gradle.MybatisGenerator" version "2.4"
-	id'io.qameta.allure' version '2.12.0'
+	id 'io.qameta.allure' version '2.12.0'
+	id 'jacoco'
 }
 
 group = 'com.example'
@@ -129,5 +130,16 @@ mybatisProperties = ['jdbcUrl'        : 'jdbc:postgresql://localhost:5432/mydb',
 allure {
 	adapter {
 		aspectjWeaver.set(false)
+	}
+}
+
+test {
+	finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+	reports {
+		xml.required = true
+		html.required = true
 	}
 }
