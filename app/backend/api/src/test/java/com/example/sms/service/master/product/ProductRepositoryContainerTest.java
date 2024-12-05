@@ -3,9 +3,10 @@ package com.example.sms.service.master.product;
 import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.type.product.*;
-import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -15,7 +16,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 import org.junit.jupiter.api.Test;
 
-import java.util.Optional;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @Testcontainers
@@ -42,14 +43,35 @@ public class ProductRepositoryContainerTest {
     }
 
     @Test
-    void test() {
-        Assertions.assertThat(postgres.isRunning()).isTrue();
-        Product product = getProduct("99999999");
-        repository.save(product);
+    @DisplayName("楽観ロックが正常に動作すること")
+    void testOptimisticLockingWithThreads() throws InterruptedException {
+        // Productを新規作成して保存
+        Product product1 = getProduct("99999999");
+        repository.save(product1);
 
-        final Optional<Product> p = repository.findById("99999999");
+        // 同じIDのProductをもう一度データベースから取得
+        Product product2 = repository.findById("99999999").orElseThrow();
 
-        Assertions.assertThat(p.get()).isEqualTo(product);
+        // スレッド1でproduct1を更新
+        Thread thread1 = new Thread(() -> {
+            Product updatedProduct1 = getProduct("99999999");
+            repository.save(updatedProduct1);
+        });
+
+        // スレッド2でproduct2を更新し、例外を確認
+        Thread thread2 = new Thread(() -> {
+            Product updatedProduct2 = getProduct("99999999");
+            assertThrows(OptimisticLockingFailureException.class, () -> {
+                repository.save(updatedProduct2);
+            });
+        });
+
+        // スレッドを開始
+        thread1.start();
+        thread2.start();
+
+        // スレッドの終了を待機
+        thread1.join();
+        thread2.join();
     }
 }
-
