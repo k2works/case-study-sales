@@ -4,6 +4,7 @@ import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.ProductList;
 import com.example.sms.domain.type.product.ProductType;
 import com.example.sms.infrastructure.PageInfoHelper;
+import com.example.sms.infrastructure.datasource.ObjectOptimisticLockingFailureException;
 import com.example.sms.service.master.product.ProductRepository;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.core.Authentication;
@@ -90,7 +91,11 @@ public class ProductDataSource implements ProductRepository {
             updateProductEntity.set作成者名(productEntity.get().get作成者名());
             updateProductEntity.set更新日時(LocalDateTime.now());
             updateProductEntity.set更新者名(username);
-            productMapper.updateByPrimaryKey(updateProductEntity);
+            updateProductEntity.setVersion(productEntity.get().getVersion());
+            int updateCount = productMapper.updateByPrimaryKey(updateProductEntity);
+            if (updateCount == 0) {
+                throw new ObjectOptimisticLockingFailureException(商品マスタ.class, product.getProductCode().getValue());
+            }
 
             if (product.getSubstituteProduct() != null) {
                 substituteProductMapper.deleteByProductCode(product.getProductCode().getValue());
