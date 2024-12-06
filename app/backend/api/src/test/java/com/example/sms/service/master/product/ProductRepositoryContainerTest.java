@@ -26,7 +26,7 @@ public class ProductRepositoryContainerTest {
     @Container
     private static final PostgreSQLContainer<?> postgres =
             new PostgreSQLContainer<>(DockerImageName.parse("postgres:15"))
-                    .withUsername("username")
+                    .withUsername("root")
                     .withPassword("password")
                     .withDatabaseName("postgres");
 
