@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.system.audit;
 
+import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -51,7 +52,12 @@ public class ApplicationExecutionHistory {
      */
     String processDetails;
 
-    public static ApplicationExecutionHistory of(Integer id, String processName, String processCode, ApplicationExecutionHistoryType processType, LocalDateTime processStart, LocalDateTime processEnd, int processFlag, String processDetails) {
-        return new ApplicationExecutionHistory(id, processName, processCode, processType, processStart, processEnd, processFlag, processDetails);
+    /**
+     * ユーザー
+     */
+     User user;
+
+    public static ApplicationExecutionHistory of(Integer id, String processName, String processCode, ApplicationExecutionHistoryType processType, LocalDateTime processStart, LocalDateTime processEnd, int processFlag, String processDetails, User user) {
+        return new ApplicationExecutionHistory(id, processName, processCode, processType, processStart, processEnd, processFlag, processDetails, user);
     }
 }

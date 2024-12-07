@@ -17,6 +17,11 @@
     <result column="process_details" jdbcType="VARCHAR" property="processDetails" />
     <result column="version" jdbcType="INTEGER" property="version" />
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <association property="user"
+                 javaType="com.example.sms.infrastructure.datasource.system.user.Usr"
+                 column="user_id"
+                 select="com.example.sms.infrastructure.datasource.system.user.UsrMapper.selectByPrimaryKey"
+                 fetchType="lazy"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
