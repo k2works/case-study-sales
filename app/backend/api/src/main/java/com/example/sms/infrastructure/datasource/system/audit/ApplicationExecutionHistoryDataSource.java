@@ -32,7 +32,11 @@ public class ApplicationExecutionHistoryDataSource implements AuditRepository {
         Optional<ApplicationExecutionHistoryEntity> historyEntity = Optional.ofNullable(applicationExecutionHistoryMapper.selectByPrimaryKey(history.getId()));
         if (historyEntity.isEmpty()) {
             ApplicationExecutionHistoryEntity newHistoryEntity = applicationExecutionHistoryEntityMapper.mapToEntity(history);
-            applicationExecutionHistoryMapper.insert(newHistoryEntity);
+            if (newHistoryEntity.getId() != null) {
+                applicationExecutionHistoryMapper.insert(newHistoryEntity);
+            } else {
+                applicationExecutionHistoryMapper.insertSelective(newHistoryEntity);
+            }
         } else {
             ApplicationExecutionHistoryEntity historyEntityToUpdate = applicationExecutionHistoryEntityMapper.mapToEntity(history);
             int updateCount = applicationExecutionHistoryMapper.updateByPrimaryKey(historyEntityToUpdate);

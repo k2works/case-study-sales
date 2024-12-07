@@ -4,13 +4,16 @@ import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.master.product.*;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
 import com.example.sms.domain.model.system.user.User;
+import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
 import com.example.sms.domain.type.product.*;
 import com.example.sms.domain.type.user.RoleName;
 import com.example.sms.service.master.department.DepartmentRepository;
 import com.example.sms.service.master.employee.EmployeeRepository;
 import com.example.sms.service.master.product.ProductCategoryRepository;
 import com.example.sms.service.master.product.ProductRepository;
+import com.example.sms.service.system.audit.AuditRepository;
 import com.example.sms.service.system.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,6 +33,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
     ProductRepository productRepository;
     @Autowired
     ProductCategoryRepository productCategoryRepository;
+    @Autowired
+    AuditRepository auditRepository;
 
     @Override
     public void setUpForAuthApiService() {
@@ -107,6 +112,17 @@ public class TestDataFactoryImpl implements TestDataFactory {
         productCategoryRepository.deleteAll();
         productCategoryRepository.save(getProductCategory("カテゴリ1", "カテゴリ1", 1, "カテゴリ1", 1));
         productCategoryRepository.save(getProductCategory("カテゴリ2", "カテゴリ2", 2, "カテゴリ2", 2));
+    }
+
+    @Override
+    public void setUpForAuditService() {
+        User execUser = User.of("U777777", user().getPassword().Value(), user().getName().FirstName(), user().getName().LastName(), user().getRoleName());
+        userRepository.save(execUser);
+
+        auditRepository.deleteAll();
+        ApplicationExecutionHistory applicationExecutionHistory = ApplicationExecutionHistory.of(null, "processName", "processCode", ApplicationExecutionHistoryType.同期処理, LocalDateTime.of(2024,1,1,1,0), LocalDateTime.of(2024,1,1,2,0), 1,  "processDetails", execUser);
+        auditRepository.save(applicationExecutionHistory);
+        auditRepository.save(applicationExecutionHistory);
     }
 
     private static User user() {

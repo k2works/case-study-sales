@@ -27,4 +27,5 @@ public interface TestDataFactory {
 
     void setUpForProductService();
 
+    void setUpForAuditService();
 }
