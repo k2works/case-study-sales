@@ -7,9 +7,9 @@ const merge = require('gulp-merge');
 
 // プロジェクトルートのディレクトリを取得
 const projectRoot = process.cwd();
-const apiGradlewPath = path.join(projectRoot, 'api', 'gradlew');
-const apiCwd = path.join(projectRoot, 'api');
-const appCwd = path.join(projectRoot, 'app');
+const apiGradlewPath = path.join(projectRoot, 'app/backend/api', 'gradlew');
+const apiCwd = path.join(projectRoot, 'app/backend/api');
+const appCwd = path.join(projectRoot, 'app/frontend');
 
 // Windows環境かどうかをチェック
 const isWindows = process.platform === 'win32';
@@ -19,12 +19,22 @@ const api = {
         const command = isWindows ? 'gradlew.bat bootRun' : './gradlew bootRun';
         return src(apiGradlewPath, { read: false })
             .pipe(exec(command, { cwd: apiCwd }));
+    },
+    build: () => {
+        const command = isWindows ? 'gradlew.bat build' : './gradlew build';
+        return src(apiGradlewPath, { read: false })
+            .pipe(exec(command, { cwd: apiCwd }));
     }
 }
 
 const app = {
     dev: () => {
-        const command = 'npm run dev';
+        const command = 'npm install && npm run dev';
+        return src(apiGradlewPath, { read: false })
+            .pipe(exec(command, { cwd: appCwd }));
+    },
+    build: () => {
+        const command = 'npm install && npm run build';
         return src(apiGradlewPath, { read: false })
             .pipe(exec(command, { cwd: appCwd }));
     }
@@ -202,6 +212,41 @@ const assets = {
         cb();
     },
 };
+const prepareDirectories = async (path) => {
+    await fs.mkdirs(path);
+}
+const allure = {
+    build: () => {
+        console.log("See osp/docker/allure/allure-reports");
+        runExecCommand('docker-compose run --rm allure');
+    },
+    build_gradle: () => {
+        const command = isWindows ? 'gradlew.bat allureReport' : './gradlew allureReport';
+        return src(apiGradlewPath, { read: false })
+            .pipe(exec(command, { cwd: apiCwd }));
+    },
+    copy_build_gradle: async () => {
+        const sourcePath = path.join(apiCwd, 'build/reports/allure-report');
+        await prepareDirectories(sourcePath);
+        return src(sourcePath + '/**')
+            .pipe(dest('./ops/docker/allure/allure-reports'));
+    },
+    clean: async (cb) => {
+        await fs.remove('./ops/docker/allure');
+        cb();
+    },
+    copy: () => {
+        return src('./app/backend/api/build/allure-results/**')
+            .pipe(dest('./ops/docker/allure/allure-results'))
+            .pipe(src('./app/frontend/allure-results/**'))
+            .pipe(dest('./ops/docker/allure/allure-results'));
+    },
+    publish: async () => {
+        await prepareDirectories('./ops/docker/allure/allure-reports');
+        return src('./ops/docker/allure/allure-reports/**')
+            .pipe(dest('./public/allure'));
+    }
+}
 
 exports.assets = assets;
 const assetsBuildTasks = () => {
@@ -212,7 +257,8 @@ exports.assetsBuildTasks = assetsBuildTasks;
 const erdBuildTasks = () => {
     return series(
         parallel(
-            erd.buildMySQL, erd.buildPostgresql
+            //erd.buildMySQL,
+            erd.buildPostgresql
         ),
         erd.copy
     );
@@ -228,9 +274,24 @@ const jigErdBuildTasks = () => {
 
 exports.app = app;
 exports.api = api;
+
+const appBuildTasks = () => {
+    return series(app.build, api.build);
+}
+exports.appBuildTasks = appBuildTasks;
 exports.jig = jig;
 exports.jig_erd = jig_erd;
 exports.erd = erd;
 exports.erdBuildTasks = erdBuildTasks
 exports.jigBuildTasks = jigBuildTasks
 exports.jigErdBuildTasks = jigErdBuildTasks
+
+exports.allure = allure;
+const allureBuildTasks = () => {
+    return series(allure.clean, allure.copy, allure.build);
+}
+exports.allureBuildTasks = allureBuildTasks;
+const allureGradleBuildTasks = () => {
+    return series(api.build, allure.build_gradle, allure.copy_build_gradle, allure.publish);
+}
+exports.allureGradleBuildTasks = allureGradleBuildTasks;
