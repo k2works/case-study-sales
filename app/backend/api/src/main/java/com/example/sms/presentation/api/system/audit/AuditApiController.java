@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/audit")
+@RequestMapping("/api/audits")
 @Tag(name = "Audit", description = "監査")
 public class AuditApiController {
     final AuditService auditService;
@@ -45,10 +45,10 @@ public class AuditApiController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "アプリケーション実行履歴を取得する", description = "アプリケーション実行履歴を取得する")
-    @GetMapping("/{applicationExecutionHistoryId}")
-    public ResponseEntity<?> find(@PathVariable String applicationExecutionHistoryId) {
+    @GetMapping("/{id}")
+    public ResponseEntity<?> find(@PathVariable String id) {
         try {
-            ApplicationExecutionHistory applicationExecutionHistory = auditService.find(applicationExecutionHistoryId);
+            ApplicationExecutionHistory applicationExecutionHistory = auditService.find(id);
             return ResponseEntity.ok(applicationExecutionHistory);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
@@ -57,10 +57,10 @@ public class AuditApiController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "アプリケーション実行履歴を削除する", description = "アプリケーション実行履歴を削除する")
-    @DeleteMapping("/{applicationExecutionHistoryId}")
-    public ResponseEntity<?> delete(@PathVariable String applicationExecutionHistoryId) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable String id) {
         try {
-            auditService.delete(Integer.valueOf(applicationExecutionHistoryId));
+            auditService.delete(Integer.valueOf(id));
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.audit.history.deleted")));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));

@@ -16,9 +16,12 @@ public enum ApplicationExecutionProcessType {
     EMPLOYEE_CREATE("社員登録", "0007"),
     EMPLOYEE_UPDATE("社員更新", "0008"),
     EMPLOYEE_DELETE("社員削除", "0009"),
-    PRODUCT_CREATE("商品登録", "0010"),
-    PRODUCT_UPDATE("商品更新", "0011"),
-    PRODUCT_DELETE("商品削除", "0012"),
+    PRODUCT_CATEGORY_CREATE("商品分類登録", "0010"),
+    PRODUCT_CATEGORY_UPDATE("商品分類更新", "0011"),
+    PRODUCT_CATEGORY_DELETE("商品分類削除", "0012"),
+    PRODUCT_CREATE("商品登録", "0013"),
+    PRODUCT_UPDATE("商品更新", "0014"),
+    PRODUCT_DELETE("商品削除", "0015"),
     OTHER("その他", "9999");
 
     private final String name;

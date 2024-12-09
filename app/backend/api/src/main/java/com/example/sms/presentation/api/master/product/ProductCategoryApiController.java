@@ -2,10 +2,13 @@ package com.example.sms.presentation.api.master.product;
 
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.ProductCategory;
+import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
+import com.example.sms.domain.type.audit.ApplicationExecutionProcessType;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
 import com.example.sms.service.master.product.ProductService;
+import com.example.sms.service.system.audit.AuditAnnotation;
 import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -62,6 +65,7 @@ public class ProductCategoryApiController {
 
     @Operation(summary = "商品分類を登録する")
     @PostMapping
+    @AuditAnnotation(process = ApplicationExecutionProcessType.PRODUCT_CATEGORY_CREATE, type = ApplicationExecutionHistoryType.SYNC)
     public ResponseEntity<?> create(@RequestBody ProductCategoryResource productCategoryResource) {
         try {
             ProductCategory productCategory = ProductCategory.of(productCategoryResource.getProductCategoryCode(), productCategoryResource.getProductCategoryName(), productCategoryResource.getProductCategoryHierarchy(), productCategoryResource.getProductCategoryPath(), productCategoryResource.getLowestLevelDivision());
@@ -77,6 +81,7 @@ public class ProductCategoryApiController {
 
     @Operation(summary = "商品分類を更新する")
     @PutMapping("/{productCategoryCode}")
+    @AuditAnnotation(process = ApplicationExecutionProcessType.PRODUCT_CATEGORY_UPDATE, type = ApplicationExecutionHistoryType.SYNC)
     public ResponseEntity<?> update(@PathVariable String productCategoryCode, @RequestBody ProductCategoryResource productCategoryResource) {
         try {
             ProductCategory productCategory = ProductCategory.of(productCategoryCode, productCategoryResource.getProductCategoryName(), productCategoryResource.getProductCategoryHierarchy(), productCategoryResource.getProductCategoryPath(), productCategoryResource.getLowestLevelDivision());
@@ -94,6 +99,7 @@ public class ProductCategoryApiController {
 
     @Operation(summary = "商品分類を削除する")
     @DeleteMapping("/{productCategoryCode}")
+    @AuditAnnotation(process = ApplicationExecutionProcessType.PRODUCT_CATEGORY_DELETE, type = ApplicationExecutionHistoryType.SYNC)
     public ResponseEntity<?> delete(@PathVariable String productCategoryCode) {
         try {
             ProductCategory productCategory = productService.findCategory(productCategoryCode);
