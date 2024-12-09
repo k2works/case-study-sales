@@ -7,7 +7,18 @@ import lombok.Getter;
  */
 @Getter
 public enum ApplicationExecutionProcessType {
-    USER_REGIS("ユーザー登録", "0001"),
+    USER_CREATE("ユーザー登録", "0001"),
+    USER_UPDATE("ユーザー更新", "0002"),
+    USER_DELETE("ユーザー削除", "0003"),
+    DEPARTMENT_CREATE("部門登録", "0004"),
+    DEPARTMENT_UPDATE("部門更新", "0005"),
+    DEPARTMENT_DELETE("部門削除", "0006"),
+    EMPLOYEE_CREATE("社員登録", "0007"),
+    EMPLOYEE_UPDATE("社員更新", "0008"),
+    EMPLOYEE_DELETE("社員削除", "0009"),
+    PRODUCT_CREATE("商品登録", "0010"),
+    PRODUCT_UPDATE("商品更新", "0011"),
+    PRODUCT_DELETE("商品削除", "0012"),
     OTHER("その他", "9999");
 
     private final String name;

@@ -4,11 +4,14 @@ import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.department.DepartmentList;
 import com.example.sms.domain.model.master.employee.Employee;
+import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
+import com.example.sms.domain.type.audit.ApplicationExecutionProcessType;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.master.employee.EmployeeResource;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
 import com.example.sms.service.master.department.DepartmentService;
+import com.example.sms.service.system.audit.AuditAnnotation;
 import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -70,6 +73,7 @@ public class DepartmentApiController {
 
     @Operation(summary = "部門を登録する", description = "部門を登録する")
     @PostMapping
+    @AuditAnnotation(process = ApplicationExecutionProcessType.DEPARTMENT_CREATE, type = ApplicationExecutionHistoryType.SYNC)
     public ResponseEntity<?> create(@RequestBody @Validated DepartmentResource resource) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
@@ -95,6 +99,7 @@ public class DepartmentApiController {
 
     @Operation(summary = "部門を更新する", description = "部門を更新する")
     @PutMapping("/{departmentCode}/{departmentStartDate}")
+    @AuditAnnotation(process = ApplicationExecutionProcessType.DEPARTMENT_UPDATE, type = ApplicationExecutionHistoryType.SYNC)
     public ResponseEntity<?> update(@PathVariable String departmentCode, @PathVariable String departmentStartDate, @RequestBody DepartmentResource departmentResource) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
@@ -120,6 +125,7 @@ public class DepartmentApiController {
 
     @Operation(summary = "部門を削除する", description = "部門を削除する")
     @DeleteMapping("/{departmentCode}/{departmentStartDate}")
+    @AuditAnnotation(process = ApplicationExecutionProcessType.DEPARTMENT_DELETE, type = ApplicationExecutionHistoryType.SYNC)
     public ResponseEntity<?> delete(@PathVariable String departmentCode, @PathVariable String departmentStartDate) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;

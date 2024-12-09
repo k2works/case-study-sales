@@ -6,11 +6,14 @@ import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.master.employee.EmployeeCode;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.user.UserId;
+import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
+import com.example.sms.domain.type.audit.ApplicationExecutionProcessType;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
 import com.example.sms.service.master.department.DepartmentService;
 import com.example.sms.service.master.employee.EmployeeService;
+import com.example.sms.service.system.audit.AuditAnnotation;
 import com.example.sms.service.system.user.UserManagementService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
@@ -74,6 +77,7 @@ public class EmployeeApiController {
 
     @Operation(summary = "社員を登録する", description = "社員を登録する")
     @PostMapping
+    @AuditAnnotation(process = ApplicationExecutionProcessType.EMPLOYEE_CREATE, type = ApplicationExecutionHistoryType.SYNC)
     public ResponseEntity<?> create(@RequestBody @Validated EmployeeResource resource) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
@@ -94,6 +98,7 @@ public class EmployeeApiController {
 
     @Operation(summary = "社員を更新する", description = "社員を更新する")
     @PutMapping("/{employeeCode}")
+    @AuditAnnotation(process = ApplicationExecutionProcessType.EMPLOYEE_UPDATE, type = ApplicationExecutionHistoryType.SYNC)
     public ResponseEntity<?> update(@PathVariable String employeeCode, @RequestBody EmployeeResource resource) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
@@ -111,6 +116,7 @@ public class EmployeeApiController {
 
     @Operation(summary = "社員を削除する", description = "社員を削除する")
     @DeleteMapping("/{employeeCode}")
+    @AuditAnnotation(process = ApplicationExecutionProcessType.EMPLOYEE_DELETE, type = ApplicationExecutionHistoryType.SYNC)
     public ResponseEntity<?> delete(@PathVariable String employeeCode) {
         try {
             EmployeeCode code = EmployeeCode.of(employeeCode);

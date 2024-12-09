@@ -1,10 +1,13 @@
 package com.example.sms.presentation.api.master.product;
 
 import com.example.sms.domain.model.master.product.Product;
+import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
+import com.example.sms.domain.type.audit.ApplicationExecutionProcessType;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
 import com.example.sms.service.master.product.ProductService;
+import com.example.sms.service.system.audit.AuditAnnotation;
 import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -71,6 +74,7 @@ public class ProductApiController {
 
     @Operation(summary = "商品を登録する")
     @PostMapping
+    @AuditAnnotation(process = ApplicationExecutionProcessType.PRODUCT_CREATE, type = ApplicationExecutionHistoryType.SYNC)
     public ResponseEntity<?> create(@RequestBody ProductResource productResource) {
         try {
             Product product = createProduct(productResource.getProductCode(), productResource);
@@ -86,6 +90,7 @@ public class ProductApiController {
 
     @Operation(summary = "商品を更新する")
     @PutMapping("/{productCode}")
+    @AuditAnnotation(process = ApplicationExecutionProcessType.PRODUCT_UPDATE, type = ApplicationExecutionHistoryType.SYNC)
     public ResponseEntity<?> update(@PathVariable String productCode, @RequestBody ProductResource productResource) {
         try {
             Product product = createProduct(productCode, productResource);
@@ -101,6 +106,7 @@ public class ProductApiController {
 
     @Operation(summary = "商品を削除する")
     @DeleteMapping("/{productCode}")
+    @AuditAnnotation(process = ApplicationExecutionProcessType.PRODUCT_DELETE, type = ApplicationExecutionHistoryType.SYNC)
     public ResponseEntity<?> delete(@PathVariable String productCode) {
         try {
             Product product = productService.find(productCode);
