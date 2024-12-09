@@ -5,6 +5,7 @@ import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryList
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.user.UserId;
 import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
+import com.example.sms.domain.type.audit.ApplicationExecutionProcessType;
 import com.example.sms.service.system.auth.AuthApiService;
 import com.example.sms.service.system.user.UserRepository;
 import com.github.pagehelper.PageInfo;
@@ -67,11 +68,11 @@ public class AuditService {
     /**
      * アプリケーション実行履歴開始
      */
-    public ApplicationExecutionHistory start(String processName) {
+    public ApplicationExecutionHistory start(ApplicationExecutionProcessType process) {
         String userId = AuthApiService.getCurrentUserId().Value();
         User user = userRepository.findById(userId).orElse(null);
         LocalDateTime processStart = LocalDateTime.now();
-        ApplicationExecutionHistory history = ApplicationExecutionHistory.of(null, processName, "xxxxxx", ApplicationExecutionHistoryType.同期処理, processStart, null, 1, null, user);
+        ApplicationExecutionHistory history = ApplicationExecutionHistory.of(null, process.getName(), process.getCode(), ApplicationExecutionHistoryType.同期処理, processStart, null, 1, null, user);
         return auditRepository.start(history);
     }
 

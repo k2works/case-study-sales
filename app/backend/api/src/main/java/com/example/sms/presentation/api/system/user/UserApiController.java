@@ -3,6 +3,7 @@ package com.example.sms.presentation.api.system.user;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.user.UserId;
+import com.example.sms.domain.type.audit.ApplicationExecutionProcessType;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
@@ -71,7 +72,7 @@ public class UserApiController {
     @Operation(summary = "ユーザーを登録する", description = "ユーザーを登録する")
     @PostMapping
     public ResponseEntity<?> create(@RequestBody @Validated UserResource resource) {
-        ApplicationExecutionHistory history = auditService.start("ユーザー登録");
+        ApplicationExecutionHistory history = auditService.start(ApplicationExecutionProcessType.USER_REGIS);
         try {
             UserId userId = new UserId(resource.getUserId());
             String password = passwordEncoder.encode(resource.getPassword());

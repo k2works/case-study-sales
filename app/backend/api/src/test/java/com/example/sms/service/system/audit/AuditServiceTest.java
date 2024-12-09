@@ -7,6 +7,7 @@ import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryList
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.user.UserId;
 import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
+import com.example.sms.domain.type.audit.ApplicationExecutionProcessType;
 import com.example.sms.domain.type.user.RoleName;
 import com.example.sms.service.system.auth.AuthApiService;
 import com.example.sms.service.system.user.UserManagementService;
@@ -98,7 +99,7 @@ public class AuditServiceTest {
             try (MockedStatic<AuthApiService> authApiServiceMockedStatic = mockStatic(AuthApiService.class)) {
                 authApiServiceMockedStatic.when(AuthApiService::getCurrentUserId).thenReturn(UserId.of("U777777"));
 
-                ApplicationExecutionHistory result = auditService.start("processName");
+                ApplicationExecutionHistory result = auditService.start(ApplicationExecutionProcessType.USER_REGIS);
 
                 assertNotNull(result.getId());
                 assertEquals(1, result.getProcessFlag());
@@ -110,7 +111,7 @@ public class AuditServiceTest {
         void endApplicationExecutionHistory() {
             try (MockedStatic<AuthApiService> authApiServiceMockedStatic = mockStatic(AuthApiService.class)) {
                 authApiServiceMockedStatic.when(AuthApiService::getCurrentUserId).thenReturn(UserId.of("U777777"));
-                ApplicationExecutionHistory history = auditService.start("processName");
+                ApplicationExecutionHistory history = auditService.start(ApplicationExecutionProcessType.USER_REGIS);
 
                 auditService.end(history);
 
@@ -125,7 +126,7 @@ public class AuditServiceTest {
         void errorApplicationExecutionHistory() {
             try (MockedStatic<AuthApiService> authApiServiceMockedStatic = mockStatic(AuthApiService.class)) {
                 authApiServiceMockedStatic.when(AuthApiService::getCurrentUserId).thenReturn(UserId.of("U777777"));
-                ApplicationExecutionHistory history = auditService.start("processName");
+                ApplicationExecutionHistory history = auditService.start(ApplicationExecutionProcessType.USER_REGIS);
 
                 auditService.error(history, "error message");
 
