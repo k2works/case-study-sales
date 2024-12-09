@@ -2,7 +2,7 @@ package com.example.sms.domain.model.system.audit;
 
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
-import com.example.sms.domain.type.audit.ApplicationExecutionProcessType;
+import com.example.sms.domain.type.audit.ApplicationExecutionProcessFlag;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -22,19 +22,14 @@ public class ApplicationExecutionHistory {
     Integer id;
 
     /**
-     * プロセス名
+     * アプリケーション実行プロセス
      */
-    String processName;
-
-    /**
-     * プロセスコード
-     */
-    String processCode;
+    ApplicationExecutionProcess process;
 
     /**
      * アプリケーション実行履歴区分
      */
-    ApplicationExecutionHistoryType processType;
+    ApplicationExecutionHistoryType type;
 
     /**
      * プロセス開始日時
@@ -49,7 +44,7 @@ public class ApplicationExecutionHistory {
     /**
      * プロセスフラグ
      */
-    Integer processFlag;
+    ApplicationExecutionProcessFlag processFlag;
 
     /**
      * プロセス詳細
@@ -61,7 +56,8 @@ public class ApplicationExecutionHistory {
      */
      User user;
 
-    public static ApplicationExecutionHistory of(Integer id, String processName, String processCode, ApplicationExecutionHistoryType processType, LocalDateTime processStart, LocalDateTime processEnd, int processFlag, String processDetails, User user) {
-        return new ApplicationExecutionHistory(id, processName, processCode, processType, processStart, processEnd, processFlag, processDetails, user);
+    public static ApplicationExecutionHistory of(Integer id, String processName, String processCode, ApplicationExecutionHistoryType type, LocalDateTime processStart, LocalDateTime processEnd, ApplicationExecutionProcessFlag processFlag, String processDetails, User user) {
+        ApplicationExecutionProcess process = ApplicationExecutionProcess.of(processName, processCode);
+        return new ApplicationExecutionHistory(id, process, type, processStart, processEnd, processFlag, processDetails, user);
     }
 }

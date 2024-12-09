@@ -3,6 +3,7 @@ package com.example.sms.infrastructure.datasource.system.audit;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
+import com.example.sms.domain.type.audit.ApplicationExecutionProcessFlag;
 import com.example.sms.domain.type.user.RoleName;
 import com.example.sms.infrastructure.datasource.system.user.Usr;
 import org.springframework.stereotype.Component;
@@ -33,7 +34,7 @@ public class ApplicationExecutionHistoryEntityMapper {
                 ApplicationExecutionHistoryType.valueOf(applicationExecutionHistoryEntity.getProcessType()),
                 applicationExecutionHistoryEntity.getProcessStart(),
                 applicationExecutionHistoryEntity.getProcessEnd(),
-                applicationExecutionHistoryEntity.getProcessFlag(),
+                ApplicationExecutionProcessFlag.fromValue(applicationExecutionHistoryEntity.getProcessFlag()),
                 applicationExecutionHistoryEntity.getProcessDetails(),
                 user.apply(applicationExecutionHistoryEntity)
         );
@@ -42,12 +43,12 @@ public class ApplicationExecutionHistoryEntityMapper {
     public ApplicationExecutionHistoryEntity mapToEntity(ApplicationExecutionHistory applicationExecutionHistory) {
         ApplicationExecutionHistoryEntity applicationExecutionHistoryEntity = new ApplicationExecutionHistoryEntity();
         applicationExecutionHistoryEntity.setId(applicationExecutionHistory.getId());
-        applicationExecutionHistoryEntity.setProcessName(applicationExecutionHistory.getProcessName());
-        applicationExecutionHistoryEntity.setProcessCode(applicationExecutionHistory.getProcessCode());
-        applicationExecutionHistoryEntity.setProcessType(applicationExecutionHistory.getProcessType().name());
+        applicationExecutionHistoryEntity.setProcessName(applicationExecutionHistory.getProcess().getProcessType().getName());
+        applicationExecutionHistoryEntity.setProcessCode(applicationExecutionHistory.getProcess().getProcessType().getCode());
+        applicationExecutionHistoryEntity.setProcessType(applicationExecutionHistory.getType().name());
         applicationExecutionHistoryEntity.setProcessStart(applicationExecutionHistory.getProcessStart());
         applicationExecutionHistoryEntity.setProcessEnd(applicationExecutionHistory.getProcessEnd());
-        applicationExecutionHistoryEntity.setProcessFlag(applicationExecutionHistory.getProcessFlag());
+        applicationExecutionHistoryEntity.setProcessFlag(applicationExecutionHistory.getProcessFlag().getValue());
         applicationExecutionHistoryEntity.setProcessDetails(applicationExecutionHistory.getProcessDetails());
         applicationExecutionHistoryEntity.setUserId(applicationExecutionHistory.getUser().getUserId().getValue());
         return applicationExecutionHistoryEntity;

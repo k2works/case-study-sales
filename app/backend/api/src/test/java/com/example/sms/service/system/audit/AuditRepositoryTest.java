@@ -4,6 +4,7 @@ import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryList;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
+import com.example.sms.domain.type.audit.ApplicationExecutionProcessFlag;
 import com.example.sms.domain.type.user.RoleName;
 import com.example.sms.service.system.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,7 +39,7 @@ public class AuditRepositoryTest {
     }
 
     private static ApplicationExecutionHistory getHistory() {
-        return ApplicationExecutionHistory.of(1, "processName", "processCode", ApplicationExecutionHistoryType.同期処理, LocalDateTime.of(2024,1,1,1,0), LocalDateTime.of(2024,1,1,2,0), 1,  "processDetails", getUser());
+        return ApplicationExecutionHistory.of(1, "その他", "9999", ApplicationExecutionHistoryType.SYNC, LocalDateTime.of(2024,1,1,1,0), LocalDateTime.of(2024,1,1,2,0), ApplicationExecutionProcessFlag.NOT_EXECUTED,  "processDetails", getUser());
     }
 
     @Test
@@ -61,9 +62,8 @@ public class AuditRepositoryTest {
 
         ApplicationExecutionHistory actual = repository.findById(history.getId()).get();
         assertEquals(history.getId(), actual.getId());
-        assertEquals(history.getProcessName(), actual.getProcessName());
-        assertEquals(history.getProcessCode(), actual.getProcessCode());
-        assertEquals(history.getProcessType(), actual.getProcessType());
+        assertEquals(history.getProcess(), actual.getProcess());
+        assertEquals(history.getType(), actual.getType());
         assertEquals(history.getProcessStart(), actual.getProcessStart());
         assertEquals(history.getProcessEnd(), actual.getProcessEnd());
         assertEquals(history.getProcessFlag(), actual.getProcessFlag());

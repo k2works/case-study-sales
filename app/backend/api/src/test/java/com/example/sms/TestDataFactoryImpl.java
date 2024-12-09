@@ -7,6 +7,7 @@ import com.example.sms.domain.model.master.product.*;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
+import com.example.sms.domain.type.audit.ApplicationExecutionProcessFlag;
 import com.example.sms.domain.type.product.*;
 import com.example.sms.domain.type.user.RoleName;
 import com.example.sms.service.master.department.DepartmentRepository;
@@ -120,7 +121,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
         userRepository.save(execUser);
 
         auditRepository.deleteAll();
-        ApplicationExecutionHistory applicationExecutionHistory = ApplicationExecutionHistory.of(null, "processName", "processCode", ApplicationExecutionHistoryType.同期処理, LocalDateTime.of(2024,1,1,1,0), LocalDateTime.of(2024,1,1,2,0), 1,  "processDetails", execUser);
+        ApplicationExecutionHistory applicationExecutionHistory = ApplicationExecutionHistory.of(null, "その他", "9999", ApplicationExecutionHistoryType.SYNC, LocalDateTime.of(2024,1,1,1,0), LocalDateTime.of(2024,1,1,2,0), ApplicationExecutionProcessFlag.NOT_EXECUTED,  "processDetails", execUser);
         auditRepository.save(applicationExecutionHistory);
         auditRepository.save(applicationExecutionHistory);
     }

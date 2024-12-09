@@ -7,6 +7,7 @@ import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryList
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.user.UserId;
 import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
+import com.example.sms.domain.type.audit.ApplicationExecutionProcessFlag;
 import com.example.sms.domain.type.audit.ApplicationExecutionProcessType;
 import com.example.sms.domain.type.user.RoleName;
 import com.example.sms.service.system.auth.AuthApiService;
@@ -52,7 +53,7 @@ public class AuditServiceTest {
         @Test
         @DisplayName("アプリケーション実行履歴を登録できる")
         void registerApplicationExecutionHistory() {
-            ApplicationExecutionHistory applicationExecutionHistory = ApplicationExecutionHistory.of(null, "processName", "processCode", ApplicationExecutionHistoryType.同期処理, LocalDateTime.of(2024,1,1,1,0), LocalDateTime.of(2024,1,1,2,0), 1,  "processDetails", null);
+            ApplicationExecutionHistory applicationExecutionHistory = ApplicationExecutionHistory.of(null, "その他", "9999", ApplicationExecutionHistoryType.SYNC, LocalDateTime.of(2024,1,1,1,0), LocalDateTime.of(2024,1,1,2,0), ApplicationExecutionProcessFlag.NOT_EXECUTED,  "processDetails", null);
             UserId userId = UserId.of("U777777");
             auditService.register(applicationExecutionHistory, userId);
 
@@ -68,7 +69,7 @@ public class AuditServiceTest {
             UserId userId = UserId.of("U777777");
             User user = User.of(userId.getValue(), "$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK", "first", "last", RoleName.USER);
             userManagementService.register(user);
-            ApplicationExecutionHistory applicationExecutionHistory = ApplicationExecutionHistory.of(1, "processName", "processCode", ApplicationExecutionHistoryType.同期処理, LocalDateTime.of(2024,1,1,1,0), LocalDateTime.of(2024,1,1,2,0), 1,  "processDetails", user);
+            ApplicationExecutionHistory applicationExecutionHistory = ApplicationExecutionHistory.of(1, "その他", "9999", ApplicationExecutionHistoryType.SYNC, LocalDateTime.of(2024,1,1,1,0), LocalDateTime.of(2024,1,1,2,0), ApplicationExecutionProcessFlag.NOT_EXECUTED,  "processDetails", user);
             auditService.register(applicationExecutionHistory, userId);
 
             ApplicationExecutionHistory result = auditService.find(String.valueOf(1));
@@ -99,10 +100,10 @@ public class AuditServiceTest {
             try (MockedStatic<AuthApiService> authApiServiceMockedStatic = mockStatic(AuthApiService.class)) {
                 authApiServiceMockedStatic.when(AuthApiService::getCurrentUserId).thenReturn(UserId.of("U777777"));
 
-                ApplicationExecutionHistory result = auditService.start(ApplicationExecutionProcessType.USER_REGIS);
+                ApplicationExecutionHistory result = auditService.start(ApplicationExecutionProcessType.OTHER);
 
                 assertNotNull(result.getId());
-                assertEquals(1, result.getProcessFlag());
+                assertEquals(ApplicationExecutionProcessFlag.START, result.getProcessFlag());
             }
         }
 
@@ -111,13 +112,13 @@ public class AuditServiceTest {
         void endApplicationExecutionHistory() {
             try (MockedStatic<AuthApiService> authApiServiceMockedStatic = mockStatic(AuthApiService.class)) {
                 authApiServiceMockedStatic.when(AuthApiService::getCurrentUserId).thenReturn(UserId.of("U777777"));
-                ApplicationExecutionHistory history = auditService.start(ApplicationExecutionProcessType.USER_REGIS);
+                ApplicationExecutionHistory history = auditService.start(ApplicationExecutionProcessType.OTHER);
 
                 auditService.end(history);
 
                 ApplicationExecutionHistory result = auditService.find(String.valueOf(history.getId()));
                 assertNotNull(result.getProcessEnd());
-                assertEquals(2, result.getProcessFlag());
+                assertEquals(ApplicationExecutionProcessFlag.END, result.getProcessFlag());
             }
         }
 
@@ -126,13 +127,13 @@ public class AuditServiceTest {
         void errorApplicationExecutionHistory() {
             try (MockedStatic<AuthApiService> authApiServiceMockedStatic = mockStatic(AuthApiService.class)) {
                 authApiServiceMockedStatic.when(AuthApiService::getCurrentUserId).thenReturn(UserId.of("U777777"));
-                ApplicationExecutionHistory history = auditService.start(ApplicationExecutionProcessType.USER_REGIS);
+                ApplicationExecutionHistory history = auditService.start(ApplicationExecutionProcessType.OTHER);
 
                 auditService.error(history, "error message");
 
                 ApplicationExecutionHistory result = auditService.find(String.valueOf(history.getId()));
                 assertNotNull(result.getProcessEnd());
-                assertEquals(3, result.getProcessFlag());
+                assertEquals(ApplicationExecutionProcessFlag.ERROR, result.getProcessFlag());
                 assertEquals("error message", result.getProcessDetails());
             }
         }

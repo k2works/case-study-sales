@@ -1,6 +1,5 @@
 package com.example.sms.infrastructure.datasource.system.audit;
 
-import com.example.sms.domain.model.system.user.User;
 import com.example.sms.infrastructure.datasource.system.user.Usr;
 
 import java.time.LocalDateTime;
@@ -254,7 +253,6 @@ public class ApplicationExecutionHistoryEntity {
      * This method returns the value of the database column system.application_execution_history.process_flag
      *
      * @return the value of system.application_execution_history.process_flag
-     *
      * @mbg.generated Sat Dec 07 15:41:15 JST 2024
      */
     public Integer getProcessFlag() {
