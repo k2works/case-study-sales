@@ -8,6 +8,9 @@ import lombok.Value;
 
 import java.time.LocalDateTime;
 
+/**
+ * アプリケーション実行履歴
+ */
 @Value
 @RequiredArgsConstructor
 @NoArgsConstructor(force = true)
@@ -28,7 +31,7 @@ public class ApplicationExecutionHistory {
     String processCode;
 
     /**
-     * プロセス種別
+     * アプリケーション実行履歴区分
      */
     ApplicationExecutionHistoryType processType;
 

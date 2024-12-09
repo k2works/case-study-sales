@@ -4,8 +4,10 @@ import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactory;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryList;
+import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.user.UserId;
 import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
+import com.example.sms.domain.type.user.RoleName;
 import com.example.sms.service.system.user.UserManagementService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -38,8 +40,8 @@ public class AuditServiceTest {
     @DisplayName("アプリケーション実行履歴")
     class ApplicationExecutionHistoryTests {
         @Test
-        @DisplayName("アプリケーション実行履歴を取得できる")
-        void getApplicationExecutionHistory() {
+        @DisplayName("アプリケーション実行履歴一覧を取得できる")
+        void getApplicationExecutionHistoryList() {
             ApplicationExecutionHistoryList result = auditService.selectAll();
             assertEquals(2, result.asList().size());
         }
@@ -50,9 +52,25 @@ public class AuditServiceTest {
             ApplicationExecutionHistory applicationExecutionHistory = ApplicationExecutionHistory.of(null, "processName", "processCode", ApplicationExecutionHistoryType.同期処理, LocalDateTime.of(2024,1,1,1,0), LocalDateTime.of(2024,1,1,2,0), 1,  "processDetails", null);
             UserId userId = UserId.of("U777777");
             auditService.register(applicationExecutionHistory, userId);
+
             ApplicationExecutionHistoryList result = auditService.selectAll();
+
             assertEquals(3, result.asList().size());
             assertEquals(userId, result.asList().get(2).getUser().getUserId());
+        }
+
+        @Test
+        @DisplayName("アプリケーション実行履歴を取得できる")
+        void getApplicationExecutionHistory() {
+            UserId userId = UserId.of("U777777");
+            User user = User.of(userId.getValue(), "$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK", "first", "last", RoleName.USER);
+            userManagementService.register(user);
+            ApplicationExecutionHistory applicationExecutionHistory = ApplicationExecutionHistory.of(1, "processName", "processCode", ApplicationExecutionHistoryType.同期処理, LocalDateTime.of(2024,1,1,1,0), LocalDateTime.of(2024,1,1,2,0), 1,  "processDetails", user);
+            auditService.register(applicationExecutionHistory, userId);
+
+            ApplicationExecutionHistory result = auditService.find(String.valueOf(1));
+
+            assertEquals(applicationExecutionHistory, result);
         }
 
         @Test

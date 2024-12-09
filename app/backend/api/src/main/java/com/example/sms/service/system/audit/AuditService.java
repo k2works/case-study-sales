@@ -52,4 +52,11 @@ public class AuditService {
     public void delete(Integer id) {
         auditRepository.deleteById(id);
     }
+
+    /**
+     * アプリケーション実行履歴取得
+     */
+    public ApplicationExecutionHistory find(String applicationExecutionHistoryId) {
+        return auditRepository.findById(Integer.valueOf(applicationExecutionHistoryId)).orElse(null);
+    }
 }
