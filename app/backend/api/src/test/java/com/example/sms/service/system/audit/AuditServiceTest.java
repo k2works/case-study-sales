@@ -8,17 +8,19 @@ import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.user.UserId;
 import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
 import com.example.sms.domain.type.user.RoleName;
+import com.example.sms.service.system.auth.AuthApiService;
 import com.example.sms.service.system.user.UserManagementService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mockStatic;
 
 @IntegrationTest
 @DisplayName("監査サービス")
@@ -88,6 +90,50 @@ public class AuditServiceTest {
             ApplicationExecutionHistoryList result = auditService.selectAll();
             boolean isUserDeleted = result.asList().stream().anyMatch(a -> a.getUser() == null);
             assertTrue(isUserDeleted);
+        }
+
+        @Test
+        @DisplayName("アプリケーション実行履歴の記録を開始できる")
+        void startApplicationExecutionHistory() {
+            try (MockedStatic<AuthApiService> authApiServiceMockedStatic = mockStatic(AuthApiService.class)) {
+                authApiServiceMockedStatic.when(AuthApiService::getCurrentUserId).thenReturn(UserId.of("U777777"));
+
+                ApplicationExecutionHistory result = auditService.start("processName");
+
+                assertNotNull(result.getId());
+                assertEquals(1, result.getProcessFlag());
+            }
+        }
+
+        @Test
+        @DisplayName("アプリケーション実行履歴の記録を終了できる")
+        void endApplicationExecutionHistory() {
+            try (MockedStatic<AuthApiService> authApiServiceMockedStatic = mockStatic(AuthApiService.class)) {
+                authApiServiceMockedStatic.when(AuthApiService::getCurrentUserId).thenReturn(UserId.of("U777777"));
+                ApplicationExecutionHistory history = auditService.start("processName");
+
+                auditService.end(history);
+
+                ApplicationExecutionHistory result = auditService.find(String.valueOf(history.getId()));
+                assertNotNull(result.getProcessEnd());
+                assertEquals(2, result.getProcessFlag());
+            }
+        }
+
+        @Test
+        @DisplayName("アプリケーション実行履歴の記録をエラーで終了できる")
+        void errorApplicationExecutionHistory() {
+            try (MockedStatic<AuthApiService> authApiServiceMockedStatic = mockStatic(AuthApiService.class)) {
+                authApiServiceMockedStatic.when(AuthApiService::getCurrentUserId).thenReturn(UserId.of("U777777"));
+                ApplicationExecutionHistory history = auditService.start("processName");
+
+                auditService.error(history, "error message");
+
+                ApplicationExecutionHistory result = auditService.find(String.valueOf(history.getId()));
+                assertNotNull(result.getProcessEnd());
+                assertEquals(3, result.getProcessFlag());
+                assertEquals("error message", result.getProcessDetails());
+            }
         }
     }
 }

@@ -4,10 +4,14 @@ import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryList;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.user.UserId;
+import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
+import com.example.sms.service.system.auth.AuthApiService;
 import com.example.sms.service.system.user.UserRepository;
 import com.github.pagehelper.PageInfo;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 /**
  * 監査サービス
@@ -58,5 +62,36 @@ public class AuditService {
      */
     public ApplicationExecutionHistory find(String applicationExecutionHistoryId) {
         return auditRepository.findById(Integer.valueOf(applicationExecutionHistoryId)).orElse(null);
+    }
+
+    /**
+     * アプリケーション実行履歴開始
+     */
+    public ApplicationExecutionHistory start(String processName) {
+        String userId = AuthApiService.getCurrentUserId().Value();
+        User user = userRepository.findById(userId).orElse(null);
+        LocalDateTime processStart = LocalDateTime.now();
+        ApplicationExecutionHistory history = ApplicationExecutionHistory.of(null, processName, "xxxxxx", ApplicationExecutionHistoryType.同期処理, processStart, null, 1, null, user);
+        return auditRepository.start(history);
+    }
+
+    /**
+     * アプリケーション実行履歴終了
+     */
+    public void end(ApplicationExecutionHistory history) {
+        LocalDateTime processEnd = LocalDateTime.now();
+        ApplicationExecutionHistory startHistory = find(String.valueOf(history.getId()));
+        ApplicationExecutionHistory endHistory = ApplicationExecutionHistory.of(history.getId(), startHistory.getProcessName(), startHistory.getProcessCode(), startHistory.getProcessType(), startHistory.getProcessStart(), processEnd, 2, startHistory.getProcessDetails(), startHistory.getUser());
+        auditRepository.save(endHistory);
+    }
+
+    /**
+     * アプリケーション実行履歴エラー
+     */
+    public void error(ApplicationExecutionHistory history, String message) {
+        LocalDateTime processEnd = LocalDateTime.now();
+        ApplicationExecutionHistory startHistory = find(String.valueOf(history.getId()));
+        ApplicationExecutionHistory endHistory = ApplicationExecutionHistory.of(history.getId(), startHistory.getProcessName(), startHistory.getProcessCode(), startHistory.getProcessType(), startHistory.getProcessStart(), processEnd, 3, message, startHistory.getUser());
+        auditRepository.save(endHistory);
     }
 }

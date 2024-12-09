@@ -1,14 +1,17 @@
 package com.example.sms.presentation.api.system.user;
 
+import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.user.UserId;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
+import com.example.sms.service.system.audit.AuditService;
 import com.example.sms.service.system.user.UserManagementService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * ユーザーAPI
  */
+@Slf4j
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/users")
@@ -28,11 +32,15 @@ public class UserApiController {
 
     final UserManagementService userManagementService;
 
+    final AuditService auditService;
+
     final Message message;
 
-    public UserApiController(PasswordEncoder passwordEncoder, UserManagementService userManagementService, Message message) {
+
+    public UserApiController(PasswordEncoder passwordEncoder, UserManagementService userManagementService, AuditService auditService, Message message) {
         this.passwordEncoder = passwordEncoder;
         this.userManagementService = userManagementService;
+        this.auditService = auditService;
         this.message = message;
     }
     @Operation(summary = "ユーザー一覧を取得する", description = "ユーザー一覧を取得する")
@@ -63,6 +71,7 @@ public class UserApiController {
     @Operation(summary = "ユーザーを登録する", description = "ユーザーを登録する")
     @PostMapping
     public ResponseEntity<?> create(@RequestBody @Validated UserResource resource) {
+        ApplicationExecutionHistory history = auditService.start("ユーザー登録");
         try {
             UserId userId = new UserId(resource.getUserId());
             String password = passwordEncoder.encode(resource.getPassword());
@@ -72,8 +81,10 @@ public class UserApiController {
             }
             User user = User.of(userId.Value(), password, resource.getFirstName(), resource.getLastName(), resource.getRoleName());
             userManagementService.register(user);
+            auditService.end(history);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.user.registered")));
         } catch (Exception e) {
+            auditService.error(history, e.getMessage());
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }

@@ -71,4 +71,11 @@ public class ApplicationExecutionHistoryDataSource implements AuditRepository {
         PageInfo<ApplicationExecutionHistoryEntity> pageInfo = new PageInfo<>(applicationExecutionHistories);
         return PageInfoHelper.of(pageInfo, applicationExecutionHistoryEntityMapper::mapToDomainModel);
     }
+
+    @Override
+    public ApplicationExecutionHistory start(ApplicationExecutionHistory history) {
+        ApplicationExecutionHistoryEntity newHistoryEntity = applicationExecutionHistoryEntityMapper.mapToEntity(history);
+        applicationExecutionHistoryMapper.insertForStart(newHistoryEntity);
+        return applicationExecutionHistoryEntityMapper.mapToDomainModel(newHistoryEntity);
+    }
 }

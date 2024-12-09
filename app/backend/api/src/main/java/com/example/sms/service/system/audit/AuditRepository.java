@@ -23,4 +23,6 @@ public interface AuditRepository {
     void deleteById(Integer id);
 
     PageInfo<ApplicationExecutionHistory> selectAllWithPageInfo();
+
+    ApplicationExecutionHistory start(ApplicationExecutionHistory history);
 }
