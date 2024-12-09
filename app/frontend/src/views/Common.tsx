@@ -41,6 +41,7 @@ interface FormSelectProps<T> {
     value: T;
     options: { [key: string]: T };
     onChange: (value: T) => void;
+    disabled?: boolean;
 }
 
 export const FormSelect = <T extends string>({id, label, className, value, options, onChange}: FormSelectProps<T>) => (

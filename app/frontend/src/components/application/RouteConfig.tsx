@@ -13,6 +13,7 @@ import {Product} from "../master/Product.tsx";
 import {SiteLayout} from "../../views/SiteLayout.tsx";
 import {ProductCategory} from "../master/ProductCategory.tsx";
 import {ProductDetail} from "../master/ProductDetail.tsx";
+import {Audit} from "../system/Audit.tsx";
 
 export const RouteConfig: React.FC = () => {
     const ProductCategoryPage = () => {
@@ -37,6 +38,8 @@ export const RouteConfig: React.FC = () => {
                 <Route path="/" element={<RouteAuthGuard component={<Home/>} redirectPath="/login"/>}/>
                 <Route path="/user" element={<RouteAuthGuard component={<User/>} redirectPath="/"
                                                              allowedRoles={[RoleType.ADMIN]}/>}/>
+                <Route path="/audit" element={<RouteAuthGuard component={<Audit/>} redirectPath="/"
+                                                                            allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/department" element={<RouteAuthGuard component={<Department/>} redirectPath="/"
                                                                    allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/employee" element={<RouteAuthGuard component={<Employee/>} redirectPath="/"

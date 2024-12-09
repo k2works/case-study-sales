@@ -39,6 +39,7 @@ const NaveItems: React.FC = () => {
                         システム
                         <ul className="nav-sub-list">
                             <SubNavItem id="side-nav-user-nav" to="/user">ユーザー</SubNavItem>
+                            <SubNavItem id="side-nav-audit-nav" to="/audit">実行履歴</SubNavItem>
                         </ul>
                     </li>
                     <li className="nav-item">
