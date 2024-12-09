@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayName("JWT認可API")
 @PresentationTest
 @AutoConfigureMybatis
-public class TestControllerTest {
+public class ApiControllerTest {
     @Autowired
     private MockMvc mockMvc;
 

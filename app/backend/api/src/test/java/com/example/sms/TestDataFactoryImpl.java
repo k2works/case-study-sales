@@ -88,6 +88,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
     @Override
     public void setUpForEmployeeService() {
+        userRepository.save(user());
         LocalDateTime startDate = LocalDateTime.of(2021, 1, 1, 0, 0);
         departmentRepository.deleteAll();
         departmentRepository.save(department("10000", startDate, "部門1"));
