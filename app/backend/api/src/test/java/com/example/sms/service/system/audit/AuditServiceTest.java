@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.testcontainers.shaded.org.checkerframework.checker.units.qual.A;
 
 import java.time.LocalDateTime;
 
@@ -100,7 +101,7 @@ public class AuditServiceTest {
             try (MockedStatic<AuthApiService> authApiServiceMockedStatic = mockStatic(AuthApiService.class)) {
                 authApiServiceMockedStatic.when(AuthApiService::getCurrentUserId).thenReturn(UserId.of("U777777"));
 
-                ApplicationExecutionHistory result = auditService.start(ApplicationExecutionProcessType.OTHER);
+                ApplicationExecutionHistory result = auditService.start(ApplicationExecutionProcessType.OTHER, ApplicationExecutionHistoryType.SYNC);
 
                 assertNotNull(result.getId());
                 assertEquals(ApplicationExecutionProcessFlag.START, result.getProcessFlag());
@@ -112,7 +113,7 @@ public class AuditServiceTest {
         void endApplicationExecutionHistory() {
             try (MockedStatic<AuthApiService> authApiServiceMockedStatic = mockStatic(AuthApiService.class)) {
                 authApiServiceMockedStatic.when(AuthApiService::getCurrentUserId).thenReturn(UserId.of("U777777"));
-                ApplicationExecutionHistory history = auditService.start(ApplicationExecutionProcessType.OTHER);
+                ApplicationExecutionHistory history = auditService.start(ApplicationExecutionProcessType.OTHER, ApplicationExecutionHistoryType.SYNC);
 
                 auditService.end(history);
 
@@ -127,7 +128,7 @@ public class AuditServiceTest {
         void errorApplicationExecutionHistory() {
             try (MockedStatic<AuthApiService> authApiServiceMockedStatic = mockStatic(AuthApiService.class)) {
                 authApiServiceMockedStatic.when(AuthApiService::getCurrentUserId).thenReturn(UserId.of("U777777"));
-                ApplicationExecutionHistory history = auditService.start(ApplicationExecutionProcessType.OTHER);
+                ApplicationExecutionHistory history = auditService.start(ApplicationExecutionProcessType.OTHER, ApplicationExecutionHistoryType.SYNC);
 
                 auditService.error(history, "error message");
 

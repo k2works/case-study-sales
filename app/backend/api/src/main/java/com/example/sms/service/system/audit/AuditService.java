@@ -69,31 +69,33 @@ public class AuditService {
     /**
      * アプリケーション実行履歴開始
      */
-    public ApplicationExecutionHistory start(ApplicationExecutionProcessType process) {
+    public ApplicationExecutionHistory start(ApplicationExecutionProcessType process, ApplicationExecutionHistoryType type) {
         String userId = AuthApiService.getCurrentUserId().Value();
         User user = userRepository.findById(userId).orElse(null);
         LocalDateTime processStart = LocalDateTime.now();
-        ApplicationExecutionHistory history = ApplicationExecutionHistory.of(null, process.getName(), process.getCode(), ApplicationExecutionHistoryType.SYNC, processStart, null, ApplicationExecutionProcessFlag.START, null, user);
+        ApplicationExecutionHistory history = ApplicationExecutionHistory.of(null, process.getName(), process.getCode(), type, processStart, null, ApplicationExecutionProcessFlag.START, null, user);
         return auditRepository.start(history);
     }
 
     /**
      * アプリケーション実行履歴終了
      */
-    public void end(ApplicationExecutionHistory history) {
+    public ApplicationExecutionHistory end(ApplicationExecutionHistory history) {
         LocalDateTime processEnd = LocalDateTime.now();
         ApplicationExecutionHistory startHistory = find(String.valueOf(history.getId()));
         ApplicationExecutionHistory endHistory = ApplicationExecutionHistory.of(history.getId(), startHistory.getProcess().getName(), startHistory.getProcess().getCode(), startHistory.getType(), startHistory.getProcessStart(), processEnd, ApplicationExecutionProcessFlag.END, startHistory.getProcessDetails(), startHistory.getUser());
         auditRepository.save(endHistory);
+        return endHistory;
     }
 
     /**
      * アプリケーション実行履歴エラー
      */
-    public void error(ApplicationExecutionHistory history, String message) {
+    public ApplicationExecutionHistory error(ApplicationExecutionHistory history, String message) {
         LocalDateTime processEnd = LocalDateTime.now();
         ApplicationExecutionHistory startHistory = find(String.valueOf(history.getId()));
         ApplicationExecutionHistory endHistory = ApplicationExecutionHistory.of(history.getId(), startHistory.getProcess().getName(), startHistory.getProcess().getCode(), startHistory.getType(), startHistory.getProcessStart(), processEnd, ApplicationExecutionProcessFlag.ERROR, message, startHistory.getUser());
         auditRepository.save(endHistory);
+        return endHistory;
     }
 }

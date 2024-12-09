@@ -1,12 +1,13 @@
 package com.example.sms.presentation.api.system.user;
 
-import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.user.UserId;
+import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
 import com.example.sms.domain.type.audit.ApplicationExecutionProcessType;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
+import com.example.sms.service.system.audit.AuditAnnotation;
 import com.example.sms.service.system.audit.AuditService;
 import com.example.sms.service.system.user.UserManagementService;
 import com.github.pagehelper.PageInfo;
@@ -71,8 +72,8 @@ public class UserApiController {
 
     @Operation(summary = "ユーザーを登録する", description = "ユーザーを登録する")
     @PostMapping
+    @AuditAnnotation(process = ApplicationExecutionProcessType.USER_REGIS, type = ApplicationExecutionHistoryType.SYNC)
     public ResponseEntity<?> create(@RequestBody @Validated UserResource resource) {
-        ApplicationExecutionHistory history = auditService.start(ApplicationExecutionProcessType.USER_REGIS);
         try {
             UserId userId = new UserId(resource.getUserId());
             String password = passwordEncoder.encode(resource.getPassword());
@@ -82,10 +83,8 @@ public class UserApiController {
             }
             User user = User.of(userId.Value(), password, resource.getFirstName(), resource.getLastName(), resource.getRoleName());
             userManagementService.register(user);
-            auditService.end(history);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.user.registered")));
         } catch (Exception e) {
-            auditService.error(history, e.getMessage());
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
