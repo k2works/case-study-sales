@@ -81,7 +81,8 @@ export const useAudit = () => {
             name: { firstName: "", lastName: "" },
             password: { value: "" },
             roleName: ""
-        }
+        },
+        checked: false
     };
 
     const [audits, setAudits] = useState<AuditType[]>([]);

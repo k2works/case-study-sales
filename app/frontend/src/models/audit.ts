@@ -43,4 +43,5 @@ export type AuditType = {
     processFlag: ApplicationExecutionProcessFlag;
     processDetails: string | null;
     user: UserAccountType;
+    checked: boolean;
 };

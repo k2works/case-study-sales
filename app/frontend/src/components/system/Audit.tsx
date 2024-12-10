@@ -93,6 +93,44 @@ export const Audit: React.FC = () => {
                 }
             };
 
+            const handleCheckAudit = (audit: AuditType) => {
+                const newAudit = audits.map((d) => {
+                    if (d.id === audit.id) {
+                        return {
+                            ...d,
+                            checked: !d.checked
+                        };
+                    }
+                    return d;
+                });
+                setAudits(newAudit);
+            }
+
+            const handleCheckAllAudit = () => {
+                const newAudits = audits.map((d) => {
+                    return {
+                        ...d,
+                        checked: !audits.every((d) => d.checked)
+                    };
+                });
+                setAudits(newAudits);
+            }
+            const handleDeleteCheckedCollection = async () => {
+                const checkedAudits = audits.filter((d) => d.checked);
+                if (!checkedAudits.length) {
+                    setError("削除する履歴を選択してください。");
+                    return;
+                }
+
+                try {
+                    if (!window.confirm("選択した履歴を削除しますか？")) return;
+                    await Promise.all(checkedAudits.map((d) => auditService.destroy(d.id)));
+                    await fetchAudits.load();
+                    setMessage("選択した部門を削除しました。");
+                } catch (error: any) {
+                    showErrorMessage(`選択した部門の削除に失敗しました: ${error?.message}`, setError);
+                }
+            }
             return (
                 <>
                     <Modal
@@ -115,6 +153,9 @@ export const Audit: React.FC = () => {
                         audits={audits}
                         handleDeleteAudit={handleDeleteAudit}
                         fetchAudits={fetchAudits.load}
+                        handleCheckAllAudit={handleCheckAudit}
+                        handleCheckToggleCollection={handleCheckAllAudit}
+                        handleDeleteCheckedCollection={handleDeleteCheckedCollection}
                         pageNation={pageNation}
                     />
                 </>

@@ -33,7 +33,7 @@ const NaveItems: React.FC = () => {
         <ul>
             <NavItem id="side-nav-home-nav" to="/"
                      className="nav-item active">ホーム</NavItem>
-            {role === RoleType.ADMIN && (
+            {role === RoleType.ADMIN ? (
                 <>
                     <li className="nav-item">
                         システム
@@ -55,8 +55,16 @@ const NaveItems: React.FC = () => {
                         </ul>
                     </li>
                 </>
-                )
-            }
+            ) : (
+                <>
+                    <li className="nav-item">
+                        システム
+                        <ul className="nav-sub-list">
+                            <SubNavItem id="side-nav-audit-nav" to="/audit">実行履歴</SubNavItem>
+                        </ul>
+                    </li>
+                </>
+            )}
             <NavItem id="side-nav-logout-nav" to="/logout" className="nav-item">ログアウト</NavItem>
         </ul>
     )
