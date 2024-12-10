@@ -96,3 +96,36 @@ export const FormInput: React.FC<FormInputProps> = ({
     );
 };
 
+interface FormTextareaProps {
+    label: string;
+    id: string;
+    className?: string;
+    placeholder?: string;
+    value: string;
+    onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+    disabled?: boolean;
+}
+
+export const FormTextarea: React.FC<FormTextareaProps> = ({
+                                                              label,
+                                                              id,
+                                                              className,
+                                                              placeholder,
+                                                              value,
+                                                              onChange,
+                                                              disabled,
+                                                          }) => {
+    return (
+        <FormItem label={label}>
+            <textarea
+                id={id}
+                className={className}
+                placeholder={placeholder}
+                value={value}
+                onChange={onChange}
+                disabled={disabled}
+            />
+        </FormItem>
+    );
+};
+

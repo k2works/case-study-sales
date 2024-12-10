@@ -1,6 +1,6 @@
 import React from "react";
 import {Message} from "../../components/application/Message.tsx";
-import {FormInput, SingleViewHeaderItem} from "../Common.tsx";
+import {FormInput, FormTextarea, SingleViewHeaderItem} from "../Common.tsx";
 import {AuditType} from "../../models/audit.ts";
 import {convertToDateTimeInputFormat} from "../../components/application/utils.ts";
 
@@ -92,10 +92,9 @@ const Form: React.FC<AuditFormProps> = ({newAudit, setNewAudit}) => {
                 })}
                 disabled
             />
-            <FormInput
+            <FormTextarea
                 label="プロセス詳細"
                 id="processDetails"
-                type="text"
                 className="single-view-content-item-form-item-input"
                 value={newAudit.processDetails || ""}
                 onChange={(e) =>
@@ -104,6 +103,15 @@ const Form: React.FC<AuditFormProps> = ({newAudit, setNewAudit}) => {
                         processDetails: e.target.value
                     })
                 }
+                disabled
+            />
+            <FormInput
+                label="ユーザーID"
+                id="errorMessage"
+                type="text"
+                className="single-view-content-item-form-item-input"
+                value={newAudit.user.userId.value || ""}
+                onChange={() => {}}
                 disabled
             />
         </div>

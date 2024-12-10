@@ -1,11 +1,12 @@
 import Config from "./config";
 import Utils from "./utils";
+import {AuditType, searchAuditCondition} from "../models/audit.ts";
 
 export interface AuditServiceType {
     select: (page?: number, pageSize?: number) => Promise<any>;
-    find: (id: number) => Promise<AuditServiceType>;
+    find: (id: number) => Promise<AuditType>;
     destroy: (id: number) => Promise<void>;
-    search: (pageSize: number, code: string, page: number) => Promise<AuditServiceType>;
+    search: (condition: searchAuditCondition) => Promise<AuditType[]>;
 }
 
 export const AuditService = (): AuditServiceType => {
@@ -13,7 +14,7 @@ export const AuditService = (): AuditServiceType => {
     const apiUtils = Utils.apiUtils;
     const endPoint = `${config.apiUrl}/audits`;
 
-    const select = async (page?: number, pageSize?: number): Promise<AuditServiceType[]> => {
+    const select = async (page?: number, pageSize?: number): Promise<AuditType[]> => {
         let url = endPoint;
         if (pageSize && page) {
             url = `${url}?pageSize=${pageSize}&page=${page}`;
@@ -26,7 +27,7 @@ export const AuditService = (): AuditServiceType => {
         return await apiUtils.fetchGet(url);
     };
 
-    const find = async (id: number): Promise<AuditServiceType> => {
+    const find = async (id: number): Promise<AuditType> => {
         const url = `${endPoint}/${id}`;
         return await apiUtils.fetchGet(url);
     };
@@ -36,10 +37,9 @@ export const AuditService = (): AuditServiceType => {
         return await apiUtils.fetchDelete(url);
     };
 
-    const search = async (pageSize: number, code: string, page: number): Promise<AuditServiceType> => {
-        const url = `${endPoint}/search?pageSize=${pageSize}&code=${code}&page=${page}`;
-
-        return await apiUtils.fetchGet(url);
+    const search = async (condition: searchAuditCondition): Promise<AuditType[]> => {
+        const url = `${endPoint}/search`;
+        return await apiUtils.fetchPost(url, condition);
     };
 
     return {

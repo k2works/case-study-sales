@@ -23,8 +23,8 @@ export const Audit: React.FC = () => {
             setAudits,
             newAudit,
             setNewAudit,
-            searchAuditId,
-            setSearchAuditId,
+            searchAuditCondition,
+            setSearchAuditCondition,
             auditService
         } = useAudit();
 
@@ -64,19 +64,17 @@ export const Audit: React.FC = () => {
 
         const collectionView = () => {
             const handleSearchAudit = async () => {
-                if (!searchAuditId) {
+                if (!searchAuditCondition) {
                     return;
                 }
                 setLoading(true);
                 try {
-                    /**
-                    const fetchedAudit = await auditService.find(searchAuditId);
-                    setAudits(fetchedAudit ? [fetchedAudit] : []);
+                    const fetchedAudit = await auditService.search(searchAuditCondition);
+                    setAudits(fetchedAudit ? fetchedAudit : []);
                     setMessage("");
                     setError("");
-                    **/
                 } catch (error: any) {
-                    showErrorMessage(`監査情報の検索に失敗しました: ${error?.message}`, setError);
+                    showErrorMessage(`実行履歴情報の検索に失敗しました: ${error?.message}`, setError);
                 } finally {
                     setLoading(false);
                 }
@@ -84,7 +82,7 @@ export const Audit: React.FC = () => {
 
             const handleDeleteAudit = async (auditId: number) => {
                 try {
-                    if (!window.confirm(`監査ID:${auditId} を削除しますか？`)) return;
+                    if (!window.confirm(`実行履歴ID:${auditId} を削除しますか？`)) return;
                     await auditService.destroy(auditId);
                     await fetchAudits.load();
                     setMessage("アプリケーション実行履歴情報を削除しました。");
@@ -146,8 +144,8 @@ export const Audit: React.FC = () => {
                     <AuditCollectionView
                         error={error}
                         message={message}
-                        searchAuditId={searchAuditId}
-                        setSearchAuditId={setSearchAuditId}
+                        searchAuditCondition={searchAuditCondition}
+                        setSearchAuditCondition={setSearchAuditCondition}
                         handleSearchAudit={handleSearchAudit}
                         handleOpenModal={handleOpenModal}
                         audits={audits}

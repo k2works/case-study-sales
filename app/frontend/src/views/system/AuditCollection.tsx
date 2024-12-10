@@ -1,29 +1,57 @@
 import React from "react";
 import {PageNation, PageNationType} from "../application/PageNation.tsx";
 import {Message} from "../../components/application/Message.tsx";
-import {AuditType} from "../../models/audit.ts";
+import {
+    ApplicationExecutionHistoryType,
+    ApplicationExecutionProcessFlag,
+    ApplicationExecutionProcessType,
+    AuditType,
+    searchAuditCondition
+} from "../../models/audit.ts";
 import {convertToDateTimeInputFormat} from "../../components/application/utils.ts";
-import {DepartmentType} from "../../models";
+import {FormSelect} from "../Common.tsx";
 
 interface SearchInputProps {
-    searchAuditId: string;
-    setSearchAuditId: (value: number) => void;
+    searchAuditCondition: searchAuditCondition;
+    setSearchAuditCondition: (value: searchAuditCondition) => void;
     handleSearchAudit: () => void;
 }
 
-const SearchInput: React.FC<SearchInputProps> = ({searchAuditId, setSearchAuditId, handleSearchAudit}) => {
+const SearchInput: React.FC<SearchInputProps> = ({searchAuditCondition, setSearchAuditCondition, handleSearchAudit}) => {
     return (
         <div className="search-container">
-            <input
-                type="text"
-                id="search-input"
-                placeholder="監査IDで検索"
-                value={searchAuditId}
-                onChange={(e) => setSearchAuditId(parseInt(e.target.value))}
-            />
-            <button className="action-button" id="search-all" onClick={handleSearchAudit}>
-                検索
-            </button>
+            <div className="single-view-content-item-form">
+                <FormSelect
+                    id={"search-process-type"}
+                    label={"処理"}
+                    value={searchAuditCondition.processType}
+                    options={ApplicationExecutionProcessType}
+                    onChange={(e) => setSearchAuditCondition(
+                        {...searchAuditCondition, processType: e}
+                    )}/>
+                <FormSelect
+                    id={"search-process-type"}
+                    label={"状態"}
+                    value={searchAuditCondition.processFlag}
+                    options={ApplicationExecutionProcessFlag}
+                    onChange={(e) => setSearchAuditCondition(
+                        {...searchAuditCondition, processFlag: e}
+                    )}/>
+                <FormSelect
+                    id={"search-type"}
+                    label={"タイプ"}
+                    value={searchAuditCondition.type}
+                    options={ApplicationExecutionHistoryType}
+                    onChange={(e) => setSearchAuditCondition(
+                        {...searchAuditCondition, type: e}
+                    )}/>
+
+                <div className="button-container">
+                    <button className="action-button" id="search-all" onClick={handleSearchAudit}>
+                        検索
+                    </button>
+                </div>
+            </div>
         </div>
     );
 };
@@ -57,12 +85,12 @@ const AuditListItem: React.FC<AuditListItemProps> = ({audit, handleOpenModal, ha
                 <div className="collection-object-item-content-name">{audit.process.name}</div>
             </div>
             <div className="collection-object-item-content">
-                <div className="collection-object-item-content-details">タイプ</div>
-                <div className="collection-object-item-content-name">{audit.type}</div>
+                <div className="collection-object-item-content-details">状態</div>
+                <div className="collection-object-item-content-name">{audit.processFlag}</div>
             </div>
             <div className="collection-object-item-content">
-                <div className="collection-object-item-content-details">ユーザーID</div>
-                <div className="collection-object-item-content-name">{audit.user.userId.value}</div>
+                <div className="collection-object-item-content-details">タイプ</div>
+                <div className="collection-object-item-content-name">{audit.type}</div>
             </div>
             <div className="collection-object-item-actions">
                 <button className="action-button" onClick={() => handleOpenModal(audit)} id="edit">編集</button>
@@ -104,8 +132,8 @@ const AuditList: React.FC<AuditListProps> = ({audits, handleOpenModal, handleDel
 interface AuditCollectionViewProps {
     error: string | null;
     message: string | null;
-    searchAuditId: number;
-    setSearchAuditId: (value: number) => void;
+    searchAuditCondition: searchAuditCondition;
+    setSearchAuditCondition: (value: searchAuditCondition) => void;
     handleSearchAudit: () => void;
     handleOpenModal: (audit?: AuditType) => void;
     audits: AuditType[];
@@ -120,8 +148,8 @@ interface AuditCollectionViewProps {
 export const AuditCollectionView: React.FC<AuditCollectionViewProps> = ({
     error,
     message,
-    searchAuditId,
-    setSearchAuditId,
+    searchAuditCondition,
+    setSearchAuditCondition,
     handleSearchAudit,
     handleOpenModal,
     audits,
@@ -141,8 +169,11 @@ export const AuditCollectionView: React.FC<AuditCollectionViewProps> = ({
                 </div>
             </div>
             <div className="collection-view-content">
-                <SearchInput searchAuditId={searchAuditId.toString()} setSearchAuditId={setSearchAuditId}
-                             handleSearchAudit={handleSearchAudit}/>
+                <SearchInput
+                    searchAuditCondition={searchAuditCondition}
+                    setSearchAuditCondition={setSearchAuditCondition}
+                    handleSearchAudit={handleSearchAudit}
+                />
                 <div className="button-container">
                     <button className="action-button" onClick={() => handleCheckToggleCollection()} id="checkAll">
                         一括選択

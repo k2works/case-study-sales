@@ -5,7 +5,7 @@ import {PageNationType} from "../../views/application/PageNation.tsx";
 import {
     ApplicationExecutionHistoryType,
     ApplicationExecutionProcessFlag,
-    ApplicationExecutionProcessType, AuditType
+    ApplicationExecutionProcessType, AuditType, searchAuditCondition
 } from "../../models/audit.ts";
 import {AuditService, AuditServiceType} from "../../services/audit.ts";
 
@@ -85,9 +85,16 @@ export const useAudit = () => {
         checked: false
     };
 
+
     const [audits, setAudits] = useState<AuditType[]>([]);
     const [newAudit, setNewAudit] = useState<AuditType>(initialAudit);
-    const [searchAuditId, setSearchAuditId] = useState<number>(0);
+    const [searchAuditCondition, setSearchAuditCondition] = useState<searchAuditCondition>(
+        {
+            processType: ApplicationExecutionProcessType.OTHER,
+            processFlag: ApplicationExecutionProcessFlag.NOT_EXECUTED,
+            type: ApplicationExecutionHistoryType.SYNC
+        }
+    );
     const auditService = AuditService();
 
     return {
@@ -96,8 +103,8 @@ export const useAudit = () => {
         setAudits,
         newAudit,
         setNewAudit,
-        searchAuditId,
-        setSearchAuditId,
+        searchAuditCondition,
+        setSearchAuditCondition,
         auditService
     };
 };
