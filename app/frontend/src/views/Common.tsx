@@ -44,17 +44,32 @@ interface FormSelectProps<T> {
     disabled?: boolean;
 }
 
-export const FormSelect = <T extends string>({id, label, className, value, options, onChange}: FormSelectProps<T>) => (
+export const FormSelect = <T extends string>({
+                                                 id,
+                                                 label,
+                                                 className,
+                                                 value,
+                                                 options,
+                                                 onChange,
+                                                 disabled, // 受け取り
+                                             }: FormSelectProps<T>) => (
     <FormItem label={label}>
         <select
             id={id}
             className={className}
             value={value}
             onChange={(e) => onChange(e.target.value as T)}
+            disabled={disabled} // "select"自体にも念のため "disabled"適用
         >
-            <option value="" disabled selected hidden></option>
+            {disabled ? (
+                <option value="" disabled selected hidden></option>
+            ) : (
+                <option value=""></option>
+            )}
             {Object.entries(options).map(([key, val]) => (
-                <option key={key} value={val}>{val}</option>
+                <option key={key} value={val}>
+                    {val}
+                </option>
             ))}
         </select>
     </FormItem>

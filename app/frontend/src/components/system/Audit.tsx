@@ -145,8 +145,10 @@ export const Audit: React.FC = () => {
                                     }
                                     setLoading(true);
                                     try {
+                                        //TODO: ページネーションの実装
                                         const fetchedAudit = await auditService.search(searchAuditCondition);
-                                        setAudits(fetchedAudit ? fetchedAudit : []);
+                                        setAudits(fetchedAudit ? fetchedAudit.list : []);
+                                        setPageNation(fetchedAudit ? fetchedAudit: {});
                                         setMessage("");
                                         setError("");
                                         handleCloseSearchModal();

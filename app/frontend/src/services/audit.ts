@@ -6,7 +6,7 @@ export interface AuditServiceType {
     select: (page?: number, pageSize?: number) => Promise<any>;
     find: (id: number) => Promise<AuditType>;
     destroy: (id: number) => Promise<void>;
-    search: (condition: searchAuditCondition) => Promise<AuditType[]>;
+    search: (condition: searchAuditCondition) => Promise<any>;
 }
 
 export const AuditService = (): AuditServiceType => {
@@ -39,15 +39,22 @@ export const AuditService = (): AuditServiceType => {
 
     const search = async (condition: searchAuditCondition): Promise<AuditType[]> => {
         const url = `${endPoint}/search`;
+
         const mapToAuditResource = (condition: searchAuditCondition) => {
-            return {
-                processFlag: condition.processFlag,
+            // プロパティが空文字の場合、その項目を除外する関数
+            const isEmpty = (value: unknown) => value === "" || value === null || value === undefined;
+
+            const resource: any = {
+                ...(isEmpty(condition.processFlag) ? {} : { processFlag: condition.processFlag }),
                 process: {
-                    processType: condition.processType,
+                    ...(isEmpty(condition.processType) ? {} : { processType: condition.processType }),
                 },
-                type: condition.type,
+                ...(isEmpty(condition.type) ? {} : { type: condition.type }),
             };
+
+            return resource;
         };
+
         return await apiUtils.fetchPost(url, mapToAuditResource(condition));
     };
 
