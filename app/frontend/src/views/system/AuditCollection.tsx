@@ -2,14 +2,10 @@ import React from "react";
 import {PageNation, PageNationType} from "../application/PageNation.tsx";
 import {Message} from "../../components/application/Message.tsx";
 import {
-    ApplicationExecutionHistoryType,
-    ApplicationExecutionProcessFlag,
-    ApplicationExecutionProcessType,
     AuditType,
     searchAuditCondition
 } from "../../models/audit.ts";
 import {convertToDateTimeInputFormat} from "../../components/application/utils.ts";
-import {FormSelect} from "../Common.tsx";
 
 interface SearchInputProps {
     searchAuditCondition: searchAuditCondition;
@@ -17,35 +13,10 @@ interface SearchInputProps {
     handleSearchAudit: () => void;
 }
 
-const SearchInput: React.FC<SearchInputProps> = ({searchAuditCondition, setSearchAuditCondition, handleSearchAudit}) => {
+const SearchInput: React.FC<SearchInputProps> = ({handleSearchAudit}) => {
     return (
         <div className="search-container">
             <div className="single-view-content-item-form">
-                <FormSelect
-                    id={"search-process-type"}
-                    label={"処理"}
-                    value={searchAuditCondition.processType}
-                    options={ApplicationExecutionProcessType}
-                    onChange={(e) => setSearchAuditCondition(
-                        {...searchAuditCondition, processType: e}
-                    )}/>
-                <FormSelect
-                    id={"search-process-type"}
-                    label={"状態"}
-                    value={searchAuditCondition.processFlag}
-                    options={ApplicationExecutionProcessFlag}
-                    onChange={(e) => setSearchAuditCondition(
-                        {...searchAuditCondition, processFlag: e}
-                    )}/>
-                <FormSelect
-                    id={"search-type"}
-                    label={"タイプ"}
-                    value={searchAuditCondition.type}
-                    options={ApplicationExecutionHistoryType}
-                    onChange={(e) => setSearchAuditCondition(
-                        {...searchAuditCondition, type: e}
-                    )}/>
-
                 <div className="button-container">
                     <button className="action-button" id="search-all" onClick={handleSearchAudit}>
                         検索

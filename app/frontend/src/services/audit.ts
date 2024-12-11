@@ -39,7 +39,16 @@ export const AuditService = (): AuditServiceType => {
 
     const search = async (condition: searchAuditCondition): Promise<AuditType[]> => {
         const url = `${endPoint}/search`;
-        return await apiUtils.fetchPost(url, condition);
+        const mapToAuditResource = (condition: searchAuditCondition) => {
+            return {
+                processFlag: condition.processFlag,
+                process: {
+                    processType: condition.processType,
+                },
+                type: condition.type,
+            };
+        };
+        return await apiUtils.fetchPost(url, mapToAuditResource(condition));
     };
 
     return {
