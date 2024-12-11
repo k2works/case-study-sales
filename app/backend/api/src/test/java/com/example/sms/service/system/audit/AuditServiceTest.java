@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.testcontainers.shaded.org.checkerframework.checker.units.qual.A;
 
 import java.time.LocalDateTime;
 
@@ -85,20 +84,75 @@ public class AuditServiceTest {
             assertEquals(2, auditService.selectAllWithPageInfo().getSize());
         }
 
-        @Test
+        @Nested
         @DisplayName("アプリケーション実行履歴を検索できる")
-        void searchApplicationExecutionHistory() {
-            ApplicationExecutionHistory applicationExecutionHistory = ApplicationExecutionHistory.of(null, ApplicationExecutionProcessType.USER_CREATE.getName(), ApplicationExecutionProcessType.USER_CREATE.getCode(), ApplicationExecutionHistoryType.SYNC, LocalDateTime.of(2024,1,1,1,0), LocalDateTime.of(2024,1,1,2,0), ApplicationExecutionProcessFlag.NOT_EXECUTED,  "processDetails", null);
-            UserId userId = UserId.of("U777777");
-            auditService.register(applicationExecutionHistory, userId);
-            AuditSearchCondition condition = AuditSearchCondition.of(ApplicationExecutionProcessType.USER_CREATE, ApplicationExecutionHistoryType.SYNC, ApplicationExecutionProcessFlag.NOT_EXECUTED);
+        class SearchApplicationExecutionHistoryTests {
+            @Test
+            @DisplayName("３条件が全て一致するアプリケーション実行履歴を検索できる")
+            void case1() {
+                ApplicationExecutionHistory applicationExecutionHistory = ApplicationExecutionHistory.of(null, ApplicationExecutionProcessType.USER_CREATE.getName(), ApplicationExecutionProcessType.USER_CREATE.getCode(), ApplicationExecutionHistoryType.SYNC, LocalDateTime.of(2024,1,1,1,0), LocalDateTime.of(2024,1,1,2,0), ApplicationExecutionProcessFlag.NOT_EXECUTED,  "processDetails", null);
+                UserId userId = UserId.of("U777777");
+                auditService.register(applicationExecutionHistory, userId);
+                AuditSearchCondition condition = AuditSearchCondition.of(ApplicationExecutionProcessType.USER_CREATE, ApplicationExecutionHistoryType.SYNC, ApplicationExecutionProcessFlag.NOT_EXECUTED);
 
-            PageInfo<ApplicationExecutionHistory> result = auditService.searchWithPageInfo(condition);
+                PageInfo<ApplicationExecutionHistory> result = auditService.searchWithPageInfo(condition);
 
-            assertEquals(1, result.getSize());
-            assertEquals(ApplicationExecutionProcessType.USER_CREATE, result.getList().get(0).getProcess().getProcessType());
-            assertEquals(ApplicationExecutionProcessFlag.NOT_EXECUTED, result.getList().get(0).getProcessFlag());
-            assertEquals(ApplicationExecutionHistoryType.SYNC, result.getList().get(0).getType());
+                assertEquals(1, result.getSize());
+                assertEquals(ApplicationExecutionProcessType.USER_CREATE, result.getList().get(0).getProcess().getProcessType());
+                assertEquals(ApplicationExecutionProcessFlag.NOT_EXECUTED, result.getList().get(0).getProcessFlag());
+                assertEquals(ApplicationExecutionHistoryType.SYNC, result.getList().get(0).getType());
+            }
+            @Test
+            @DisplayName("２条件が一致するアプリケーション実行履歴を検索できる")
+            void case2() {
+                ApplicationExecutionHistory applicationExecutionHistory = ApplicationExecutionHistory.of(null, ApplicationExecutionProcessType.USER_CREATE.getName(), ApplicationExecutionProcessType.USER_CREATE.getCode(), ApplicationExecutionHistoryType.SYNC, LocalDateTime.of(2024,1,1,1,0), LocalDateTime.of(2024,1,1,2,0), ApplicationExecutionProcessFlag.NOT_EXECUTED,  "processDetails", null);
+                UserId userId = UserId.of("U777777");
+                auditService.register(applicationExecutionHistory, userId);
+                AuditSearchCondition condition = AuditSearchCondition.of(ApplicationExecutionProcessType.USER_CREATE, ApplicationExecutionHistoryType.SYNC, null);
+
+                PageInfo<ApplicationExecutionHistory> result = auditService.searchWithPageInfo(condition);
+
+                assertEquals(1, result.getSize());
+                assertEquals(ApplicationExecutionProcessType.USER_CREATE, result.getList().get(0).getProcess().getProcessType());
+                assertEquals(ApplicationExecutionHistoryType.SYNC, result.getList().get(0).getType());
+            }
+            @Test
+            @DisplayName("１条件が一致するアプリケーション実行履歴を検索できる")
+            void case3() {
+                ApplicationExecutionHistory applicationExecutionHistory = ApplicationExecutionHistory.of(null, ApplicationExecutionProcessType.USER_CREATE.getName(), ApplicationExecutionProcessType.USER_CREATE.getCode(), ApplicationExecutionHistoryType.SYNC, LocalDateTime.of(2024,1,1,1,0), LocalDateTime.of(2024,1,1,2,0), ApplicationExecutionProcessFlag.NOT_EXECUTED,  "processDetails", null);
+                UserId userId = UserId.of("U777777");
+                auditService.register(applicationExecutionHistory, userId);
+                AuditSearchCondition condition = AuditSearchCondition.of(ApplicationExecutionProcessType.USER_CREATE, null, null);
+
+                PageInfo<ApplicationExecutionHistory> result = auditService.searchWithPageInfo(condition);
+
+                assertEquals(1, result.getSize());
+                assertEquals(ApplicationExecutionProcessType.USER_CREATE, result.getList().get(0).getProcess().getProcessType());
+            }
+            @Test
+            @DisplayName("条件なしの場合はアプリケーション実行履歴を全件検索できる")
+            void case4() {
+                ApplicationExecutionHistory applicationExecutionHistory = ApplicationExecutionHistory.of(null, ApplicationExecutionProcessType.USER_CREATE.getName(), ApplicationExecutionProcessType.USER_CREATE.getCode(), ApplicationExecutionHistoryType.SYNC, LocalDateTime.of(2024,1,1,1,0), LocalDateTime.of(2024,1,1,2,0), ApplicationExecutionProcessFlag.NOT_EXECUTED,  "processDetails", null);
+                UserId userId = UserId.of("U777777");
+                auditService.register(applicationExecutionHistory, userId);
+                AuditSearchCondition condition = AuditSearchCondition.of(null, null, null);
+
+                PageInfo<ApplicationExecutionHistory> result = auditService.searchWithPageInfo(condition);
+
+                assertEquals(3, result.getSize());
+            }
+            @Test
+            @DisplayName("条件に一致するアプリケーション実行履歴が存在しない場合は空のリストを返す")
+            void case5() {
+                ApplicationExecutionHistory applicationExecutionHistory = ApplicationExecutionHistory.of(null, ApplicationExecutionProcessType.USER_CREATE.getName(), ApplicationExecutionProcessType.USER_CREATE.getCode(), ApplicationExecutionHistoryType.SYNC, LocalDateTime.of(2024,1,1,1,0), LocalDateTime.of(2024,1,1,2,0), ApplicationExecutionProcessFlag.NOT_EXECUTED,  "processDetails", null);
+                UserId userId = UserId.of("U777777");
+                auditService.register(applicationExecutionHistory, userId);
+                AuditSearchCondition condition = AuditSearchCondition.of(ApplicationExecutionProcessType.PRODUCT_CREATE, ApplicationExecutionHistoryType.ASYNC, ApplicationExecutionProcessFlag.END);
+
+                PageInfo<ApplicationExecutionHistory> result = auditService.searchWithPageInfo(condition);
+
+                assertEquals(0, result.getSize());
+            }
         }
 
         @Test

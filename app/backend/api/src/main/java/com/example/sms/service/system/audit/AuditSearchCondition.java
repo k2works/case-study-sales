@@ -16,7 +16,22 @@ public class AuditSearchCondition {
     Integer processFlag;
 
     public static AuditSearchCondition of(ApplicationExecutionProcessType process, ApplicationExecutionHistoryType type, ApplicationExecutionProcessFlag processFlag) {
+        String processTypeNameValue = null;
+        String processCodeValue = null;
+        String processTypeValue = null;
+        Integer processFlagValue = null;
 
-        return new AuditSearchCondition(process.getName(), process.getCode(), type.getName(), processFlag.getValue());
+        if (process != null) {
+            processTypeNameValue = process.getName();
+            processCodeValue = process.getCode();
+        }
+        if (type != null) {
+            processTypeValue = type.getName();
+        }
+        if (processFlag != null) {
+            processFlagValue = processFlag.getValue();
+        }
+
+        return new AuditSearchCondition(processTypeNameValue, processCodeValue, processTypeValue, processFlagValue);
     }
 }
