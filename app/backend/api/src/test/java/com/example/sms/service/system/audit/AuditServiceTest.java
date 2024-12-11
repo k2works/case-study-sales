@@ -12,6 +12,7 @@ import com.example.sms.domain.type.audit.ApplicationExecutionProcessType;
 import com.example.sms.domain.type.user.RoleName;
 import com.example.sms.service.system.auth.AuthApiService;
 import com.example.sms.service.system.user.UserManagementService;
+import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -85,6 +86,22 @@ public class AuditServiceTest {
         }
 
         @Test
+        @DisplayName("アプリケーション実行履歴を検索できる")
+        void searchApplicationExecutionHistory() {
+            ApplicationExecutionHistory applicationExecutionHistory = ApplicationExecutionHistory.of(null, ApplicationExecutionProcessType.USER_CREATE.getName(), ApplicationExecutionProcessType.USER_CREATE.getCode(), ApplicationExecutionHistoryType.SYNC, LocalDateTime.of(2024,1,1,1,0), LocalDateTime.of(2024,1,1,2,0), ApplicationExecutionProcessFlag.NOT_EXECUTED,  "processDetails", null);
+            UserId userId = UserId.of("U777777");
+            auditService.register(applicationExecutionHistory, userId);
+            AuditSearchCondition condition = AuditSearchCondition.of(ApplicationExecutionProcessType.USER_CREATE, ApplicationExecutionHistoryType.SYNC, ApplicationExecutionProcessFlag.NOT_EXECUTED);
+
+            PageInfo<ApplicationExecutionHistory> result = auditService.searchWithPageInfo(condition);
+
+            assertEquals(1, result.getSize());
+            assertEquals(ApplicationExecutionProcessType.USER_CREATE, result.getList().get(0).getProcess().getProcessType());
+            assertEquals(ApplicationExecutionProcessFlag.NOT_EXECUTED, result.getList().get(0).getProcessFlag());
+            assertEquals(ApplicationExecutionHistoryType.SYNC, result.getList().get(0).getType());
+        }
+
+        @Test
         @DisplayName("実行ユーザーを削除した場合は、アプリケーション実行履歴の実行ユーザーはnullになる")
         void deleteExecutionUser() {
             UserId userId = UserId.of("U777777");
@@ -138,5 +155,6 @@ public class AuditServiceTest {
                 assertEquals("error message", result.getProcessDetails());
             }
         }
+
     }
 }

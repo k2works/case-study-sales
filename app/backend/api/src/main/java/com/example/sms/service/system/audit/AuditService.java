@@ -7,6 +7,7 @@ import com.example.sms.domain.model.system.user.UserId;
 import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
 import com.example.sms.domain.type.audit.ApplicationExecutionProcessFlag;
 import com.example.sms.domain.type.audit.ApplicationExecutionProcessType;
+import com.example.sms.presentation.api.system.audit.AuditResource;
 import com.example.sms.service.system.auth.AuthApiService;
 import com.example.sms.service.system.user.UserRepository;
 import com.github.pagehelper.PageInfo;
@@ -97,5 +98,12 @@ public class AuditService {
         ApplicationExecutionHistory endHistory = ApplicationExecutionHistory.of(history.getId(), startHistory.getProcess().getName(), startHistory.getProcess().getCode(), startHistory.getType(), startHistory.getProcessStart(), processEnd, ApplicationExecutionProcessFlag.ERROR, message, startHistory.getUser());
         auditRepository.save(endHistory);
         return endHistory;
+    }
+
+    /**
+     * アプリケーション実行履歴検索
+     */
+    public PageInfo<ApplicationExecutionHistory> searchWithPageInfo(AuditSearchCondition condition) {
+        return auditRepository.searchWithPageInfo(condition);
     }
 }

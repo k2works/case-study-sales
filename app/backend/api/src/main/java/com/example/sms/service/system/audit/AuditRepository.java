@@ -25,4 +25,6 @@ public interface AuditRepository {
     PageInfo<ApplicationExecutionHistory> selectAllWithPageInfo();
 
     ApplicationExecutionHistory start(ApplicationExecutionHistory history);
+
+    PageInfo<ApplicationExecutionHistory> searchWithPageInfo(AuditSearchCondition condition);
 }

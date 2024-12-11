@@ -1,9 +1,11 @@
 package com.example.sms.presentation.api.system.audit;
 
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryList;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
+import com.example.sms.service.system.audit.AuditSearchCondition;
 import com.example.sms.service.system.audit.AuditService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
@@ -62,6 +64,22 @@ public class AuditApiController {
         try {
             auditService.delete(Integer.valueOf(id));
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.audit.history.deleted")));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
+    }
+
+    @Operation(summary = "アプリケーション実行履歴を検索する", description = "アプリケーション実行履歴を検索する")
+    @PostMapping("/search")
+    public ResponseEntity<?> search(
+            @RequestBody AuditResource resource,
+            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(value = "page", defaultValue = "1") int... page) {
+        try {
+            PageNation.startPage(page, pageSize);
+            AuditSearchCondition condition = AuditSearchCondition.of(resource.getProcess().getProcessType(), resource.getType(), resource.getProcessFlag());
+            PageInfo<ApplicationExecutionHistory> result = auditService.searchWithPageInfo(condition);
+            return ResponseEntity.ok(result);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }

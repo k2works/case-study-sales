@@ -6,6 +6,7 @@ import com.example.sms.domain.model.system.user.User;
 import com.example.sms.infrastructure.PageInfoHelper;
 import com.example.sms.infrastructure.datasource.ObjectOptimisticLockingFailureException;
 import com.example.sms.service.system.audit.AuditRepository;
+import com.example.sms.service.system.audit.AuditSearchCondition;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Repository;
 
@@ -77,5 +78,12 @@ public class ApplicationExecutionHistoryDataSource implements AuditRepository {
         ApplicationExecutionHistoryEntity newHistoryEntity = applicationExecutionHistoryEntityMapper.mapToEntity(history);
         applicationExecutionHistoryMapper.insertForStart(newHistoryEntity);
         return applicationExecutionHistoryEntityMapper.mapToDomainModel(newHistoryEntity);
+    }
+
+    @Override
+    public PageInfo<ApplicationExecutionHistory> searchWithPageInfo(AuditSearchCondition condition) {
+        List<ApplicationExecutionHistoryEntity> applicationExecutionHistories = applicationExecutionHistoryMapper.selectByCondition(condition);
+        PageInfo<ApplicationExecutionHistoryEntity> pageInfo = new PageInfo<>(applicationExecutionHistories);
+        return PageInfoHelper.of(pageInfo, applicationExecutionHistoryEntityMapper::mapToDomainModel);
     }
 }

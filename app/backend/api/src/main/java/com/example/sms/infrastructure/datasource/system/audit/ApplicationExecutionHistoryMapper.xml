@@ -201,4 +201,27 @@
     <include refid="Base_Column_List" />
     from system.application_execution_history
   </select>
+
+  <select id="selectByCondition" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM system.application_execution_history
+    <where>
+      <if test="processName != null and processName != ''">
+        AND process_name = #{processName}
+      </if>
+
+      <if test="processCode != null and processCode != ''">
+        AND process_code = #{processCode}
+      </if>
+
+      <if test="processType != null and processType != ''">
+        AND process_type = #{processType}
+      </if>
+
+      <if test="processFlag != null">
+        AND process_flag = #{processFlag}
+      </if>
+    </where>
+  </select>
 </mapper>
