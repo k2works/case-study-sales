@@ -85,20 +85,17 @@ export const useAudit = () => {
         checked: false
     };
 
+    const initialSearchAuditCondition = {}
+
 
     const [audits, setAudits] = useState<AuditType[]>([]);
     const [newAudit, setNewAudit] = useState<AuditType>(initialAudit);
-    const [searchAuditCondition, setSearchAuditCondition] = useState<SearchAuditConditionType>(
-        {
-            processType: ApplicationExecutionProcessType.OTHER,
-            processFlag: ApplicationExecutionProcessFlag.NOT_EXECUTED,
-            type: ApplicationExecutionHistoryType.SYNC
-        }
-    );
+    const [searchAuditCondition, setSearchAuditCondition] = useState<SearchAuditConditionType>(initialSearchAuditCondition);
     const auditService = AuditService();
 
     return {
         initialAudit,
+        initialSearchAuditCondition,
         audits,
         setAudits,
         newAudit,

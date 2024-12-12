@@ -100,10 +100,10 @@ interface AuditListProps {
     audits: AuditType[];
     handleOpenModal: (audit?: AuditType) => void;
     handleDeleteAudit: (auditId: number) => void;
-    handleCheckAllAudit: (audit: AuditType) => void;
+    handleCheckAudit: (audit: AuditType) => void;
 }
 
-const AuditList: React.FC<AuditListProps> = ({audits, handleOpenModal, handleDeleteAudit, handleCheckAllAudit}) => {
+const AuditList: React.FC<AuditListProps> = ({audits, handleOpenModal, handleDeleteAudit, handleCheckAudit}) => {
     return (
         <div className="collection-object-container">
             <ul className="collection-object-list">
@@ -113,7 +113,7 @@ const AuditList: React.FC<AuditListProps> = ({audits, handleOpenModal, handleDel
                         audit={audit}
                         handleOpenModal={handleOpenModal}
                         handleDeleteAudit={handleDeleteAudit}
-                        onCheck={handleCheckAllAudit}
+                        onCheck={handleCheckAudit}
                     />
                 ))}
             </ul>
@@ -138,7 +138,7 @@ interface AuditCollectionViewProps {
         handleOpenModal: (audit?: AuditType) => void;
         audits: AuditType[];
         handleDeleteAudit: (auditId: number) => void;
-        handleCheckAllAudit: (audit: AuditType) => void;
+        handleCheckAudit: (audit: AuditType) => void;
     }
     pageNationItems: {
         pageNation: PageNationType | null;
@@ -164,7 +164,7 @@ export const AuditCollectionView: React.FC<AuditCollectionViewProps> = ({
         handleOpenModal,
         audits,
         handleDeleteAudit,
-        handleCheckAllAudit,
+        handleCheckAudit,
     },
     pageNationItems: {
         pageNation,
@@ -197,7 +197,7 @@ export const AuditCollectionView: React.FC<AuditCollectionViewProps> = ({
                     audits={audits}
                     handleOpenModal={handleOpenModal}
                     handleDeleteAudit={handleDeleteAudit}
-                    handleCheckAllAudit={handleCheckAllAudit}
+                    handleCheckAudit={handleCheckAudit}
                 />
                 <PageNation
                     pageNation={pageNation}

@@ -19,6 +19,7 @@ export const Audit: React.FC = () => {
         const {modalIsOpen: searchModalIsOpen, setModalIsOpen: setSearchModalIsOpen,} = useModal();
         const {
             initialAudit,
+            initialSearchAuditCondition,
             audits,
             setAudits,
             newAudit,
@@ -135,6 +136,29 @@ export const Audit: React.FC = () => {
         }
 
         const collectionView = () => {
+            const handleCheckAudit = (audit: AuditType) => {
+                const newAudit = audits.map((d) => {
+                    if (d.id === audit.id) {
+                        return {
+                            ...d,
+                            checked: !d.checked
+                        };
+                    }
+                    return d;
+                });
+                setAudits(newAudit);
+            }
+
+            const handleCheckAllAudit = () => {
+                const newAudits = audits.map((d) => {
+                    return {
+                        ...d,
+                        checked: !audits.every((d) => d.checked)
+                    };
+                });
+                setAudits(newAudits);
+            }
+
             const handleDeleteAudit = async (auditId: number) => {
                 try {
                     if (!window.confirm(`実行履歴ID:${auditId} を削除しますか？`)) return;
@@ -146,15 +170,6 @@ export const Audit: React.FC = () => {
                 }
             };
 
-            const handleCheckAllAudit = () => {
-                const newAudits = audits.map((d) => {
-                    return {
-                        ...d,
-                        checked: !audits.every((d) => d.checked)
-                    };
-                });
-                setAudits(newAudits);
-            }
             const handleDeleteCheckedCollection = async () => {
                 const checkedAudits = audits.filter((d) => d.checked);
                 if (!checkedAudits.length) {
@@ -190,7 +205,7 @@ export const Audit: React.FC = () => {
                             handleOpenModal,
                             audits,
                             handleDeleteAudit,
-                            handleCheckAllAudit,
+                            handleCheckAudit,
                         }}
                         pageNationItems={{
                             pageNation: pageNation,

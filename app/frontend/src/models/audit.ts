@@ -35,9 +35,9 @@ type Process = {
 };
 
 export type SearchAuditConditionType = {
-    processType: ApplicationExecutionProcessType;
-    processFlag: ApplicationExecutionProcessFlag;
-    type: ApplicationExecutionHistoryType;
+    processType?: ApplicationExecutionProcessType;
+    processFlag?: ApplicationExecutionProcessFlag;
+    type?: ApplicationExecutionHistoryType;
 }
 
 export type AuditType = {
