@@ -17,7 +17,6 @@ export const Audit: React.FC = () => {
         const {pageNation, setPageNation, condition, setCondition} = usePageNation<SearchAuditConditionType>();
         const {modalIsOpen, setModalIsOpen, isEditing, setIsEditing, setEditId, Modal} = useModal();
         const {modalIsOpen: searchModalIsOpen, setModalIsOpen: setSearchModalIsOpen,} = useModal();
-
         const {
             initialAudit,
             audits,
@@ -28,7 +27,6 @@ export const Audit: React.FC = () => {
             setSearchAuditCondition,
             auditService
         } = useAudit();
-
         const fetchAudits = useFetchAudits(
             setLoading,
             setAudits,
@@ -62,53 +60,32 @@ export const Audit: React.FC = () => {
             setEditId(null);
         };
 
-        const collectionView = () => {
-            const handleCloseSearchModal = () => {
-                setSearchModalIsOpen(false);
+        const handleOpenSearchModal = () => {
+            setSearchModalIsOpen(true);
+        }
+
+        const handleCloseSearchModal = () => {
+            setSearchModalIsOpen(false);
+        }
+
+        const modalView = () => {
+            const editModal = () => {
+                return (
+                    <Modal
+                        isOpen={modalIsOpen}
+                        onRequestClose={handleCloseModal}
+                        contentLabel="アプリケーション実行履歴情報を入力"
+                        className="modal"
+                        overlayClassName="modal-overlay"
+                        bodyOpenClassName="modal-open"
+                    >
+                        {singleView()}
+                    </Modal>
+                );
             }
 
-            const handleOpenSearchModal = () => {
-                setSearchModalIsOpen(true);
-            }
-
-            const handleDeleteAudit = async (auditId: number) => {
-                try {
-                    if (!window.confirm(`実行履歴ID:${auditId} を削除しますか？`)) return;
-                    await auditService.destroy(auditId);
-                    await fetchAudits.load(pageNation?.pageNum, searchAuditCondition);
-                    setMessage("アプリケーション実行履歴情報を削除しました。");
-                } catch (error: any) {
-                    showErrorMessage(`アプリケーション実行履歴情報の削除に失敗しました: ${error?.message}`, setError);
-                }
-            };
-
-            const handleCheckAllAudit = () => {
-                const newAudits = audits.map((d) => {
-                    return {
-                        ...d,
-                        checked: !audits.every((d) => d.checked)
-                    };
-                });
-                setAudits(newAudits);
-            }
-            const handleDeleteCheckedCollection = async () => {
-                const checkedAudits = audits.filter((d) => d.checked);
-                if (!checkedAudits.length) {
-                    setError("削除する履歴を選択してください。");
-                    return;
-                }
-
-                try {
-                    if (!window.confirm("選択した履歴を削除しますか？")) return;
-                    await Promise.all(checkedAudits.map((d) => auditService.destroy(d.id)));
-                    await fetchAudits.load(pageNation?.pageNum, searchAuditCondition);
-                    setMessage("選択した履歴を削除しました。");
-                } catch (error: any) {
-                    showErrorMessage(`選択した履歴の削除に失敗しました: ${error?.message}`, setError);
-                }
-            }
-            return (
-                <>
+            const searchModal = () => {
+                return (
                     <Modal
                         isOpen={searchModalIsOpen}
                         onRequestClose={handleCloseSearchModal}
@@ -147,16 +124,55 @@ export const Audit: React.FC = () => {
                             />
                         }
                     </Modal>
-                    <Modal
-                        isOpen={modalIsOpen}
-                        onRequestClose={handleCloseModal}
-                        contentLabel="アプリケーション実行履歴情報を入力"
-                        className="modal"
-                        overlayClassName="modal-overlay"
-                        bodyOpenClassName="modal-open"
-                    >
-                        {singleView()}
-                    </Modal>
+                )
+            }
+            return (
+                <>
+                    {searchModal()}
+                    {editModal()}
+                </>
+            );
+        }
+
+        const collectionView = () => {
+            const handleDeleteAudit = async (auditId: number) => {
+                try {
+                    if (!window.confirm(`実行履歴ID:${auditId} を削除しますか？`)) return;
+                    await auditService.destroy(auditId);
+                    await fetchAudits.load(pageNation?.pageNum, searchAuditCondition);
+                    setMessage("アプリケーション実行履歴情報を削除しました。");
+                } catch (error: any) {
+                    showErrorMessage(`アプリケーション実行履歴情報の削除に失敗しました: ${error?.message}`, setError);
+                }
+            };
+
+            const handleCheckAllAudit = () => {
+                const newAudits = audits.map((d) => {
+                    return {
+                        ...d,
+                        checked: !audits.every((d) => d.checked)
+                    };
+                });
+                setAudits(newAudits);
+            }
+            const handleDeleteCheckedCollection = async () => {
+                const checkedAudits = audits.filter((d) => d.checked);
+                if (!checkedAudits.length) {
+                    setError("削除する履歴を選択してください。");
+                    return;
+                }
+
+                try {
+                    if (!window.confirm("選択した履歴を削除しますか？")) return;
+                    await Promise.all(checkedAudits.map((d) => auditService.destroy(d.id)));
+                    await fetchAudits.load(pageNation?.pageNum, searchAuditCondition);
+                    setMessage("選択した履歴を削除しました。");
+                } catch (error: any) {
+                    showErrorMessage(`選択した履歴の削除に失敗しました: ${error?.message}`, setError);
+                }
+            }
+
+            return (
                     <AuditCollectionView
                         error={error}
                         message={message}
@@ -182,7 +198,6 @@ export const Audit: React.FC = () => {
                             fetchAudits: fetchAudits.load
                         }}
                     />
-                </>
             );
         };
 
@@ -204,7 +219,10 @@ export const Audit: React.FC = () => {
                 {loading ? (
                     <LoadingIndicator/>
                 ) : (
-                    collectionView()
+                    <>
+                        {modalView()}
+                        {collectionView()}
+                    </>
                 )}
             </>
         );
