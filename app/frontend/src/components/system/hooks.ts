@@ -117,13 +117,16 @@ export const useFetchAudits = (
     showErrorMessage: (message: string, callback: (error: string) => void) => void,
     service: AuditServiceType) => {
 
-    const load = async (page: number = 1): Promise<void> => {
-        const ERROR_MESSAGE = "監査情報の取得に失敗しました:";
+    const load = async (page: number = 1, condition?: searchAuditCondition): Promise<void> => {
+        const ERROR_MESSAGE = "アプリケーション実行履歴情報の取得に失敗しました:";
         setLoading(true);
 
         try {
-            const fetchedAudits = await service.select(page);
-            const {list, ...pagination} = fetchedAudits;
+            const fetchAudits = async (condition?: searchAuditCondition, page: number = 1) => {
+                return condition ? service.search(condition, page) : service.select(page);
+            };
+
+            const { list, ...pagination } = await fetchAudits(condition, page);
 
             setList(list);
             setPageNation(pagination);

@@ -114,6 +114,7 @@ interface AuditCollectionViewProps {
     handleCheckToggleCollection: () => void;
     handleDeleteCheckedCollection: () => void;
     pageNation: PageNationType | null;
+    condition: searchAuditCondition | null;
 }
 
 export const AuditCollectionView: React.FC<AuditCollectionViewProps> = ({
@@ -129,7 +130,8 @@ export const AuditCollectionView: React.FC<AuditCollectionViewProps> = ({
     handleCheckAllAudit,
     handleCheckToggleCollection,
     handleDeleteCheckedCollection,
-    pageNation
+    pageNation,
+    condition
 }) => (
     <div className="collection-view-object-container">
         <Message error={error} message={message}/>
@@ -159,7 +161,7 @@ export const AuditCollectionView: React.FC<AuditCollectionViewProps> = ({
                     handleDeleteAudit={handleDeleteAudit}
                     handleCheckAllAudit={handleCheckAllAudit}
                 />
-                <PageNation pageNation={pageNation} callBack={fetchAudits}/>
+                <PageNation pageNation={pageNation} callBack={fetchAudits} condition={condition}/>
             </div>
         </div>
     </div>

@@ -6,7 +6,7 @@ export interface AuditServiceType {
     select: (page?: number, pageSize?: number) => Promise<any>;
     find: (id: number) => Promise<AuditType>;
     destroy: (id: number) => Promise<void>;
-    search: (condition: searchAuditCondition) => Promise<any>;
+    search: (condition: searchAuditCondition, page?: number, pageSize?: number) => Promise<any>;
 }
 
 export const AuditService = (): AuditServiceType => {
@@ -37,8 +37,15 @@ export const AuditService = (): AuditServiceType => {
         return await apiUtils.fetchDelete(url);
     };
 
-    const search = async (condition: searchAuditCondition): Promise<AuditType[]> => {
-        const url = `${endPoint}/search`;
+    const search = async (condition: searchAuditCondition, page?: number, pageSize?: number): Promise<AuditType[]> => {
+        let url = `${endPoint}/search`;
+        if (pageSize && page) {
+            url = `${url}?pageSize=${pageSize}&page=${page}`;
+        } else if (pageSize) {
+            url = `${url}?pageSize=${pageSize}`;
+        } else if (page) {
+            url = `${url}?page=${page}`;
+        }
 
         const mapToAuditResource = (condition: searchAuditCondition) => {
             // プロパティが空文字の場合、その項目を除外する関数
