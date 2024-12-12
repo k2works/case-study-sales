@@ -1,12 +1,12 @@
 import Config from "./config";
 import Utils from "./utils";
-import {AuditType, searchAuditCondition} from "../models/audit.ts";
+import {AuditType, SearchAuditConditionType} from "../models/audit.ts";
 
 export interface AuditServiceType {
     select: (page?: number, pageSize?: number) => Promise<any>;
     find: (id: number) => Promise<AuditType>;
     destroy: (id: number) => Promise<void>;
-    search: (condition: searchAuditCondition, page?: number, pageSize?: number) => Promise<any>;
+    search: (condition: SearchAuditConditionType, page?: number, pageSize?: number) => Promise<any>;
 }
 
 export const AuditService = (): AuditServiceType => {
@@ -37,7 +37,7 @@ export const AuditService = (): AuditServiceType => {
         return await apiUtils.fetchDelete(url);
     };
 
-    const search = async (condition: searchAuditCondition, page?: number, pageSize?: number): Promise<AuditType[]> => {
+    const search = async (condition: SearchAuditConditionType, page?: number, pageSize?: number): Promise<AuditType[]> => {
         let url = `${endPoint}/search`;
         if (pageSize && page) {
             url = `${url}?pageSize=${pageSize}&page=${page}`;
@@ -47,7 +47,7 @@ export const AuditService = (): AuditServiceType => {
             url = `${url}?page=${page}`;
         }
 
-        const mapToAuditResource = (condition: searchAuditCondition) => {
+        const mapToAuditResource = (condition: SearchAuditConditionType) => {
             // プロパティが空文字の場合、その項目を除外する関数
             const isEmpty = (value: unknown) => value === "" || value === null || value === undefined;
 

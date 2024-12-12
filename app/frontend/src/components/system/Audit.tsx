@@ -3,7 +3,7 @@ import {useMessage} from "../application/Message.tsx";
 import {usePageNation} from "../../views/application/PageNation.tsx";
 import {useModal} from "../application/hooks.ts";
 import {useAudit, useFetchAudits} from "./hooks.ts";
-import {AuditType, searchAuditCondition} from "../../models/audit.ts";
+import {AuditType, SearchAuditConditionType} from "../../models/audit.ts";
 import {SiteLayout} from "../../views/SiteLayout.tsx";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
 import {AuditCollectionView} from "../../views/system/AuditCollection.tsx";
@@ -14,7 +14,7 @@ export const Audit: React.FC = () => {
     const Content: React.FC = () => {
         const [loading, setLoading] = useState<boolean>(false);
         const {message, setMessage, error, setError, showErrorMessage} = useMessage();
-        const {pageNation, setPageNation, condition, setCondition} = usePageNation<searchAuditCondition>();
+        const {pageNation, setPageNation, condition, setCondition} = usePageNation<SearchAuditConditionType>();
         const {modalIsOpen, setModalIsOpen, isEditing, setIsEditing, setEditId, Modal} = useModal();
         const {modalIsOpen: searchModalIsOpen, setModalIsOpen: setSearchModalIsOpen,} = useModal();
 
@@ -145,7 +145,6 @@ export const Audit: React.FC = () => {
                                     }
                                     setLoading(true);
                                     try {
-                                        //TODO: ページネーションの実装
                                         const fetchedAudit = await auditService.search(searchAuditCondition);
                                         setAudits(fetchedAudit ? fetchedAudit.list : []);
                                         setCondition(searchAuditCondition);

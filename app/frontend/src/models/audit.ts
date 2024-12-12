@@ -34,7 +34,7 @@ type Process = {
     code: string;
 };
 
-export type searchAuditCondition = {
+export type SearchAuditConditionType = {
     processType: ApplicationExecutionProcessType;
     processFlag: ApplicationExecutionProcessFlag;
     type: ApplicationExecutionHistoryType;

@@ -3,15 +3,15 @@ import {
     ApplicationExecutionHistoryType,
     ApplicationExecutionProcessFlag,
     ApplicationExecutionProcessType,
-    searchAuditCondition
+    SearchAuditConditionType
 } from "../../models/audit.ts";
 import {FormSelect, SingleViewHeaderItem} from "../Common.tsx";
 
 
 interface AuditSearchSingleViewProps {
-    condition: searchAuditCondition,
-    setCondition:(condition: searchAuditCondition) => void,
-    handleSelect: (condition: searchAuditCondition) => Promise<void>,
+    condition: SearchAuditConditionType,
+    setCondition:(condition: SearchAuditConditionType) => void,
+    handleSelect: (condition: SearchAuditConditionType) => Promise<void>,
     handleClose: () => void
 }
 

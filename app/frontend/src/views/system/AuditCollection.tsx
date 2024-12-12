@@ -3,13 +3,13 @@ import {PageNation, PageNationType} from "../application/PageNation.tsx";
 import {Message} from "../../components/application/Message.tsx";
 import {
     AuditType,
-    searchAuditCondition
+    SearchAuditConditionType
 } from "../../models/audit.ts";
 import {convertToDateTimeInputFormat} from "../../components/application/utils.ts";
 
 interface SearchInputProps {
-    searchAuditCondition: searchAuditCondition;
-    setSearchAuditCondition: (value: searchAuditCondition) => void;
+    searchAuditCondition: SearchAuditConditionType;
+    setSearchAuditCondition: (value: SearchAuditConditionType) => void;
     handleSearchAudit: () => void;
 }
 
@@ -103,8 +103,8 @@ const AuditList: React.FC<AuditListProps> = ({audits, handleOpenModal, handleDel
 interface AuditCollectionViewProps {
     error: string | null;
     message: string | null;
-    searchAuditCondition: searchAuditCondition;
-    setSearchAuditCondition: (value: searchAuditCondition) => void;
+    searchAuditCondition: SearchAuditConditionType;
+    setSearchAuditCondition: (value: SearchAuditConditionType) => void;
     handleSearchAudit: () => void;
     handleOpenModal: (audit?: AuditType) => void;
     audits: AuditType[];
@@ -114,7 +114,7 @@ interface AuditCollectionViewProps {
     handleCheckToggleCollection: () => void;
     handleDeleteCheckedCollection: () => void;
     pageNation: PageNationType | null;
-    condition: searchAuditCondition | null;
+    condition: SearchAuditConditionType | null;
 }
 
 export const AuditCollectionView: React.FC<AuditCollectionViewProps> = ({
