@@ -6,17 +6,14 @@ import {
     SearchAuditConditionType
 } from "../../models/audit.ts";
 import {convertToDateTimeInputFormat} from "../../components/application/utils.ts";
-import {FaTimes} from "react-icons/fa";
-import {RotateLoader} from "react-spinners";
-import {FaRotate} from "react-icons/fa6";
 
-interface SearchInputProps {
+interface SearchProps {
     searchAuditCondition: SearchAuditConditionType;
     setSearchAuditCondition: (value: SearchAuditConditionType) => void;
     handleSearchAudit: () => void;
 }
 
-const SearchInput: React.FC<SearchInputProps> = ({handleSearchAudit}) => {
+const Search: React.FC<SearchProps> = ({handleSearchAudit}) => {
     return (
         <div className="search-container">
             <div className="single-view-content-item-form">
@@ -29,6 +26,27 @@ const SearchInput: React.FC<SearchInputProps> = ({handleSearchAudit}) => {
         </div>
     );
 };
+
+interface MenuButtonProps {
+    handleReloadCollection: () => void;
+    handleCheckToggleCollection: () => void;
+    handleDeleteCheckedCollection: () => void;
+}
+const MenuButton: React.FC<MenuButtonProps> = ({handleReloadCollection, handleCheckToggleCollection, handleDeleteCheckedCollection}) => {
+    return (
+        <div className="button-container">
+            <button className="action-button" onClick={() => handleReloadCollection()} id="reload">
+                再読込
+            </button>
+            <button className="action-button" onClick={() => handleCheckToggleCollection()} id="checkAll">
+                一括選択
+            </button>
+            <button className="action-button" onClick={() => handleDeleteCheckedCollection()} id="deleteAll">
+                一括削除
+            </button>
+        </div>
+    );
+}
 
 interface AuditListItemProps {
     audit: AuditType;
@@ -106,37 +124,53 @@ const AuditList: React.FC<AuditListProps> = ({audits, handleOpenModal, handleDel
 interface AuditCollectionViewProps {
     error: string | null;
     message: string | null;
-    searchAuditCondition: SearchAuditConditionType;
-    setSearchAuditCondition: (value: SearchAuditConditionType) => void;
-    handleSearchAudit: () => void;
-    handleOpenModal: (audit?: AuditType) => void;
-    audits: AuditType[];
-    handleDeleteAudit: (auditId: number) => void;
-    fetchAudits: () => void;
-    handleReloadCollection: () => void;
-    handleCheckAllAudit: (audit: AuditType) => void;
-    handleCheckToggleCollection: () => void;
-    handleDeleteCheckedCollection: () => void;
-    pageNation: PageNationType | null;
-    condition: SearchAuditConditionType | null;
+    searchItems: {
+        searchAuditCondition: SearchAuditConditionType;
+        setSearchAuditCondition: (value: SearchAuditConditionType) => void;
+        handleSearchAudit: () => void;
+    }
+    menuButtonItems: {
+        handleReloadCollection: () => void;
+        handleCheckToggleCollection: () => void;
+        handleDeleteCheckedCollection: () => void;
+    }
+    collectionItems: {
+        handleOpenModal: (audit?: AuditType) => void;
+        audits: AuditType[];
+        handleDeleteAudit: (auditId: number) => void;
+        handleCheckAllAudit: (audit: AuditType) => void;
+    }
+    pageNationItems: {
+        pageNation: PageNationType | null;
+        condition: SearchAuditConditionType | null;
+        fetchAudits: () => void;
+    }
 }
 
 export const AuditCollectionView: React.FC<AuditCollectionViewProps> = ({
     error,
     message,
-    searchAuditCondition,
-    setSearchAuditCondition,
-    handleSearchAudit,
-    handleOpenModal,
-    audits,
-    handleDeleteAudit,
-    fetchAudits,
-    handleReloadCollection,
-    handleCheckAllAudit,
-    handleCheckToggleCollection,
-    handleDeleteCheckedCollection,
-    pageNation,
-    condition
+    searchItems: {
+        searchAuditCondition,
+        setSearchAuditCondition,
+        handleSearchAudit,
+    },
+    menuButtonItems: {
+        handleReloadCollection,
+        handleCheckToggleCollection,
+        handleDeleteCheckedCollection,
+    },
+    collectionItems: {
+        handleOpenModal,
+        audits,
+        handleDeleteAudit,
+        handleCheckAllAudit,
+    },
+    pageNationItems: {
+        pageNation,
+        condition,
+        fetchAudits
+    }
 }) => (
     <div className="collection-view-object-container">
         <Message error={error} message={message}/>
@@ -149,29 +183,27 @@ export const AuditCollectionView: React.FC<AuditCollectionViewProps> = ({
                 </div>
             </div>
             <div className="collection-view-content">
-                <SearchInput
+                <Search
                     searchAuditCondition={searchAuditCondition}
                     setSearchAuditCondition={setSearchAuditCondition}
                     handleSearchAudit={handleSearchAudit}
                 />
-                <div className="button-container">
-                    <button className="action-button" onClick={() => handleReloadCollection()} id="reload">
-                        再読込
-                    </button>
-                    <button className="action-button" onClick={() => handleCheckToggleCollection()} id="checkAll">
-                        一括選択
-                    </button>
-                    <button className="action-button" onClick={() => handleDeleteCheckedCollection()} id="deleteAll">
-                        一括削除
-                    </button>
-                </div>
+                <MenuButton
+                    handleReloadCollection={handleReloadCollection}
+                    handleCheckToggleCollection={handleCheckToggleCollection}
+                    handleDeleteCheckedCollection={handleDeleteCheckedCollection}
+                />
                 <AuditList
                     audits={audits}
                     handleOpenModal={handleOpenModal}
                     handleDeleteAudit={handleDeleteAudit}
                     handleCheckAllAudit={handleCheckAllAudit}
                 />
-                <PageNation pageNation={pageNation} callBack={fetchAudits} condition={condition}/>
+                <PageNation
+                    pageNation={pageNation}
+                    callBack={fetchAudits}
+                    condition={condition}
+                />
             </div>
         </div>
     </div>

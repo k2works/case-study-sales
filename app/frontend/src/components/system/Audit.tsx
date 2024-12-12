@@ -86,19 +86,6 @@ export const Audit: React.FC = () => {
                 }
             };
 
-            const handleCheckAudit = (audit: AuditType) => {
-                const newAudit = audits.map((d) => {
-                    if (d.id === audit.id) {
-                        return {
-                            ...d,
-                            checked: !d.checked
-                        };
-                    }
-                    return d;
-                });
-                setAudits(newAudit);
-            }
-
             const handleCheckAllAudit = () => {
                 const newAudits = audits.map((d) => {
                     return {
@@ -177,19 +164,27 @@ export const Audit: React.FC = () => {
                     <AuditCollectionView
                         error={error}
                         message={message}
-                        searchAuditCondition={searchAuditCondition}
-                        setSearchAuditCondition={setSearchAuditCondition}
-                        handleSearchAudit={handleSearchAudit}
-                        handleOpenModal={handleOpenModal}
-                        audits={audits}
-                        handleDeleteAudit={handleDeleteAudit}
-                        fetchAudits={fetchAudits.load}
-                        handleReloadCollection={fetchAudits.load}
-                        handleCheckAllAudit={handleCheckAudit}
-                        handleCheckToggleCollection={handleCheckAllAudit}
-                        handleDeleteCheckedCollection={handleDeleteCheckedCollection}
-                        pageNation={pageNation}
-                        condition={condition}
+                        searchItems={{
+                            searchAuditCondition,
+                            setSearchAuditCondition,
+                            handleSearchAudit,
+                        }}
+                        menuButtonItems={{
+                            handleReloadCollection: fetchAudits.load,
+                            handleCheckToggleCollection: handleCheckAllAudit,
+                            handleDeleteCheckedCollection,
+                        }}
+                        collectionItems={{
+                            handleOpenModal,
+                            audits,
+                            handleDeleteAudit,
+                            handleCheckAllAudit,
+                        }}
+                        pageNationItems={{
+                            pageNation: pageNation,
+                            condition: condition,
+                            fetchAudits: fetchAudits.load
+                        }}
                     />
                 </>
             );
