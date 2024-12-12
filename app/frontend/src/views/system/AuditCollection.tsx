@@ -127,7 +127,7 @@ interface AuditCollectionViewProps {
     searchItems: {
         searchAuditCondition: SearchAuditConditionType;
         setSearchAuditCondition: (value: SearchAuditConditionType) => void;
-        handleSearchAudit: () => void;
+        handleOpenSearchModal: () => void;
     }
     menuButtonItems: {
         handleReloadCollection: () => void;
@@ -153,7 +153,7 @@ export const AuditCollectionView: React.FC<AuditCollectionViewProps> = ({
     searchItems: {
         searchAuditCondition,
         setSearchAuditCondition,
-        handleSearchAudit,
+        handleOpenSearchModal,
     },
     menuButtonItems: {
         handleReloadCollection,
@@ -186,7 +186,7 @@ export const AuditCollectionView: React.FC<AuditCollectionViewProps> = ({
                 <Search
                     searchAuditCondition={searchAuditCondition}
                     setSearchAuditCondition={setSearchAuditCondition}
-                    handleSearchAudit={handleSearchAudit}
+                    handleSearchAudit={handleOpenSearchModal}
                 />
                 <MenuButton
                     handleReloadCollection={handleReloadCollection}

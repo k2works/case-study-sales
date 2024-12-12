@@ -71,10 +71,6 @@ export const Audit: React.FC = () => {
                 setSearchModalIsOpen(true);
             }
 
-            const handleSearchAudit = async () => {
-                handleOpenSearchModal();
-            };
-
             const handleDeleteAudit = async (auditId: number) => {
                 try {
                     if (!window.confirm(`実行履歴ID:${auditId} を削除しますか？`)) return;
@@ -167,7 +163,7 @@ export const Audit: React.FC = () => {
                         searchItems={{
                             searchAuditCondition,
                             setSearchAuditCondition,
-                            handleSearchAudit,
+                            handleOpenSearchModal,
                         }}
                         menuButtonItems={{
                             handleReloadCollection: fetchAudits.load,
