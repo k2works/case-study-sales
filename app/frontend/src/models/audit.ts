@@ -51,3 +51,24 @@ export type AuditType = {
     user: UserAccountType;
     checked: boolean;
 };
+
+export const mapToAuditSearchResource = (condition: SearchAuditConditionType) => {
+    const isEmpty = (value: unknown) => value === "" || value === null || value === undefined;
+    type Resource = {
+        process?: {
+            processType?: string;
+        };
+        processFlag?: string;
+        type?: string;
+    };
+    const resource: Resource = {
+        ...(isEmpty(condition.processFlag) ? {} : { processFlag: condition.processFlag }),
+        process: {
+            ...(isEmpty(condition.processType) ? {} : { processType: condition.processType }),
+        },
+        ...(isEmpty(condition.type) ? {} : { type: condition.type }),
+    };
+
+    return resource;
+};
+

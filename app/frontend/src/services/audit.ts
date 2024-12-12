@@ -1,6 +1,6 @@
 import Config from "./config";
 import Utils from "./utils";
-import {AuditType, SearchAuditConditionType} from "../models/audit.ts";
+import {AuditType, mapToAuditSearchResource, SearchAuditConditionType} from "../models/audit.ts";
 
 export interface AuditServiceType {
     select: (page?: number, pageSize?: number) => Promise<any>;
@@ -47,22 +47,7 @@ export const AuditService = (): AuditServiceType => {
             url = `${url}?page=${page}`;
         }
 
-        const mapToAuditResource = (condition: SearchAuditConditionType) => {
-            // プロパティが空文字の場合、その項目を除外する関数
-            const isEmpty = (value: unknown) => value === "" || value === null || value === undefined;
-
-            const resource: any = {
-                ...(isEmpty(condition.processFlag) ? {} : { processFlag: condition.processFlag }),
-                process: {
-                    ...(isEmpty(condition.processType) ? {} : { processType: condition.processType }),
-                },
-                ...(isEmpty(condition.type) ? {} : { type: condition.type }),
-            };
-
-            return resource;
-        };
-
-        return await apiUtils.fetchPost(url, mapToAuditResource(condition));
+        return await apiUtils.fetchPost(url, mapToAuditSearchResource(condition));
     };
 
     return {
