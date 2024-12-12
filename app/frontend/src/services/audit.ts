@@ -14,40 +14,29 @@ export const AuditService = (): AuditServiceType => {
     const apiUtils = Utils.apiUtils;
     const endPoint = `${config.apiUrl}/audits`;
 
-    const select = async (page?: number, pageSize?: number): Promise<AuditType[]> => {
-        let url = endPoint;
-        if (pageSize && page) {
-            url = `${url}?pageSize=${pageSize}&page=${page}`;
-        } else if (pageSize) {
-            url = `${url}?pageSize=${pageSize}`;
-        } else if (page) {
-            url = `${url}?page=${page}`;
-        }
-
-        return await apiUtils.fetchGet(url);
+    const buildUrlWithPaging = (baseUrl: string, page?: number, pageSize?: number): string => {
+        const params = new URLSearchParams();
+        if (pageSize) params.append("pageSize", pageSize.toString());
+        if (page) params.append("page", page.toString());
+        return params.toString() ? `${baseUrl}?${params.toString()}` : baseUrl;
     };
 
-    const find = async (id: number): Promise<AuditType> => {
-        const url = `${endPoint}/${id}`;
-        return await apiUtils.fetchGet(url);
+    const select = (page?: number, pageSize?: number): Promise<AuditType[]> => {
+        const url = buildUrlWithPaging(endPoint, page, pageSize);
+        return apiUtils.fetchGet(url);
     };
 
-    const destroy = async (id: number): Promise<void> => {
-        const url = `${endPoint}/${id}`;
-        return await apiUtils.fetchDelete(url);
+    const find = (id: number): Promise<AuditType> => {
+        return apiUtils.fetchGet(`${endPoint}/${id}`);
     };
 
-    const search = async (condition: SearchAuditConditionType, page?: number, pageSize?: number): Promise<AuditType[]> => {
-        let url = `${endPoint}/search`;
-        if (pageSize && page) {
-            url = `${url}?pageSize=${pageSize}&page=${page}`;
-        } else if (pageSize) {
-            url = `${url}?pageSize=${pageSize}`;
-        } else if (page) {
-            url = `${url}?page=${page}`;
-        }
+    const destroy = (id: number): Promise<void> => {
+        return apiUtils.fetchDelete(`${endPoint}/${id}`);
+    };
 
-        return await apiUtils.fetchPost(url, mapToAuditSearchResource(condition));
+    const search = (condition: SearchAuditConditionType, page?: number, pageSize?: number): Promise<AuditType[]> => {
+        const url = buildUrlWithPaging(`${endPoint}/search`, page, pageSize);
+        return apiUtils.fetchPost(url, mapToAuditSearchResource(condition));
     };
 
     return {
