@@ -6,6 +6,9 @@ import {
     SearchAuditConditionType
 } from "../../models/audit.ts";
 import {convertToDateTimeInputFormat} from "../../components/application/utils.ts";
+import {FaTimes} from "react-icons/fa";
+import {RotateLoader} from "react-spinners";
+import {FaRotate} from "react-icons/fa6";
 
 interface SearchInputProps {
     searchAuditCondition: SearchAuditConditionType;
@@ -110,6 +113,7 @@ interface AuditCollectionViewProps {
     audits: AuditType[];
     handleDeleteAudit: (auditId: number) => void;
     fetchAudits: () => void;
+    handleReloadCollection: () => void;
     handleCheckAllAudit: (audit: AuditType) => void;
     handleCheckToggleCollection: () => void;
     handleDeleteCheckedCollection: () => void;
@@ -127,6 +131,7 @@ export const AuditCollectionView: React.FC<AuditCollectionViewProps> = ({
     audits,
     handleDeleteAudit,
     fetchAudits,
+    handleReloadCollection,
     handleCheckAllAudit,
     handleCheckToggleCollection,
     handleDeleteCheckedCollection,
@@ -138,7 +143,9 @@ export const AuditCollectionView: React.FC<AuditCollectionViewProps> = ({
         <div className="collection-view-container">
             <div className="collection-view-header">
                 <div className="single-view-header-item">
-                    <h1 className="single-view-title">アプリケーション実行履歴</h1>
+                    <h1 className="single-view-title">
+                        アプリケーション実行履歴
+                    </h1>
                 </div>
             </div>
             <div className="collection-view-content">
@@ -148,6 +155,9 @@ export const AuditCollectionView: React.FC<AuditCollectionViewProps> = ({
                     handleSearchAudit={handleSearchAudit}
                 />
                 <div className="button-container">
+                    <button className="action-button" onClick={() => handleReloadCollection()} id="reload">
+                        再読込
+                    </button>
                     <button className="action-button" onClick={() => handleCheckToggleCollection()} id="checkAll">
                         一括選択
                     </button>

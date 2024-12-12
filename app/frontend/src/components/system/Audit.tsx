@@ -184,6 +184,7 @@ export const Audit: React.FC = () => {
                         audits={audits}
                         handleDeleteAudit={handleDeleteAudit}
                         fetchAudits={fetchAudits.load}
+                        handleReloadCollection={fetchAudits.load}
                         handleCheckAllAudit={handleCheckAudit}
                         handleCheckToggleCollection={handleCheckAllAudit}
                         handleDeleteCheckedCollection={handleDeleteCheckedCollection}
