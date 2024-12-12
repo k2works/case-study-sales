@@ -64,7 +64,6 @@ export const Audit: React.FC = () => {
 
         const collectionView = () => {
             const handleCloseSearchModal = () => {
-                setError("");
                 setSearchModalIsOpen(false);
             }
 
@@ -80,7 +79,7 @@ export const Audit: React.FC = () => {
                 try {
                     if (!window.confirm(`実行履歴ID:${auditId} を削除しますか？`)) return;
                     await auditService.destroy(auditId);
-                    await fetchAudits.load();
+                    await fetchAudits.load(pageNation?.pageNum, searchAuditCondition);
                     setMessage("アプリケーション実行履歴情報を削除しました。");
                 } catch (error: any) {
                     showErrorMessage(`アプリケーション実行履歴情報の削除に失敗しました: ${error?.message}`, setError);
@@ -119,7 +118,7 @@ export const Audit: React.FC = () => {
                 try {
                     if (!window.confirm("選択した履歴を削除しますか？")) return;
                     await Promise.all(checkedAudits.map((d) => auditService.destroy(d.id)));
-                    await fetchAudits.load();
+                    await fetchAudits.load(pageNation?.pageNum, searchAuditCondition);
                     setMessage("選択した履歴を削除しました。");
                 } catch (error: any) {
                     showErrorMessage(`選択した履歴の削除に失敗しました: ${error?.message}`, setError);
@@ -147,11 +146,14 @@ export const Audit: React.FC = () => {
                                     try {
                                         const fetchedAudit = await auditService.search(searchAuditCondition);
                                         setAudits(fetchedAudit ? fetchedAudit.list : []);
-                                        setCondition(searchAuditCondition);
-                                        setPageNation(fetchedAudit ? fetchedAudit: {});
-                                        setMessage("");
-                                        setError("");
-                                        handleCloseSearchModal();
+                                        if (fetchedAudit.list.length === 0) {
+                                            showErrorMessage(`検索結果は0件です`, setError);
+                                        } else {
+                                            setCondition(searchAuditCondition);
+                                            setPageNation(fetchedAudit ? fetchedAudit: {});
+                                            setMessage("");
+                                            setError("");
+                                        }
                                     } catch (error: any) {
                                         showErrorMessage(`実行履歴情報の検索に失敗しました: ${error?.message}`, setError);
                                     } finally {
