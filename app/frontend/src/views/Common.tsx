@@ -38,7 +38,7 @@ interface FormSelectProps<T> {
     id: string;
     label: string;
     className?: string;
-    value: T;
+    value?: T;
     options: { [key: string]: T };
     onChange: (value: T) => void;
     disabled?: boolean;
