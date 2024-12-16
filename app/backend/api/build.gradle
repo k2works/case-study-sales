@@ -88,6 +88,7 @@ dependencies {
 	implementation 'org.aspectj:aspectjrt:1.9.22'
 	implementation 'org.aspectj:aspectjtools:1.9.22'
 	implementation 'org.aspectj:aspectjweaver:1.9.22'
+	implementation 'com.opencsv:opencsv:5.8'
 }
 
 tasks.named('test') {

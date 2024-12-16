@@ -55,4 +55,17 @@ public class DepartmentEntityMapper {
                 employeeEntity.get職種コード()
         );
     }
+
+    public DepartmentDownloadCSV mapToCsvModel(Department department) {
+        return new DepartmentDownloadCSV(
+                department.getDepartmentId().getDeptCode().getValue(),
+                department.getDepartmentId().getDepartmentStartDate().getValue(),
+                department.getEndDate().getValue(),
+                department.getDepartmentName(),
+                department.getPath().getValue(),
+                department.getLowerType().getValue(),
+                department.getSlitYn().getValue(),
+                department.getLayer()
+        );
+    }
 }

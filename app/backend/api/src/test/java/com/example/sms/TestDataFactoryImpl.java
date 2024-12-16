@@ -127,6 +127,14 @@ public class TestDataFactoryImpl implements TestDataFactory {
         auditRepository.save(applicationExecutionHistory);
     }
 
+    @Override
+    public void setUpForDownloadService() {
+        departmentRepository.deleteAll();
+        departmentRepository.save(department("30000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門3"));
+        departmentRepository.save(department("40000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門4"));
+        departmentRepository.save(department("50000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門5"));
+    }
+
     private static User user() {
         return User.of("U999999", "$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK", "first", "last", RoleName.USER);
     }
