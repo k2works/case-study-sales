@@ -23,11 +23,11 @@ import java.io.OutputStreamWriter;
 @RestController
 @RequestMapping("/api/downloads")
 @Tag(name = "Download", description = "データダウンロード")
-public class downloadApiController {
+public class DownloadApiController {
     final DownloadService downloadService;
     final MessageSource messageSource;
 
-    public downloadApiController(DownloadService downloadService, MessageSource messageSource) {
+    public DownloadApiController(DownloadService downloadService, MessageSource messageSource) {
         this.downloadService = downloadService;
         this.messageSource = messageSource;
     }

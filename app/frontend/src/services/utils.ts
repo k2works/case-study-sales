@@ -115,12 +115,36 @@ const Utils = (() => {
             }
         };
 
+        const fetchPostDownload = async (url: string, body: any): Promise<any> => {
+            const config = Config();
+            try {
+                const res = await fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": config.authHeader
+                    },
+                    body: JSON.stringify(body)
+                });
+                if (!res.ok) {
+                    return res.blob().then(e => {
+                        throw e;
+                    });
+                }
+                return await res.blob();
+            } catch (err) {
+                console.log(err);
+                throw err;
+            }
+        };
+
         return {
             fetchGet,
             fetchPost,
             fetchPut,
             fetchDelete,
-            fetchGetDownload
+            fetchGetDownload,
+            fetchPostDownload
         };
     })();
 
