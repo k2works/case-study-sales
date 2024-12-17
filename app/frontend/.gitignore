@@ -26,6 +26,7 @@ dist-ssr
 .vercel
 
 frontend/cypress/screenshots
+frontend/cypress/downloads
 
 .env
 .env.*
