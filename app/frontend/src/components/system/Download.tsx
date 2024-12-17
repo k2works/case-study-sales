@@ -24,6 +24,10 @@ export const Download: React.FC = () => {
 
             try {
                 const condition = { target: selectedTarget };
+                const downloadCount = await downloadService.count(condition);
+                const isProceed = confirm(`${downloadCount}件ダウンロードします。よろしいですか？`);
+                if (!isProceed) return;
+
                 const blob = await downloadService.download(condition);
                 const currentDate = new Date().toISOString().split("T")[0];
                 const downloadFileName = `${selectedTarget.toLowerCase()}-${currentDate}.csv`;

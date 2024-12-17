@@ -21,7 +21,7 @@ export const DownloadService = (): DownloadServiceType => {
     const count = (condition: DownloadConditionType): Promise<number> => {
         const url = `${endPoint}/count`;
         const resource = mapToDownloadResource(condition);
-        return apiUtils.fetchPost(url, resource).then((response: { count: number }) => response.count);
+        return apiUtils.fetchPost(url, resource);
     };
 
     return {
