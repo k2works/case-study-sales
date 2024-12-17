@@ -9,7 +9,8 @@ import lombok.Getter;
 public enum DownloadTarget {
     DEPARTMENT("department"),
     EMPLOYEE("employee"),
-    PRODUCT_CATEGORY("product_category");
+    PRODUCT_CATEGORY("product_category"),
+    PRODUCT("product");
 
     private final String value;
 

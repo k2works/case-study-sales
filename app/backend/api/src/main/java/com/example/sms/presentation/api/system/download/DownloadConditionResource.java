@@ -25,6 +25,7 @@ public class DownloadConditionResource implements Serializable {
             case DEPARTMENT -> Department.of();
             case EMPLOYEE -> Employee.of();
             case PRODUCT_CATEGORY -> ProductCategory.of();
+            case PRODUCT -> Product.of();
         };
     }
 }

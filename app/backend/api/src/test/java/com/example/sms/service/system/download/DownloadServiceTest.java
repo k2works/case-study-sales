@@ -2,13 +2,11 @@ package com.example.sms.service.system.download;
 
 import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactory;
-import com.example.sms.domain.model.system.download.Department;
-import com.example.sms.domain.model.system.download.DownloadCondition;
-import com.example.sms.domain.model.system.download.Employee;
-import com.example.sms.domain.model.system.download.ProductCategory;
+import com.example.sms.domain.model.system.download.*;
+import com.example.sms.domain.type.product.*;
 import com.example.sms.infrastructure.datasource.master.department.DepartmentDownloadCSV;
 import com.example.sms.infrastructure.datasource.master.employee.EmployeeDownloadCSV;
-import com.example.sms.infrastructure.datasource.master.product.ProductCategoryDownloadCSV;
+import com.example.sms.infrastructure.datasource.master.product.ProductDownloadCSV;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -105,7 +103,7 @@ public class DownloadServiceTest {
         @Test
         @DisplayName("件数取得")
         void testCount() {
-            DownloadCondition condition = ProductCategory.of();
+            DownloadCondition condition = Product.of();
             int result = downloadService.count(condition);
 
             assertEquals(3, result);
@@ -114,20 +112,30 @@ public class DownloadServiceTest {
         @Test
         @DisplayName("データダウンロード変換")
         void testDownload() {
-            DownloadCondition condition = ProductCategory.of();
+            DownloadCondition condition = Product.of();
             List<?> rawResult = downloadService.convert(condition);
 
-            List<ProductCategoryDownloadCSV> result = rawResult.stream()
-                    .filter(ProductCategoryDownloadCSV.class::isInstance)
-                    .map(ProductCategoryDownloadCSV.class::cast)
+            List<ProductDownloadCSV> result = rawResult.stream()
+                    .filter(ProductDownloadCSV.class::isInstance)
+                    .map(ProductDownloadCSV.class::cast)
                     .toList();
 
             assertFalse(result.isEmpty());
-            assertEquals("00000001", result.getFirst().getProductCategoryCode());
-            assertEquals("カテゴリ3", result.getFirst().getProductCategoryName());
-            assertEquals(1, result.getFirst().getProductCategoryLevel());
-            assertEquals("2", result.getFirst().getProductCategoryPath());
-            assertEquals(3, result.getFirst().getIsBottomLayer());
+            assertEquals("99999999", result.getFirst().getProductCode());
+            assertEquals("商品1", result.getFirst().getProductFormalName());
+            assertEquals("商品1", result.getFirst().getProductAbbreviation());
+            assertEquals("ショウヒンイチ", result.getFirst().getProductNameKana());
+            assertEquals(ProductType.その他.getCode(), result.getFirst().getProductCategory());
+            assertEquals(900, result.getFirst().getSalesPrice().intValue());
+            assertEquals(810, result.getFirst().getPurchasePrice().intValue());
+            assertEquals(90, result.getFirst().getCostOfGoodsSold().intValue());
+            assertEquals(TaxType.その他.getCode(), result.getFirst().getTaxCategory());
+            assertEquals("カテゴリ9", result.getFirst().getProductCategoryCode());
+            assertEquals(MiscellaneousType.適用外.getCode(), result.getFirst().getMiscellaneousCategory());
+            assertEquals(StockManagementTargetType.対象.getCode(), result.getFirst().getInventoryManagementCategory());
+            assertEquals(StockAllocationType.引当済.getCode(), result.getFirst().getInventoryAllocationCategory());
+            assertEquals("サプライヤ9", result.getFirst().getSupplierCode());
+            assertEquals(9, result.getFirst().getSupplierBranchNumber());
         }
     }
 }

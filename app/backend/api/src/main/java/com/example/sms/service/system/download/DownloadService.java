@@ -3,10 +3,12 @@ package com.example.sms.service.system.download;
 import com.example.sms.domain.model.master.department.DepartmentList;
 import com.example.sms.domain.model.master.employee.EmployeeList;
 import com.example.sms.domain.model.master.product.ProductCategoryList;
+import com.example.sms.domain.model.master.product.ProductList;
 import com.example.sms.domain.model.system.download.DownloadCondition;
 import com.example.sms.infrastructure.datasource.master.department.DepartmentDownloadCSV;
 import com.example.sms.infrastructure.datasource.master.employee.EmployeeDownloadCSV;
 import com.example.sms.infrastructure.datasource.master.product.ProductCategoryDownloadCSV;
+import com.example.sms.infrastructure.datasource.master.product.ProductDownloadCSV;
 import org.springframework.stereotype.Service;
 
 import java.io.OutputStreamWriter;
@@ -22,11 +24,13 @@ public class DownloadService {
     private final DepartmentCSVRepository departmentCSVRepository;
     private final EmployeeCSVRepository employeeCSVRepository;
     private final ProductCategoryCSVRepository productCategoryCSVRepository;
+    private final ProductCSVRepository productCSVRepository;
 
-    public DownloadService(DepartmentCSVRepository departmentCSVRepository, EmployeeCSVRepository employeeCSVRepository, ProductCategoryCSVRepository productCategoryCSVRepository) {
+    public DownloadService(DepartmentCSVRepository departmentCSVRepository, EmployeeCSVRepository employeeCSVRepository, ProductCategoryCSVRepository productCategoryCSVRepository, ProductCSVRepository productCSVRepository) {
         this.departmentCSVRepository = departmentCSVRepository;
         this.employeeCSVRepository = employeeCSVRepository;
         this.productCategoryCSVRepository = productCategoryCSVRepository;
+        this.productCSVRepository = productCSVRepository;
     }
 
     /**
@@ -37,6 +41,7 @@ public class DownloadService {
             case DEPARTMENT -> countDepartments(condition);
             case EMPLOYEE -> countEmployees(condition);
             case PRODUCT_CATEGORY -> countProductCategories(condition);
+            case PRODUCT -> countProducts(condition);
         };
     }
 
@@ -48,6 +53,7 @@ public class DownloadService {
             case DEPARTMENT -> (List<T>) downloadDepartments(condition);
             case EMPLOYEE -> (List<T>) downloadEmployees(condition);
             case PRODUCT_CATEGORY -> (List<T>) downloadProductCategories(condition);
+            case PRODUCT -> (List<T>) downloadProducts(condition);
         };
     }
 
@@ -59,6 +65,7 @@ public class DownloadService {
             case DEPARTMENT -> writeCsv(DepartmentDownloadCSV.class).accept(streamWriter, convert(condition));
             case EMPLOYEE -> writeCsv(EmployeeDownloadCSV.class).accept(streamWriter, convert(condition));
             case PRODUCT_CATEGORY -> writeCsv(ProductCategoryDownloadCSV.class).accept(streamWriter, convert(condition));
+            case PRODUCT -> writeCsv(ProductDownloadCSV.class).accept(streamWriter, convert(condition));
         };
     }
 
@@ -84,6 +91,13 @@ public class DownloadService {
     }
 
     /**
+     * 商品ダウンロード件数取得
+     */
+    private int countProducts(DownloadCondition condition) {
+        return productCSVRepository.countBy(condition);
+    }
+
+    /**
      * 部門ダウンロード
      */
     private List<DepartmentDownloadCSV> downloadDepartments(DownloadCondition condition) {
@@ -105,5 +119,13 @@ public class DownloadService {
     private List<ProductCategoryDownloadCSV> downloadProductCategories(DownloadCondition condition) {
         ProductCategoryList productCategoryList = productCategoryCSVRepository.selectBy(condition);
         return productCategoryCSVRepository.convert(productCategoryList);
+    }
+
+    /**
+     * 商品ダウンロード
+     */
+    private List<ProductDownloadCSV> downloadProducts(DownloadCondition condition) {
+        ProductList productList = productCSVRepository.selectBy(condition);
+        return productCSVRepository.convert(productList);
     }
 }

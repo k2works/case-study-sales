@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+//TODO:製品型番追加
 @Component
 public class ProductEntityMapper {
     public 商品マスタ mapToEntity(Product product) {
@@ -114,6 +115,27 @@ public class ProductEntityMapper {
                 顧客別販売単価.get商品コード(),
                 顧客別販売単価.get取引先コード(),
                 顧客別販売単価.get販売単価()
+        );
+    }
+
+    public ProductDownloadCSV mapToCsvModel(Product product) {
+        return new ProductDownloadCSV(
+                product.getProductCode().getValue(),
+                product.getProductName().getProductFormalName(),
+                product.getProductName().getProductAbbreviation(),
+                product.getProductName().getProductNameKana(),
+                product.getProductType().getCode(),
+                "",
+                product.getSellingPrice().getAmount(),
+                product.getPurchasePrice().getAmount(),
+                product.getCostOfSales().getAmount(),
+                product.getTaxType().getCode(),
+                product.getProductCategoryCode().getValue(),
+                product.getMiscellaneousType().getCode(),
+                product.getStockManagementTargetType().getCode(),
+                product.getStockAllocationType().getCode(),
+                product.getSupplierCode().getValue(),
+                product.getSupplierCode().getBranchNumber()
         );
     }
 }
