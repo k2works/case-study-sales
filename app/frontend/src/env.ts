@@ -3,7 +3,7 @@ const Env = (() => {
     const isStaging = (): boolean => process.env.VITE_MODE === "staging";
     const prdApiUrl = ((): string => {
         if (isProduction()) {
-            return process.env.VITE_API_URL as string;
+            return process.env.VITE_APP_API_URL as string;
         }
         return "" as string
     })();
