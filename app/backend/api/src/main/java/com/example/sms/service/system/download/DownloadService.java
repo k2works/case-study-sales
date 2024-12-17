@@ -10,7 +10,6 @@ import com.example.sms.infrastructure.datasource.master.employee.EmployeeDownloa
 import com.example.sms.infrastructure.datasource.master.product.ProductCategoryDownloadCSV;
 import com.example.sms.infrastructure.datasource.master.product.ProductDownloadCSV;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -62,18 +61,6 @@ public class DownloadService {
     }
 
     /**
-     * ダウンロード変換
-     */
-    public <T> List<T> convert(DownloadCondition condition) {
-        return switch (condition.getTarget()) {
-            case DEPARTMENT -> (List<T>) downloadDepartments(condition);
-            case EMPLOYEE -> (List<T>) downloadEmployees(condition);
-            case PRODUCT_CATEGORY -> (List<T>) downloadProductCategories(condition);
-            case PRODUCT -> (List<T>) downloadProducts(condition);
-        };
-    }
-
-    /**
      * ダウンロード
      */
     public void download(OutputStreamWriter streamWriter, DownloadCondition condition) throws Exception {
@@ -82,6 +69,18 @@ public class DownloadService {
             case EMPLOYEE -> writeCsv(EmployeeDownloadCSV.class).accept(streamWriter, convert(condition));
             case PRODUCT_CATEGORY -> writeCsv(ProductCategoryDownloadCSV.class).accept(streamWriter, convert(condition));
             case PRODUCT -> writeCsv(ProductDownloadCSV.class).accept(streamWriter, convert(condition));
+        };
+    }
+
+    /**
+     * ダウンロード変換
+     */
+    public <T> List<T> convert(DownloadCondition condition) {
+        return switch (condition.getTarget()) {
+            case DEPARTMENT -> (List<T>) convertDepartments(condition);
+            case EMPLOYEE -> (List<T>) convertEmployees(condition);
+            case PRODUCT_CATEGORY -> (List<T>) convertProductCategories(condition);
+            case PRODUCT -> (List<T>) convertProducts(condition);
         };
     }
 
@@ -116,7 +115,7 @@ public class DownloadService {
     /**
      * 部門ダウンロード
      */
-    private List<DepartmentDownloadCSV> downloadDepartments(DownloadCondition condition) {
+    private List<DepartmentDownloadCSV> convertDepartments(DownloadCondition condition) {
         DepartmentList departmentList = departmentCSVRepository.selectBy(condition);
         return departmentCSVRepository.convert(departmentList);
     }
@@ -124,7 +123,7 @@ public class DownloadService {
     /**
      * 社員ダウンロード
      */
-    private List<EmployeeDownloadCSV> downloadEmployees(DownloadCondition condition) {
+    private List<EmployeeDownloadCSV> convertEmployees(DownloadCondition condition) {
         EmployeeList employeeList = employeeCSVRepository.selectBy(condition);
         return employeeCSVRepository.convert(employeeList);
     }
@@ -132,7 +131,7 @@ public class DownloadService {
     /**
      * 商品カテゴリダウンロード
      */
-    private List<ProductCategoryDownloadCSV> downloadProductCategories(DownloadCondition condition) {
+    private List<ProductCategoryDownloadCSV> convertProductCategories(DownloadCondition condition) {
         ProductCategoryList productCategoryList = productCategoryCSVRepository.selectBy(condition);
         return productCategoryCSVRepository.convert(productCategoryList);
     }
@@ -140,7 +139,7 @@ public class DownloadService {
     /**
      * 商品ダウンロード
      */
-    private List<ProductDownloadCSV> downloadProducts(DownloadCondition condition) {
+    private List<ProductDownloadCSV> convertProducts(DownloadCondition condition) {
         ProductList productList = productCSVRepository.selectBy(condition);
         return productCSVRepository.convert(productList);
     }
