@@ -1,4 +1,4 @@
-import {DownloadTarget} from "../../models/download.ts";
+import {DownloadTarget, getKeyBySymbol} from "../../models/download.ts";
 import React from "react";
 import {Message} from "../../components/application/Message.tsx";
 
@@ -22,10 +22,10 @@ const Form: React.FC<FormProps> = ({selectedTarget, setSelectedTarget}) => {
                 <option value="" disabled>
                     対象を選択してください
                 </option>
-                <option value={DownloadTarget.DEPARTMENT}>部門</option>
-                <option value={DownloadTarget.EMPLOYEE}>社員</option>
-                <option value={DownloadTarget.PRODUCT_CATEGORY}>商品分類</option>
-                <option value={DownloadTarget.PRODUCT}>商品</option>
+                <option value={DownloadTarget.部門}>{getKeyBySymbol(DownloadTarget.部門)}</option>
+                <option value={DownloadTarget.社員}>{getKeyBySymbol(DownloadTarget.社員)}</option>
+                <option value={DownloadTarget.商品分類}>{getKeyBySymbol(DownloadTarget.商品分類)}</option>
+                <option value={DownloadTarget.商品}>{getKeyBySymbol(DownloadTarget.商品)}</option>
             </select>
         </div>
     );

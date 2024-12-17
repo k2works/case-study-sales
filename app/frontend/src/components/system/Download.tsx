@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {useMessage} from "../application/Message.tsx";
 import {DownloadService} from "../../services/download.ts";
-import {DownloadTarget} from "../../models/download.ts";
+import {DownloadTarget, getKeyBySymbol, getSymbolByValue} from "../../models/download.ts";
 import {SiteLayout} from "../../views/SiteLayout.tsx";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
 import {SingleView} from "../../views/system/DownloadSingle.tsx";
@@ -30,7 +30,9 @@ export const Download: React.FC = () => {
 
                 const blob = await downloadService.download(condition);
                 const currentDate = new Date().toISOString().split("T")[0];
-                const downloadFileName = `${selectedTarget.toLowerCase()}-${currentDate}.csv`;
+                const symbol = getSymbolByValue(selectedTarget);
+                const symbolName = getKeyBySymbol(symbol?.toString() as DownloadTarget) || "unknown";
+                const downloadFileName = `${symbolName}-${currentDate}.csv`;
 
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement("a");
@@ -39,7 +41,7 @@ export const Download: React.FC = () => {
                 a.click();
                 window.URL.revokeObjectURL(url);
 
-                setMessage(`${selectedTarget} データをダウンロードしました。`);
+                setMessage(`${symbolName} データをダウンロードしました。`);
             } catch (error: any) {
                 showErrorMessage(
                     `ダウンロードに失敗しました: ${error?.message}`,
