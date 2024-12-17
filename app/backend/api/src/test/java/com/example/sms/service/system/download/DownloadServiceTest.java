@@ -4,7 +4,9 @@ import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactory;
 import com.example.sms.domain.model.system.download.Department;
 import com.example.sms.domain.model.system.download.DownloadCondition;
+import com.example.sms.domain.model.system.download.Employee;
 import com.example.sms.infrastructure.datasource.master.department.DepartmentDownloadCSV;
+import com.example.sms.infrastructure.datasource.master.employee.EmployeeDownloadCSV;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -59,6 +61,40 @@ public class DownloadServiceTest {
             assertEquals(LocalDateTime.of(2021,1,1,0, 0), result.getFirst().getDepartmentStartDate());
             assertEquals(LocalDateTime.of(9999,12,31,0, 0), result.getFirst().getDepartmentEndDate());
             assertEquals("部門3", result.getFirst().getDepartmentName());
+        }
+    }
+    @Nested
+    @DisplayName("社員")
+    class EmployeeDownload {
+        @Test
+        @DisplayName("件数取得")
+        void testCount() {
+            DownloadCondition condition = Employee.of();
+            int result = downloadService.count(condition);
+
+            assertEquals(3, result);
+        }
+
+        @Test
+        @DisplayName("データダウンロード変換")
+        void testDownload() {
+            DownloadCondition condition = Employee.of();
+            List<?> rawResult = downloadService.convert(condition);
+
+            List<EmployeeDownloadCSV> result = rawResult.stream()
+                    .filter(EmployeeDownloadCSV.class::isInstance)
+                    .map(EmployeeDownloadCSV.class::cast)
+                    .toList();
+
+            assertFalse(result.isEmpty());
+            assertEquals("EMP003", result.getFirst().getEmployeeCode());
+            assertEquals("30000", result.getFirst().getDepartmentCode());
+            assertEquals(LocalDateTime.of(2021,1,1,0, 0), result.getFirst().getStartDate());
+            assertEquals("firstName lastName", result.getFirst().getEmployeeName());
+            assertEquals("firstNameKana lastNameKana", result.getFirst().getEmployeeNameKana());
+            assertEquals("090-1234-5678", result.getFirst().getPhoneNumber());
+            assertEquals("03-1234-5678", result.getFirst().getFaxNumber());
+            assertEquals("U999999", result.getFirst().getUserId());
         }
     }
 }

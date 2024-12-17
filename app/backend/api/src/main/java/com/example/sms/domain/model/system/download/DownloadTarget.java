@@ -8,7 +8,7 @@ import lombok.Getter;
 @Getter
 public enum DownloadTarget {
     DEPARTMENT("department"),
-    ;
+    EMPLOYEE("employee");
 
     private final String value;
 

@@ -3,6 +3,7 @@ package com.example.sms.presentation.api.system.download;
 import com.example.sms.domain.model.system.download.Department;
 import com.example.sms.domain.model.system.download.DownloadCondition;
 import com.example.sms.domain.model.system.download.DownloadTarget;
+import com.example.sms.domain.model.system.download.Employee;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -25,6 +26,7 @@ public class DownloadConditionResource implements Serializable {
     public static DownloadCondition of(DownloadTarget target) {
         return switch (target) {
             case DEPARTMENT -> Department.of();
+            case EMPLOYEE -> Employee.of();
         };
     }
 }

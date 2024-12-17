@@ -133,6 +133,11 @@ public class TestDataFactoryImpl implements TestDataFactory {
         departmentRepository.save(department("30000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門3"));
         departmentRepository.save(department("40000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門4"));
         departmentRepository.save(department("50000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門5"));
+        employeeRepository.deleteAll();
+        userRepository.save(user());
+        employeeRepository.save(employee("EMP003", "30000", LocalDateTime.of(2021, 1, 1, 0, 0)));
+        employeeRepository.save(employee("EMP004", "30000", LocalDateTime.of(2021, 1, 1, 0, 0)));
+        employeeRepository.save(employee("EMP005", "40000", LocalDateTime.of(2021, 1, 1, 0, 0)));
     }
 
     private static User user() {

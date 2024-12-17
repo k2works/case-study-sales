@@ -2,12 +2,17 @@ package com.example.sms.infrastructure.datasource.master.employee;
 
 import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentId;
+import com.example.sms.domain.model.master.department.DepartmentCode;
+import com.example.sms.domain.model.master.department.DepartmentStartDate;
 import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.system.user.User;
+import com.example.sms.domain.model.system.user.UserId;
 import com.example.sms.domain.type.user.RoleName;
 import com.example.sms.infrastructure.datasource.master.department.部門マスタ;
 import com.example.sms.infrastructure.datasource.system.user.Usr;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 public class EmployeeEntityMapper {
@@ -78,6 +83,36 @@ public class EmployeeEntityMapper {
                 userEntity.getFirstName(),
                 userEntity.getLastName(),
                 RoleName.valueOf(userEntity.getRoleName())
+        );
+    }
+
+    public EmployeeDownloadCSV mapToCsvModel(Employee employee) {
+        return new EmployeeDownloadCSV(
+                employee.getEmpCode().getValue(),
+                employee.getEmpName().Name(),
+                employee.getEmpName().NameKana(),
+                employee.getLoginPassword(),
+                employee.getTel().getValue(),
+                employee.getFax().getValue(),
+                employee.getOccuCode().getValue(),
+                employee.getApprovalCode(),
+                Optional.ofNullable(employee)
+                        .map(Employee::getDepartment)
+                        .map(Department::getDepartmentId)
+                        .map(DepartmentId::getDeptCode)
+                        .map(DepartmentCode::getValue)
+                        .orElse(null),
+                Optional.ofNullable(employee)
+                        .map(Employee::getDepartment)
+                        .map(Department::getDepartmentId)
+                        .map(DepartmentId::getDepartmentStartDate)
+                        .map(DepartmentStartDate::getValue)
+                        .orElse(null),
+                Optional.ofNullable(employee)
+                        .map(Employee::getUser)
+                        .map(User::getUserId)
+                        .map(UserId::getValue)
+                        .orElse(null)
         );
     }
 }

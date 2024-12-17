@@ -57,6 +57,15 @@ public class DownloadApiController {
                 }
                 downloadService.convert(condition);
                 break;
+            case DownloadTarget.EMPLOYEE:
+                response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"employees.csv\"");
+                try (OutputStreamWriter streamWriter = new OutputStreamWriter(response.getOutputStream(), "Windows-31J")) {
+                    downloadService.download(streamWriter, condition);
+                } catch (Exception e) {
+                    log.error("ダウンロードエラー", e);
+                }
+                downloadService.convert(condition);
+                break;
             default:
                 throw new IllegalArgumentException("対象が不正です");
         }
