@@ -12,6 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,6 +36,7 @@ public class DownloadServiceTest {
 
     @Nested
     @DisplayName("部門")
+    @WithMockUser(username = "admin", roles = "ADMIN")
     class DepartmentDownload {
         @Test
         @DisplayName("件数取得")
@@ -65,6 +67,7 @@ public class DownloadServiceTest {
     }
     @Nested
     @DisplayName("社員")
+    @WithMockUser(username = "admin", roles = "ADMIN")
     class EmployeeDownload {
         @Test
         @DisplayName("件数取得")
@@ -99,6 +102,7 @@ public class DownloadServiceTest {
     }
     @Nested
     @DisplayName("商品分類")
+    @WithMockUser(username = "admin", roles = "ADMIN")
     class ProductCategoryDownload {
         @Test
         @DisplayName("件数取得")

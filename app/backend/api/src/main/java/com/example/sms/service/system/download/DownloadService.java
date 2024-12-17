@@ -9,6 +9,10 @@ import com.example.sms.infrastructure.datasource.master.department.DepartmentDow
 import com.example.sms.infrastructure.datasource.master.employee.EmployeeDownloadCSV;
 import com.example.sms.infrastructure.datasource.master.product.ProductCategoryDownloadCSV;
 import com.example.sms.infrastructure.datasource.master.product.ProductDownloadCSV;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.io.OutputStreamWriter;
@@ -38,10 +42,22 @@ public class DownloadService {
      */
     public int count(DownloadCondition condition) {
         return switch (condition.getTarget()) {
-            case DEPARTMENT -> countDepartments(condition);
-            case EMPLOYEE -> countEmployees(condition);
-            case PRODUCT_CATEGORY -> countProductCategories(condition);
-            case PRODUCT -> countProducts(condition);
+            case DEPARTMENT -> {
+                checkPermission("ROLE_ADMIN");
+                yield countDepartments(condition);
+            }
+            case EMPLOYEE -> {
+                checkPermission("ROLE_ADMIN");
+                yield countEmployees(condition);
+            }
+            case PRODUCT_CATEGORY -> {
+                checkPermission("ROLE_ADMIN");
+                yield countProductCategories(condition);
+            }
+            case PRODUCT ->  {
+                checkPermission("ROLE_ADMIN");
+                yield countProducts(condition);
+            }
         };
     }
 
@@ -127,5 +143,19 @@ public class DownloadService {
     private List<ProductDownloadCSV> downloadProducts(DownloadCondition condition) {
         ProductList productList = productCSVRepository.selectBy(condition);
         return productCSVRepository.convert(productList);
+    }
+
+    /**
+     * 権限チェック
+     */
+    private void checkPermission(String requiredRole) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        boolean hasPermission = authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals(requiredRole));
+
+        if (!hasPermission) {
+            throw new AccessDeniedException("権限がありません");
+        }
     }
 }
