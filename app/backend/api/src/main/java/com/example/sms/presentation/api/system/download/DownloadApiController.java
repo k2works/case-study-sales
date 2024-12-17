@@ -47,7 +47,7 @@ public class DownloadApiController {
 
     @Operation(summary = "ダウンロード", description = "ダウンロードする")
     @PostMapping("/download")
-    @AuditAnnotation(process = ApplicationExecutionProcessType.DOWNLOAD, type = ApplicationExecutionHistoryType.同期)
+    @AuditAnnotation(process = ApplicationExecutionProcessType.データダウンロード, type = ApplicationExecutionHistoryType.同期)
     public void download(@RequestBody DownloadConditionResource resource, HttpServletResponse response) {
         DownloadCondition condition = DownloadConditionResource.of(resource.getTarget());
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + condition.getFileName());

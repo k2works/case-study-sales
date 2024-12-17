@@ -77,7 +77,7 @@ public class EmployeeApiController {
 
     @Operation(summary = "社員を登録する", description = "社員を登録する")
     @PostMapping
-    @AuditAnnotation(process = ApplicationExecutionProcessType.EMPLOYEE_CREATE, type = ApplicationExecutionHistoryType.同期)
+    @AuditAnnotation(process = ApplicationExecutionProcessType.社員更新, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> create(@RequestBody @Validated EmployeeResource resource) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
@@ -98,7 +98,7 @@ public class EmployeeApiController {
 
     @Operation(summary = "社員を更新する", description = "社員を更新する")
     @PutMapping("/{employeeCode}")
-    @AuditAnnotation(process = ApplicationExecutionProcessType.EMPLOYEE_UPDATE, type = ApplicationExecutionHistoryType.同期)
+    @AuditAnnotation(process = ApplicationExecutionProcessType.社員更新, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> update(@PathVariable String employeeCode, @RequestBody EmployeeResource resource) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
@@ -116,7 +116,7 @@ public class EmployeeApiController {
 
     @Operation(summary = "社員を削除する", description = "社員を削除する")
     @DeleteMapping("/{employeeCode}")
-    @AuditAnnotation(process = ApplicationExecutionProcessType.EMPLOYEE_DELETE, type = ApplicationExecutionHistoryType.同期)
+    @AuditAnnotation(process = ApplicationExecutionProcessType.社員削除, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> delete(@PathVariable String employeeCode) {
         try {
             EmployeeCode code = EmployeeCode.of(employeeCode);
