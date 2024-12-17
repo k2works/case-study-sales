@@ -73,7 +73,7 @@ public class DepartmentApiController {
 
     @Operation(summary = "部門を登録する", description = "部門を登録する")
     @PostMapping
-    @AuditAnnotation(process = ApplicationExecutionProcessType.DEPARTMENT_CREATE, type = ApplicationExecutionHistoryType.SYNC)
+    @AuditAnnotation(process = ApplicationExecutionProcessType.DEPARTMENT_CREATE, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> create(@RequestBody @Validated DepartmentResource resource) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
@@ -99,7 +99,7 @@ public class DepartmentApiController {
 
     @Operation(summary = "部門を更新する", description = "部門を更新する")
     @PutMapping("/{departmentCode}/{departmentStartDate}")
-    @AuditAnnotation(process = ApplicationExecutionProcessType.DEPARTMENT_UPDATE, type = ApplicationExecutionHistoryType.SYNC)
+    @AuditAnnotation(process = ApplicationExecutionProcessType.DEPARTMENT_UPDATE, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> update(@PathVariable String departmentCode, @PathVariable String departmentStartDate, @RequestBody DepartmentResource departmentResource) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
@@ -125,7 +125,7 @@ public class DepartmentApiController {
 
     @Operation(summary = "部門を削除する", description = "部門を削除する")
     @DeleteMapping("/{departmentCode}/{departmentStartDate}")
-    @AuditAnnotation(process = ApplicationExecutionProcessType.DEPARTMENT_DELETE, type = ApplicationExecutionHistoryType.SYNC)
+    @AuditAnnotation(process = ApplicationExecutionProcessType.DEPARTMENT_DELETE, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> delete(@PathVariable String departmentCode, @PathVariable String departmentStartDate) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;

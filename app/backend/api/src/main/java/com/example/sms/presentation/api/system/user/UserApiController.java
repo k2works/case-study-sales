@@ -72,7 +72,7 @@ public class UserApiController {
 
     @Operation(summary = "ユーザーを登録する", description = "ユーザーを登録する")
     @PostMapping
-    @AuditAnnotation(process = ApplicationExecutionProcessType.USER_CREATE, type = ApplicationExecutionHistoryType.SYNC)
+    @AuditAnnotation(process = ApplicationExecutionProcessType.USER_CREATE, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> create(@RequestBody @Validated UserResource resource) {
         try {
             UserId userId = new UserId(resource.getUserId());
@@ -91,7 +91,7 @@ public class UserApiController {
 
     @Operation(summary = "ユーザーを更新する", description = "ユーザーを更新する")
     @PutMapping("/{userId}")
-    @AuditAnnotation(process = ApplicationExecutionProcessType.USER_UPDATE, type = ApplicationExecutionHistoryType.SYNC)
+    @AuditAnnotation(process = ApplicationExecutionProcessType.USER_UPDATE, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> update(@PathVariable String userId, @RequestBody @Validated UserResource resource) {
         try {
             User userOptional = userManagementService.find(new UserId(userId));
@@ -112,7 +112,7 @@ public class UserApiController {
 
     @Operation(summary = "ユーザーを削除する", description = "ユーザーを削除する")
     @DeleteMapping("/{userId}")
-    @AuditAnnotation(process = ApplicationExecutionProcessType.USER_DELETE, type = ApplicationExecutionHistoryType.SYNC)
+    @AuditAnnotation(process = ApplicationExecutionProcessType.USER_DELETE, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> delete(@PathVariable String userId) {
         try {
             User userOptional = userManagementService.find(new UserId(userId));

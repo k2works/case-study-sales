@@ -74,7 +74,7 @@ public class ProductApiController {
 
     @Operation(summary = "商品を登録する")
     @PostMapping
-    @AuditAnnotation(process = ApplicationExecutionProcessType.PRODUCT_CREATE, type = ApplicationExecutionHistoryType.SYNC)
+    @AuditAnnotation(process = ApplicationExecutionProcessType.PRODUCT_CREATE, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> create(@RequestBody ProductResource productResource) {
         try {
             Product product = createProduct(productResource.getProductCode(), productResource);
@@ -90,7 +90,7 @@ public class ProductApiController {
 
     @Operation(summary = "商品を更新する")
     @PutMapping("/{productCode}")
-    @AuditAnnotation(process = ApplicationExecutionProcessType.PRODUCT_UPDATE, type = ApplicationExecutionHistoryType.SYNC)
+    @AuditAnnotation(process = ApplicationExecutionProcessType.PRODUCT_UPDATE, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> update(@PathVariable String productCode, @RequestBody ProductResource productResource) {
         try {
             Product product = createProduct(productCode, productResource);
@@ -106,7 +106,7 @@ public class ProductApiController {
 
     @Operation(summary = "商品を削除する")
     @DeleteMapping("/{productCode}")
-    @AuditAnnotation(process = ApplicationExecutionProcessType.PRODUCT_DELETE, type = ApplicationExecutionHistoryType.SYNC)
+    @AuditAnnotation(process = ApplicationExecutionProcessType.PRODUCT_DELETE, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> delete(@PathVariable String productCode) {
         try {
             Product product = productService.find(productCode);

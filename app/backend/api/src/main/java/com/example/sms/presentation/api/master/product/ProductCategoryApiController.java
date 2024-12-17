@@ -65,7 +65,7 @@ public class ProductCategoryApiController {
 
     @Operation(summary = "商品分類を登録する")
     @PostMapping
-    @AuditAnnotation(process = ApplicationExecutionProcessType.PRODUCT_CATEGORY_CREATE, type = ApplicationExecutionHistoryType.SYNC)
+    @AuditAnnotation(process = ApplicationExecutionProcessType.PRODUCT_CATEGORY_CREATE, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> create(@RequestBody ProductCategoryResource productCategoryResource) {
         try {
             ProductCategory productCategory = ProductCategory.of(productCategoryResource.getProductCategoryCode(), productCategoryResource.getProductCategoryName(), productCategoryResource.getProductCategoryHierarchy(), productCategoryResource.getProductCategoryPath(), productCategoryResource.getLowestLevelDivision());
@@ -81,7 +81,7 @@ public class ProductCategoryApiController {
 
     @Operation(summary = "商品分類を更新する")
     @PutMapping("/{productCategoryCode}")
-    @AuditAnnotation(process = ApplicationExecutionProcessType.PRODUCT_CATEGORY_UPDATE, type = ApplicationExecutionHistoryType.SYNC)
+    @AuditAnnotation(process = ApplicationExecutionProcessType.PRODUCT_CATEGORY_UPDATE, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> update(@PathVariable String productCategoryCode, @RequestBody ProductCategoryResource productCategoryResource) {
         try {
             ProductCategory productCategory = ProductCategory.of(productCategoryCode, productCategoryResource.getProductCategoryName(), productCategoryResource.getProductCategoryHierarchy(), productCategoryResource.getProductCategoryPath(), productCategoryResource.getLowestLevelDivision());
@@ -99,7 +99,7 @@ public class ProductCategoryApiController {
 
     @Operation(summary = "商品分類を削除する")
     @DeleteMapping("/{productCategoryCode}")
-    @AuditAnnotation(process = ApplicationExecutionProcessType.PRODUCT_CATEGORY_DELETE, type = ApplicationExecutionHistoryType.SYNC)
+    @AuditAnnotation(process = ApplicationExecutionProcessType.PRODUCT_CATEGORY_DELETE, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> delete(@PathVariable String productCategoryCode) {
         try {
             ProductCategory productCategory = productService.findCategory(productCategoryCode);

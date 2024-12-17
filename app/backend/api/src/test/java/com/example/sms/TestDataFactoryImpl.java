@@ -122,7 +122,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
         userRepository.save(execUser);
 
         auditRepository.deleteAll();
-        ApplicationExecutionHistory applicationExecutionHistory = ApplicationExecutionHistory.of(null, "その他", "9999", ApplicationExecutionHistoryType.SYNC, LocalDateTime.of(2024,1,1,1,0), LocalDateTime.of(2024,1,1,2,0), ApplicationExecutionProcessFlag.NOT_EXECUTED,  "processDetails", execUser);
+        ApplicationExecutionHistory applicationExecutionHistory = ApplicationExecutionHistory.of(null, "その他", "9999", ApplicationExecutionHistoryType.同期, LocalDateTime.of(2024,1,1,1,0), LocalDateTime.of(2024,1,1,2,0), ApplicationExecutionProcessFlag.NOT_EXECUTED,  "processDetails", execUser);
         auditRepository.save(applicationExecutionHistory);
         auditRepository.save(applicationExecutionHistory);
     }
