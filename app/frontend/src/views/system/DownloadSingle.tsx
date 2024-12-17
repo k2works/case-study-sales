@@ -25,6 +25,7 @@ const Form: React.FC<FormProps> = ({selectedTarget, setSelectedTarget}) => {
                 <option value={DownloadTarget.DEPARTMENT}>部門</option>
                 <option value={DownloadTarget.EMPLOYEE}>社員</option>
                 <option value={DownloadTarget.PRODUCT_CATEGORY}>商品分類</option>
+                <option value={DownloadTarget.PRODUCT}>商品</option>
             </select>
         </div>
     );
