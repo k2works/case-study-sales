@@ -1,5 +1,6 @@
 export enum DownloadTarget {
     DEPARTMENT = "DEPARTMENT",
+    EMPLOYEE = "EMPLOYEE",
 }
 
 export type DownloadConditionType = {

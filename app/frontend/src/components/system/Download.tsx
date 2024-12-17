@@ -39,7 +39,7 @@ export const Download: React.FC = () => {
                 a.click();
                 window.URL.revokeObjectURL(url);
 
-                setMessage(`${selectedTarget} のデータをダウンロードしました。`);
+                setMessage(`${selectedTarget} データをダウンロードしました。`);
             } catch (error: any) {
                 showErrorMessage(
                     `ダウンロードに失敗しました: ${error?.message}`,

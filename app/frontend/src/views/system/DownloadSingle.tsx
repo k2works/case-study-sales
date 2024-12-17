@@ -23,7 +23,7 @@ const Form: React.FC<FormProps> = ({selectedTarget, setSelectedTarget}) => {
                     対象を選択してください
                 </option>
                 <option value={DownloadTarget.DEPARTMENT}>部門</option>
-                {/* 必要なオプションを追加 */}
+                <option value={DownloadTarget.EMPLOYEE}>社員</option>
             </select>
         </div>
     );
@@ -64,7 +64,7 @@ export const SingleView: React.FC<SingleViewProps> = ({
                         <div className="single-view-header-item">
                             <div className="button-container">
                                 <button className="action-button" onClick={handleDownload} id="download">
-                                    {"ダウンロード"}
+                                    {"実行"}
                                 </button>
                             </div>
                         </div>
