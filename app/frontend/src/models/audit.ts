@@ -1,31 +1,32 @@
 import {UserAccountType} from "./user.ts";
 
 export enum ApplicationExecutionProcessType {
-    USER_CREATE = "USER_CREATE",
-    USER_UPDATE = "USER_UPDATE",
-    USER_DELETE = "USER_DELETE",
-    DEPARTMENT_CREATE = "DEPARTMENT_CREATE",
-    DEPARTMENT_UPDATE = "DEPARTMENT_UPDATE",
-    DEPARTMENT_DELETE = "DEPARTMENT_DELETE",
-    EMPLOYEE_CREATE = "EMPLOYEE_CREATE",
-    EMPLOYEE_UPDATE = "EMPLOYEE_UPDATE",
-    EMPLOYEE_DELETE = "EMPLOYEE_DELETE",
-    PRODUCT_CREATE = "PRODUCT_CREATE",
-    PRODUCT_UPDATE = "PRODUCT_UPDATE",
-    PRODUCT_DELETE = "PRODUCT_DELETE",
-    OTHER = "OTHER",
+    ユーザー登録 = "ユーザー登録",
+    ユーザー更新 = "ユーザー更新",
+    ユーザー削除 = "ユーザー削除",
+    部門登録 = "部門登録",
+    部門更新 = "部門更新",
+    部門削除 = "部門削除",
+    社員登録 = "社員登録",
+    社員更新 = "社員更新",
+    社員削除 = "社員削除",
+    商品分類登録 = "商品分類登録",
+    商品分類更新 = "商品分類更新",
+    商品分類削除 = "商品分類削除",
+    データダウンロード = "データダウンロード",
+    その他 = "その他",
 }
 
 export enum ApplicationExecutionHistoryType {
-    SYNC = "SYNC",
-    ASYNC = "ASYNC",
+    同期 = "同期",
+    非同期 = "非同期",
 }
 
 export enum ApplicationExecutionProcessFlag {
-    START = "START",
-    END = "END",
-    ERROR = "ERROR",
-    NOT_EXECUTED = "NOT_EXECUTED",
+    実行中 = "実行中",
+    実行済 = "実行済",
+    エラー = "エラー",
+    未実行 = "未実行",
 }
 
 type Process = {
