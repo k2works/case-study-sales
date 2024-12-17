@@ -1,7 +1,10 @@
-package com.example.sms.infrastructure.datasource.master.department;
+package com.example.sms.infrastructure.datasource.system.download;
 
 import com.example.sms.domain.model.master.department.DepartmentList;
 import com.example.sms.domain.model.system.download.DownloadCondition;
+import com.example.sms.infrastructure.datasource.master.department.DepartmentEntityMapper;
+import com.example.sms.infrastructure.datasource.master.department.部門マスタ;
+import com.example.sms.infrastructure.datasource.master.department.部門マスタMapper;
 import com.example.sms.service.system.download.DepartmentCSVRepository;
 import org.springframework.stereotype.Repository;
 

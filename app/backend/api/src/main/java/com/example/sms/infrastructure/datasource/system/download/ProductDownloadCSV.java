@@ -1,4 +1,4 @@
-package com.example.sms.infrastructure.datasource.master.product;
+package com.example.sms.infrastructure.datasource.system.download;
 
 import com.opencsv.bean.CsvBindByPosition;
 import com.opencsv.bean.CsvBindByName;

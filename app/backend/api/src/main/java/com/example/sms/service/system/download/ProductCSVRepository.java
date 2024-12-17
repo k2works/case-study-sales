@@ -2,7 +2,7 @@ package com.example.sms.service.system.download;
 
 import com.example.sms.domain.model.master.product.ProductList;
 import com.example.sms.domain.model.system.download.DownloadCondition;
-import com.example.sms.infrastructure.datasource.master.product.ProductDownloadCSV;
+import com.example.sms.infrastructure.datasource.system.download.ProductDownloadCSV;
 
 import java.util.List;
 

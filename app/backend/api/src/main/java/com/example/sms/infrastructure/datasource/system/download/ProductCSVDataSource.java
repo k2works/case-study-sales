@@ -1,7 +1,10 @@
-package com.example.sms.infrastructure.datasource.master.product;
+package com.example.sms.infrastructure.datasource.system.download;
 
 import com.example.sms.domain.model.master.product.ProductList;
 import com.example.sms.domain.model.system.download.DownloadCondition;
+import com.example.sms.infrastructure.datasource.master.product.ProductEntityMapper;
+import com.example.sms.infrastructure.datasource.master.product.商品マスタ;
+import com.example.sms.infrastructure.datasource.master.product.商品マスタMapper;
 import com.example.sms.service.system.download.ProductCSVRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;

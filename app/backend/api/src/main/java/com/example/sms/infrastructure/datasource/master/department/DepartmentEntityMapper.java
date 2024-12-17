@@ -8,6 +8,7 @@ import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.type.department.DepartmentLowerType;
 import com.example.sms.domain.type.department.SlitYnType;
 import com.example.sms.infrastructure.datasource.master.employee.社員マスタ;
+import com.example.sms.infrastructure.datasource.system.download.DepartmentDownloadCSV;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

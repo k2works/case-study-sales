@@ -9,6 +9,7 @@ import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.user.UserId;
 import com.example.sms.domain.type.user.RoleName;
 import com.example.sms.infrastructure.datasource.master.department.部門マスタ;
+import com.example.sms.infrastructure.datasource.system.download.EmployeeDownloadCSV;
 import com.example.sms.infrastructure.datasource.system.user.Usr;
 import org.springframework.stereotype.Component;
 
