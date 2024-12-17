@@ -12,8 +12,9 @@ import lombok.Value;
 @NoArgsConstructor(force = true)
 public class ProductCategory implements DownloadCondition{
     DownloadTarget target;
+    String fileName;
 
     public static ProductCategory of() {
-        return new ProductCategory(DownloadTarget.PRODUCT_CATEGORY);
+        return new ProductCategory(DownloadTarget.PRODUCT_CATEGORY,"");
     }
 }

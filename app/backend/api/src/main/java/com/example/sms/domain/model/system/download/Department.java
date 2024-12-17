@@ -12,8 +12,9 @@ import lombok.Value;
 @NoArgsConstructor(force = true)
 public class Department implements DownloadCondition{
     DownloadTarget target;
+    String fileName;
 
     public static Department of() {
-        return new Department(DownloadTarget.DEPARTMENT);
+        return new Department(DownloadTarget.DEPARTMENT, "");
     }
 }

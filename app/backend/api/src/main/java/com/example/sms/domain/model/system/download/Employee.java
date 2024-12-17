@@ -12,8 +12,9 @@ import lombok.Value;
 @NoArgsConstructor(force = true)
 public class Employee  implements DownloadCondition {
     DownloadTarget target;
+    String fileName;
 
     public static Employee of() {
-        return new Employee(DownloadTarget.EMPLOYEE);
+        return new Employee(DownloadTarget.EMPLOYEE, "");
     }
 }

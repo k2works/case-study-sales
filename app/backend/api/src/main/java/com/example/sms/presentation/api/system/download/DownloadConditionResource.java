@@ -18,7 +18,7 @@ public class DownloadConditionResource implements Serializable {
 
     @NotNull
     private DownloadTarget target;
-
+    private String fileName;
 
     public static DownloadCondition of(DownloadTarget target) {
         return switch (target) {

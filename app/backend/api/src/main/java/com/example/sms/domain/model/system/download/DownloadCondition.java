@@ -5,4 +5,6 @@ package com.example.sms.domain.model.system.download;
  */
 public interface DownloadCondition {
     DownloadTarget getTarget();
+
+    String getFileName();
 }

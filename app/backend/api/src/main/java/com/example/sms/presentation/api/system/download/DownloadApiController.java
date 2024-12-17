@@ -1,7 +1,6 @@
 package com.example.sms.presentation.api.system.download;
 
 import com.example.sms.domain.model.system.download.DownloadCondition;
-import com.example.sms.domain.model.system.download.DownloadTarget;
 import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
 import com.example.sms.domain.type.audit.ApplicationExecutionProcessType;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
@@ -51,41 +50,11 @@ public class DownloadApiController {
     @AuditAnnotation(process = ApplicationExecutionProcessType.DOWNLOAD, type = ApplicationExecutionHistoryType.SYNC)
     public void download(@RequestBody DownloadConditionResource resource, HttpServletResponse response) {
         DownloadCondition condition = DownloadConditionResource.of(resource.getTarget());
-        switch (condition.getTarget()) {
-            case DownloadTarget.DEPARTMENT:
-                response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"departments.csv\"");
-                try (OutputStreamWriter streamWriter = new OutputStreamWriter(response.getOutputStream(), "Windows-31J")) {
-                    downloadService.download(streamWriter, condition);
-                } catch (Exception e) {
-                    log.error("ダウンロードエラー", e);
-                }
-                break;
-            case DownloadTarget.EMPLOYEE:
-                response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"employees.csv\"");
-                try (OutputStreamWriter streamWriter = new OutputStreamWriter(response.getOutputStream(), "Windows-31J")) {
-                    downloadService.download(streamWriter, condition);
-                } catch (Exception e) {
-                    log.error("ダウンロードエラー", e);
-                }
-                break;
-            case DownloadTarget.PRODUCT_CATEGORY:
-                response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"product_categories.csv\"");
-                try (OutputStreamWriter streamWriter = new OutputStreamWriter(response.getOutputStream(), "Windows-31J")) {
-                    downloadService.download(streamWriter, condition);
-                } catch (Exception e) {
-                    log.error("ダウンロードエラー", e);
-                }
-                break;
-            case DownloadTarget.PRODUCT:
-                response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"products.csv\"");
-                try (OutputStreamWriter streamWriter = new OutputStreamWriter(response.getOutputStream(), "Windows-31J")) {
-                    downloadService.download(streamWriter, condition);
-                } catch (Exception e) {
-                    log.error("ダウンロードエラー", e);
-                }
-                break;
-            default:
-                throw new IllegalArgumentException("対象が不正です");
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + condition.getFileName());
+        try (OutputStreamWriter streamWriter = new OutputStreamWriter(response.getOutputStream(), "Windows-31J")) {
+            downloadService.download(streamWriter, condition);
+        } catch (Exception e) {
+            log.error("ダウンロードエラー", e);
         }
     }
 }
