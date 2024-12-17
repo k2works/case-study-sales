@@ -67,14 +67,14 @@ export const useAudit = () => {
     const initialAudit = {
         id: 0,
         process: {
-            processType: ApplicationExecutionProcessType.OTHER,
+            processType: ApplicationExecutionProcessType.その他,
             name: "",
             code: ""
         },
-        type: ApplicationExecutionHistoryType.SYNC,
+        type: ApplicationExecutionHistoryType.同期,
         processStart: new Date().toISOString(),
         processEnd: new Date().toISOString(),
-        processFlag: ApplicationExecutionProcessFlag.NOT_EXECUTED,
+        processFlag: ApplicationExecutionProcessFlag.未実行,
         processDetails: null,
         user: {
             userId: { value: "" },
