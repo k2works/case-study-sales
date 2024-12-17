@@ -39,7 +39,7 @@ public class AuditRepositoryTest {
     }
 
     private static ApplicationExecutionHistory getHistory() {
-        return ApplicationExecutionHistory.of(1, "その他", "9999", ApplicationExecutionHistoryType.同期, LocalDateTime.of(2024,1,1,1,0), LocalDateTime.of(2024,1,1,2,0), ApplicationExecutionProcessFlag.NOT_EXECUTED,  "processDetails", getUser());
+        return ApplicationExecutionHistory.of(1, "その他", "9999", ApplicationExecutionHistoryType.同期, LocalDateTime.of(2024,1,1,1,0), LocalDateTime.of(2024,1,1,2,0), ApplicationExecutionProcessFlag.未実行,  "processDetails", getUser());
     }
 
     @Test

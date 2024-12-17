@@ -4,22 +4,10 @@ package com.example.sms.domain.type.audit;
  * アプリケーション実行プロセスフラグ
  */
 public enum ApplicationExecutionProcessFlag {
-    /**
-     * 未実行
-     */
-    NOT_EXECUTED(0),
-    /**
-     * 実行中
-     */
-    START(1),
-    /**
-     * 実行済
-     */
-    END(2),
-    /**
-     * エラー
-     */
-    ERROR(3);
+    未実行(0),
+    実行中(1),
+    実行済(2),
+    エラー(3);
 
     private final int i;
 
