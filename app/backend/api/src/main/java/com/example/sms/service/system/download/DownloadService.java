@@ -18,6 +18,7 @@ import java.io.OutputStreamWriter;
 import java.util.List;
 
 import static com.example.sms.infrastructure.Pattern2WriteCSVUtil.writeCsv;
+import static com.example.sms.service.system.auth.AuthApiService.checkPermission;
 
 /**
  * データダウンロードサービス
@@ -142,19 +143,5 @@ public class DownloadService {
     private List<ProductDownloadCSV> convertProducts(DownloadCondition condition) {
         ProductList productList = productCSVRepository.selectBy(condition);
         return productCSVRepository.convert(productList);
-    }
-
-    /**
-     * 権限チェック
-     */
-    private void checkPermission(String requiredRole) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        boolean hasPermission = authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals(requiredRole));
-
-        if (!hasPermission) {
-            throw new AccessDeniedException("権限がありません");
-        }
     }
 }

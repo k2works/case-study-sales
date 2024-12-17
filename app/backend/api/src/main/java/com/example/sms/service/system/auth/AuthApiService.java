@@ -2,6 +2,7 @@ package com.example.sms.service.system.auth;
 
 import com.example.sms.domain.model.system.auth.AuthUserDetails;
 import com.example.sms.domain.model.system.user.UserId;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -65,6 +66,20 @@ public class AuthApiService {
             return UserId.of(userId);
         } else {
             throw new UsernameNotFoundException("User details not found");
+        }
+    }
+
+    /**
+     * 権限チェック
+     */
+    public static void checkPermission(String requiredRole) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        boolean hasPermission = authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals(requiredRole));
+
+        if (!hasPermission) {
+            throw new AccessDeniedException("権限がありません");
         }
     }
 }
