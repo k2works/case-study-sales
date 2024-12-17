@@ -2,7 +2,10 @@ package com.example.sms.presentation.api.system.download;
 
 import com.example.sms.domain.model.system.download.DownloadCondition;
 import com.example.sms.domain.model.system.download.DownloadTarget;
+import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
+import com.example.sms.domain.type.audit.ApplicationExecutionProcessType;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
+import com.example.sms.service.system.audit.AuditAnnotation;
 import com.example.sms.service.system.download.DownloadService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -45,6 +48,7 @@ public class DownloadApiController {
 
     @Operation(summary = "ダウンロード", description = "ダウンロードする")
     @PostMapping("/download")
+    @AuditAnnotation(process = ApplicationExecutionProcessType.DOWNLOAD, type = ApplicationExecutionHistoryType.SYNC)
     public void download(@RequestBody DownloadConditionResource resource, HttpServletResponse response) {
         DownloadCondition condition = DownloadConditionResource.of(resource.getTarget());
         switch (condition.getTarget()) {

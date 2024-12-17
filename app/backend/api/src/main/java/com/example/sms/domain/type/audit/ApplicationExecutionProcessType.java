@@ -22,6 +22,7 @@ public enum ApplicationExecutionProcessType {
     PRODUCT_CREATE("商品登録", "0013"),
     PRODUCT_UPDATE("商品更新", "0014"),
     PRODUCT_DELETE("商品削除", "0015"),
+    DOWNLOAD("データダウンロード", "9001"),
     OTHER("その他", "9999");
 
     private final String name;

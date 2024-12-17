@@ -4,6 +4,9 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
+/**
+ * 商品分類ダウンロード条件
+ */
 @Value
 @RequiredArgsConstructor
 @NoArgsConstructor(force = true)
