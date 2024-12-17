@@ -16,6 +16,6 @@ public class Department implements DownloadCondition{
     String fileName;
 
     public static Department of() {
-        return new Department(DownloadTarget.DEPARTMENT, "");
+        return new Department(DownloadTarget.部門, "");
     }
 }

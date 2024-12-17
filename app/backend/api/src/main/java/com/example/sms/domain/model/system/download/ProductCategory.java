@@ -16,6 +16,6 @@ public class ProductCategory implements DownloadCondition{
     String fileName;
 
     public static ProductCategory of() {
-        return new ProductCategory(DownloadTarget.PRODUCT_CATEGORY,"");
+        return new ProductCategory(DownloadTarget.商品分類,"");
     }
 }

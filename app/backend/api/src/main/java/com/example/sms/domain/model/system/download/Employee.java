@@ -16,6 +16,6 @@ public class Employee  implements DownloadCondition {
     String fileName;
 
     public static Employee of() {
-        return new Employee(DownloadTarget.EMPLOYEE, "");
+        return new Employee(DownloadTarget.社員, "");
     }
 }

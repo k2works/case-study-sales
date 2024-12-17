@@ -39,19 +39,19 @@ public class DownloadService {
      */
     public int count(DownloadCondition condition) {
         return switch (condition.getTarget()) {
-            case DEPARTMENT -> {
+            case 部門 -> {
                 checkPermission("ROLE_ADMIN");
                 yield countDepartments(condition);
             }
-            case EMPLOYEE -> {
+            case 社員 -> {
                 checkPermission("ROLE_ADMIN");
                 yield countEmployees(condition);
             }
-            case PRODUCT_CATEGORY -> {
+            case 商品分類 -> {
                 checkPermission("ROLE_ADMIN");
                 yield countProductCategories(condition);
             }
-            case PRODUCT ->  {
+            case 商品 ->  {
                 checkPermission("ROLE_ADMIN");
                 yield countProducts(condition);
             }
@@ -63,10 +63,10 @@ public class DownloadService {
      */
     public void download(OutputStreamWriter streamWriter, DownloadCondition condition) throws Exception {
         switch (condition.getTarget()) {
-            case DEPARTMENT -> writeCsv(DepartmentDownloadCSV.class).accept(streamWriter, convert(condition));
-            case EMPLOYEE -> writeCsv(EmployeeDownloadCSV.class).accept(streamWriter, convert(condition));
-            case PRODUCT_CATEGORY -> writeCsv(ProductCategoryDownloadCSV.class).accept(streamWriter, convert(condition));
-            case PRODUCT -> writeCsv(ProductDownloadCSV.class).accept(streamWriter, convert(condition));
+            case 部門 -> writeCsv(DepartmentDownloadCSV.class).accept(streamWriter, convert(condition));
+            case 社員 -> writeCsv(EmployeeDownloadCSV.class).accept(streamWriter, convert(condition));
+            case 商品分類 -> writeCsv(ProductCategoryDownloadCSV.class).accept(streamWriter, convert(condition));
+            case 商品 -> writeCsv(ProductDownloadCSV.class).accept(streamWriter, convert(condition));
         };
     }
 
@@ -75,10 +75,10 @@ public class DownloadService {
      */
     public <T> List<T> convert(DownloadCondition condition) {
         return switch (condition.getTarget()) {
-            case DEPARTMENT -> (List<T>) convertDepartments(condition);
-            case EMPLOYEE -> (List<T>) convertEmployees(condition);
-            case PRODUCT_CATEGORY -> (List<T>) convertProductCategories(condition);
-            case PRODUCT -> (List<T>) convertProducts(condition);
+            case 部門 -> (List<T>) convertDepartments(condition);
+            case 社員 -> (List<T>) convertEmployees(condition);
+            case 商品分類 -> (List<T>) convertProductCategories(condition);
+            case 商品 -> (List<T>) convertProducts(condition);
         };
     }
 

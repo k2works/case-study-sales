@@ -16,6 +16,6 @@ public class Product implements DownloadCondition {
     String fileName;
 
     public static Product of() {
-        return new Product(DownloadTarget.PRODUCT, "");
+        return new Product(DownloadTarget.商品, "");
     }
 }

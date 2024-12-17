@@ -23,10 +23,10 @@ public class DownloadConditionResource implements Serializable {
 
     public static DownloadCondition of(DownloadTarget target) {
         return switch (target) {
-            case DEPARTMENT -> Department.of();
-            case EMPLOYEE -> Employee.of();
-            case PRODUCT_CATEGORY -> ProductCategory.of();
-            case PRODUCT -> Product.of();
+            case 部門 -> Department.of();
+            case 社員 -> Employee.of();
+            case 商品分類 -> ProductCategory.of();
+            case 商品 -> Product.of();
         };
     }
 }

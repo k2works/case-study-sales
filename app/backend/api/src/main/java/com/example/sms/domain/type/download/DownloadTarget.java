@@ -7,10 +7,10 @@ import lombok.Getter;
  */
 @Getter
 public enum DownloadTarget {
-    DEPARTMENT("department"),
-    EMPLOYEE("employee"),
-    PRODUCT_CATEGORY("product_category"),
-    PRODUCT("product");
+    部門("department"),
+    社員("employee"),
+    商品分類("product_category"),
+    商品("product");
 
     private final String value;
 
