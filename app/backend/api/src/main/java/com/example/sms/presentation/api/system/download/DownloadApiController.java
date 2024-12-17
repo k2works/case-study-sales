@@ -55,7 +55,6 @@ public class DownloadApiController {
                 } catch (Exception e) {
                     log.error("ダウンロードエラー", e);
                 }
-                downloadService.convert(condition);
                 break;
             case DownloadTarget.EMPLOYEE:
                 response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"employees.csv\"");
@@ -64,7 +63,6 @@ public class DownloadApiController {
                 } catch (Exception e) {
                     log.error("ダウンロードエラー", e);
                 }
-                downloadService.convert(condition);
                 break;
             default:
                 throw new IllegalArgumentException("対象が不正です");
