@@ -74,7 +74,7 @@ public class DownloadService {
     }
 
     /**
-     * ダウンロード変換
+     * CSV変換
      */
     public <T> List<T> convert(DownloadCondition condition) {
         return switch (condition.getTarget()) {
@@ -114,7 +114,7 @@ public class DownloadService {
     }
 
     /**
-     * 部門ダウンロード
+     * 部門CSV変換
      */
     private List<DepartmentDownloadCSV> convertDepartments(DownloadCondition condition) {
         DepartmentList departmentList = departmentCSVRepository.selectBy(condition);
@@ -122,7 +122,7 @@ public class DownloadService {
     }
 
     /**
-     * 社員ダウンロード
+     * 社員CSV変換
      */
     private List<EmployeeDownloadCSV> convertEmployees(DownloadCondition condition) {
         EmployeeList employeeList = employeeCSVRepository.selectBy(condition);
@@ -130,7 +130,7 @@ public class DownloadService {
     }
 
     /**
-     * 商品カテゴリダウンロード
+     * 商品分類CSV変換
      */
     private List<ProductCategoryDownloadCSV> convertProductCategories(DownloadCondition condition) {
         ProductCategoryList productCategoryList = productCategoryCSVRepository.selectBy(condition);
@@ -138,7 +138,7 @@ public class DownloadService {
     }
 
     /**
-     * 商品ダウンロード
+     * 商品CSV変換
      */
     private List<ProductDownloadCSV> convertProducts(DownloadCondition condition) {
         ProductList productList = productCSVRepository.selectBy(condition);
