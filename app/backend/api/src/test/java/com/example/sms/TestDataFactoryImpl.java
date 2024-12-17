@@ -138,6 +138,10 @@ public class TestDataFactoryImpl implements TestDataFactory {
         employeeRepository.save(employee("EMP003", "30000", LocalDateTime.of(2021, 1, 1, 0, 0)));
         employeeRepository.save(employee("EMP004", "30000", LocalDateTime.of(2021, 1, 1, 0, 0)));
         employeeRepository.save(employee("EMP005", "40000", LocalDateTime.of(2021, 1, 1, 0, 0)));
+        productCategoryRepository.deleteAll();
+        productCategoryRepository.save(getProductCategory("00000001", "カテゴリ3", 1, "2", 3));
+        productCategoryRepository.save(getProductCategory("00000002", "カテゴリ4", 1, "2", 3));
+        productCategoryRepository.save(getProductCategory("00000003", "カテゴリ5", 1, "2", 3));
     }
 
     private static User user() {

@@ -5,8 +5,10 @@ import com.example.sms.TestDataFactory;
 import com.example.sms.domain.model.system.download.Department;
 import com.example.sms.domain.model.system.download.DownloadCondition;
 import com.example.sms.domain.model.system.download.Employee;
+import com.example.sms.domain.model.system.download.ProductCategory;
 import com.example.sms.infrastructure.datasource.master.department.DepartmentDownloadCSV;
 import com.example.sms.infrastructure.datasource.master.employee.EmployeeDownloadCSV;
+import com.example.sms.infrastructure.datasource.master.product.ProductCategoryDownloadCSV;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -95,6 +97,37 @@ public class DownloadServiceTest {
             assertEquals("090-1234-5678", result.getFirst().getPhoneNumber());
             assertEquals("03-1234-5678", result.getFirst().getFaxNumber());
             assertEquals("U999999", result.getFirst().getUserId());
+        }
+    }
+    @Nested
+    @DisplayName("商品分類")
+    class ProductCategoryDownload {
+        @Test
+        @DisplayName("件数取得")
+        void testCount() {
+            DownloadCondition condition = ProductCategory.of();
+            int result = downloadService.count(condition);
+
+            assertEquals(3, result);
+        }
+
+        @Test
+        @DisplayName("データダウンロード変換")
+        void testDownload() {
+            DownloadCondition condition = ProductCategory.of();
+            List<?> rawResult = downloadService.convert(condition);
+
+            List<ProductCategoryDownloadCSV> result = rawResult.stream()
+                    .filter(ProductCategoryDownloadCSV.class::isInstance)
+                    .map(ProductCategoryDownloadCSV.class::cast)
+                    .toList();
+
+            assertFalse(result.isEmpty());
+            assertEquals("00000001", result.getFirst().getProductCategoryCode());
+            assertEquals("カテゴリ3", result.getFirst().getProductCategoryName());
+            assertEquals(1, result.getFirst().getProductCategoryLevel());
+            assertEquals("2", result.getFirst().getProductCategoryPath());
+            assertEquals(3, result.getFirst().getIsBottomLayer());
         }
     }
 }

@@ -56,4 +56,14 @@ public class ProductCategoryEntityMapper {
 
         return productCategoryEntity;
     }
+
+    public ProductCategoryDownloadCSV mapToCsvModel(ProductCategory productCategory) {
+        return new ProductCategoryDownloadCSV(
+                productCategory.getProductCategoryCode().getValue(),
+                productCategory.getProductCategoryName(),
+                productCategory.getProductCategoryHierarchy(),
+                productCategory.getProductCategoryPath(),
+                productCategory.getLowestLevelDivision()
+        );
+    }
 }

@@ -64,6 +64,14 @@ public class DownloadApiController {
                     log.error("ダウンロードエラー", e);
                 }
                 break;
+            case DownloadTarget.PRODUCT_CATEGORY:
+                response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"product_categories.csv\"");
+                try (OutputStreamWriter streamWriter = new OutputStreamWriter(response.getOutputStream(), "Windows-31J")) {
+                    downloadService.download(streamWriter, condition);
+                } catch (Exception e) {
+                    log.error("ダウンロードエラー", e);
+                }
+                break;
             default:
                 throw new IllegalArgumentException("対象が不正です");
         }
