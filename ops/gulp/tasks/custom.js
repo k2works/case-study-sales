@@ -278,6 +278,23 @@ const allure = {
     }
 }
 
+const journalNpmPath = path.join(projectRoot, 'docs/journal', 'package.json');
+const journalPath = './docs/journal';
+const astro = {
+    buildAstro: () => {
+        const command = 'npm install && npm run build';
+        return src(journalNpmPath, { read: false })
+            .pipe(exec(command, { cwd: journalPath }));
+    },
+    cleanAstro: async () => {
+        await fs.remove(journalPath + '/dist');
+    },
+    copyAstro: () => {
+        return src(path.join(journalPath, 'dist/**'), {encoding: false})
+            .pipe(dest('./public/journal'));
+    }
+}
+
 exports.assets = assets;
 const assetsBuildTasks = () => {
     return series(assets.copyAssets, assets.copyAssetsPublic, assets.moveAssets, assets.publishAssets);
@@ -319,10 +336,16 @@ const allureGradleBuildTasks = () => {
 }
 exports.allureGradleBuildTasks = allureGradleBuildTasks;
 
+const astroBuildTasks = () => {
+    return series(astro.buildAstro, astro.copyAstro);
+}
+exports.astroBuildTasks = astroBuildTasks;
+exports.astro = astro.copyAstro;
+
 exports.app = app;
 exports.api = api;
 const appCleanTasks = () => {
-    return parallel(app.cleanApp, api.cleanApi, assets.cleanAssets, jig.cleanJig, jig_erd.cleanJigErd, erd.cleanErd, allure.cleanAllure);
+    return parallel(app.cleanApp, api.cleanApi, assets.cleanAssets, jig.cleanJig, jig_erd.cleanJigErd, erd.cleanErd, allure.cleanAllure, astro.cleanAstro);
 }
 exports.appCleanTasks = appCleanTasks;
 const appBuildTasks = () => {
