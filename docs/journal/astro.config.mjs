@@ -4,6 +4,8 @@ import mdx from '@astrojs/mdx';
 import expressiveCode from "astro-expressive-code";
 import remarkMermaid from 'remark-mermaidjs'
 
+import relativeLinks from 'astro-relative-links';
+
 // https://astro.build/config
 export default defineConfig({
     site: 'https://example.com',
@@ -11,5 +13,5 @@ export default defineConfig({
         // Applied to .md and .mdx files
         remarkPlugins: [remarkMermaid],
     },
-    integrations: [expressiveCode(), mdx()]
+    integrations: [expressiveCode(), mdx(), relativeLinks()]
 });
