@@ -237,13 +237,35 @@ const allure = {
         await fs.remove('./ops/docker/allure');
         cb();
     },
-    copyAllAllure: () => {
-        return src('./app/backend/api/build/allure-results/**')
-            .pipe(dest('./ops/docker/allure/allure-results'))
-            .pipe(src('./app/frontend/allure-results/**'))
-            .pipe(dest('./ops/docker/allure/allure-results'));
+    copyAllAllure: async () => {
+        // 入力元と出力先ディレクトリ
+        const sourcePaths = [
+            './app/backend/api/build/allure-results/**',
+            './app/frontend/allure-results/**'
+        ];
+        const outputPath = './ops/docker/allure/allure-results';
+
+        // 出力先ディレクトリがなければ作成
+        await fs.ensureDir(outputPath);
+
+        // すべての入力元を確認し、存在するものだけ処理を実施
+        for (const sourcePath of sourcePaths) {
+            const dirPath = sourcePath.replace('/**', ''); // 入力ディレクトリを抽出
+            const pathExists = await fs.pathExists(dirPath); // ディレクトリの存在確認
+
+            if (pathExists) {
+                await new Promise((resolve, reject) => {
+                    src(sourcePath)
+                        .pipe(dest(outputPath))
+                        .on('end', resolve) // 処理完了時のコールバック
+                        .on('error', reject); // エラー時のコールバック
+                });
+            } else {
+                console.log(`Skipping: Directory does not exist - ${dirPath}`);
+            }
+        }
     },
-    publish: async () => {
+    publishAllure: async () => {
         await prepareDirectories('./ops/docker/allure/allure-reports');
         return src('./ops/docker/allure/allure-reports/**')
             .pipe(dest('./public/allure'));
@@ -287,7 +309,7 @@ const allureBuildTasks = () => {
 }
 exports.allureBuildTasks = allureBuildTasks;
 const allureGradleBuildTasks = () => {
-    return series(allure.runAllure, allure.copyAllure, allure.copyAllAllure, allure.publish);
+    return series(allure.runAllure, allure.copyAllure, allure.copyAllAllure, allure.publishAllure);
 }
 exports.allureGradleBuildTasks = allureGradleBuildTasks;
 
