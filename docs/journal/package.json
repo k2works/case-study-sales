@@ -12,6 +12,9 @@
     "@astrojs/mdx": "^4.0.2",
     "@astrojs/rss": "^4.0.10",
     "@astrojs/sitemap": "^3.2.1",
-    "astro": "^5.0.9"
+    "@playwright/test": "^1.49.1",
+    "astro": "^5.0.9",
+    "astro-expressive-code": "^0.38.3",
+    "remark-mermaidjs": "^7.0.0"
   }
 }
