@@ -12,7 +12,7 @@
     "heroku-postbuild": "webpack --config ./webpack.config.js --progress",
     "deploy": "npm-run-all deploy:*",
     "deploy:api": "git subtree push --prefix app/backend/api heroku main",
-    "deploy:app": "cd app && vercel",
+    "deploy:app": "cd app/frontend && vercel",
     "deploy:docs": "vercel",
     "jig": "npm-run-all jig:*",
     "jig:api": "npx gulp jig",

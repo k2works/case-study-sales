@@ -7,6 +7,7 @@ const merge = require('gulp-merge');
 
 // プロジェクトルートのディレクトリを取得
 const projectRoot = process.cwd();
+const appNpmPath = path.join(projectRoot, 'app/frontend', 'package.json');
 const apiGradlewPath = path.join(projectRoot, 'app/backend/api', 'gradlew');
 const apiCwd = path.join(projectRoot, 'app/backend/api');
 const appCwd = path.join(projectRoot, 'app/frontend');
@@ -15,43 +16,51 @@ const appCwd = path.join(projectRoot, 'app/frontend');
 const isWindows = process.platform === 'win32';
 
 const api = {
-    dev: () => {
+    devApi: () => {
         const command = isWindows ? 'gradlew.bat bootRun' : './gradlew bootRun';
         return src(apiGradlewPath, { read: false })
             .pipe(exec(command, { cwd: apiCwd }));
     },
-    build: () => {
+    buildApi: () => {
         const command = isWindows ? 'gradlew.bat build' : './gradlew build';
+        return src(apiGradlewPath, { read: false })
+            .pipe(exec(command, { cwd: apiCwd }));
+    },
+    cleanApi: () => {
+        const command = isWindows ? 'gradlew.bat clean' : './gradlew clean';
         return src(apiGradlewPath, { read: false })
             .pipe(exec(command, { cwd: apiCwd }));
     }
 }
 
 const app = {
-    dev: () => {
-        const command = 'npm install && npm run dev';
-        return src(apiGradlewPath, { read: false })
+    devApp: () => {
+        const command = 'npm run dev';
+        return src(appNpmPath, { read: false })
             .pipe(exec(command, { cwd: appCwd }));
     },
-    build: () => {
+    buildApp: () => {
         const command = 'npm install && npm run build';
-        return src(apiGradlewPath, { read: false })
+        return src(appNpmPath, { read: false })
             .pipe(exec(command, { cwd: appCwd }));
+    },
+    cleanApp: async () => {
+        await fs.remove(appCwd + '/dist');
     }
 }
 
 const jig = {
-    build: () => {
+    buildJig: () => {
         const command = isWindows ? 'gradlew.bat build -x test' : './gradlew build -x test';
         return src(apiGradlewPath, { read: false })
             .pipe(exec(command, { cwd: apiCwd }));
     },
-    docs: () => {
+    runJig: () => {
         const command = isWindows ? 'gradlew.bat jigReports' : './gradlew jigReports';
         return src(apiGradlewPath, { read: false })
             .pipe(exec(command, { cwd: apiCwd }));
     },
-    cleanDoc: async () => {
+    cleanJig: async () => {
         await fs.remove("./public/jig");
     },
     cleanApi: () => {
@@ -59,34 +68,34 @@ const jig = {
         return src(apiGradlewPath, {read: false})
             .pipe(exec(command, {cwd: apiCwd}));
     },
-    copy: () => {
+    copyJig: () => {
         return src(path.join(apiCwd, 'build/jig/**'))
             .pipe(dest('./public/jig'));
     },
-    watch: (cb) => {
+    watchJig: (cb) => {
         watch(path.join(apiCwd, 'src/**/*.java'), series(jig.docs, jig.copy));
         cb();
     },
 };
 
 const jig_erd = {
-    build: () => {
+    runJigErd: () => {
         const command = isWindows ? 'gradlew.bat test --tests "com.example.sms.Erd.run"' : './gradlew test --tests "com.example.sms.Erd.run"';
         return src(apiGradlewPath, { read: false })
             .pipe(exec(command, { cwd: apiCwd }));
     },
-    clean: async () => {
+    cleanJigErd: async () => {
         await fs.remove("./public/jig-erd");
     },
-    copy: () => {
+    copyJigErd: () => {
         return src(path.join(apiCwd, 'build/jig-erd/**'))
             .pipe(dest('./public/jig-erd'));
     },
-    watch: (cb) => {
+    watchJigErd: (cb) => {
         watch(path.join(apiCwd, 'src/**/*.java'), series(jig_erd.build, jig_erd.copy));
         cb();
     },
-    publish: (cb) => {
+    publishJigErd: (cb) => {
         const content = `<!DOCTYPE html>
     <html>
         <head>
@@ -125,29 +134,28 @@ const runExecCommand = (command) => {
 };
 
 const erd = {
-    buildMySQL: () => {
+    buildMySQLErd: () => {
         return runExecCommand('npm run db:schemaspy:mysql');
     },
-    buildPostgresql: () => {
+    buildPostgresqlErd: () => {
         return runExecCommand('npm run db:schemaspy:postresql');
     },
-    clean: async (cb) => {
+    cleanErd: async (cb) => {
         await fs.remove(DOCKER_OUTPUT_PATH);
         cb();
     },
-    copy: () => {
+    copyErd: () => {
         return src(`${DOCKER_OUTPUT_PATH}/**`, {encoding: false})
             .pipe(dest(PUBLIC_ERD_PATH));
     },
 };
 
 const assets = {
-    clean: async (cb) => {
-        await fs.remove('./docs/assets');
+    cleanAssets: async (cb) => {
         await fs.remove('./public/assets');
         cb();
     },
-    copyDocs: async (done) => {
+    copyAssets: async (done) => {
         const copyFeatures = src(path.join(apiCwd, 'src/test/resources/features/**'))
             .pipe(dest('./docs/assets'));
 
@@ -159,7 +167,7 @@ const assets = {
         mergedStreams.on('end', done);
         mergedStreams.on('error', done);
     },
-    copyPublic: async (done) => {
+    copyAssetsPublic: async (done) => {
         const copyFeatures = src(path.join(apiCwd, 'src/test/resources/features/**'))
             .pipe(dest('./public/assets'));
 
@@ -171,11 +179,11 @@ const assets = {
         mergedStreams.on('end', done);
         mergedStreams.on('error', done);
     },
-    move: async (done) => {
+    moveAssets: async (done) => {
         src(`./docs/assets/**/*`, {encoding: false}).pipe(dest(`./public/assets`))
             .on('end', done);
     },
-    publish: (cb) => {
+    publishAssets: (cb) => {
         const content = `
         <!DOCTYPE html>
         <html lang="ja">
@@ -216,32 +224,54 @@ const prepareDirectories = async (path) => {
     await fs.mkdirs(path);
 }
 const allure = {
-    build: () => {
+    buildAllure: () => {
         console.log("See osp/docker/allure/allure-reports");
         runExecCommand('docker-compose run --rm allure');
     },
-    build_gradle: () => {
+    runAllure: () => {
         const command = isWindows ? 'gradlew.bat allureReport' : './gradlew allureReport';
         return src(apiGradlewPath, { read: false })
             .pipe(exec(command, { cwd: apiCwd }));
     },
-    copy_build_gradle: async () => {
+    copyAllure: async () => {
         const sourcePath = path.join(apiCwd, 'build/reports/allure-report');
         await prepareDirectories(sourcePath);
         return src(sourcePath + '/**')
             .pipe(dest('./ops/docker/allure/allure-reports'));
     },
-    clean: async (cb) => {
+    cleanAllure: async (cb) => {
         await fs.remove('./ops/docker/allure');
         cb();
     },
-    copy: () => {
-        return src('./app/backend/api/build/allure-results/**')
-            .pipe(dest('./ops/docker/allure/allure-results'))
-            .pipe(src('./app/frontend/allure-results/**'))
-            .pipe(dest('./ops/docker/allure/allure-results'));
+    copyAllAllure: async () => {
+        // 入力元と出力先ディレクトリ
+        const sourcePaths = [
+            './app/backend/api/build/allure-results/**',
+            './app/frontend/allure-results/**'
+        ];
+        const outputPath = './ops/docker/allure/allure-results';
+
+        // 出力先ディレクトリがなければ作成
+        await fs.ensureDir(outputPath);
+
+        // すべての入力元を確認し、存在するものだけ処理を実施
+        for (const sourcePath of sourcePaths) {
+            const dirPath = sourcePath.replace('/**', ''); // 入力ディレクトリを抽出
+            const pathExists = await fs.pathExists(dirPath); // ディレクトリの存在確認
+
+            if (pathExists) {
+                await new Promise((resolve, reject) => {
+                    src(sourcePath)
+                        .pipe(dest(outputPath))
+                        .on('end', resolve) // 処理完了時のコールバック
+                        .on('error', reject); // エラー時のコールバック
+                });
+            } else {
+                console.log(`Skipping: Directory does not exist - ${dirPath}`);
+            }
+        }
     },
-    publish: async () => {
+    publishAllure: async () => {
         await prepareDirectories('./ops/docker/allure/allure-reports');
         return src('./ops/docker/allure/allure-reports/**')
             .pipe(dest('./public/allure'));
@@ -250,7 +280,7 @@ const allure = {
 
 exports.assets = assets;
 const assetsBuildTasks = () => {
-    return series(assets.copyDocs, assets.copyPublic, assets.move, assets.publish);
+    return series(assets.copyAssets, assets.copyAssetsPublic, assets.moveAssets, assets.publishAssets);
 }
 exports.assetsBuildTasks = assetsBuildTasks;
 
@@ -258,40 +288,44 @@ const erdBuildTasks = () => {
     return series(
         parallel(
             //erd.buildMySQL,
-            erd.buildPostgresql
+            erd.buildPostgresqlErd
         ),
-        erd.copy
+        erd.copyErd
     );
 }
 
 const jigBuildTasks = () => {
-    return series(jig.cleanDoc, jig.cleanApi, jig.build, jig.docs, jig.copy);
+    return series(jig.runJig, jig.copyJig);
 }
+exports.jig = jig;
+exports.jigBuildTasks = jigBuildTasks
 
 const jigErdBuildTasks = () => {
-    return series(jig_erd.clean, jig_erd.build, jig_erd.copy, jig_erd.publish);
+    return series(jig_erd.runJigErd, jig_erd.copyJigErd, jig_erd.publishJigErd);
 }
-
-exports.app = app;
-exports.api = api;
-
-const appBuildTasks = () => {
-    return series(app.build, api.build);
-}
-exports.appBuildTasks = appBuildTasks;
-exports.jig = jig;
 exports.jig_erd = jig_erd;
+exports.jigErdBuildTasks = jigErdBuildTasks
+
 exports.erd = erd;
 exports.erdBuildTasks = erdBuildTasks
-exports.jigBuildTasks = jigBuildTasks
-exports.jigErdBuildTasks = jigErdBuildTasks
 
 exports.allure = allure;
 const allureBuildTasks = () => {
-    return series(allure.clean, allure.copy, allure.build);
+    return series(allure.cleanAllure, allure.copyAllAllure, allure.buildAllure);
 }
 exports.allureBuildTasks = allureBuildTasks;
 const allureGradleBuildTasks = () => {
-    return series(api.build, allure.build_gradle, allure.copy_build_gradle, allure.publish);
+    return series(allure.runAllure, allure.copyAllure, allure.copyAllAllure, allure.publishAllure);
 }
 exports.allureGradleBuildTasks = allureGradleBuildTasks;
+
+exports.app = app;
+exports.api = api;
+const appCleanTasks = () => {
+    return parallel(app.cleanApp, api.cleanApi, assets.cleanAssets, jig.cleanJig, jig_erd.cleanJigErd, erd.cleanErd, allure.cleanAllure);
+}
+exports.appCleanTasks = appCleanTasks;
+const appBuildTasks = () => {
+    return parallel(app.buildApp, api.buildApi);
+}
+exports.appBuildTasks = appBuildTasks;
