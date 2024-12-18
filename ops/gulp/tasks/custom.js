@@ -286,11 +286,6 @@ const astro = {
     copyAstro: () => {
         return src(path.join(journalPath, 'dist/**'), {encoding: false})
             .pipe(dest('./public/journal'));
-    },
-    publishAstro: async () => {
-        await prepareDirectories('./public/journal');
-        return src('./public/journal/**', {encoding: false})
-            .pipe(dest('./public/journal'));
     }
 }
 
@@ -336,9 +331,10 @@ const allureGradleBuildTasks = () => {
 exports.allureGradleBuildTasks = allureGradleBuildTasks;
 
 const astroBuildTasks = () => {
-    return series(astro.buildAstro, astro.copyAstro, astro.publishAstro);
+    return series(astro.buildAstro, astro.copyAstro);
 }
 exports.astroBuildTasks = astroBuildTasks;
+exports.astro = astro.copyAstro;
 
 exports.app = app;
 exports.api = api;
