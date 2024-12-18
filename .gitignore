@@ -144,3 +144,5 @@ app/frontend/cypress/downloads
 app/frontend/allure-results
 
 my.secrets
+
+.sonarlint
