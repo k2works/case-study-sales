@@ -49,5 +49,3 @@ exports.erd = custom.erdBuildTasks();
 exports.allure = custom.allureBuildTasks();
 
 exports.allureBuild = custom.allureGradleBuildTasks();
-
-exports.astro = custom.astro;
