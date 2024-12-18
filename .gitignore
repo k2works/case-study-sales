@@ -146,3 +146,5 @@ app/frontend/allure-results
 my.secrets
 
 .sonarlint
+
+!docs/journal/public

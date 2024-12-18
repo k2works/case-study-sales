@@ -14,6 +14,7 @@ const build = series(
     custom.jigErdBuildTasks(),
     custom.erdBuildTasks(),
     custom.allureGradleBuildTasks(),
+    custom.astroBuildTasks(),
 );
 exports.build = build;
 
