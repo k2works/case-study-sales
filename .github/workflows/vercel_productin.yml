@@ -7,7 +7,7 @@ on:
     branches:
       - main
 jobs:
-  Deploy-Production:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -19,21 +19,8 @@ jobs:
           services: |
             db_postgresql
 
-      - name: Install Prisma
-        run: npm install
-        working-directory: ./db
-      - name: Setup DB
-        run: |
-          echo DATABASE_URL="postgresql://root:password@localhost:5432/mydb?schema=public" > .env
-          npx prisma migrate dev
-        working-directory: ./db
-      - name: Run tests
-        run: npm test
-        working-directory: ./db
-
       - name: Setup Graphviz
         uses: tlylt/install-graphviz@main
-
       - name: Setup JDK
         uses: actions/setup-java@v3
         with:
@@ -42,6 +29,11 @@ jobs:
       - name: Grant execute permission for Gradle wrapper
         run: chmod +x ./gradlew
         working-directory: app/backend/api
+      - name: Run migrations
+        run: |
+          ./gradlew assemble
+          ./gradlew flywayMigrate
+        working-directory: app/backend/api
 
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
@@ -49,9 +41,5 @@ jobs:
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
       - name: Build Project Artifacts
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-      - name: Work round for Report Generation
-        run: npm run allure:build
-      - name: Work round for Report Generation
-        run: cp -r public/allure .vercel/output/static
       - name: Deploy Project Artifacts to Vercel
         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}

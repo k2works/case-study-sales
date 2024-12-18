@@ -4,17 +4,16 @@ const custom = require('./ops/gulp/tasks/custom');
 
 const build = series(
     core.webpackBuildTasks(),
+    core.asciidoctorBuildTasks(),
+    core.marpBuildTasks(),
+    core.adrBuildTasks(),
+    custom.appCleanTasks(),
     custom.appBuildTasks(),
-    parallel(
-        custom.assetsBuildTasks(),
-        core.asciidoctorBuildTasks(),
-        core.marpBuildTasks(),
-        core.adrBuildTasks(),
-        custom.jigBuildTasks(),
-        custom.jigErdBuildTasks(),
-        custom.erdBuildTasks(),
-        custom.allureGradleBuildTasks(),
-    ),
+    custom.assetsBuildTasks(),
+    custom.jigBuildTasks(),
+    custom.jigErdBuildTasks(),
+    custom.erdBuildTasks(),
+    custom.allureGradleBuildTasks(),
 );
 exports.build = build;
 
@@ -23,7 +22,7 @@ const start = series(
         parallel(core.webpack.server, core.asciidoctor.server),
         parallel(core.webpack.watch, core.asciidoctor.watch, core.marp.watch, core.adr.watch),
     ),
-    parallel(custom.app.dev, custom.api.dev),
+    parallel(custom.app.devApp, custom.api.devApi),
 );
 exports.default = start;
 

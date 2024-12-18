@@ -14,6 +14,7 @@ plugins {
 	id "com.thinkimi.gradle.MybatisGenerator" version "2.4"
 	id 'io.qameta.allure' version '2.12.0'
 	id 'jacoco'
+	id "org.sonarqube" version "6.0.1.5171"
 }
 
 group = 'com.example'
@@ -41,6 +42,14 @@ sourceSets {
 	}
 }
 def allureVersion = "2.24.0"
+
+sonar {
+	properties {
+		property "sonar.projectKey", "k2works_case-study-sales"
+		property "sonar.organization", "k2works"
+		property "sonar.host.url", "https://sonarcloud.io"
+	}
+}
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
