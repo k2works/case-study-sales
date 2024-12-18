@@ -5,27 +5,25 @@ pubDate: 'Jun 01 2024'
 heroImage: '/blog-placeholder-5.jpg'
 ---
 
-This theme comes with the [@astrojs/mdx](https://docs.astro.build/en/guides/integrations-guide/mdx/) integration installed and configured in your `astro.config.mjs` config file. If you prefer not to use MDX, you can disable support by removing the integration from your config file.
+このテーマには、`astro.config.mjs`の設定ファイルで[@astrojs/mdx](https://docs.astro.build/en/guides/integrations-guide/mdx/)統合がインストールおよび設定されています。MDXを使用したくない場合は、この設定ファイルから統合を削除してサポートを無効にすることができます。
 
-## Why MDX?
+           ## なぜMDXを使うのか？
+           MDXは、埋め込みJavaScriptとJSX構文をサポートするMarkdownの特別なバージョンです。これにより、[JavaScriptやUIコンポーネントをMarkdownコンテンツ内で混ぜて使用することが可能](https://docs.astro.build/en/guides/markdown-content/#mdx-features)となり、インタラクティブなチャートやアラートなどが作成できます。
 
-MDX is a special flavor of Markdown that supports embedded JavaScript & JSX syntax. This unlocks the ability to [mix JavaScript and UI Components into your Markdown content](https://docs.astro.build/en/guides/markdown-content/#mdx-features) for things like interactive charts or alerts.
+           既存のMDX形式で記述されたコンテンツがある場合、Astroへの移行がスムーズになることを期待しています。
 
-If you have existing content authored in MDX, this integration will hopefully make migrating to Astro a breeze.
+           ## 例
+           以下は、MDX内でUIコンポーネントをインポートして使用する方法です。
+           ブラウザでこのページを開くと、以下のクリック可能なボタンが表示されます。
 
-## Example
+           ```jsx
+           import HeaderLink from '../../components/HeaderLink.astro';
+           <HeaderLink href="#" onclick="alert('clicked!')">
+           	MDX内の埋め込みコンポーネント
+           </HeaderLink>
+           ```
 
-Here is how you import and use a UI component inside of MDX.  
-When you open this page in the browser, you should see the clickable button below.
-
-import HeaderLink from '../../components/HeaderLink.astro';
-
-<HeaderLink href="#" onclick="alert('clicked!')">
-	Embedded component in MDX
-</HeaderLink>
-
-## More Links
-
-- [MDX Syntax Documentation](https://mdxjs.com/docs/what-is-mdx)
-- [Astro Usage Documentation](https://docs.astro.build/en/guides/markdown-content/#markdown-and-mdx-pages)
-- **Note:** [Client Directives](https://docs.astro.build/en/reference/directives-reference/#client-directives) are still required to create interactive components. Otherwise, all components in your MDX will render as static HTML (no JavaScript) by default.
+           ## さらに詳しく
+           - [MDX構文のドキュメント](https://mdxjs.com/docs/what-is-mdx)
+           - [Astroの使用方法ドキュメント](https://docs.astro.build/en/guides/markdown-content/#markdown-and-mdx-pages)
+           - **注意:** [クライアントディレクティブ](https://docs.astro.build/en/reference/directives-reference/#client-directives)は、インタラクティブなコンポーネントを作成するために依然として必要です。それ以外の場合、MDX内のすべてのコンポーネントはデフォルトで静的HTML（JavaScriptなし）としてレンダリングされます。

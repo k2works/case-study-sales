@@ -1,15 +1,15 @@
 ---
 title: 'Markdown Style Guide'
 description: 'Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.'
-pubDate: 'Jun 19 2024'
+pubDate: '2099-12-31'
 heroImage: '/blog-placeholder-1.jpg'
 ---
 
-Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.
+こちらは、AstroでMarkdownコンテンツを書く際に使用できる基本的なMarkdown構文のサンプルです。
 
-## Headings
+## 見出し
 
-The following HTML `<h1>`—`<h6>` elements represent six levels of section headings. `<h1>` is the highest section level while `<h6>` is the lowest.
+以下のHTML `<h1>`～`<h6>` 要素は6つのセクションレベルの見出しを表します。`<h1>` が最上位のセクションレベル、`<h6>` が最下位のセクションレベルを表します。
 
 # H1
 
@@ -23,61 +23,61 @@ The following HTML `<h1>`—`<h6>` elements represent six levels of section head
 
 ###### H6
 
-## Paragraph
+## 段落
 
 Xerum, quo qui aut unt expliquam qui dolut labo. Aque venitatiusda cum, voluptionse latur sitiae dolessi aut parist aut dollo enim qui voluptate ma dolestendit peritin re plis aut quas inctum laceat est volestemque commosa as cus endigna tectur, offic to cor sequas etum rerum idem sintibus eiur? Quianimin porecus evelectur, cum que nis nust voloribus ratem aut omnimi, sitatur? Quiatem. Nam, omnis sum am facea corem alique molestrunt et eos evelece arcillit ut aut eos eos nus, sin conecerem erum fuga. Ri oditatquam, ad quibus unda veliamenimin cusam et facea ipsamus es exerum sitate dolores editium rerore eost, temped molorro ratiae volorro te reribus dolorer sperchicium faceata tiustia prat.
 
 Itatur? Quiatae cullecum rem ent aut odis in re eossequodi nonsequ idebis ne sapicia is sinveli squiatum, core et que aut hariosam ex eat.
 
-## Images
+## 画像
 
-### Syntax
+### 構文
 
 ```markdown
 ![Alt text](./full/or/relative/path/of/image)
 ```
 
-### Output
+### 出力
 
-![blog placeholder](/blog-placeholder-about.jpg)
+![ブログのプレースホルダー](/blog-placeholder-about.jpg)
 
-## Blockquotes
+## 引用
 
-The blockquote element represents content that is quoted from another source, optionally with a citation which must be within a `footer` or `cite` element, and optionally with in-line changes such as annotations and abbreviations.
+`blockquote` 要素は、他のソースから引用された内容を表します。任意で、引用元を`footer` や `cite` 要素内に追加したり、注釈や略語などのインライン変更も追加できます。
 
-### Blockquote without attribution
+### 引用 (出典なし)
 
-#### Syntax
+#### 構文
 
 ```markdown
 > Tiam, ad mint andaepu dandae nostion secatur sequo quae.  
 > **Note** that you can use _Markdown syntax_ within a blockquote.
 ```
 
-#### Output
+#### 出力
 
 > Tiam, ad mint andaepu dandae nostion secatur sequo quae.  
 > **Note** that you can use _Markdown syntax_ within a blockquote.
 
-### Blockquote with attribution
+### 引用 (出典あり)
 
-#### Syntax
+#### 構文
 
 ```markdown
 > Don't communicate by sharing memory, share memory by communicating.<br>
 > — <cite>Rob Pike[^1]</cite>
 ```
 
-#### Output
+#### 出力
 
 > Don't communicate by sharing memory, share memory by communicating.<br>
 > — <cite>Rob Pike[^1]</cite>
 
-[^1]: The above quote is excerpted from Rob Pike's [talk](https://www.youtube.com/watch?v=PAAkCSZUG1c) during Gopherfest, November 18, 2015.
+[^1]: 上記の引用は、Rob Pikeが2015年11月18日のGopherfestで行った[講演](https://www.youtube.com/watch?v=PAAkCSZUG1c)からの抜粋です。
 
-## Tables
+## テーブル
 
-### Syntax
+### 構文
 
 ```markdown
 | Italics   | Bold     | Code   |
@@ -85,17 +85,17 @@ The blockquote element represents content that is quoted from another source, op
 | _italics_ | **bold** | `code` |
 ```
 
-### Output
+### 出力
 
 | Italics   | Bold     | Code   |
 | --------- | -------- | ------ |
 | _italics_ | **bold** | `code` |
 
-## Code Blocks
+## コードブロック
 
-### Syntax
+### 構文
 
-we can use 3 backticks ``` in new line and write snippet and close with 3 backticks on new line and to highlight language specific syntax, write one word of language name after first 3 backticks, for eg. html, javascript, css, markdown, typescript, txt, bash
+3つのバッククォート ``` を新しい行で追加し、コードスニペットを記述して、もう一度3つのバッククォートで閉じます。コードのハイライトを行うには、最初の3つのバッククォートの後に言語名を記述します (例： html, javascript, css, markdown, typescript, txt, bash など)。
 
 ````markdown
 ```html
@@ -112,7 +112,7 @@ we can use 3 backticks ``` in new line and write snippet and close with 3 backti
 ```
 ````
 
-### Output
+### 出力
 
 ```html
 <!doctype html>
@@ -127,11 +127,11 @@ we can use 3 backticks ``` in new line and write snippet and close with 3 backti
 </html>
 ```
 
-## List Types
+## リストの種類
 
-### Ordered List
+### 順序付きリスト
 
-#### Syntax
+#### 構文
 
 ```markdown
 1. First item
@@ -139,15 +139,15 @@ we can use 3 backticks ``` in new line and write snippet and close with 3 backti
 3. Third item
 ```
 
-#### Output
+#### 出力
 
 1. First item
 2. Second item
 3. Third item
 
-### Unordered List
+### 順序なしリスト
 
-#### Syntax
+#### 構文
 
 ```markdown
 - List item
@@ -155,15 +155,15 @@ we can use 3 backticks ``` in new line and write snippet and close with 3 backti
 - And another item
 ```
 
-#### Output
+#### 出力
 
 - List item
 - Another item
 - And another item
 
-### Nested list
+### ネストされたリスト
 
-#### Syntax
+#### 構文
 
 ```markdown
 - Fruit
@@ -175,7 +175,7 @@ we can use 3 backticks ``` in new line and write snippet and close with 3 backti
   - Cheese
 ```
 
-#### Output
+#### 出力
 
 - Fruit
   - Apple
@@ -185,9 +185,9 @@ we can use 3 backticks ``` in new line and write snippet and close with 3 backti
   - Milk
   - Cheese
 
-## Other Elements — abbr, sub, sup, kbd, mark
+## その他の要素 — abbr, sub, sup, kbd, mark
 
-### Syntax
+### 構文
 
 ```markdown
 <abbr title="Graphics Interchange Format">GIF</abbr> is a bitmap image format.
@@ -201,7 +201,7 @@ Press <kbd>CTRL</kbd> + <kbd>ALT</kbd> + <kbd>Delete</kbd> to end the session.
 Most <mark>salamanders</mark> are nocturnal, and hunt for insects, worms, and other small creatures.
 ```
 
-### Output
+### 出力
 
 <abbr title="Graphics Interchange Format">GIF</abbr> is a bitmap image format.
 
