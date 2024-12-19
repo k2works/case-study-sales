@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.sms.infrastructure.datasource.master.product.CustomerSpecificSellingPriceCustomMapper">
+    <select id="selectAll"
+            resultMap="com.example.sms.infrastructure.datasource.autogen.mapper.顧客別販売単価Mapper.BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.顧客別販売単価Mapper.Base_Column_List"/>
+        from public.顧客別販売単価
+    </select>
+
+    <select id="selectByProductCode"
+            parameterType="java.lang.String"
+            resultMap="com.example.sms.infrastructure.datasource.autogen.mapper.顧客別販売単価Mapper.BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.顧客別販売単価Mapper.Base_Column_List"/>
+        from public.顧客別販売単価
+        where 商品コード = #{商品コード,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByProductCode"
+            parameterType="java.lang.String">
+        delete
+        from public.顧客別販売単価
+        where 商品コード = #{商品コード,jdbcType=VARCHAR}
+    </delete>
+</mapper>

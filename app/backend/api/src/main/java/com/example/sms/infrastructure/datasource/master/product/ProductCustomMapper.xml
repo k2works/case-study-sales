@@ -23,7 +23,7 @@
         <collection property="顧客別販売単価"
                     javaType="ArrayList"
                     column="商品コード"
-                    select="com.example.sms.infrastructure.datasource.master.product.顧客別販売単価Mapper.selectByProductCode"
+                    select="com.example.sms.infrastructure.datasource.master.product.CustomerSpecificSellingPriceCustomMapper.selectByProductCode"
                     fetchType="eager"
         />
     </resultMap>

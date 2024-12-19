@@ -8,6 +8,7 @@ import com.example.sms.domain.type.product.*;
 import com.example.sms.infrastructure.datasource.autogen.model.代替商品;
 import com.example.sms.infrastructure.datasource.autogen.model.商品マスタ;
 import com.example.sms.infrastructure.datasource.autogen.model.部品表;
+import com.example.sms.infrastructure.datasource.autogen.model.顧客別販売単価;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
