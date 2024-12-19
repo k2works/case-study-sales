@@ -9,21 +9,21 @@
         <collection property="代替商品"
                     javaType="ArrayList"
                     column="商品コード"
-                    select="com.example.sms.infrastructure.datasource.master.product.SubstituteProductCustomMapper.selectByProductCode"
+                    select="com.example.sms.infrastructure.datasource.master.product.substitute.SubstituteProductCustomMapper.selectByProductCode"
                     fetchType="eager"
         />
 
         <collection property="部品表"
                     javaType="ArrayList"
                     column="商品コード"
-                    select="com.example.sms.infrastructure.datasource.master.product.BomCustomMapper.selectByProductCode"
+                    select="com.example.sms.infrastructure.datasource.master.product.bom.BomCustomMapper.selectByProductCode"
                     fetchType="eager"
         />
 
         <collection property="顧客別販売単価"
                     javaType="ArrayList"
                     column="商品コード"
-                    select="com.example.sms.infrastructure.datasource.master.product.CustomerSpecificSellingPriceCustomMapper.selectByProductCode"
+                    select="com.example.sms.infrastructure.datasource.master.product.customer_specific_price.CustomerSpecificSellingPriceCustomMapper.selectByProductCode"
                     fetchType="eager"
         />
     </resultMap>

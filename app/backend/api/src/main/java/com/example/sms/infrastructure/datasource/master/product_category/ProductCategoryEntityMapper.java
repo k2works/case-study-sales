@@ -1,4 +1,4 @@
-package com.example.sms.infrastructure.datasource.master.product;
+package com.example.sms.infrastructure.datasource.master.product_category;
 
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.ProductCategory;

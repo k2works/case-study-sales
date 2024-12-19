@@ -1,4 +1,4 @@
-package com.example.sms.infrastructure.datasource.master.product;
+package com.example.sms.infrastructure.datasource.master.product.substitute;
 
 import com.example.sms.infrastructure.datasource.autogen.model.代替商品;
 import lombok.Getter;

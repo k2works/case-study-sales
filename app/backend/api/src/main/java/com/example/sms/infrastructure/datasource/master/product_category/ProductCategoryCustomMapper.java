@@ -1,6 +1,5 @@
-package com.example.sms.infrastructure.datasource.master.product;
+package com.example.sms.infrastructure.datasource.master.product_category;
 
-import com.example.sms.infrastructure.datasource.autogen.model.商品分類マスタ;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 

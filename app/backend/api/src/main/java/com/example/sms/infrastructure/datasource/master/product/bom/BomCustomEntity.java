@@ -1,4 +1,4 @@
-package com.example.sms.infrastructure.datasource.master.product;
+package com.example.sms.infrastructure.datasource.master.product.bom;
 
 import com.example.sms.infrastructure.datasource.autogen.model.部品表;
 import lombok.Getter;

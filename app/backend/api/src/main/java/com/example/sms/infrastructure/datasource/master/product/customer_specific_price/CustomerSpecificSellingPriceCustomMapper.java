@@ -1,4 +1,4 @@
-package com.example.sms.infrastructure.datasource.master.product;
+package com.example.sms.infrastructure.datasource.master.product.customer_specific_price;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;

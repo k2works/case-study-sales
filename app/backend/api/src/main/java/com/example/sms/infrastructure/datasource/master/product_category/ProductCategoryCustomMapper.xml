@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.sms.infrastructure.datasource.master.product.ProductCategoryCustomMapper">
+<mapper namespace="com.example.sms.infrastructure.datasource.master.product_category.ProductCategoryCustomMapper">
     <resultMap
             id="BaseResultMap"
-            type="com.example.sms.infrastructure.datasource.master.product.ProductCategoryCustomEntity"
+            type="com.example.sms.infrastructure.datasource.master.product_category.ProductCategoryCustomEntity"
             extends="com.example.sms.infrastructure.datasource.autogen.mapper.商品分類マスタMapper.BaseResultMap"
     >
         <collection property="商品マスタ"

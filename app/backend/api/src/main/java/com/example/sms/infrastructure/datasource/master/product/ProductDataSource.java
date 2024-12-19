@@ -9,6 +9,9 @@ import com.example.sms.infrastructure.datasource.autogen.mapper.商品マスタM
 import com.example.sms.infrastructure.datasource.autogen.mapper.部品表Mapper;
 import com.example.sms.infrastructure.datasource.autogen.mapper.顧客別販売単価Mapper;
 import com.example.sms.infrastructure.datasource.autogen.model.*;
+import com.example.sms.infrastructure.datasource.master.product.bom.BomCustomMapper;
+import com.example.sms.infrastructure.datasource.master.product.customer_specific_price.CustomerSpecificSellingPriceCustomMapper;
+import com.example.sms.infrastructure.datasource.master.product.substitute.SubstituteProductCustomMapper;
 import com.example.sms.service.master.product.ProductRepository;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.core.Authentication;
