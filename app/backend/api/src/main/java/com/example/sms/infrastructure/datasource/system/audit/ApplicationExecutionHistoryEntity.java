@@ -1,6 +1,7 @@
 package com.example.sms.infrastructure.datasource.system.audit;
 
-import com.example.sms.infrastructure.datasource.system.user.Usr;
+
+import com.example.sms.infrastructure.datasource.autogen.model.Usr;
 
 import java.time.LocalDateTime;
 

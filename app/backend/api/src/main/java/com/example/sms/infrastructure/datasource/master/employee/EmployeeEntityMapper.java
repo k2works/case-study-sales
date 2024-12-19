@@ -12,7 +12,6 @@ import com.example.sms.infrastructure.datasource.autogen.model.Usr;
 import com.example.sms.infrastructure.datasource.autogen.model.社員マスタ;
 import com.example.sms.infrastructure.datasource.autogen.model.部門マスタ;
 import com.example.sms.infrastructure.datasource.system.download.EmployeeDownloadCSV;
-import com.example.sms.infrastructure.datasource.system.user.Usr;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;

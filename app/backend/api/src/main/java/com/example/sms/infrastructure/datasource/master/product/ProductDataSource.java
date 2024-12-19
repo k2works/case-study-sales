@@ -74,7 +74,11 @@ public class ProductDataSource implements ProductRepository {
         updateProductEntity.set作成者名(productEntity.get().get作成者名());
         updateProductEntity.set更新日時(LocalDateTime.now());
         updateProductEntity.set更新者名(username);
-        productMapper.updateByPrimaryKey(updateProductEntity);
+        updateProductEntity.setVersion(productEntity.get().getVersion());
+        int updateCount = productMapper.updateByPrimaryKey(updateProductEntity);
+        if (updateCount == 0) {
+            throw new ObjectOptimisticLockingFailureException(商品マスタ.class, product.getProductCode().getValue());
+        }
 
         if (product.getSubstituteProduct() != null) {
             substituteProductCustomMapper.deleteByProductCode(product.getProductCode().getValue());
@@ -138,27 +142,6 @@ public class ProductDataSource implements ProductRepository {
         newProductEntity.set更新日時(LocalDateTime.now());
         newProductEntity.set更新者名(username);
         productMapper.insert(newProductEntity);
-            if (product.getCustomerSpecificSellingPrices() != null) {
-                product.getCustomerSpecificSellingPrices().forEach(customerSpecificSellingPrice -> {
-                    顧客別販売単価 customerSellingPriceEntity = productEntityMapper.mapToEntity(customerSpecificSellingPrice);
-                    customerSellingPriceEntity.set作成日時(LocalDateTime.now());
-                    customerSellingPriceEntity.set作成者名(username);
-                    customerSellingPriceEntity.set更新日時(LocalDateTime.now());
-                    customerSellingPriceEntity.set更新者名(username);
-                    customerSellingPriceMapper.insert(customerSellingPriceEntity);
-                });
-            }
-        } else {
-            商品マスタ updateProductEntity = productEntityMapper.mapToEntity(product);
-            updateProductEntity.set作成日時(productEntity.get().get作成日時());
-            updateProductEntity.set作成者名(productEntity.get().get作成者名());
-            updateProductEntity.set更新日時(LocalDateTime.now());
-            updateProductEntity.set更新者名(username);
-            updateProductEntity.setVersion(productEntity.get().getVersion());
-            int updateCount = productMapper.updateByPrimaryKey(updateProductEntity);
-            if (updateCount == 0) {
-                throw new ObjectOptimisticLockingFailureException(商品マスタ.class, product.getProductCode().getValue());
-            }
 
         if (product.getSubstituteProduct() != null) {
             product.getSubstituteProduct().forEach(substituteProduct -> {

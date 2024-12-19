@@ -2,20 +2,21 @@ package com.example.sms.infrastructure.datasource.system.download;
 
 import com.example.sms.domain.model.master.product.ProductList;
 import com.example.sms.domain.model.system.download.DownloadCondition;
+import com.example.sms.infrastructure.datasource.autogen.mapper.商品マスタMapper;
+import com.example.sms.infrastructure.datasource.master.product.ProductCustomEntity;
+import com.example.sms.infrastructure.datasource.master.product.ProductCustomMapper;
 import com.example.sms.infrastructure.datasource.master.product.ProductEntityMapper;
-import com.example.sms.infrastructure.datasource.master.product.商品マスタ;
-import com.example.sms.infrastructure.datasource.master.product.商品マスタMapper;
 import com.example.sms.service.system.download.ProductCSVRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
 public class ProductCSVDataSource implements ProductCSVRepository {
-    private final 商品マスタMapper productMapper;
+    private final ProductCustomMapper productCustomMapper;
     private final ProductEntityMapper productEntityMapper;
 
-    public ProductCSVDataSource(商品マスタMapper productMapper, ProductEntityMapper productEntityMapper) {
-        this.productMapper = productMapper;
+    public ProductCSVDataSource(ProductCustomMapper productCustomMapper, ProductEntityMapper productEntityMapper) {
+        this.productCustomMapper = productCustomMapper;
         this.productEntityMapper = productEntityMapper;
     }
 
@@ -31,13 +32,13 @@ public class ProductCSVDataSource implements ProductCSVRepository {
 
     @Override
     public int countBy(DownloadCondition condition) {
-        List<商品マスタ> productEntities = productMapper.selectAll();
+        List<ProductCustomEntity> productEntities = productCustomMapper.selectAll();
         return productEntities.size();
     }
 
     @Override
     public ProductList selectBy(DownloadCondition condition) {
-        List<商品マスタ> productEntities = productMapper.selectAll();
+        List<ProductCustomEntity> productEntities = productCustomMapper.selectAll();
         return new ProductList(productEntities.stream()
                 .map(productEntityMapper::mapToDomainModel)
                 .toList());

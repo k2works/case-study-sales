@@ -5,7 +5,7 @@ import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
 import com.example.sms.domain.type.audit.ApplicationExecutionProcessFlag;
 import com.example.sms.domain.type.user.RoleName;
-import com.example.sms.infrastructure.datasource.system.user.Usr;
+import com.example.sms.infrastructure.datasource.autogen.model.Usr;
 import org.springframework.stereotype.Component;
 
 import java.util.function.Function;
