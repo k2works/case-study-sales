@@ -24,9 +24,9 @@
         <result column="user_id" jdbcType="VARCHAR" property="userId"/>
 
         <association property="部門"
-                     javaType="com.example.sms.infrastructure.datasource.master.department.部門マスタ"
+                     javaType="com.example.sms.infrastructure.datasource.autogen.model.部門マスタ"
                      column="{部門コード=部門コード, 開始日=開始日}"
-                     select="com.example.sms.infrastructure.datasource.master.department.部門マスタMapper.selectByPrimaryKey"
+                     select="com.example.sms.infrastructure.datasource.autogen.mapper.部門マスタMapper.selectByPrimaryKey"
                      fetchType="lazy"/>
 
         <association property="user"

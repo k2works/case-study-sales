@@ -4,6 +4,9 @@ import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.department.DepartmentList;
 import com.example.sms.infrastructure.PageInfoHelper;
+import com.example.sms.infrastructure.datasource.autogen.mapper.部門マスタMapper;
+import com.example.sms.infrastructure.datasource.autogen.model.部門マスタ;
+import com.example.sms.infrastructure.datasource.autogen.model.部門マスタKey;
 import com.example.sms.service.master.department.DepartmentRepository;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.core.Authentication;
@@ -17,10 +20,12 @@ import java.util.Optional;
 @Repository
 public class DepartmentDataSource implements DepartmentRepository {
     final 部門マスタMapper departmentMapper;
+    final DepartmentCustomMapper departmentCustomMapper;
     final DepartmentEntityMapper departmentEntityMapper;
 
-    public DepartmentDataSource(部門マスタMapper departmentMapper, DepartmentEntityMapper departmentEntityMapper) {
+    public DepartmentDataSource(部門マスタMapper departmentMapper, DepartmentCustomMapper departmentCustomMapper, DepartmentEntityMapper departmentEntityMapper) {
         this.departmentMapper = departmentMapper;
+        this.departmentCustomMapper = departmentCustomMapper;
         this.departmentEntityMapper = departmentEntityMapper;
     }
 
@@ -29,7 +34,7 @@ public class DepartmentDataSource implements DepartmentRepository {
         部門マスタKey departmentKey = new 部門マスタKey();
         departmentKey.set部門コード(departmentId.getDeptCode().getValue());
         departmentKey.set開始日(departmentId.getDepartmentStartDate().getValue());
-        部門マスタ departmentEntity = departmentMapper.selectByPrimaryKey(departmentKey);
+        DepartmentCustomEntity departmentEntity = departmentCustomMapper.selectByPrimaryKey(departmentKey);
         if (departmentEntity != null) {
             return Optional.of(departmentEntityMapper.mapToDomainModel(departmentEntity));
         }
@@ -38,7 +43,7 @@ public class DepartmentDataSource implements DepartmentRepository {
 
     @Override
     public DepartmentList findByCode(String departmentCode) {
-        List<部門マスタ> departmentEntities = departmentMapper.selectByDepartmentCode(departmentCode);
+        List<DepartmentCustomEntity> departmentEntities = departmentCustomMapper.selectByDepartmentCode(departmentCode);
         return new DepartmentList(departmentEntities.stream()
                 .map(departmentEntityMapper::mapToDomainModel)
                 .toList());
@@ -46,7 +51,7 @@ public class DepartmentDataSource implements DepartmentRepository {
 
     @Override
     public DepartmentList selectAll() {
-        List<部門マスタ> departmentEntities = departmentMapper.selectAll();
+        List<DepartmentCustomEntity> departmentEntities = departmentCustomMapper.selectAll();
         return new DepartmentList(departmentEntities.stream()
                 .map(departmentEntityMapper::mapToDomainModel)
                 .toList());
@@ -54,8 +59,8 @@ public class DepartmentDataSource implements DepartmentRepository {
 
     @Override
     public PageInfo<Department> selectAllWithPageInfo() {
-        List<部門マスタ> departmentEntities = departmentMapper.selectAll();
-        PageInfo<部門マスタ> pageInfo = new PageInfo<>(departmentEntities);
+        List<DepartmentCustomEntity> departmentEntities = departmentCustomMapper.selectAll();
+        PageInfo<DepartmentCustomEntity> pageInfo = new PageInfo<>(departmentEntities);
 
         return PageInfoHelper.of(pageInfo, departmentEntityMapper::mapToDomainModel);
     }
@@ -68,7 +73,7 @@ public class DepartmentDataSource implements DepartmentRepository {
         部門マスタKey departmentKey = new 部門マスタKey();
         departmentKey.set部門コード(department.getDepartmentId().getDeptCode().getValue());
         departmentKey.set開始日(department.getDepartmentId().getDepartmentStartDate().getValue());
-        Optional<部門マスタ> departmentEntity = Optional.ofNullable(departmentMapper.selectByPrimaryKey(departmentKey));
+        Optional<DepartmentCustomEntity> departmentEntity = Optional.ofNullable(departmentCustomMapper.selectByPrimaryKey(departmentKey));
         if (departmentEntity.isEmpty()) {
             部門マスタ newDepartmentEntity = departmentEntityMapper.mapToEntity(department);
 
@@ -97,6 +102,6 @@ public class DepartmentDataSource implements DepartmentRepository {
 
     @Override
     public void deleteAll() {
-        departmentMapper.deleteAll();
+        departmentCustomMapper.deleteAll();
     }
 }

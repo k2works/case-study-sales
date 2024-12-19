@@ -7,6 +7,7 @@ import com.example.sms.domain.model.master.department.DepartmentPath;
 import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.type.department.DepartmentLowerType;
 import com.example.sms.domain.type.department.SlitYnType;
+import com.example.sms.infrastructure.datasource.autogen.model.部門マスタ;
 import com.example.sms.infrastructure.datasource.master.employee.社員マスタ;
 import org.springframework.stereotype.Component;
 
@@ -28,10 +29,10 @@ public class DepartmentEntityMapper {
         return departmentEntity;
     }
 
-    public Department mapToDomainModel(部門マスタ departmentEntity) {
+    public Department mapToDomainModel(DepartmentCustomEntity departmentEntity) {
         List<Employee> employees = departmentEntity.get社員().stream()
                 .map(this::mapToEmployee)
-                .collect(Collectors.toList());
+                .toList();
 
         return new Department(
                 DepartmentId.of(departmentEntity.get部門コード(), departmentEntity.get開始日()),
