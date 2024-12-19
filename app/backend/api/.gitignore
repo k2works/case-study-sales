@@ -36,4 +36,6 @@ out/
 ### VS Code ###
 .vscode/
 
-**/src/main/java/**/autogen
+/src/main/java/com/example/sms/infrastructure/datasource/autogen/mapper/FlywaySchemaHistoryMapper.java
+/src/main/java/com/example/sms/infrastructure/datasource/autogen/mapper/FlywaySchemaHistoryMapper.xml
+/src/main/java/com/example/sms/infrastructure/datasource/autogen/model/FlywaySchemaHistory.java
