@@ -7,12 +7,13 @@ import com.example.sms.domain.model.master.department.DepartmentPath;
 import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.type.department.DepartmentLowerType;
 import com.example.sms.domain.type.department.SlitYnType;
-import com.example.sms.infrastructure.datasource.master.employee.社員マスタ;
+import com.example.sms.infrastructure.datasource.autogen.model.社員マスタ;
+import com.example.sms.infrastructure.datasource.autogen.model.部門マスタ;
 import com.example.sms.infrastructure.datasource.system.download.DepartmentDownloadCSV;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.function.Function;
 
 @Component
 public class DepartmentEntityMapper {
@@ -29,10 +30,19 @@ public class DepartmentEntityMapper {
         return departmentEntity;
     }
 
-    public Department mapToDomainModel(部門マスタ departmentEntity) {
+    public Department mapToDomainModel(DepartmentCustomEntity departmentEntity) {
+        Function<社員マスタ, Employee> mapToEmployee = e -> Employee.of(
+                e.get社員コード(),
+                e.get社員名(),
+                e.get社員名カナ(),
+                e.get電話番号(),
+                e.getFax番号(),
+                e.get職種コード()
+        );
+
         List<Employee> employees = departmentEntity.get社員().stream()
-                .map(this::mapToEmployee)
-                .collect(Collectors.toList());
+                .map(mapToEmployee)
+                .toList();
 
         return new Department(
                 DepartmentId.of(departmentEntity.get部門コード(), departmentEntity.get開始日()),

@@ -10,6 +10,7 @@
                 connectionURL="${jdbcUrl}"
                 userId="${jdbcUsername}"
                 password="${jdbcPassword}">
+            <property name="nullCatalogMeansCurrent" value="true" />
         </jdbcConnection>
 
         <!-- 日付、時刻はJSR310で出力 -->
@@ -19,15 +20,15 @@
 
         <!-- SELECT 結果等を格納するドメインモデルを生成する設定 -->
         <!-- targetProjectには、プロジェクトフォルダも含めることに注意 -->
-        <javaModelGenerator targetPackage="com.example.sms.infrastructure.autogen" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="com.example.sms.infrastructure.datasource.autogen.model" targetProject="src/main/java">
             <property name="trimStrings" value="true" />
         </javaModelGenerator>
 
         <!-- SQL 設定が記述された XML を生成する設定 -->
-        <sqlMapGenerator targetPackage="com.example.sms.infrastructure.autogen" targetProject="src/main/java">
+        <sqlMapGenerator targetPackage="com.example.sms.infrastructure.datasource.autogen.mapper" targetProject="src/main/java">
         </sqlMapGenerator>
         <!-- マッパークラスを生成する設定 -->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.example.sms.infrastructure.autogen" targetProject="src/main/java">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.example.sms.infrastructure.datasource.autogen.mapper" targetProject="src/main/java">
         </javaClientGenerator>
 
         <!-- コードを生成するテーブルを指定 -->
@@ -36,14 +37,16 @@
                enableSelectByExample="false"
                enableDeleteByExample="false"
                enableUpdateByExample="false"
-               enableCountByExample="false">
+               enableCountByExample="false"
+        >
             <property name="useActualColumnNames" value="false"  />
         </table>
         <table schema="system" tableName="%"
                enableSelectByExample="false"
                enableDeleteByExample="false"
                enableUpdateByExample="false"
-               enableCountByExample="false">
+               enableCountByExample="false"
+        >
             <property name="useActualColumnNames" value="false"  />
         </table>
 

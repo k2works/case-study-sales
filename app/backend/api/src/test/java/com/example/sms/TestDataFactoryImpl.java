@@ -39,9 +39,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
     @Override
     public void setUpForAuthApiService() {
-        userRepository.deleteAll();
-        userRepository.save(user());
-        userRepository.save(admin());
+        setUpUser();
     }
 
     @Override
@@ -71,9 +69,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
     @Override
     public void setUpForUserManagementService() {
-        userRepository.deleteAll();
-        userRepository.save(user());
-        userRepository.save(admin());
+        setUpUser();
     }
 
     @Override
@@ -114,6 +110,12 @@ public class TestDataFactoryImpl implements TestDataFactory {
         productCategoryRepository.deleteAll();
         productCategoryRepository.save(getProductCategory("カテゴリ1", "カテゴリ1", 1, "カテゴリ1", 1));
         productCategoryRepository.save(getProductCategory("カテゴリ2", "カテゴリ2", 2, "カテゴリ2", 2));
+    }
+
+    private void setUpUser() {
+        userRepository.deleteAll();
+        userRepository.save(user());
+        userRepository.save(admin());
     }
 
     @Override

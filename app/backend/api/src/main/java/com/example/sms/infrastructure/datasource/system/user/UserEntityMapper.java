@@ -2,11 +2,12 @@ package com.example.sms.infrastructure.datasource.system.user;
 
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.type.user.RoleName;
+import com.example.sms.infrastructure.datasource.autogen.model.Usr;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserEntityMapper {
-    public User mapToDomainModel(Usr userEntity) {
+    public User mapToDomainEntity(Usr userEntity) {
         return User.of(
                 userEntity.getUserId(),
                 userEntity.getPassword(),
