@@ -61,106 +61,114 @@ public class ProductDataSource implements ProductRepository {
 
         Optional<ProductCustomEntity> productEntity = Optional.ofNullable(productCustomMapper.selectByPrimaryKey(product.getProductCode().getValue()));
         if (productEntity.isEmpty()) {
-            商品マスタ newProductEntity = productEntityMapper.mapToEntity(product);
-            newProductEntity.set作成日時(LocalDateTime.now());
-            newProductEntity.set作成者名(username);
-            newProductEntity.set更新日時(LocalDateTime.now());
-            newProductEntity.set更新者名(username);
-            productMapper.insert(newProductEntity);
-
-            if (product.getSubstituteProduct() != null) {
-                product.getSubstituteProduct().forEach(substituteProduct -> {
-                    代替商品 substituteProductEntity = productEntityMapper.mapToEntity(substituteProduct);
-                    substituteProductEntity.set作成日時(LocalDateTime.now());
-                    substituteProductEntity.set作成者名(username);
-                    substituteProductEntity.set更新日時(LocalDateTime.now());
-                    substituteProductEntity.set更新者名(username);
-                    substituteProductMapper.insert(substituteProductEntity);
-                });
-            }
-
-            if (product.getBoms() != null) {
-                product.getBoms().forEach(bom -> {
-                    部品表 bomEntity = productEntityMapper.mapToEntity(bom);
-                    bomEntity.set作成日時(LocalDateTime.now());
-                    bomEntity.set作成者名(username);
-                    bomEntity.set更新日時(LocalDateTime.now());
-                    bomEntity.set更新者名(username);
-                    bomMapper.insert(bomEntity);
-                });
-            }
-
-            if (product.getCustomerSpecificSellingPrices() != null) {
-                product.getCustomerSpecificSellingPrices().forEach(customerSpecificSellingPrice -> {
-                    顧客別販売単価 customerSellingPriceEntity = productEntityMapper.mapToEntity(customerSpecificSellingPrice);
-                    customerSellingPriceEntity.set作成日時(LocalDateTime.now());
-                    customerSellingPriceEntity.set作成者名(username);
-                    customerSellingPriceEntity.set更新日時(LocalDateTime.now());
-                    customerSellingPriceEntity.set更新者名(username);
-                    customerSellingPriceMapper.insert(customerSellingPriceEntity);
-                });
-            }
+            createProduct(product, username);
         } else {
-            商品マスタ updateProductEntity = productEntityMapper.mapToEntity(product);
-            updateProductEntity.set作成日時(productEntity.get().get作成日時());
-            updateProductEntity.set作成者名(productEntity.get().get作成者名());
-            updateProductEntity.set更新日時(LocalDateTime.now());
-            updateProductEntity.set更新者名(username);
-            productMapper.updateByPrimaryKey(updateProductEntity);
+            updateProduct(product, productEntity, username);
+        }
+    }
 
-            if (product.getSubstituteProduct() != null) {
-                substituteProductCustomMapper.deleteByProductCode(product.getProductCode().getValue());
+    private void updateProduct(Product product, Optional<ProductCustomEntity> productEntity, String username) {
+        商品マスタ updateProductEntity = productEntityMapper.mapToEntity(product);
+        updateProductEntity.set作成日時(productEntity.get().get作成日時());
+        updateProductEntity.set作成者名(productEntity.get().get作成者名());
+        updateProductEntity.set更新日時(LocalDateTime.now());
+        updateProductEntity.set更新者名(username);
+        productMapper.updateByPrimaryKey(updateProductEntity);
 
-                product.getSubstituteProduct().forEach(substituteProduct -> {
-                    代替商品Key key = new 代替商品Key();
-                    key.set代替商品コード(substituteProduct.getSubstituteProductCode().getValue());
-                    key.set商品コード(substituteProduct.getProductCode().getValue());
-                    substituteProductMapper.deleteByPrimaryKey(key);
+        if (product.getSubstituteProduct() != null) {
+            substituteProductCustomMapper.deleteByProductCode(product.getProductCode().getValue());
 
-                    代替商品 substituteProductEntity = productEntityMapper.mapToEntity(substituteProduct);
-                    substituteProductEntity.set作成日時(LocalDateTime.now());
-                    substituteProductEntity.set作成者名(username);
-                    substituteProductEntity.set更新日時(LocalDateTime.now());
-                    substituteProductEntity.set更新者名(username);
-                    substituteProductMapper.insert(substituteProductEntity);
-                });
-            }
+            product.getSubstituteProduct().forEach(substituteProduct -> {
+                代替商品Key key = new 代替商品Key();
+                key.set代替商品コード(substituteProduct.getSubstituteProductCode().getValue());
+                key.set商品コード(substituteProduct.getProductCode().getValue());
+                substituteProductMapper.deleteByPrimaryKey(key);
 
-            if (product.getBoms() != null) {
-                bomCustomMapper.deleteByProductCode(product.getProductCode().getValue());
+                代替商品 substituteProductEntity = productEntityMapper.mapToEntity(substituteProduct);
+                substituteProductEntity.set作成日時(LocalDateTime.now());
+                substituteProductEntity.set作成者名(username);
+                substituteProductEntity.set更新日時(LocalDateTime.now());
+                substituteProductEntity.set更新者名(username);
+                substituteProductMapper.insert(substituteProductEntity);
+            });
+        }
 
-                product.getBoms().forEach(bom -> {
-                    部品表Key key = new 部品表Key();
-                    key.set商品コード(bom.getProductCode().getValue());
-                    key.set部品コード(bom.getComponentCode().getValue());
-                    bomMapper.deleteByPrimaryKey(key);
+        if (product.getBoms() != null) {
+            bomCustomMapper.deleteByProductCode(product.getProductCode().getValue());
 
-                    部品表 bomEntity = productEntityMapper.mapToEntity(bom);
-                    bomEntity.set作成日時(LocalDateTime.now());
-                    bomEntity.set作成者名(username);
-                    bomEntity.set更新日時(LocalDateTime.now());
-                    bomEntity.set更新者名(username);
-                    bomMapper.insert(bomEntity);
-                });
-            }
+            product.getBoms().forEach(bom -> {
+                部品表Key key = new 部品表Key();
+                key.set商品コード(bom.getProductCode().getValue());
+                key.set部品コード(bom.getComponentCode().getValue());
+                bomMapper.deleteByPrimaryKey(key);
 
-            if (product.getCustomerSpecificSellingPrices() != null) {
-                customerSpecificSellingPriceCustomMapper.deleteByProductCode(product.getProductCode().getValue());
+                部品表 bomEntity = productEntityMapper.mapToEntity(bom);
+                bomEntity.set作成日時(LocalDateTime.now());
+                bomEntity.set作成者名(username);
+                bomEntity.set更新日時(LocalDateTime.now());
+                bomEntity.set更新者名(username);
+                bomMapper.insert(bomEntity);
+            });
+        }
 
-                product.getCustomerSpecificSellingPrices().forEach(customerSpecificSellingPrice -> {
-                    顧客別販売単価Key key = new 顧客別販売単価Key();
-                    key.set商品コード(customerSpecificSellingPrice.getProductCode().getValue());
-                    key.set取引先コード(customerSpecificSellingPrice.getCustomerCode());
-                    customerSellingPriceMapper.deleteByPrimaryKey(key);
+        if (product.getCustomerSpecificSellingPrices() != null) {
+            customerSpecificSellingPriceCustomMapper.deleteByProductCode(product.getProductCode().getValue());
 
-                    顧客別販売単価 customerSellingPriceEntity = productEntityMapper.mapToEntity(customerSpecificSellingPrice);
-                    customerSellingPriceEntity.set作成日時(LocalDateTime.now());
-                    customerSellingPriceEntity.set作成者名(username);
-                    customerSellingPriceEntity.set更新日時(LocalDateTime.now());
-                    customerSellingPriceEntity.set更新者名(username);
-                    customerSellingPriceMapper.insert(customerSellingPriceEntity);
-                });
-            }
+            product.getCustomerSpecificSellingPrices().forEach(customerSpecificSellingPrice -> {
+                顧客別販売単価Key key = new 顧客別販売単価Key();
+                key.set商品コード(customerSpecificSellingPrice.getProductCode().getValue());
+                key.set取引先コード(customerSpecificSellingPrice.getCustomerCode());
+                customerSellingPriceMapper.deleteByPrimaryKey(key);
+
+                顧客別販売単価 customerSellingPriceEntity = productEntityMapper.mapToEntity(customerSpecificSellingPrice);
+                customerSellingPriceEntity.set作成日時(LocalDateTime.now());
+                customerSellingPriceEntity.set作成者名(username);
+                customerSellingPriceEntity.set更新日時(LocalDateTime.now());
+                customerSellingPriceEntity.set更新者名(username);
+                customerSellingPriceMapper.insert(customerSellingPriceEntity);
+            });
+        }
+    }
+
+    private void createProduct(Product product, String username) {
+        商品マスタ newProductEntity = productEntityMapper.mapToEntity(product);
+        newProductEntity.set作成日時(LocalDateTime.now());
+        newProductEntity.set作成者名(username);
+        newProductEntity.set更新日時(LocalDateTime.now());
+        newProductEntity.set更新者名(username);
+        productMapper.insert(newProductEntity);
+
+        if (product.getSubstituteProduct() != null) {
+            product.getSubstituteProduct().forEach(substituteProduct -> {
+                代替商品 substituteProductEntity = productEntityMapper.mapToEntity(substituteProduct);
+                substituteProductEntity.set作成日時(LocalDateTime.now());
+                substituteProductEntity.set作成者名(username);
+                substituteProductEntity.set更新日時(LocalDateTime.now());
+                substituteProductEntity.set更新者名(username);
+                substituteProductMapper.insert(substituteProductEntity);
+            });
+        }
+
+        if (product.getBoms() != null) {
+            product.getBoms().forEach(bom -> {
+                部品表 bomEntity = productEntityMapper.mapToEntity(bom);
+                bomEntity.set作成日時(LocalDateTime.now());
+                bomEntity.set作成者名(username);
+                bomEntity.set更新日時(LocalDateTime.now());
+                bomEntity.set更新者名(username);
+                bomMapper.insert(bomEntity);
+            });
+        }
+
+        if (product.getCustomerSpecificSellingPrices() != null) {
+            product.getCustomerSpecificSellingPrices().forEach(customerSpecificSellingPrice -> {
+                顧客別販売単価 customerSellingPriceEntity = productEntityMapper.mapToEntity(customerSpecificSellingPrice);
+                customerSellingPriceEntity.set作成日時(LocalDateTime.now());
+                customerSellingPriceEntity.set作成者名(username);
+                customerSellingPriceEntity.set更新日時(LocalDateTime.now());
+                customerSellingPriceEntity.set更新者名(username);
+                customerSellingPriceMapper.insert(customerSellingPriceEntity);
+            });
         }
     }
 
