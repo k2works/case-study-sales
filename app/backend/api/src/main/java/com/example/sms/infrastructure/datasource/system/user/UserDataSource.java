@@ -58,12 +58,6 @@ public class UserDataSource implements UserRepository {
     }
 
     @Override
-    public void update(User user) {
-        Usr userEntity = userEntityMapper.mapToEntity(user);
-        userMapper.updateByPrimaryKey(userEntity);
-    }
-
-    @Override
     public void deleteById(String userId) {
         userMapper.deleteByPrimaryKey(userId);
     }

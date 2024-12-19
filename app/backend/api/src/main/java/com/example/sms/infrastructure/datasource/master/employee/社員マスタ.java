@@ -1,7 +1,7 @@
 package com.example.sms.infrastructure.datasource.master.employee;
 
+import com.example.sms.infrastructure.datasource.autogen.model.Usr;
 import com.example.sms.infrastructure.datasource.master.department.部門マスタ;
-import com.example.sms.infrastructure.datasource.system.user.Usr;
 
 import java.time.LocalDateTime;
 

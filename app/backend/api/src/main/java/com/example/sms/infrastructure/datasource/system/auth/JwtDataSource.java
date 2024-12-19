@@ -13,12 +13,12 @@ import java.util.Optional;
 @Repository
 public class JwtDataSource implements AuthRepository {
     final UsrMapper userMapper;
-    final UserObjMapper userObjMapper;
+    final UserEntityMapper userEntityMapper;
     final JwtUtils jwtUtils;
 
-    public JwtDataSource(UsrMapper userMapper, UserObjMapper userObjMapper, JwtUtils jwtUtils) {
+    public JwtDataSource(UsrMapper userMapper, UserEntityMapper userEntityMapper, JwtUtils jwtUtils) {
         this.userMapper = userMapper;
-        this.userObjMapper = userObjMapper;
+        this.userEntityMapper = userEntityMapper;
         this.jwtUtils = jwtUtils;
     }
 

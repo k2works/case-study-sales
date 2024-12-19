@@ -33,9 +33,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
     @Override
     public void setUpForAuthApiService() {
-        userRepository.deleteAll();
-        userRepository.save(user());
-        userRepository.save(admin());
+        setUpUser();
     }
 
     @Override
@@ -65,9 +63,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
     @Override
     public void setUpForUserManagementService() {
-        userRepository.deleteAll();
-        userRepository.save(user());
-        userRepository.save(admin());
+        setUpUser();
     }
 
     @Override
@@ -82,6 +78,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
     @Override
     public void setUpForEmployeeService() {
+        userRepository.save(user());
         LocalDateTime startDate = LocalDateTime.of(2021, 1, 1, 0, 0);
         departmentRepository.deleteAll();
         departmentRepository.save(department("10000", startDate, "部門1"));
@@ -107,6 +104,12 @@ public class TestDataFactoryImpl implements TestDataFactory {
         productCategoryRepository.deleteAll();
         productCategoryRepository.save(getProductCategory("カテゴリ1", "カテゴリ1", 1, "カテゴリ1", 1));
         productCategoryRepository.save(getProductCategory("カテゴリ2", "カテゴリ2", 2, "カテゴリ2", 2));
+    }
+
+    private void setUpUser() {
+        userRepository.deleteAll();
+        userRepository.save(user());
+        userRepository.save(admin());
     }
 
     private static User user() {
