@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.sms.infrastructure.datasource.master.product.ProductCategoryCustomMapper">
+    <resultMap
+            id="BaseResultMap"
+            type="com.example.sms.infrastructure.datasource.master.product.ProductCategoryCustomEntity"
+            extends="com.example.sms.infrastructure.datasource.autogen.mapper.商品分類マスタMapper.BaseResultMap"
+    >
+        <collection property="商品マスタ"
+                    javaType="ArrayList"
+                    column="商品分類コード"
+                    select="com.example.sms.infrastructure.datasource.master.product.商品マスタMapper.selectByProductCategoryCode"
+                    fetchType="eager"
+        />
+    </resultMap>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.商品分類マスタMapper.Base_Column_List"/>
+        from public.商品分類マスタ
+        where 商品分類コード = #{商品分類コード,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.商品分類マスタMapper.Base_Column_List"/>
+        from public.商品分類マスタ
+    </select>
+</mapper>
