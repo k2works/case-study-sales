@@ -2,9 +2,9 @@ package com.example.sms.infrastructure.datasource.system.audit;
 
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryList;
-import com.example.sms.domain.model.system.user.User;
 import com.example.sms.infrastructure.PageInfoHelper;
 import com.example.sms.infrastructure.datasource.ObjectOptimisticLockingFailureException;
+import com.example.sms.infrastructure.datasource.autogen.mapper.ApplicationExecutionHistoryMapper;
 import com.example.sms.service.system.audit.AuditRepository;
 import com.example.sms.service.system.audit.AuditSearchCondition;
 import com.github.pagehelper.PageInfo;
@@ -16,40 +16,42 @@ import java.util.Optional;
 @Repository
 public class ApplicationExecutionHistoryDataSource implements AuditRepository {
     final ApplicationExecutionHistoryMapper applicationExecutionHistoryMapper;
+    final ApplicationExecutionHistoryCustomMapper applicationExecutionHistoryCustomMapper;
     final ApplicationExecutionHistoryEntityMapper applicationExecutionHistoryEntityMapper;
 
-    public ApplicationExecutionHistoryDataSource(ApplicationExecutionHistoryMapper applicationExecutionHistoryMapper, ApplicationExecutionHistoryEntityMapper applicationExecutionHistoryEntityMapper) {
+    public ApplicationExecutionHistoryDataSource(ApplicationExecutionHistoryMapper applicationExecutionHistoryMapper, ApplicationExecutionHistoryCustomMapper applicationExecutionHistoryCustomMapper, ApplicationExecutionHistoryEntityMapper applicationExecutionHistoryEntityMapper) {
         this.applicationExecutionHistoryMapper = applicationExecutionHistoryMapper;
+        this.applicationExecutionHistoryCustomMapper = applicationExecutionHistoryCustomMapper;
         this.applicationExecutionHistoryEntityMapper = applicationExecutionHistoryEntityMapper;
     }
 
     @Override
     public void deleteAll() {
-        applicationExecutionHistoryMapper.deleteAll();
+        applicationExecutionHistoryCustomMapper.deleteAll();
     }
 
     @Override
     public void save(ApplicationExecutionHistory history) {
-        Optional<ApplicationExecutionHistoryEntity> historyEntity = Optional.ofNullable(applicationExecutionHistoryMapper.selectByPrimaryKey(history.getId()));
+        Optional<ApplicationExecutionHistoryCustomEntity> historyEntity = Optional.ofNullable(applicationExecutionHistoryCustomMapper.selectByPrimaryKey(history.getId()));
         if (historyEntity.isEmpty()) {
-            ApplicationExecutionHistoryEntity newHistoryEntity = applicationExecutionHistoryEntityMapper.mapToEntity(history);
+            ApplicationExecutionHistoryCustomEntity newHistoryEntity = applicationExecutionHistoryEntityMapper.mapToEntity(history);
             if (newHistoryEntity.getId() != null) {
                 applicationExecutionHistoryMapper.insert(newHistoryEntity);
             } else {
                 applicationExecutionHistoryMapper.insertSelective(newHistoryEntity);
             }
         } else {
-            ApplicationExecutionHistoryEntity historyEntityToUpdate = applicationExecutionHistoryEntityMapper.mapToEntity(history);
+            ApplicationExecutionHistoryCustomEntity historyEntityToUpdate = applicationExecutionHistoryEntityMapper.mapToEntity(history);
             int updateCount = applicationExecutionHistoryMapper.updateByPrimaryKey(historyEntityToUpdate);
             if (updateCount == 0) {
-                throw new ObjectOptimisticLockingFailureException(ApplicationExecutionHistoryEntity.class, history.getId());
+                throw new ObjectOptimisticLockingFailureException(ApplicationExecutionHistoryCustomEntity.class, history.getId());
             }
         }
     }
 
     @Override
     public ApplicationExecutionHistoryList selectAll() {
-        List<ApplicationExecutionHistoryEntity> applicationExecutionHistories = applicationExecutionHistoryMapper.selectAll();
+        List<ApplicationExecutionHistoryCustomEntity> applicationExecutionHistories = applicationExecutionHistoryCustomMapper.selectAll();
         return new ApplicationExecutionHistoryList(applicationExecutionHistories.stream()
                 .map(applicationExecutionHistoryEntityMapper::mapToDomainModel)
                 .toList());
@@ -57,7 +59,7 @@ public class ApplicationExecutionHistoryDataSource implements AuditRepository {
 
     @Override
     public Optional<ApplicationExecutionHistory> findById(Integer id) {
-        Optional<ApplicationExecutionHistoryEntity> applicationExecutionHistoryEntity = Optional.ofNullable(applicationExecutionHistoryMapper.selectByPrimaryKey(id));
+        Optional<ApplicationExecutionHistoryCustomEntity> applicationExecutionHistoryEntity = Optional.ofNullable(applicationExecutionHistoryCustomMapper.selectByPrimaryKey(id));
         return applicationExecutionHistoryEntity.map(applicationExecutionHistoryEntityMapper::mapToDomainModel);
     }
 
@@ -68,22 +70,22 @@ public class ApplicationExecutionHistoryDataSource implements AuditRepository {
 
     @Override
     public PageInfo<ApplicationExecutionHistory> selectAllWithPageInfo() {
-        List<ApplicationExecutionHistoryEntity> applicationExecutionHistories = applicationExecutionHistoryMapper.selectAll();
-        PageInfo<ApplicationExecutionHistoryEntity> pageInfo = new PageInfo<>(applicationExecutionHistories);
+        List<ApplicationExecutionHistoryCustomEntity> applicationExecutionHistories = applicationExecutionHistoryCustomMapper.selectAll();
+        PageInfo<ApplicationExecutionHistoryCustomEntity> pageInfo = new PageInfo<>(applicationExecutionHistories);
         return PageInfoHelper.of(pageInfo, applicationExecutionHistoryEntityMapper::mapToDomainModel);
     }
 
     @Override
     public ApplicationExecutionHistory start(ApplicationExecutionHistory history) {
-        ApplicationExecutionHistoryEntity newHistoryEntity = applicationExecutionHistoryEntityMapper.mapToEntity(history);
-        applicationExecutionHistoryMapper.insertForStart(newHistoryEntity);
+        ApplicationExecutionHistoryCustomEntity newHistoryEntity = applicationExecutionHistoryEntityMapper.mapToEntity(history);
+        applicationExecutionHistoryCustomMapper.insertForStart(newHistoryEntity);
         return applicationExecutionHistoryEntityMapper.mapToDomainModel(newHistoryEntity);
     }
 
     @Override
     public PageInfo<ApplicationExecutionHistory> searchWithPageInfo(AuditSearchCondition condition) {
-        List<ApplicationExecutionHistoryEntity> applicationExecutionHistories = applicationExecutionHistoryMapper.selectByCondition(condition);
-        PageInfo<ApplicationExecutionHistoryEntity> pageInfo = new PageInfo<>(applicationExecutionHistories);
+        List<ApplicationExecutionHistoryCustomEntity> applicationExecutionHistories = applicationExecutionHistoryCustomMapper.selectByCondition(condition);
+        PageInfo<ApplicationExecutionHistoryCustomEntity> pageInfo = new PageInfo<>(applicationExecutionHistories);
         return PageInfoHelper.of(pageInfo, applicationExecutionHistoryEntityMapper::mapToDomainModel);
     }
 }

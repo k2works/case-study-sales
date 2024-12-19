@@ -12,8 +12,8 @@ import java.util.function.Function;
 
 @Component
 public class ApplicationExecutionHistoryEntityMapper {
-    public ApplicationExecutionHistory mapToDomainModel(ApplicationExecutionHistoryEntity applicationExecutionHistoryEntity) {
-        Function<ApplicationExecutionHistoryEntity, User> user = (ApplicationExecutionHistoryEntity applicationExecutionHistory) -> {
+    public ApplicationExecutionHistory mapToDomainModel(ApplicationExecutionHistoryCustomEntity applicationExecutionHistoryEntity) {
+        Function<ApplicationExecutionHistoryCustomEntity, User> user = (ApplicationExecutionHistoryCustomEntity applicationExecutionHistory) -> {
             if (applicationExecutionHistory.getUser() == null) {
                 return null;
             }
@@ -40,8 +40,8 @@ public class ApplicationExecutionHistoryEntityMapper {
         );
     }
 
-    public ApplicationExecutionHistoryEntity mapToEntity(ApplicationExecutionHistory applicationExecutionHistory) {
-        ApplicationExecutionHistoryEntity applicationExecutionHistoryEntity = new ApplicationExecutionHistoryEntity();
+    public ApplicationExecutionHistoryCustomEntity mapToEntity(ApplicationExecutionHistory applicationExecutionHistory) {
+        ApplicationExecutionHistoryCustomEntity applicationExecutionHistoryEntity = new ApplicationExecutionHistoryCustomEntity();
         applicationExecutionHistoryEntity.setId(applicationExecutionHistory.getId());
         applicationExecutionHistoryEntity.setProcessName(applicationExecutionHistory.getProcess().getProcessType().getName());
         applicationExecutionHistoryEntity.setProcessCode(applicationExecutionHistory.getProcess().getProcessType().getCode());
