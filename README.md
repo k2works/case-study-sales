@@ -3,6 +3,16 @@
 [![Node.js CI](https://github.com/k2works/case-study-sales/actions/workflows/node.js.yml/badge.svg)](https://github.com/k2works/case-study-sales/actions/workflows/node.js.yml)
 [![Java CI](https://github.com/k2works/case-study-sales/actions/workflows/gradle.yml/badge.svg)](https://github.com/k2works/case-study-sales/actions/workflows/gradle.yml)
 
+[![Heroku Production](https://github.com/k2works/case-study-sales/actions/workflows/heroku_backend_production.yml/badge.svg)](https://github.com/k2works/case-study-sales/actions/workflows/heroku_backend_production.yml)
+[![Heroku Develop](https://github.com/k2works/case-study-sales/actions/workflows/heroku_backend_develop.yml/badge.svg)](https://github.com/k2works/case-study-sales/actions/workflows/heroku_backend_develop.yml)
+
+
+[![Vercel Production](https://github.com/k2works/case-study-sales/actions/workflows/vercel_frontend_production.yml/badge.svg)](https://github.com/k2works/case-study-sales/actions/workflows/vercel_frontend_production.yml)
+[![Vercel Develop](https://github.com/k2works/case-study-sales/actions/workflows/vercel_frontend_preview.yml/badge.svg)](https://github.com/k2works/case-study-sales/actions/workflows/vercel_frontend_preview.yml)
+
+[![Maintainability](https://api.codeclimate.com/v1/badges/8ff7a5b4be0f3a63ca4f/maintainability)](https://codeclimate.com/github/k2works/case-study-sales/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/8ff7a5b4be0f3a63ca4f/test_coverage)](https://codeclimate.com/github/k2works/case-study-sales/test_coverage)
+
 ## 概要
 
 [ガイドライン](./docs/slides/PITCHME.md)
@@ -20,6 +30,7 @@
 
 ```bash
 npm install
+npm run build
 npm start
 ```
 ## 構成

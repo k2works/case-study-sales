@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.sms.infrastructure.datasource.master.employee.EmployeeCustomMapper">
+    <resultMap
+            id="BaseResultMap"
+            type="com.example.sms.infrastructure.datasource.master.employee.EmployeeCustomEntity"
+            extends="com.example.sms.infrastructure.datasource.autogen.mapper.社員マスタMapper.BaseResultMap"
+    >
+        <association property="部門"
+                     javaType="com.example.sms.infrastructure.datasource.autogen.model.部門マスタ"
+                     column="{部門コード=部門コード, 開始日=開始日}"
+                     select="com.example.sms.infrastructure.datasource.autogen.mapper.部門マスタMapper.selectByPrimaryKey"
+                     fetchType="lazy"/>
+
+        <association property="user"
+                     javaType="com.example.sms.infrastructure.datasource.autogen.model.Usr"
+                     column="user_id"
+                     select="com.example.sms.infrastructure.datasource.autogen.mapper.UsrMapper.selectByPrimaryKey"
+                     fetchType="lazy"/>
+    </resultMap>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.社員マスタMapper.Base_Column_List" />
+        from public.社員マスタ
+        where 社員コード = #{社員コード,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectAll" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.社員マスタMapper.Base_Column_List"/>
+        from public.社員マスタ
+    </select>
+
+    <select id="selectByDepartmentCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.社員マスタMapper.Base_Column_List"/>
+        from public.社員マスタ
+        where 部門コード = #{部門コード,jdbcType=VARCHAR}
+    </select>
+</mapper>
