@@ -9,7 +9,7 @@
         <collection property="商品マスタ"
                     javaType="ArrayList"
                     column="商品分類コード"
-                    select="com.example.sms.infrastructure.datasource.master.product.商品マスタMapper.selectByProductCategoryCode"
+                    select="com.example.sms.infrastructure.datasource.master.product.ProductCustomMapper.selectByProductCategoryCode"
                     fetchType="eager"
         />
     </resultMap>

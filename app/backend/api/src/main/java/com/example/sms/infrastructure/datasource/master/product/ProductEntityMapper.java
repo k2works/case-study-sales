@@ -5,9 +5,11 @@ import com.example.sms.domain.model.master.product.CustomerSpecificSellingPrice;
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.SubstituteProduct;
 import com.example.sms.domain.type.product.*;
+import com.example.sms.infrastructure.datasource.autogen.model.商品マスタ;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.function.Function;
 
 @Component
 public class ProductEntityMapper {
@@ -59,7 +61,31 @@ public class ProductEntityMapper {
         return customerSellingPriceEntity;
     }
 
-    public Product mapToDomainModel(商品マスタ productEntity) {
+    public Product mapToDomainModel(ProductCustomEntity productEntity) {
+        Function<代替商品, SubstituteProduct> mapToSubstituteProduct = s -> (
+                SubstituteProduct.of(
+                        s.get商品コード(),
+                        s.get代替商品コード(),
+                        s.get優先順位()
+                )
+        );
+
+        Function<部品表, Bom> mapToBom = b -> (
+                Bom.of(
+                        b.get商品コード(),
+                        b.get部品コード(),
+                        b.get部品数量()
+                )
+        );
+
+        Function<顧客別販売単価, CustomerSpecificSellingPrice> mapToCustomerSpecificSellingPrice = c -> (
+                CustomerSpecificSellingPrice.of(
+                        c.get商品コード(),
+                        c.get取引先コード(),
+                        c.get販売単価()
+                )
+        );
+
         Product product = Product.of(
                 productEntity.get商品コード(),
                 productEntity.get商品正式名(),
@@ -79,41 +105,16 @@ public class ProductEntityMapper {
         );
 
         List<SubstituteProduct> substituteProducts = productEntity.get代替商品().stream()
-                .map(this::mapToSubstituteProduct)
+                .map(mapToSubstituteProduct)
                 .toList();
         List<Bom> boms = productEntity.get部品表().stream()
-                .map(this::mapToBom)
+                .map(mapToBom)
                 .toList();
         List<CustomerSpecificSellingPrice> customerSpecificSellingPrices = productEntity.get顧客別販売単価().stream()
-                .map(this::mapToCustomerSpecificSellingPrice)
+                .map(mapToCustomerSpecificSellingPrice)
                 .toList();
         product = Product.of(product, substituteProducts, boms, customerSpecificSellingPrices);
 
         return product;
-    }
-
-
-    private SubstituteProduct mapToSubstituteProduct(代替商品 substituteProductEntity) {
-        return SubstituteProduct.of(
-                substituteProductEntity.get商品コード(),
-                substituteProductEntity.get代替商品コード(),
-                substituteProductEntity.get優先順位()
-        );
-    }
-
-    private Bom mapToBom(部品表 bomEntity) {
-        return Bom.of(
-                bomEntity.get商品コード(),
-                bomEntity.get部品コード(),
-                bomEntity.get部品数量()
-        );
-    }
-
-    private CustomerSpecificSellingPrice mapToCustomerSpecificSellingPrice(顧客別販売単価 顧客別販売単価) {
-        return CustomerSpecificSellingPrice.of(
-                顧客別販売単価.get商品コード(),
-                顧客別販売単価.get取引先コード(),
-                顧客別販売単価.get販売単価()
-        );
     }
 }

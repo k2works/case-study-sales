@@ -1,7 +1,6 @@
 package com.example.sms.infrastructure.datasource.master.product;
 
 import com.example.sms.infrastructure.datasource.autogen.model.商品マスタ;
-import com.example.sms.infrastructure.datasource.autogen.model.商品分類マスタ;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +8,10 @@ import java.util.List;
 
 @Getter
 @Setter
-public class ProductCategoryCustomEntity extends 商品分類マスタ {
-    private List<商品マスタ> 商品マスタ;
+public class ProductCustomEntity extends 商品マスタ {
+    private List<代替商品> 代替商品;
+
+    private List<部品表> 部品表;
+
+    private List<顧客別販売単価> 顧客別販売単価;
 }

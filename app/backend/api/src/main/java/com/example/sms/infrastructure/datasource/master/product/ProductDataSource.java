@@ -4,6 +4,8 @@ import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.ProductList;
 import com.example.sms.domain.type.product.ProductType;
 import com.example.sms.infrastructure.PageInfoHelper;
+import com.example.sms.infrastructure.datasource.autogen.mapper.商品マスタMapper;
+import com.example.sms.infrastructure.datasource.autogen.model.商品マスタ;
 import com.example.sms.service.master.product.ProductRepository;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.core.Authentication;
@@ -17,13 +19,15 @@ import java.util.Optional;
 @Repository
 public class ProductDataSource implements ProductRepository {
     final 商品マスタMapper productMapper;
+    final ProductCustomMapper productCustomMapper;
     final 代替商品Mapper substituteProductMapper;
     final 部品表Mapper bomMapper;
     final 顧客別販売単価Mapper customerSellingPriceMapper;
     final ProductEntityMapper productEntityMapper;
 
-    public ProductDataSource(商品マスタMapper productMapper, 代替商品Mapper substituteProductMapper, 部品表Mapper bomMapper, 顧客別販売単価Mapper customerSellingPriceMapper, ProductEntityMapper productEntityMapper) {
+    public ProductDataSource(商品マスタMapper productMapper, ProductCustomMapper productCustomMapper, 代替商品Mapper substituteProductMapper, 部品表Mapper bomMapper, 顧客別販売単価Mapper customerSellingPriceMapper, ProductEntityMapper productEntityMapper) {
         this.productMapper = productMapper;
+        this.productCustomMapper = productCustomMapper;
         this.substituteProductMapper = substituteProductMapper;
         this.bomMapper = bomMapper;
         this.customerSellingPriceMapper = customerSellingPriceMapper;
@@ -35,7 +39,7 @@ public class ProductDataSource implements ProductRepository {
         customerSellingPriceMapper.deleteAll();
         bomMapper.deleteAll();
         substituteProductMapper.deleteAll();
-        productMapper.deleteAll();
+        productCustomMapper.deleteAll();
     }
 
     @Override
@@ -43,7 +47,7 @@ public class ProductDataSource implements ProductRepository {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication != null && authentication.getName() != null ? authentication.getName() : "system";
 
-        Optional<商品マスタ> productEntity = Optional.ofNullable(productMapper.selectByPrimaryKey(product.getProductCode().getValue()));
+        Optional<ProductCustomEntity> productEntity = Optional.ofNullable(productCustomMapper.selectByPrimaryKey(product.getProductCode().getValue()));
         if (productEntity.isEmpty()) {
             商品マスタ newProductEntity = productEntityMapper.mapToEntity(product);
             newProductEntity.set作成日時(LocalDateTime.now());
@@ -150,7 +154,7 @@ public class ProductDataSource implements ProductRepository {
 
     @Override
     public ProductList selectAll() {
-        List<商品マスタ> productEntities = productMapper.selectAll();
+        List<ProductCustomEntity> productEntities = productCustomMapper.selectAll();
 
         return new ProductList(productEntities.stream()
                 .map(productEntityMapper::mapToDomainModel)
@@ -159,23 +163,23 @@ public class ProductDataSource implements ProductRepository {
 
     @Override
     public PageInfo<Product> selectAllWithPageInfo() {
-        List<商品マスタ> productEntities = productMapper.selectAll();
-        PageInfo<商品マスタ> pageInfo = new PageInfo<>(productEntities);
+        List<ProductCustomEntity> productEntities = productCustomMapper.selectAll();
+        PageInfo<ProductCustomEntity> pageInfo = new PageInfo<>(productEntities);
 
         return PageInfoHelper.of(pageInfo, productEntityMapper::mapToDomainModel);
     }
 
     @Override
     public PageInfo<Product> selectAllBoms() {
-        List<商品マスタ> productEntities = productMapper.selectAllBoms(List.of(ProductType.製品.getCode(), ProductType.部品.getCode(), ProductType.包材.getCode()));
-        PageInfo<商品マスタ> pageInfo = new PageInfo<>(productEntities);
+        List<ProductCustomEntity> productEntities = productCustomMapper.selectAllBoms(List.of(ProductType.製品.getCode(), ProductType.部品.getCode(), ProductType.包材.getCode()));
+        PageInfo<ProductCustomEntity> pageInfo = new PageInfo<>(productEntities);
 
         return PageInfoHelper.of(pageInfo, productEntityMapper::mapToDomainModel);
     }
 
     @Override
     public Optional<Product> findById(String productCode) {
-        商品マスタ productEntity = productMapper.selectByPrimaryKey(productCode);
+        ProductCustomEntity productEntity = productCustomMapper.selectByPrimaryKey(productCode);
         if (productEntity != null) {
             return Optional.of(productEntityMapper.mapToDomainModel(productEntity));
         }
