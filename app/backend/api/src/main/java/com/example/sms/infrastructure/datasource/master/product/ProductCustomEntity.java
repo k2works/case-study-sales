@@ -1,5 +1,6 @@
 package com.example.sms.infrastructure.datasource.master.product;
 
+import com.example.sms.infrastructure.datasource.autogen.model.代替商品;
 import com.example.sms.infrastructure.datasource.autogen.model.商品マスタ;
 import lombok.Getter;
 import lombok.Setter;

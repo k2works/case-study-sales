@@ -9,7 +9,7 @@
         <collection property="代替商品"
                     javaType="ArrayList"
                     column="商品コード"
-                    select="com.example.sms.infrastructure.datasource.master.product.代替商品Mapper.selectByProductCode"
+                    select="com.example.sms.infrastructure.datasource.master.product.SubstituteProductCustomMapper.selectByProductCode"
                     fetchType="eager"
         />
 

@@ -5,6 +5,7 @@ import com.example.sms.domain.model.master.product.CustomerSpecificSellingPrice;
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.SubstituteProduct;
 import com.example.sms.domain.type.product.*;
+import com.example.sms.infrastructure.datasource.autogen.model.代替商品;
 import com.example.sms.infrastructure.datasource.autogen.model.商品マスタ;
 import org.springframework.stereotype.Component;
 
