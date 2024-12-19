@@ -38,7 +38,6 @@
                enableDeleteByExample="false"
                enableUpdateByExample="false"
                enableCountByExample="false"
-               domainObjectName="%Entity"
         >
             <property name="useActualColumnNames" value="false"  />
         </table>
