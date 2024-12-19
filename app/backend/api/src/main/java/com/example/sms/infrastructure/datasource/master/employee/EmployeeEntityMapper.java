@@ -6,6 +6,7 @@ import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.type.user.RoleName;
 import com.example.sms.infrastructure.datasource.autogen.model.Usr;
+import com.example.sms.infrastructure.datasource.autogen.model.社員マスタ;
 import com.example.sms.infrastructure.datasource.autogen.model.部門マスタ;
 import org.springframework.stereotype.Component;
 
@@ -37,7 +38,7 @@ public class EmployeeEntityMapper {
         return employeeEntity;
     }
 
-    public Employee mapToDomainModel(社員マスタ employeeEntity) {
+    public Employee mapToDomainModel(EmployeeCustomEntity employeeEntity) {
         Department department = mapToDepartment(employeeEntity.get部門());
         User user = mapToUser(employeeEntity.getUser());
 

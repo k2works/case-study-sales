@@ -4,6 +4,8 @@ import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.master.employee.EmployeeCode;
 import com.example.sms.domain.model.master.employee.EmployeeList;
 import com.example.sms.infrastructure.PageInfoHelper;
+import com.example.sms.infrastructure.datasource.autogen.mapper.社員マスタMapper;
+import com.example.sms.infrastructure.datasource.autogen.model.社員マスタ;
 import com.example.sms.service.master.employee.EmployeeRepository;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.core.Authentication;
@@ -17,16 +19,18 @@ import java.util.Optional;
 @Repository
 public class EmployeeDataSource implements EmployeeRepository {
     final 社員マスタMapper employeeMapper;
+    final EmployeeCustomMapper employeeCustomMapper;
     final EmployeeEntityMapper employeeEntityMapper;
 
-    public EmployeeDataSource(社員マスタMapper employeeMapper, EmployeeEntityMapper employeeEntityMapper) {
+    public EmployeeDataSource(社員マスタMapper employeeMapper, EmployeeCustomMapper employeeCustomMapper, EmployeeEntityMapper employeeEntityMapper) {
         this.employeeMapper = employeeMapper;
+        this.employeeCustomMapper = employeeCustomMapper;
         this.employeeEntityMapper = employeeEntityMapper;
     }
 
     @Override
     public Optional<Employee> findById(EmployeeCode empCode) {
-        社員マスタ employeeEntity = employeeMapper.selectByPrimaryKey(empCode.getValue());
+        EmployeeCustomEntity employeeEntity = employeeCustomMapper.selectByPrimaryKey(empCode.getValue());
         if (employeeEntity != null) {
             return Optional.of(employeeEntityMapper.mapToDomainModel(employeeEntity));
         }
@@ -35,7 +39,7 @@ public class EmployeeDataSource implements EmployeeRepository {
 
     @Override
     public EmployeeList selectAll() {
-        List<社員マスタ> employeeEntities = employeeMapper.selectAll();
+        List<EmployeeCustomEntity> employeeEntities = employeeCustomMapper.selectAll();
         return new EmployeeList(employeeEntities.stream()
                 .map(employeeEntityMapper::mapToDomainModel)
                 .toList());
@@ -43,8 +47,8 @@ public class EmployeeDataSource implements EmployeeRepository {
 
     @Override
     public PageInfo<Employee> selectAllWithPageInfo() {
-        List<社員マスタ> employeeEntities = employeeMapper.selectAll();
-        PageInfo<社員マスタ> pageInfo = new PageInfo<>(employeeEntities);
+        List<EmployeeCustomEntity> employeeEntities = employeeCustomMapper.selectAll();
+        PageInfo<EmployeeCustomEntity> pageInfo = new PageInfo<>(employeeEntities);
 
         return PageInfoHelper.of(pageInfo, employeeEntityMapper::mapToDomainModel);
     }
@@ -81,6 +85,6 @@ public class EmployeeDataSource implements EmployeeRepository {
 
     @Override
     public void deleteAll() {
-        employeeMapper.deleteAll();
+        employeeCustomMapper.deleteAll();
     }
 }

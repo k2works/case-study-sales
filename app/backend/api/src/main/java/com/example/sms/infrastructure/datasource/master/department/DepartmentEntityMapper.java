@@ -7,12 +7,12 @@ import com.example.sms.domain.model.master.department.DepartmentPath;
 import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.type.department.DepartmentLowerType;
 import com.example.sms.domain.type.department.SlitYnType;
+import com.example.sms.infrastructure.datasource.autogen.model.社員マスタ;
 import com.example.sms.infrastructure.datasource.autogen.model.部門マスタ;
-import com.example.sms.infrastructure.datasource.master.employee.社員マスタ;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.function.Function;
 
 @Component
 public class DepartmentEntityMapper {
@@ -30,8 +30,17 @@ public class DepartmentEntityMapper {
     }
 
     public Department mapToDomainModel(DepartmentCustomEntity departmentEntity) {
+        Function<社員マスタ, Employee> mapToEmployee = e -> Employee.of(
+                e.get社員コード(),
+                e.get社員名(),
+                e.get社員名カナ(),
+                e.get電話番号(),
+                e.getFax番号(),
+                e.get職種コード()
+        );
+
         List<Employee> employees = departmentEntity.get社員().stream()
-                .map(this::mapToEmployee)
+                .map(mapToEmployee)
                 .toList();
 
         return new Department(
@@ -43,17 +52,6 @@ public class DepartmentEntityMapper {
                 DepartmentLowerType.of(departmentEntity.get最下層区分()),
                 SlitYnType.of(departmentEntity.get伝票入力可否()),
                 employees
-        );
-    }
-
-    private Employee mapToEmployee(社員マスタ employeeEntity) {
-        return Employee.of(
-                employeeEntity.get社員コード(),
-                employeeEntity.get社員名(),
-                employeeEntity.get社員名カナ(),
-                employeeEntity.get電話番号(),
-                employeeEntity.getFax番号(),
-                employeeEntity.get職種コード()
         );
     }
 }

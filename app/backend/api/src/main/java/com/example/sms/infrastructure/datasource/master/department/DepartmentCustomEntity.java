@@ -1,7 +1,7 @@
 package com.example.sms.infrastructure.datasource.master.department;
 
+import com.example.sms.infrastructure.datasource.autogen.model.社員マスタ;
 import com.example.sms.infrastructure.datasource.autogen.model.部門マスタ;
-import com.example.sms.infrastructure.datasource.master.employee.社員マスタ;
 import lombok.Getter;
 import lombok.Setter;
 
