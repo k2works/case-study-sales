@@ -16,7 +16,7 @@
         <collection property="部品表"
                     javaType="ArrayList"
                     column="商品コード"
-                    select="com.example.sms.infrastructure.datasource.master.product.部品表Mapper.selectByProductCode"
+                    select="com.example.sms.infrastructure.datasource.master.product.BomCustomMapper.selectByProductCode"
                     fetchType="eager"
         />
 

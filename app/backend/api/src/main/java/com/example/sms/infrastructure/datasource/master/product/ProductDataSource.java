@@ -6,9 +6,8 @@ import com.example.sms.domain.type.product.ProductType;
 import com.example.sms.infrastructure.PageInfoHelper;
 import com.example.sms.infrastructure.datasource.autogen.mapper.代替商品Mapper;
 import com.example.sms.infrastructure.datasource.autogen.mapper.商品マスタMapper;
-import com.example.sms.infrastructure.datasource.autogen.model.代替商品;
-import com.example.sms.infrastructure.datasource.autogen.model.代替商品Key;
-import com.example.sms.infrastructure.datasource.autogen.model.商品マスタ;
+import com.example.sms.infrastructure.datasource.autogen.mapper.部品表Mapper;
+import com.example.sms.infrastructure.datasource.autogen.model.*;
 import com.example.sms.service.master.product.ProductRepository;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.core.Authentication;
@@ -26,23 +25,26 @@ public class ProductDataSource implements ProductRepository {
     final 代替商品Mapper substituteProductMapper;
     final SubstituteProductCustomMapper substituteProductCustomMapper;
     final 部品表Mapper bomMapper;
+    final BomCustomMapper bomCustomMapper;
     final 顧客別販売単価Mapper customerSellingPriceMapper;
     final ProductEntityMapper productEntityMapper;
 
-    public ProductDataSource(商品マスタMapper productMapper, ProductCustomMapper productCustomMapper, 代替商品Mapper substituteProductMapper, SubstituteProductCustomMapper substituteProductCustomMapper, 部品表Mapper bomMapper, 顧客別販売単価Mapper customerSellingPriceMapper, ProductEntityMapper productEntityMapper) {
+    public ProductDataSource(商品マスタMapper productMapper, ProductCustomMapper productCustomMapper, 代替商品Mapper substituteProductMapper, SubstituteProductCustomMapper substituteProductCustomMapper, 部品表Mapper bomMapper, BomCustomMapper bomCustomMapper, 顧客別販売単価Mapper customerSellingPriceMapper, ProductEntityMapper productEntityMapper) {
         this.productMapper = productMapper;
         this.productCustomMapper = productCustomMapper;
         this.substituteProductMapper = substituteProductMapper;
         this.substituteProductCustomMapper = substituteProductCustomMapper;
         this.bomMapper = bomMapper;
+        this.bomCustomMapper = bomCustomMapper;
         this.customerSellingPriceMapper = customerSellingPriceMapper;
         this.productEntityMapper = productEntityMapper;
     }
 
+
     @Override
     public void deleteAll() {
         customerSellingPriceMapper.deleteAll();
-        bomMapper.deleteAll();
+        bomCustomMapper.deleteAll();
         substituteProductCustomMapper.deleteAll();
         productCustomMapper.deleteAll();
     }
@@ -120,7 +122,7 @@ public class ProductDataSource implements ProductRepository {
             }
 
             if (product.getBoms() != null) {
-                bomMapper.deleteByProductCode(product.getProductCode().getValue());
+                bomCustomMapper.deleteByProductCode(product.getProductCode().getValue());
 
                 product.getBoms().forEach(bom -> {
                     部品表Key key = new 部品表Key();
