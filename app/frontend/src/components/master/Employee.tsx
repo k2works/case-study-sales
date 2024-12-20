@@ -90,27 +90,138 @@ export const Employee: React.FC = () => {
             });
         }, []);
 
-        const collectionView = () => {
-            const handleOpenModal = (employee?: EmployeeType) => {
-                setMessage("");
-                setError("");
-                if (employee) {
-                    employee.loginPassword = "";
-                    setNewEmployee(employee);
-                    setEditId(employee.empCode.value);
-                    setIsEditing(true);
-                } else {
-                    setNewEmployee(initialEmployee);
-                    setIsEditing(false);
-                }
-                setModalIsOpen(true);
-            };
+        const modalView = () => {
+            const editModal = () => {
+                const handleOpenModal = (employee?: EmployeeType) => {
+                    setMessage("");
+                    setError("");
+                    if (employee) {
+                        employee.loginPassword = "";
+                        setNewEmployee(employee);
+                        setEditId(employee.empCode.value);
+                        setIsEditing(true);
+                    } else {
+                        setNewEmployee(initialEmployee);
+                        setIsEditing(false);
+                    }
+                    setModalIsOpen(true);
+                };
 
-            const handleCloseModal = () => {
-                setError("");
-                setModalIsOpen(false);
-                setEditId(null);
-            };
+                const handleCloseModal = () => {
+                    setError("");
+                    setModalIsOpen(false);
+                    setEditId(null);
+                };
+
+                const editModalView = () => {
+                    return(
+                        <Modal
+                            isOpen={modalIsOpen}
+                            onRequestClose={handleCloseModal}
+                            contentLabel="社員情報を入力"
+                            className="modal"
+                            overlayClassName="modal-overlay"
+                            bodyOpenClassName="modal-open"
+                        >
+                            {singleView()}
+                        </Modal>
+                    )
+                }
+
+                return {
+                    editModalView,
+                    handleOpenModal,
+                    handleCloseModal,
+                }
+            }
+
+            const departmentModal = () => {
+                const departmentModalView = () => {
+                    return (
+                        <Modal
+                            isOpen={departmentModalIsOpen}
+                            onRequestClose={() => setDepartmentModalIsOpen(false)}
+                            contentLabel="部門情報を入力"
+                            className="modal"
+                            overlayClassName="modal-overlay"
+                            bodyOpenClassName="modal-open"
+                        >
+                            {
+                                <DepartmentCollectionSelectView
+                                    departments={departments}
+                                    handleSelect={(department) => {
+                                        setNewEmployee({
+                                            ...newEmployee,
+                                            department: department
+                                        });
+                                        setDepartmentModalIsOpen(false);
+                                    }}
+                                    handleClose={() => setDepartmentModalIsOpen(false)}
+                                    pageNation={departmentPageNation}
+                                    fetchDepartments={fetchDepartments.load}
+                                />
+                            }
+                        </Modal>
+                    )
+                }
+
+                return {
+                    departmentModalView,
+                }
+            }
+
+            const employeeModal = () => {
+                const employeeModalView = () => {
+                    return (
+                        <Modal
+                            isOpen={userModalIsOpen}
+                            onRequestClose={() => setUserModalIsOpen(false)}
+                            contentLabel="ユーザー情報を入力"
+                            className="modal"
+                            overlayClassName="modal-overlay"
+                            bodyOpenClassName="modal-open"
+                        >
+                            {
+                                <UserCollectionSelectView
+                                    users={users}
+                                    handleSelect={(user) => {
+                                        setNewEmployee({
+                                            ...newEmployee,
+                                            user: user
+                                        });
+                                        setUserModalIsOpen(false);
+                                    }}
+                                    handleClose={() => setUserModalIsOpen(false)}
+                                    pageNation={userPageNation}
+                                    fetchUsers={fetchUsers.load}
+                                />
+                            }
+                        </Modal>
+                    )
+                }
+
+                return {
+                    employeeModalView,
+                }
+            }
+
+            const init = () => (
+                <>
+                    {editModal().editModalView()}
+                    {departmentModal().departmentModalView()}
+                    {employeeModal().employeeModalView()}
+                </>
+            )
+
+            return {
+                editModal,
+                departmentModal,
+                init,
+            }
+        }
+
+        const collectionView = () => {
+            const {handleOpenModal} = modalView().editModal();
 
             const handleSearchEmployee = async () => {
                 if (!searchEmployeeCode.trim()) return;
@@ -179,18 +290,6 @@ export const Employee: React.FC = () => {
             }
 
             return (
-                <>
-                    <Modal
-                        isOpen={modalIsOpen}
-                        onRequestClose={handleCloseModal}
-                        contentLabel="社員情報を入力"
-                        className="modal"
-                        overlayClassName="modal-overlay"
-                        bodyOpenClassName="modal-open"
-                    >
-                        {singleView()}
-                    </Modal>
-
                     <EmployeeCollectionView
                         error={error}
                         message={message}
@@ -206,16 +305,11 @@ export const Employee: React.FC = () => {
                         pageNation={pageNation}
                         fetchEmployees={fetchEmployees.load}
                     />
-                </>
             )
         };
 
         const singleView = () => {
-            const handleCloseModal = () => {
-                setError("");
-                setModalIsOpen(false);
-                setEditId(null);
-            };
+            const {handleCloseModal} = modalView().editModal();
 
             const handleCreateOrUpdateEmployee = async () => {
                 const validateEmployee = (): boolean => {
@@ -263,59 +357,9 @@ export const Employee: React.FC = () => {
                         handleCloseModal={handleCloseModal}
                     />
 
-                    <Modal
-                        isOpen={departmentModalIsOpen}
-                        onRequestClose={() => setDepartmentModalIsOpen(false)}
-                        contentLabel="部門情報を入力"
-                        className="modal"
-                        overlayClassName="modal-overlay"
-                        bodyOpenClassName="modal-open"
-                    >
-                        {
-                            <DepartmentCollectionSelectView
-                                departments={departments}
-                                handleSelect={(department) => {
-                                    setNewEmployee({
-                                        ...newEmployee,
-                                        department: department
-                                    });
-                                    setDepartmentModalIsOpen(false);
-                                }}
-                                handleClose={() => setDepartmentModalIsOpen(false)}
-                                pageNation={departmentPageNation}
-                                fetchDepartments={fetchDepartments.load}
-                            />
-                        }
-                    </Modal>
-
                     <DepartmentSelectView
                         handleSelect={() => setDepartmentModalIsOpen(true)}
                     />
-
-                    <Modal
-                        isOpen={userModalIsOpen}
-                        onRequestClose={() => setUserModalIsOpen(false)}
-                        contentLabel="ユーザー情報を入力"
-                        className="modal"
-                        overlayClassName="modal-overlay"
-                        bodyOpenClassName="modal-open"
-                    >
-                        {
-                            <UserCollectionSelectView
-                                users={users}
-                                handleSelect={(user) => {
-                                    setNewEmployee({
-                                        ...newEmployee,
-                                        user: user
-                                    });
-                                    setUserModalIsOpen(false);
-                                }}
-                                handleClose={() => setUserModalIsOpen(false)}
-                                pageNation={userPageNation}
-                                fetchUsers={fetchUsers.load}
-                            />
-                        }
-                    </Modal>
 
                     <UserSelectView
                         handleSelect={() => setUserModalIsOpen(true)}
@@ -329,7 +373,10 @@ export const Employee: React.FC = () => {
                 {loading ? (
                     <LoadingIndicator/>
                 ) : (
-                    collectionView()
+                    <>
+                        {modalView().init()}
+                        {collectionView()}
+                    </>
                 )}
             </>
         );
