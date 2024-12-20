@@ -13,11 +13,21 @@ const Env = (() => {
         }
         return "http://localhost:8080/api" as string
     })();
+    const currentEnv = (): string => {
+        if (isProduction()) {
+            return "Production";
+        }
+        if (isStaging()) {
+            return "Staging";
+        }
+        return "Development";
+    }
 
     return {
         isProduction,
         prdApiUrl,
-        devApiUrl
+        devApiUrl,
+        currentEnv
     };
 })();
 
