@@ -187,10 +187,14 @@ interface DepartmentSingleViewProps {
     error: string | null;
     message: string | null;
     isEditing: boolean;
-    handleCreateOrUpdateDepartment: () => void;
-    handleCloseModal: () => void;
-    newDepartment: DepartmentType;
-    setNewDepartment: React.Dispatch<React.SetStateAction<DepartmentType>>;
+    headerItems: {
+        handleCreateOrUpdateDepartment: () => void;
+        handleCloseModal: () => void;
+    }
+    formItems: {
+        newDepartment: DepartmentType;
+        setNewDepartment: React.Dispatch<React.SetStateAction<DepartmentType>>;
+    }
 }
 
 
@@ -198,10 +202,14 @@ export const DepartmentSingleView = ({
                                          error,
                                          message,
                                          isEditing,
-                                         handleCreateOrUpdateDepartment,
-                                         handleCloseModal,
-                                         newDepartment,
-                                         setNewDepartment
+                                         headerItems: {
+                                             handleCreateOrUpdateDepartment,
+                                             handleCloseModal,
+                                         },
+                                         formItems: {
+                                             newDepartment,
+                                             setNewDepartment
+                                         }
                                      }: DepartmentSingleViewProps) => (
     <div className="single-view-object-container">
         <Message error={error} message={message}/>

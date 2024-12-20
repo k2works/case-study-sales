@@ -286,17 +286,10 @@ export const Department: React.FC = () => {
                     <DepartmentCollectionView
                         error={error}
                         message={message}
-                        searchDepartmentId={searchDepartmentId}
-                        setSearchDepartmentId={setSearchDepartmentId}
-                        handleSearchDepartment={handleSearchDepartment}
-                        handleOpenModal={handleOpenModal}
-                        departments={departments}
-                        handleDeleteDepartment={handleDeleteDepartment}
-                        handleCheckDepartment={handleCheckDepartment}
-                        handleCheckToggleCollection={handleCheckAllDepartment}
-                        handleDeleteCheckedCollection={handleDeleteCheckedCollection}
-                        pageNation={pageNation}
-                        fetchDepartments={fetchDepartments.load}
+                        searchItems={{searchDepartmentId, setSearchDepartmentId, handleSearchDepartment}}
+                        headerItems={{handleOpenModal, handleCheckToggleCollection:handleCheckAllDepartment, handleDeleteCheckedCollection}}
+                        collectionItems={{departments, handleOpenModal, handleDeleteDepartment, handleCheckDepartment}}
+                        pageNationItems={{pageNation, fetchDepartments: fetchDepartments.load}}
                     />
             );
         };
@@ -342,11 +335,9 @@ export const Department: React.FC = () => {
                     <DepartmentSingleView
                         error={error}
                         message={message}
-                        newDepartment={newDepartment}
-                        setNewDepartment={setNewDepartment}
                         isEditing={isEditing}
-                        handleCreateOrUpdateDepartment={handleCreateOrUpdateDepartment}
-                        handleCloseModal={handleCloseModal}
+                        headerItems={{handleCreateOrUpdateDepartment, handleCloseModal}}
+                        formItems={{newDepartment, setNewDepartment}}
                     />
 
                     {isEditing && (

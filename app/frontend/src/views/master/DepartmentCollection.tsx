@@ -77,33 +77,35 @@ const DepartmentList: React.FC<DepartmentListProps> = ({departments, onEdit, onD
 interface DepartmentCollectionViewProps {
     error: string | null;
     message: string | null;
-    searchDepartmentId: { deptCode: { value: string } };
-    setSearchDepartmentId: React.Dispatch<React.SetStateAction<DepartmentIdType>>;
-    handleSearchDepartment: () => void;
-    handleOpenModal: (department?: DepartmentType) => void;
-    departments: DepartmentType[];
-    handleDeleteDepartment: (departmentId: DepartmentType['departmentId']) => void;
-    handleCheckDepartment: (department: DepartmentType) => void;
-    handleCheckToggleCollection: () => void;
-    handleDeleteCheckedCollection: () => void;
-    pageNation: any; // 適切な型を使用してください
-    fetchDepartments: () => void;
+    searchItems: {
+        searchDepartmentId: { deptCode: { value: string } };
+        setSearchDepartmentId: React.Dispatch<React.SetStateAction<DepartmentIdType>>;
+        handleSearchDepartment: () => void;
+    }
+    headerItems: {
+        handleOpenModal: (department?: DepartmentType) => void;
+        handleCheckToggleCollection: () => void;
+        handleDeleteCheckedCollection: () => void;
+    }
+    collectionItems: {
+        departments: DepartmentType[];
+        handleOpenModal: (department?: DepartmentType) => void;
+        handleDeleteDepartment: (departmentId: DepartmentType['departmentId']) => void;
+        handleCheckDepartment: (department: DepartmentType) => void;
+    }
+    pageNationItems: {
+        pageNation: any; // 適切な型を使用してください
+        fetchDepartments: () => void;
+    }
 }
 
 export const DepartmentCollectionView: React.FC<DepartmentCollectionViewProps> = ({
                                                                                       error,
                                                                                       message,
-                                                                                      searchDepartmentId,
-                                                                                      setSearchDepartmentId,
-                                                                                      handleSearchDepartment,
-                                                                                      handleOpenModal,
-                                                                                      departments,
-                                                                                      handleDeleteDepartment,
-                                                                                      handleCheckDepartment,
-                                                                                      handleCheckToggleCollection,
-                                                                                      handleDeleteCheckedCollection,
-                                                                                      pageNation,
-                                                                                      fetchDepartments
+                                                                                      searchItems: {searchDepartmentId, setSearchDepartmentId, handleSearchDepartment},
+                                                                                      headerItems: {handleOpenModal, handleCheckToggleCollection, handleDeleteCheckedCollection},
+                                                                                      collectionItems: { departments, handleDeleteDepartment, handleCheckDepartment },
+                                                                                      pageNationItems: { pageNation, fetchDepartments }
                                                                                   }) => (
     <div className="collection-view-object-container">
         <Message error={error} message={message}/>
