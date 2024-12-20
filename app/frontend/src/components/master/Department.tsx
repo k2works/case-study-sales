@@ -22,9 +22,7 @@ export const Department: React.FC = () => {
         const {
             modalIsOpen: employeeModalIsOpen,
             setModalIsOpen: setEmployeeModalIsOpen,
-            isEditing: isEmployeeEditing,
             setIsEditing: setEmployeeIsEditing,
-            editId: EmployeeEditId,
             setEditId: setEmployeeEditId
         } = useModal();
 
