@@ -280,6 +280,13 @@ img {
     margin-top: 1rem;
     color: #00a157;
 }
+.logo-dev {
+    font-weight: bold;
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    margin-top: 1rem;
+    color: red;
+}
 
 /* ボタン */
 .action-button {
