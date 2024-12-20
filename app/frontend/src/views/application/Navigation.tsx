@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import {FaBars, FaTimes} from "react-icons/fa";
 import {RoleType} from "../../models";
 import {getRoleFromUser} from "../../components/application/RouteAuthGuard.tsx";
+import Env from "../../env.ts";
 
 interface NavItemProps {
     id: string;
@@ -49,23 +50,23 @@ const NaveItems: React.FC = () => {
                             <SubNavItem id="side-nav-department-nav" to="/department">部門</SubNavItem>
                             <SubNavItem id="side-nav-employee-nav" to="/employee">社員</SubNavItem>
                             <SubNavItem id="side-nav-product-nav" to="/product">商品</SubNavItem>
-                            <ul className="nav-sub-list">
-                                <SubNavItem id="side-nav-product-nav" to="/product-category">分類</SubNavItem>
-                                <SubNavItem id="side-nav-product-nav" to="/product-detail">詳細</SubNavItem>
-                            </ul>
+                            { !Env.isProduction() && (
+                                <ul className="nav-sub-list">
+                                    <SubNavItem id="side-nav-product-nav" to="/product-category">分類</SubNavItem>
+                                    <SubNavItem id="side-nav-product-nav" to="/product-detail">詳細</SubNavItem>
+                                </ul>
+                            )}
                         </ul>
                     </li>
                 </>
             ) : (
-                <>
-                    <li className="nav-item">
-                        システム
-                        <ul className="nav-sub-list">
-                            <SubNavItem id="side-nav-audit-nav" to="/audit">実行履歴</SubNavItem>
-                            <SubNavItem id="side-nav-download-nav" to="/download">ダウンロード</SubNavItem>
-                        </ul>
-                    </li>
-                </>
+                <li className="nav-item">
+                    システム
+                    <ul className="nav-sub-list">
+                        <SubNavItem id="side-nav-audit-nav" to="/audit">実行履歴</SubNavItem>
+                        <SubNavItem id="side-nav-download-nav" to="/download">ダウンロード</SubNavItem>
+                    </ul>
+                </li>
             )}
             <NavItem id="side-nav-logout-nav" to="/logout" className="nav-item">ログアウト</NavItem>
         </ul>
@@ -89,12 +90,6 @@ export const HeaderNavigation: React.FC = () => {
         nav.classList.toggle("open");
     };
 
-    const clearMenu = () => {
-        const nav = document.querySelector("html");
-        if (!nav) return;
-        nav.classList.remove("open");
-    };
-
     return (
         <div className="nav-container">
             <button className="navbtn" id="nav-button" onClick={toggleMenu}>
@@ -102,7 +97,7 @@ export const HeaderNavigation: React.FC = () => {
                 <i className="fas fa-times"><FaTimes/></i>
             </button>
 
-            <nav className="nav" id="nav-menu" onClick={clearMenu}>
+            <nav className="nav" id="nav-menu">
                 <NaveItems/>
             </nav>
         </div>
