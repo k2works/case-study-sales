@@ -24,6 +24,7 @@
         select
         <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.ApplicationExecutionHistoryMapper.Base_Column_List" />
         from system.application_execution_history
+        order by id desc
     </select>
 
     <select id="selectByCondition" resultMap="BaseResultMap">
