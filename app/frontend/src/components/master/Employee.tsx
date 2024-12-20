@@ -23,20 +23,12 @@ export const Employee: React.FC = () => {
         const {pageNation: userPageNation, setPageNation: setUserPageNation} = usePageNation();
         const {modalIsOpen, setModalIsOpen, isEditing, setIsEditing, editId, setEditId} = useModal();
         const {
-            modalIsOpen: departmenModalIsOpen,
-            setModalIsOpen: setDepartmentModalIsOpen,
-            isEditing: isDepartmentEditing,
-            setIsEditing: setDepartmentIsEditing,
-            editId: departmentEditId,
-            setEditId: setDepartmentEditId
+            modalIsOpen: departmentModalIsOpen,
+            setModalIsOpen: setDepartmentModalIsOpen
         } = useModal();
         const {
             modalIsOpen: userModalIsOpen,
-            setModalIsOpen: setUserModalIsOpen,
-            isEditing: isUserEditing,
-            setIsEditing: setUserIsEditing,
-            editId: userEditId,
-            setEditId: setUserEditId
+            setModalIsOpen: setUserModalIsOpen
         } = useModal();
 
         const {
@@ -272,7 +264,7 @@ export const Employee: React.FC = () => {
                     />
 
                     <Modal
-                        isOpen={departmenModalIsOpen}
+                        isOpen={departmentModalIsOpen}
                         onRequestClose={() => setDepartmentModalIsOpen(false)}
                         contentLabel="部門情報を入力"
                         className="modal"
