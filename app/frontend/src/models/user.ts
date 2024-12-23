@@ -1,3 +1,5 @@
+import {PageNationType} from "../views/application/PageNation.tsx";
+
 export type UserType = {
     userId: string;
     token: string;
@@ -27,6 +29,10 @@ export enum RoleNameEnumType {
     ROLE_ADMIN = 'ADMIN',
     ROLE_USER = 'USER'
 }
+
+export type UserFetchType = {
+    list: UserAccountType[];
+} & PageNationType;
 
 export type UserAccountResourceType = {
     userId: string;
