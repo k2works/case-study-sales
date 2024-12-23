@@ -303,17 +303,10 @@ export const Employee: React.FC = () => {
                     <EmployeeCollectionView
                         error={error}
                         message={message}
-                        searchEmployeeCode={searchEmployeeCode}
-                        setSearchEmployeeCode={setSearchEmployeeCode}
-                        handleSearchEmployee={handleSearchEmployee}
-                        handleOpenModal={handleOpenModal}
-                        employees={employees}
-                        handleDeleteEmployee={handleDeleteEmployee}
-                        handleCheckEmployee={handleCheckEmployee}
-                        handleCheckToggleCollection={handleCheckAllEmployees}
-                        handleDeleteCheckedCollection={handleDeleteCheckedEmployees}
-                        pageNation={pageNation}
-                        fetchEmployees={fetchEmployees.load}
+                        searchItems={{searchEmployeeCode, setSearchEmployeeCode, handleSearchEmployee}}
+                        headerItems={{handleOpenModal, handleCheckToggleCollection:handleCheckAllEmployees, handleDeleteCheckedCollection:handleDeleteCheckedEmployees}}
+                        collectionItems={{employees, handleDeleteEmployee, handleCheckEmployee}}
+                        pageNationItems={{pageNation, fetchEmployees:fetchEmployees.load}}
                     />
             )
         };
