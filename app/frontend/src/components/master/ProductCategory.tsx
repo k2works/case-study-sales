@@ -284,17 +284,10 @@ export const ProductCategory: React.FC = () => {
                     <ProductCategoryCollectionView
                         error={error}
                         message={message}
-                        searchProductCategoryCode={searchProductCategoryCode}
-                        setSearchProductCategoryCode={setSearchProductCategoryCode}
-                        handleSearchProductCategory={handleSearchProductCategory}
-                        handleOpenModal={handleOpenModal}
-                        productCategories={productCategories}
-                        handleDeleteProductCategory={handleDeleteProductCategory}
-                        handleCheckProductCategory={handleCheckProductCategory}
-                        handleCheckToggleCollection={handleCheckAllProductCategories}
-                        handleDeleteCheckedCollection={handleDeleteCheckedProductCategories}
-                        pageNation={pageNation}
-                        fetchProductCategories={fetchProductCategories.load}
+                        searchItems={{searchProductCategoryCode, setSearchProductCategoryCode, handleSearchProductCategory}}
+                        headerItems={{handleOpenModal, handleCheckToggleCollection:handleCheckAllProductCategories, handleDeleteCheckedCollection:handleDeleteCheckedProductCategories}}
+                        collectionItems={{productCategories, handleDeleteProductCategory, handleCheckProductCategory}}
+                        pageNationItems={{pageNation, fetchProductCategories: fetchProductCategories.load}}
                     />
                 </>
             )
