@@ -1,7 +1,7 @@
 import React from "react";
 import {useTab} from "../application/hooks.ts";
 import {ProductCategory} from "./ProductCategory.tsx";
-import {ProductDetail} from "./ProductDetail.tsx";
+import {ProductItem} from "./ProductItem.tsx";
 import {SiteLayout} from "../../views/SiteLayout.tsx";
 
 export const Product: React.FC = () => {
@@ -17,13 +17,13 @@ export const Product: React.FC = () => {
             <Tabs>
                 <TabList>
                     <Tab>分類</Tab>
-                    <Tab>詳細</Tab>
+                    <Tab>アイテム</Tab>
                 </TabList>
                 <TabPanel>
                     <ProductCategory/>
                 </TabPanel>
                 <TabPanel>
-                    <ProductDetail/>
+                    <ProductItem/>
                 </TabPanel>
             </Tabs>
         );

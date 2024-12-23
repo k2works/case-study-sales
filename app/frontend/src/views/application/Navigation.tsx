@@ -49,7 +49,7 @@ const NaveItems: React.FC = () => {
                             <SubNavItem id="side-nav-product-nav" to="/product">商品</SubNavItem>
                             <ul className="nav-sub-list">
                                 <SubNavItem id="side-nav-product-nav" to="/product-category">分類</SubNavItem>
-                                <SubNavItem id="side-nav-product-nav" to="/product-detail">詳細</SubNavItem>
+                                <SubNavItem id="side-nav-product-nav" to="/product-item">アイテム</SubNavItem>
                             </ul>
                         </ul>
                     </li>

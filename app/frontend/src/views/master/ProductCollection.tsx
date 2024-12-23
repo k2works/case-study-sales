@@ -133,7 +133,7 @@ export const ProductCollectionView: React.FC<ProductCollectionViewProps> = ({
         <div className="collection-view-container">
             <div className="collection-view-header">
                 <div className="single-view-header-item">
-                    <h1 className="single-view-title">商品</h1>
+                    <h1 className="single-view-title">商品アイテム</h1>
                 </div>
             </div>
             <div className="collection-view-content">

@@ -12,7 +12,7 @@ import {Home} from "./Home.tsx";
 import {Product} from "../master/Product.tsx";
 import {SiteLayout} from "../../views/SiteLayout.tsx";
 import {ProductCategory} from "../master/ProductCategory.tsx";
-import {ProductDetail} from "../master/ProductDetail.tsx";
+import {ProductItem} from "../master/ProductItem.tsx";
 
 export const RouteConfig: React.FC = () => {
     const ProductCategoryPage = () => {
@@ -26,7 +26,7 @@ export const RouteConfig: React.FC = () => {
     const ProductDetailPage = () => {
         return (
             <SiteLayout>
-                <ProductDetail/>
+                <ProductItem/>
             </SiteLayout>
         );
     }
@@ -45,7 +45,7 @@ export const RouteConfig: React.FC = () => {
                                                                 allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/product-category" element={<RouteAuthGuard component={<ProductCategoryPage/>} redirectPath="/"
                                                                 allowedRoles={[RoleType.ADMIN]}/>}/>
-                <Route path="/product-detail" element={<RouteAuthGuard component={<ProductDetailPage/>} redirectPath="/"
+                <Route path="/product-item" element={<RouteAuthGuard component={<ProductDetailPage/>} redirectPath="/"
                                                                 allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/logout" element={<Logout/>}/>
