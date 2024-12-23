@@ -3,25 +3,23 @@ import {PageNation, PageNationType} from "../application/PageNation.tsx";
 import {Message} from "../../components/application/Message.tsx";
 import {UserAccountType} from "../../models";
 
-interface SearchInputProps {
-    searchUserId: string;
-    setSearchUserId: (value: string) => void;
-    handleSearchUser: () => void;
+interface SearchBarProps {
+    searchValue: string;
+    onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onSearchClick: () => void;
 }
 
-const SearchInput: React.FC<SearchInputProps> = ({searchUserId, setSearchUserId, handleSearchUser}) => {
+const SearchBar: React.FC<SearchBarProps> = ({searchValue, onSearchChange, onSearchClick}) => {
     return (
         <div className="search-container">
             <input
-                type="text"
                 id="search-input"
+                type="text"
                 placeholder="ユーザーIDで検索"
-                value={searchUserId}
-                onChange={(e) => setSearchUserId(e.target.value)}
+                value={searchValue}
+                onChange={onSearchChange}
             />
-            <button className="action-button" id="search-all" onClick={handleSearchUser}>
-                検索
-            </button>
+            <button className="action-button" id="search-all" onClick={onSearchClick}>検索</button>
         </div>
     );
 };
@@ -88,27 +86,31 @@ const UserList: React.FC<UserListProps> = ({users, handleOpenModal, handleDelete
 interface UserCollectionViewProps {
     error: string | null;
     message: string | null;
-    searchUserId: string;
-    setSearchUserId: (value: string) => void;
-    handleSearchUser: () => void;
-    handleOpenModal: (user?: UserAccountType) => void;
-    users: UserAccountType[];
-    handleDeleteUser: (userId: string) => void;
-    fetchUsers: () => void;
-    pageNation: PageNationType | null;
+    searchItems: {
+        searchUserId: string;
+        setSearchUserId: (value: string) => void;
+        handleSearchUser: () => void;
+    }
+    headerItems: {
+        handleOpenModal: (user?: UserAccountType) => void;
+    }
+    collectionItems: {
+        users: UserAccountType[];
+        handleDeleteUser: (userId: string) => void;
+    }
+    pageNationItems: {
+        pageNation: PageNationType | null;
+        fetchUsers: (page: number) => void;
+    }
 }
 
 export const UserCollectionView = ({
                                        error,
                                        message,
-                                       searchUserId,
-                                       setSearchUserId,
-                                       handleSearchUser,
-                                       handleOpenModal,
-                                       users,
-                                       handleDeleteUser,
-                                       fetchUsers,
-                                       pageNation
+                                       searchItems: {searchUserId, setSearchUserId, handleSearchUser,},
+                                       headerItems: {handleOpenModal},
+                                       collectionItems: {users, handleDeleteUser},
+                                       pageNationItems: {pageNation, fetchUsers}
                                    }: UserCollectionViewProps) => (
     <div className="collection-view-object-container">
         <Message error={error} message={message}/>
@@ -119,8 +121,11 @@ export const UserCollectionView = ({
                 </div>
             </div>
             <div className="collection-view-content">
-                <SearchInput searchUserId={searchUserId} setSearchUserId={setSearchUserId}
-                             handleSearchUser={handleSearchUser}/>
+                <SearchBar
+                    searchValue={searchUserId}
+                    onSearchChange={(e) => setSearchUserId(e.target.value)}
+                    onSearchClick={handleSearchUser}
+                />
                 <div className="button-container">
                     <button className="action-button" onClick={() => handleOpenModal()} id="new">
                         新規

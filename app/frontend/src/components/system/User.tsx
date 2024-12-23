@@ -134,14 +134,10 @@ export const User: React.FC = () => {
                     <UserCollectionView
                         error={error}
                         message={message}
-                        searchUserId={searchUserId}
-                        setSearchUserId={setSearchUserId}
-                        handleSearchUser={handleSearchUser}
-                        handleOpenModal={handleOpenModal}
-                        users={users}
-                        handleDeleteUser={handleDeleteUser}
-                        fetchUsers={fetchUsers.load}
-                        pageNation={pageNation}
+                        searchItems={{ searchUserId, setSearchUserId, handleSearchUser }}
+                        headerItems={{ handleOpenModal }}
+                        collectionItems={{ users, handleDeleteUser }}
+                        pageNationItems={{ pageNation, fetchUsers: fetchUsers.load }}
                     />
                 </>
             )
