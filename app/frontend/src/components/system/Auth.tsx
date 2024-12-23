@@ -56,3 +56,20 @@ export const Login: React.FC = () => {
         />
     );
 }
+
+export const Logout: React.FC = () => {
+    const authUser: AuthUserContextType = useAuthUserContext();
+    const navigate = useNavigate();
+
+    const handleSignOut = () => {
+        authUser.signOut(() => {
+            navigate("/login");
+        });
+    };
+
+    React.useEffect(() => {
+        handleSignOut();
+    }, []);
+
+    return null;
+};
