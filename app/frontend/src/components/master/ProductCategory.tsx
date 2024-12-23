@@ -75,26 +75,144 @@ export const ProductCategory: React.FC = () => {
             );
         }, []);
 
-        const collectionView = () => {
-            const handleOpenModal = (productCategory?: ProductCategoryType) => {
-                setMessage("");
-                setError("");
-                if (productCategory) {
-                    setNewProductCategory(productCategory);
-                    setEditId(productCategory.productCategoryCode.value);
-                    setIsEditing(true);
-                } else {
-                    setNewProductCategory(initialProductCategory);
-                    setIsEditing(false);
-                }
-                setModalIsOpen(true);
-            };
+        const modalView = () => {
+            const editModal = () => {
+                const handleOpenModal = (productCategory?: ProductCategoryType) => {
+                    setMessage("");
+                    setError("");
+                    if (productCategory) {
+                        setNewProductCategory(productCategory);
+                        setEditId(productCategory.productCategoryCode.value);
+                        setIsEditing(true);
+                    } else {
+                        setNewProductCategory(initialProductCategory);
+                        setIsEditing(false);
+                    }
+                    setModalIsOpen(true);
+                };
 
-            const handleCloseModal = () => {
-                setError("");
-                setModalIsOpen(false);
-                setEditId(null);
-            };
+                const handleCloseModal = () => {
+                    setError("");
+                    setModalIsOpen(false);
+                    setEditId(null);
+                };
+
+                const editModalView = () => {
+                    return (
+                        <Modal
+                            isOpen={modalIsOpen}
+                            onRequestClose={handleCloseModal}
+                            contentLabel="商品分類情報を入力"
+                            className="modal"
+                            overlayClassName="modal-overlay"
+                            bodyOpenClassName="modal-open"
+                        >
+                            {singleView()}
+
+                            {productModal().productModalView()}
+
+                            {isEditing && (
+                                <ProductCollectionListView
+                                    products={newProductCategory.products.filter((e) => !e.deleteFlag)}
+                                    handleAdd={() => {
+                                        setMessage("");
+                                        setError("");
+                                        setProductIsEditing(true);
+                                        setProductModalIsOpen(true);
+                                    }}
+                                    handleDelete={(product: ProductType) => {
+                                        const newProducts = newProductCategory.products.filter((e) => e.productCode.value !== product.productCode.value);
+                                        if (product.productCode.value) {
+                                            newProducts.push({
+                                                ...product,
+                                                addFlag: false,
+                                                deleteFlag: true
+                                            });
+                                        }
+                                        setNewProductCategory({
+                                            ...newProductCategory,
+                                            products: newProducts
+                                        });
+                                    }}
+                                />
+                            )
+                            }
+                        </Modal>
+                    )
+                }
+
+                return {
+                    handleOpenModal,
+                    handleCloseModal,
+                    editModalView
+                }
+            }
+
+            const productModal = () => {
+                const handleCloseProductModal = () => {
+                    setError("");
+                    setProductModalIsOpen(false);
+                    setProductEditId(null);
+                }
+
+                const productModalView = () => {
+                    return (
+                        <Modal
+                            isOpen={productModalIsOpen}
+                            onRequestClose={handleCloseProductModal}
+                            contentLabel="商品情報を入力"
+                            className="modal"
+                            overlayClassName="modal-overlay"
+                            bodyOpenClassName="modal-open"
+                        >
+                            {
+                                <ProductCollectionSelectView
+                                    products={products}
+                                    handleSelect={(product) => {
+                                        const newProducts = newProductCategory.products.filter((e) => e.productCode.value !== product.productCode.value);
+                                        if (product.productCode.value) {
+                                            newProducts.push({
+                                                ...product,
+                                                addFlag: true,
+                                                deleteFlag: false
+                                            });
+                                        }
+                                        setNewProductCategory({
+                                            ...newProductCategory,
+                                            products: newProducts
+                                        });
+                                    }}
+                                    handleClose={handleCloseProductModal}
+                                    pageNation={pageNation}
+                                    fetchProducts={fetchProducts.load}
+                                />
+                            }
+                        </Modal>
+
+                    )
+                }
+
+                return {
+                    productModalView,
+                }
+            }
+
+            const init = () => {
+                return (
+                    <>
+                        {editModal().editModalView()}
+                    </>
+                )
+            }
+
+            return {
+                editModal,
+                init
+            }
+        }
+
+        const collectionView = () => {
+            const {handleOpenModal} = modalView().editModal()
 
             const handleSearchProductCategory = async () => {
                 if (!searchProductCategoryCode.trim()) return;
@@ -163,16 +281,6 @@ export const ProductCategory: React.FC = () => {
 
             return (
                 <>
-                    <Modal
-                        isOpen={modalIsOpen}
-                        onRequestClose={handleCloseModal}
-                        contentLabel="商品分類情報を入力"
-                        className="modal"
-                        overlayClassName="modal-overlay"
-                        bodyOpenClassName="modal-open"
-                    >
-                        {singleView()}
-                    </Modal>
                     <ProductCategoryCollectionView
                         error={error}
                         message={message}
@@ -193,17 +301,7 @@ export const ProductCategory: React.FC = () => {
         };
 
         const singleView = () => {
-            const handleCloseModal = () => {
-                setError("");
-                setModalIsOpen(false);
-                setEditId(null);
-            };
-
-            const handleCloseProductModal = () => {
-                setError("");
-                setProductModalIsOpen(false);
-                setProductEditId(null);
-            }
+            const {handleCloseModal} = modalView().editModal();
 
             const handleCreateOrUpdateProductCategory = async () => {
                 const validateProductCategory = (): boolean => {
@@ -234,39 +332,6 @@ export const ProductCategory: React.FC = () => {
             };
 
             return (
-                <>
-                    <Modal
-                        isOpen={productModalIsOpen}
-                        onRequestClose={handleCloseProductModal}
-                        contentLabel="商品情報を入力"
-                        className="modal"
-                        overlayClassName="modal-overlay"
-                        bodyOpenClassName="modal-open"
-                    >
-                        {
-                            <ProductCollectionSelectView
-                                products={products}
-                                handleSelect={(product) => {
-                                    const newProducts = newProductCategory.products.filter((e) => e.productCode.value !== product.productCode.value);
-                                    if (product.productCode.value) {
-                                        newProducts.push({
-                                            ...product,
-                                            addFlag: true,
-                                            deleteFlag: false
-                                        });
-                                    }
-                                    setNewProductCategory({
-                                        ...newProductCategory,
-                                        products: newProducts
-                                    });
-                                }}
-                                handleClose={handleCloseProductModal}
-                                pageNation={pageNation}
-                                fetchProducts={fetchProducts.load}
-                            />
-                        }
-                    </Modal>
-
                     <ProductCategorySingleView
                         error={error}
                         message={message}
@@ -276,34 +341,6 @@ export const ProductCategory: React.FC = () => {
                         handleCreateOrUpdateProductCategory={handleCreateOrUpdateProductCategory}
                         handleCloseModal={handleCloseModal}
                     />
-
-                    {isEditing && (
-                        <ProductCollectionListView
-                            products={newProductCategory.products.filter((e) => !e.deleteFlag)}
-                            handleAdd={() => {
-                                setMessage("");
-                                setError("");
-                                setProductIsEditing(true);
-                                setProductModalIsOpen(true);
-                            }}
-                            handleDelete={(product: ProductType) => {
-                                const newProducts = newProductCategory.products.filter((e) => e.productCode.value !== product.productCode.value);
-                                if (product.productCode.value) {
-                                    newProducts.push({
-                                        ...product,
-                                        addFlag: false,
-                                        deleteFlag: true
-                                    });
-                                }
-                                setNewProductCategory({
-                                    ...newProductCategory,
-                                    products: newProducts
-                                });
-                            }}
-                        />
-                    )
-                    }
-                </>
             );
         };
 
@@ -312,7 +349,11 @@ export const ProductCategory: React.FC = () => {
                 {loading ? (
                     <LoadingIndicator/>
                 ) : (
-                    collectionView()
+                    <>
+                        {modalView().init()}
+                        {collectionView()}
+                    </>
+
                 )}
             </>
         );
