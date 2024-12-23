@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
+import {AuthUserContextType, useAuthUserContext} from "../../providers/AuthUser.tsx";
+import AuthService from "../../services/auth.ts";
+import {LoginSingleView} from "../../views/system/auth/Login.tsx";
 import {CustomLocation, DataType, RoleType, UserType} from "../../models";
-import {AuthUserContextType, useAuthUserContext} from "../../providers/AuthUser";
-import AuthService from "../../services/auth";
-import {LoginSingleView} from "../../views/system/Login.tsx";
 
 const DEFAULT_USER_ID = "U000003";
 const DEFAULT_PASSWORD = "a234567Z";
@@ -56,3 +56,20 @@ export const Login: React.FC = () => {
         />
     );
 }
+
+export const Logout: React.FC = () => {
+    const authUser: AuthUserContextType = useAuthUserContext();
+    const navigate = useNavigate();
+
+    const handleSignOut = () => {
+        authUser.signOut(() => {
+            navigate("/login");
+        });
+    };
+
+    React.useEffect(() => {
+        handleSignOut();
+    }, []);
+
+    return null;
+};

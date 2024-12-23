@@ -10,7 +10,7 @@ import {SiteLayout} from "../../views/SiteLayout.tsx";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
 import {useFetchUsers, useUser} from "../system/hooks.ts";
 import {DepartmentCollectionSelectView, DepartmentSelectView} from "../../views/master/department/DepartmentSelect.tsx";
-import {UserCollectionSelectView, UserSelectView} from "../../views/system/UserSelect.tsx";
+import {UserCollectionSelectView, UserSelectView} from "../../views/system/user/UserSelect.tsx";
 import {EmployeeCollectionView} from "../../views/master/employee/EmployeeCollection.tsx";
 import {EmployeeSingleView} from "../../views/master/employee/EmployeeSingle.tsx";
 

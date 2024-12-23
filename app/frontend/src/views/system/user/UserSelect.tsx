@@ -1,7 +1,7 @@
 import React from 'react';
 import {FaTimes} from 'react-icons/fa';
-import {PageNation} from '../application/PageNation.tsx';
-import {UserAccountType} from "../../models";
+import {PageNation} from '../../application/PageNation.tsx';
+import {UserAccountType} from "../../../models";
 
 interface UserSelectProps {
     handleSelect: () => void;
