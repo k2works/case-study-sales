@@ -427,17 +427,10 @@ export const ProductDetail: React.FC = () => {
                     <ProductCollectionView
                         error={error}
                         message={message}
-                        searchProductCode={searchProductCode}
-                        setSearchProductCode={setSearchProductCode}
-                        handleSearchProduct={handleSearchProduct}
-                        handleOpenModal={handleOpenModal}
-                        products={products}
-                        handleDeleteProduct={handleDeleteProduct}
-                        handleCheckProduct={handleCheckProduct}
-                        handleCheckToggleCollection={handleCheckAllProducts}
-                        handleDeleteCheckedCollection={handleDeleteCheckedProducts}
-                        pageNation={pageNation}
-                        fetchProducts={fetchProducts.load}
+                        searchItems={{searchProductCode, setSearchProductCode, handleSearchProduct}}
+                        headerItems={{handleOpenModal, handleCheckToggleCollection: handleCheckAllProducts, handleDeleteCheckedCollection: handleDeleteCheckedProducts}}
+                        contentItems={{products, handleDeleteProduct, handleCheckProduct}}
+                        pageNationItems={{pageNation, fetchProducts: fetchProducts.load}}
                     />
                 </>
             )
