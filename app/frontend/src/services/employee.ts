@@ -1,9 +1,9 @@
 import Config from "./config";
 import Utils from "./utils";
-import {EmployeeType, mapToEmployeeResource} from "../models";
+import {EmployeeFetchType, EmployeeType, mapToEmployeeResource} from "../models";
 
 export interface EmployeeServiceType {
-    select: (page?: number, pageSize?: number) => Promise<any>;
+    select: (page?: number, pageSize?: number) => Promise<EmployeeFetchType>;
     find: (empCode: string) => Promise<EmployeeType>;
     create: (employee: EmployeeType) => Promise<void>;
     update: (employee: EmployeeType) => Promise<void>;
@@ -16,7 +16,7 @@ export const EmployeeService = () => {
     const endPoint = `${config.apiUrl}/employees`;
 
 
-    const select = async (page?: number, pageSize?: number): Promise<any> => {
+    const select = async (page?: number, pageSize?: number): Promise<EmployeeFetchType> => {
         let url = endPoint;
         if (pageSize && page) {
             url = url + "?pageSize=" + pageSize + "&page=" + page;

@@ -1,10 +1,10 @@
 import Config from "./config";
 import Utils from "./utils";
-import {DepartmentType, mapToDepartmentResource} from "../models";
+import {DepartmentFetchType, DepartmentType, mapToDepartmentResource} from "../models";
 import {toISOStringWithTimezone} from "../components/application/utils.ts";
 
 export interface DepartmentServiceType {
-    select: (page?: number, pageSize?: number) => Promise<any>;
+    select: (page?: number, pageSize?: number) => Promise<DepartmentFetchType>;
     find: (deptCode: string, departmentStartDate: string) => Promise<DepartmentType[]>;
     create: (department: DepartmentType) => Promise<void>;
     update: (department: DepartmentType) => Promise<void>;
@@ -16,7 +16,7 @@ export const DepartmentService = () => {
     const apiUtils = Utils.apiUtils;
     const endPoint = `${config.apiUrl}/departments`;
 
-    const select = async (page?: number, pageSize?: number): Promise<any> => {
+    const select = async (page?: number, pageSize?: number): Promise<DepartmentFetchType> => {
         let url = endPoint;
         if (pageSize && page) {
             url = url + "?pageSize=" + pageSize + "&page=" + page;

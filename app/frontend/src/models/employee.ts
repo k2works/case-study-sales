@@ -1,6 +1,7 @@
 import {DepartmentType} from './department';
 import {UserAccountType} from './user';
 import {toISOStringWithTimezone} from "../components/application/utils.ts";
+import {PageNationType} from "../views/application/PageNation.tsx";
 
 export type EmployeeType = {
     empCode: { value: string };
@@ -33,6 +34,10 @@ export type EmployeeType = {
     deleteFlag: boolean;
     checked: boolean;
 }
+
+export type EmployeeFetchType = {
+    list: EmployeeType[];
+} & PageNationType;
 
 export type EmployeeResourceType = {
     empCode: string;

@@ -1,10 +1,10 @@
 import Config from "./config";
 import Utils from "./utils";
-import {mapToProductResource, ProductType} from "../models";
+import {BomFetchType, mapToProductResource, ProductFetchType, ProductType} from "../models";
 
 export interface ProductServiceType {
-    select: (page?: number, pageSize?: number) => Promise<any>;
-    selectBoms: (page?: number, pageSize?: number) => Promise<any>;
+    select: (page?: number, pageSize?: number) => Promise<ProductFetchType>;
+    selectBoms: (page?: number, pageSize?: number) => Promise<BomFetchType>;
     find: (productCode: string) => Promise<ProductType>;
     create: (product: ProductType) => Promise<void>;
     update: (product: ProductType) => Promise<void>;
@@ -17,7 +17,7 @@ export const ProductService = (): ProductServiceType => {
     const apiUtils = Utils.apiUtils;
     const endPoint = `${config.apiUrl}/products`;
 
-    const select = async (page?: number, pageSize?: number): Promise<any> => {
+    const select = async (page?: number, pageSize?: number): Promise<ProductFetchType> => {
         let url = endPoint;
         if (pageSize && page) {
             url = url + "?pageSize=" + pageSize + "&page=" + page;
@@ -29,7 +29,7 @@ export const ProductService = (): ProductServiceType => {
         return await apiUtils.fetchGet(url);
     };
 
-    const selectBoms = async (page?: number, pageSize?: number): Promise<any> => {
+    const selectBoms = async (page?: number, pageSize?: number): Promise<BomFetchType> => {
         let url = endPoint + "/boms";
         if (pageSize && page) {
             url = url + "?pageSize=" + pageSize + "&page=" + page;
