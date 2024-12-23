@@ -15,7 +15,6 @@ import {BomCollectionView} from "../../views/master/BomCollection.tsx";
 import {
     CustomerSpecificSellingPriceCollectionView
 } from "../../views/master/CustomerSpecificSellingPriceCollection.tsx";
-import {Tab, TabList, TabPanel, Tabs} from "react-tabs";
 
 export const ProductDetail: React.FC = () => {
     const Content: React.FC = () => {
