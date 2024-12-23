@@ -8,9 +8,9 @@ import {ProductCategoryType, ProductType} from "../../models";
 
 import {useFetchProductCategories, useFetchProducts, useProduct, useProductCategory} from "./hooks.ts";
 import Modal from "react-modal";
-import {ProductCategoryCollectionView} from "../../views/master/ProductCategoryCollection.tsx";
-import {ProductCategorySingleView} from "../../views/master/ProductCategorySingle.tsx";
-import {ProductCollectionListView, ProductCollectionSelectView} from "../../views/master/ProductSelect.tsx";
+import {ProductCategoryCollectionView} from "../../views/master/product/ProductCategoryCollection.tsx";
+import {ProductCategorySingleView} from "../../views/master/product/ProductCategorySingle.tsx";
+import {ProductCollectionListView, ProductCollectionSelectView} from "../../views/master/product/ProductSelect.tsx";
 
 export const ProductCategory: React.FC = () => {
     const Content: React.FC = () => {

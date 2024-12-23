@@ -1,7 +1,7 @@
 import React from "react";
-import {DepartmentIdType, DepartmentType} from "../../models";
-import {Message} from "../../components/application/Message.tsx";
-import {PageNation} from "../application/PageNation.tsx";
+import {DepartmentIdType, DepartmentType} from "../../../models";
+import {Message} from "../../../components/application/Message.tsx";
+import {PageNation} from "../../application/PageNation.tsx";
 
 interface SearchBarProps {
     searchValue: string;

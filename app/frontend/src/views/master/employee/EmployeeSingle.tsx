@@ -1,8 +1,8 @@
-import {Message} from "../../components/application/Message.tsx";
+import {Message} from "../../../components/application/Message.tsx";
 import React from "react";
-import {convertToDateInputFormat} from "../../components/application/utils.ts";
-import {EmployeeType} from "../../models";
-import {FormInput, SingleViewHeaderActions, SingleViewHeaderItem} from "../Common.tsx";
+import {convertToDateInputFormat} from "../../../components/application/utils.ts";
+import {EmployeeType} from "../../../models";
+import {FormInput, SingleViewHeaderActions, SingleViewHeaderItem} from "../../Common.tsx";
 
 interface HeaderProps {
     title: string;

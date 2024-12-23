@@ -8,9 +8,9 @@ import Modal from "react-modal";
 import {usePageNation} from "../../views/application/PageNation.tsx";
 import {SiteLayout} from "../../views/SiteLayout.tsx";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
-import {EmployeeCollectionListView, EmployeeCollectionSelectView} from "../../views/master/EmployeeSelect.tsx";
-import {DepartmentCollectionView} from "../../views/master/DepartmentCollection.tsx";
-import {DepartmentSingleView} from "../../views/master/DepartmentSingle.tsx";
+import {EmployeeCollectionListView, EmployeeCollectionSelectView} from "../../views/master/employee/EmployeeSelect.tsx";
+import {DepartmentCollectionView} from "../../views/master/department/DepartmentCollection.tsx";
+import {DepartmentSingleView} from "../../views/master/department/DepartmentSingle.tsx";
 
 export const Department: React.FC = () => {
     const Content: React.FC = () => {

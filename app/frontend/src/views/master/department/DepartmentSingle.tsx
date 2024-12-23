@@ -1,8 +1,8 @@
 import React from 'react';
-import {Message} from "../../components/application/Message.tsx";
-import {DepartmentType, LowerType, SlitYnType} from "../../models";
-import {convertToDateInputFormat} from "../../components/application/utils.ts";
-import {FormInput, SingleViewHeaderActions, SingleViewHeaderItem} from "../Common.tsx";
+import {Message} from "../../../components/application/Message.tsx";
+import {DepartmentType, LowerType, SlitYnType} from "../../../models";
+import {convertToDateInputFormat} from "../../../components/application/utils.ts";
+import {FormInput, SingleViewHeaderActions, SingleViewHeaderItem} from "../../Common.tsx";
 
 interface HeaderProps {
     title: string;

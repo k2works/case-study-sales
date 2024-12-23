@@ -1,4 +1,4 @@
-import {FormInput, FormSelect, SingleViewHeaderActions, SingleViewHeaderItem} from "../Common.tsx";
+import {FormInput, FormSelect, SingleViewHeaderActions, SingleViewHeaderItem} from "../../Common.tsx";
 import {
     MiscellaneousEnumType,
     ProductEnumType,
@@ -6,9 +6,9 @@ import {
     StockAllocationEnumType,
     StockManagementTargetEnumType,
     TaxEnumType
-} from "../../models";
+} from "../../../models";
 import React from "react";
-import {Message} from "../../components/application/Message.tsx";
+import {Message} from "../../../components/application/Message.tsx";
 
 interface HeaderProps {
     title: string;

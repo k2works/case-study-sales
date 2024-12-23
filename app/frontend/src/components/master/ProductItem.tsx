@@ -7,14 +7,14 @@ import {usePageNation} from "../../views/application/PageNation.tsx";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
 import {useFetchBoms, useFetchProducts, useFetchSubstitutes, useProduct} from "./hooks.ts";
 import {ProductType} from "../../models";
-import {ProductCollectionView} from "../../views/master/ProductCollection.tsx";
-import {ProductSingleView} from "../../views/master/ProductSingle.tsx";
-import {ProductCollectionSelectView} from "../../views/master/ProductSelect.tsx";
-import {SubstituteProductCollectionView} from "../../views/master/SubstituteProductCollection.tsx";
-import {BomCollectionView} from "../../views/master/BomCollection.tsx";
+import {ProductCollectionView} from "../../views/master/product/ProductCollection.tsx";
+import {ProductSingleView} from "../../views/master/product/ProductSingle.tsx";
+import {ProductCollectionSelectView} from "../../views/master/product/ProductSelect.tsx";
+import {SubstituteProductCollectionView} from "../../views/master/product/SubstituteProductCollection.tsx";
+import {BomCollectionView} from "../../views/master/product/BomCollection.tsx";
 import {
     CustomerSpecificSellingPriceCollectionView
-} from "../../views/master/CustomerSpecificSellingPriceCollection.tsx";
+} from "../../views/master/product/CustomerSpecificSellingPriceCollection.tsx";
 
 export const ProductItem: React.FC = () => {
     const Content: React.FC = () => {
