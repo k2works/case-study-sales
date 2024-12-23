@@ -4,8 +4,8 @@ import {
     ApplicationExecutionProcessFlag,
     ApplicationExecutionProcessType,
     SearchAuditConditionType
-} from "../../models/audit.ts";
-import {FormSelect, SingleViewHeaderItem} from "../Common.tsx";
+} from "../../../models/audit.ts";
+import {FormSelect, SingleViewHeaderItem} from "../../Common.tsx";
 
 interface FormProps {
     condition: SearchAuditConditionType,

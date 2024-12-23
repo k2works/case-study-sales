@@ -1,8 +1,8 @@
 import React from "react";
-import {Message} from "../../components/application/Message.tsx";
-import {FormInput, FormTextarea, SingleViewHeaderItem} from "../Common.tsx";
-import {AuditType} from "../../models/audit.ts";
-import {convertToDateTimeInputFormat} from "../../components/application/utils.ts";
+import {Message} from "../../../components/application/Message.tsx";
+import {FormInput, FormTextarea, SingleViewHeaderItem} from "../../Common.tsx";
+import {AuditType} from "../../../models/audit.ts";
+import {convertToDateTimeInputFormat} from "../../../components/application/utils.ts";
 
 interface HeaderProps {
     title: string;

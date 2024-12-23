@@ -6,9 +6,9 @@ import {useAudit, useFetchAudits} from "./hooks.ts";
 import {AuditType, SearchAuditConditionType} from "../../models/audit.ts";
 import {SiteLayout} from "../../views/SiteLayout.tsx";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
-import {AuditCollectionView} from "../../views/system/AuditCollection.tsx";
-import {AuditSingleView} from "../../views/system/AuditSingle.tsx";
-import {AuditSearchSingleView} from "../../views/system/AuditSearch.tsx";
+import {AuditCollectionView} from "../../views/system/audit/AuditCollection.tsx";
+import {AuditSingleView} from "../../views/system/audit/AuditSingle.tsx";
+import {AuditSearchSingleView} from "../../views/system/audit/AuditSearch.tsx";
 
 export const Audit: React.FC = () => {
     const Content: React.FC = () => {

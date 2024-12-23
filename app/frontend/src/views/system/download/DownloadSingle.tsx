@@ -1,7 +1,7 @@
-import {DownloadTarget} from "../../models/download.ts";
+import {DownloadTarget} from "../../../models/download.ts";
 import React from "react";
-import {Message} from "../../components/application/Message.tsx";
-import {getKeyBySymbol} from "../../models/utils.ts";
+import {Message} from "../../../components/application/Message.tsx";
+import {getKeyBySymbol} from "../../../models/utils.ts";
 
 interface FormProps {
     selectedTarget: DownloadTarget | null;

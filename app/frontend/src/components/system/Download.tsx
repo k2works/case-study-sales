@@ -4,7 +4,7 @@ import {DownloadService} from "../../services/download.ts";
 import {DownloadTarget} from "../../models/download.ts";
 import {SiteLayout} from "../../views/SiteLayout.tsx";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
-import {SingleView} from "../../views/system/DownloadSingle.tsx";
+import {SingleView} from "../../views/system/download/DownloadSingle.tsx";
 import {getKeyBySymbol, getSymbolByValue} from "../../models/utils.ts";
 
 export const Download: React.FC = () => {
