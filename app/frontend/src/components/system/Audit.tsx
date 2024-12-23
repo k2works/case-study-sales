@@ -19,7 +19,6 @@ export const Audit: React.FC = () => {
         const {modalIsOpen: searchModalIsOpen, setModalIsOpen: setSearchModalIsOpen,} = useModal();
         const {
             initialAudit,
-            initialSearchAuditCondition,
             audits,
             setAudits,
             newAudit,
@@ -111,7 +110,7 @@ export const Audit: React.FC = () => {
                                             showErrorMessage(`検索結果は0件です`, setError);
                                         } else {
                                             setCondition(searchAuditCondition);
-                                            setPageNation(fetchedAudit ? fetchedAudit: {});
+                                            setPageNation(fetchedAudit);
                                             setMessage("");
                                             setError("");
                                         }

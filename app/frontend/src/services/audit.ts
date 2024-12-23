@@ -1,12 +1,12 @@
 import Config from "./config";
 import Utils from "./utils";
-import {AuditType, mapToAuditSearchResource, SearchAuditConditionType} from "../models/audit.ts";
+import {AuditFetchType, AuditType, mapToAuditSearchResource, SearchAuditConditionType} from "../models/audit.ts";
 
 export interface AuditServiceType {
-    select: (page?: number, pageSize?: number) => Promise<any>;
+    select: (page?: number, pageSize?: number) => Promise<AuditFetchType>;
     find: (id: number) => Promise<AuditType>;
     destroy: (id: number) => Promise<void>;
-    search: (condition: SearchAuditConditionType, page?: number, pageSize?: number) => Promise<any>;
+    search: (condition: SearchAuditConditionType, page?: number, pageSize?: number) => Promise<AuditFetchType>;
 }
 
 export const AuditService = (): AuditServiceType => {
@@ -21,7 +21,7 @@ export const AuditService = (): AuditServiceType => {
         return params.toString() ? `${baseUrl}?${params.toString()}` : baseUrl;
     };
 
-    const select = (page?: number, pageSize?: number): Promise<AuditType[]> => {
+    const select = (page?: number, pageSize?: number): Promise<AuditFetchType> => {
         const url = buildUrlWithPaging(endPoint, page, pageSize);
         return apiUtils.fetchGet(url);
     };
@@ -34,7 +34,7 @@ export const AuditService = (): AuditServiceType => {
         return apiUtils.fetchDelete(`${endPoint}/${id}`);
     };
 
-    const search = (condition: SearchAuditConditionType, page?: number, pageSize?: number): Promise<AuditType[]> => {
+    const search = (condition: SearchAuditConditionType, page?: number, pageSize?: number): Promise<AuditFetchType> => {
         const url = buildUrlWithPaging(`${endPoint}/search`, page, pageSize);
         return apiUtils.fetchPost(url, mapToAuditSearchResource(condition));
     };

@@ -1,4 +1,5 @@
 import {UserAccountType} from "./user.ts";
+import {PageNationType} from "../views/application/PageNation.tsx";
 
 export enum ApplicationExecutionProcessType {
     ユーザー登録 = "ユーザー登録",
@@ -52,6 +53,10 @@ export type AuditType = {
     user: UserAccountType;
     checked: boolean;
 };
+
+export type AuditFetchType = {
+    list: AuditType[];
+} & PageNationType;
 
 export const mapToAuditSearchResource = (condition: SearchAuditConditionType) => {
     const isEmpty = (value: unknown) => value === "" || value === null || value === undefined;
