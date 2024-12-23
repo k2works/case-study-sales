@@ -1,7 +1,7 @@
 import React from "react";
-import {EmployeeType} from "../../models";
-import {Message} from "../../components/application/Message.tsx";
-import {PageNation} from "../application/PageNation.tsx";
+import {EmployeeType} from "../../../models";
+import {Message} from "../../../components/application/Message.tsx";
+import {PageNation} from "../../application/PageNation.tsx";
 
 interface SearchBarProps {
     searchValue: string;
@@ -88,33 +88,34 @@ const EmployeeList: React.FC<EmployeeListProps> = ({employees, onEdit, onDelete,
 interface EmployeeCollectionViewProps {
     error: string | null;
     message: string | null;
-    searchEmployeeCode: string;
-    setSearchEmployeeCode: (value: string) => void;
-    handleSearchEmployee: () => void;
-    handleOpenModal: () => void;
-    employees: any[];
-    handleDeleteEmployee: (empCode: string) => void;
-    handleCheckEmployee: (employee: EmployeeType) => void;
-    handleCheckToggleCollection: () => void;
-    handleDeleteCheckedCollection: () => void;
-    pageNation: any;
-    fetchEmployees: (page: number) => void;
+    searchItems: {
+        searchEmployeeCode: string;
+        setSearchEmployeeCode: React.Dispatch<React.SetStateAction<string>>;
+        handleSearchEmployee: () => void;
+    }
+    headerItems: {
+        handleOpenModal: () => void;
+        handleCheckToggleCollection: () => void;
+        handleDeleteCheckedCollection: () => void;
+    }
+    collectionItems: {
+        employees: any[];
+        handleDeleteEmployee: (empCode: string) => void;
+        handleCheckEmployee: (employee: EmployeeType) => void;
+    }
+    pageNationItems: {
+        pageNation: any;
+        fetchEmployees: (page: number) => void;
+    }
 }
 
 export const EmployeeCollectionView: React.FC<EmployeeCollectionViewProps> = ({
                                                                                   error,
                                                                                   message,
-                                                                                  searchEmployeeCode,
-                                                                                  setSearchEmployeeCode,
-                                                                                  handleSearchEmployee,
-                                                                                  handleOpenModal,
-                                                                                  employees,
-                                                                                  handleDeleteEmployee,
-                                                                                  handleCheckEmployee,
-                                                                                  handleCheckToggleCollection,
-                                                                                  handleDeleteCheckedCollection,
-                                                                                  pageNation,
-                                                                                  fetchEmployees
+                                                                                  searchItems: {searchEmployeeCode, setSearchEmployeeCode, handleSearchEmployee},
+                                                                                  headerItems: {handleOpenModal, handleCheckToggleCollection, handleDeleteCheckedCollection},
+                                                                                  collectionItems: {employees, handleDeleteEmployee, handleCheckEmployee},
+                                                                                  pageNationItems: {pageNation, fetchEmployees}
                                                                               }) => {
     return (
         <div className="collection-view-object-container">

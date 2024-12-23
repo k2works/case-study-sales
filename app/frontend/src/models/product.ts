@@ -1,3 +1,5 @@
+import {PageNationType} from "../views/application/PageNation.tsx";
+
 type ProductCodeType = {
     value: string;
     businessType: string;
@@ -38,6 +40,10 @@ export type BomType = {
     componentCode: ProductCodeType;
     componentQuantity: QuantityType;
 }
+
+export type BomFetchType = {
+    list: BomType[];
+} & PageNationType;
 
 export type CustomerSpecificSellingPriceType = {
     productCode: ProductCodeType;
@@ -86,6 +92,10 @@ export enum StockAllocationEnumType {
     未引当 = "未引当", 引当済 = "引当済"
 }
 
+export type ProductFetchType = {
+    list: ProductType[];
+} & PageNationType;
+
 export type ProductResourceType = {
     productCode: string;
     productFormalName: string;
@@ -122,6 +132,10 @@ export type ProductCategoryType = {
     products: ProductType[];
     checked: boolean;
 };
+
+export type ProductCategoryFetchType = {
+    list: ProductCategoryType[];
+} & PageNationType;
 
 export type ProductCategoryResourceType = {
     productCategoryCode: string;

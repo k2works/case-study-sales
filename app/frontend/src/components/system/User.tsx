@@ -40,28 +40,67 @@ export const User: React.FC = () => {
             });
         }, []);
 
-        const handleOpenModal = (user?: UserAccountType) => {
-            setMessage("");
-            setError("");
-            if (user) {
-                user.password = {value: ""};
-                setNewUser(user);
-                setEditId(user.userId.value);
-                setIsEditing(true);
-            } else {
-                setNewUser(initialUser);
-                setIsEditing(false);
-            }
-            setModalIsOpen(true);
-        };
+        const modalView = () => {
+            const editModal = () => {
+                const handleOpenModal = (user?: UserAccountType) => {
+                    setMessage("");
+                    setError("");
+                    if (user) {
+                        user.password = {value: ""};
+                        setNewUser(user);
+                        setEditId(user.userId.value);
+                        setIsEditing(true);
+                    } else {
+                        setNewUser(initialUser);
+                        setIsEditing(false);
+                    }
+                    setModalIsOpen(true);
+                };
 
-        const handleCloseModal = () => {
-            setError("");
-            setModalIsOpen(false);
-            setEditId(null);
-        };
+                const handleCloseModal = () => {
+                    setError("");
+                    setModalIsOpen(false);
+                    setEditId(null);
+                };
+
+                const editModalView = () => {
+                    return (
+                        <Modal
+                            isOpen={modalIsOpen}
+                            onRequestClose={handleCloseModal}
+                            contentLabel="ユーザー情報を入力"
+                            className="modal"
+                            overlayClassName="modal-overlay"
+                            bodyOpenClassName="modal-open"
+                        >
+                            {singleView()}
+                        </Modal>
+
+                    )
+                }
+
+                return {
+                    handleOpenModal,
+                    handleCloseModal,
+                    editModalView
+                }
+            }
+
+            const init = () => (
+                <>
+                    {editModal().editModalView()}
+                </>
+            )
+
+            return{
+                editModal,
+                init
+            }
+        }
 
         const collectionView = () => {
+            const {handleOpenModal} = modalView().editModal();
+
             const handleSearchUser = async () => {
                 if (!searchUserId.trim()) {
                     return;
@@ -92,34 +131,21 @@ export const User: React.FC = () => {
 
             return (
                 <>
-                    <Modal
-                        isOpen={modalIsOpen}
-                        onRequestClose={handleCloseModal}
-                        contentLabel="ユーザー情報を入力"
-                        className="modal"
-                        overlayClassName="modal-overlay"
-                        bodyOpenClassName="modal-open"
-                    >
-                        {singleView()}
-                    </Modal>
-
                     <UserCollectionView
                         error={error}
                         message={message}
-                        searchUserId={searchUserId}
-                        setSearchUserId={setSearchUserId}
-                        handleSearchUser={handleSearchUser}
-                        handleOpenModal={handleOpenModal}
-                        users={users}
-                        handleDeleteUser={handleDeleteUser}
-                        fetchUsers={fetchUsers.load}
-                        pageNation={pageNation}
+                        searchItems={{ searchUserId, setSearchUserId, handleSearchUser }}
+                        headerItems={{ handleOpenModal }}
+                        collectionItems={{ users, handleDeleteUser }}
+                        pageNationItems={{ pageNation, fetchUsers: fetchUsers.load }}
                     />
                 </>
             )
         }
 
         const singleView = () => {
+            const  {handleCloseModal} = modalView().editModal();
+
             const handleCreateOrUpdateUser = async () => {
                 const validateUser = (): boolean => {
                     if (!newUser.userId.value.trim() || !newUser.name?.firstName?.trim() || !newUser.name?.lastName?.trim() || !newUser.roleName?.trim()) {
@@ -168,7 +194,10 @@ export const User: React.FC = () => {
                 {loading ? (
                     <LoadingIndicator/>
                 ) : (
-                    collectionView()
+                    <>
+                        {modalView().init()}
+                        {collectionView()}
+                    </>
                 )}
             </>
         );

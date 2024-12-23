@@ -1,5 +1,6 @@
 import {EmployeeResourceType, EmployeeType} from './employee';
 import {toISOStringWithTimezone} from "../components/application/utils.ts";
+import {PageNationType} from "../views/application/PageNation.tsx";
 
 export type DepartmentIdType = {
     deptCode: { value: string };
@@ -17,6 +18,10 @@ export type DepartmentType = {
     employees: EmployeeType[];
     checked: boolean;
 }
+
+export type DepartmentFetchType = {
+    list: DepartmentType[];
+} & PageNationType;
 
 export type DepartmentResourceType = {
     departmentCode: string;

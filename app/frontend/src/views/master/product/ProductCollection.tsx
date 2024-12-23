@@ -1,7 +1,7 @@
 import React from 'react';
-import {Message} from "../../components/application/Message.tsx";
-import {PageNation} from "../application/PageNation.tsx";
-import {ProductType} from "../../models";
+import {Message} from "../../../components/application/Message.tsx";
+import {PageNation} from "../../application/PageNation.tsx";
+import {ProductType} from "../../../models";
 
 interface SearchBarProps {
     searchValue: string;
@@ -99,40 +99,41 @@ const ProductList: React.FC<ProductListProps> = ({products, onEdit, onDelete, on
 interface ProductCollectionViewProps {
     error: string | null;
     message: string | null;
-    searchProductCode: string;
-    setSearchProductCode: React.Dispatch<React.SetStateAction<string>>;
-    handleSearchProduct: () => void;
-    handleOpenModal: (product?: ProductType) => void;
-    products: ProductType[];
-    handleDeleteProduct: (productCode: string) => void;
-    handleCheckProduct: (product: ProductType) => void;
-    handleCheckToggleCollection: () => void;
-    handleDeleteCheckedCollection: () => void;
-    pageNation: any; // 適切な型を使用してください
-    fetchProducts: () => void;
+    searchItems: {
+        searchProductCode: string;
+        setSearchProductCode: React.Dispatch<React.SetStateAction<string>>;
+        handleSearchProduct: () => void;
+    }
+    headerItems: {
+        handleOpenModal: (product?: ProductType) => void;
+        handleCheckToggleCollection: () => void;
+        handleDeleteCheckedCollection: () => void;
+    }
+    contentItems: {
+        products: ProductType[];
+        handleDeleteProduct: (productCode: string) => void;
+        handleCheckProduct: (product: ProductType) => void;
+    }
+    pageNationItems: {
+        pageNation: any; // 適切な型を使用してください
+        fetchProducts: () => void;
+    }
 }
 
 export const ProductCollectionView: React.FC<ProductCollectionViewProps> = ({
                                                                                 error,
                                                                                 message,
-                                                                                searchProductCode,
-                                                                                setSearchProductCode,
-                                                                                handleSearchProduct,
-                                                                                handleOpenModal,
-                                                                                products,
-                                                                                handleDeleteProduct,
-                                                                                handleCheckProduct,
-                                                                                handleCheckToggleCollection,
-                                                                                handleDeleteCheckedCollection,
-                                                                                pageNation,
-                                                                                fetchProducts
+                                                                                searchItems: {searchProductCode, setSearchProductCode, handleSearchProduct,},
+                                                                                headerItems: {handleOpenModal, handleCheckToggleCollection, handleDeleteCheckedCollection},
+                                                                                contentItems: {products, handleDeleteProduct, handleCheckProduct},
+                                                                                pageNationItems: {pageNation, fetchProducts}
                                                                             }) => (
     <div className="collection-view-object-container">
         <Message error={error} message={message}/>
         <div className="collection-view-container">
             <div className="collection-view-header">
                 <div className="single-view-header-item">
-                    <h1 className="single-view-title">商品</h1>
+                    <h1 className="single-view-title">商品アイテム</h1>
                 </div>
             </div>
             <div className="collection-view-content">

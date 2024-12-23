@@ -1,8 +1,8 @@
 import React from 'react';
 import {FaTimes} from 'react-icons/fa';
-import {DepartmentType} from "../../models";
-import {convertToDateInputFormat} from "../../components/application/utils.ts";
-import {PageNation} from "../application/PageNation.tsx";
+import {DepartmentType} from "../../../models";
+import {convertToDateInputFormat} from "../../../components/application/utils.ts";
+import {PageNation} from "../../application/PageNation.tsx";
 
 interface DepartmentSelectProps {
     handleSelect: () => void;

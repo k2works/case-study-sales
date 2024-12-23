@@ -1,6 +1,6 @@
-import {EmployeeType} from "../../models";
+import {EmployeeType} from "../../../models";
 import React from "react";
-import {PageNation} from "../application/PageNation.tsx";
+import {PageNation} from "../../application/PageNation.tsx";
 import {FaTimes} from "react-icons/fa";
 
 interface EmployeeCollectionProps {

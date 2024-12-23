@@ -1,7 +1,7 @@
 import React from "react";
-import {ProductCategoryType} from "../../models";
-import {Message} from "../../components/application/Message.tsx";
-import {PageNation} from "../application/PageNation.tsx";
+import {ProductCategoryType} from "../../../models";
+import {Message} from "../../../components/application/Message.tsx";
+import {PageNation} from "../../application/PageNation.tsx";
 
 interface SearchBarProps {
     searchValue: string;
@@ -78,33 +78,34 @@ const ProductCategoryList: React.FC<ProductCategoryListProps> = ({productCategor
 interface ProductCategoryCollectionViewProps {
     error: string | null;
     message: string | null;
-    searchProductCategoryCode: string;
-    setSearchProductCategoryCode: React.Dispatch<React.SetStateAction<string>>;
-    handleSearchProductCategory: () => void;
-    handleOpenModal: (productCategory?: ProductCategoryType) => void;
-    productCategories: ProductCategoryType[];
-    handleDeleteProductCategory: (productCategoryCode: string) => void;
-    handleCheckProductCategory: (productCategory: ProductCategoryType) => void;
-    handleCheckToggleCollection: () => void;
-    handleDeleteCheckedCollection: () => void;
-    pageNation: any; // 適切な型を使用してください
-    fetchProductCategories: () => void;
+    searchItems: {
+        searchProductCategoryCode: string;
+        setSearchProductCategoryCode: React.Dispatch<React.SetStateAction<string>>;
+        handleSearchProductCategory: () => void;
+    }
+    headerItems: {
+        handleOpenModal: (productCategory?: ProductCategoryType) => void;
+        handleCheckToggleCollection: () => void;
+        handleDeleteCheckedCollection: () => void;
+    }
+    collectionItems: {
+        productCategories: ProductCategoryType[];
+        handleDeleteProductCategory: (productCategoryCode: string) => void;
+        handleCheckProductCategory: (productCategory: ProductCategoryType) => void;
+    }
+    pageNationItems: {
+        pageNation: any;
+        fetchProductCategories: () => void;
+    }
 }
 
 export const ProductCategoryCollectionView: React.FC<ProductCategoryCollectionViewProps> = ({
                                                                                                 error,
                                                                                                 message,
-                                                                                                searchProductCategoryCode,
-                                                                                                setSearchProductCategoryCode,
-                                                                                                handleSearchProductCategory,
-                                                                                                handleOpenModal,
-                                                                                                productCategories,
-                                                                                                handleDeleteProductCategory,
-                                                                                                handleCheckProductCategory,
-                                                                                                handleCheckToggleCollection,
-                                                                                                handleDeleteCheckedCollection,
-                                                                                                pageNation,
-                                                                                                fetchProductCategories
+                                                                                                searchItems: {searchProductCategoryCode, setSearchProductCategoryCode, handleSearchProductCategory},
+                                                                                                collectionItems: {productCategories, handleDeleteProductCategory, handleCheckProductCategory},
+                                                                                                headerItems: {handleOpenModal, handleCheckToggleCollection, handleDeleteCheckedCollection},
+                                                                                                pageNationItems: {pageNation, fetchProductCategories}
                                                                                             }) => (
     <div className="collection-view-object-container">
         <Message error={error} message={message}/>
