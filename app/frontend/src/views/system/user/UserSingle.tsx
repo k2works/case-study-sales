@@ -1,7 +1,7 @@
 import React from "react";
-import {RoleNameEnumType, UserAccountType} from "../../models";
-import {Message} from "../../components/application/Message.tsx";
-import {FormInput, FormSelect, SingleViewHeaderActions, SingleViewHeaderItem} from "../Common.tsx";
+import {RoleNameEnumType, UserAccountType} from "../../../models";
+import {Message} from "../../../components/application/Message.tsx";
+import {FormInput, FormSelect, SingleViewHeaderActions, SingleViewHeaderItem} from "../../Common.tsx";
 
 
 interface HeaderProps {

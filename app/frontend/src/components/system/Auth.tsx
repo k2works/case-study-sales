@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import {AuthUserContextType, useAuthUserContext} from "../../providers/AuthUser.tsx";
 import AuthService from "../../services/auth.ts";
-import {LoginSingleView} from "../../views/system/Login.tsx";
+import {LoginSingleView} from "../../views/system/auth/Login.tsx";
 import {CustomLocation, DataType, RoleType, UserType} from "../../models";
 
 const DEFAULT_USER_ID = "U000003";
