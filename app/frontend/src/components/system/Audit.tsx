@@ -41,100 +41,129 @@ export const Audit: React.FC = () => {
             });
         }, []);
 
-        const handleOpenModal = (audit?: AuditType) => {
-            setMessage("");
-            setError("");
-            if (audit) {
-                setNewAudit(audit);
-                setIsEditing(true);
-            } else {
-                setNewAudit(initialAudit);
-                setIsEditing(false);
-            }
-            setModalIsOpen(true);
-        };
-
-        const handleCloseModal = () => {
-            setError("");
-            setModalIsOpen(false);
-            setEditId(null);
-        };
-
-        const handleOpenSearchModal = () => {
-            setSearchModalIsOpen(true);
-        }
-
-        const handleCloseSearchModal = () => {
-            setSearchModalIsOpen(false);
-        }
 
         const modalView = () => {
             const editModal = () => {
-                return (
-                    <Modal
-                        isOpen={modalIsOpen}
-                        onRequestClose={handleCloseModal}
-                        contentLabel="アプリケーション実行履歴情報を入力"
-                        className="modal"
-                        overlayClassName="modal-overlay"
-                        bodyOpenClassName="modal-open"
-                    >
-                        {singleView()}
-                    </Modal>
-                );
+                const handleOpenModal = (audit?: AuditType) => {
+                    setMessage("");
+                    setError("");
+                    if (audit) {
+                        setNewAudit(audit);
+                        setIsEditing(true);
+                    } else {
+                        setNewAudit(initialAudit);
+                        setIsEditing(false);
+                    }
+                    setModalIsOpen(true);
+                };
+
+                const handleCloseModal = () => {
+                    setError("");
+                    setModalIsOpen(false);
+                    setEditId(null);
+                };
+
+                const editModalView = () => {
+                    return (
+                        <Modal
+                            isOpen={modalIsOpen}
+                            onRequestClose={handleCloseModal}
+                            contentLabel="アプリケーション実行履歴情報を入力"
+                            className="modal"
+                            overlayClassName="modal-overlay"
+                            bodyOpenClassName="modal-open"
+                        >
+                            {singleView()}
+                        </Modal>
+                    );
+                }
+
+                return {
+                    editModalView,
+                    handleOpenModal,
+                    handleCloseModal
+                }
             }
 
             const searchModal = () => {
-                return (
-                    <Modal
-                        isOpen={searchModalIsOpen}
-                        onRequestClose={handleCloseSearchModal}
-                        contentLabel="検索情報を入力"
-                        className="modal"
-                        overlayClassName="modal-overlay"
-                        bodyOpenClassName="modal-open"
-                    >
-                        {
-                            <AuditSearchSingleView
-                                condition={searchAuditCondition}
-                                setCondition={setSearchAuditCondition}
-                                handleSelect={async () => {
-                                    if (!searchAuditCondition) {
-                                        return;
-                                    }
-                                    setLoading(true);
-                                    try {
-                                        const fetchedAudit = await auditService.search(searchAuditCondition);
-                                        setAudits(fetchedAudit ? fetchedAudit.list : []);
-                                        if (fetchedAudit.list.length === 0) {
-                                            showErrorMessage(`検索結果は0件です`, setError);
-                                        } else {
-                                            setCondition(searchAuditCondition);
-                                            setPageNation(fetchedAudit);
-                                            setMessage("");
-                                            setError("");
+                const handleOpenSearchModal = () => {
+                    setSearchModalIsOpen(true);
+                }
+
+                const handleCloseSearchModal = () => {
+                    setSearchModalIsOpen(false);
+                }
+
+                const searchModalView = () => {
+                    return (
+                        <Modal
+                            isOpen={searchModalIsOpen}
+                            onRequestClose={handleCloseSearchModal}
+                            contentLabel="検索情報を入力"
+                            className="modal"
+                            overlayClassName="modal-overlay"
+                            bodyOpenClassName="modal-open"
+                        >
+                            {
+                                <AuditSearchSingleView
+                                    condition={searchAuditCondition}
+                                    setCondition={setSearchAuditCondition}
+                                    handleSelect={async () => {
+                                        if (!searchAuditCondition) {
+                                            return;
                                         }
-                                    } catch (error: any) {
-                                        showErrorMessage(`実行履歴情報の検索に失敗しました: ${error?.message}`, setError);
-                                    } finally {
-                                        setLoading(false);
-                                    }
-                                }}
-                                handleClose={handleCloseSearchModal}
-                            />
-                        }
-                    </Modal>
+                                        setLoading(true);
+                                        try {
+                                            const fetchedAudit = await auditService.search(searchAuditCondition);
+                                            setAudits(fetchedAudit ? fetchedAudit.list : []);
+                                            if (fetchedAudit.list.length === 0) {
+                                                showErrorMessage(`検索結果は0件です`, setError);
+                                            } else {
+                                                setCondition(searchAuditCondition);
+                                                setPageNation(fetchedAudit);
+                                                setMessage("");
+                                                setError("");
+                                            }
+                                        } catch (error: any) {
+                                            showErrorMessage(`実行履歴情報の検索に失敗しました: ${error?.message}`, setError);
+                                        } finally {
+                                            setLoading(false);
+                                        }
+                                    }}
+                                    handleClose={handleCloseSearchModal}
+                                />
+                            }
+                        </Modal>
+                    )
+                }
+
+                return {
+                    searchModalView,
+                    handleOpenSearchModal,
+                    handleCloseSearchModal
+                }
+            }
+
+            const init = () => {
+                return (
+                    <>
+                        {editModal().editModalView()}
+                        {searchModal().searchModalView()}
+                    </>
                 )
             }
-            return (
-                <>
-                    {searchModal()}
-                    {editModal()}
-                </>
-            );
+
+            return {
+                editModal,
+                searchModal,
+                init
+            }
         }
 
         const collectionView = () => {
+            const {handleOpenModal} = modalView().editModal();
+            const {handleOpenSearchModal} = modalView().searchModal();
+
             const handleCheckAudit = (audit: AuditType) => {
                 const newAudit = audits.map((d) => {
                     if (d.id === audit.id) {
@@ -216,6 +245,8 @@ export const Audit: React.FC = () => {
         };
 
         const singleView = () => {
+            const {handleCloseModal} = modalView().editModal();
+
             return (
                 <AuditSingleView
                     error={error}
@@ -234,7 +265,7 @@ export const Audit: React.FC = () => {
                     <LoadingIndicator/>
                 ) : (
                     <>
-                        {modalView()}
+                        {modalView().init()}
                         {collectionView()}
                     </>
                 )}
