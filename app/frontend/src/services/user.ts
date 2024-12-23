@@ -1,14 +1,14 @@
 import Config from "./config.ts";
 import Utils from "./utils.ts";
-import {mapToUserAccountResource, UserAccountType} from "../models";
+import {mapToUserAccountResource, UserAccountType, UserFetchType} from "../models";
 
 export interface UserServiceType {
-    select: (page?: number, pageSize?: number) => Promise<any>;
-    find: (userId: String) => Promise<any>;
-    create: (user: UserAccountType) => Promise<any>;
-    update: (user: UserAccountType) => Promise<any>;
-    destroy: (userId: String) => Promise<any>;
-    search: (pageSize: number, code: string, page: number) => Promise<any>;
+    select: (page?: number, pageSize?: number) => Promise<UserFetchType>;
+    find: (userId: string) => Promise<UserAccountType>;
+    create: (user: UserAccountType) => Promise<string>;
+    update: (user: UserAccountType) => Promise<string>;
+    destroy: (userId: string) => Promise<string>;
+    search: (pageSize: number, code: string, page: number) => Promise<UserFetchType>;
 }
 export const UserService = () => {
     const config = Config();
@@ -28,7 +28,7 @@ export const UserService = () => {
         return await apiUtils.fetchGet(url);
     };
 
-    const find = async (userId: String) => {
+    const find = async (userId: string) => {
         const url = `${endPoint}/${userId}`;
         return await apiUtils.fetchGet(url);
     };
@@ -43,12 +43,12 @@ export const UserService = () => {
     };
 
     const search = async (pageSize = 10, code: string, page = 1): Promise<any> => {
-        let url = `${endPoint}/search?pageSize=${pageSize}&code=${code}&page=${page}`;
+        const url = `${endPoint}/search?pageSize=${pageSize}&code=${code}&page=${page}`;
 
         return await apiUtils.fetchGet(url);
     };
 
-    const destroy = async (userId: String) => {
+    const destroy = async (userId: string) => {
         const url = `${endPoint}/${userId}`;
         return await apiUtils.fetchDelete(url);
     };

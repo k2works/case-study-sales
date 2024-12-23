@@ -1,3 +1,5 @@
+import {PageNationType} from "../views/application/PageNation.tsx";
+
 export type UserType = {
     userId: string;
     token: string;
@@ -22,6 +24,10 @@ export type UserAccountType = {
     };
     roleName?: string;
 }
+
+export type UserFetchType = {
+    list: UserAccountType[];
+} & PageNationType;
 
 export type UserAccountResourceType = {
     userId: string;
