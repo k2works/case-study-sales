@@ -118,27 +118,244 @@ export const ProductDetail: React.FC = () => {
             Tabs,
         } = useTab();
 
+        const modalView = () => {
+            const editModal = () => {
+                const handleOpenModal = (product?: ProductType) => {
+                    setMessage("");
+                    setError("");
+                    if (product) {
+                        setNewProduct(product);
+                        setEditId(product.productCode.value);
+                        setIsEditing(true);
+                    } else {
+                        setNewProduct(initialProduct);
+                        setIsEditing(false);
+                    }
+                    setModalIsOpen(true);
+                };
+
+                const handleCloseModal = () => {
+                    setError("");
+                    setModalIsOpen(false);
+                    setEditId(null);
+                };
+
+                const editModalView = () => {
+                    return (
+                        <Modal
+                            isOpen={modalIsOpen}
+                            onRequestClose={handleCloseModal}
+                            contentLabel="商品情報を入力"
+                            className="modal"
+                            overlayClassName="modal-overlay"
+                            bodyOpenClassName="modal-open"
+                        >
+                            {singleView()}
+
+                            {substituteModal().substituteEditModalView()}
+                            {bomModal().bomEditModalView()}
+
+                            {isEditing && (
+                                <>
+                                    <Tabs>
+                                        <TabList>
+                                            <Tab>代替品</Tab>
+                                            <Tab>部品表</Tab>
+                                            <Tab>顧客別販売単価</Tab>
+                                        </TabList>
+                                        <TabPanel>
+                                            <SubstituteProductCollectionView
+                                                substituteProducts={newProduct.substituteProduct}
+                                                handleAdd={() => {
+                                                    setMessage("");
+                                                    setError("");
+                                                    setProductIsEditing(true);
+                                                    setProductModalIsOpen(true);
+                                                }}
+                                                handleDelete={(product) => {
+                                                    setNewProduct({
+                                                        ...newProduct,
+                                                        substituteProduct: newProduct.substituteProduct.filter(
+                                                            (substituteProduct) => substituteProduct.substituteProductCode !== product.substituteProductCode
+                                                        )
+                                                    });
+                                                }}
+                                            />
+                                        </TabPanel>
+                                        <TabPanel>
+                                            <BomCollectionView
+                                                boms={newProduct.boms}
+                                                handleAdd={() => {
+                                                    setMessage("");
+                                                    setError("");
+                                                    setBomIsEditing(true);
+                                                    setBomModalIsOpen(true);
+                                                }}
+                                                handleDelete={(product) => {
+                                                    setNewProduct({
+                                                        ...newProduct,
+                                                        boms: newProduct.boms.filter(
+                                                            (bomProduct) => bomProduct.componentCode !== product.componentCode
+                                                        )
+                                                    });
+                                                }}
+                                            />
+                                        </TabPanel>
+                                        <TabPanel>
+                                            <CustomerSpecificSellingPriceCollectionView
+                                                prices={newProduct.customerSpecificSellingPrices}
+                                                handleAdd={() => {
+                                                    setNewProduct({
+                                                        ...newProduct,
+                                                        customerSpecificSellingPrices: newProduct.customerSpecificSellingPrices.concat({
+                                                            productCode: newProduct.productCode,
+                                                            customerCode: "XXXX",
+                                                            sellingPrice: {
+                                                                amount: 0,
+                                                                currency: "JPY"
+                                                            }
+                                                        })
+                                                    });
+                                                }}
+                                                handleDelete={(price) => {
+                                                    setNewProduct({
+                                                        ...newProduct,
+                                                        customerSpecificSellingPrices: newProduct.customerSpecificSellingPrices.filter(
+                                                            (sellingPrice) => sellingPrice.customerCode !== price.customerCode
+                                                        )
+                                                    });
+                                                }}
+                                            />
+                                        </TabPanel>
+                                    </Tabs>
+                                </>
+                            )
+                            }
+                        </Modal>
+                    )
+                }
+
+                return {
+                    handleOpenModal,
+                    handleCloseModal,
+                    editModalView
+                }
+            }
+
+            const substituteModal = () => {
+                const handleCloseProductModal = () => {
+                    setError("");
+                    setProductModalIsOpen(false);
+                    setProductEditId(null);
+                }
+
+                const substituteEditModalView = () => {
+                    return (
+                        <Modal
+                            isOpen={productModalIsOpen}
+                            onRequestClose={handleCloseProductModal}
+                            contentLabel="代替商品情報を入力"
+                            className="modal"
+                            overlayClassName="modal-overlay"
+                            bodyOpenClassName="modal-open"
+                        >
+                            {
+                                <ProductCollectionSelectView
+                                    products={substitutes}
+                                    handleSelect={(product) => {
+                                        const newProducts = newProduct.substituteProduct.filter((e) => e.substituteProductCode.value !== product.productCode.value);
+                                        newProducts.push({
+                                            productCode: newProduct.productCode,
+                                            substituteProductCode: product.productCode,
+                                            priority: 0
+                                        });
+                                        setNewProduct({
+                                            ...newProduct,
+                                            substituteProduct: newProducts
+                                        });
+                                    }}
+                                    handleClose={handleCloseProductModal}
+                                    pageNation={substitutePageNation}
+                                    fetchProducts={fetchSubstitutes.load}
+                                />
+                            }
+                        </Modal>
+
+                    )
+                }
+
+                return {
+                    substituteEditModalView
+                }
+            }
+
+            const bomModal = () => {
+                const handleCloseBomModal = () => {
+                    setError("");
+                    setBomModalIsOpen(false);
+                    setBomEditId(null);
+                }
+
+                const bomEditModalView = () => {
+                    return (
+                        <Modal
+                            isOpen={bomModalIsOpen}
+                            onRequestClose={handleCloseBomModal}
+                            contentLabel="部品情報を入力"
+                            className="modal"
+                            overlayClassName="modal-overlay"
+                            bodyOpenClassName="modal-open"
+                        >
+                            {
+                                <ProductCollectionSelectView
+                                    products={boms}
+                                    handleSelect={(bom) => {
+                                        const newProducts = newProduct.boms.filter((e) => e.productCode.value !== bom.productCode.value);
+                                        newProducts.push({
+                                            productCode: newProduct.productCode,
+                                            componentCode: bom.productCode,
+                                            componentQuantity: {
+                                                amount: 1,
+                                                unit: "個"
+                                            }
+                                        });
+                                        setNewProduct({
+                                            ...newProduct,
+                                            boms: newProducts
+                                        });
+                                    }}
+                                    handleClose={handleCloseBomModal}
+                                    pageNation={bomPageNation}
+                                    fetchProducts={fetchBoms.load}
+                                />
+                            }
+                        </Modal>
+
+                    )
+                }
+
+                return {
+                    bomEditModalView
+                }
+            }
+
+            const init = () => {
+                return (
+                    <>
+                        {editModal().editModalView()}
+                    </>
+                )
+            }
+
+            return {
+                editModal,
+                init
+            }
+        }
+
         // TODO:顧客マスタの作成後に実装
         const collectionView = () => {
-            const handleOpenModal = (product?: ProductType) => {
-                setMessage("");
-                setError("");
-                if (product) {
-                    setNewProduct(product);
-                    setEditId(product.productCode.value);
-                    setIsEditing(true);
-                } else {
-                    setNewProduct(initialProduct);
-                    setIsEditing(false);
-                }
-                setModalIsOpen(true);
-            };
-
-            const handleCloseModal = () => {
-                setError("");
-                setModalIsOpen(false);
-                setEditId(null);
-            };
+            const {handleOpenModal} = modalView().editModal();
 
             const handleSearchProduct = async () => {
                 if (!searchProductCode.trim()) return;
@@ -207,16 +424,6 @@ export const ProductDetail: React.FC = () => {
 
             return (
                 <>
-                    <Modal
-                        isOpen={modalIsOpen}
-                        onRequestClose={handleCloseModal}
-                        contentLabel="商品情報を入力"
-                        className="modal"
-                        overlayClassName="modal-overlay"
-                        bodyOpenClassName="modal-open"
-                    >
-                        {singleView()}
-                    </Modal>
                     <ProductCollectionView
                         error={error}
                         message={message}
@@ -237,23 +444,7 @@ export const ProductDetail: React.FC = () => {
         };
 
         const singleView = () => {
-            const handleCloseModal = () => {
-                setError("");
-                setModalIsOpen(false);
-                setEditId(null);
-            };
-
-            const handleCloseProductModal = () => {
-                setError("");
-                setProductModalIsOpen(false);
-                setProductEditId(null);
-            }
-
-            const handleCloseBomModal = () => {
-                setError("");
-                setBomModalIsOpen(false);
-                setBomEditId(null);
-            }
+            const {handleCloseModal} = modalView().editModal();
 
             const handleCreateOrUpdateProduct = async () => {
                 const validateProduct = (): boolean => {
@@ -301,70 +492,6 @@ export const ProductDetail: React.FC = () => {
             };
 
             return (
-                <>
-                    <Modal
-                        isOpen={productModalIsOpen}
-                        onRequestClose={handleCloseProductModal}
-                        contentLabel="代替商品情報を入力"
-                        className="modal"
-                        overlayClassName="modal-overlay"
-                        bodyOpenClassName="modal-open"
-                    >
-                        {
-                            <ProductCollectionSelectView
-                                products={substitutes}
-                                handleSelect={(product) => {
-                                    const newProducts = newProduct.substituteProduct.filter((e) => e.substituteProductCode.value !== product.productCode.value);
-                                    newProducts.push({
-                                        productCode: newProduct.productCode,
-                                        substituteProductCode: product.productCode,
-                                        priority: 0
-                                    });
-                                    setNewProduct({
-                                        ...newProduct,
-                                        substituteProduct: newProducts
-                                    });
-                                }}
-                                handleClose={handleCloseProductModal}
-                                pageNation={substitutePageNation}
-                                fetchProducts={fetchSubstitutes.load}
-                            />
-                        }
-                    </Modal>
-
-                    <Modal
-                        isOpen={bomModalIsOpen}
-                        onRequestClose={handleCloseBomModal}
-                        contentLabel="部品情報を入力"
-                        className="modal"
-                        overlayClassName="modal-overlay"
-                        bodyOpenClassName="modal-open"
-                    >
-                        {
-                            <ProductCollectionSelectView
-                                products={boms}
-                                handleSelect={(bom) => {
-                                    const newProducts = newProduct.boms.filter((e) => e.productCode.value !== bom.productCode.value);
-                                    newProducts.push({
-                                        productCode: newProduct.productCode,
-                                        componentCode: bom.productCode,
-                                        componentQuantity: {
-                                            amount: 1,
-                                            unit: "個"
-                                        }
-                                    });
-                                    setNewProduct({
-                                        ...newProduct,
-                                        boms: newProducts
-                                    });
-                                }}
-                                handleClose={handleCloseBomModal}
-                                pageNation={bomPageNation}
-                                fetchProducts={fetchBoms.load}
-                            />
-                        }
-                    </Modal>
-
                     <ProductSingleView
                         error={error}
                         message={message}
@@ -374,84 +501,6 @@ export const ProductDetail: React.FC = () => {
                         handleCreateOrUpdateProduct={handleCreateOrUpdateProduct}
                         handleCloseModal={handleCloseModal}
                     />
-
-                    {isEditing && (
-                        <>
-                            <Tabs>
-                                <TabList>
-                                    <Tab>代替品</Tab>
-                                    <Tab>部品表</Tab>
-                                    <Tab>顧客別販売単価</Tab>
-                                </TabList>
-                                <TabPanel>
-                                    <SubstituteProductCollectionView
-                                        substituteProducts={newProduct.substituteProduct}
-                                        handleAdd={() => {
-                                            setMessage("");
-                                            setError("");
-                                            setProductIsEditing(true);
-                                            setProductModalIsOpen(true);
-                                        }}
-                                        handleDelete={(product) => {
-                                            setNewProduct({
-                                                ...newProduct,
-                                                substituteProduct: newProduct.substituteProduct.filter(
-                                                    (substituteProduct) => substituteProduct.substituteProductCode !== product.substituteProductCode
-                                                )
-                                            });
-                                        }}
-                                    />
-                                </TabPanel>
-                                <TabPanel>
-                                    <BomCollectionView
-                                        boms={newProduct.boms}
-                                        handleAdd={() => {
-                                            setMessage("");
-                                            setError("");
-                                            setBomIsEditing(true);
-                                            setBomModalIsOpen(true);
-                                        }}
-                                        handleDelete={(product) => {
-                                            setNewProduct({
-                                                ...newProduct,
-                                                boms: newProduct.boms.filter(
-                                                    (bomProduct) => bomProduct.componentCode !== product.componentCode
-                                                )
-                                            });
-                                        }}
-                                    />
-                                </TabPanel>
-                                <TabPanel>
-                                    <CustomerSpecificSellingPriceCollectionView
-                                        prices={newProduct.customerSpecificSellingPrices}
-                                        handleAdd={() => {
-                                            setNewProduct({
-                                                ...newProduct,
-                                                customerSpecificSellingPrices: newProduct.customerSpecificSellingPrices.concat({
-                                                    productCode: newProduct.productCode,
-                                                    customerCode: "XXXX",
-                                                    sellingPrice: {
-                                                        amount: 0,
-                                                        currency: "JPY"
-                                                    }
-                                                })
-                                            });
-                                        }}
-                                        handleDelete={(price) => {
-                                            setNewProduct({
-                                                ...newProduct,
-                                                customerSpecificSellingPrices: newProduct.customerSpecificSellingPrices.filter(
-                                                    (sellingPrice) => sellingPrice.customerCode !== price.customerCode
-                                                )
-                                            });
-                                        }}
-                                    />
-                                </TabPanel>
-                            </Tabs>
-                        </>
-                    )
-                    }
-                </>
             );
         };
 
@@ -460,7 +509,10 @@ export const ProductDetail: React.FC = () => {
                 {loading ? (
                     <LoadingIndicator/>
                 ) : (
-                    collectionView()
+                    <>
+                        {modalView().init()}
+                        {collectionView()}
+                    </>
                 )}
             </>
         );
