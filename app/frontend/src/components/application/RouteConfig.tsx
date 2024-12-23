@@ -1,14 +1,13 @@
 import {Route, Routes} from "react-router-dom";
 import React from "react";
 import {RouteAuthGuard} from "./RouteAuthGuard";
-import {Login} from "../system/Login.tsx";
-import {Logout} from "../system/Logout.tsx";
+import {Home} from "./Home.tsx";
 import {User} from "../system/User.tsx";
+import {NotFound} from "../../views/application/NotFound.tsx";
 import {RoleType} from "../../models";
+import {Login, Logout} from "../system/Auth.tsx";
 import {Department} from "../master/Department.tsx";
 import {Employee} from "../master/Employee.tsx";
-import {NotFound} from "../../views/application/NotFound.tsx";
-import {Home} from "./Home.tsx";
 import {Product} from "../master/Product.tsx";
 import {SiteLayout} from "../../views/SiteLayout.tsx";
 import {ProductCategory} from "../master/ProductCategory.tsx";
