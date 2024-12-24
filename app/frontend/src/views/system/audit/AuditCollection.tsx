@@ -6,26 +6,7 @@ import {
     AuditCriteriaType
 } from "../../../models/audit.ts";
 import {convertToDateTimeInputFormat} from "../../../components/application/utils.ts";
-
-interface SearchProps {
-    searchAuditCriteria: AuditCriteriaType;
-    setSearchAuditCriteria: (value: AuditCriteriaType) => void;
-    handleSearchAudit: () => void;
-}
-
-const Search: React.FC<SearchProps> = ({handleSearchAudit}) => {
-    return (
-        <div className="search-container">
-            <div className="single-view-content-item-form">
-                <div className="button-container">
-                    <button className="action-button" id="search" onClick={handleSearchAudit}>
-                        検索
-                    </button>
-                </div>
-            </div>
-        </div>
-    );
-};
+import {Search} from "../../Common.tsx";
 
 interface MenuButtonProps {
     handleReloadCollection: () => void;
@@ -184,8 +165,8 @@ export const AuditCollectionView: React.FC<AuditCollectionViewProps> = ({
             </div>
             <div className="collection-view-content">
                 <Search
-                    searchAuditCriteria={searchAuditCriteria}
-                    setSearchAuditCriteria={setSearchAuditCriteria}
+                    searchCriteria={searchAuditCriteria}
+                    setSearchCriteria={setSearchAuditCriteria}
                     handleSearchAudit={handleOpenSearchModal}
                 />
                 <MenuButton

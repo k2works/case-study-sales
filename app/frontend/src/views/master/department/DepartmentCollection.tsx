@@ -1,28 +1,8 @@
 import React from "react";
-import {DepartmentCriteriaType, DepartmentIdType, DepartmentType} from "../../../models";
+import {DepartmentCriteriaType, DepartmentType} from "../../../models";
 import {Message} from "../../../components/application/Message.tsx";
 import {PageNation, PageNationType} from "../../application/PageNation.tsx";
-import {AuditCriteriaType} from "../../../models/audit.ts";
-
-interface SearchProps {
-    searchCriteria: DepartmentCriteriaType;
-    setSearchCriteria: (value: DepartmentCriteriaType) => void;
-    handleSearchAudit: () => void;
-}
-
-const Search: React.FC<SearchProps> = ({handleSearchAudit}) => {
-    return (
-        <div className="search-container">
-            <div className="single-view-content-item-form">
-                <div className="button-container">
-                    <button className="action-button" id="search" onClick={handleSearchAudit}>
-                        検索
-                    </button>
-                </div>
-            </div>
-        </div>
-    );
-};
+import {Search} from "../../Common.tsx";
 
 interface DepartmentItemProps {
     department: DepartmentType;

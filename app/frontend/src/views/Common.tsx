@@ -1,4 +1,5 @@
 import React from "react";
+import {DepartmentCriteriaType} from "../models";
 
 export const SingleViewHeaderItem: React.FC<{ title: string, subtitle: string }> = ({title, subtitle}) => (
     <div className="single-view-header-item">
@@ -144,3 +145,24 @@ export const FormTextarea: React.FC<FormTextareaProps> = ({
     );
 };
 
+interface SearchProps<T> {
+    searchCriteria: T;
+    setSearchCriteria: (value: T) => void;
+    handleSearchAudit: () => void;
+}
+
+export const Search = <T,>({
+                               handleSearchAudit,
+                           }: SearchProps<T>): React.ReactElement => {
+    return (
+        <div className="search-container">
+            <div className="single-view-content-item-form">
+                <div className="button-container">
+                    <button className="action-button" id="search" onClick={handleSearchAudit}>
+                        検索
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+};
