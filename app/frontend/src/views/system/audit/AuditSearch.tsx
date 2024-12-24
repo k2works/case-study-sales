@@ -3,42 +3,42 @@ import {
     ApplicationExecutionHistoryType,
     ApplicationExecutionProcessFlag,
     ApplicationExecutionProcessType,
-    SearchAuditConditionType
+    AuditCriteriaType
 } from "../../../models/audit.ts";
 import {FormSelect, SingleViewHeaderItem} from "../../Common.tsx";
 
 interface FormProps {
-    condition: SearchAuditConditionType,
-    setCondition:(condition: SearchAuditConditionType) => void,
+    criteria: AuditCriteriaType,
+    setCondition:(criteria: AuditCriteriaType) => void,
     handleClick: (e: React.MouseEvent<HTMLButtonElement>) => void,
     handleClose: (e: React.MouseEvent<HTMLButtonElement>) => void
 }
-const Form = ({condition, setCondition, handleClick, handleClose}: FormProps) => {
+const Form = ({criteria, setCondition, handleClick, handleClose}: FormProps) => {
     return (
         <div className="single-view-content-item-form">
             <FormSelect
                 id={"search-process-type"}
                 label={"処理"}
-                value={condition.processType}
+                value={criteria.processType}
                 options={ApplicationExecutionProcessType}
                 onChange={(e) => setCondition(
-                    {...condition, processType: e}
+                    {...criteria, processType: e}
                 )}/>
             <FormSelect
                 id={"search-process-type"}
                 label={"状態"}
-                value={condition.processFlag}
+                value={criteria.processFlag}
                 options={ApplicationExecutionProcessFlag}
                 onChange={(e) => setCondition(
-                    {...condition, processFlag: e}
+                    {...criteria, processFlag: e}
                 )}/>
             <FormSelect
                 id={"search-type"}
                 label={"タイプ"}
-                value={condition.type}
+                value={criteria.type}
                 options={ApplicationExecutionHistoryType}
                 onChange={(e) => setCondition(
-                    {...condition, type: e}
+                    {...criteria, type: e}
                 )}/>
 
             <div className="button-container">
@@ -54,21 +54,21 @@ const Form = ({condition, setCondition, handleClick, handleClose}: FormProps) =>
 };
 
 interface AuditSearchSingleViewProps {
-    condition: SearchAuditConditionType,
-    setCondition:(condition: SearchAuditConditionType) => void,
-    handleSelect: (condition: SearchAuditConditionType) => Promise<void>,
+    criteria: AuditCriteriaType,
+    setCondition:(criteria: AuditCriteriaType) => void,
+    handleSelect: (criteria: AuditCriteriaType) => Promise<void>,
     handleClose: () => void
 }
 
 export const AuditSearchSingleView: React.FC<AuditSearchSingleViewProps> = ({
-                                                                                  condition,
+                                                                                  criteria,
                                                                                   setCondition,
                                                                                   handleSelect,
                                                                                   handleClose,
                                                                               }) => {
     const handleClick: MouseEventHandler<HTMLButtonElement> = async(e) => {
         e.preventDefault();
-        await handleSelect(condition);
+        await handleSelect(criteria);
         handleClose();
     }
 
@@ -87,7 +87,7 @@ export const AuditSearchSingleView: React.FC<AuditSearchSingleViewProps> = ({
             <div className="single-view-container">
                 <div className="single-view-content">
                     <div className="single-view-content-item">
-                        <Form condition={condition} setCondition={setCondition} handleClick={handleClick} handleClose={handleCancel}/>
+                        <Form criteria={criteria} setCondition={setCondition} handleClick={handleClick} handleClose={handleCancel}/>
                     </div>
                 </div>
             </div>

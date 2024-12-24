@@ -36,7 +36,7 @@ type Process = {
     code: string;
 };
 
-export type SearchAuditConditionType = {
+export type AuditCriteriaType = {
     processType?: ApplicationExecutionProcessType;
     processFlag?: ApplicationExecutionProcessFlag;
     type?: ApplicationExecutionHistoryType;
@@ -58,7 +58,7 @@ export type AuditFetchType = {
     list: AuditType[];
 } & PageNationType;
 
-export const mapToAuditSearchResource = (condition: SearchAuditConditionType) => {
+export const mapToAuditSearchResource = (criteria: AuditCriteriaType) => {
     const isEmpty = (value: unknown) => value === "" || value === null || value === undefined;
     type Resource = {
         process?: {
@@ -68,11 +68,11 @@ export const mapToAuditSearchResource = (condition: SearchAuditConditionType) =>
         type?: string;
     };
     const resource: Resource = {
-        ...(isEmpty(condition.processFlag) ? {} : { processFlag: condition.processFlag }),
+        ...(isEmpty(criteria.processFlag) ? {} : { processFlag: criteria.processFlag }),
         process: {
-            ...(isEmpty(condition.processType) ? {} : { processType: condition.processType }),
+            ...(isEmpty(criteria.processType) ? {} : { processType: criteria.processType }),
         },
-        ...(isEmpty(condition.type) ? {} : { type: condition.type }),
+        ...(isEmpty(criteria.type) ? {} : { type: criteria.type }),
     };
 
     return resource;

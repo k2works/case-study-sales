@@ -22,26 +22,26 @@ export type PageNationType = {
 
 export const usePageNation = <T = never>() => {
     const [pageNation, setPageNation] = useState<PageNationType | null>(null);
-    const [condition, setCondition] = useState<T | null>(null);
+    const [criteria, setCriteria] = useState<T | null>(null);
 
     return {
         pageNation,
         setPageNation,
-        condition,
-        setCondition
+        criteria,
+        setCriteria
     }
 }
 
 interface PageNationComponentProps<T = never> {
     pageNation: PageNationType | null;
-    callBack: (page: number, condition?: T) => void;
-    condition?: T;
+    callBack: (page: number, criteria?: T) => void;
+    criteria?: T;
 }
 
-export const PageNation = <T = never>({pageNation, callBack, condition} : PageNationComponentProps<T>) => {
+export const PageNation = <T = never>({pageNation, callBack, criteria} : PageNationComponentProps<T>) => {
     const handlePageClick = (page: number) => (event: React.MouseEvent<HTMLAnchorElement>) => {
         event.preventDefault();
-        callBack(page, condition ?? undefined);
+        callBack(page, criteria ?? undefined);
     };
 
     if (pageNation == null) return null;

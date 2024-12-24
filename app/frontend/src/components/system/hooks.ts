@@ -5,7 +5,7 @@ import {PageNationType} from "../../views/application/PageNation.tsx";
 import {
     ApplicationExecutionHistoryType,
     ApplicationExecutionProcessFlag,
-    ApplicationExecutionProcessType, AuditType, SearchAuditConditionType
+    ApplicationExecutionProcessType, AuditType, AuditCriteriaType
 } from "../../models/audit.ts";
 import {AuditService, AuditServiceType} from "../../services/audit.ts";
 
@@ -90,7 +90,7 @@ export const useAudit = () => {
 
     const [audits, setAudits] = useState<AuditType[]>([]);
     const [newAudit, setNewAudit] = useState<AuditType>(initialAudit);
-    const [searchAuditCondition, setSearchAuditCondition] = useState<SearchAuditConditionType>(initialSearchAuditCondition);
+    const [searchAuditCondition, setSearchAuditCondition] = useState<AuditCriteriaType>(initialSearchAuditCondition);
     const auditService = AuditService();
 
     return {
@@ -114,16 +114,16 @@ export const useFetchAudits = (
     showErrorMessage: (message: string, callback: (error: string) => void) => void,
     service: AuditServiceType) => {
 
-    const load = async (page: number = 1, condition?: SearchAuditConditionType): Promise<void> => {
+    const load = async (page: number = 1, criteria?: AuditCriteriaType): Promise<void> => {
         const ERROR_MESSAGE = "アプリケーション実行履歴情報の取得に失敗しました:";
         setLoading(true);
 
         try {
-            const fetchAudits = async (condition?: SearchAuditConditionType, page: number = 1) => {
-                return condition ? service.search(condition, page) : service.select(page);
+            const fetchAudits = async (criteria?: AuditCriteriaType, page: number = 1) => {
+                return criteria ? service.search(criteria, page) : service.select(page);
             };
 
-            const { list, ...pagination } = await fetchAudits(condition, page);
+            const { list, ...pagination } = await fetchAudits(criteria, page);
 
             setList(list);
             setPageNation(pagination);

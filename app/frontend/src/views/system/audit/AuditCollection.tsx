@@ -3,13 +3,13 @@ import {PageNation, PageNationType} from "../../application/PageNation.tsx";
 import {Message} from "../../../components/application/Message.tsx";
 import {
     AuditType,
-    SearchAuditConditionType
+    AuditCriteriaType
 } from "../../../models/audit.ts";
 import {convertToDateTimeInputFormat} from "../../../components/application/utils.ts";
 
 interface SearchProps {
-    searchAuditCondition: SearchAuditConditionType;
-    setSearchAuditCondition: (value: SearchAuditConditionType) => void;
+    searchAuditCondition: AuditCriteriaType;
+    setSearchAuditCondition: (value: AuditCriteriaType) => void;
     handleSearchAudit: () => void;
 }
 
@@ -125,8 +125,8 @@ interface AuditCollectionViewProps {
     error: string | null;
     message: string | null;
     searchItems: {
-        searchAuditCondition: SearchAuditConditionType;
-        setSearchAuditCondition: (value: SearchAuditConditionType) => void;
+        searchAuditCondition: AuditCriteriaType;
+        setSearchAuditCondition: (value: AuditCriteriaType) => void;
         handleOpenSearchModal: () => void;
     }
     menuButtonItems: {
@@ -142,7 +142,7 @@ interface AuditCollectionViewProps {
     }
     pageNationItems: {
         pageNation: PageNationType | null;
-        condition: SearchAuditConditionType | null;
+        criteria: AuditCriteriaType | null;
         fetchAudits: () => void;
     }
 }
@@ -168,7 +168,7 @@ export const AuditCollectionView: React.FC<AuditCollectionViewProps> = ({
     },
     pageNationItems: {
         pageNation,
-        condition,
+        criteria,
         fetchAudits
     }
 }) => (
@@ -202,7 +202,7 @@ export const AuditCollectionView: React.FC<AuditCollectionViewProps> = ({
                 <PageNation
                     pageNation={pageNation}
                     callBack={fetchAudits}
-                    condition={condition}
+                    criteria={criteria}
                 />
             </div>
         </div>

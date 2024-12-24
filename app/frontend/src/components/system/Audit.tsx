@@ -3,7 +3,7 @@ import {useMessage} from "../application/Message.tsx";
 import {usePageNation} from "../../views/application/PageNation.tsx";
 import {useModal} from "../application/hooks.ts";
 import {useAudit, useFetchAudits} from "./hooks.ts";
-import {AuditType, SearchAuditConditionType} from "../../models/audit.ts";
+import {AuditType, AuditCriteriaType} from "../../models/audit.ts";
 import {SiteLayout} from "../../views/SiteLayout.tsx";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
 import {AuditCollectionView} from "../../views/system/audit/AuditCollection.tsx";
@@ -14,7 +14,7 @@ export const Audit: React.FC = () => {
     const Content: React.FC = () => {
         const [loading, setLoading] = useState<boolean>(false);
         const {message, setMessage, error, setError, showErrorMessage} = useMessage();
-        const {pageNation, setPageNation, condition, setCondition} = usePageNation<SearchAuditConditionType>();
+        const {pageNation, setPageNation, criteria, setCriteria} = usePageNation<AuditCriteriaType>();
         const {modalIsOpen, setModalIsOpen, isEditing, setIsEditing, setEditId, Modal} = useModal();
         const {modalIsOpen: searchModalIsOpen, setModalIsOpen: setSearchModalIsOpen,} = useModal();
         const {
@@ -106,7 +106,7 @@ export const Audit: React.FC = () => {
                         >
                             {
                                 <AuditSearchSingleView
-                                    condition={searchAuditCondition}
+                                    criteria={searchAuditCondition}
                                     setCondition={setSearchAuditCondition}
                                     handleSelect={async () => {
                                         if (!searchAuditCondition) {
@@ -119,7 +119,7 @@ export const Audit: React.FC = () => {
                                             if (fetchedAudit.list.length === 0) {
                                                 showErrorMessage(`検索結果は0件です`, setError);
                                             } else {
-                                                setCondition(searchAuditCondition);
+                                                setCriteria(searchAuditCondition);
                                                 setPageNation(fetchedAudit);
                                                 setMessage("");
                                                 setError("");
@@ -237,7 +237,7 @@ export const Audit: React.FC = () => {
                         }}
                         pageNationItems={{
                             pageNation: pageNation,
-                            condition: condition,
+                            criteria: criteria,
                             fetchAudits: fetchAudits.load
                         }}
                     />
