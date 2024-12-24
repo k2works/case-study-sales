@@ -7,6 +7,7 @@ import com.example.sms.infrastructure.PageInfoHelper;
 import com.example.sms.infrastructure.datasource.autogen.mapper.部門マスタMapper;
 import com.example.sms.infrastructure.datasource.autogen.model.部門マスタ;
 import com.example.sms.infrastructure.datasource.autogen.model.部門マスタKey;
+import com.example.sms.service.master.department.DepartmentCriteria;
 import com.example.sms.service.master.department.DepartmentRepository;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.core.Authentication;
@@ -103,5 +104,12 @@ public class DepartmentDataSource implements DepartmentRepository {
     @Override
     public void deleteAll() {
         departmentCustomMapper.deleteAll();
+    }
+
+    @Override
+    public PageInfo<Department> searchWithPageInfo(DepartmentCriteria criteria) {
+        List<DepartmentCustomEntity> departmentEntities = departmentCustomMapper.selectByCriteria(criteria);
+        PageInfo<DepartmentCustomEntity> pageInfo = new PageInfo<>(departmentEntities);
+        return PageInfoHelper.of(pageInfo, departmentEntityMapper::mapToDomainModel);
     }
 }

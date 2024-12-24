@@ -94,4 +94,10 @@ public class DepartmentService {
         return departmentRepository.findByCode(departmentId.getDeptCode().getValue());
     }
 
+    /**
+     * 部門検索
+     */
+    public PageInfo<Department> searchWithPageInfo(DepartmentCriteria criteria) {
+        return departmentRepository.searchWithPageInfo(criteria);
+    }
 }

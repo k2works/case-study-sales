@@ -22,4 +22,5 @@ public interface DepartmentRepository {
 
     void deleteAll();
 
+    PageInfo<Department> searchWithPageInfo(DepartmentCriteria criteria);
 }

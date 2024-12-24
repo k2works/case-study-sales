@@ -2,6 +2,7 @@ package com.example.sms.infrastructure.datasource.master.department;
 
 import com.example.sms.infrastructure.datasource.autogen.model.部門マスタ;
 import com.example.sms.infrastructure.datasource.autogen.model.部門マスタKey;
+import com.example.sms.service.master.department.DepartmentCriteria;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -17,4 +18,6 @@ public interface DepartmentCustomMapper {
     List<DepartmentCustomEntity> selectAll();
 
     List<DepartmentCustomEntity> selectByDepartmentCode(String departmentCode);
+
+    List<DepartmentCustomEntity> selectByCriteria(DepartmentCriteria criteria);
 }

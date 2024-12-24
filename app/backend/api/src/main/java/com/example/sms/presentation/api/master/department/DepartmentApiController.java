@@ -10,6 +10,7 @@ import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.master.employee.EmployeeResource;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
+import com.example.sms.service.master.department.DepartmentCriteria;
 import com.example.sms.service.master.department.DepartmentService;
 import com.example.sms.service.system.audit.AuditAnnotation;
 import com.github.pagehelper.PageInfo;
@@ -136,6 +137,27 @@ public class DepartmentApiController {
             }
             departmentManagementService.delete(departmentId);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.department.deleted")));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
+    }
+
+    @Operation(summary = "部門を検索する", description = "部門を検索する")
+    @PostMapping("/search")
+    public ResponseEntity<?> search(
+            @RequestBody DepartmentResource resource,
+            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(value = "page", defaultValue = "1") int... page) {
+        try {
+            PageNation.startPage(page, pageSize);
+            DepartmentCriteria criteria = DepartmentCriteria.builder()
+                    .departmentCode(resource.getDepartmentCode())
+                    .departmentName(resource.getDepartmentName())
+                    .startDate(LocalDateTime.parse(resource.getStartDate()))
+                    .endDate(LocalDateTime.parse(resource.getEndDate()))
+                    .build();
+            PageInfo<Department> result = departmentManagementService.searchWithPageInfo(criteria);
+            return ResponseEntity.ok(result);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }

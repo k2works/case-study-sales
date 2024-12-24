@@ -3,12 +3,17 @@ package com.example.sms.service.master.department;
 import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactory;
 import com.example.sms.domain.model.master.department.Department;
+import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.department.DepartmentList;
+import com.github.pagehelper.PageInfo;
+import io.cucumber.java8.De;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -81,6 +86,87 @@ public class DepartmentServiceTest {
 
             Department result = departmentService.find(department.getDepartmentId());
             assertEquals(department, result);
+        }
+
+        @Nested
+        @DisplayName("部門の検索ができる")
+        class SearchDepartmentTests {
+            @Test
+            @DisplayName("部門コードで検索できる")
+            void case1() {
+                String departmentId = "30000";
+                Department department = Department.of(DepartmentId.of(departmentId, LocalDateTime.of(2021,1,1,0,0,0)), LocalDateTime.of(9999, 12, 31, 0, 0), "部門", 0, departmentId + "~", 0, 1);
+                departmentService.register(department);
+                DepartmentCriteria criteria = DepartmentCriteria.builder().departmentCode(departmentId).build();
+
+                PageInfo<Department> result = departmentService.searchWithPageInfo(criteria);
+
+                assertEquals(1, result.getList().size());
+                assertEquals(department, result.getList().getFirst());
+                assertEquals(1, result.getTotal());
+            }
+            @Test
+            @DisplayName("部門名で検索できる")
+            void case2() {
+                String departmentId = "30000";
+                String departmentName = "部門";
+                Department department =Department.of(DepartmentId.of(departmentId, LocalDateTime.of(2021,1,1,0,0,0)), LocalDateTime.of(9999, 12, 31, 0, 0), departmentName, 0, departmentId + "~", 0, 1);
+                departmentService.register(department);
+                DepartmentCriteria criteria = DepartmentCriteria.builder().departmentName(departmentName).build();
+
+                PageInfo<Department> result = departmentService.searchWithPageInfo(criteria);
+
+                assertEquals(1, result.getList().size());
+                assertEquals(department, result.getList().getFirst());
+                assertEquals(1, result.getTotal());
+            }
+            @Test
+            @DisplayName("開始日で検索できる")
+            void case3() {
+                String departmentId = "30000";
+                LocalDateTime startDate = LocalDateTime.of(2024,1,1,0,0,0);
+                Department department = Department.of(DepartmentId.of(departmentId, startDate), LocalDateTime.of(9999, 12, 31, 0, 0), "部門", 0, departmentId + "~", 0, 1);
+                departmentService.register(department);
+                DepartmentCriteria criteria = DepartmentCriteria.builder().startDate(startDate).build();
+
+                PageInfo<Department> result = departmentService.searchWithPageInfo(criteria);
+
+                assertEquals(1, result.getList().size());
+                assertEquals(department, result.getList().getFirst());
+                assertEquals(1, result.getTotal());
+            }
+            @Test
+            @DisplayName("終了日で検索できる")
+            void case4() {
+                String departmentId = "30000";
+                LocalDateTime endDate = LocalDateTime.of(2025, 12, 31, 0, 0);
+                Department department = Department.of(DepartmentId.of(departmentId, LocalDateTime.of(2021,1,1,0,0,0)), endDate, "部門", 0, departmentId + "~", 0, 1);
+                departmentService.register(department);
+                DepartmentCriteria criteria = DepartmentCriteria.builder().endDate(endDate).build();
+
+                PageInfo<Department> result = departmentService.searchWithPageInfo(criteria);
+
+                assertEquals(1, result.getList().size());
+                assertEquals(department, result.getList().getFirst());
+                assertEquals(1, result.getTotal());
+            }
+            @Test
+            @DisplayName("複数条件で検索できる")
+            void case5() {
+                String departmentId = "30000";
+                String departmentName = "部門";
+                LocalDateTime startDate = LocalDateTime.of(2021,1,1,0,0,0);
+                LocalDateTime endDate = LocalDateTime.of(9999, 12, 31, 0, 0);
+                Department department = Department.of(DepartmentId.of(departmentId, startDate), endDate, departmentName, 0, departmentId + "~", 0, 1);
+                departmentService.register(department);
+                DepartmentCriteria criteria = DepartmentCriteria.builder().departmentCode(departmentId).departmentName(departmentName).startDate(startDate).endDate(endDate).build();
+
+                PageInfo<Department> result = departmentService.searchWithPageInfo(criteria);
+
+                assertEquals(1, result.getList().size());
+                assertEquals(department, result.getList().getFirst());
+                assertEquals(1, result.getTotal());
+            }
         }
     }
 }
