@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @IntegrationTest
 @DisplayName("部門サービス")
@@ -166,6 +167,16 @@ public class DepartmentServiceTest {
                 assertEquals(1, result.getList().size());
                 assertEquals(department, result.getList().getFirst());
                 assertEquals(1, result.getTotal());
+            }
+            @Test
+            @DisplayName("不正な期間を指定した場合、エラーが発生する")
+            void case6() {
+                assertThrows(IllegalArgumentException.class, () -> {
+                    DepartmentCriteria criteria = DepartmentCriteria.builder().
+                            startDate(LocalDateTime.of(2021, 1, 1, 0, 0, 0)).
+                            endDate(LocalDateTime.of(2020, 12, 31, 0, 0, 0)).
+                            build();
+                });
             }
         }
     }

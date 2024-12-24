@@ -149,12 +149,13 @@ public class DepartmentApiController {
             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
+            DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
             PageNation.startPage(page, pageSize);
             DepartmentCriteria criteria = DepartmentCriteria.builder()
                     .departmentCode(resource.getDepartmentCode())
                     .departmentName(resource.getDepartmentName())
-                    .startDate(LocalDateTime.parse(resource.getStartDate()))
-                    .endDate(LocalDateTime.parse(resource.getEndDate()))
+                    .startDate(resource.getStartDate() != null ? LocalDateTime.parse(resource.getStartDate(), formatter) : null)
+                    .endDate(resource.getEndDate() != null ? LocalDateTime.parse(resource.getEndDate(), formatter) : null)
                     .build();
             PageInfo<Department> result = departmentManagementService.searchWithPageInfo(criteria);
             return ResponseEntity.ok(result);
