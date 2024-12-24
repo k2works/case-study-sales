@@ -3,12 +3,14 @@ package com.example.sms.service.system.audit;
 import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
 import com.example.sms.domain.type.audit.ApplicationExecutionProcessFlag;
 import com.example.sms.domain.type.audit.ApplicationExecutionProcessType;
+import lombok.Builder;
 import lombok.Value;
 
 /**
  * 監査検索条件
  */
 @Value
+@Builder
 public class AuditCriteria {
     String processName;
     String processCode;
@@ -16,22 +18,11 @@ public class AuditCriteria {
     Integer processFlag;
 
     public static AuditCriteria of(ApplicationExecutionProcessType process, ApplicationExecutionHistoryType type, ApplicationExecutionProcessFlag processFlag) {
-        String processTypeNameValue = null;
-        String processCodeValue = null;
-        String processTypeValue = null;
-        Integer processFlagValue = null;
-
-        if (process != null) {
-            processTypeNameValue = process.getName();
-            processCodeValue = process.getCode();
-        }
-        if (type != null) {
-            processTypeValue = type.getName();
-        }
-        if (processFlag != null) {
-            processFlagValue = processFlag.getValue();
-        }
-
-        return new AuditCriteria(processTypeNameValue, processCodeValue, processTypeValue, processFlagValue);
+        return AuditCriteria.builder()
+                .processName(process != null ? process.getName() : null)
+                .processCode(process != null ? process.getCode() : null)
+                .processType(type != null ? type.getName() : null)
+                .processFlag(processFlag != null ? processFlag.getValue() : null)
+                .build();
     }
 }
