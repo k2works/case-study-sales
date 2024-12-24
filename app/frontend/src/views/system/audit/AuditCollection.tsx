@@ -8,8 +8,8 @@ import {
 import {convertToDateTimeInputFormat} from "../../../components/application/utils.ts";
 
 interface SearchProps {
-    searchAuditCondition: AuditCriteriaType;
-    setSearchAuditCondition: (value: AuditCriteriaType) => void;
+    searchAuditCriteria: AuditCriteriaType;
+    setSearchAuditCriteria: (value: AuditCriteriaType) => void;
     handleSearchAudit: () => void;
 }
 
@@ -125,8 +125,8 @@ interface AuditCollectionViewProps {
     error: string | null;
     message: string | null;
     searchItems: {
-        searchAuditCondition: AuditCriteriaType;
-        setSearchAuditCondition: (value: AuditCriteriaType) => void;
+        searchAuditCriteria: AuditCriteriaType;
+        setSearchAuditCriteria: (value: AuditCriteriaType) => void;
         handleOpenSearchModal: () => void;
     }
     menuButtonItems: {
@@ -151,8 +151,8 @@ export const AuditCollectionView: React.FC<AuditCollectionViewProps> = ({
     error,
     message,
     searchItems: {
-        searchAuditCondition,
-        setSearchAuditCondition,
+        searchAuditCriteria,
+        setSearchAuditCriteria,
         handleOpenSearchModal,
     },
     menuButtonItems: {
@@ -184,8 +184,8 @@ export const AuditCollectionView: React.FC<AuditCollectionViewProps> = ({
             </div>
             <div className="collection-view-content">
                 <Search
-                    searchAuditCondition={searchAuditCondition}
-                    setSearchAuditCondition={setSearchAuditCondition}
+                    searchAuditCriteria={searchAuditCriteria}
+                    setSearchAuditCriteria={setSearchAuditCriteria}
                     handleSearchAudit={handleOpenSearchModal}
                 />
                 <MenuButton

@@ -85,23 +85,23 @@ export const useAudit = () => {
         checked: false
     };
 
-    const initialSearchAuditCondition = {}
+    const initialSearchAuditCriteria = {}
 
 
     const [audits, setAudits] = useState<AuditType[]>([]);
     const [newAudit, setNewAudit] = useState<AuditType>(initialAudit);
-    const [searchAuditCondition, setSearchAuditCondition] = useState<AuditCriteriaType>(initialSearchAuditCondition);
+    const [searchAuditCriteria, setSearchAuditCriteria] = useState<AuditCriteriaType>(initialSearchAuditCriteria);
     const auditService = AuditService();
 
     return {
         initialAudit,
-        initialSearchAuditCondition,
+        initialSearchAuditCriteria,
         audits,
         setAudits,
         newAudit,
         setNewAudit,
-        searchAuditCondition,
-        setSearchAuditCondition,
+        searchAuditCriteria,
+        setSearchAuditCriteria,
         auditService
     };
 };

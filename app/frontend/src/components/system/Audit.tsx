@@ -23,8 +23,8 @@ export const Audit: React.FC = () => {
             setAudits,
             newAudit,
             setNewAudit,
-            searchAuditCondition,
-            setSearchAuditCondition,
+            searchAuditCriteria,
+            setSearchAuditCriteria,
             auditService
         } = useAudit();
         const fetchAudits = useFetchAudits(
@@ -106,20 +106,20 @@ export const Audit: React.FC = () => {
                         >
                             {
                                 <AuditSearchSingleView
-                                    criteria={searchAuditCondition}
-                                    setCondition={setSearchAuditCondition}
+                                    criteria={searchAuditCriteria}
+                                    setCondition={setSearchAuditCriteria}
                                     handleSelect={async () => {
-                                        if (!searchAuditCondition) {
+                                        if (!searchAuditCriteria) {
                                             return;
                                         }
                                         setLoading(true);
                                         try {
-                                            const fetchedAudit = await auditService.search(searchAuditCondition);
+                                            const fetchedAudit = await auditService.search(searchAuditCriteria);
                                             setAudits(fetchedAudit ? fetchedAudit.list : []);
                                             if (fetchedAudit.list.length === 0) {
                                                 showErrorMessage(`検索結果は0件です`, setError);
                                             } else {
-                                                setCriteria(searchAuditCondition);
+                                                setCriteria(searchAuditCriteria);
                                                 setPageNation(fetchedAudit);
                                                 setMessage("");
                                                 setError("");
@@ -191,7 +191,7 @@ export const Audit: React.FC = () => {
                 try {
                     if (!window.confirm(`実行履歴ID:${auditId} を削除しますか？`)) return;
                     await auditService.destroy(auditId);
-                    await fetchAudits.load(pageNation?.pageNum, searchAuditCondition);
+                    await fetchAudits.load(pageNation?.pageNum, searchAuditCriteria);
                     setMessage("アプリケーション実行履歴情報を削除しました。");
                 } catch (error: any) {
                     showErrorMessage(`アプリケーション実行履歴情報の削除に失敗しました: ${error?.message}`, setError);
@@ -208,7 +208,7 @@ export const Audit: React.FC = () => {
                 try {
                     if (!window.confirm("選択した履歴を削除しますか？")) return;
                     await Promise.all(checkedAudits.map((d) => auditService.destroy(d.id)));
-                    await fetchAudits.load(pageNation?.pageNum, searchAuditCondition);
+                    await fetchAudits.load(pageNation?.pageNum, searchAuditCriteria);
                     setMessage("選択した履歴を削除しました。");
                 } catch (error: any) {
                     showErrorMessage(`選択した履歴の削除に失敗しました: ${error?.message}`, setError);
@@ -220,8 +220,8 @@ export const Audit: React.FC = () => {
                         error={error}
                         message={message}
                         searchItems={{
-                            searchAuditCondition,
-                            setSearchAuditCondition,
+                            searchAuditCriteria,
+                            setSearchAuditCriteria,
                             handleOpenSearchModal,
                         }}
                         menuButtonItems={{
