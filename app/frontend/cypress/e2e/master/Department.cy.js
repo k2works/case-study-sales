@@ -35,7 +35,8 @@ describe('部門管理', () => {
     context('部門検索', () => {
         it('検索', () => {
             userPage();
-            cy.get('#search-input').type('99999');
+            cy.get('#search').click();
+            cy.get('#search-department-code').type('99999');
             cy.wait(1000);
             cy.get('#search-all').click();
             cy.get(':nth-child(3) > .collection-object-item-content-name').contains('テスト');
@@ -45,7 +46,8 @@ describe('部門管理', () => {
     context('部門登録情報編集', () => {
         it('登録情報編集', () => {
             userPage();
-            cy.get('#search-input').type('99999');
+            cy.get('#search').click();
+            cy.get('#search-department-code').type('99999');
             cy.wait(1000);
             cy.get('#search-all').click();
             cy.wait(1000);
@@ -68,7 +70,8 @@ describe('部門管理', () => {
     context('部門削除', () => {
         it('削除', () => {
             userPage();
-            cy.get('#search-input').type('99999');
+            cy.get('#search').click();
+            cy.get('#search-department-code').type('99999');
             cy.wait(1000);
             cy.get('#search-all').click();
             cy.wait(1000);

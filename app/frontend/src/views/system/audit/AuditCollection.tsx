@@ -18,7 +18,7 @@ const Search: React.FC<SearchProps> = ({handleSearchAudit}) => {
         <div className="search-container">
             <div className="single-view-content-item-form">
                 <div className="button-container">
-                    <button className="action-button" id="search-all" onClick={handleSearchAudit}>
+                    <button className="action-button" id="search" onClick={handleSearchAudit}>
                         検索
                     </button>
                 </div>
