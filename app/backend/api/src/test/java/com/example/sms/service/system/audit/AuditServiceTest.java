@@ -93,9 +93,9 @@ public class AuditServiceTest {
                 ApplicationExecutionHistory applicationExecutionHistory = ApplicationExecutionHistory.of(null, ApplicationExecutionProcessType.ユーザー登録.getName(), ApplicationExecutionProcessType.ユーザー登録.getCode(), ApplicationExecutionHistoryType.同期, LocalDateTime.of(2024,1,1,1,0), LocalDateTime.of(2024,1,1,2,0), ApplicationExecutionProcessFlag.未実行,  "processDetails", null);
                 UserId userId = UserId.of("U777777");
                 auditService.register(applicationExecutionHistory, userId);
-                AuditCriteria condition = AuditCriteria.of(ApplicationExecutionProcessType.ユーザー登録, ApplicationExecutionHistoryType.同期, ApplicationExecutionProcessFlag.未実行);
+                AuditCriteria criteria = AuditCriteria.of(ApplicationExecutionProcessType.ユーザー登録, ApplicationExecutionHistoryType.同期, ApplicationExecutionProcessFlag.未実行);
 
-                PageInfo<ApplicationExecutionHistory> result = auditService.searchWithPageInfo(condition);
+                PageInfo<ApplicationExecutionHistory> result = auditService.searchWithPageInfo(criteria);
 
                 assertEquals(1, result.getSize());
                 assertEquals(ApplicationExecutionProcessType.ユーザー登録, result.getList().get(0).getProcess().getProcessType());
@@ -108,9 +108,9 @@ public class AuditServiceTest {
                 ApplicationExecutionHistory applicationExecutionHistory = ApplicationExecutionHistory.of(null, ApplicationExecutionProcessType.ユーザー登録.getName(), ApplicationExecutionProcessType.ユーザー登録.getCode(), ApplicationExecutionHistoryType.同期, LocalDateTime.of(2024,1,1,1,0), LocalDateTime.of(2024,1,1,2,0), ApplicationExecutionProcessFlag.未実行,  "processDetails", null);
                 UserId userId = UserId.of("U777777");
                 auditService.register(applicationExecutionHistory, userId);
-                AuditCriteria condition = AuditCriteria.of(ApplicationExecutionProcessType.ユーザー登録, ApplicationExecutionHistoryType.同期, null);
+                AuditCriteria criteria = AuditCriteria.of(ApplicationExecutionProcessType.ユーザー登録, ApplicationExecutionHistoryType.同期, null);
 
-                PageInfo<ApplicationExecutionHistory> result = auditService.searchWithPageInfo(condition);
+                PageInfo<ApplicationExecutionHistory> result = auditService.searchWithPageInfo(criteria);
 
                 assertEquals(1, result.getSize());
                 assertEquals(ApplicationExecutionProcessType.ユーザー登録, result.getList().get(0).getProcess().getProcessType());
@@ -122,9 +122,9 @@ public class AuditServiceTest {
                 ApplicationExecutionHistory applicationExecutionHistory = ApplicationExecutionHistory.of(null, ApplicationExecutionProcessType.ユーザー登録.getName(), ApplicationExecutionProcessType.ユーザー登録.getCode(), ApplicationExecutionHistoryType.同期, LocalDateTime.of(2024,1,1,1,0), LocalDateTime.of(2024,1,1,2,0), ApplicationExecutionProcessFlag.未実行,  "processDetails", null);
                 UserId userId = UserId.of("U777777");
                 auditService.register(applicationExecutionHistory, userId);
-                AuditCriteria condition = AuditCriteria.of(ApplicationExecutionProcessType.ユーザー登録, null, null);
+                AuditCriteria criteria = AuditCriteria.of(ApplicationExecutionProcessType.ユーザー登録, null, null);
 
-                PageInfo<ApplicationExecutionHistory> result = auditService.searchWithPageInfo(condition);
+                PageInfo<ApplicationExecutionHistory> result = auditService.searchWithPageInfo(criteria);
 
                 assertEquals(1, result.getSize());
                 assertEquals(ApplicationExecutionProcessType.ユーザー登録, result.getList().get(0).getProcess().getProcessType());
@@ -135,9 +135,9 @@ public class AuditServiceTest {
                 ApplicationExecutionHistory applicationExecutionHistory = ApplicationExecutionHistory.of(null, ApplicationExecutionProcessType.ユーザー登録.getName(), ApplicationExecutionProcessType.ユーザー登録.getCode(), ApplicationExecutionHistoryType.同期, LocalDateTime.of(2024,1,1,1,0), LocalDateTime.of(2024,1,1,2,0), ApplicationExecutionProcessFlag.未実行,  "processDetails", null);
                 UserId userId = UserId.of("U777777");
                 auditService.register(applicationExecutionHistory, userId);
-                AuditCriteria condition = AuditCriteria.of(null, null, null);
+                AuditCriteria criteria = AuditCriteria.of(null, null, null);
 
-                PageInfo<ApplicationExecutionHistory> result = auditService.searchWithPageInfo(condition);
+                PageInfo<ApplicationExecutionHistory> result = auditService.searchWithPageInfo(criteria);
 
                 assertEquals(3, result.getSize());
             }
@@ -147,9 +147,9 @@ public class AuditServiceTest {
                 ApplicationExecutionHistory applicationExecutionHistory = ApplicationExecutionHistory.of(null, ApplicationExecutionProcessType.ユーザー登録.getName(), ApplicationExecutionProcessType.ユーザー登録.getCode(), ApplicationExecutionHistoryType.同期, LocalDateTime.of(2024,1,1,1,0), LocalDateTime.of(2024,1,1,2,0), ApplicationExecutionProcessFlag.未実行,  "processDetails", null);
                 UserId userId = UserId.of("U777777");
                 auditService.register(applicationExecutionHistory, userId);
-                AuditCriteria condition = AuditCriteria.of(ApplicationExecutionProcessType.商品登録, ApplicationExecutionHistoryType.非同期, ApplicationExecutionProcessFlag.実行済);
+                AuditCriteria criteria = AuditCriteria.of(ApplicationExecutionProcessType.商品登録, ApplicationExecutionHistoryType.非同期, ApplicationExecutionProcessFlag.実行済);
 
-                PageInfo<ApplicationExecutionHistory> result = auditService.searchWithPageInfo(condition);
+                PageInfo<ApplicationExecutionHistory> result = auditService.searchWithPageInfo(criteria);
 
                 assertEquals(0, result.getSize());
             }
