@@ -58,7 +58,7 @@ export type AuditFetchType = {
     list: AuditType[];
 } & PageNationType;
 
-export const mapToAuditSearchResource = (criteria: AuditCriteriaType) => {
+export const mapToCriteriaResource = (criteria: AuditCriteriaType) => {
     const isEmpty = (value: unknown) => value === "" || value === null || value === undefined;
     type Resource = {
         process?: {

@@ -148,8 +148,16 @@ const Utils = (() => {
         };
     })();
 
+    const buildUrlWithPaging = (baseUrl: string, page?: number, pageSize?: number): string => {
+        const params = new URLSearchParams();
+        if (pageSize) params.append("pageSize", pageSize.toString());
+        if (page) params.append("page", page.toString());
+        return params.toString() ? `${baseUrl}?${params.toString()}` : baseUrl;
+    };
+
     return {
         apiUtils,
+        buildUrlWithPaging
     };
 })();
 
