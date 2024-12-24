@@ -81,7 +81,7 @@ interface FormInputProps {
     type: string;
     className: string;
     placeholder?: string;
-    value: string | number;
+    value: string | number | undefined;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     disabled?: boolean;
 }

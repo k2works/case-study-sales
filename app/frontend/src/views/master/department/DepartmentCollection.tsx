@@ -1,24 +1,28 @@
 import React from "react";
-import {DepartmentIdType, DepartmentType} from "../../../models";
+import {DepartmentCriteriaType, DepartmentIdType, DepartmentType} from "../../../models";
 import {Message} from "../../../components/application/Message.tsx";
-import {PageNation} from "../../application/PageNation.tsx";
+import {PageNation, PageNationType} from "../../application/PageNation.tsx";
+import {AuditCriteriaType} from "../../../models/audit.ts";
 
-interface SearchBarProps {
-    searchValue: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    onSearch: () => void;
+interface SearchProps {
+    searchCriteria: DepartmentCriteriaType;
+    setSearchCriteria: (value: DepartmentCriteriaType) => void;
+    handleSearchAudit: () => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({searchValue, onChange, onSearch}) => (
-    <div className="search-container">
-        <input id="search-input"
-               type="text"
-               placeholder="部門コードで検索"
-               value={searchValue}
-               onChange={onChange}/>
-        <button className="action-button" id="search-all" onClick={onSearch}>検索</button>
-    </div>
-);
+const Search: React.FC<SearchProps> = ({handleSearchAudit}) => {
+    return (
+        <div className="search-container">
+            <div className="single-view-content-item-form">
+                <div className="button-container">
+                    <button className="action-button" id="search-all" onClick={handleSearchAudit}>
+                        検索
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+};
 
 interface DepartmentItemProps {
     department: DepartmentType;
@@ -78,9 +82,9 @@ interface DepartmentCollectionViewProps {
     error: string | null;
     message: string | null;
     searchItems: {
-        searchDepartmentId: { deptCode: { value: string } };
-        setSearchDepartmentId: React.Dispatch<React.SetStateAction<DepartmentIdType>>;
-        handleSearchDepartment: () => void;
+        searchDepartmentCriteria: DepartmentCriteriaType;
+        setSearchDepartmentCriteria: (value: DepartmentCriteriaType) => void;
+        handleOpenSearchModal: () => void;
     }
     headerItems: {
         handleOpenModal: (department?: DepartmentType) => void;
@@ -94,7 +98,8 @@ interface DepartmentCollectionViewProps {
         handleCheckDepartment: (department: DepartmentType) => void;
     }
     pageNationItems: {
-        pageNation: any; // 適切な型を使用してください
+        pageNation: PageNationType | null;
+        criteria: DepartmentCriteriaType | null;
         fetchDepartments: () => void;
     }
 }
@@ -102,10 +107,10 @@ interface DepartmentCollectionViewProps {
 export const DepartmentCollectionView: React.FC<DepartmentCollectionViewProps> = ({
                                                                                       error,
                                                                                       message,
-                                                                                      searchItems: {searchDepartmentId, setSearchDepartmentId, handleSearchDepartment},
+                                                                                      searchItems: {searchDepartmentCriteria, setSearchDepartmentCriteria, handleOpenSearchModal},
                                                                                       headerItems: {handleOpenModal, handleCheckToggleCollection, handleDeleteCheckedCollection},
                                                                                       collectionItems: { departments, handleDeleteDepartment, handleCheckDepartment },
-                                                                                      pageNationItems: { pageNation, fetchDepartments }
+                                                                                      pageNationItems: { pageNation, criteria, fetchDepartments }
                                                                                   }) => (
     <div className="collection-view-object-container">
         <Message error={error} message={message}/>
@@ -116,14 +121,10 @@ export const DepartmentCollectionView: React.FC<DepartmentCollectionViewProps> =
                 </div>
             </div>
             <div className="collection-view-content">
-                <SearchBar
-                    searchValue={searchDepartmentId.deptCode.value}
-                    onChange={(e) => setSearchDepartmentId({
-                        ...searchDepartmentId,
-                        deptCode: {value: e.target.value},
-                        departmentStartDate: {value: ""}
-                    })}
-                    onSearch={handleSearchDepartment}
+                <Search
+                    searchCriteria={searchDepartmentCriteria}
+                    setSearchCriteria={setSearchDepartmentCriteria}
+                    handleSearchAudit={handleOpenSearchModal}
                 />
                 <div className="button-container">
                     <button className="action-button" onClick={() => handleOpenModal()} id="new">
@@ -142,7 +143,7 @@ export const DepartmentCollectionView: React.FC<DepartmentCollectionViewProps> =
                     onDelete={handleDeleteDepartment}
                     onCheck={handleCheckDepartment}
                 />
-                <PageNation pageNation={pageNation} callBack={fetchDepartments}/>
+                <PageNation pageNation={pageNation} callBack={fetchDepartments} criteria={criteria}/>
             </div>
         </div>
     </div>

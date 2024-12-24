@@ -1,6 +1,7 @@
 import {EmployeeResourceType, EmployeeType} from './employee';
 import {toISOStringWithTimezone} from "../components/application/utils.ts";
 import {PageNationType} from "../views/application/PageNation.tsx";
+import {AuditCriteriaType} from "./audit.ts";
 
 export type DepartmentIdType = {
     deptCode: { value: string };
@@ -33,6 +34,13 @@ export type DepartmentResourceType = {
     lowerType: string;
     slitYn: string;
     employees: EmployeeResourceType[];
+}
+
+export type DepartmentCriteriaType = {
+    departmentCode?: string;
+    departmentName?: string;
+    startDate?: string;
+    endDate?: string;
 }
 
 export const LowerType = {
@@ -71,4 +79,22 @@ export const mapToDepartmentResource = (department: DepartmentType): DepartmentR
             deleteFlag: employee.deleteFlag
         }))
     };
+};
+
+export const mapToCriteriaResource = (criteria: DepartmentCriteriaType) => {
+    const isEmpty = (value: unknown) => value === "" || value === null || value === undefined;
+    type Resource = {
+        departmentCode?: string;
+        departmentName?: string;
+        startDate?: string;
+        endDate?: string;
+    };
+    const resource: Resource = {
+        ...(isEmpty(criteria.departmentCode) ? {} : { departmentCode: criteria.departmentCode }),
+        ...(isEmpty(criteria.departmentName) ? {} : { departmentName: criteria.departmentName }),
+        ...(isEmpty(criteria.startDate) ? {} : { startDate: toISOStringWithTimezone(new Date(criteria.startDate))}),
+        ...(isEmpty(criteria.endDate) ? {} : { endDate: toISOStringWithTimezone(new Date(criteria.endDate))}),
+    };
+
+    return resource;
 };

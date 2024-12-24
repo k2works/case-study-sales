@@ -1,6 +1,12 @@
 import Config from "./config";
 import Utils from "./utils";
-import {DepartmentFetchType, DepartmentType, mapToDepartmentResource} from "../models";
+import {
+    DepartmentCriteriaType,
+    DepartmentFetchType,
+    DepartmentType,
+    mapToCriteriaResource,
+    mapToDepartmentResource
+} from "../models";
 import {toISOStringWithTimezone} from "../components/application/utils.ts";
 
 export interface DepartmentServiceType {
@@ -9,7 +15,7 @@ export interface DepartmentServiceType {
     create: (department: DepartmentType) => Promise<void>;
     update: (department: DepartmentType) => Promise<void>;
     destroy: (deptCode: string, departmentStartDate: string) => Promise<void>;
-    search: (pageSize: number, code: string, page: number) => Promise<DepartmentType[]>;
+    search: (criteria:DepartmentCriteriaType, page?: number, pageSize?: number) => Promise<DepartmentFetchType>;
 }
 export const DepartmentService = () => {
     const config = Config();
@@ -17,14 +23,7 @@ export const DepartmentService = () => {
     const endPoint = `${config.apiUrl}/departments`;
 
     const select = async (page?: number, pageSize?: number): Promise<DepartmentFetchType> => {
-        let url = endPoint;
-        if (pageSize && page) {
-            url = url + "?pageSize=" + pageSize + "&page=" + page;
-        } else if (pageSize) {
-            url = url + "?pageSize=" + pageSize;
-        } else if (page) {
-            url = url + "?page=" + page;
-        }
+        const url = Utils.buildUrlWithPaging(endPoint, page, pageSize);
         return await apiUtils.fetchGet(url);
     };
 
@@ -44,9 +43,9 @@ export const DepartmentService = () => {
         return await apiUtils.fetchPut(url, mapToDepartmentResource(department));
     };
 
-    const search = async (pageSize = 10, code: string, page = 1): Promise<DepartmentType[]> => {
-        const url = `${endPoint}/search?pageSize=${pageSize}&code=${code}&page=${page}`;
-        return await apiUtils.fetchGet(url);
+    const search = (criteria: DepartmentCriteriaType, page?: number, pageSize?: number): Promise<DepartmentFetchType> => {
+        const url = Utils.buildUrlWithPaging(`${endPoint}/search`, page, pageSize);
+        return apiUtils.fetchPost(url, mapToCriteriaResource(criteria));
     };
 
     const destroy = async (deptCode: string, departmentStartDate: string): Promise<void> => {

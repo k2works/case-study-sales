@@ -1,5 +1,6 @@
 import {useState} from "react";
 import {
+    DepartmentCriteriaType,
     DepartmentIdType,
     DepartmentType,
     EmployeeType,
@@ -14,6 +15,7 @@ import {PageNationType} from "../../views/application/PageNation.tsx";
 import {ProductCategoryService, ProductCategoryServiceType} from "../../services/product_category.ts";
 import {ProductService, ProductServiceType} from "../../services/product.ts";
 import {useFetchEntities} from "../application/hooks.ts";
+import {AuditCriteriaType} from "../../models/audit.ts";
 
 export const useDepartment = () => {
     const initialDepartment = {
@@ -30,10 +32,7 @@ export const useDepartment = () => {
 
     const [departments, setDepartments] = useState<DepartmentType[]>([]);
     const [newDepartment, setNewDepartment] = useState<DepartmentType>(initialDepartment);
-    const [searchDepartmentId, setSearchDepartmentId] = useState<DepartmentIdType>({
-        deptCode: {value: ""},
-        departmentStartDate: {value: ""}
-    });
+    const [searchDepartmentCriteria, setSearchDepartmentCriteria] = useState<DepartmentCriteriaType>({});
     const departmentService = DepartmentService();
 
     return {
@@ -41,8 +40,8 @@ export const useDepartment = () => {
         departments,
         newDepartment,
         setNewDepartment,
-        searchDepartmentId,
-        setSearchDepartmentId,
+        searchDepartmentCriteria,
+        setSearchDepartmentCriteria,
         setDepartments,
         departmentService,
     }

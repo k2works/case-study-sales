@@ -3,7 +3,7 @@ import {useMessage} from "../application/Message.tsx";
 import {useModal} from "../application/hooks.ts";
 import {useDepartment, useEmployee, useFetchDepartments, useFetchEmployees} from "./hooks.ts";
 import {showErrorMessage} from "../application/utils.ts";
-import {DepartmentIdType, DepartmentType, EmployeeType} from "../../models";
+import {DepartmentCriteriaType, DepartmentIdType, DepartmentType, EmployeeType} from "../../models";
 import Modal from "react-modal";
 import {usePageNation} from "../../views/application/PageNation.tsx";
 import {SiteLayout} from "../../views/SiteLayout.tsx";
@@ -11,14 +11,18 @@ import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
 import {EmployeeCollectionListView, EmployeeCollectionSelectView} from "../../views/master/employee/EmployeeSelect.tsx";
 import {DepartmentCollectionView} from "../../views/master/department/DepartmentCollection.tsx";
 import {DepartmentSingleView} from "../../views/master/department/DepartmentSingle.tsx";
+import {AuditSearchSingleView} from "../../views/system/audit/AuditSearch.tsx";
+import {DepartmentSearchSingleView} from "../../views/master/department/DepartmentSearch.tsx";
+import {AuditCriteriaType} from "../../models/audit.ts";
 
 export const Department: React.FC = () => {
     const Content: React.FC = () => {
         const [loading, setLoading] = useState<boolean>(false);
         const {message, setMessage, error, setError} = useMessage();
         const {pageNation, setPageNation} = usePageNation();
-        const {pageNation: employeePageNation, setPageNation: setEmployeePageNation} = usePageNation();
+        const {pageNation: employeePageNation, setPageNation: setEmployeePageNation, criteria, setCriteria} = usePageNation<DepartmentCriteriaType>();
         const {modalIsOpen, setModalIsOpen, isEditing, setIsEditing, editId, setEditId} = useModal();
+        const {modalIsOpen: searchModalIsOpen, setModalIsOpen: setSearchModalIsOpen,} = useModal();
         const {
             modalIsOpen: employeeModalIsOpen,
             setModalIsOpen: setEmployeeModalIsOpen,
@@ -32,8 +36,8 @@ export const Department: React.FC = () => {
             setDepartments,
             newDepartment,
             setNewDepartment,
-            searchDepartmentId,
-            setSearchDepartmentId,
+            searchDepartmentCriteria,
+            setSearchDepartmentCriteria,
             departmentService
         } = useDepartment();
 
@@ -187,49 +191,84 @@ export const Department: React.FC = () => {
                 }
             }
 
+            const searchModal = () => {
+                const handleOpenSearchModal = () => {
+                    setSearchModalIsOpen(true);
+                }
+
+                const handleCloseSearchModal = () => {
+                    setSearchModalIsOpen(false);
+                }
+
+                const searchModalView = () => {
+                    return (
+                        <Modal
+                            isOpen={searchModalIsOpen}
+                            onRequestClose={handleCloseSearchModal}
+                            contentLabel="検索情報を入力"
+                            className="modal"
+                            overlayClassName="modal-overlay"
+                            bodyOpenClassName="modal-open"
+                        >
+                            {
+                                <DepartmentSearchSingleView
+                                    criteria={searchDepartmentCriteria}
+                                    setCondition={setSearchDepartmentCriteria}
+                                    handleSelect={async () => {
+                                        if (!searchDepartmentCriteria) {
+                                            return;
+                                        }
+                                        setLoading(true);
+                                        try {
+                                            const result = await departmentService.search(searchDepartmentCriteria);
+                                            setDepartments(result ? result.list : []);
+                                            if (result.list.length === 0) {
+                                                showErrorMessage(`検索結果は0件です`, setError);
+                                            } else {
+                                                setCriteria(searchDepartmentCriteria);
+                                                setPageNation(result);
+                                                setMessage("");
+                                                setError("");
+                                            }
+                                        } catch (error: any) {
+                                            showErrorMessage(`実行履歴情報の検索に失敗しました: ${error?.message}`, setError);
+                                        } finally {
+                                            setLoading(false);
+                                        }
+                                    }}
+                                    handleClose={handleCloseSearchModal}
+                                />
+                            }
+                        </Modal>
+                    )
+                }
+
+                return {
+                    searchModalView,
+                    handleOpenSearchModal,
+                    handleCloseSearchModal
+                }
+            }
+
             const init = () => (
                 <>
                     {editModal().editModalView()}
                     {employeeModal().employeeModalView()}
+                    {searchModal().searchModalView()}
                 </>
             )
 
             return {
                 editModal,
                 employeeModal,
+                searchModal,
                 init,
             }
         }
 
         const collectionView = () => {
             const {handleOpenModal} = modalView().editModal();
-
-            const handleSearchDepartment = async () => {
-                if (!searchDepartmentId.deptCode.value.trim() && !searchDepartmentId.departmentStartDate.value.trim()) {
-                    return;
-                }
-                setLoading(true);
-                let fetchedDepartment: DepartmentType[] = [];
-
-                try {
-                    if (searchDepartmentId.deptCode.value === "") {
-                        setError("部門コードは必須項目です。");
-                        return;
-                    }
-                    if (searchDepartmentId.departmentStartDate.value === "") {
-                        fetchedDepartment = await departmentService.find(searchDepartmentId.deptCode.value, "9999-12-29T12:00:00+09:00");
-                    } else {
-                        fetchedDepartment = await departmentService.find(searchDepartmentId.deptCode.value, searchDepartmentId.departmentStartDate.value);
-                    }
-                    setDepartments(fetchedDepartment ? [...fetchedDepartment] : []);
-                    setMessage("");
-                    setError("");
-                } catch (error: any) {
-                    showErrorMessage(`部門の検索に失敗しました: ${error?.message}`, setError);
-                } finally {
-                    setLoading(false);
-                }
-            };
+            const {handleOpenSearchModal} = modalView().searchModal();
 
             const handleDeleteDepartment = async (departmentId: DepartmentIdType) => {
                 try {
@@ -286,10 +325,10 @@ export const Department: React.FC = () => {
                     <DepartmentCollectionView
                         error={error}
                         message={message}
-                        searchItems={{searchDepartmentId, setSearchDepartmentId, handleSearchDepartment}}
+                        searchItems={{searchDepartmentCriteria, setSearchDepartmentCriteria, handleOpenSearchModal,}}
                         headerItems={{handleOpenModal, handleCheckToggleCollection:handleCheckAllDepartment, handleDeleteCheckedCollection}}
                         collectionItems={{departments, handleOpenModal, handleDeleteDepartment, handleCheckDepartment}}
-                        pageNationItems={{pageNation, fetchDepartments: fetchDepartments.load}}
+                        pageNationItems={{pageNation, fetchDepartments: fetchDepartments.load, criteria}}
                     />
             );
         };
