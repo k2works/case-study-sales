@@ -6,7 +6,7 @@ import com.example.sms.infrastructure.PageInfoHelper;
 import com.example.sms.infrastructure.datasource.ObjectOptimisticLockingFailureException;
 import com.example.sms.infrastructure.datasource.autogen.mapper.ApplicationExecutionHistoryMapper;
 import com.example.sms.service.system.audit.AuditRepository;
-import com.example.sms.service.system.audit.AuditSearchCondition;
+import com.example.sms.service.system.audit.AuditCriteria;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Repository;
 
@@ -83,8 +83,8 @@ public class ApplicationExecutionHistoryDataSource implements AuditRepository {
     }
 
     @Override
-    public PageInfo<ApplicationExecutionHistory> searchWithPageInfo(AuditSearchCondition condition) {
-        List<ApplicationExecutionHistoryCustomEntity> applicationExecutionHistories = applicationExecutionHistoryCustomMapper.selectByCondition(condition);
+    public PageInfo<ApplicationExecutionHistory> searchWithPageInfo(AuditCriteria criteria) {
+        List<ApplicationExecutionHistoryCustomEntity> applicationExecutionHistories = applicationExecutionHistoryCustomMapper.selectByCriteria(criteria);
         PageInfo<ApplicationExecutionHistoryCustomEntity> pageInfo = new PageInfo<>(applicationExecutionHistories);
         return PageInfoHelper.of(pageInfo, applicationExecutionHistoryEntityMapper::mapToDomainModel);
     }

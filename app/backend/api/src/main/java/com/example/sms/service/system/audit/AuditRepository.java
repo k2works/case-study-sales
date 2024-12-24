@@ -2,10 +2,8 @@ package com.example.sms.service.system.audit;
 
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryList;
-import com.example.sms.domain.model.system.user.User;
 import com.github.pagehelper.PageInfo;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -26,5 +24,5 @@ public interface AuditRepository {
 
     ApplicationExecutionHistory start(ApplicationExecutionHistory history);
 
-    PageInfo<ApplicationExecutionHistory> searchWithPageInfo(AuditSearchCondition condition);
+    PageInfo<ApplicationExecutionHistory> searchWithPageInfo(AuditCriteria criteria);
 }

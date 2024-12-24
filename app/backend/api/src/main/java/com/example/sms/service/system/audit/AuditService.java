@@ -102,7 +102,7 @@ public class AuditService {
     /**
      * アプリケーション実行履歴検索
      */
-    public PageInfo<ApplicationExecutionHistory> searchWithPageInfo(AuditSearchCondition condition) {
-        return auditRepository.searchWithPageInfo(condition);
+    public PageInfo<ApplicationExecutionHistory> searchWithPageInfo(AuditCriteria criteria) {
+        return auditRepository.searchWithPageInfo(criteria);
     }
 }

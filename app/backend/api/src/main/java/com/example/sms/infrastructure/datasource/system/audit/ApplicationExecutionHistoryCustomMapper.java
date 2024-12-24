@@ -1,6 +1,6 @@
 package com.example.sms.infrastructure.datasource.system.audit;
 
-import com.example.sms.service.system.audit.AuditSearchCondition;
+import com.example.sms.service.system.audit.AuditCriteria;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -30,5 +30,5 @@ public interface ApplicationExecutionHistoryCustomMapper {
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insertForStart(ApplicationExecutionHistoryCustomEntity record);
 
-    List<ApplicationExecutionHistoryCustomEntity> selectByCondition(AuditSearchCondition condition);
+    List<ApplicationExecutionHistoryCustomEntity> selectByCriteria(AuditCriteria criteria);
 }

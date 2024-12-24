@@ -27,7 +27,7 @@
         order by id desc
     </select>
 
-    <select id="selectByCondition" resultMap="BaseResultMap">
+    <select id="selectByCriteria" resultMap="BaseResultMap">
         SELECT
         <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.ApplicationExecutionHistoryMapper.Base_Column_List" />
         FROM system.application_execution_history

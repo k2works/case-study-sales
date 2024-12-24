@@ -9,13 +9,13 @@ import lombok.Value;
  * 監査検索条件
  */
 @Value
-public class AuditSearchCondition {
+public class AuditCriteria {
     String processName;
     String processCode;
     String processType;
     Integer processFlag;
 
-    public static AuditSearchCondition of(ApplicationExecutionProcessType process, ApplicationExecutionHistoryType type, ApplicationExecutionProcessFlag processFlag) {
+    public static AuditCriteria of(ApplicationExecutionProcessType process, ApplicationExecutionHistoryType type, ApplicationExecutionProcessFlag processFlag) {
         String processTypeNameValue = null;
         String processCodeValue = null;
         String processTypeValue = null;
@@ -32,6 +32,6 @@ public class AuditSearchCondition {
             processFlagValue = processFlag.getValue();
         }
 
-        return new AuditSearchCondition(processTypeNameValue, processCodeValue, processTypeValue, processFlagValue);
+        return new AuditCriteria(processTypeNameValue, processCodeValue, processTypeValue, processFlagValue);
     }
 }
