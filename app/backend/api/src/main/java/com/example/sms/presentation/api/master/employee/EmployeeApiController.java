@@ -12,6 +12,7 @@ import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
 import com.example.sms.service.master.department.DepartmentService;
+import com.example.sms.service.master.employee.EmployeeCriteria;
 import com.example.sms.service.master.employee.EmployeeService;
 import com.example.sms.service.system.audit.AuditAnnotation;
 import com.example.sms.service.system.user.UserManagementService;
@@ -126,6 +127,29 @@ public class EmployeeApiController {
             }
             employeeManagementService.delete(code);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.employee.deleted")));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
+    }
+
+    @Operation(summary = "社員を検索する", description = "社員を検索する")
+    @PostMapping("/search")
+    public ResponseEntity<?> search(
+            @RequestBody EmployeeResource resource,
+            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(value = "page", defaultValue = "1") int... page) {
+        try {
+            PageNation.startPage(page, pageSize);
+            EmployeeCriteria criteria = EmployeeCriteria.builder()
+                    .employeeCode(resource.getEmpCode())
+                    .employeeName(resource.getEmpName())
+                    .employeeNameKana(resource.getEmpNameKana())
+                    .phoneNumber(resource.getTel())
+                    .faxNumber(resource.getFax())
+                    .departmentCode(resource.getDepartmentCode())
+                    .build();
+            PageInfo<Employee> result = employeeManagementService.searchWithPageInfo(criteria);
+            return ResponseEntity.ok(result);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }

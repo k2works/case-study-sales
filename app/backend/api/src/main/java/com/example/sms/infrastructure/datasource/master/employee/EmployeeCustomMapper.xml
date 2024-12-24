@@ -38,4 +38,35 @@
         from public.社員マスタ
         where 部門コード = #{部門コード,jdbcType=VARCHAR}
     </select>
+
+    <select id="selectByCriteria" resultMap="BaseResultMap">
+        SELECT
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.社員マスタMapper.Base_Column_List"/>
+        FROM public.社員マスタ
+        <where>
+            <if test="employeeCode != null and employeeCode != ''">
+                AND 社員コード = #{employeeCode}
+            </if>
+
+            <if test="employeeName != null and employeeName != ''">
+                AND 社員名 = #{employeeName}
+            </if>
+
+            <if test="employeeNameKana != null and employeeNameKana != ''">
+                AND 社員名カナ = #{employeeNameKana}
+            </if>
+
+            <if test="phoneNumber != null and phoneNumber != ''">
+                AND 電話番号 = #{phoneNumber}
+            </if>
+
+            <if test="faxNumber != null and faxNumber != ''">
+                AND FAX番号 = #{faxNumber}
+            </if>
+
+            <if test="departmentCode != null and departmentCode != ''">
+                AND 部門コード = #{departmentCode}
+            </if>
+        </where>
+    </select>
 </mapper>

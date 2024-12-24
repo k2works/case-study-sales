@@ -60,4 +60,10 @@ public class EmployeeService {
         return employeeRepository.findById(empCode).orElse(null);
     }
 
+    /**
+     * 社員検索（ページング）
+     */
+    public PageInfo<Employee> searchWithPageInfo(EmployeeCriteria criteria) {
+        return employeeRepository.searchWithPageInfo(criteria);
+    }
 }

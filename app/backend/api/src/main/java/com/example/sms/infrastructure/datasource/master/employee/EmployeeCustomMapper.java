@@ -1,5 +1,6 @@
 package com.example.sms.infrastructure.datasource.master.employee;
 
+import com.example.sms.service.master.employee.EmployeeCriteria;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -15,4 +16,6 @@ public interface EmployeeCustomMapper {
     void deleteAll();
 
     List<EmployeeCustomEntity> selectByDepartmentCode(String departmentCode);
+
+    List<EmployeeCustomEntity> selectByCriteria(EmployeeCriteria criteria);
 }

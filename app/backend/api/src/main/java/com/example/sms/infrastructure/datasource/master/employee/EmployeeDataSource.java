@@ -6,6 +6,7 @@ import com.example.sms.domain.model.master.employee.EmployeeList;
 import com.example.sms.infrastructure.PageInfoHelper;
 import com.example.sms.infrastructure.datasource.autogen.mapper.社員マスタMapper;
 import com.example.sms.infrastructure.datasource.autogen.model.社員マスタ;
+import com.example.sms.service.master.employee.EmployeeCriteria;
 import com.example.sms.service.master.employee.EmployeeRepository;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.core.Authentication;
@@ -86,5 +87,13 @@ public class EmployeeDataSource implements EmployeeRepository {
     @Override
     public void deleteAll() {
         employeeCustomMapper.deleteAll();
+    }
+
+    @Override
+    public PageInfo<Employee> searchWithPageInfo(EmployeeCriteria criteria) {
+        List<EmployeeCustomEntity> employeeEntities = employeeCustomMapper.selectByCriteria(criteria);
+        PageInfo<EmployeeCustomEntity> pageInfo = new PageInfo<>(employeeEntities);
+
+        return PageInfoHelper.of(pageInfo, employeeEntityMapper::mapToDomainModel);
     }
 }

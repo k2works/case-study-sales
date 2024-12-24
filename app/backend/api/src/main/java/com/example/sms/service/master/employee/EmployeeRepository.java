@@ -19,4 +19,6 @@ public interface EmployeeRepository {
     void deleteById(EmployeeCode empCode);
 
     void deleteAll();
+
+    PageInfo<Employee> searchWithPageInfo(EmployeeCriteria criteria);
 }
