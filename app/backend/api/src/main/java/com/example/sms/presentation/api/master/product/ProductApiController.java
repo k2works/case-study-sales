@@ -13,9 +13,12 @@ import com.example.sms.service.system.audit.AuditAnnotation;
 import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.function.Function;
 
 /**
  * 商品API
@@ -130,49 +133,34 @@ public class ProductApiController {
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
             PageNation.startPage(page, pageSize);
-            String productType = resource.getProductType();
-            String setProductType = null;
-            if (productType != null) {
-                setProductType = ProductType.getCodeByName(productType);
-            }
-            String taxType = resource.getTaxType();
-            Integer setTaxType = null;
-            if (taxType != null) {
-               setTaxType = TaxType.getCodeByName(taxType);
-            }
-            String miscellaneousType = resource.getMiscellaneousType();
-            Integer setMiscellaneousType = null;
-            if (miscellaneousType != null) {
-                setMiscellaneousType = MiscellaneousType.getCodeByName(miscellaneousType);
-            }
-            String stockManagementTargetType = resource.getStockManagementTargetType();
-            Integer setStockManagementTargetType = null;
-            if (stockManagementTargetType != null) {
-                setStockManagementTargetType = StockManagementTargetType.getCodeByName(stockManagementTargetType);
-            }
-            String stockAllocationType = resource.getStockAllocationType();
-            Integer setStockAllocationType = null;
-            if (stockAllocationType != null) {
-                setStockAllocationType = StockAllocationType.getCodeByName(stockAllocationType);
-            }
-            ProductCriteria criteria = ProductCriteria.builder()
-                    .productCode(resource.getProductCode())
-                    .productNameFormal(resource.getProductNameFormal())
-                    .productNameAbbreviation(resource.getProductNameAbbreviation())
-                    .productNameKana(resource.getProductNameKana())
-                    .productCategoryCode(resource.getProductCategoryCode())
-                    .supplierCode(resource.getSupplierCode())
-                    .productType(setProductType)
-                    .taxType(setTaxType)
-                    .miscellaneousType(setMiscellaneousType)
-                    .stockManagementTargetType(setStockManagementTargetType)
-                    .stockAllocationType(setStockAllocationType)
-                    .build();
+
+            ProductCriteria criteria = convertToCriteria(resource);
             PageInfo<Product> result = productService.searchProductWithPageInfo(criteria);
+
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
+    }
+
+    private ProductCriteria convertToCriteria(ProductCriteriaResource resource) {
+        return ProductCriteria.builder()
+                .productCode(resource.getProductCode())
+                .productNameFormal(resource.getProductNameFormal())
+                .productNameAbbreviation(resource.getProductNameAbbreviation())
+                .productNameKana(resource.getProductNameKana())
+                .productCategoryCode(resource.getProductCategoryCode())
+                .supplierCode(resource.getSupplierCode())
+                .productType(mapStringToCode(resource.getProductType(), ProductType::getCodeByName))
+                .taxType(mapStringToCode(resource.getTaxType(), TaxType::getCodeByName))
+                .miscellaneousType(mapStringToCode(resource.getMiscellaneousType(), MiscellaneousType::getCodeByName))
+                .stockManagementTargetType(mapStringToCode(resource.getStockManagementTargetType(), StockManagementTargetType::getCodeByName))
+                .stockAllocationType(mapStringToCode(resource.getStockAllocationType(), StockAllocationType::getCodeByName))
+                .build();
+    }
+
+    private <T> T mapStringToCode(String value, Function<String, T> mapper) {
+        return value != null ? mapper.apply(value) : null;
     }
 
     private static Product createProduct(String productResource, ProductResource productResource1) {
