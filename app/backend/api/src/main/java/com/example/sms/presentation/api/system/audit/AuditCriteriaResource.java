@@ -9,20 +9,15 @@ import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @Setter
 @Getter
-@Schema(description = "監査")
-public class AuditResource implements Serializable {
+@Schema(description = "監査検索条件")
+public class AuditCriteriaResource implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    Integer id;
     ApplicationExecutionProcess process;
     ApplicationExecutionHistoryType type;
-    LocalDateTime processStart;
-    LocalDateTime processEnd;
     ApplicationExecutionProcessFlag processFlag;
-    String processDetails;
 }

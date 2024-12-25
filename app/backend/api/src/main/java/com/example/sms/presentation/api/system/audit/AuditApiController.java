@@ -71,7 +71,7 @@ public class AuditApiController {
     @Operation(summary = "アプリケーション実行履歴を検索する", description = "アプリケーション実行履歴を検索する")
     @PostMapping("/search")
     public ResponseEntity<?> search(
-            @RequestBody AuditResource resource,
+            @RequestBody AuditCriteriaResource resource,
             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
