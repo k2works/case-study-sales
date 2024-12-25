@@ -96,7 +96,7 @@ export const EmployeeCollectionView: React.FC<EmployeeCollectionViewProps> = ({
                                                                                   searchItems: {searchEmployeeCriteria, setSearchEmployeeCriteria, handleOpenSearchModal},
                                                                                   headerItems: {handleOpenModal, handleCheckToggleCollection, handleDeleteCheckedCollection},
                                                                                   collectionItems: {employees, handleDeleteEmployee, handleCheckEmployee},
-                                                                                  pageNationItems: {pageNation, fetchEmployees}
+                                                                                  pageNationItems: {pageNation, fetchEmployees, criteria}
                                                                               }) => {
     return (
         <div className="collection-view-object-container">
@@ -130,7 +130,7 @@ export const EmployeeCollectionView: React.FC<EmployeeCollectionViewProps> = ({
                         onDelete={handleDeleteEmployee}
                         onCheck={handleCheckEmployee}
                     />
-                    <PageNation pageNation={pageNation} callBack={fetchEmployees}/>
+                    <PageNation pageNation={pageNation} callBack={fetchEmployees} criteria={criteria}/>
                 </div>
             </div>
         </div>

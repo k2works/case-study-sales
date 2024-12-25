@@ -59,8 +59,8 @@ export type EmployeeCriteriaType = {
     empNameLast?: string;
     empNameFirstKana?: string;
     empNameLastKana?: string;
-    tel?: string;
-    fax?: string;
+    phoneNumber?: string;
+    faxNumber?: string;
     departmentCode?: string;
 }
 
@@ -80,28 +80,16 @@ export const mapToEmployeeResource = (employee: EmployeeType): EmployeeResourceT
     };
 };
 
-export const mapToEmployeeCriteriaResource = (criteria: EmployeeCriteriaType) => {
+export const mapToEmployeeCriteriaResource = (criteria: EmployeeCriteriaType) : EmployeeCriteriaType => {
     const isEmpty = (value: unknown) => value === "" || value === null || value === undefined;
-    type Resource = {
-        employeeCode?: string;
-        employeeFirstName?: string;
-        employeeLastName?: string;
-        employeeFirstNameKana?: string;
-        employeeLastNameKana?: string;
-        phoneNumber?: string;
-        faxNumber?: string;
-        departmentCode?: string;
-    }
-    const resource: Resource = {
+    return {
         ...(isEmpty(criteria.empCode) ? {} : {employeeCode: criteria.empCode}),
         ...(isEmpty(criteria.empNameFirst) ? {} : {employeeFirstName: criteria.empNameFirst}),
         ...(isEmpty(criteria.empNameLast) ? {} : {employeeLastName: criteria.empNameLast}),
         ...(isEmpty(criteria.empNameFirstKana) ? {} : {employeeFirstNameKana: criteria.empNameFirstKana}),
         ...(isEmpty(criteria.empNameLastKana) ? {} : {employeeLastNameKana: criteria.empNameLastKana}),
-        ...(isEmpty(criteria.tel) ? {} : {phoneNumber: criteria.tel}),
-        ...(isEmpty(criteria.fax) ? {} : {faxNumber: criteria.fax}),
+        ...(isEmpty(criteria.phoneNumber) ? {} : {phoneNumber: criteria.phoneNumber}),
+        ...(isEmpty(criteria.faxNumber) ? {} : {faxNumber: criteria.faxNumber}),
         ...(isEmpty(criteria.departmentCode) ? {} : {departmentCode: criteria.departmentCode}),
     };
-
-    return resource;
 }
