@@ -26,4 +26,21 @@
         <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.商品分類マスタMapper.Base_Column_List"/>
         from public.商品分類マスタ
     </select>
+
+    <select id="selectByCriteria" resultMap="BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.商品分類マスタMapper.Base_Column_List"/>
+        from public.商品分類マスタ
+        <where>
+            <if test="productCategoryCode != null">
+                商品分類コード = #{productCategoryCode,jdbcType=VARCHAR}
+            </if>
+            <if test="productCategoryName != null">
+                and 商品分類名 = #{productCategoryName,jdbcType=VARCHAR}
+            </if>
+            <if test="productCategoryPath != null">
+                and 商品分類パス like CONCAT(#{productCategoryPath,jdbcType=VARCHAR}, '%')
+            </if>
+        </where>
+    </select>
 </mapper>

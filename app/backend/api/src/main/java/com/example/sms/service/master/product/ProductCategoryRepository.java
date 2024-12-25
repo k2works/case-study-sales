@@ -18,4 +18,6 @@ public interface ProductCategoryRepository {
     void deleteById(ProductCategory productCategory);
 
     PageInfo<ProductCategory> selectAllWithPageInfo();
+
+    PageInfo<ProductCategory> searchWithPageInfo(ProductCategoryCriteria criteria);
 }

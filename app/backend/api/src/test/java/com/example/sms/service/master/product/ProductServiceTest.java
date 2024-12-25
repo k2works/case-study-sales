@@ -7,6 +7,7 @@ import com.example.sms.domain.model.master.product.ProductCategory;
 import com.example.sms.domain.model.master.product.ProductCategoryList;
 import com.example.sms.domain.model.master.product.ProductList;
 import com.example.sms.domain.type.product.*;
+import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -125,6 +126,83 @@ public class ProductServiceTest {
 
             ProductCategoryList result = productService.selectAllCategory();
             assertEquals(2, result.asList().size());
+        }
+
+        @Nested
+        @DisplayName("商品分類検索")
+        class ProductCategorySearchTest {
+            @Test
+            @DisplayName("商品分類をコードで検索できる")
+            void case1() {
+                ProductCategory productCategory = testDataFactory.ProductCategory();
+                ProductCategory searchProductCategory = ProductCategory.of("12345678", productCategory.getProductCategoryName(), productCategory.getProductCategoryHierarchy(), productCategory.getProductCategoryPath(), productCategory.getLowestLevelDivision());
+                productService.registerCategory(searchProductCategory);
+                ProductCategoryCriteria criteria = ProductCategoryCriteria.builder().productCategoryCode("12345678").build();
+
+                PageInfo<ProductCategory> result = productService.searchWithPageInfo(criteria);
+
+                assertEquals(1, result.getList().size());
+                assertEquals(searchProductCategory, result.getList().getFirst());
+                assertEquals(1, result.getTotal());
+            }
+            @Test
+            @DisplayName("商品分類を名前で検索できる")
+            void case2() {
+                ProductCategory productCategory = testDataFactory.ProductCategory();
+                ProductCategory searchProductCategory = ProductCategory.of(productCategory.getProductCategoryCode().getValue(), "検索用商品分類名", productCategory.getProductCategoryHierarchy(), productCategory.getProductCategoryPath(), productCategory.getLowestLevelDivision());
+                productService.registerCategory(searchProductCategory);
+                ProductCategoryCriteria criteria = ProductCategoryCriteria.builder().productCategoryCode(productCategory.getProductCategoryCode().getValue()).build();
+
+                PageInfo<ProductCategory> result = productService.searchWithPageInfo(criteria);
+
+                assertEquals(1, result.getList().size());
+                assertEquals(searchProductCategory, result.getList().getFirst());
+                assertEquals(1, result.getTotal());
+            }
+            @Test
+            @DisplayName("商品分類をパスで検索できる")
+            void case3() {
+                ProductCategory productCategory = testDataFactory.ProductCategory();
+                ProductCategory searchProductCategory = ProductCategory.of("10000000", productCategory.getProductCategoryName(), productCategory.getProductCategoryHierarchy(), "10000000~", productCategory.getLowestLevelDivision());
+                productService.registerCategory(searchProductCategory);
+                searchProductCategory = ProductCategory.of("11000000", productCategory.getProductCategoryName(), productCategory.getProductCategoryHierarchy(), "10000000~11000000", productCategory.getLowestLevelDivision());
+                productService.registerCategory(searchProductCategory);
+                ProductCategoryCriteria criteria = ProductCategoryCriteria.builder().productCategoryPath("10000000~").build();
+
+                PageInfo<ProductCategory> result = productService.searchWithPageInfo(criteria);
+
+                assertEquals(2, result.getList().size());
+                assertEquals(searchProductCategory, result.getList().getLast());
+                assertEquals(2, result.getTotal());
+            }
+            @Test
+            @DisplayName("商品分類をコードと名前で検索できる")
+            void case4() {
+                ProductCategory productCategory = testDataFactory.ProductCategory();
+                ProductCategory searchProductCategory = ProductCategory.of("12345678", "検索用商品分類名", productCategory.getProductCategoryHierarchy(), productCategory.getProductCategoryPath(), productCategory.getLowestLevelDivision());
+                productService.registerCategory(searchProductCategory);
+                ProductCategoryCriteria criteria = ProductCategoryCriteria.builder().productCategoryCode("12345678").productCategoryName("検索用商品分類名").build();
+
+                PageInfo<ProductCategory> result = productService.searchWithPageInfo(criteria);
+
+                assertEquals(1, result.getList().size());
+                assertEquals(searchProductCategory, result.getList().getFirst());
+                assertEquals(1, result.getTotal());
+            }
+            @Test
+            @DisplayName("商品分類をコードとパスで検索できる")
+            void case5() {
+                ProductCategory productCategory = testDataFactory.ProductCategory();
+                ProductCategory searchProductCategory = ProductCategory.of("12345678", productCategory.getProductCategoryName(), productCategory.getProductCategoryHierarchy(), "12345678~", productCategory.getLowestLevelDivision());
+                productService.registerCategory(searchProductCategory);
+                ProductCategoryCriteria criteria = ProductCategoryCriteria.builder().productCategoryCode("12345678").productCategoryPath("12345678~").build();
+
+                PageInfo<ProductCategory> result = productService.searchWithPageInfo(criteria);
+
+                assertEquals(1, result.getList().size());
+                assertEquals(searchProductCategory, result.getList().getFirst());
+                assertEquals(1, result.getTotal());
+            }
         }
     }
 }

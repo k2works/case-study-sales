@@ -5,6 +5,7 @@ import com.example.sms.domain.model.master.product.ProductCategoryList;
 import com.example.sms.infrastructure.PageInfoHelper;
 import com.example.sms.infrastructure.datasource.autogen.mapper.商品分類マスタMapper;
 import com.example.sms.infrastructure.datasource.autogen.model.商品分類マスタ;
+import com.example.sms.service.master.product.ProductCategoryCriteria;
 import com.example.sms.service.master.product.ProductCategoryRepository;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.core.Authentication;
@@ -66,6 +67,14 @@ public class ProductCategoryDataSource implements ProductCategoryRepository {
     @Override
     public PageInfo<ProductCategory> selectAllWithPageInfo() {
         List<ProductCategoryCustomEntity> productEntities = productCategoryCustomMapper.selectAll();
+        PageInfo<ProductCategoryCustomEntity> pageInfo = new PageInfo<>(productEntities);
+
+        return PageInfoHelper.of(pageInfo, productCategoryEntityMapper::mapToDomainModel);
+    }
+
+    @Override
+    public PageInfo<ProductCategory> searchWithPageInfo(ProductCategoryCriteria criteria) {
+        List<ProductCategoryCustomEntity> productEntities = productCategoryCustomMapper.selectByCriteria(criteria);
         PageInfo<ProductCategoryCustomEntity> pageInfo = new PageInfo<>(productEntities);
 
         return PageInfoHelper.of(pageInfo, productCategoryEntityMapper::mapToDomainModel);

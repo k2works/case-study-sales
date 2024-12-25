@@ -144,4 +144,10 @@ public class ProductService {
         productCategoryRepository.deleteById(productCategory);
     }
 
+    /**
+     * 商品分類検索（ページング）
+     */
+    public PageInfo<ProductCategory> searchWithPageInfo(ProductCategoryCriteria criteria) {
+        return productCategoryRepository.searchWithPageInfo(criteria);
+    }
 }

@@ -7,6 +7,7 @@ import com.example.sms.domain.type.audit.ApplicationExecutionProcessType;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
+import com.example.sms.service.master.product.ProductCategoryCriteria;
 import com.example.sms.service.master.product.ProductService;
 import com.example.sms.service.system.audit.AuditAnnotation;
 import com.github.pagehelper.PageInfo;
@@ -113,6 +114,22 @@ public class ProductCategoryApiController {
         }
     }
 
+    @Operation(summary = "商品分類を検索する")
+    @PostMapping("/search")
+    public ResponseEntity<?> search(@RequestBody ProductCategoryCriteriaResource resource) {
+        try {
+            ProductCategoryCriteria criteria = ProductCategoryCriteria.builder()
+                    .productCategoryCode(resource.getProductCategoryCode())
+                    .productCategoryName(resource.getProductCategoryName())
+                    .productCategoryPath(resource.getProductCategoryPath())
+                    .build();
+            PageInfo<ProductCategory> result = productService.searchWithPageInfo(criteria);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
+    }
+
     private static List<Product> getAddFilteredProducts(ProductCategoryResource productCategoryResource) {
         return productCategoryResource.getProducts() == null ? Collections.emptyList() :
                 productCategoryResource.getProducts().stream()
@@ -134,7 +151,7 @@ public class ProductCategoryApiController {
                                 resource.getSupplierCode(),
                                 resource.getSupplierBranchNumber()
                         ))
-                        .collect(Collectors.toList());
+                        .toList();
     }
 
     private static List<Product> getDeleteFilteredProducts(ProductCategoryResource productCategoryResource) {
@@ -158,7 +175,7 @@ public class ProductCategoryApiController {
                                 resource.getSupplierCode(),
                                 resource.getSupplierBranchNumber()
                         ))
-                        .collect(Collectors.toList());
+                        .toList();
     }
 
 }
