@@ -13,7 +13,6 @@ import {DepartmentCollectionSelectView, DepartmentSelectView} from "../../views/
 import {UserCollectionSelectView, UserSelectView} from "../../views/system/user/UserSelect.tsx";
 import {EmployeeCollectionView} from "../../views/master/employee/EmployeeCollection.tsx";
 import {EmployeeSingleView} from "../../views/master/employee/EmployeeSingle.tsx";
-import {DepartmentSearchSingleView} from "../../views/master/department/DepartmentSearch.tsx";
 import {EmployeeSearchSingleView} from "../../views/master/employee/EmployeeSearch.tsx";
 
 export const Employee: React.FC = () => {
@@ -178,8 +177,37 @@ export const Employee: React.FC = () => {
                     )
                 }
 
+                const departmentSearchModalView = () => {
+                    return (
+                        <Modal
+                            isOpen={departmentModalIsOpen}
+                            onRequestClose={() => setDepartmentModalIsOpen(false)}
+                            contentLabel="部門情報を入力"
+                            className="modal"
+                            overlayClassName="modal-overlay"
+                            bodyOpenClassName="modal-open"
+                        >
+                            {
+                                <DepartmentCollectionSelectView
+                                    departments={departments}
+                                    handleSelect={(department) => {
+                                        setSearchEmployeeCriteria(
+                                            {...criteria, departmentCode: department.departmentId.deptCode.value}
+                                        )
+                                        setDepartmentModalIsOpen(false);
+                                    }}
+                                    handleClose={() => setDepartmentModalIsOpen(false)}
+                                    pageNation={departmentPageNation}
+                                    fetchDepartments={fetchDepartments.load}
+                                />
+                            }
+                        </Modal>
+                    )
+                }
+
                 return {
                     departmentModalView,
+                    departmentSearchModalView,
                 }
             }
 
@@ -238,33 +266,40 @@ export const Employee: React.FC = () => {
                             bodyOpenClassName="modal-open"
                         >
                             {
-                                <EmployeeSearchSingleView
-                                    criteria={searchEmployeeCriteria}
-                                    setCondition={setSearchEmployeeCriteria}
-                                    handleSelect={async () => {
-                                        if (!searchEmployeeCriteria) {
-                                            return;
-                                        }
-                                        setLoading(true);
-                                        try {
-                                            const result = await employeeService.search(searchEmployeeCriteria);
-                                            setEmployees(result ? result.list : []);
-                                            if (result.list.length === 0) {
-                                                showErrorMessage(`検索結果は0件です`, setError);
-                                            } else {
-                                                setCriteria(searchEmployeeCriteria);
-                                                setPageNation(result);
-                                                setMessage("");
-                                                setError("");
+                                <>
+                                    <EmployeeSearchSingleView
+                                        criteria={searchEmployeeCriteria}
+                                        setCondition={setSearchEmployeeCriteria}
+                                        handleSelect={async () => {
+                                            if (!searchEmployeeCriteria) {
+                                                return;
                                             }
-                                        } catch (error: any) {
-                                            showErrorMessage(`実行履歴情報の検索に失敗しました: ${error?.message}`, setError);
-                                        } finally {
-                                            setLoading(false);
-                                        }
-                                    }}
-                                    handleClose={handleCloseSearchModal}
-                                />
+                                            setLoading(true);
+                                            try {
+                                                const result = await employeeService.search(searchEmployeeCriteria);
+                                                setEmployees(result ? result.list : []);
+                                                if (result.list.length === 0) {
+                                                    showErrorMessage(`検索結果は0件です`, setError);
+                                                } else {
+                                                    setCriteria(searchEmployeeCriteria);
+                                                    setPageNation(result);
+                                                    setMessage("");
+                                                    setError("");
+                                                }
+                                            } catch (error: any) {
+                                                showErrorMessage(`実行履歴情報の検索に失敗しました: ${error?.message}`, setError);
+                                            } finally {
+                                                setLoading(false);
+                                            }
+                                        }}
+                                        handleClose={handleCloseSearchModal}
+                                    />
+
+                                    {departmentModal().departmentSearchModalView()}
+                                    <DepartmentSelectView
+                                        handleSelect={() => setDepartmentModalIsOpen(true)}
+                                    />
+                                </>
                             }
                         </Modal>
                     )
