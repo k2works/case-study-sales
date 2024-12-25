@@ -4,7 +4,7 @@ import {
     DepartmentCriteriaType,
     DepartmentFetchType,
     DepartmentType,
-    mapToCriteriaResource,
+    mapToDepartmentCriteriaResource,
     mapToDepartmentResource
 } from "../models";
 import {toISOStringWithTimezone} from "../components/application/utils.ts";
@@ -45,7 +45,7 @@ export const DepartmentService = () => {
 
     const search = (criteria: DepartmentCriteriaType, page?: number, pageSize?: number): Promise<DepartmentFetchType> => {
         const url = Utils.buildUrlWithPaging(`${endPoint}/search`, page, pageSize);
-        return apiUtils.fetchPost(url, mapToCriteriaResource(criteria));
+        return apiUtils.fetchPost(url, mapToDepartmentCriteriaResource(criteria));
     };
 
     const destroy = async (deptCode: string, departmentStartDate: string): Promise<void> => {

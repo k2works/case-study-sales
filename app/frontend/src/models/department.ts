@@ -81,7 +81,7 @@ export const mapToDepartmentResource = (department: DepartmentType): DepartmentR
     };
 };
 
-export const mapToCriteriaResource = (criteria: DepartmentCriteriaType) => {
+export const mapToDepartmentCriteriaResource = (criteria: DepartmentCriteriaType) => {
     const isEmpty = (value: unknown) => value === "" || value === null || value === undefined;
     type Resource = {
         departmentCode?: string;

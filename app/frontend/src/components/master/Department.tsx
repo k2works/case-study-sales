@@ -3,7 +3,13 @@ import {useMessage} from "../application/Message.tsx";
 import {useModal} from "../application/hooks.ts";
 import {useDepartment, useEmployee, useFetchDepartments, useFetchEmployees} from "./hooks.ts";
 import {showErrorMessage} from "../application/utils.ts";
-import {DepartmentCriteriaType, DepartmentIdType, DepartmentType, EmployeeType} from "../../models";
+import {
+    DepartmentCriteriaType,
+    DepartmentIdType,
+    DepartmentType,
+    EmployeeCriteriaType,
+    EmployeeType
+} from "../../models";
 import Modal from "react-modal";
 import {usePageNation} from "../../views/application/PageNation.tsx";
 import {SiteLayout} from "../../views/SiteLayout.tsx";
@@ -11,16 +17,14 @@ import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
 import {EmployeeCollectionListView, EmployeeCollectionSelectView} from "../../views/master/employee/EmployeeSelect.tsx";
 import {DepartmentCollectionView} from "../../views/master/department/DepartmentCollection.tsx";
 import {DepartmentSingleView} from "../../views/master/department/DepartmentSingle.tsx";
-import {AuditSearchSingleView} from "../../views/system/audit/AuditSearch.tsx";
 import {DepartmentSearchSingleView} from "../../views/master/department/DepartmentSearch.tsx";
-import {AuditCriteriaType} from "../../models/audit.ts";
 
 export const Department: React.FC = () => {
     const Content: React.FC = () => {
         const [loading, setLoading] = useState<boolean>(false);
         const {message, setMessage, error, setError} = useMessage();
-        const {pageNation, setPageNation} = usePageNation();
-        const {pageNation: employeePageNation, setPageNation: setEmployeePageNation, criteria, setCriteria} = usePageNation<DepartmentCriteriaType>();
+        const {pageNation, setPageNation, criteria, setCriteria} = usePageNation<DepartmentCriteriaType>();
+        const {pageNation: employeePageNation, setPageNation: setEmployeePageNation} = usePageNation<EmployeeCriteriaType>();
         const {modalIsOpen, setModalIsOpen, isEditing, setIsEditing, editId, setEditId} = useModal();
         const {modalIsOpen: searchModalIsOpen, setModalIsOpen: setSearchModalIsOpen,} = useModal();
         const {
