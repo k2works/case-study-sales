@@ -36,7 +36,8 @@ describe('社員管理', () => {
     context('社員検索', () => {
         it('検索', () => {
             userPage();
-            cy.get('#search-input').type('EMP999');
+            cy.get('#search').click();
+            cy.get('#empCode').type('EMP999');
             cy.wait(1000);
             cy.get('#search-all').click();
             cy.get(':nth-child(3) > .collection-object-item-content-name').contains('山田');
@@ -46,7 +47,8 @@ describe('社員管理', () => {
     context('社員登録情報編集', () => {
         it('登録情報編集', () => {
             userPage();
-            cy.get('#search-input').type('EMP999');
+            cy.get('#search').click();
+            cy.get('#empCode').type('EMP999');
             cy.wait(1000);
             cy.get('#search-all').click();
             cy.get('#edit').click();
@@ -73,7 +75,8 @@ describe('社員管理', () => {
     context('社員削除', () => {
         it('削除', () => {
             userPage();
-            cy.get('#search-input').type('EMP999');
+            cy.get('#search').click();
+            cy.get('#empCode').type('EMP999');
             cy.wait(1000);
             cy.get('#search-all').click();
             cy.get('#delete').click();
