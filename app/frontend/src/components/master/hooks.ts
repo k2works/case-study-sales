@@ -1,10 +1,9 @@
 import {useState} from "react";
 import {
     DepartmentCriteriaType,
-    DepartmentIdType,
     DepartmentType, EmployeeCriteriaType,
     EmployeeType,
-    LowerType,
+    LowerType, ProductCategoryCriteriaType,
     ProductCategoryType,
     ProductType,
     SlitYnType
@@ -15,7 +14,6 @@ import {PageNationType} from "../../views/application/PageNation.tsx";
 import {ProductCategoryService, ProductCategoryServiceType} from "../../services/product_category.ts";
 import {ProductService, ProductServiceType} from "../../services/product.ts";
 import {useFetchEntities} from "../application/hooks.ts";
-import {AuditCriteriaType} from "../../models/audit.ts";
 
 export const useDepartment = () => {
     const initialDepartment = {
@@ -150,7 +148,7 @@ export const useProductCategory = () => {
 
     const [productCategories, setProductCategories] = useState<ProductCategoryType[]>([]);
     const [newProductCategory, setNewProductCategory] = useState<ProductCategoryType>(initialProductCategory);
-    const [searchProductCategoryCode, setSearchProductCategoryCode] = useState<string>("");
+    const [searchProductCategoryCriteria, setSearchProductCategoryCriteria] = useState<ProductCategoryCriteriaType>({});
     const productCategoryService = ProductCategoryService();
 
     return {
@@ -159,8 +157,8 @@ export const useProductCategory = () => {
         newProductCategory,
         setNewProductCategory,
         setProductCategories,
-        searchProductCategoryCode,
-        setSearchProductCategoryCode,
+        searchProductCategoryCriteria,
+        setSearchProductCategoryCriteria,
         productCategoryService
     };
 };

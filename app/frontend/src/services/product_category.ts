@@ -1,14 +1,19 @@
 import Config from "./config";
 import Utils from "./utils";
-import {mapToProductCategoryResource, ProductCategoryType} from "../models";
+import {
+    mapToProductCategoryCriteriaResource,
+    mapToProductCategoryResource, ProductCategoryCriteriaType, ProductCategoryFetchType,
+    ProductCategoryType,
+    ProductFetchType
+} from "../models";
 
 export interface ProductCategoryServiceType {
-    select: (page?: number, pageSize?: number) => Promise<any>;
+    select: (page?: number, pageSize?: number) => Promise<ProductFetchType>;
     find: (categoryCode: string) => Promise<ProductCategoryType>;
     create: (category: ProductCategoryType) => Promise<void>;
     update: (category: ProductCategoryType) => Promise<void>;
     destroy: (categoryCode: string) => Promise<void>;
-    search: (pageSize: number, categoryName: string, page: number) => Promise<ProductCategoryType[]>;
+    search: (criteria:ProductCategoryCriteriaType, page?: number, pageSize?: number) => Promise<ProductCategoryFetchType>;
 }
 
 export const ProductCategoryService = (): ProductCategoryServiceType => {
@@ -16,15 +21,8 @@ export const ProductCategoryService = (): ProductCategoryServiceType => {
     const apiUtils = Utils.apiUtils;
     const endPoint = `${config.apiUrl}/product/categories`;
 
-    const select = async (page?: number, pageSize?: number): Promise<any> => {
-        let url = endPoint;
-        if (pageSize && page) {
-            url = url + "?pageSize=" + pageSize + "&page=" + page;
-        } else if (pageSize) {
-            url = url + "?pageSize=" + pageSize;
-        } else if (page) {
-            url = url + "?page=" + page;
-        }
+    const select = async (page?: number, pageSize?: number): Promise<ProductFetchType> => {
+        const url = Utils.buildUrlWithPaging(endPoint, page, pageSize);
         return await apiUtils.fetchGet(url);
     };
 
@@ -42,14 +40,14 @@ export const ProductCategoryService = (): ProductCategoryServiceType => {
         return await apiUtils.fetchPut(url, mapToProductCategoryResource(category));
     };
 
+    const search = (criteria: ProductCategoryCriteriaType, page?: number, pageSize?: number): Promise<ProductCategoryFetchType> => {
+        const url = Utils.buildUrlWithPaging(`${endPoint}/search`, page, pageSize);
+        return apiUtils.fetchPost(url, mapToProductCategoryCriteriaResource(criteria));
+    };
+
     const destroy = async (categoryCode: string): Promise<void> => {
         const url = `${endPoint}/${categoryCode}`;
         await apiUtils.fetchDelete(url);
-    };
-
-    const search = async (pageSize = 10, categoryName: string, page = 1): Promise<ProductCategoryType[]> => {
-        const url = `${endPoint}/search?pageSize=${pageSize}&categoryName=${encodeURIComponent(categoryName)}&page=${page}`;
-        return await apiUtils.fetchGet(url);
     };
 
     return {

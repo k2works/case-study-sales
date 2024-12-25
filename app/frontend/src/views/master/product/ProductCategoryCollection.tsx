@@ -1,24 +1,8 @@
 import React from "react";
-import {ProductCategoryType} from "../../../models";
+import {ProductCategoryCriteriaType, ProductCategoryType} from "../../../models";
 import {Message} from "../../../components/application/Message.tsx";
-import {PageNation} from "../../application/PageNation.tsx";
-
-interface SearchBarProps {
-    searchValue: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    onSearch: () => void;
-}
-
-const SearchBar: React.FC<SearchBarProps> = ({searchValue, onChange, onSearch}) => (
-    <div className="search-container">
-        <input id="search-input"
-               type="text"
-               placeholder="商品分類コードで検索"
-               value={searchValue}
-               onChange={onChange}/>
-        <button className="action-button" id="search-all" onClick={onSearch}>検索</button>
-    </div>
-);
+import {PageNation, PageNationType} from "../../application/PageNation.tsx";
+import {Search} from "../../Common.tsx";
 
 interface ProductCategoryItemProps {
     productCategory: ProductCategoryType;
@@ -79,9 +63,9 @@ interface ProductCategoryCollectionViewProps {
     error: string | null;
     message: string | null;
     searchItems: {
-        searchProductCategoryCode: string;
-        setSearchProductCategoryCode: React.Dispatch<React.SetStateAction<string>>;
-        handleSearchProductCategory: () => void;
+        searchProductCategoryCriteria: ProductCategoryCriteriaType;
+        setSearchProductCategoryCriteria: (value: ProductCategoryCriteriaType) => void;
+        handleOpenSearchModal: () => void;
     }
     headerItems: {
         handleOpenModal: (productCategory?: ProductCategoryType) => void;
@@ -94,7 +78,8 @@ interface ProductCategoryCollectionViewProps {
         handleCheckProductCategory: (productCategory: ProductCategoryType) => void;
     }
     pageNationItems: {
-        pageNation: any;
+        pageNation: PageNationType | null;
+        criteria: ProductCategoryCriteriaType | null;
         fetchProductCategories: () => void;
     }
 }
@@ -102,10 +87,10 @@ interface ProductCategoryCollectionViewProps {
 export const ProductCategoryCollectionView: React.FC<ProductCategoryCollectionViewProps> = ({
                                                                                                 error,
                                                                                                 message,
-                                                                                                searchItems: {searchProductCategoryCode, setSearchProductCategoryCode, handleSearchProductCategory},
+                                                                                                searchItems: {searchProductCategoryCriteria, setSearchProductCategoryCriteria, handleOpenSearchModal},
                                                                                                 collectionItems: {productCategories, handleDeleteProductCategory, handleCheckProductCategory},
                                                                                                 headerItems: {handleOpenModal, handleCheckToggleCollection, handleDeleteCheckedCollection},
-                                                                                                pageNationItems: {pageNation, fetchProductCategories}
+                                                                                                pageNationItems: {pageNation, fetchProductCategories, criteria}
                                                                                             }) => (
     <div className="collection-view-object-container">
         <Message error={error} message={message}/>
@@ -116,10 +101,10 @@ export const ProductCategoryCollectionView: React.FC<ProductCategoryCollectionVi
                 </div>
             </div>
             <div className="collection-view-content">
-                <SearchBar
-                    searchValue={searchProductCategoryCode}
-                    onChange={(e) => setSearchProductCategoryCode(e.target.value)}
-                    onSearch={handleSearchProductCategory}
+                <Search
+                    searchCriteria={searchProductCategoryCriteria}
+                    setSearchCriteria={setSearchProductCategoryCriteria}
+                    handleSearchAudit={handleOpenSearchModal}
                 />
                 <div className="button-container">
                     <button className="action-button" onClick={() => handleOpenModal()} id="new">
@@ -138,7 +123,7 @@ export const ProductCategoryCollectionView: React.FC<ProductCategoryCollectionVi
                     onDelete={handleDeleteProductCategory}
                     onCheck={handleCheckProductCategory}
                 />
-                <PageNation pageNation={pageNation} callBack={fetchProductCategories}/>
+                <PageNation pageNation={pageNation} callBack={fetchProductCategories} criteria={criteria}/>
             </div>
         </div>
     </div>

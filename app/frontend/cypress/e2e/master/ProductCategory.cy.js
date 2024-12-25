@@ -27,7 +27,8 @@ describe('商品分類管理', () => {
     context('商品分類検索', () => {
         it('検索', () => {
             openProductCategoryPage();
-            cy.get('#search-input').type('99999');
+            cy.get('#search').click();
+            cy.get('#productCategoryCode').type('99999');
             cy.get('#search-all').click();
             cy.get(':nth-child(3) > .collection-object-item-content-name').contains('テストカテゴリ');
         });
@@ -35,7 +36,8 @@ describe('商品分類管理', () => {
     context('商品分類登録情報編集', () => {
         it('登録情報編集', () => {
             openProductCategoryPage();
-            cy.get('#search-input').type('99999');
+            cy.get('#search').click();
+            cy.get('#productCategoryCode').type('99999');
             cy.get('#search-all').click();
             cy.get('#edit').click();
             cy.get('#productCategoryName').clear();
@@ -52,7 +54,8 @@ describe('商品分類管理', () => {
     context('商品分類削除', () => {
         it('削除', () => {
             openProductCategoryPage();
-            cy.get('#search-input').type('99999');
+            cy.get('#search').click();
+            cy.get('#productCategoryCode').type('99999');
             cy.get('#search-all').click();
             cy.get('#delete').click();
             cy.get('#message').contains('商品分類を削除しました。');

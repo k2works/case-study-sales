@@ -146,6 +146,12 @@ export type ProductCategoryResourceType = {
     products?: ProductResourceType[];
 };
 
+export type ProductCategoryCriteriaType = {
+    productCategoryCode?: string;
+    productCategoryName?: string;
+    productCategoryPath?: string;
+}
+
 export const mapToProductResource = (product: ProductType): ProductResourceType => {
     return {
         productCode: product.productCode.value,
@@ -179,5 +185,14 @@ export const mapToProductCategoryResource = (productCategory: ProductCategoryTyp
         productCategoryPath: productCategory.productCategoryPath,
         lowestLevelDivision: productCategory.lowestLevelDivision,
         products: productCategory.products.map(product => mapToProductResource(product))
+    };
+}
+
+export const mapToProductCategoryCriteriaResource = (criteria: ProductCategoryCriteriaType): ProductCategoryCriteriaType => {
+    const isEmpty = (value: unknown) => value === "" || value === null || value === undefined;
+    return {
+        ...(isEmpty(criteria.productCategoryCode) ? {} : {productCategoryCode: criteria.productCategoryCode}),
+        ...(isEmpty(criteria.productCategoryName) ? {} : {productCategoryName: criteria.productCategoryName}),
+        ...(isEmpty(criteria.productCategoryPath) ? {} : {productCategoryPath: criteria.productCategoryPath})
     };
 }
