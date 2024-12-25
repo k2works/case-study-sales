@@ -1,6 +1,6 @@
 import React from 'react';
 import {Message} from "../../../components/application/Message.tsx";
-import {PageNation} from "../../application/PageNation.tsx";
+import {PageNation, PageNationType} from "../../application/PageNation.tsx";
 import {ProductCriteriaType, ProductType} from "../../../models";
 import {Search} from "../../Common.tsx";
 
@@ -97,7 +97,8 @@ interface ProductCollectionViewProps {
         handleCheckProduct: (product: ProductType) => void;
     }
     pageNationItems: {
-        pageNation: any; // 適切な型を使用してください
+        pageNation: PageNationType | null;
+        criteria: ProductCriteriaType | null;
         fetchProducts: () => void;
     }
 }
@@ -108,7 +109,7 @@ export const ProductCollectionView: React.FC<ProductCollectionViewProps> = ({
                                                                                 searchItems: {searchProductCriteria, setSearchProductCriteria, handleOpenSearchModal},
                                                                                 headerItems: {handleOpenModal, handleCheckToggleCollection, handleDeleteCheckedCollection},
                                                                                 contentItems: {products, handleDeleteProduct, handleCheckProduct},
-                                                                                pageNationItems: {pageNation, fetchProducts}
+                                                                                pageNationItems: {pageNation, fetchProducts, criteria}
                                                                             }) => (
     <div className="collection-view-object-container">
         <Message error={error} message={message}/>
@@ -139,7 +140,7 @@ export const ProductCollectionView: React.FC<ProductCollectionViewProps> = ({
                     onDelete={handleDeleteProduct}
                     onCheck={handleCheckProduct}
                 />
-                <PageNation pageNation={pageNation} callBack={fetchProducts}/>
+                <PageNation pageNation={pageNation} callBack={fetchProducts} criteria={criteria}/>
             </div>
         </div>
     </div>

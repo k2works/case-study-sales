@@ -15,7 +15,6 @@ import {BomCollectionView} from "../../views/master/product/BomCollection.tsx";
 import {
     CustomerSpecificSellingPriceCollectionView
 } from "../../views/master/product/CustomerSpecificSellingPriceCollection.tsx";
-import {ProductCategorySearchSingleView} from "../../views/master/product/ProductCategorySearch.tsx";
 import {ProductSearchSingleView} from "../../views/master/product/ProductSearch.tsx";
 
 export const ProductItem: React.FC = () => {
@@ -477,7 +476,7 @@ export const ProductItem: React.FC = () => {
                         searchItems={{searchProductCriteria, setSearchProductCriteria, handleOpenSearchModal}}
                         headerItems={{handleOpenModal, handleCheckToggleCollection: handleCheckAllProducts, handleDeleteCheckedCollection: handleDeleteCheckedProducts}}
                         contentItems={{products, handleDeleteProduct, handleCheckProduct}}
-                        pageNationItems={{pageNation, fetchProducts: fetchProducts.load}}
+                        pageNationItems={{pageNation, fetchProducts: fetchProducts.load, criteria}}
                     />
             )
         };

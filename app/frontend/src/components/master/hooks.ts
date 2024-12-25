@@ -52,7 +52,7 @@ export const useFetchDepartments = (
     setError: (error: string) => void,
     showErrorMessage: (message: string, callback: (error: string) => void) => void,
     service: DepartmentServiceType
-) => useFetchEntities(setLoading, setList, setPageNation, setError, showErrorMessage, service, "部門情報の取得に失敗しました:");
+) => useFetchEntities<DepartmentType, DepartmentServiceType, DepartmentCriteriaType>(setLoading, setList, setPageNation, setError, showErrorMessage, service, "部門情報の取得に失敗しました:");
 
 
 export const useEmployee = () => {
@@ -133,7 +133,7 @@ export const useFetchEmployees = (
     setError: (error: string) => void,
     showErrorMessage: (message: string, callback: (error: string) => void) => void,
     service: EmployeeServiceType
-) => useFetchEntities(setLoading, setList, setPageNation, setError, showErrorMessage, service, "社員情報の取得に失敗しました:");
+) => useFetchEntities<EmployeeType, EmployeeServiceType, EmployeeCriteriaType>(setLoading, setList, setPageNation, setError, showErrorMessage, service, "社員情報の取得に失敗しました:");
 
 export const useProductCategory = () => {
     const initialProductCategory: ProductCategoryType = {
@@ -170,7 +170,7 @@ export const useFetchProductCategories = (
     setError: (error: string) => void,
     showErrorMessage: (message: string, callback: (error: string) => void) => void,
     service: ProductCategoryServiceType
-) => useFetchEntities(setLoading, setList, setPageNation, setError, showErrorMessage, service, "商品分類情報の取得に失敗しました:");
+) => useFetchEntities<ProductCategoryType, ProductCategoryServiceType, ProductCategoryCriteriaType>(setLoading, setList, setPageNation, setError, showErrorMessage, service, "商品分類情報の取得に失敗しました:");
 
 export const useProduct = () => {
     const initialProduct: ProductType = {
@@ -231,7 +231,7 @@ export const useFetchProducts = (
     setError: (error: string) => void,
     showErrorMessage: (message: string, callback: (error: string) => void) => void,
     service: ProductServiceType
-) => useFetchEntities(setLoading, setList, setPageNation, setError, showErrorMessage, service, "商品情報の取得に失敗しました:");
+) => useFetchEntities<ProductType, ProductServiceType, ProductCriteriaType>(setLoading, setList, setPageNation, setError, showErrorMessage, service, "商品情報の取得に失敗しました:");
 
 export const useFetchBoms = (
     setLoading: (loading: boolean) => void,
@@ -249,5 +249,5 @@ export const useFetchSubstitutes = (
     setError: (error: string) => void,
     showErrorMessage: (message: string, callback: (error: string) => void) => void,
     service: ProductServiceType
-) => useFetchEntities(setLoading, setList, setPageNation, setError, showErrorMessage, service, "代替商品情報の取得に失敗しました:");
+) => useFetchEntities<ProductType, ProductServiceType, ProductCriteriaType>(setLoading, setList, setPageNation, setError, showErrorMessage, service, "代替商品情報の取得に失敗しました:");
 

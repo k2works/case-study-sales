@@ -39,7 +39,11 @@ export const useTab = () => {
 }
 export const useFetchEntities = <
     EntityType,
-    ServiceType extends { select: (page: number) => Promise<any> }
+    ServiceType extends {
+        select: (page: number) => Promise<{ list: EntityType[], [key: string]: any }>;
+        search?: (criteria: CriteriaType, page: number) => Promise<{ list: EntityType[], [key: string]: any }>;
+    },
+    CriteriaType = any
 >(
     setLoading: (loading: boolean) => void,
     setList: (list: EntityType[]) => void,
@@ -49,22 +53,28 @@ export const useFetchEntities = <
     service: ServiceType,
     errorMessage: string
 ) => {
-    const load = async (page: number = 1): Promise<void> => {
+    const load = async (page: number = 1, criteria?: CriteriaType): Promise<void> => {
         setLoading(true);
         try {
-            const fetchedEntities = await service.select(page);
-            const {list, ...pagination} = fetchedEntities;
+            const fetchedEntities = criteria
+                ? await service.search?.(criteria, page)
+                : await service.select(page);
+
+            if (!fetchedEntities || !Array.isArray(fetchedEntities.list)) {
+                throw new Error("取得されたデータの形式が正しくありません。");
+            }
+
+            const { list, ...pagination } = fetchedEntities;
             setList(list);
-            setPageNation(pagination);
+            setPageNation(pagination as PageNationType);
             setError("");
-        } catch (error: any) {
-            showErrorMessage(`${errorMessage} ${error?.message}`, setError);
+        } catch (error) {
+            const message = error instanceof Error ? error.message : "不明なエラーが発生しました。";
+            setError(message);
+            showErrorMessage(`${errorMessage} ${message}`, () => {});
         } finally {
             setLoading(false);
         }
     };
-    return {
-        load
-    };
+    return { load };
 };
-

@@ -1,7 +1,7 @@
 import Config from "./config";
 import Utils from "./utils";
 import {
-    BomFetchType, mapToProductCriteriaResource,
+    mapToProductCriteriaResource,
     mapToProductResource,
     ProductCriteriaType,
     ProductFetchType,
@@ -10,7 +10,7 @@ import {
 
 export interface ProductServiceType {
     select: (page?: number, pageSize?: number) => Promise<ProductFetchType>;
-    selectBoms: (page?: number, pageSize?: number) => Promise<BomFetchType>;
+    selectBoms: (page?: number, pageSize?: number) => Promise<ProductFetchType>;
     find: (productCode: string) => Promise<ProductType>;
     create: (product: ProductType) => Promise<void>;
     update: (product: ProductType) => Promise<void>;
@@ -28,8 +28,8 @@ export const ProductService = (): ProductServiceType => {
         return await apiUtils.fetchGet(url);
     };
 
-    const selectBoms = async (page?: number, pageSize?: number): Promise<BomFetchType> => {
-        const url = Utils.buildUrlWithPaging(endPoint, page, pageSize);
+    const selectBoms = async (page?: number, pageSize?: number): Promise<ProductFetchType> => {
+        const url = Utils.buildUrlWithPaging(`${endPoint}/boms`, page, pageSize);
         return await apiUtils.fetchGet(url);
     };
 

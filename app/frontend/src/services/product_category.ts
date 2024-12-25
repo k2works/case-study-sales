@@ -3,12 +3,11 @@ import Utils from "./utils";
 import {
     mapToProductCategoryCriteriaResource,
     mapToProductCategoryResource, ProductCategoryCriteriaType, ProductCategoryFetchType,
-    ProductCategoryType,
-    ProductFetchType
+    ProductCategoryType
 } from "../models";
 
 export interface ProductCategoryServiceType {
-    select: (page?: number, pageSize?: number) => Promise<ProductFetchType>;
+    select: (page?: number, pageSize?: number) => Promise<ProductCategoryFetchType>;
     find: (categoryCode: string) => Promise<ProductCategoryType>;
     create: (category: ProductCategoryType) => Promise<void>;
     update: (category: ProductCategoryType) => Promise<void>;
@@ -21,7 +20,7 @@ export const ProductCategoryService = (): ProductCategoryServiceType => {
     const apiUtils = Utils.apiUtils;
     const endPoint = `${config.apiUrl}/product/categories`;
 
-    const select = async (page?: number, pageSize?: number): Promise<ProductFetchType> => {
+    const select = async (page?: number, pageSize?: number): Promise<ProductCategoryFetchType> => {
         const url = Utils.buildUrlWithPaging(endPoint, page, pageSize);
         return await apiUtils.fetchGet(url);
     };
