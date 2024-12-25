@@ -1,6 +1,6 @@
 import React, { MouseEventHandler } from "react";
 import { FormInput, SingleViewHeaderItem } from "../../Common.tsx";
-import {EmployeeCriteriaType, EmployeeType} from "../../../models";
+import {EmployeeCriteriaType} from "../../../models";
 
 interface FormProps {
     criteria: EmployeeCriteriaType,
@@ -73,9 +73,9 @@ const Form = ({criteria, setCondition, handleClick, handleClose}: FormProps) => 
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="電話番号"
-                value={criteria.tel}
+                value={criteria.phoneNumber}
                 onChange={(e) => setCondition(
-                    {...criteria, tel: e.target.value}
+                    {...criteria, phoneNumber: e.target.value}
                 )}
             />
             <FormInput
@@ -84,9 +84,9 @@ const Form = ({criteria, setCondition, handleClick, handleClose}: FormProps) => 
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="メールアドレス"
-                value={criteria.fax}
+                value={criteria.faxNumber}
                 onChange={(e) => setCondition(
-                    {...criteria, fax: e.target.value}
+                    {...criteria, faxNumber: e.target.value}
                 )}
             />
             <FormInput
