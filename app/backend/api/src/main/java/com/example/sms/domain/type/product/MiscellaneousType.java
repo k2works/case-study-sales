@@ -15,6 +15,15 @@ public enum MiscellaneousType {
         this.code = code;
     }
 
+    public static Integer getCodeByName(String name) {
+        for (MiscellaneousType miscellaneousType : MiscellaneousType.values()) {
+            if (miscellaneousType.name().equals(name)) {
+                return miscellaneousType.getCode();
+            }
+        }
+        throw new IllegalArgumentException("雑区分未登録:" + name);
+    }
+
     public static MiscellaneousType fromCode(Integer code) {
         for (MiscellaneousType miscellaneousType : MiscellaneousType.values()) {
             if (miscellaneousType.code.equals(code)) {

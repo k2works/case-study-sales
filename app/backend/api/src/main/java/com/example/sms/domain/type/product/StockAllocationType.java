@@ -15,6 +15,15 @@ public enum StockAllocationType {
         this.code = code;
     }
 
+    public static Integer getCodeByName(String name) {
+        for (StockAllocationType stockAllocationType : StockAllocationType.values()) {
+            if (stockAllocationType.name().equals(name)) {
+                return stockAllocationType.getCode();
+            }
+        }
+        throw new IllegalArgumentException("在庫引当区分未登録:" + name);
+    }
+
     public static StockAllocationType fromCode(Integer code) {
         for (StockAllocationType stockAllocationType : StockAllocationType.values()) {
             if (stockAllocationType.code.equals(code)) {

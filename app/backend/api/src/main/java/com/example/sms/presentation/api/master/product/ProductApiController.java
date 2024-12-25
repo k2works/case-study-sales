@@ -3,6 +3,7 @@ package com.example.sms.presentation.api.master.product;
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
 import com.example.sms.domain.type.audit.ApplicationExecutionProcessType;
+import com.example.sms.domain.type.product.*;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
@@ -129,18 +130,43 @@ public class ProductApiController {
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
             PageNation.startPage(page, pageSize);
+            String productType = resource.getProductType();
+            String setProductType = null;
+            if (productType != null) {
+                setProductType = ProductType.getCodeByName(productType);
+            }
+            String taxType = resource.getTaxType();
+            Integer setTaxType = null;
+            if (taxType != null) {
+               setTaxType = TaxType.getCodeByName(taxType);
+            }
+            String miscellaneousType = resource.getMiscellaneousType();
+            Integer setMiscellaneousType = null;
+            if (miscellaneousType != null) {
+                setMiscellaneousType = MiscellaneousType.getCodeByName(miscellaneousType);
+            }
+            String stockManagementTargetType = resource.getStockManagementTargetType();
+            Integer setStockManagementTargetType = null;
+            if (stockManagementTargetType != null) {
+                setStockManagementTargetType = StockManagementTargetType.getCodeByName(stockManagementTargetType);
+            }
+            String stockAllocationType = resource.getStockAllocationType();
+            Integer setStockAllocationType = null;
+            if (stockAllocationType != null) {
+                setStockAllocationType = StockAllocationType.getCodeByName(stockAllocationType);
+            }
             ProductCriteria criteria = ProductCriteria.builder()
                     .productCode(resource.getProductCode())
                     .productNameFormal(resource.getProductNameFormal())
                     .productNameAbbreviation(resource.getProductNameAbbreviation())
                     .productNameKana(resource.getProductNameKana())
-                    .productType(resource.getProductType())
-                    .taxType(resource.getTaxType())
                     .productCategoryCode(resource.getProductCategoryCode())
-                    .miscellaneousType(resource.getMiscellaneousType())
-                    .stockManagementTargetType(resource.getStockManagementTargetType())
-                    .stockAllocationType(resource.getStockAllocationType())
                     .supplierCode(resource.getSupplierCode())
+                    .productType(setProductType)
+                    .taxType(setTaxType)
+                    .miscellaneousType(setMiscellaneousType)
+                    .stockManagementTargetType(setStockManagementTargetType)
+                    .stockAllocationType(setStockAllocationType)
                     .build();
             PageInfo<Product> result = productService.searchProductWithPageInfo(criteria);
             return ResponseEntity.ok(result);

@@ -15,6 +15,15 @@ public enum TaxType {
         this.code = code;
     }
 
+    public static Integer getCodeByName(String name) {
+        for (TaxType taxType : TaxType.values()) {
+            if (taxType.name().equals(name)) {
+                return taxType.getCode();
+            }
+        }
+        throw new IllegalArgumentException("税区分未登録:" + name);
+    }
+
     public static TaxType fromCode(Integer code) {
         for (TaxType taxType : TaxType.values()) {
             if (taxType.code.equals(code)) {

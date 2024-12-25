@@ -15,6 +15,15 @@ public enum StockManagementTargetType {
         this.code = code;
     }
 
+    public static Integer getCodeByName(String name) {
+        for (StockManagementTargetType stockManagementTargetType : StockManagementTargetType.values()) {
+            if (stockManagementTargetType.name().equals(name)) {
+                return stockManagementTargetType.getCode();
+            }
+        }
+        throw new IllegalArgumentException("在庫管理対象区分未登録:" + name);
+    }
+
     public static StockManagementTargetType fromCode(Integer code) {
         for (StockManagementTargetType stockManagementTargetType : StockManagementTargetType.values()) {
             if (stockManagementTargetType.code.equals(code)) {

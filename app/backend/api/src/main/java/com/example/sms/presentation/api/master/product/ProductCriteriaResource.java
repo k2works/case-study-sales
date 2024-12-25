@@ -21,8 +21,8 @@ public class ProductCriteriaResource implements Serializable {
     String productCategoryCode;
     String supplierCode;
     String productType;
-    Integer taxType;
-    Integer miscellaneousType;
-    Integer stockManagementTargetType;
-    Integer stockAllocationType;
+    String taxType;
+    String miscellaneousType;
+    String stockManagementTargetType;
+    String stockAllocationType;
 }

@@ -15,6 +15,15 @@ public enum ProductType {
         this.code = code;
     }
 
+    public static String getCodeByName(String name) {
+        for (ProductType productType : ProductType.values()) {
+            if (productType.name().equals(name)) {
+                return productType.getCode();
+            }
+        }
+        throw new IllegalArgumentException("商品区分未登録:" + name);
+    }
+
     public static ProductType fromCode(String code) {
         for (ProductType productType : ProductType.values()) {
             if (productType.code.equals(code)) {
