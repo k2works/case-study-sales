@@ -10,8 +10,10 @@ import lombok.Value;
 @Builder
 public class EmployeeCriteria {
     String employeeCode;
-    String employeeName;
-    String employeeNameKana;
+    String employeeFirstName;
+    String employeeLastName;
+    String employeeFirstNameKana;
+    String employeeLastNameKana;
     String phoneNumber;
     String faxNumber;
     String departmentCode;

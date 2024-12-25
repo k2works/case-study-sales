@@ -135,17 +135,19 @@ public class EmployeeApiController {
     @Operation(summary = "社員を検索する", description = "社員を検索する")
     @PostMapping("/search")
     public ResponseEntity<?> search(
-            @RequestBody EmployeeResource resource,
+            @RequestBody EmployeeCriteriaResource resource,
             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
             PageNation.startPage(page, pageSize);
             EmployeeCriteria criteria = EmployeeCriteria.builder()
-                    .employeeCode(resource.getEmpCode())
-                    .employeeName(resource.getEmpName())
-                    .employeeNameKana(resource.getEmpNameKana())
-                    .phoneNumber(resource.getTel())
-                    .faxNumber(resource.getFax())
+                    .employeeCode(resource.getEmployeeCode())
+                    .employeeFirstName(resource.getEmployeeFirstName())
+                    .employeeLastName(resource.getEmployeeLastName())
+                    .employeeFirstNameKana(resource.getEmployeeFirstNameKana())
+                    .employeeLastNameKana(resource.getEmployeeLastNameKana())
+                    .phoneNumber(resource.getPhoneNumber())
+                    .faxNumber(resource.getFaxNumber())
                     .departmentCode(resource.getDepartmentCode())
                     .build();
             PageInfo<Employee> result = employeeManagementService.searchWithPageInfo(criteria);

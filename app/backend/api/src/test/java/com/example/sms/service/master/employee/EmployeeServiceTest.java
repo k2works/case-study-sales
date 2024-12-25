@@ -113,7 +113,7 @@ class EmployeeServiceTest {
         }
         @Test
         @DisplayName("社員を名前で検索できる")
-        void case2() {
+        void case2_1() {
             Employee employee = testDataFactory.Employee();
             Employee searchEmployee = Employee.of(
                     Employee.of(employee.getEmpCode().getValue(), "検索 太郎", employee.getEmpName().NameKana(), employee.getTel().getValue(), employee.getFax().getValue(), employee.getOccuCode().getValue()),
@@ -121,7 +121,78 @@ class EmployeeServiceTest {
                     employee.getUser()
             );
             employeeService.register(searchEmployee);
-            EmployeeCriteria criteria = EmployeeCriteria.builder().employeeName("検索 太郎").build();
+            EmployeeCriteria criteria = EmployeeCriteria.builder().employeeFirstName("検索").employeeLastName("太郎").build();
+
+            PageInfo<Employee> result = employeeService.searchWithPageInfo(criteria);
+
+            assertEquals(1, result.getList().size());
+            assertEquals(searchEmployee, result.getList().getFirst());
+            assertEquals(1, result.getTotal());
+        }
+        @Test
+        @DisplayName("社員を名前で検索できる")
+        void case2_2() {
+            Employee employee = testDataFactory.Employee();
+            Employee searchEmployee = Employee.of(
+                    Employee.of(employee.getEmpCode().getValue(), "検索 太郎", employee.getEmpName().NameKana(), employee.getTel().getValue(), employee.getFax().getValue(), employee.getOccuCode().getValue()),
+                    employee.getDepartment(),
+                    employee.getUser()
+            );
+            employeeService.register(searchEmployee);
+            EmployeeCriteria criteria = EmployeeCriteria.builder().employeeFirstName("検索").build();
+
+            PageInfo<Employee> result = employeeService.searchWithPageInfo(criteria);
+
+            assertEquals(1, result.getList().size());
+            assertEquals(searchEmployee, result.getList().getFirst());
+            assertEquals(1, result.getTotal());
+        }
+        @Test
+        @DisplayName("社員を名前で検索できる")
+        void case2_3() {
+            Employee employee = testDataFactory.Employee();
+            Employee searchEmployee = Employee.of(
+                    Employee.of(employee.getEmpCode().getValue(), "検索 太郎", employee.getEmpName().NameKana(), employee.getTel().getValue(), employee.getFax().getValue(), employee.getOccuCode().getValue()),
+                    employee.getDepartment(),
+                    employee.getUser()
+            );
+            employeeService.register(searchEmployee);
+            EmployeeCriteria criteria = EmployeeCriteria.builder().employeeLastName("太郎").build();
+
+            PageInfo<Employee> result = employeeService.searchWithPageInfo(criteria);
+
+            assertEquals(1, result.getList().size());
+            assertEquals(searchEmployee, result.getList().getFirst());
+            assertEquals(1, result.getTotal());
+        }
+        @Test
+        @DisplayName("社員を名前で検索できる")
+        void case2_4() {
+            Employee employee = testDataFactory.Employee();
+            Employee searchEmployee = Employee.of(
+                    Employee.of(employee.getEmpCode().getValue(), "検索 太郎", employee.getEmpName().NameKana(), employee.getTel().getValue(), employee.getFax().getValue(), employee.getOccuCode().getValue()),
+                    employee.getDepartment(),
+                    employee.getUser()
+            );
+            employeeService.register(searchEmployee);
+            EmployeeCriteria criteria = EmployeeCriteria.builder().employeeLastName("検索").employeeLastName("次郎").build();
+
+            PageInfo<Employee> result = employeeService.searchWithPageInfo(criteria);
+
+            assertEquals(0, result.getList().size());
+            assertEquals(0, result.getTotal());
+        }
+        @Test
+        @DisplayName("社員を名前カナで検索できる")
+        void case3_1() {
+            Employee employee = testDataFactory.Employee();
+            Employee searchEmployee = Employee.of(
+                    Employee.of(employee.getEmpCode().getValue(), employee.getEmpName().Name(), "ケンサク タロウ", employee.getTel().getValue(), employee.getFax().getValue(), employee.getOccuCode().getValue()),
+                    employee.getDepartment(),
+                    employee.getUser()
+            );
+            employeeService.register(searchEmployee);
+            EmployeeCriteria criteria = EmployeeCriteria.builder().employeeFirstNameKana("ケンサク").employeeLastNameKana("タロウ").build();
 
             PageInfo<Employee> result = employeeService.searchWithPageInfo(criteria);
 
@@ -131,7 +202,7 @@ class EmployeeServiceTest {
         }
         @Test
         @DisplayName("社員を名前カナで検索できる")
-        void case3() {
+        void case3_2() {
             Employee employee = testDataFactory.Employee();
             Employee searchEmployee = Employee.of(
                     Employee.of(employee.getEmpCode().getValue(), employee.getEmpName().Name(), "ケンサク タロウ", employee.getTel().getValue(), employee.getFax().getValue(), employee.getOccuCode().getValue()),
@@ -139,13 +210,48 @@ class EmployeeServiceTest {
                     employee.getUser()
             );
             employeeService.register(searchEmployee);
-            EmployeeCriteria criteria = EmployeeCriteria.builder().employeeNameKana("ケンサク タロウ").build();
+            EmployeeCriteria criteria = EmployeeCriteria.builder().employeeFirstNameKana("ケンサク").build();
 
             PageInfo<Employee> result = employeeService.searchWithPageInfo(criteria);
 
             assertEquals(1, result.getList().size());
             assertEquals(searchEmployee, result.getList().getFirst());
             assertEquals(1, result.getTotal());
+        }
+           @Test
+        @DisplayName("社員を名前カナで検索できる")
+        void case3_3() {
+            Employee employee = testDataFactory.Employee();
+            Employee searchEmployee = Employee.of(
+                    Employee.of(employee.getEmpCode().getValue(), employee.getEmpName().Name(), "ケンサク タロウ", employee.getTel().getValue(), employee.getFax().getValue(), employee.getOccuCode().getValue()),
+                    employee.getDepartment(),
+                    employee.getUser()
+            );
+            employeeService.register(searchEmployee);
+            EmployeeCriteria criteria = EmployeeCriteria.builder().employeeLastNameKana("タロウ").build();
+
+            PageInfo<Employee> result = employeeService.searchWithPageInfo(criteria);
+
+            assertEquals(1, result.getList().size());
+            assertEquals(searchEmployee, result.getList().getFirst());
+            assertEquals(1, result.getTotal());
+        }
+        @Test
+        @DisplayName("社員を名前カナで検索できる")
+        void case3_4() {
+            Employee employee = testDataFactory.Employee();
+            Employee searchEmployee = Employee.of(
+                    Employee.of(employee.getEmpCode().getValue(), employee.getEmpName().Name(), "ケンサク タロウ", employee.getTel().getValue(), employee.getFax().getValue(), employee.getOccuCode().getValue()),
+                    employee.getDepartment(),
+                    employee.getUser()
+            );
+            employeeService.register(searchEmployee);
+            EmployeeCriteria criteria = EmployeeCriteria.builder().employeeLastNameKana("ケンサク").employeeLastNameKana("ジロウ").build();
+
+            PageInfo<Employee> result = employeeService.searchWithPageInfo(criteria);
+
+            assertEquals(0, result.getList().size());
+            assertEquals(0, result.getTotal());
         }
         @Test
         @DisplayName("社員を電話番号で検索できる")
@@ -217,7 +323,7 @@ class EmployeeServiceTest {
             );
             departmentService.register(searchDepartment);
             employeeService.register(searchEmployee);
-            EmployeeCriteria criteria = EmployeeCriteria.builder().employeeCode("EMP123").employeeName("検索 太郎").employeeNameKana("ケンサク タロウ").phoneNumber("03-9999-0000").faxNumber("03-9999-0000").departmentCode("12345").build();
+            EmployeeCriteria criteria = EmployeeCriteria.builder().employeeCode("EMP123").employeeFirstName("検索").employeeLastName("太郎").employeeFirstNameKana("ケンサク").employeeLastNameKana("タロウ").phoneNumber("03-9999-0000").faxNumber("03-9999-0000").departmentCode("12345").build();
 
             PageInfo<Employee> result = employeeService.searchWithPageInfo(criteria);
 
