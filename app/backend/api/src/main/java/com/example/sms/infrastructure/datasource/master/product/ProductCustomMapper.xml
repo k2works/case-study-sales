@@ -59,4 +59,45 @@
             #{item}
         </foreach>
     </select>
+
+    <select id="selectByCriteria" resultMap="BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.商品マスタMapper.Base_Column_List"/>
+        from public.商品マスタ
+        <where>
+            <if test="productCode != null">
+                商品コード = #{productCode,jdbcType=VARCHAR}
+            </if>
+            <if test="productNameFormal != null">
+                and 商品正式名 = #{productNameFormal,jdbcType=VARCHAR}
+            </if>
+            <if test="productNameAbbreviation != null">
+                and 商品略称 = #{productNameAbbreviation,jdbcType=VARCHAR}
+            </if>
+            <if test="productNameKana != null">
+                and 商品名カナ = #{productNameKana,jdbcType=VARCHAR}
+            </if>
+            <if test="productCategoryCode != null">
+                and 商品分類コード = #{productCategoryCode,jdbcType=VARCHAR}
+            </if>
+            <if test="supplierCode != null">
+                and 仕入先コード = #{supplierCode,jdbcType=VARCHAR}
+            </if>
+            <if test="productType != null">
+                and 商品区分 = #{productType,jdbcType=VARCHAR}
+            </if>
+            <if test="taxType != null">
+                and 税区分 = #{taxType,jdbcType=VARCHAR}
+            </if>
+            <if test="miscellaneousType != null">
+                and 雑区分 = #{miscellaneousType,jdbcType=VARCHAR}
+            </if>
+            <if test="stockManagementTargetType != null">
+                and 在庫管理対象区分 = #{stockManagementTargetType,jdbcType=VARCHAR}
+            </if>
+            <if test="stockAllocationType != null">
+                and 在庫引当区分 = #{stockAllocationType,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
 </mapper>

@@ -20,4 +20,6 @@ public interface ProductRepository {
     PageInfo<Product> selectAllWithPageInfo();
 
     PageInfo<Product> selectAllBoms();
+
+    PageInfo<Product> searchWithPageInfo(ProductCriteria criteria);
 }

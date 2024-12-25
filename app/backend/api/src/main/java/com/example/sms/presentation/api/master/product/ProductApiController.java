@@ -6,6 +6,7 @@ import com.example.sms.domain.type.audit.ApplicationExecutionProcessType;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
+import com.example.sms.service.master.product.ProductCriteria;
 import com.example.sms.service.master.product.ProductService;
 import com.example.sms.service.system.audit.AuditAnnotation;
 import com.github.pagehelper.PageInfo;
@@ -115,6 +116,34 @@ public class ProductApiController {
             }
             productService.delete(product);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.product.deleted")));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
+    }
+
+    @Operation(summary = "商品を検索する")
+    @PostMapping("/search")
+    public ResponseEntity<?> search(
+            @RequestBody ProductCriteriaResource resource,
+            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(value = "page", defaultValue = "1") int... page) {
+        try {
+            PageNation.startPage(page, pageSize);
+            ProductCriteria criteria = ProductCriteria.builder()
+                    .productCode(resource.getProductCode())
+                    .productNameFormal(resource.getProductNameFormal())
+                    .productNameAbbreviation(resource.getProductNameAbbreviation())
+                    .productNameKana(resource.getProductNameKana())
+                    .productType(resource.getProductType())
+                    .taxType(resource.getTaxType())
+                    .productCategoryCode(resource.getProductCategoryCode())
+                    .miscellaneousType(resource.getMiscellaneousType())
+                    .stockManagementTargetType(resource.getStockManagementTargetType())
+                    .stockAllocationType(resource.getStockAllocationType())
+                    .supplierCode(resource.getSupplierCode())
+                    .build();
+            PageInfo<Product> result = productService.searchProductWithPageInfo(criteria);
+            return ResponseEntity.ok(result);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }

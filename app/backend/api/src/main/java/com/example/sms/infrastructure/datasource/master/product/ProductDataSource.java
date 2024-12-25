@@ -13,6 +13,7 @@ import com.example.sms.infrastructure.datasource.autogen.model.*;
 import com.example.sms.infrastructure.datasource.master.product.bom.BomCustomMapper;
 import com.example.sms.infrastructure.datasource.master.product.customer_specific_price.CustomerSpecificSellingPriceCustomMapper;
 import com.example.sms.infrastructure.datasource.master.product.substitute.SubstituteProductCustomMapper;
+import com.example.sms.service.master.product.ProductCriteria;
 import com.example.sms.service.master.product.ProductRepository;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.core.Authentication;
@@ -197,6 +198,14 @@ public class ProductDataSource implements ProductRepository {
     @Override
     public PageInfo<Product> selectAllBoms() {
         List<ProductCustomEntity> productEntities = productCustomMapper.selectAllBoms(List.of(ProductType.製品.getCode(), ProductType.部品.getCode(), ProductType.包材.getCode()));
+        PageInfo<ProductCustomEntity> pageInfo = new PageInfo<>(productEntities);
+
+        return PageInfoHelper.of(pageInfo, productEntityMapper::mapToDomainModel);
+    }
+
+    @Override
+    public PageInfo<Product> searchWithPageInfo(ProductCriteria criteria) {
+        List<ProductCustomEntity> productEntities = productCustomMapper.selectByCriteria(criteria);
         PageInfo<ProductCustomEntity> pageInfo = new PageInfo<>(productEntities);
 
         return PageInfoHelper.of(pageInfo, productEntityMapper::mapToDomainModel);

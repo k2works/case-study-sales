@@ -1,5 +1,6 @@
 package com.example.sms.infrastructure.datasource.master.product;
 
+import com.example.sms.service.master.product.ProductCriteria;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -17,4 +18,6 @@ public interface ProductCustomMapper {
     List<ProductCustomEntity> selectByProductCategoryCode(String productCategoryCode);
 
     List<ProductCustomEntity> selectAllBoms(List<String> boms);
+
+    List<ProductCustomEntity> selectByCriteria(ProductCriteria criteria);
 }

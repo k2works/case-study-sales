@@ -147,7 +147,14 @@ public class ProductService {
     /**
      * 商品分類検索（ページング）
      */
-    public PageInfo<ProductCategory> searchWithPageInfo(ProductCategoryCriteria criteria) {
+    public PageInfo<ProductCategory> searchProductCategoryWithPageInfo(ProductCategoryCriteria criteria) {
         return productCategoryRepository.searchWithPageInfo(criteria);
+    }
+
+    /**
+     * 商品検索 (ページング)
+     */
+    public PageInfo<Product> searchProductWithPageInfo(ProductCriteria criteria) {
+        return productRepository.searchWithPageInfo(criteria);
     }
 }
