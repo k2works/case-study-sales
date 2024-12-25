@@ -1,28 +1,8 @@
 import React from "react";
-import {EmployeeType} from "../../../models";
+import {EmployeeCriteriaType, EmployeeType} from "../../../models";
 import {Message} from "../../../components/application/Message.tsx";
-import {PageNation} from "../../application/PageNation.tsx";
-
-interface SearchBarProps {
-    searchValue: string;
-    onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    onSearchClick: () => void;
-}
-
-const SearchBar: React.FC<SearchBarProps> = ({searchValue, onSearchChange, onSearchClick}) => {
-    return (
-        <div className="search-container">
-            <input
-                id="search-input"
-                type="text"
-                placeholder="社員コードで検索"
-                value={searchValue}
-                onChange={onSearchChange}
-            />
-            <button className="action-button" id="search-all" onClick={onSearchClick}>検索</button>
-        </div>
-    );
-};
+import {PageNation, PageNationType} from "../../application/PageNation.tsx";
+import {Search} from "../../Common.tsx";
 
 interface EmployeeListItemProps {
     employee: EmployeeType;
@@ -89,9 +69,9 @@ interface EmployeeCollectionViewProps {
     error: string | null;
     message: string | null;
     searchItems: {
-        searchEmployeeCode: string;
-        setSearchEmployeeCode: React.Dispatch<React.SetStateAction<string>>;
-        handleSearchEmployee: () => void;
+        searchEmployeeCriteria: EmployeeCriteriaType;
+        setSearchEmployeeCriteria: (value: EmployeeCriteriaType) => void;
+        handleOpenSearchModal: () => void;
     }
     headerItems: {
         handleOpenModal: () => void;
@@ -104,15 +84,16 @@ interface EmployeeCollectionViewProps {
         handleCheckEmployee: (employee: EmployeeType) => void;
     }
     pageNationItems: {
-        pageNation: any;
-        fetchEmployees: (page: number) => void;
+        pageNation: PageNationType | null;
+        criteria: EmployeeCriteriaType | null;
+        fetchEmployees: () => void;
     }
 }
 
 export const EmployeeCollectionView: React.FC<EmployeeCollectionViewProps> = ({
                                                                                   error,
                                                                                   message,
-                                                                                  searchItems: {searchEmployeeCode, setSearchEmployeeCode, handleSearchEmployee},
+                                                                                  searchItems: {searchEmployeeCriteria, setSearchEmployeeCriteria, handleOpenSearchModal},
                                                                                   headerItems: {handleOpenModal, handleCheckToggleCollection, handleDeleteCheckedCollection},
                                                                                   collectionItems: {employees, handleDeleteEmployee, handleCheckEmployee},
                                                                                   pageNationItems: {pageNation, fetchEmployees}
@@ -129,10 +110,10 @@ export const EmployeeCollectionView: React.FC<EmployeeCollectionViewProps> = ({
                     </div>
                 </div>
                 <div className="collection-view-content">
-                    <SearchBar
-                        searchValue={searchEmployeeCode}
-                        onSearchChange={(e) => setSearchEmployeeCode(e.target.value)}
-                        onSearchClick={handleSearchEmployee}
+                    <Search
+                        searchCriteria={searchEmployeeCriteria}
+                        setSearchCriteria={setSearchEmployeeCriteria}
+                        handleSearchAudit={handleOpenSearchModal}
                     />
                     <div className="button-container">
                         <button className="action-button" onClick={() => handleOpenModal()} id="new">新規</button>

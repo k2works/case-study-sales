@@ -4,7 +4,7 @@ import {showErrorMessage} from "../application/utils.ts";
 import {useMessage} from "../application/Message.tsx";
 import {useModal} from "../application/hooks.ts";
 import {useDepartment, useEmployee, useFetchDepartments, useFetchEmployees} from "./hooks.ts";
-import {EmployeeType} from "../../models";
+import {DepartmentCriteriaType, EmployeeCriteriaType, EmployeeType} from "../../models";
 import {usePageNation} from "../../views/application/PageNation.tsx";
 import {SiteLayout} from "../../views/SiteLayout.tsx";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
@@ -13,13 +13,15 @@ import {DepartmentCollectionSelectView, DepartmentSelectView} from "../../views/
 import {UserCollectionSelectView, UserSelectView} from "../../views/system/user/UserSelect.tsx";
 import {EmployeeCollectionView} from "../../views/master/employee/EmployeeCollection.tsx";
 import {EmployeeSingleView} from "../../views/master/employee/EmployeeSingle.tsx";
+import {DepartmentSearchSingleView} from "../../views/master/department/DepartmentSearch.tsx";
+import {EmployeeSearchSingleView} from "../../views/master/employee/EmployeeSearch.tsx";
 
 export const Employee: React.FC = () => {
     const Content: React.FC = () => {
         const [loading, setLoading] = useState<boolean>(false);
         const {message, setMessage, error, setError} = useMessage();
-        const {pageNation, setPageNation} = usePageNation();
-        const {pageNation: departmentPageNation, setPageNation: setDepartmentPageNation} = usePageNation();
+        const {pageNation, setPageNation, criteria, setCriteria} = usePageNation<EmployeeCriteriaType>();
+        const {pageNation: departmentPageNation, setPageNation: setDepartmentPageNation} = usePageNation<DepartmentCriteriaType>();
         const {pageNation: userPageNation, setPageNation: setUserPageNation} = usePageNation();
         const {modalIsOpen, setModalIsOpen, isEditing, setIsEditing, editId, setEditId} = useModal();
         const {
@@ -30,6 +32,7 @@ export const Employee: React.FC = () => {
             modalIsOpen: userModalIsOpen,
             setModalIsOpen: setUserModalIsOpen
         } = useModal();
+        const {modalIsOpen: searchModalIsOpen, setModalIsOpen: setSearchModalIsOpen,} = useModal();
 
         const {
             initialEmployee,
@@ -37,8 +40,8 @@ export const Employee: React.FC = () => {
             setEmployees,
             newEmployee,
             setNewEmployee,
-            searchEmployeeCode,
-            setSearchEmployeeCode,
+            searchEmployeeCriteria,
+            setSearchEmployeeCriteria,
             employeeService
         } = useEmployee();
 
@@ -115,7 +118,6 @@ export const Employee: React.FC = () => {
 
                 const editModalView = () => {
                     return(
-                        <>
                             <Modal
                                 isOpen={modalIsOpen}
                                 onRequestClose={handleCloseModal}
@@ -136,7 +138,6 @@ export const Employee: React.FC = () => {
                                     handleSelect={() => setUserModalIsOpen(true)}
                                 />
                             </Modal>
-                        </>
                     )
                 }
 
@@ -217,36 +218,83 @@ export const Employee: React.FC = () => {
                 }
             }
 
+            const searchModal = () => {
+                const handleOpenSearchModal = () => {
+                    setSearchModalIsOpen(true);
+                }
+
+                const handleCloseSearchModal = () => {
+                    setSearchModalIsOpen(false);
+                }
+
+                const searchModalView = () => {
+                    return (
+                        <Modal
+                            isOpen={searchModalIsOpen}
+                            onRequestClose={handleCloseSearchModal}
+                            contentLabel="検索情報を入力"
+                            className="modal"
+                            overlayClassName="modal-overlay"
+                            bodyOpenClassName="modal-open"
+                        >
+                            {
+                                <EmployeeSearchSingleView
+                                    criteria={searchEmployeeCriteria}
+                                    setCondition={setSearchEmployeeCriteria}
+                                    handleSelect={async () => {
+                                        if (!searchEmployeeCriteria) {
+                                            return;
+                                        }
+                                        setLoading(true);
+                                        try {
+                                            const result = await employeeService.search(searchEmployeeCriteria);
+                                            setEmployees(result ? result.list : []);
+                                            if (result.list.length === 0) {
+                                                showErrorMessage(`検索結果は0件です`, setError);
+                                            } else {
+                                                setCriteria(searchEmployeeCriteria);
+                                                setPageNation(result);
+                                                setMessage("");
+                                                setError("");
+                                            }
+                                        } catch (error: any) {
+                                            showErrorMessage(`実行履歴情報の検索に失敗しました: ${error?.message}`, setError);
+                                        } finally {
+                                            setLoading(false);
+                                        }
+                                    }}
+                                    handleClose={handleCloseSearchModal}
+                                />
+                            }
+                        </Modal>
+                    )
+                }
+
+                return {
+                    searchModalView,
+                    handleOpenSearchModal,
+                    handleCloseSearchModal
+                }
+            }
+
             const init = () => (
                 <>
                     {editModal().editModalView()}
+                    {searchModal().searchModalView()}
                 </>
             )
 
             return {
                 editModal,
                 departmentModal,
+                searchModal,
                 init,
             }
         }
 
         const collectionView = () => {
             const {handleOpenModal} = modalView().editModal();
-
-            const handleSearchEmployee = async () => {
-                if (!searchEmployeeCode.trim()) return;
-                setLoading(true);
-                try {
-                    const fetchedEmployee = await employeeService.find(searchEmployeeCode.trim());
-                    setEmployees(fetchedEmployee ? [fetchedEmployee] : []);
-                    setMessage("");
-                    setError("");
-                } catch (error: any) {
-                    showErrorMessage(`社員の検索に失敗しました: ${error?.message}`, setError);
-                } finally {
-                    setLoading(false);
-                }
-            };
+            const {handleOpenSearchModal} = modalView().searchModal();
 
             const handleDeleteEmployee = async (empCode: string) => {
                 try {
@@ -303,10 +351,10 @@ export const Employee: React.FC = () => {
                     <EmployeeCollectionView
                         error={error}
                         message={message}
-                        searchItems={{searchEmployeeCode, setSearchEmployeeCode, handleSearchEmployee}}
+                        searchItems={{searchEmployeeCriteria, setSearchEmployeeCriteria, handleOpenSearchModal}}
                         headerItems={{handleOpenModal, handleCheckToggleCollection:handleCheckAllEmployees, handleDeleteCheckedCollection:handleDeleteCheckedEmployees}}
                         collectionItems={{employees, handleDeleteEmployee, handleCheckEmployee}}
-                        pageNationItems={{pageNation, fetchEmployees:fetchEmployees.load}}
+                        pageNationItems={{pageNation, fetchEmployees:fetchEmployees.load, criteria}}
                     />
             )
         };

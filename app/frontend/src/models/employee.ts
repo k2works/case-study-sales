@@ -53,6 +53,17 @@ export type EmployeeResourceType = {
     deleteFlag: boolean;
 }
 
+export type EmployeeCriteriaType = {
+    empCode?: string;
+    empNameFirst?: string;
+    empNameLast?: string;
+    empNameFirstKana?: string;
+    empNameLastKana?: string;
+    tel?: string;
+    fax?: string;
+    departmentCode?: string;
+}
+
 export const mapToEmployeeResource = (employee: EmployeeType): EmployeeResourceType => {
     return {
         empCode: employee.empCode.value,
@@ -68,3 +79,25 @@ export const mapToEmployeeResource = (employee: EmployeeType): EmployeeResourceT
         deleteFlag: employee.deleteFlag
     };
 };
+
+export const mapToEmployeeCriteriaResource = (criteria: EmployeeCriteriaType) => {
+    const isEmpty = (value: unknown) => value === "" || value === null || value === undefined;
+    type Resource = {
+        empCode?: string;
+        empName?: string;
+        empNameKana?: string;
+        tel?: string;
+        fax?: string;
+        departmentCode?: string;
+    }
+    const resource: Resource = {
+        ...(isEmpty(criteria.empCode) ? {} : {empCode: criteria.empCode}),
+        ...(isEmpty(criteria.empNameFirst) || isEmpty(criteria.empNameLast) ? {} : {empName: criteria.empNameFirst + " " + criteria.empNameLast}),
+        ...(isEmpty(criteria.empNameFirstKana) || isEmpty(criteria.empNameLastKana) ? {} : {empNameKana: criteria.empNameFirstKana + " " + criteria.empNameLastKana}),
+        ...(isEmpty(criteria.tel) ? {} : {tel: criteria.tel}),
+        ...(isEmpty(criteria.fax) ? {} : {fax: criteria.fax}),
+        ...(isEmpty(criteria.departmentCode) ? {} : {departmentCode: criteria.departmentCode}),
+    };
+
+    return resource;
+}

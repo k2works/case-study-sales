@@ -2,7 +2,7 @@ import {useState} from "react";
 import {
     DepartmentCriteriaType,
     DepartmentIdType,
-    DepartmentType,
+    DepartmentType, EmployeeCriteriaType,
     EmployeeType,
     LowerType,
     ProductCategoryType,
@@ -112,7 +112,7 @@ export const useEmployee = () => {
 
     const [employees, setEmployees] = useState<EmployeeType[]>([]);
     const [newEmployee, setNewEmployee] = useState<EmployeeType>(initialEmployee);
-    const [searchEmployeeCode, setSearchEmployeeCode] = useState<string>("");
+    const [searchEmployeeCriteria, setSearchEmployeeCriteria] = useState<EmployeeCriteriaType>({});
 
     const employeeService = EmployeeService();
 
@@ -122,8 +122,8 @@ export const useEmployee = () => {
         newEmployee,
         setNewEmployee,
         setEmployees,
-        searchEmployeeCode,
-        setSearchEmployeeCode,
+        searchEmployeeCriteria,
+        setSearchEmployeeCriteria,
         employeeService,
     };
 }

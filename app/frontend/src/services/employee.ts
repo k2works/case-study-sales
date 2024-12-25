@@ -1,6 +1,13 @@
 import Config from "./config";
 import Utils from "./utils";
-import {EmployeeFetchType, EmployeeType, mapToEmployeeResource} from "../models";
+import {
+    DepartmentCriteriaType, DepartmentFetchType,
+    EmployeeCriteriaType,
+    EmployeeFetchType,
+    EmployeeType,
+    mapToEmployeeCriteriaResource,
+    mapToEmployeeResource
+} from "../models";
 
 export interface EmployeeServiceType {
     select: (page?: number, pageSize?: number) => Promise<EmployeeFetchType>;
@@ -8,7 +15,7 @@ export interface EmployeeServiceType {
     create: (employee: EmployeeType) => Promise<void>;
     update: (employee: EmployeeType) => Promise<void>;
     destroy: (empCode: string) => Promise<void>;
-    search: (pageSize: number, empName: string, page: number) => Promise<EmployeeType[]>;
+    search: (criteria:EmployeeCriteriaType, page?: number, pageSize?: number) => Promise<EmployeeFetchType>;
 }
 export const EmployeeService = () => {
     const config = Config();
@@ -17,14 +24,7 @@ export const EmployeeService = () => {
 
 
     const select = async (page?: number, pageSize?: number): Promise<EmployeeFetchType> => {
-        let url = endPoint;
-        if (pageSize && page) {
-            url = url + "?pageSize=" + pageSize + "&page=" + page;
-        } else if (pageSize) {
-            url = url + "?pageSize=" + pageSize;
-        } else if (page) {
-            url = url + "?page=" + page;
-        }
+        const url = Utils.buildUrlWithPaging(endPoint, page, pageSize);
         return await apiUtils.fetchGet(url);
     };
 
@@ -42,9 +42,9 @@ export const EmployeeService = () => {
         return await apiUtils.fetchPut(url, mapToEmployeeResource(employee));
     };
 
-    const search = async (pageSize = 10, empName: string, page = 1): Promise<EmployeeType[]> => {
-        const url = `${endPoint}/search?pageSize=${pageSize}&empName=${encodeURIComponent(empName)}&page=${page}`;
-        return await apiUtils.fetchGet(url);
+    const search = (criteria: EmployeeCriteriaType, page?: number, pageSize?: number): Promise<EmployeeFetchType> => {
+        const url = Utils.buildUrlWithPaging(`${endPoint}/search`, page, pageSize);
+        return apiUtils.fetchPost(url, mapToEmployeeCriteriaResource(criteria));
     };
 
     const destroy = async (empCode: string): Promise<void> => {
