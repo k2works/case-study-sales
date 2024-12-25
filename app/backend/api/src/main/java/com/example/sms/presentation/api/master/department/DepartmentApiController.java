@@ -145,7 +145,7 @@ public class DepartmentApiController {
     @Operation(summary = "部門を検索する", description = "部門を検索する")
     @PostMapping("/search")
     public ResponseEntity<?> search(
-            @RequestBody DepartmentResource resource,
+            @RequestBody DepartmentCriteriaResource resource,
             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
@@ -176,7 +176,7 @@ public class DepartmentApiController {
                                 employeeResource.getFax(),
                                 employeeResource.getOccuCode()
                         ))
-                        .collect(Collectors.toList());
+                        .toList();
     }
 
     private static List<Employee> getDeleteFilteredEmployees(DepartmentResource departmentResource) {
@@ -191,7 +191,7 @@ public class DepartmentApiController {
                                 employeeResource.getFax(),
                                 employeeResource.getOccuCode()
                         ))
-                        .collect(Collectors.toList());
+                        .toList();
     }
 }
 
