@@ -1,6 +1,12 @@
 import Config from "./config";
 import Utils from "./utils";
-import {BomFetchType, mapToProductResource, ProductFetchType, ProductType} from "../models";
+import {
+    BomFetchType, mapToProductCriteriaResource,
+    mapToProductResource,
+    ProductCriteriaType,
+    ProductFetchType,
+    ProductType
+} from "../models";
 
 export interface ProductServiceType {
     select: (page?: number, pageSize?: number) => Promise<ProductFetchType>;
@@ -9,7 +15,7 @@ export interface ProductServiceType {
     create: (product: ProductType) => Promise<void>;
     update: (product: ProductType) => Promise<void>;
     destroy: (productCode: string) => Promise<void>;
-    search: (pageSize: number, productName: string, page: number) => Promise<ProductType[]>;
+    search: (criteria:ProductCriteriaType, page?: number, pageSize?: number) => Promise<ProductFetchType>;
 }
 
 export const ProductService = (): ProductServiceType => {
@@ -18,26 +24,12 @@ export const ProductService = (): ProductServiceType => {
     const endPoint = `${config.apiUrl}/products`;
 
     const select = async (page?: number, pageSize?: number): Promise<ProductFetchType> => {
-        let url = endPoint;
-        if (pageSize && page) {
-            url = url + "?pageSize=" + pageSize + "&page=" + page;
-        } else if (pageSize) {
-            url = url + "?pageSize=" + pageSize;
-        } else if (page) {
-            url = url + "?page=" + page;
-        }
+        const url = Utils.buildUrlWithPaging(endPoint, page, pageSize);
         return await apiUtils.fetchGet(url);
     };
 
     const selectBoms = async (page?: number, pageSize?: number): Promise<BomFetchType> => {
-        let url = endPoint + "/boms";
-        if (pageSize && page) {
-            url = url + "?pageSize=" + pageSize + "&page=" + page;
-        } else if (pageSize) {
-            url = url + "?pageSize=" + pageSize;
-        } else if (page) {
-            url = url + "?page=" + page;
-        }
+        const url = Utils.buildUrlWithPaging(endPoint, page, pageSize);
         return await apiUtils.fetchGet(url);
     };
 
@@ -55,14 +47,14 @@ export const ProductService = (): ProductServiceType => {
         return await apiUtils.fetchPut(url, mapToProductResource(product));
     };
 
+    const search = (criteria: ProductCriteriaType, page?: number, pageSize?: number): Promise<ProductFetchType> => {
+        const url = Utils.buildUrlWithPaging(`${endPoint}/search`, page, pageSize);
+        return apiUtils.fetchPost(url, mapToProductCriteriaResource(criteria));
+    };
+
     const destroy = async (productCode: string): Promise<void> => {
         const url = `${endPoint}/${productCode}`;
         await apiUtils.fetchDelete(url);
-    };
-
-    const search = async (pageSize = 10, productName: string, page = 1): Promise<ProductType[]> => {
-        const url = `${endPoint}/search?pageSize=${pageSize}&productName=${encodeURIComponent(productName)}&page=${page}`;
-        return await apiUtils.fetchGet(url);
     };
 
     return {

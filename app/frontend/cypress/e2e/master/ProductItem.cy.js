@@ -45,7 +45,8 @@ describe('商品管理', () => {
     context('商品検索', () => {
         it('検索', () => {
             openProductPage();
-            cy.get('#search-input').type('99999001');
+            cy.get('#search').click();
+            cy.get('#productCode').type('99999001');
             cy.get('#search-all').click();
             cy.get('.collection-object-item-content-name').contains('テスト商品正式名');
         });
@@ -54,7 +55,8 @@ describe('商品管理', () => {
     context('商品登録情報編集', () => {
         it('登録情報編集', () => {
             openProductPage();
-            cy.get('#search-input').type('99999001');
+            cy.get('#search').click();
+            cy.get('#productCode').type('99999001');
             cy.get('#search-all').click();
             cy.get('#edit').click();
 
@@ -82,7 +84,8 @@ describe('商品管理', () => {
     context('商品削除', () => {
         it('削除', () => {
             openProductPage();
-            cy.get('#search-input').type('99999001');
+            cy.get('#search').click();
+            cy.get('#productCode').type('99999001');
             cy.get('#search-all').click();
             cy.get('#delete').click();
             cy.get('#message').contains('商品を削除しました。');

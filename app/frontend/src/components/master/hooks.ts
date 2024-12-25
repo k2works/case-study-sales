@@ -4,7 +4,7 @@ import {
     DepartmentType, EmployeeCriteriaType,
     EmployeeType,
     LowerType, ProductCategoryCriteriaType,
-    ProductCategoryType,
+    ProductCategoryType, ProductCriteriaType,
     ProductType,
     SlitYnType
 } from "../../models";
@@ -209,7 +209,7 @@ export const useProduct = () => {
 
     const [products, setProducts] = useState<ProductType[]>([]);
     const [newProduct, setNewProduct] = useState<ProductType>(initialProduct);
-    const [searchProductCode, setSearchProductCode] = useState<string>("");
+    const [searchProductCriteria, setSearchProductCriteria] = useState<ProductCriteriaType>({});
     const productService = ProductService();
 
     return {
@@ -218,8 +218,8 @@ export const useProduct = () => {
         newProduct,
         setNewProduct,
         setProducts,
-        searchProductCode,
-        setSearchProductCode,
+        searchProductCriteria,
+        setSearchProductCriteria,
         productService
     };
 };
