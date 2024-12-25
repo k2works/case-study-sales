@@ -83,19 +83,23 @@ export const mapToEmployeeResource = (employee: EmployeeType): EmployeeResourceT
 export const mapToEmployeeCriteriaResource = (criteria: EmployeeCriteriaType) => {
     const isEmpty = (value: unknown) => value === "" || value === null || value === undefined;
     type Resource = {
-        empCode?: string;
-        empName?: string;
-        empNameKana?: string;
-        tel?: string;
-        fax?: string;
+        employeeCode?: string;
+        employeeFirstName?: string;
+        employeeLastName?: string;
+        employeeFirstNameKana?: string;
+        employeeLastNameKana?: string;
+        phoneNumber?: string;
+        faxNumber?: string;
         departmentCode?: string;
     }
     const resource: Resource = {
-        ...(isEmpty(criteria.empCode) ? {} : {empCode: criteria.empCode}),
-        ...(isEmpty(criteria.empNameFirst) || isEmpty(criteria.empNameLast) ? {} : {empName: criteria.empNameFirst + " " + criteria.empNameLast}),
-        ...(isEmpty(criteria.empNameFirstKana) || isEmpty(criteria.empNameLastKana) ? {} : {empNameKana: criteria.empNameFirstKana + " " + criteria.empNameLastKana}),
-        ...(isEmpty(criteria.tel) ? {} : {tel: criteria.tel}),
-        ...(isEmpty(criteria.fax) ? {} : {fax: criteria.fax}),
+        ...(isEmpty(criteria.empCode) ? {} : {employeeCode: criteria.empCode}),
+        ...(isEmpty(criteria.empNameFirst) ? {} : {employeeFirstName: criteria.empNameFirst}),
+        ...(isEmpty(criteria.empNameLast) ? {} : {employeeLastName: criteria.empNameLast}),
+        ...(isEmpty(criteria.empNameFirstKana) ? {} : {employeeFirstNameKana: criteria.empNameFirstKana}),
+        ...(isEmpty(criteria.empNameLastKana) ? {} : {employeeLastNameKana: criteria.empNameLastKana}),
+        ...(isEmpty(criteria.tel) ? {} : {phoneNumber: criteria.tel}),
+        ...(isEmpty(criteria.fax) ? {} : {faxNumber: criteria.fax}),
         ...(isEmpty(criteria.departmentCode) ? {} : {departmentCode: criteria.departmentCode}),
     };
 
