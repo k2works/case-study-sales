@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 商品分類API
@@ -116,14 +115,17 @@ public class ProductCategoryApiController {
 
     @Operation(summary = "商品分類を検索する")
     @PostMapping("/search")
-    public ResponseEntity<?> search(@RequestBody ProductCategoryCriteriaResource resource) {
+    public ResponseEntity<?> search(
+            @RequestBody ProductCategoryCriteriaResource resource,
+            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
             ProductCategoryCriteria criteria = ProductCategoryCriteria.builder()
                     .productCategoryCode(resource.getProductCategoryCode())
                     .productCategoryName(resource.getProductCategoryName())
                     .productCategoryPath(resource.getProductCategoryPath())
                     .build();
-            PageInfo<ProductCategory> result = productService.searchWithPageInfo(criteria);
+            PageInfo<ProductCategory> result = productService.searchProductCategoryWithPageInfo(criteria);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
