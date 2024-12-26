@@ -1,6 +1,6 @@
 package com.example.sms.presentation.api.system.download;
 
-import com.example.sms.domain.model.system.download.DownloadCondition;
+import com.example.sms.domain.model.system.download.DownloadCriteria;
 import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
 import com.example.sms.domain.type.audit.ApplicationExecutionProcessType;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
@@ -38,7 +38,7 @@ public class DownloadApiController {
     @PostMapping("/count")
     public ResponseEntity<?> count(@RequestBody DownloadConditionResource resource) {
         try {
-            DownloadCondition condition = DownloadConditionResource.of(resource.getTarget());
+            DownloadCriteria condition = DownloadConditionResource.of(resource.getTarget());
             return ResponseEntity.ok(downloadService.count(condition));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
@@ -49,7 +49,7 @@ public class DownloadApiController {
     @PostMapping("/download")
     @AuditAnnotation(process = ApplicationExecutionProcessType.データダウンロード, type = ApplicationExecutionHistoryType.同期)
     public void download(@RequestBody DownloadConditionResource resource, HttpServletResponse response) {
-        DownloadCondition condition = DownloadConditionResource.of(resource.getTarget());
+        DownloadCriteria condition = DownloadConditionResource.of(resource.getTarget());
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + condition.getFileName());
         try (OutputStreamWriter streamWriter = new OutputStreamWriter(response.getOutputStream(), "Windows-31J")) {
             downloadService.download(streamWriter, condition);

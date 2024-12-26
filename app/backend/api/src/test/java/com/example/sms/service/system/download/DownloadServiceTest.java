@@ -41,7 +41,7 @@ public class DownloadServiceTest {
         @Test
         @DisplayName("件数取得")
         void testCount() {
-            DownloadCondition condition = Department.of();
+            DownloadCriteria condition = Department.of();
             int result = downloadService.count(condition);
 
             assertEquals(3, result);
@@ -50,7 +50,7 @@ public class DownloadServiceTest {
         @Test
         @DisplayName("データダウンロード変換")
         void testDownload() {
-            DownloadCondition condition = Department.of();
+            DownloadCriteria condition = Department.of();
             List<?> rawResult = downloadService.convert(condition);
 
             List<DepartmentDownloadCSV> result = rawResult.stream()
@@ -72,7 +72,7 @@ public class DownloadServiceTest {
         @Test
         @DisplayName("件数取得")
         void testCount() {
-            DownloadCondition condition = Employee.of();
+            DownloadCriteria condition = Employee.of();
             int result = downloadService.count(condition);
 
             assertEquals(3, result);
@@ -81,7 +81,7 @@ public class DownloadServiceTest {
         @Test
         @DisplayName("データダウンロード変換")
         void testDownload() {
-            DownloadCondition condition = Employee.of();
+            DownloadCriteria condition = Employee.of();
             List<?> rawResult = downloadService.convert(condition);
 
             List<EmployeeDownloadCSV> result = rawResult.stream()
@@ -107,7 +107,7 @@ public class DownloadServiceTest {
         @Test
         @DisplayName("件数取得")
         void testCount() {
-            DownloadCondition condition = Product.of();
+            DownloadCriteria condition = Product.of();
             int result = downloadService.count(condition);
 
             assertEquals(3, result);
@@ -116,7 +116,7 @@ public class DownloadServiceTest {
         @Test
         @DisplayName("データダウンロード変換")
         void testDownload() {
-            DownloadCondition condition = Product.of();
+            DownloadCriteria condition = Product.of();
             List<?> rawResult = downloadService.convert(condition);
 
             List<ProductDownloadCSV> result = rawResult.stream()

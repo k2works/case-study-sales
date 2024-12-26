@@ -1,7 +1,7 @@
 package com.example.sms.infrastructure.datasource.system.download;
 
 import com.example.sms.domain.model.master.employee.EmployeeList;
-import com.example.sms.domain.model.system.download.DownloadCondition;
+import com.example.sms.domain.model.system.download.DownloadCriteria;
 import com.example.sms.infrastructure.datasource.master.employee.EmployeeCustomEntity;
 import com.example.sms.infrastructure.datasource.master.employee.EmployeeCustomMapper;
 import com.example.sms.infrastructure.datasource.master.employee.EmployeeEntityMapper;
@@ -30,13 +30,13 @@ public class EmployeeCSVDataSource implements EmployeeCSVRepository {
     }
 
     @Override
-    public int countBy(DownloadCondition condition) {
+    public int countBy(DownloadCriteria condition) {
         List<EmployeeCustomEntity> employeeEntities = employeeCustomMapper.selectAll();
         return employeeEntities.size();
     }
 
     @Override
-    public EmployeeList selectBy(DownloadCondition condition) {
+    public EmployeeList selectBy(DownloadCriteria condition) {
         List<EmployeeCustomEntity> employeeEntities = employeeCustomMapper.selectAll();
         return new EmployeeList(employeeEntities.stream()
                 .map(employeeEntityMapper::mapToDomainModel)

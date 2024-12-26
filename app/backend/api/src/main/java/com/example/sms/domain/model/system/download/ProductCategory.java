@@ -11,7 +11,7 @@ import lombok.Value;
 @Value
 @RequiredArgsConstructor
 @NoArgsConstructor(force = true)
-public class ProductCategory implements DownloadCondition{
+public class ProductCategory implements DownloadCriteria {
     DownloadTarget target;
     String fileName;
 

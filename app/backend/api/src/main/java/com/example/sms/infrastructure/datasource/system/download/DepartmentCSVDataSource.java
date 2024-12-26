@@ -1,9 +1,8 @@
 package com.example.sms.infrastructure.datasource.system.download;
 
 import com.example.sms.domain.model.master.department.DepartmentList;
-import com.example.sms.domain.model.system.download.DownloadCondition;
+import com.example.sms.domain.model.system.download.DownloadCriteria;
 import com.example.sms.infrastructure.datasource.autogen.mapper.部門マスタMapper;
-import com.example.sms.infrastructure.datasource.autogen.model.部門マスタ;
 import com.example.sms.infrastructure.datasource.master.department.DepartmentCustomEntity;
 import com.example.sms.infrastructure.datasource.master.department.DepartmentCustomMapper;
 import com.example.sms.infrastructure.datasource.master.department.DepartmentEntityMapper;
@@ -35,13 +34,13 @@ public class DepartmentCSVDataSource implements DepartmentCSVRepository {
     }
 
     @Override
-    public int countBy(DownloadCondition condition) {
+    public int countBy(DownloadCriteria condition) {
         List<DepartmentCustomEntity> departmentEntities = departmentCustomMapper.selectAll();
         return departmentEntities.size();
     }
 
     @Override
-    public DepartmentList selectBy(DownloadCondition condition) {
+    public DepartmentList selectBy(DownloadCriteria condition) {
         List<DepartmentCustomEntity> departmentEntities = departmentCustomMapper.selectAll();
         return new DepartmentList(departmentEntities.stream()
                 .map(departmentEntityMapper::mapToDomainModel)

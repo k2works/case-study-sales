@@ -1,8 +1,7 @@
 package com.example.sms.infrastructure.datasource.system.download;
 
 import com.example.sms.domain.model.master.product.ProductList;
-import com.example.sms.domain.model.system.download.DownloadCondition;
-import com.example.sms.infrastructure.datasource.autogen.mapper.商品マスタMapper;
+import com.example.sms.domain.model.system.download.DownloadCriteria;
 import com.example.sms.infrastructure.datasource.master.product.ProductCustomEntity;
 import com.example.sms.infrastructure.datasource.master.product.ProductCustomMapper;
 import com.example.sms.infrastructure.datasource.master.product.ProductEntityMapper;
@@ -31,13 +30,13 @@ public class ProductCSVDataSource implements ProductCSVRepository {
     }
 
     @Override
-    public int countBy(DownloadCondition condition) {
+    public int countBy(DownloadCriteria condition) {
         List<ProductCustomEntity> productEntities = productCustomMapper.selectAll();
         return productEntities.size();
     }
 
     @Override
-    public ProductList selectBy(DownloadCondition condition) {
+    public ProductList selectBy(DownloadCriteria condition) {
         List<ProductCustomEntity> productEntities = productCustomMapper.selectAll();
         return new ProductList(productEntities.stream()
                 .map(productEntityMapper::mapToDomainModel)

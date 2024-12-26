@@ -21,7 +21,7 @@ public class DownloadConditionResource implements Serializable {
     private DownloadTarget target;
     private String fileName;
 
-    public static DownloadCondition of(DownloadTarget target) {
+    public static DownloadCriteria of(DownloadTarget target) {
         return switch (target) {
             case 部門 -> Department.of();
             case 社員 -> Employee.of();
