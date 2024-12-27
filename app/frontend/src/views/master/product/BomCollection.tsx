@@ -7,7 +7,7 @@ interface BomCollectionProps {
     handleDelete: (product: BomType) => void;
 }
 
-export const BomCollectionView: React.FC<BomCollectionProps> = ({
+export const BomCollectionAddListView: React.FC<BomCollectionProps> = ({
                                                                     boms,
                                                                     handleAdd,
                                                                     handleDelete,

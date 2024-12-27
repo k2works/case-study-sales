@@ -9,7 +9,7 @@ interface ProductCollectionProps {
     handleDelete: (product: ProductType) => void;
 }
 
-export const ProductCollectionListView: React.FC<ProductCollectionProps> = ({products, handleAdd, handleDelete}) => {
+export const ProductCollectionAddListView: React.FC<ProductCollectionProps> = ({products, handleAdd, handleDelete}) => {
     return (
         <div className="collection-view-object-container">
             <div className="collection-view-container">

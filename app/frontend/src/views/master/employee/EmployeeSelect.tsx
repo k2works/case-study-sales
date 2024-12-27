@@ -9,7 +9,7 @@ interface EmployeeCollectionProps {
     handleDelete: (employee: EmployeeType) => void;
 }
 
-export const EmployeeCollectionListView: React.FC<EmployeeCollectionProps> = ({employees, handleAdd, handleDelete}) => {
+export const EmployeeCollectionAddListView: React.FC<EmployeeCollectionProps> = ({employees, handleAdd, handleDelete}) => {
     return (
         <div className="collection-view-object-container">
             <div className="collection-view-container">

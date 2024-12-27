@@ -10,10 +10,10 @@ import {ProductType} from "../../models";
 import {ProductCollectionView} from "../../views/master/product/ProductCollection.tsx";
 import {ProductSingleView} from "../../views/master/product/ProductSingle.tsx";
 import {ProductCollectionSelectView} from "../../views/master/product/ProductSelect.tsx";
-import {SubstituteProductCollectionView} from "../../views/master/product/SubstituteProductCollection.tsx";
-import {BomCollectionView} from "../../views/master/product/BomCollection.tsx";
+import {SubstituteProductCollectionAddListView} from "../../views/master/product/SubstituteProductCollection.tsx";
+import {BomCollectionAddListView} from "../../views/master/product/BomCollection.tsx";
 import {
-    CustomerSpecificSellingPriceCollectionView
+    CustomerSpecificSellingPriceCollectionAddListView
 } from "../../views/master/product/CustomerSpecificSellingPriceCollection.tsx";
 
 export const ProductItem: React.FC = () => {
@@ -163,7 +163,7 @@ export const ProductItem: React.FC = () => {
                                             <Tab>顧客別販売単価</Tab>
                                         </TabList>
                                         <TabPanel>
-                                            <SubstituteProductCollectionView
+                                            <SubstituteProductCollectionAddListView
                                                 substituteProducts={newProduct.substituteProduct}
                                                 handleAdd={() => {
                                                     setMessage("");
@@ -182,7 +182,7 @@ export const ProductItem: React.FC = () => {
                                             />
                                         </TabPanel>
                                         <TabPanel>
-                                            <BomCollectionView
+                                            <BomCollectionAddListView
                                                 boms={newProduct.boms}
                                                 handleAdd={() => {
                                                     setMessage("");
@@ -201,7 +201,7 @@ export const ProductItem: React.FC = () => {
                                             />
                                         </TabPanel>
                                         <TabPanel>
-                                            <CustomerSpecificSellingPriceCollectionView
+                                            <CustomerSpecificSellingPriceCollectionAddListView
                                                 prices={newProduct.customerSpecificSellingPrices}
                                                 handleAdd={() => {
                                                     setNewProduct({

@@ -8,7 +8,7 @@ import Modal from "react-modal";
 import {usePageNation} from "../../views/application/PageNation.tsx";
 import {SiteLayout} from "../../views/SiteLayout.tsx";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
-import {EmployeeCollectionListView, EmployeeCollectionSelectView} from "../../views/master/employee/EmployeeSelect.tsx";
+import {EmployeeCollectionAddListView, EmployeeCollectionSelectView} from "../../views/master/employee/EmployeeSelect.tsx";
 import {DepartmentCollectionView} from "../../views/master/department/DepartmentCollection.tsx";
 import {DepartmentSingleView} from "../../views/master/department/DepartmentSingle.tsx";
 
@@ -101,6 +101,15 @@ export const Department: React.FC = () => {
                             bodyOpenClassName="modal-open"
                         >
                             {singleView()}
+
+                            {isEditing && (
+                                <EmployeeCollectionAddListView
+                                    employees={newDepartment.employees.filter((e) => !e.deleteFlag)}
+                                    handleAdd={employeeModal().handleOpenEmployeeModal}
+                                    handleDelete={employeeModal().handleDeleteEmployee}
+                                />
+                            )
+                            }
                         </Modal>
                     )
                 }
@@ -296,7 +305,6 @@ export const Department: React.FC = () => {
 
         const singleView = () => {
             const {handleCloseModal} = modalView().editModal();
-            const {handleOpenEmployeeModal, handleDeleteEmployee} = modalView().employeeModal();
 
             const handleCreateOrUpdateDepartment = async () => {
                 const validateDepartment = (): boolean => {
@@ -331,7 +339,6 @@ export const Department: React.FC = () => {
             };
 
             return (
-                <>
                     <DepartmentSingleView
                         error={error}
                         message={message}
@@ -339,16 +346,6 @@ export const Department: React.FC = () => {
                         headerItems={{handleCreateOrUpdateDepartment, handleCloseModal}}
                         formItems={{newDepartment, setNewDepartment}}
                     />
-
-                    {isEditing && (
-                        <EmployeeCollectionListView
-                            employees={newDepartment.employees.filter((e) => !e.deleteFlag)}
-                            handleAdd={handleOpenEmployeeModal}
-                            handleDelete={handleDeleteEmployee}
-                        />
-                    )
-                    }
-                </>
             );
         };
 

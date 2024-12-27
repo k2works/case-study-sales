@@ -10,7 +10,7 @@ import {useFetchProductCategories, useFetchProducts, useProduct, useProductCateg
 import Modal from "react-modal";
 import {ProductCategoryCollectionView} from "../../views/master/product/ProductCategoryCollection.tsx";
 import {ProductCategorySingleView} from "../../views/master/product/ProductCategorySingle.tsx";
-import {ProductCollectionListView, ProductCollectionSelectView} from "../../views/master/product/ProductSelect.tsx";
+import {ProductCollectionAddListView, ProductCollectionSelectView} from "../../views/master/product/ProductSelect.tsx";
 
 export const ProductCategory: React.FC = () => {
     const Content: React.FC = () => {
@@ -109,10 +109,8 @@ export const ProductCategory: React.FC = () => {
                         >
                             {singleView()}
 
-                            {productModal().productModalView()}
-
                             {isEditing && (
-                                <ProductCollectionListView
+                                <ProductCollectionAddListView
                                     products={newProductCategory.products.filter((e) => !e.deleteFlag)}
                                     handleAdd={() => {
                                         setMessage("");
@@ -201,6 +199,7 @@ export const ProductCategory: React.FC = () => {
                 return (
                     <>
                         {editModal().editModalView()}
+                        {productModal().productModalView()}
                     </>
                 )
             }
