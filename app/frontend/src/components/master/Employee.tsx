@@ -8,7 +8,7 @@ import {EmployeeType} from "../../models";
 import {usePageNation} from "../../views/application/PageNation.tsx";
 import {SiteLayout} from "../../views/SiteLayout.tsx";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
-import {useFetchUsers, useUser} from "../system/hooks.ts";
+import {useFetchUsers, useUser} from "../system/hooks";
 import {DepartmentCollectionSelectView, DepartmentSelectView} from "../../views/master/department/DepartmentSelect.tsx";
 import {UserCollectionSelectView, UserSelectView} from "../../views/system/user/UserSelect.tsx";
 import {EmployeeCollectionView} from "../../views/master/employee/EmployeeCollection.tsx";
@@ -115,7 +115,6 @@ export const Employee: React.FC = () => {
 
                 const editModalView = () => {
                     return(
-                        <>
                             <Modal
                                 isOpen={modalIsOpen}
                                 onRequestClose={handleCloseModal}
@@ -136,7 +135,6 @@ export const Employee: React.FC = () => {
                                     handleSelect={() => setUserModalIsOpen(true)}
                                 />
                             </Modal>
-                        </>
                     )
                 }
 

@@ -1,7 +1,7 @@
 import {useState} from "react";
-import {UserAccountType} from "../../models";
-import {UserService, UserServiceType} from "../../services/user";
-import {PageNationType} from "../../views/application/PageNation.tsx";
+import {UserAccountType} from "../../../models";
+import {UserService, UserServiceType} from "../../../services/user.ts";
+import {PageNationType} from "../../../views/application/PageNation.tsx";
 
 export const useUser = () => {
     const initialUser = {
