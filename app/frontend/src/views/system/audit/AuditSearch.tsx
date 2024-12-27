@@ -4,7 +4,7 @@ import {
     ApplicationExecutionProcessFlag,
     ApplicationExecutionProcessType,
     AuditCriteriaType
-} from "../../../models/audit.ts";
+} from "../../../models/system/audit.ts";
 import {FormSelect, SingleViewHeaderItem} from "../../Common.tsx";
 
 interface FormProps {

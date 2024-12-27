@@ -4,7 +4,7 @@ import {Message} from "../../../components/application/Message.tsx";
 import {
     AuditType,
     AuditCriteriaType
-} from "../../../models/audit.ts";
+} from "../../../models/system/audit.ts";
 import {convertToDateTimeInputFormat} from "../../../components/application/utils.ts";
 import {Search} from "../../Common.tsx";
 

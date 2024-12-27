@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {useMessage} from "../application/Message.tsx";
-import {DownloadService} from "../../services/download.ts";
-import {DownloadTarget} from "../../models/download.ts";
+import {DownloadService} from "../../services/system/download.ts";
+import {DownloadTarget} from "../../models/system/download.ts";
 import {SiteLayout} from "../../views/SiteLayout.tsx";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
 import {SingleView} from "../../views/system/download/DownloadSingle.tsx";
@@ -32,7 +32,7 @@ export const Download: React.FC = () => {
                 const blob = await downloadService.download(condition);
                 const currentDate = new Date().toISOString().split("T")[0];
                 const symbol = getSymbolByValue(DownloadTarget, selectedTarget);
-                const symbolName = getKeyBySymbol(DownloadTarget, symbol?.toString() as DownloadTarget) || "unknown";
+                const symbolName = getKeyBySymbol(DownloadTarget, symbol?.toString() as DownloadTarget) ?? "unknown";
                 const downloadFileName = `${symbolName}-${currentDate}.csv`;
 
                 const url = window.URL.createObjectURL(blob);

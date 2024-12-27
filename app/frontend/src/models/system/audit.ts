@@ -1,5 +1,5 @@
-import {PageNationType} from "../views/application/PageNation.tsx";
-import {UserAccountType} from "./system/user.ts";
+import {PageNationType} from "../../views/application/PageNation.tsx";
+import {UserAccountType} from "./user.ts";
 
 export enum ApplicationExecutionProcessType {
     ユーザー登録 = "ユーザー登録",

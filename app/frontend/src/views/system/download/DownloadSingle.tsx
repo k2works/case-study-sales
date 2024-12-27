@@ -1,4 +1,4 @@
-import {DownloadTarget} from "../../../models/download.ts";
+import {DownloadTarget} from "../../../models/system/download.ts";
 import React from "react";
 import {Message} from "../../../components/application/Message.tsx";
 import {getKeyBySymbol} from "../../../models/utils.ts";
@@ -16,7 +16,7 @@ const Form: React.FC<FormProps> = ({selectedTarget, setSelectedTarget}) => {
             </label>
             <select
                 id="downloadTarget"
-                value={selectedTarget || ""}
+                value={selectedTarget ?? ""}
                 onChange={(e) => setSelectedTarget(e.target.value as DownloadTarget)}
                 className="dropdown"
             >
@@ -54,8 +54,6 @@ export const SingleView: React.FC<SingleViewProps> = ({
     const { handleDownload } = headerActions;
 
     return (
-        <>
-
             <div className="single-view-object-container">
                 <Message error={error} message={message}/>
                 <div className="single-view-header">
@@ -84,6 +82,5 @@ export const SingleView: React.FC<SingleViewProps> = ({
                     </div>
                 </div>
             </div>
-        </>
     );
 };

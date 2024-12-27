@@ -1,6 +1,6 @@
-import Config from "./config";
-import Utils from "./utils";
-import {AuditFetchType, AuditType, mapToCriteriaResource, AuditCriteriaType} from "../models/audit.ts";
+import Config from "../config.ts";
+import Utils from "../utils.ts";
+import {AuditFetchType, AuditType, mapToCriteriaResource, AuditCriteriaType} from "../../models/system/audit.ts";
 
 export interface AuditServiceType {
     select: (page?: number, pageSize?: number) => Promise<AuditFetchType>;

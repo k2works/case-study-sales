@@ -1,6 +1,6 @@
-import Config from "./config";
-import Utils from "./utils";
-import {DownloadConditionType, mapToDownloadResource} from "../models/download.ts";
+import Config from "../config.ts";
+import Utils from "../utils.ts";
+import {DownloadConditionType, mapToDownloadResource} from "../../models/system/download.ts";
 
 export interface DownloadServiceType {
     download: (condition: DownloadConditionType) => Promise<Blob>;

@@ -1,7 +1,7 @@
 import React from "react";
 import {Message} from "../../../components/application/Message.tsx";
 import {FormInput, FormTextarea, SingleViewHeaderItem} from "../../Common.tsx";
-import {AuditType} from "../../../models/audit.ts";
+import {AuditType} from "../../../models/system/audit.ts";
 import {convertToDateTimeInputFormat} from "../../../components/application/utils.ts";
 
 interface HeaderProps {
@@ -96,7 +96,7 @@ const Form: React.FC<AuditFormProps> = ({newAudit, setNewAudit}) => {
                 label="プロセス詳細"
                 id="processDetails"
                 className="single-view-content-item-form-item-input"
-                value={newAudit.processDetails || ""}
+                value={newAudit.processDetails ?? ""}
                 onChange={(e) =>
                     setNewAudit({
                         ...newAudit,

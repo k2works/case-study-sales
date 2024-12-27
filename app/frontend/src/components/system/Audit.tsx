@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useMessage} from "../application/Message.tsx";
 import {usePageNation} from "../../views/application/PageNation.tsx";
 import {useModal} from "../application/hooks.ts";
-import {AuditType, AuditCriteriaType} from "../../models/audit.ts";
+import {AuditType, AuditCriteriaType} from "../../models/system/audit.ts";
 import {SiteLayout} from "../../views/SiteLayout.tsx";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
 import {AuditCollectionView} from "../../views/system/audit/AuditCollection.tsx";
