@@ -1,6 +1,6 @@
-import Config from "./config.ts";
-import Utils from "./utils.ts";
-import {mapToUserAccountResource, UserAccountType, UserFetchType} from "../models";
+import Config from "../config.ts";
+import Utils from "../utils.ts";
+import {mapToUserAccountResource, UserAccountType, UserFetchType} from "../../models";
 
 export interface UserServiceType {
     select: (page?: number, pageSize?: number) => Promise<UserFetchType>;
@@ -8,7 +8,7 @@ export interface UserServiceType {
     create: (user: UserAccountType) => Promise<string>;
     update: (user: UserAccountType) => Promise<string>;
     destroy: (userId: string) => Promise<string>;
-    search: (pageSize: number, code: string, page: number) => Promise<UserFetchType>;
+    search: (code: string, page: number, pageSize: number) => Promise<UserFetchType>;
 }
 export const UserService = () => {
     const config = Config();
@@ -42,7 +42,7 @@ export const UserService = () => {
         return await apiUtils.fetchPut(url, mapToUserAccountResource(user));
     };
 
-    const search = async (pageSize = 10, code: string, page = 1): Promise<any> => {
+    const search = async (code: string, page = 1, pageSize = 10): Promise<UserFetchType> => {
         const url = `${endPoint}/search?pageSize=${pageSize}&code=${code}&page=${page}`;
 
         return await apiUtils.fetchGet(url);

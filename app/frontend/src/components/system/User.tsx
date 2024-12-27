@@ -130,7 +130,6 @@ export const User: React.FC = () => {
             };
 
             return (
-                <>
                     <UserCollectionView
                         error={error}
                         message={message}
@@ -139,7 +138,6 @@ export const User: React.FC = () => {
                         collectionItems={{ users, handleDeleteUser }}
                         pageNationItems={{ pageNation, fetchUsers: fetchUsers.load }}
                     />
-                </>
             )
         }
 
