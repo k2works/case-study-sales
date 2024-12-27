@@ -1,30 +1,8 @@
 import React from 'react';
-import {Message} from "../../../components/application/Message.tsx";
-import {PageNation, PageNationType} from "../../application/PageNation.tsx";
-import {ProductCriteriaType, ProductType} from "../../../models";
-import {Search} from "../../Common.tsx";
+import {ProductCriteriaType, ProductType} from "../../../../models";
+import {PageNation, PageNationType} from "../../../application/PageNation.tsx";
+import {Search} from "../../../Common.tsx";
 import {Message} from "../../../../components/application/Message.tsx";
-import {PageNation} from "../../../application/PageNation.tsx";
-import {ProductType} from "../../../../models";
-
-interface SearchBarProps {
-    searchValue: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    onSearch: () => void;
-}
-
-const SearchBar: React.FC<SearchBarProps> = ({searchValue, onChange, onSearch}) => (
-    <div className="search-container">
-        <input
-            id="search-input"
-            type="text"
-            placeholder="商品コードで検索"
-            value={searchValue}
-            onChange={onChange}
-        />
-        <button className="action-button" id="search-all" onClick={onSearch}>検索</button>
-    </div>
-);
 
 interface ProductItemProps {
     product: ProductType;
