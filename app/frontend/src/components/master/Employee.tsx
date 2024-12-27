@@ -3,7 +3,7 @@ import Modal from "react-modal";
 import {showErrorMessage} from "../application/utils.ts";
 import {useMessage} from "../application/Message.tsx";
 import {useModal} from "../application/hooks.ts";
-import {useDepartment, useEmployee, useFetchDepartments, useFetchEmployees} from "./hooks.ts";
+import {useDepartment, useEmployee, useFetchDepartments, useFetchEmployees} from "./hooks";
 import {EmployeeType} from "../../models";
 import {usePageNation} from "../../views/application/PageNation.tsx";
 import {SiteLayout} from "../../views/SiteLayout.tsx";

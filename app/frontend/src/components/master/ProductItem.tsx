@@ -5,7 +5,7 @@ import {useMessage} from "../application/Message.tsx";
 import {useModal, useTab} from "../application/hooks.ts";
 import {usePageNation} from "../../views/application/PageNation.tsx";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
-import {useFetchBoms, useFetchProducts, useFetchSubstitutes, useProduct} from "./hooks.ts";
+import {useFetchBoms, useFetchProducts, useFetchSubstitutes, useProduct} from "./hooks";
 import {ProductType} from "../../models";
 import {ProductCollectionView} from "../../views/master/product/ProductCollection.tsx";
 import {ProductSingleView} from "../../views/master/product/ProductSingle.tsx";
@@ -156,7 +156,6 @@ export const ProductItem: React.FC = () => {
                             {bomModal().bomEditModalView()}
 
                             {isEditing && (
-                                <>
                                     <Tabs>
                                         <TabList>
                                             <Tab>代替品</Tab>
@@ -228,7 +227,6 @@ export const ProductItem: React.FC = () => {
                                             />
                                         </TabPanel>
                                     </Tabs>
-                                </>
                             )
                             }
                         </Modal>
@@ -423,7 +421,6 @@ export const ProductItem: React.FC = () => {
             }
 
             return (
-                <>
                     <ProductCollectionView
                         error={error}
                         message={message}
@@ -432,7 +429,6 @@ export const ProductItem: React.FC = () => {
                         contentItems={{products, handleDeleteProduct, handleCheckProduct}}
                         pageNationItems={{pageNation, fetchProducts: fetchProducts.load}}
                     />
-                </>
             )
         };
 
