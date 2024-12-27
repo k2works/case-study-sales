@@ -71,11 +71,13 @@ public class ProductDataSource implements ProductRepository {
 
     private void updateProduct(Product product, Optional<ProductCustomEntity> productEntity, String username) {
         商品マスタ updateProductEntity = productEntityMapper.mapToEntity(product);
-        updateProductEntity.set作成日時(productEntity.get().get作成日時());
-        updateProductEntity.set作成者名(productEntity.get().get作成者名());
-        updateProductEntity.set更新日時(LocalDateTime.now());
-        updateProductEntity.set更新者名(username);
-        updateProductEntity.setVersion(productEntity.get().getVersion());
+        if (productEntity.isPresent()) {
+            updateProductEntity.set作成日時(productEntity.get().get作成日時());
+            updateProductEntity.set作成者名(productEntity.get().get作成者名());
+            updateProductEntity.set更新日時(LocalDateTime.now());
+            updateProductEntity.set更新者名(username);
+            updateProductEntity.setVersion(productEntity.get().getVersion());
+        }
         int updateCount = productMapper.updateByPrimaryKey(updateProductEntity);
         if (updateCount == 0) {
             throw new ObjectOptimisticLockingFailureException(商品マスタ.class, product.getProductCode().getValue());
