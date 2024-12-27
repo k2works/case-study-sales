@@ -14,8 +14,19 @@ import {
     CustomerSpecificSellingPriceCollectionView
 } from "../../views/master/product/CustomerSpecificSellingPriceCollection.tsx";
 import {ProductSearchSingleView} from "../../views/master/product/ProductSearch.tsx";
-import {ProductCriteriaType, ProductType} from "../../models";
-import {useFetchBoms, useFetchProducts, useFetchSubstitutes, useProduct} from "./hooks";
+import {ProductCategoryCriteriaType, ProductCriteriaType, ProductType} from "../../models";
+import {
+    useFetchBoms,
+    useFetchProductCategories,
+    useFetchProducts,
+    useFetchSubstitutes,
+    useProduct,
+    useProductCategory
+} from "./hooks";
+import {
+    ProductCategoryCollectionSelectView,
+    ProductCategorySelectView
+} from "../../views/master/product/ProductCategorySelect.tsx";
 
 export const ProductItem: React.FC = () => {
     const Content: React.FC = () => {
@@ -24,6 +35,8 @@ export const ProductItem: React.FC = () => {
         const {pageNation, setPageNation, criteria, setCriteria} = usePageNation<ProductCriteriaType>();
         const {pageNation: substitutePageNation, setPageNation: setSubstitutePageNation} = usePageNation();
         const {pageNation: bomPageNation, setPageNation: setBomPageNation} = usePageNation();
+        const {pageNation: productCategoryPageNation, setPageNation: setProductCategoryPageNation} = usePageNation<ProductCategoryCriteriaType>();
+
         const {modalIsOpen: searchModalIsOpen, setModalIsOpen: setSearchModalIsOpen,} = useModal();
 
         const {
@@ -47,6 +60,11 @@ export const ProductItem: React.FC = () => {
             setModalIsOpen: setBomModalIsOpen,
             setIsEditing: setBomIsEditing,
             setEditId: setBomEditId
+        } = useModal();
+
+        const {
+            modalIsOpen: productCategoryModalIsOpen,
+            setModalIsOpen: setProductCategoryModalIsOpen
         } = useModal();
 
         const {
@@ -99,13 +117,29 @@ export const ProductItem: React.FC = () => {
             bomService
         );
 
+        const {
+            productCategories,
+            setProductCategories,
+            productCategoryService
+        } = useProductCategory();
+
+        const fetchProductCategories = useFetchProductCategories(
+            setLoading,
+            setProductCategories,
+            setProductCategoryPageNation,
+            setError,
+            showErrorMessage,
+            productCategoryService
+        );
+
         useEffect(() => {
             (async () => {
                 try {
                     await Promise.all([
                         fetchProducts.load(),
                         fetchSubstitutes.load(),
-                        fetchBoms.load()
+                        fetchBoms.load(),
+                        fetchProductCategories.load()
                     ]);
                 } catch (error: any) {
                     showErrorMessage(`商品情報の取得に失敗しました: ${error?.message}`, setError);
@@ -339,6 +373,50 @@ export const ProductItem: React.FC = () => {
                 }
             }
 
+            const productCategoryModal = () => {
+                const handleCloseProductModal = () => {
+                    setError("");
+                    setProductModalIsOpen(false);
+                    setProductEditId(null);
+                }
+
+                const productCategorySearchModalView = () => {
+                    return (
+                        <Modal
+                            isOpen={productCategoryModalIsOpen}
+                            onRequestClose={handleCloseProductModal}
+                            contentLabel="商品情報を入力"
+                            className="modal"
+                            overlayClassName="modal-overlay"
+                            bodyOpenClassName="modal-open"
+                        >
+                            {
+                                <ProductCategoryCollectionSelectView
+                                    productCategories={productCategories}
+                                    handleSelect={(productCategory) => {
+                                        setSearchProductCriteria(
+                                            {
+                                                ...searchProductCriteria,
+                                                productCategoryCode: productCategory.productCategoryCode.value
+                                            }
+                                        )
+                                        setProductCategoryModalIsOpen(false);
+                                    }}
+                                    handleClose={() => setProductCategoryModalIsOpen(false)}
+                                    pageNation={productCategoryPageNation}
+                                    fetchProductCategories={fetchProductCategories.load}
+                                />
+                            }
+                        </Modal>
+
+                    )
+                }
+
+                return {
+                    productCategorySearchModalView
+                }
+            }
+
             const searchModal = () => {
                 const handleOpenSearchModal = () => {
                     setSearchModalIsOpen(true);
@@ -359,33 +437,40 @@ export const ProductItem: React.FC = () => {
                             bodyOpenClassName="modal-open"
                         >
                             {
-                                <ProductSearchSingleView
-                                    criteria={searchProductCriteria}
-                                    setCondition={setSearchProductCriteria}
-                                    handleSelect={async () => {
-                                        if (!searchProductCriteria) {
-                                            return;
-                                        }
-                                        setLoading(true);
-                                        try {
-                                            const result = await productService.search(searchProductCriteria);
-                                            setProducts(result ? result.list : []);
-                                            if (result.list.length === 0) {
-                                                showErrorMessage(`検索結果は0件です`, setError);
-                                            } else {
-                                                setCriteria(searchProductCriteria);
-                                                setPageNation(result);
-                                                setMessage("");
-                                                setError("");
+                                <>
+                                    <ProductSearchSingleView
+                                        criteria={searchProductCriteria}
+                                        setCondition={setSearchProductCriteria}
+                                        handleSelect={async () => {
+                                            if (!searchProductCriteria) {
+                                                return;
                                             }
-                                        } catch (error: any) {
-                                            showErrorMessage(`実行履歴情報の検索に失敗しました: ${error?.message}`, setError);
-                                        } finally {
-                                            setLoading(false);
-                                        }
-                                    }}
-                                    handleClose={handleCloseSearchModal}
-                                />
+                                            setLoading(true);
+                                            try {
+                                                const result = await productService.search(searchProductCriteria);
+                                                setProducts(result ? result.list : []);
+                                                if (result.list.length === 0) {
+                                                    showErrorMessage(`検索結果は0件です`, setError);
+                                                } else {
+                                                    setCriteria(searchProductCriteria);
+                                                    setPageNation(result);
+                                                    setMessage("");
+                                                    setError("");
+                                                }
+                                            } catch (error: any) {
+                                                showErrorMessage(`実行履歴情報の検索に失敗しました: ${error?.message}`, setError);
+                                            } finally {
+                                                setLoading(false);
+                                            }
+                                        }}
+                                        handleClose={handleCloseSearchModal}
+                                    />
+
+                                    {productCategoryModal().productCategorySearchModalView()}
+                                    <ProductCategorySelectView
+                                        handleSelect={() => setProductCategoryModalIsOpen(true)}
+                                    />
+                                </>
                             }
                         </Modal>
                     )
