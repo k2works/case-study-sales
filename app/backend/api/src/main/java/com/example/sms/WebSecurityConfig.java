@@ -23,14 +23,17 @@ public class WebSecurityConfig {
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
         return new AuthTokenFilter();
     }
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.formLogin(login -> login
@@ -47,13 +50,14 @@ public class WebSecurityConfig {
         ).csrf(csrf -> csrf.ignoringRequestMatchers(PathRequest.toH2Console())
         ).csrf(csrf -> csrf.ignoringRequestMatchers("/api/**")
         ).cors(cors -> cors
-                .configurationSource(request -> new org.springframework.web.cors.CorsConfiguration() {{
-                            setAllowedOriginPatterns(java.util.List.of("*"));
-                            setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-                            setAllowedHeaders(java.util.List.of("*"));
-                            setAllowCredentials(true);
-                        }}
-                )
+                .configurationSource(request -> {
+                    org.springframework.web.cors.CorsConfiguration corsConfiguration = new org.springframework.web.cors.CorsConfiguration();
+                    corsConfiguration.setAllowedOriginPatterns(java.util.List.of("*"));
+                    corsConfiguration.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                    corsConfiguration.setAllowedHeaders(java.util.List.of("*"));
+                    corsConfiguration.setAllowCredentials(true);
+                    return corsConfiguration;
+                })
         ).authorizeHttpRequests(authz -> authz
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
@@ -63,7 +67,6 @@ public class WebSecurityConfig {
                 //).sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 //).exceptionHandling(ex -> ex.authenticationEntryPoint(new AuthEntryPointJwt())
         );
-
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
