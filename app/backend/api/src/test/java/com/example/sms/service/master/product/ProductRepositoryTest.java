@@ -10,16 +10,39 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
+@Testcontainers
+@ActiveProfiles("container")
 @DisplayName("商品レポジトリ")
 public class ProductRepositoryTest {
+    @Container
+    private static final PostgreSQLContainer<?> postgres =
+            new PostgreSQLContainer<>(DockerImageName.parse("postgres:15"))
+                    .withUsername("root")
+                    .withPassword("password")
+                    .withDatabaseName("postgres");
+
+    @DynamicPropertySource
+    static void setup(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", postgres::getJdbcUrl);
+    }
+
     @Autowired
     private ProductRepository repository;
 
@@ -109,6 +132,39 @@ public class ProductRepositoryTest {
             repository.deleteById(product);
 
             assertEquals(0, repository.selectAll().size());
+        }
+
+        @Test
+        @DisplayName("楽観ロックが正常に動作すること")
+        void testOptimisticLockingWithThreads() throws InterruptedException {
+            // Productを新規作成して保存
+            Product product1 = getProduct("99999999");
+            repository.save(product1);
+
+            // 同じIDのProductをもう一度データベースから取得
+            repository.findById("99999999").orElseThrow();
+
+            // スレッド1でproduct1を更新
+            Thread thread1 = new Thread(() -> {
+                Product updatedProduct1 = getProduct("99999999");
+                repository.save(updatedProduct1);
+            });
+
+            // スレッド2でproduct2を更新し、例外を確認
+            Thread thread2 = new Thread(() -> {
+                Product updatedProduct2 = getProduct("99999999");
+                assertThrows(OptimisticLockingFailureException.class, () -> {
+                    repository.save(updatedProduct2);
+                });
+            });
+
+            // スレッドを開始
+            thread1.start();
+            thread2.start();
+
+            // スレッドの終了を待機
+            thread1.join();
+            thread2.join();
         }
     }
 
