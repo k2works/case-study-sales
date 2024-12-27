@@ -4,7 +4,7 @@ import {
     LowerType,
     SlitYnType
 } from "../../../models";
-import {EmployeeService, EmployeeServiceType} from "../../../services/employee.ts";
+import {EmployeeService, EmployeeServiceType} from "../../../services/master/employee.ts";
 import {PageNationType} from "../../../views/application/PageNation.tsx";
 import {useFetchEntities} from "../../application/hooks.ts";
 

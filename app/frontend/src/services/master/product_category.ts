@@ -1,6 +1,6 @@
-import Config from "./config";
-import Utils from "./utils";
-import {mapToProductCategoryResource, ProductCategoryType} from "../models";
+import Config from "../config.ts";
+import Utils from "../utils.ts";
+import {mapToProductCategoryResource, ProductCategoryType} from "../../models";
 
 export interface ProductCategoryServiceType {
     select: (page?: number, pageSize?: number) => Promise<any>;
@@ -8,7 +8,7 @@ export interface ProductCategoryServiceType {
     create: (category: ProductCategoryType) => Promise<void>;
     update: (category: ProductCategoryType) => Promise<void>;
     destroy: (categoryCode: string) => Promise<void>;
-    search: (pageSize: number, categoryName: string, page: number) => Promise<ProductCategoryType[]>;
+    search: (categoryName: string, page: number, pageSize: number) => Promise<ProductCategoryType[]>;
 }
 
 export const ProductCategoryService = (): ProductCategoryServiceType => {
@@ -47,7 +47,7 @@ export const ProductCategoryService = (): ProductCategoryServiceType => {
         await apiUtils.fetchDelete(url);
     };
 
-    const search = async (pageSize = 10, categoryName: string, page = 1): Promise<ProductCategoryType[]> => {
+    const search = async (categoryName: string, page = 1, pageSize = 10): Promise<ProductCategoryType[]> => {
         const url = `${endPoint}/search?pageSize=${pageSize}&categoryName=${encodeURIComponent(categoryName)}&page=${page}`;
         return await apiUtils.fetchGet(url);
     };

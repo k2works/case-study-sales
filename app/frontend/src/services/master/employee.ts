@@ -1,6 +1,6 @@
-import Config from "./config";
-import Utils from "./utils";
-import {EmployeeFetchType, EmployeeType, mapToEmployeeResource} from "../models";
+import Config from "../config.ts";
+import Utils from "../utils.ts";
+import {EmployeeFetchType, EmployeeType, mapToEmployeeResource} from "../../models";
 
 export interface EmployeeServiceType {
     select: (page?: number, pageSize?: number) => Promise<EmployeeFetchType>;
@@ -8,7 +8,7 @@ export interface EmployeeServiceType {
     create: (employee: EmployeeType) => Promise<void>;
     update: (employee: EmployeeType) => Promise<void>;
     destroy: (empCode: string) => Promise<void>;
-    search: (pageSize: number, empName: string, page: number) => Promise<EmployeeType[]>;
+    search: (empName: string, page: number, pageSize: number) => Promise<EmployeeType[]>;
 }
 export const EmployeeService = () => {
     const config = Config();
@@ -42,7 +42,7 @@ export const EmployeeService = () => {
         return await apiUtils.fetchPut(url, mapToEmployeeResource(employee));
     };
 
-    const search = async (pageSize = 10, empName: string, page = 1): Promise<EmployeeType[]> => {
+    const search = async (empName: string, page = 1, pageSize = 10): Promise<EmployeeType[]> => {
         const url = `${endPoint}/search?pageSize=${pageSize}&empName=${encodeURIComponent(empName)}&page=${page}`;
         return await apiUtils.fetchGet(url);
     };

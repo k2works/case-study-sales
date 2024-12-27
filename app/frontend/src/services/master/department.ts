@@ -1,7 +1,7 @@
-import Config from "./config";
-import Utils from "./utils";
-import {DepartmentFetchType, DepartmentType, mapToDepartmentResource} from "../models";
-import {toISOStringWithTimezone} from "../components/application/utils.ts";
+import Config from "../config.ts";
+import Utils from "../utils.ts";
+import {DepartmentFetchType, DepartmentType, mapToDepartmentResource} from "../../models";
+import {toISOStringWithTimezone} from "../../components/application/utils.ts";
 
 export interface DepartmentServiceType {
     select: (page?: number, pageSize?: number) => Promise<DepartmentFetchType>;
@@ -9,7 +9,7 @@ export interface DepartmentServiceType {
     create: (department: DepartmentType) => Promise<void>;
     update: (department: DepartmentType) => Promise<void>;
     destroy: (deptCode: string, departmentStartDate: string) => Promise<void>;
-    search: (pageSize: number, code: string, page: number) => Promise<DepartmentType[]>;
+    search: (code: string, page: number, pageSize: number) => Promise<DepartmentType[]>;
 }
 export const DepartmentService = () => {
     const config = Config();
@@ -44,7 +44,7 @@ export const DepartmentService = () => {
         return await apiUtils.fetchPut(url, mapToDepartmentResource(department));
     };
 
-    const search = async (pageSize = 10, code: string, page = 1): Promise<DepartmentType[]> => {
+    const search = async (code: string, page = 1, pageSize = 10): Promise<DepartmentType[]> => {
         const url = `${endPoint}/search?pageSize=${pageSize}&code=${code}&page=${page}`;
         return await apiUtils.fetchGet(url);
     };

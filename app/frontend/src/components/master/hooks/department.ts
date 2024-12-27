@@ -5,7 +5,7 @@ import {
     LowerType,
     SlitYnType
 } from "../../../models";
-import {DepartmentService, DepartmentServiceType} from "../../../services/department.ts";
+import {DepartmentService, DepartmentServiceType} from "../../../services/master/department.ts";
 import {PageNationType} from "../../../views/application/PageNation.tsx";
 import {useFetchEntities} from "../../application/hooks.ts";
 

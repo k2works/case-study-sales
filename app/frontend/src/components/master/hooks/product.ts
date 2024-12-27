@@ -4,8 +4,8 @@ import {
     ProductType
 } from "../../../models";
 import {PageNationType} from "../../../views/application/PageNation.tsx";
-import {ProductCategoryService, ProductCategoryServiceType} from "../../../services/product_category.ts";
-import {ProductService, ProductServiceType} from "../../../services/product.ts";
+import {ProductCategoryService, ProductCategoryServiceType} from "../../../services/master/product_category.ts";
+import {ProductService, ProductServiceType} from "../../../services/master/product.ts";
 import {useFetchEntities} from "../../application/hooks.ts";
 
 export const useProductCategory = () => {

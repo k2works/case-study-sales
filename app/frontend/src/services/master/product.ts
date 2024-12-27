@@ -1,6 +1,6 @@
-import Config from "./config";
-import Utils from "./utils";
-import {BomFetchType, mapToProductResource, ProductFetchType, ProductType} from "../models";
+import Config from "../config.ts";
+import Utils from "../utils.ts";
+import {BomFetchType, mapToProductResource, ProductFetchType, ProductType} from "../../models";
 
 export interface ProductServiceType {
     select: (page?: number, pageSize?: number) => Promise<ProductFetchType>;
@@ -9,7 +9,7 @@ export interface ProductServiceType {
     create: (product: ProductType) => Promise<void>;
     update: (product: ProductType) => Promise<void>;
     destroy: (productCode: string) => Promise<void>;
-    search: (pageSize: number, productName: string, page: number) => Promise<ProductType[]>;
+    search: (productName: string, page: number, pageSize: number) => Promise<ProductType[]>;
 }
 
 export const ProductService = (): ProductServiceType => {
@@ -60,7 +60,7 @@ export const ProductService = (): ProductServiceType => {
         await apiUtils.fetchDelete(url);
     };
 
-    const search = async (pageSize = 10, productName: string, page = 1): Promise<ProductType[]> => {
+    const search = async (productName: string, page = 1, pageSize = 10): Promise<ProductType[]> => {
         const url = `${endPoint}/search?pageSize=${pageSize}&productName=${encodeURIComponent(productName)}&page=${page}`;
         return await apiUtils.fetchGet(url);
     };
