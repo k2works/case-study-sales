@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {SubstituteProductType} from "../../../models";
+import {SubstituteProductType} from "../../../../models";
 
 interface SubstituteProductCollectionProps {
     substituteProducts: SubstituteProductType[];

@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {CustomerSpecificSellingPriceType} from "../../../models";
+import {CustomerSpecificSellingPriceType} from "../../../../models";
 
 interface CustomerSpecificSellingPriceCollectionProps {
     prices: CustomerSpecificSellingPriceType[];
