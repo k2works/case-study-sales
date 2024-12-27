@@ -1,6 +1,6 @@
 import {useState} from "react";
+import {UserService, UserServiceType} from "../../../services/system/user.ts";
 import {UserAccountType} from "../../../models";
-import {UserService, UserServiceType} from "../../../services/user.ts";
 import {PageNationType} from "../../../views/application/PageNation.tsx";
 
 export const useUser = () => {

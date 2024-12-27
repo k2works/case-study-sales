@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import {AuthUserContextType, useAuthUserContext} from "../../providers/AuthUser.tsx";
-import AuthService from "../../services/auth.ts";
+import AuthService from "../../services/system/auth.ts";
 import {LoginSingleView} from "../../views/system/auth/Login.tsx";
-import {CustomLocation, DataType, RoleType, UserType} from "../../models";
+import {CustomLocation, DataType, UserType} from "../../models";
 
 const DEFAULT_USER_ID = "U000003";
 const DEFAULT_PASSWORD = "a234567Z";
@@ -35,7 +35,7 @@ export const Login: React.FC = () => {
             const user: UserType = {
                 userId: data.userId,
                 token: data.accessToken,
-                roles: data.roles as RoleType[],
+                roles: data.roles,
             };
             authUser.signIn(user, () => {
                 navigate(fromPathName, {replace: true});

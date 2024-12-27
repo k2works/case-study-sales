@@ -1,5 +1,5 @@
-import Config from "./config.ts";
-import {APIResponse} from "../models";
+import Config from "../config.ts";
+import {APIResponse} from "../../models";
 
 const AuthService = () => {
     const config = Config();
