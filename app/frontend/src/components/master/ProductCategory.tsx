@@ -12,6 +12,10 @@ import {ProductCategoryCollectionView} from "../../views/master/product/ProductC
 import {ProductCategorySingleView} from "../../views/master/product/ProductCategorySingle.tsx";
 import {ProductCollectionListView, ProductCollectionSelectView} from "../../views/master/product/ProductSelect.tsx";
 import {ProductCategorySearchSingleView} from "../../views/master/product/ProductCategorySearch.tsx";
+import {ProductCategoryCollectionView} from "../../views/master/product/category/ProductCategoryCollection.tsx";
+import {ProductCategorySingleView} from "../../views/master/product/category/ProductCategorySingle.tsx";
+import {ProductCollectionSelectView} from "../../views/master/product/item/ProductSelect.tsx";
+import {ProductCollectionAddListView} from "../../views/master/product/item/ProductCollection.tsx";
 
 export const ProductCategory: React.FC = () => {
     const Content: React.FC = () => {
@@ -111,10 +115,8 @@ export const ProductCategory: React.FC = () => {
                         >
                             {singleView()}
 
-                            {productModal().productModalView()}
-
                             {isEditing && (
-                                <ProductCollectionListView
+                                <ProductCollectionAddListView
                                     products={newProductCategory.products.filter((e) => !e.deleteFlag)}
                                     handleAdd={() => {
                                         setMessage("");
@@ -262,6 +264,7 @@ export const ProductCategory: React.FC = () => {
                 return (
                     <>
                         {editModal().editModalView()}
+                        {productModal().productModalView()}
                         {searchModal().searchModalView()}
                     </>
                 )

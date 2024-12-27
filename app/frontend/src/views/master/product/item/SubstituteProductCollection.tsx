@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {SubstituteProductType} from "../../../models";
+import {SubstituteProductType} from "../../../../models";
 
 interface SubstituteProductCollectionProps {
     substituteProducts: SubstituteProductType[];
@@ -7,7 +7,7 @@ interface SubstituteProductCollectionProps {
     handleDelete: (product: SubstituteProductType) => void;
 }
 
-export const SubstituteProductCollectionView: React.FC<SubstituteProductCollectionProps> = ({
+export const SubstituteProductCollectionAddListView: React.FC<SubstituteProductCollectionProps> = ({
                                                                                                 substituteProducts,
                                                                                                 handleAdd,
                                                                                                 handleDelete,

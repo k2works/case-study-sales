@@ -3,6 +3,28 @@ import {Message} from "../../../components/application/Message.tsx";
 import {PageNation, PageNationType} from "../../application/PageNation.tsx";
 import {ProductCriteriaType, ProductType} from "../../../models";
 import {Search} from "../../Common.tsx";
+import {Message} from "../../../../components/application/Message.tsx";
+import {PageNation} from "../../../application/PageNation.tsx";
+import {ProductType} from "../../../../models";
+
+interface SearchBarProps {
+    searchValue: string;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onSearch: () => void;
+}
+
+const SearchBar: React.FC<SearchBarProps> = ({searchValue, onChange, onSearch}) => (
+    <div className="search-container">
+        <input
+            id="search-input"
+            type="text"
+            placeholder="商品コードで検索"
+            value={searchValue}
+            onChange={onChange}
+        />
+        <button className="action-button" id="search-all" onClick={onSearch}>検索</button>
+    </div>
+);
 
 interface ProductItemProps {
     product: ProductType;
@@ -145,3 +167,51 @@ export const ProductCollectionView: React.FC<ProductCollectionViewProps> = ({
         </div>
     </div>
 );
+
+interface ProductCollectionAddListProps {
+    products: ProductType[];
+    handleAdd: () => void;
+    handleDelete: (product: ProductType) => void;
+}
+
+export const ProductCollectionAddListView: React.FC<ProductCollectionAddListProps> = ({products, handleAdd, handleDelete}) => {
+    return (
+        <div className="collection-view-object-container">
+            <div className="collection-view-container">
+                <div className="collection-view-header">
+                    <div className="single-view-header-item">
+                        <h2 className="single-view-title">商品</h2>
+                    </div>
+                </div>
+                <div className="collection-view-content">
+                    <div className="button-container">
+                        <button className="action-button" onClick={handleAdd} id="add">追加</button>
+                    </div>
+                    <div className="collection-object-container-modal">
+                        <ul className="collection-object-list">
+                            {products.map(product => (
+                                <li className="collection-object-item" key={product.productCode.value}>
+                                    <div className="collection-object-item-content" data-id={product.productCode.value}>
+                                        <div className="collection-object-item-content-details">商品コード</div>
+                                        <div
+                                            className="collection-object-item-content-name">{product.productCode.value}</div>
+                                    </div>
+                                    <div className="collection-object-item-content" data-id={product.productCode.value}>
+                                        <div className="collection-object-item-content-details">商品名</div>
+                                        <div
+                                            className="collection-object-item-content-name">{product.productName.productFormalName}</div>
+                                    </div>
+                                    <div className="collection-object-item-actions" data-id={product.productCode.value}>
+                                        <button className="action-button" onClick={() => handleDelete(product)}>削除
+                                        </button>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+

@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {CustomerSpecificSellingPriceType} from "../../../models";
+import {CustomerSpecificSellingPriceType} from "../../../../models";
 
 interface CustomerSpecificSellingPriceCollectionProps {
     prices: CustomerSpecificSellingPriceType[];
@@ -7,7 +7,7 @@ interface CustomerSpecificSellingPriceCollectionProps {
     handleDelete: (price: CustomerSpecificSellingPriceType) => void;
 }
 
-export const CustomerSpecificSellingPriceCollectionView: React.FC<CustomerSpecificSellingPriceCollectionProps> = ({
+export const CustomerSpecificSellingPriceCollectionAddListView: React.FC<CustomerSpecificSellingPriceCollectionProps> = ({
                                                                                                                       prices,
                                                                                                                       handleAdd,
                                                                                                                       handleDelete,

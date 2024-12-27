@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {BomType} from "../../../models";
+import {BomType} from "../../../../models";
 
 interface BomCollectionProps {
     boms: BomType[];
@@ -7,7 +7,7 @@ interface BomCollectionProps {
     handleDelete: (product: BomType) => void;
 }
 
-export const BomCollectionView: React.FC<BomCollectionProps> = ({
+export const BomCollectionAddListView: React.FC<BomCollectionProps> = ({
                                                                     boms,
                                                                     handleAdd,
                                                                     handleDelete,
