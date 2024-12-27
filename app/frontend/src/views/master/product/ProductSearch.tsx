@@ -167,7 +167,7 @@ export const ProductSearchSingleView: React.FC<ProductSearchSingleViewProps> = (
         <div className="single-view-object-container">
             <div className="single-view-header">
                 <div>
-                    <SingleViewHeaderItem title={"部門"} subtitle={"検索"}/>
+                    <SingleViewHeaderItem title={"商品アイテム"} subtitle={"検索"}/>
                 </div>
             </div>
             <div className="single-view-container">
