@@ -2,10 +2,11 @@ import Config from "../config.ts";
 import Utils from "../utils.ts";
 import {
     mapToProductCategoryCriteriaResource,
-    mapToProductCategoryResource, ProductCategoryCriteriaType, ProductCategoryFetchType,
+    mapToProductCategoryResource,
+    ProductCategoryCriteriaType,
+    ProductCategoryFetchType,
     ProductCategoryType
-} from "../models";
-import {mapToProductCategoryResource, ProductCategoryType} from "../../models";
+} from "../../models";
 
 export interface ProductCategoryServiceType {
     select: (page?: number, pageSize?: number) => Promise<ProductCategoryFetchType>;

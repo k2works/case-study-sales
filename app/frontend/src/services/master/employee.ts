@@ -1,14 +1,12 @@
 import Config from "../config.ts";
 import Utils from "../utils.ts";
 import {
-    DepartmentCriteriaType, DepartmentFetchType,
     EmployeeCriteriaType,
     EmployeeFetchType,
     EmployeeType,
     mapToEmployeeCriteriaResource,
     mapToEmployeeResource
-} from "../models";
-import {EmployeeFetchType, EmployeeType, mapToEmployeeResource} from "../../models";
+} from "../../models";
 
 export interface EmployeeServiceType {
     select: (page?: number, pageSize?: number) => Promise<EmployeeFetchType>;

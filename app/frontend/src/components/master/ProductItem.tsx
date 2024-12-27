@@ -5,9 +5,6 @@ import {useMessage} from "../application/Message.tsx";
 import {useModal, useTab} from "../application/hooks.ts";
 import {usePageNation} from "../../views/application/PageNation.tsx";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
-import {useFetchBoms, useFetchProducts, useFetchSubstitutes, useProduct} from "./hooks.ts";
-import {ProductCriteriaType, ProductType} from "../../models";
-import {ProductType} from "../../models";
 import {ProductCollectionView} from "../../views/master/product/ProductCollection.tsx";
 import {ProductSingleView} from "../../views/master/product/ProductSingle.tsx";
 import {ProductCollectionSelectView} from "../../views/master/product/ProductSelect.tsx";
@@ -17,6 +14,8 @@ import {
     CustomerSpecificSellingPriceCollectionView
 } from "../../views/master/product/CustomerSpecificSellingPriceCollection.tsx";
 import {ProductSearchSingleView} from "../../views/master/product/ProductSearch.tsx";
+import {ProductCriteriaType, ProductType} from "../../models";
+import {useFetchBoms, useFetchProducts, useFetchSubstitutes, useProduct} from "./hooks";
 
 export const ProductItem: React.FC = () => {
     const Content: React.FC = () => {

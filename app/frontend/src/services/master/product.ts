@@ -6,8 +6,7 @@ import {
     ProductCriteriaType,
     ProductFetchType,
     ProductType
-} from "../models";
-import {BomFetchType, mapToProductResource, ProductFetchType, ProductType} from "../../models";
+} from "../../models";
 
 export interface ProductServiceType {
     select: (page?: number, pageSize?: number) => Promise<ProductFetchType>;

@@ -1,139 +1,9 @@
 import {useState} from "react";
-import {
-    DepartmentCriteriaType,
-    DepartmentType, EmployeeCriteriaType,
-    EmployeeType,
-    LowerType, ProductCategoryCriteriaType,
-    ProductCategoryType, ProductCriteriaType,
-    ProductType,
-    SlitYnType
-} from "../../models";
-import {DepartmentService, DepartmentServiceType} from "../../services/department.ts";
-import {EmployeeService, EmployeeServiceType} from "../../services/employee.ts";
-import {PageNationType} from "../../views/application/PageNation.tsx";
-import {ProductCategoryService, ProductCategoryServiceType} from "../../services/product_category.ts";
-import {ProductService, ProductServiceType} from "../../services/product.ts";
-import {useFetchEntities} from "../application/hooks.ts";
-
-export const useDepartment = () => {
-    const initialDepartment = {
-        departmentId: {deptCode: {value: ""}, departmentStartDate: {value: ""}},
-        endDate: {value: ""},
-        departmentName: "",
-        layer: 0,
-        path: {value: ""},
-        lowerType: LowerType.NO,
-        slitYn: SlitYnType.NO,
-        employees: [],
-        checked: false
-    };
-
-    const [departments, setDepartments] = useState<DepartmentType[]>([]);
-    const [newDepartment, setNewDepartment] = useState<DepartmentType>(initialDepartment);
-    const [searchDepartmentCriteria, setSearchDepartmentCriteria] = useState<DepartmentCriteriaType>({});
-    const departmentService = DepartmentService();
-
-    return {
-        initialDepartment,
-        departments,
-        newDepartment,
-        setNewDepartment,
-        searchDepartmentCriteria,
-        setSearchDepartmentCriteria,
-        setDepartments,
-        departmentService,
-    }
-}
-
-export const useFetchDepartments = (
-    setLoading: (loading: boolean) => void,
-    setList: (list: DepartmentType[]) => void,
-    setPageNation: (pageNation: PageNationType) => void,
-    setError: (error: string) => void,
-    showErrorMessage: (message: string, callback: (error: string) => void) => void,
-    service: DepartmentServiceType
-) => useFetchEntities<DepartmentType, DepartmentServiceType, DepartmentCriteriaType>(setLoading, setList, setPageNation, setError, showErrorMessage, service, "部門情報の取得に失敗しました:");
-
-
-export const useEmployee = () => {
-    const initialEmployee: EmployeeType = {
-        empCode: {value: ""},
-        empName: {
-            firstName: "",
-            lastName: "",
-            firstNameKana: "",
-            lastNameKana: ""
-        },
-        loginPassword: "",
-        tel: {
-            value: "",
-            areaCode: "",
-            localExchange: "",
-            subscriberNumber: ""
-        },
-        fax: {
-            value: "",
-            areaCode: "",
-            localExchange: "",
-            subscriberNumber: ""
-        },
-        occuCode: {
-            value: ""
-        },
-        approvalCode: "",
-        department: {
-            departmentId: {deptCode: {value: ""}, departmentStartDate: {value: ""}},
-            endDate: {value: ""},
-            departmentName: "",
-            layer: 0,
-            path: {value: ""},
-            lowerType: LowerType.NO,
-            slitYn: SlitYnType.NO,
-            employees: [],
-            checked: false
-        },
-        user: {
-            userId: {value: ""},
-            name: {
-                firstName: "",
-                lastName: ""
-            },
-            password: {
-                value: ""
-            },
-            roleName: ""
-        },
-        addFlag: false,
-        deleteFlag: false,
-        checked: false
-    };
-
-    const [employees, setEmployees] = useState<EmployeeType[]>([]);
-    const [newEmployee, setNewEmployee] = useState<EmployeeType>(initialEmployee);
-    const [searchEmployeeCriteria, setSearchEmployeeCriteria] = useState<EmployeeCriteriaType>({});
-
-    const employeeService = EmployeeService();
-
-    return {
-        initialEmployee,
-        employees,
-        newEmployee,
-        setNewEmployee,
-        setEmployees,
-        searchEmployeeCriteria,
-        setSearchEmployeeCriteria,
-        employeeService,
-    };
-}
-
-export const useFetchEmployees = (
-    setLoading: (loading: boolean) => void,
-    setList: (list: EmployeeType[]) => void,
-    setPageNation: (pageNation: PageNationType) => void,
-    setError: (error: string) => void,
-    showErrorMessage: (message: string, callback: (error: string) => void) => void,
-    service: EmployeeServiceType
-) => useFetchEntities<EmployeeType, EmployeeServiceType, EmployeeCriteriaType>(setLoading, setList, setPageNation, setError, showErrorMessage, service, "社員情報の取得に失敗しました:");
+import {ProductCategoryCriteriaType, ProductCategoryType, ProductCriteriaType, ProductType} from "../../../models";
+import {ProductCategoryService, ProductCategoryServiceType} from "../../../services/master/product_category.ts";
+import {PageNationType} from "../../../views/application/PageNation.tsx";
+import {useFetchEntities} from "../../application/hooks.ts";
+import {ProductService, ProductServiceType} from "../../../services/master/product.ts";
 
 export const useProductCategory = () => {
     const initialProductCategory: ProductCategoryType = {
@@ -170,7 +40,7 @@ export const useFetchProductCategories = (
     setError: (error: string) => void,
     showErrorMessage: (message: string, callback: (error: string) => void) => void,
     service: ProductCategoryServiceType
-) => useFetchEntities(setLoading, setList, setPageNation, setError, showErrorMessage, service, "商品分類情報の取得に失敗しました:");
+) => useFetchEntities<ProductCategoryType, ProductCategoryServiceType, ProductCategoryCriteriaType>(setLoading, setList, setPageNation, setError, showErrorMessage, service, "商品分類情報の取得に失敗しました:");
 
 export const useProduct = () => {
     const initialProduct: ProductType = {
@@ -250,4 +120,3 @@ export const useFetchSubstitutes = (
     showErrorMessage: (message: string, callback: (error: string) => void) => void,
     service: ProductServiceType
 ) => useFetchEntities<ProductType, ProductServiceType, ProductCriteriaType>(setLoading, setList, setPageNation, setError, showErrorMessage, service, "代替商品情報の取得に失敗しました:");
-

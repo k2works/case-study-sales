@@ -3,10 +3,7 @@ import Modal from "react-modal";
 import {showErrorMessage} from "../application/utils.ts";
 import {useMessage} from "../application/Message.tsx";
 import {useModal} from "../application/hooks.ts";
-import {useDepartment, useEmployee, useFetchDepartments, useFetchEmployees} from "./hooks.ts";
-import {DepartmentCriteriaType, EmployeeCriteriaType, EmployeeType} from "../../models";
 import {useDepartment, useEmployee, useFetchDepartments, useFetchEmployees} from "./hooks";
-import {EmployeeType} from "../../models";
 import {usePageNation} from "../../views/application/PageNation.tsx";
 import {SiteLayout} from "../../views/SiteLayout.tsx";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
@@ -16,6 +13,7 @@ import {UserCollectionSelectView, UserSelectView} from "../../views/system/user/
 import {EmployeeCollectionView} from "../../views/master/employee/EmployeeCollection.tsx";
 import {EmployeeSingleView} from "../../views/master/employee/EmployeeSingle.tsx";
 import {EmployeeSearchSingleView} from "../../views/master/employee/EmployeeSearch.tsx";
+import {DepartmentCriteriaType, EmployeeCriteriaType, EmployeeType} from "../../models";
 
 export const Employee: React.FC = () => {
     const Content: React.FC = () => {

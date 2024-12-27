@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {
-    DepartmentIdType,
+    DepartmentCriteriaType,
     DepartmentType,
     LowerType,
     SlitYnType
@@ -24,10 +24,7 @@ export const useDepartment = () => {
 
     const [departments, setDepartments] = useState<DepartmentType[]>([]);
     const [newDepartment, setNewDepartment] = useState<DepartmentType>(initialDepartment);
-    const [searchDepartmentId, setSearchDepartmentId] = useState<DepartmentIdType>({
-        deptCode: {value: ""},
-        departmentStartDate: {value: ""}
-    });
+    const [searchDepartmentCriteria, setSearchDepartmentCriteria] = useState<DepartmentCriteriaType>({});
     const departmentService = DepartmentService();
 
     return {
@@ -35,8 +32,8 @@ export const useDepartment = () => {
         departments,
         newDepartment,
         setNewDepartment,
-        searchDepartmentId,
-        setSearchDepartmentId,
+        searchDepartmentCriteria,
+        setSearchDepartmentCriteria,
         setDepartments,
         departmentService,
     }
@@ -49,4 +46,4 @@ export const useFetchDepartments = (
     setError: (error: string) => void,
     showErrorMessage: (message: string, callback: (error: string) => void) => void,
     service: DepartmentServiceType
-) => useFetchEntities(setLoading, setList, setPageNation, setError, showErrorMessage, service, "部門情報の取得に失敗しました:");
+) => useFetchEntities<DepartmentType, DepartmentServiceType, DepartmentCriteriaType>(setLoading, setList, setPageNation, setError, showErrorMessage, service, "部門情報の取得に失敗しました:");

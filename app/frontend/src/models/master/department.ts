@@ -1,10 +1,6 @@
-import {EmployeeResourceType, EmployeeType} from './employee.ts';
-import {toISOStringWithTimezone} from "../../components/application/utils.ts";
+import {EmployeeResourceType, EmployeeType} from "./employee.ts";
 import {PageNationType} from "../../views/application/PageNation.tsx";
-import {EmployeeResourceType, EmployeeType} from './employee';
-import {toISOStringWithTimezone} from "../components/application/utils.ts";
-import {PageNationType} from "../views/application/PageNation.tsx";
-import {AuditCriteriaType} from "./audit.ts";
+import {toISOStringWithTimezone} from "../../components/application/utils.ts";
 
 export type DepartmentIdType = {
     deptCode: { value: string };

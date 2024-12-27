@@ -1,13 +1,13 @@
 import {useState} from "react";
-import {UserService, UserServiceType} from "../../services/user.ts";
-import {UserAccountType} from "../../models";
-import {PageNationType} from "../../views/application/PageNation.tsx";
+import {UserAccountType} from "../../../models";
+import {UserService, UserServiceType} from "../../../services/system/user.ts";
+import {PageNationType} from "../../../views/application/PageNation.tsx";
 import {
     ApplicationExecutionHistoryType,
     ApplicationExecutionProcessFlag,
-    ApplicationExecutionProcessType, AuditType, AuditCriteriaType
-} from "../../models/audit.ts";
-import {AuditService, AuditServiceType} from "../../services/audit.ts";
+    ApplicationExecutionProcessType, AuditCriteriaType, AuditType
+} from "../../../models/audit.ts";
+import {AuditService, AuditServiceType} from "../../../services/audit.ts";
 
 export const useUser = () => {
     const initialUser = {

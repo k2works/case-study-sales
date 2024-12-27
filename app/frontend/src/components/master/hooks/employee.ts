@@ -1,5 +1,6 @@
 import {useState} from "react";
 import {
+    EmployeeCriteriaType,
     EmployeeType,
     LowerType,
     SlitYnType
@@ -63,7 +64,7 @@ export const useEmployee = () => {
 
     const [employees, setEmployees] = useState<EmployeeType[]>([]);
     const [newEmployee, setNewEmployee] = useState<EmployeeType>(initialEmployee);
-    const [searchEmployeeCode, setSearchEmployeeCode] = useState<string>("");
+    const [searchEmployeeCriteria, setSearchEmployeeCriteria] = useState<EmployeeCriteriaType>({});
 
     const employeeService = EmployeeService();
 
@@ -73,8 +74,8 @@ export const useEmployee = () => {
         newEmployee,
         setNewEmployee,
         setEmployees,
-        searchEmployeeCode,
-        setSearchEmployeeCode,
+        searchEmployeeCriteria,
+        setSearchEmployeeCriteria,
         employeeService,
     };
 }
@@ -86,4 +87,4 @@ export const useFetchEmployees = (
     setError: (error: string) => void,
     showErrorMessage: (message: string, callback: (error: string) => void) => void,
     service: EmployeeServiceType
-) => useFetchEntities(setLoading, setList, setPageNation, setError, showErrorMessage, service, "社員情報の取得に失敗しました:");
+) => useFetchEntities<EmployeeType, EmployeeServiceType, EmployeeCriteriaType>(setLoading, setList, setPageNation, setError, showErrorMessage, service, "社員情報の取得に失敗しました:");
