@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useMessage} from "../application/Message.tsx";
 import {useModal} from "../application/hooks.ts";
-import {useDepartment, useEmployee, useFetchDepartments, useFetchEmployees} from "./hooks.ts";
+import {useDepartment, useEmployee, useFetchDepartments, useFetchEmployees} from "./hooks";
 import {showErrorMessage} from "../application/utils.ts";
 import {
     DepartmentCriteriaType,

@@ -170,7 +170,7 @@ export const useFetchProductCategories = (
     setError: (error: string) => void,
     showErrorMessage: (message: string, callback: (error: string) => void) => void,
     service: ProductCategoryServiceType
-) => useFetchEntities<ProductCategoryType, ProductCategoryServiceType, ProductCategoryCriteriaType>(setLoading, setList, setPageNation, setError, showErrorMessage, service, "商品分類情報の取得に失敗しました:");
+) => useFetchEntities(setLoading, setList, setPageNation, setError, showErrorMessage, service, "商品分類情報の取得に失敗しました:");
 
 export const useProduct = () => {
     const initialProduct: ProductType = {

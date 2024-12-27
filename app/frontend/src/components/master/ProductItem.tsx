@@ -7,6 +7,7 @@ import {usePageNation} from "../../views/application/PageNation.tsx";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
 import {useFetchBoms, useFetchProducts, useFetchSubstitutes, useProduct} from "./hooks.ts";
 import {ProductCriteriaType, ProductType} from "../../models";
+import {ProductType} from "../../models";
 import {ProductCollectionView} from "../../views/master/product/ProductCollection.tsx";
 import {ProductSingleView} from "../../views/master/product/ProductSingle.tsx";
 import {ProductCollectionSelectView} from "../../views/master/product/ProductSelect.tsx";

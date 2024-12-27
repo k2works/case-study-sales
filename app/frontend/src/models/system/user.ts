@@ -1,4 +1,4 @@
-import {PageNationType} from "../views/application/PageNation.tsx";
+import {PageNationType} from "../../views/application/PageNation.tsx";
 
 export type UserType = {
     userId: string;

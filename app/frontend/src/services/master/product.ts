@@ -1,5 +1,5 @@
-import Config from "./config";
-import Utils from "./utils";
+import Config from "../config.ts";
+import Utils from "../utils.ts";
 import {
     mapToProductCriteriaResource,
     mapToProductResource,
@@ -7,6 +7,7 @@ import {
     ProductFetchType,
     ProductType
 } from "../models";
+import {BomFetchType, mapToProductResource, ProductFetchType, ProductType} from "../../models";
 
 export interface ProductServiceType {
     select: (page?: number, pageSize?: number) => Promise<ProductFetchType>;

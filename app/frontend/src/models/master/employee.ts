@@ -1,7 +1,7 @@
-import {DepartmentType} from './department';
-import {UserAccountType} from './user';
-import {toISOStringWithTimezone} from "../components/application/utils.ts";
-import {PageNationType} from "../views/application/PageNation.tsx";
+import {DepartmentType} from './department.ts';
+import {toISOStringWithTimezone} from "../../components/application/utils.ts";
+import {PageNationType} from "../../views/application/PageNation.tsx";
+import {UserAccountType} from "../system/user.ts";
 
 export type EmployeeType = {
     empCode: { value: string };

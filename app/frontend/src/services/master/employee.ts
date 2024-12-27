@@ -1,5 +1,5 @@
-import Config from "./config";
-import Utils from "./utils";
+import Config from "../config.ts";
+import Utils from "../utils.ts";
 import {
     DepartmentCriteriaType, DepartmentFetchType,
     EmployeeCriteriaType,
@@ -8,6 +8,7 @@ import {
     mapToEmployeeCriteriaResource,
     mapToEmployeeResource
 } from "../models";
+import {EmployeeFetchType, EmployeeType, mapToEmployeeResource} from "../../models";
 
 export interface EmployeeServiceType {
     select: (page?: number, pageSize?: number) => Promise<EmployeeFetchType>;
