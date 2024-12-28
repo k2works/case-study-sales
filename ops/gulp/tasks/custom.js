@@ -206,6 +206,12 @@ const assets = {
                     <img src="./v0_2_0/jig-erd/library-er-summary.svg" alt="Summary">
                 </div>
 
+                <h2>v0.3.0</h2>
+                <div>
+                    <p><a href="./v0_3_0/jig/index.html">JIG</a></p>
+                    <img src="./v0_3_0/jig-erd/library-er-summary.svg" alt="Summary">
+                </div>
+                
                 <p>Powered by <a href="https://github.com/dddjava/jig">Jig</a> </p>
            </body>
         </html>
