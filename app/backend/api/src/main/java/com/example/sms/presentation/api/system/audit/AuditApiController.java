@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 /**
  * 監査API
  */
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/audits")
 @Tag(name = "Audit", description = "監査")

@@ -23,7 +23,6 @@ import java.util.function.Function;
 /**
  * 商品API
  */
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/products")
 @Tag(name = "Product", description = "商品")

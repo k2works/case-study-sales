@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableWebSecurity
@@ -53,8 +54,9 @@ public class WebSecurityConfig {
                 .configurationSource(request -> {
                     org.springframework.web.cors.CorsConfiguration corsConfiguration = new org.springframework.web.cors.CorsConfiguration();
                     corsConfiguration.setAllowedOriginPatterns(java.util.List.of("*"));
-                    corsConfiguration.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-                    corsConfiguration.setAllowedHeaders(java.util.List.of("*"));
+                    corsConfiguration.addAllowedOrigin("http://localhost:8080");
+                    corsConfiguration.addAllowedMethod(CorsConfiguration.ALL);
+                    corsConfiguration.addAllowedHeader(CorsConfiguration.ALL);
                     corsConfiguration.setAllowCredentials(true);
                     return corsConfiguration;
                 })

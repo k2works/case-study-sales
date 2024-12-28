@@ -31,7 +31,6 @@ import java.util.Optional;
 /**
  * 社員API
  */
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/employees")
 @Tag(name = "Employee", description = "社員")

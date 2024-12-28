@@ -23,7 +23,6 @@ import java.util.List;
 /**
  * 商品分類API
  */
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/product/categories")
 @Tag(name = "ProductCategory", description = "商品分類")

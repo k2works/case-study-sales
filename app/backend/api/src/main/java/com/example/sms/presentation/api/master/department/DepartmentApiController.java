@@ -30,7 +30,6 @@ import java.util.stream.Collectors;
 /**
  * 部門API
  */
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/departments")
 @Tag(name = "Department", description = "部門")
