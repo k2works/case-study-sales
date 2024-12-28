@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableWebSecurity
@@ -47,13 +48,15 @@ public class WebSecurityConfig {
         ).csrf(csrf -> csrf.ignoringRequestMatchers(PathRequest.toH2Console())
         ).csrf(csrf -> csrf.ignoringRequestMatchers("/api/**")
         ).cors(cors -> cors
-                .configurationSource(request -> new org.springframework.web.cors.CorsConfiguration() {{
-                            setAllowedOriginPatterns(java.util.List.of("*"));
-                            setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-                            setAllowedHeaders(java.util.List.of("*"));
-                            setAllowCredentials(true);
-                        }}
-                )
+                .configurationSource(request -> {
+                    org.springframework.web.cors.CorsConfiguration corsConfiguration = new org.springframework.web.cors.CorsConfiguration();
+                    corsConfiguration.setAllowedOriginPatterns(java.util.List.of("*"));
+                    corsConfiguration.addAllowedOrigin("http://localhost:8080");
+                    corsConfiguration.addAllowedMethod(CorsConfiguration.ALL);
+                    corsConfiguration.addAllowedHeader(CorsConfiguration.ALL);
+                    corsConfiguration.setAllowCredentials(true);
+                    return corsConfiguration;
+                })
         ).authorizeHttpRequests(authz -> authz
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
@@ -63,7 +66,6 @@ public class WebSecurityConfig {
                 //).sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 //).exceptionHandling(ex -> ex.authenticationEntryPoint(new AuthEntryPointJwt())
         );
-
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
