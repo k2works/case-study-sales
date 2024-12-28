@@ -2,6 +2,7 @@ package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
 import com.example.sms.domain.model.master.employee.Employee;
+import com.example.sms.presentation.api.master.employee.EmployeeCriteriaResource;
 import com.example.sms.presentation.api.master.employee.EmployeeResource;
 import com.example.sms.stepdefinitions.utils.ListResponse;
 import com.example.sms.stepdefinitions.utils.MessageResponse;
@@ -138,5 +139,27 @@ public class UC004StepDefs extends SpringAcceptanceTest {
     public void toDelete(String code) throws IOException {
         String url = EMPLOYEE_API_URL + "/" + code;
         executeDelete(url);
+    }
+
+    @もし(":UC004 社員名 {string} で検索する")
+    public void searchByCriteria(String name) throws IOException {
+        String url = EMPLOYEE_API_URL + "/search";
+        EmployeeCriteriaResource employeeCriteriaResource = new EmployeeCriteriaResource();
+        employeeCriteriaResource.setEmployeeFirstName(name);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(employeeCriteriaResource);
+        executePost(url, json);
+    }
+
+    @ならば(":UC004 検索結果一覧を取得できる")
+    public void catFetch() throws JsonProcessingException {
+        String result = latestResponse.getBody();
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        ListResponse<Employee> response = objectMapper.readValue(result, new TypeReference<>() {
+        });
+        List<Employee> employeeList = response.getList();
+        assertEquals(2, employeeList.size());
     }
 }

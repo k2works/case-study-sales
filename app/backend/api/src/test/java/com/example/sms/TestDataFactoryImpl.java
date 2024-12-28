@@ -109,7 +109,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
         productCategoryRepository.deleteAll();
         productCategoryRepository.save(getProductCategory("カテゴリ1", "カテゴリ1", 1, "カテゴリ1", 1));
-        productCategoryRepository.save(getProductCategory("カテゴリ2", "カテゴリ2", 2, "カテゴリ2", 2));
+        productCategoryRepository.save(getProductCategory("カテゴリ2", "カテゴリ2", 2, "カテゴリ1~カテゴリ2", 2));
     }
 
     private void setUpUser() {

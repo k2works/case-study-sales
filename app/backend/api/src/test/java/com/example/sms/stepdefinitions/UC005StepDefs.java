@@ -4,7 +4,9 @@ import com.example.sms.TestDataFactory;
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.ProductCategory;
 import com.example.sms.domain.type.product.*;
+import com.example.sms.presentation.api.master.product.ProductCategoryCriteriaResource;
 import com.example.sms.presentation.api.master.product.ProductCategoryResource;
+import com.example.sms.presentation.api.master.product.ProductCriteriaResource;
 import com.example.sms.presentation.api.master.product.ProductResource;
 import com.example.sms.stepdefinitions.utils.ListResponse;
 import com.example.sms.stepdefinitions.utils.MessageResponse;
@@ -213,5 +215,49 @@ public class UC005StepDefs extends SpringAcceptanceTest {
     public void toDeleteCategory(String code) throws IOException {
         String url = PRODUCT_CATEGORIES_API_URL + "/" + code;
         executeDelete(url);
+    }
+
+    @もし(":UC005 商品区分 {string} で検索する")
+    public void searchByCriteria(String name) throws IOException {
+        String url = PRODUCTS_API_URL + "/search";
+        ProductCriteriaResource productCriteriaResource = new ProductCriteriaResource();
+        productCriteriaResource.setProductType(name);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(productCriteriaResource);
+        executePost(url, json);
+    }
+
+    @ならば(":UC005 商品検索結果一覧を取得できる")
+    public void catFetch() throws JsonProcessingException {
+        String result = latestResponse.getBody();
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        ListResponse<Product> response = objectMapper.readValue(result, new TypeReference<>() {
+        });
+        List<Product> productList = response.getList();
+        assertEquals(3, productList.size());
+    }
+
+    @もし(":UC005 商品分類パス {string} で検索する")
+    public void searchByCriteria2(String name) throws IOException {
+        String url = PRODUCT_CATEGORIES_API_URL + "/search";
+        ProductCategoryCriteriaResource productCategoryCriteriaResource = new ProductCategoryCriteriaResource();
+        productCategoryCriteriaResource.setProductCategoryPath(name);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(productCategoryCriteriaResource);
+        executePost(url, json);
+    }
+
+    @ならば(":UC005 商品分類検索結果一覧を取得できる")
+    public void catFetch2() throws JsonProcessingException {
+        String result = latestResponse.getBody();
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        ListResponse<ProductCategory> response = objectMapper.readValue(result, new TypeReference<>() {
+        });
+        List<ProductCategory> productCategoryList = response.getList();
+        assertEquals(2, productCategoryList.size());
     }
 }

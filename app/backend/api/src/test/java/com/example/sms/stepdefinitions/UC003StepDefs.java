@@ -4,6 +4,7 @@ import com.example.sms.TestDataFactory;
 import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.type.department.DepartmentLowerType;
 import com.example.sms.domain.type.department.SlitYnType;
+import com.example.sms.presentation.api.master.department.DepartmentCriteriaResource;
 import com.example.sms.presentation.api.master.department.DepartmentResource;
 import com.example.sms.stepdefinitions.utils.ListResponse;
 import com.example.sms.stepdefinitions.utils.MessageResponse;
@@ -19,7 +20,6 @@ import io.cucumber.java.ja.前提;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -80,10 +80,7 @@ public class UC003StepDefs extends SpringAcceptanceTest {
     }
 
     @もし(":UC003 部門コード {string} 部門名 {string} で新規登録する")
-    public void toRegist(String code, String name) throws IOException {
-        String url = DEPARTMENT_API_URL;
-        LocalDateTime from = LocalDateTime.of(2021, 1, 1, 0, 0, 0);
-        LocalDateTime to = LocalDateTime.of(2021, 12, 31, 23, 59, 59);
+    public void toRegister(String code, String name) throws IOException {
         DepartmentResource departmentResource = new DepartmentResource();
         departmentResource.setDepartmentCode(code);
         departmentResource.setStartDate("2021-01-01T00:00:00+09:00");
@@ -96,7 +93,7 @@ public class UC003StepDefs extends SpringAcceptanceTest {
 
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(departmentResource);
-        executePost(url, json);
+        executePost(DEPARTMENT_API_URL, json);
     }
 
     @もし(":UC003 部門コード {string} で検索する")
@@ -137,5 +134,28 @@ public class UC003StepDefs extends SpringAcceptanceTest {
         String from = "2021-01-01T00:00:00+09:00";
         String url = DEPARTMENT_API_URL + "/" + code + "/" + from;
         executeDelete(url);
+    }
+
+    @もし(":UC003 開始期間を {string} から {string} で検索する")
+    public void searchByCriteria(String from, String to) throws IOException {
+        String url = DEPARTMENT_API_URL + "/search";
+        DepartmentCriteriaResource departmentCriteriaResource = new DepartmentCriteriaResource();
+        departmentCriteriaResource.setStartDate(from);
+        departmentCriteriaResource.setEndDate(to);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(departmentCriteriaResource);
+        executePost(url, json);
+    }
+
+    @ならば(":UC003 検索結果一覧を取得できる")
+    public void canFetch() throws JsonProcessingException {
+        String result = latestResponse.getBody();
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        ListResponse<Department> response = objectMapper.readValue(result, new TypeReference<>() {
+        });
+        List<Department> departmentList = response.getList();
+        assertEquals(2, departmentList.size());
     }
 }
