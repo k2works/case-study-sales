@@ -161,3 +161,9 @@ jacocoTestReport {
 		html.required = true
 	}
 }
+
+sonar {
+	properties {
+		property "sonar.exclusions", "**/autogen/**"
+	}
+}
