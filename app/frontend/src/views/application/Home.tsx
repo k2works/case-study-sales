@@ -13,10 +13,16 @@ const HomeSingleView: React.FC = () => {
                 <dl className="info">
                     <dt>
                         <span>新機能</span>
-                        <time>2024.10.1</time>
+                        <time>2025.1.1</time>
                     </dt>
                     <dd>
-                        <a href="#" id="auth-func">認証機能リリース</a>
+                        <a href="#" id="auth-func">実行履歴機能リリース</a>
+                    </dd>
+                    <dd>
+                        <a href="#" id="auth-func">ダウンロード機能リリース</a>
+                    </dd>
+                    <dd>
+                        <a href="#" id="auth-func">マスタ検索機能追加</a>
                     </dd>
                     <dt>
                         <span>新機能</span>
@@ -30,6 +36,13 @@ const HomeSingleView: React.FC = () => {
                     </dd>
                     <dd>
                         <a href="#" id="auth-func">商品マスタ機能リリース</a>
+                    </dd>
+                    <dt>
+                        <span>新機能</span>
+                        <time>2024.10.1</time>
+                    </dt>
+                    <dd>
+                        <a href="#" id="auth-func">認証機能リリース</a>
                     </dd>
                 </dl>
             </div>
