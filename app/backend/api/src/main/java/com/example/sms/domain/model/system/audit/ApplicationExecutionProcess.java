@@ -15,13 +15,15 @@ import java.util.Objects;
 @NoArgsConstructor(force = true)
 public class ApplicationExecutionProcess {
     ApplicationExecutionProcessType processType;
+    String name;
+    String code;
 
     public static ApplicationExecutionProcess of(String processName, String processCode) {
         ApplicationExecutionProcessType processType = ApplicationExecutionProcessType.fromNameAndCode(processName, processCode);
         if (!processType.getCode().equals(processCode)) {
             throw new IllegalArgumentException("不正なプロセスコードです。");
         }
-        return new ApplicationExecutionProcess(processType);
+        return new ApplicationExecutionProcess(processType, processName, processCode);
     }
 
     public String getName() {
