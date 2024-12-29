@@ -148,3 +148,5 @@ my.secrets
 .sonarlint
 
 !docs/journal/public
+
+.DS_Store
