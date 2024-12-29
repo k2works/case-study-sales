@@ -4,3 +4,8 @@ profile:
   name: qodana.recommended
 include:
   - name: CheckDependencyLicenses
+exclude:
+  - name: All
+    paths:
+      - docs\assets\release
+      - app\frontend\cypress

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.sms.infrastructure.datasource.system.audit.ApplicationExecutionHistoryCustomMapper">
+    <resultMap
+            id="BaseResultMap"
+            type="com.example.sms.infrastructure.datasource.system.audit.ApplicationExecutionHistoryCustomEntity"
+            extends="com.example.sms.infrastructure.datasource.autogen.mapper.ApplicationExecutionHistoryMapper.BaseResultMap"
+    >
+        <association property="user"
+                     javaType="com.example.sms.infrastructure.datasource.autogen.model.Usr"
+                     column="user_id"
+                     select="com.example.sms.infrastructure.datasource.autogen.mapper.UsrMapper.selectByPrimaryKey"
+                     fetchType="lazy"/>
+    </resultMap>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.ApplicationExecutionHistoryMapper.Base_Column_List" />
+        from system.application_execution_history
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.ApplicationExecutionHistoryMapper.Base_Column_List" />
+        from system.application_execution_history
+        order by id desc
+    </select>
+
+    <select id="selectByCriteria" resultMap="BaseResultMap">
+        SELECT
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.ApplicationExecutionHistoryMapper.Base_Column_List" />
+        FROM system.application_execution_history
+        <where>
+            <if test="processName != null and processName != ''">
+                AND process_name = #{processName}
+            </if>
+
+            <if test="processCode != null and processCode != ''">
+                AND process_code = #{processCode}
+            </if>
+
+            <if test="processType != null and processType != ''">
+                AND process_type = #{processType}
+            </if>
+
+            <if test="processFlag != null">
+                AND process_flag = #{processFlag}
+            </if>
+        </where>
+    </select>
+</mapper>

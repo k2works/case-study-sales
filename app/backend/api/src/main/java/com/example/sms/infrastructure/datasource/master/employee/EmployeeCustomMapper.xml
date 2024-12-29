@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.sms.infrastructure.datasource.master.employee.EmployeeCustomMapper">
+    <resultMap
+            id="BaseResultMap"
+            type="com.example.sms.infrastructure.datasource.master.employee.EmployeeCustomEntity"
+            extends="com.example.sms.infrastructure.datasource.autogen.mapper.社員マスタMapper.BaseResultMap"
+    >
+        <association property="部門"
+                     javaType="com.example.sms.infrastructure.datasource.autogen.model.部門マスタ"
+                     column="{部門コード=部門コード, 開始日=開始日}"
+                     select="com.example.sms.infrastructure.datasource.autogen.mapper.部門マスタMapper.selectByPrimaryKey"
+                     fetchType="lazy"/>
+
+        <association property="user"
+                     javaType="com.example.sms.infrastructure.datasource.autogen.model.Usr"
+                     column="user_id"
+                     select="com.example.sms.infrastructure.datasource.autogen.mapper.UsrMapper.selectByPrimaryKey"
+                     fetchType="lazy"/>
+    </resultMap>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.社員マスタMapper.Base_Column_List" />
+        from public.社員マスタ
+        where 社員コード = #{社員コード,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectAll" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.社員マスタMapper.Base_Column_List"/>
+        from public.社員マスタ
+    </select>
+
+    <select id="selectByDepartmentCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.社員マスタMapper.Base_Column_List"/>
+        from public.社員マスタ
+        where 部門コード = #{部門コード,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByCriteria" resultMap="BaseResultMap">
+        SELECT
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.社員マスタMapper.Base_Column_List"/>
+        FROM public.社員マスタ
+        <where>
+            <if test="employeeCode != null and employeeCode != ''">
+                AND 社員コード = #{employeeCode}
+            </if>
+            <!-- 両方が指定されているとき -->
+            <if test="employeeFirstName != null and employeeFirstName != '' and employeeLastName != null and employeeLastName != ''">
+                AND 社員名 = CONCAT(#{employeeFirstName}, ' ', #{employeeLastName})
+            </if>
+            <!-- 片方のみの場合の条件 -->
+            <if test="employeeFirstName != null and employeeFirstName != '' and (employeeLastName == null or employeeLastName == '')">
+                AND 社員名 LIKE CONCAT('%', #{employeeFirstName}, '%')
+            </if>
+            <if test="employeeLastName != null and employeeLastName != '' and (employeeFirstName == null or employeeFirstName == '')">
+                AND 社員名 LIKE CONCAT('%', #{employeeLastName}, '%')
+            </if>
+            <!-- カナの両方が指定されているとき -->
+            <if test="employeeFirstNameKana != null and employeeFirstNameKana != '' and employeeLastNameKana != null and employeeLastNameKana != ''">
+                AND 社員名カナ = CONCAT(#{employeeFirstNameKana}, ' ', #{employeeLastNameKana})
+            </if>
+            <!-- カナの片方のみの場合の条件 -->
+            <if test="employeeFirstNameKana != null and employeeFirstNameKana != '' and (employeeLastNameKana == null or employeeLastNameKana == '')">
+                AND 社員名カナ LIKE CONCAT('%', #{employeeFirstNameKana}, '%')
+            </if>
+            <if test="employeeLastNameKana != null and employeeLastNameKana != '' and (employeeFirstNameKana == null or employeeFirstNameKana == '')">
+                AND 社員名カナ LIKE CONCAT('%', #{employeeLastNameKana}, '%')
+            </if>
+            <if test="phoneNumber != null and phoneNumber != ''">
+                AND 電話番号 = #{phoneNumber}
+            </if>
+            <if test="faxNumber != null and faxNumber != ''">
+                AND FAX番号 = #{faxNumber}
+            </if>
+            <if test="departmentCode != null and departmentCode != ''">
+                AND 部門コード = #{departmentCode}
+            </if>
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.sms.infrastructure.datasource.master.department.DepartmentCustomMapper">
+    <resultMap id="BaseResultMap"
+               type="com.example.sms.infrastructure.datasource.master.department.DepartmentCustomEntity"
+               extends="com.example.sms.infrastructure.datasource.autogen.mapper.部門マスタMapper.BaseResultMap"
+    >
+        <collection property="社員"
+                    javaType="ArrayList"
+                    column="部門コード"
+                    select="com.example.sms.infrastructure.datasource.master.employee.EmployeeCustomMapper.selectByDepartmentCode"
+                    fetchType="eager"
+        />
+    </resultMap>
+
+    <select id="selectByPrimaryKey" parameterType="com.example.sms.infrastructure.datasource.autogen.model.部門マスタKey" resultMap="BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.部門マスタMapper.Base_Column_List" />
+        from public.部門マスタ
+        where 部門コード = #{部門コード,jdbcType=VARCHAR}
+        and 開始日 = #{開始日,jdbcType=TIMESTAMP}
+    </select>
+
+    <select id="selectAll"
+            parameterType="java.lang.String"
+            resultMap="BaseResultMap">
+
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.部門マスタMapper.Base_Column_List"/>
+        from public.部門マスタ
+    </select>
+
+    <select id="selectByDepartmentCode"
+            parameterType="java.lang.String"
+            resultMap="BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.部門マスタMapper.Base_Column_List"/>
+        from public.部門マスタ
+        where 部門コード = #{departmentCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByCriteria" resultMap="BaseResultMap">
+        SELECT
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.部門マスタMapper.Base_Column_List"/>
+        FROM public.部門マスタ
+        <where>
+            <if test="departmentName != null and departmentName != ''">
+                AND 部門名 = #{departmentName}
+            </if>
+
+            <if test="departmentCode != null and departmentCode != ''">
+                AND 部門コード = #{departmentCode}
+            </if>
+
+            <if test="startDate != null and endDate != null">
+                AND 開始日 BETWEEN #{startDate} AND #{endDate}
+            </if>
+
+            <if test="startDate != null and endDate == null">
+                AND 開始日 = #{startDate}
+            </if>
+
+            <if test="startDate == null and endDate != null">
+                AND 終了日 = #{endDate}
+            </if>
+        </where>
+    </select>
+</mapper>
