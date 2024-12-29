@@ -23,7 +23,7 @@ const start = series(
         parallel(core.webpack.server, core.asciidoctor.server),
         parallel(core.webpack.watch, core.asciidoctor.watch, core.marp.watch, core.adr.watch),
     ),
-    parallel(custom.app.devApp, custom.api.devApi),
+    parallel(custom.app.devApp, custom.api.devApi, custom.app.openApp),
 );
 exports.default = start;
 
