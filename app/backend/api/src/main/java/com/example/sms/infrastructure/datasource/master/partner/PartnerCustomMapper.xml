@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.sms.infrastructure.datasource.master.partner.PartnerCustomMapper">
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="com.example.sms.infrastructure.datasource.autogen.mapper.取引先マスタMapper.BaseResultMap">
+    select
+    <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.取引先マスタMapper.Base_Column_List" />
+    from public.取引先マスタ
+    where 取引先コード = #{取引先コード,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectAll" parameterType="java.lang.String" resultMap="com.example.sms.infrastructure.datasource.autogen.mapper.取引先マスタMapper.BaseResultMap">
+    select
+    <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.取引先マスタMapper.Base_Column_List" />
+    from public.取引先マスタ
+  </select>
+</mapper>
