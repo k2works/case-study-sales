@@ -3,6 +3,7 @@ package com.example.sms;
 import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.employee.Employee;
+import com.example.sms.domain.model.master.partner.Partner;
 import com.example.sms.domain.model.master.product.*;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
 import com.example.sms.domain.model.system.user.User;
@@ -190,4 +191,35 @@ public class TestDataFactoryImpl implements TestDataFactory {
         return ProductCategory.of(productCategoryCode, productCategoryName, productCategoryHierarchy, productCategoryPath, lowestLevelDivision);
     }
 
+    public static Partner partner(
+            String partnerCode,
+            String partnerName,
+            String partnerNameKana,
+            Integer supplierType,
+            String postalCode,
+            String prefecture,
+            String address1,
+            String address2,
+            Integer tradeProhibitedFlag,
+            Integer miscellaneousType,
+            String partnerGroupCode,
+            Integer creditLimit,
+            Integer temporaryCreditIncrease
+    ) {
+        return  Partner.of(
+                partnerCode,
+                partnerName,
+                partnerNameKana,
+                supplierType,
+                postalCode,
+                prefecture,
+                address1,
+                address2,
+                tradeProhibitedFlag,
+                miscellaneousType,
+                partnerGroupCode,
+                creditLimit,
+                temporaryCreditIncrease
+        );
+    }
 }
