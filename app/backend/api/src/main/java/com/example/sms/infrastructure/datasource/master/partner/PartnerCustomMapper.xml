@@ -6,6 +6,13 @@
           type="com.example.sms.infrastructure.datasource.master.partner.PartnerCustomEntity"
           extends="com.example.sms.infrastructure.datasource.autogen.mapper.取引先マスタMapper.BaseResultMap"
   >
+    <collection property="顧客マスタ"
+                javaType="ArrayList"
+                column="取引先コード"
+                select="com.example.sms.infrastructure.datasource.master.partner.customer.CustomerCustomMapper.selectByCustomerCode"
+                fetchType="eager"
+    />
+
   </resultMap>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">

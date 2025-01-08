@@ -1,5 +1,6 @@
 package com.example.sms.service.master.partner;
 
+import com.example.sms.domain.model.master.partner.Customer;
 import com.example.sms.domain.model.master.partner.Partner;
 import com.example.sms.domain.model.master.partner.PartnerList;
 import com.github.pagehelper.PageInfo;
@@ -18,4 +19,6 @@ public interface PartnerRepository {
     void deleteById(Partner partnerCode);
 
     PageInfo<Partner> selectAllWithPageInfo();
+
+    PageInfo<Customer> selectAllCustomerWithPageInfo();
 }

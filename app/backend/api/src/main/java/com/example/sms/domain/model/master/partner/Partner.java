@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
+import java.util.List;
+
 /**
  * 取引先
  */
@@ -24,6 +26,7 @@ public class Partner {
     String partnerGroupCode;     // 取引先グループコード
     Integer creditLimit;         // 与信限度額
     Integer temporaryCreditIncrease; // 与信一時増加枠
+    List<Customer> customers;   // 顧客
 
     public static Partner of(
             String partnerCode,
@@ -53,7 +56,27 @@ public class Partner {
                 miscellaneousType,
                 partnerGroupCode,
                 creditLimit,
-                temporaryCreditIncrease
+                temporaryCreditIncrease,
+                List.of()
+        );
+    }
+
+    public static Partner of(Partner partner, List<Customer> customers) {
+        return new Partner(
+                partner.partnerCode,
+                partner.partnerName,
+                partner.partnerNameKana,
+                partner.supplierType,
+                partner.postalCode,
+                partner.prefecture,
+                partner.address1,
+                partner.address2,
+                partner.tradeProhibitedFlag,
+                partner.miscellaneousType,
+                partner.partnerGroupCode,
+                partner.creditLimit,
+                partner.temporaryCreditIncrease,
+                customers
         );
     }
 }
