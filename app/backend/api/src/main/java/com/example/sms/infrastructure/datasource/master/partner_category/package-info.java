@@ -1,0 +1,1 @@
+package com.example.sms.infrastructure.datasource.master.partner_category;
