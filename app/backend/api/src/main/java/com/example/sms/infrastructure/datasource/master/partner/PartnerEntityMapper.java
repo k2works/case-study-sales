@@ -2,6 +2,8 @@ package com.example.sms.infrastructure.datasource.master.partner;
 
 import com.example.sms.domain.model.master.partner.Customer;
 import com.example.sms.domain.model.master.partner.Partner;
+import com.example.sms.domain.model.master.partner.Shipping;
+import com.example.sms.infrastructure.datasource.autogen.model.出荷先マスタ;
 import com.example.sms.infrastructure.datasource.autogen.model.取引先マスタ;
 import com.example.sms.infrastructure.datasource.autogen.model.顧客マスタ;
 import com.example.sms.infrastructure.datasource.master.partner.customer.CustomerCustomEntity;
@@ -32,36 +34,59 @@ public class PartnerEntityMapper {
 
     public Partner mapToDomain(PartnerCustomEntity partnerCustomEntity) {
         List<Customer> customers = partnerCustomEntity.get顧客マスタ().stream()
-                .map(customer -> Customer.of(
-                        customer.get顧客コード(),
-                        customer.get顧客枝番(),
-                        customer.get顧客区分(),
-                        customer.get請求先コード(),
-                        customer.get請求先枝番(),
-                        customer.get回収先コード(),
-                        customer.get回収先枝番(),
-                        customer.get顧客名(),
-                        customer.get顧客名カナ(),
-                        customer.get自社担当者コード(),
-                        customer.get顧客担当者名(),
-                        customer.get顧客部門名(),
-                        customer.get顧客郵便番号(),
-                        customer.get顧客都道府県(),
-                        customer.get顧客住所１(),
-                        customer.get顧客住所２(),
-                        customer.get顧客電話番号(),
-                        customer.get顧客ｆａｘ番号(),
-                        customer.get顧客メールアドレス(),
-                        customer.get顧客請求区分(),
-                        customer.get顧客締日１(),
-                        customer.get顧客支払月１(),
-                        customer.get顧客支払日１(),
-                        customer.get顧客支払方法１(),
-                        customer.get顧客締日２(),
-                        customer.get顧客支払月２(),
-                        customer.get顧客支払日２(),
-                        customer.get顧客支払方法２()
-                )).toList();
+                .map(customer -> {
+                    Customer newCustomer = Customer.of(
+                            customer.get顧客コード(),
+                            customer.get顧客枝番(),
+                            customer.get顧客区分(),
+                            customer.get請求先コード(),
+                            customer.get請求先枝番(),
+                            customer.get回収先コード(),
+                            customer.get回収先枝番(),
+                            customer.get顧客名(),
+                            customer.get顧客名カナ(),
+                            customer.get自社担当者コード(),
+                            customer.get顧客担当者名(),
+                            customer.get顧客部門名(),
+                            customer.get顧客郵便番号(),
+                            customer.get顧客都道府県(),
+                            customer.get顧客住所１(),
+                            customer.get顧客住所２(),
+                            customer.get顧客電話番号(),
+                            customer.get顧客ｆａｘ番号(),
+                            customer.get顧客メールアドレス(),
+                            customer.get顧客請求区分(),
+                            customer.get顧客締日１(),
+                            customer.get顧客支払月１(),
+                            customer.get顧客支払日１(),
+                            customer.get顧客支払方法１(),
+                            customer.get顧客締日２(),
+                            customer.get顧客支払月２(),
+                            customer.get顧客支払日２(),
+                            customer.get顧客支払方法２()
+                    );
+
+                    List<Shipping> shippings = customer.get出荷先マスタ() != null
+                            ? customer.get出荷先マスタ().stream()
+                            .map(shipping -> Shipping.of(
+                                    shipping.get顧客コード(),
+                                    shipping.get出荷先番号(),
+                                    shipping.get顧客枝番(),
+                                    shipping.get出荷先名(),
+                                    shipping.get地域コード(),
+                                    shipping.get出荷先郵便番号(),
+                                    shipping.get出荷先住所１(),
+                                    shipping.get出荷先住所２()
+                            ))
+                            .toList()
+                            : List.of();
+
+                    return Customer.of(
+                            newCustomer,
+                            shippings
+                    );
+                })
+                .toList();
 
         Partner partner = Partner.of(
                 partnerCustomEntity.get取引先コード(),
@@ -147,5 +172,19 @@ public class PartnerEntityMapper {
                 customerCustomEntity.get顧客支払日２(),
                 customerCustomEntity.get顧客支払方法２()
         );
+    }
+
+    public 出荷先マスタ mapToEntity(Shipping shipping) {
+        出荷先マスタ shippingEntity = new 出荷先マスタ();
+        shippingEntity.set顧客コード(shipping.getCustomerCode());
+        shippingEntity.set出荷先番号(shipping.getDestinationNumber());
+        shippingEntity.set顧客枝番(shipping.getCustomerBranchNumber());
+        shippingEntity.set出荷先名(shipping.getDestinationName());
+        shippingEntity.set地域コード(shipping.getRegionCode());
+        shippingEntity.set出荷先郵便番号(shipping.getDestinationPostalCode());
+        shippingEntity.set出荷先住所１(shipping.getDestinationAddress1());
+        shippingEntity.set出荷先住所２(shipping.getDestinationAddress2());
+
+        return shippingEntity;
     }
 }

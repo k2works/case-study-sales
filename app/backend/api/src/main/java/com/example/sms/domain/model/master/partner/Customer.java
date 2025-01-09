@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
+import java.util.List;
+
 /**
  * 顧客
  */
@@ -39,6 +41,7 @@ public class Customer {
     Integer customerPaymentMonth2; // 顧客支払月２
     Integer customerPaymentDay2; // 顧客支払日２
     Integer customerPaymentMethod2; // 顧客支払方法２
+    List<Shipping> shippings; // 出荷先
 
     public static Customer of(
             String customerCode,
@@ -98,7 +101,42 @@ public class Customer {
                 customerClosingDay2,
                 customerPaymentMonth2,
                 customerPaymentDay2,
-                customerPaymentMethod2
+                customerPaymentMethod2,
+                List.of()
+        );
+    }
+
+    public static Customer of(Customer customer, List<Shipping> shippings) {
+        return new Customer(
+                customer.customerCode,
+                customer.customerBranchNumber,
+                customer.customerCategory,
+                customer.billingCode,
+                customer.billingBranchNumber,
+                customer.collectionCode,
+                customer.collectionBranchNumber,
+                customer.customerName,
+                customer.customerNameKana,
+                customer.companyRepresentativeCode,
+                customer.customerRepresentativeName,
+                customer.customerDepartmentName,
+                customer.customerPostalCode,
+                customer.customerPrefecture,
+                customer.customerAddress1,
+                customer.customerAddress2,
+                customer.customerPhoneNumber,
+                customer.customerFaxNumber,
+                customer.customerEmailAddress,
+                customer.customerBillingCategory,
+                customer.customerClosingDay1,
+                customer.customerPaymentMonth1,
+                customer.customerPaymentDay1,
+                customer.customerPaymentMethod1,
+                customer.customerClosingDay2,
+                customer.customerPaymentMonth2,
+                customer.customerPaymentDay2,
+                customer.customerPaymentMethod2,
+                shippings
         );
     }
 }

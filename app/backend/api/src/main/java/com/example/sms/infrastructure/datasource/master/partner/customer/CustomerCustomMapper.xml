@@ -6,6 +6,12 @@
           type="com.example.sms.infrastructure.datasource.master.partner.customer.CustomerCustomEntity"
           extends="com.example.sms.infrastructure.datasource.autogen.mapper.顧客マスタMapper.BaseResultMap"
   >
+    <collection property="出荷先マスタ"
+                javaType="ArrayList"
+                column="{顧客コード=顧客コード, 顧客枝番=顧客枝番}"
+                select="com.example.sms.infrastructure.datasource.master.partner.customer.shipping.ShippingCustomMapper.selectByCustomerCode"
+                fetchType="eager"
+    />
   </resultMap>
 
   <select id="selectByPrimaryKey" parameterType="com.example.sms.infrastructure.datasource.autogen.model.顧客マスタKey" resultMap="BaseResultMap">
@@ -29,8 +35,8 @@
     where 顧客コード = #{顧客コード,jdbcType=VARCHAR}
   </select>
 
-  <select id="deleteByCustomerCode" parameterType="java.lang.String">
+  <delete id="deleteByCustomerCode" parameterType="java.lang.String">
     delete from public.顧客マスタ
     where 顧客コード = #{顧客コード,jdbcType=VARCHAR}
-  </select>
+  </delete>
 </mapper>

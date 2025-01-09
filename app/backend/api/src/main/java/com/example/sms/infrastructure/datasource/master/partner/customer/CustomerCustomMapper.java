@@ -15,7 +15,7 @@ public interface CustomerCustomMapper {
     @Delete("DELETE FROM public.顧客マスタ")
     void deleteAll();
 
-    CustomerCustomEntity selectByCustomerCode(String customerCode);
+    List<CustomerCustomEntity> selectByCustomerCode(String customerCode);
 
     void deleteByCustomerCode(String customerCode);
 }

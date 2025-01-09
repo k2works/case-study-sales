@@ -2,6 +2,7 @@ package com.example.sms.service.master.partner;
 
 import com.example.sms.domain.model.master.partner.Customer;
 import com.example.sms.domain.model.master.partner.Partner;
+import com.example.sms.domain.model.master.partner.Shipping;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Testcontainers
@@ -100,6 +101,19 @@ public class PartnerRepositoryTest {
         );
     }
 
+    private Shipping getShipping(String customerCode, Integer destinationNumber, Integer customerBranchNumber) {
+        return Shipping.of(
+                customerCode,
+                destinationNumber,
+                customerBranchNumber,
+                "出荷先名A",
+                "R001",
+                "123-4567",
+                "東京都",
+                "新宿区1-1-1"
+        );
+    }
+
     @Nested
     @DisplayName("取引先")
     class PartnerTest {
@@ -119,8 +133,7 @@ public class PartnerRepositoryTest {
             Partner partner = getPartner("P001");
             repository.save(partner);
             Partner actual = repository.findById("P001").orElseThrow();
-            assertEquals(partner.getPartnerCode(), actual.getPartnerCode());
-            assertEquals(partner.getPartnerName(), actual.getPartnerName());
+            assertEquals(partner, actual);
         }
 
         @Test
@@ -148,6 +161,7 @@ public class PartnerRepositoryTest {
 
             Partner actual = repository.findById("P001").orElseThrow();
             assertEquals(updatedPartner.getPartnerName(), actual.getPartnerName());
+            assertNotEquals(partner, actual);
         }
 
         @Test
@@ -192,6 +206,7 @@ public class PartnerRepositoryTest {
             Partner actual = repository.findById("P001").orElseThrow();
 
             assertEquals(1, actual.getCustomers().size());
+            assertEquals(customer, actual.getCustomers().getFirst());
         }
 
         @Test
@@ -259,6 +274,80 @@ public class PartnerRepositoryTest {
         }
     }
 
+    @Nested
+    @DisplayName("出荷先")
+    class ShippingTest {
+        @Test
+        @DisplayName("出荷先一覧を取得できる")
+        void shouldRetrieveAllShipping() {
+            IntStream.range(0, 10).forEach(i -> {
+                Partner partner = getPartner(String.format("P%03d", i));
+                List<Customer> customers = IntStream.range(0, 2).collect(ArrayList::new, (list, j) -> {
+                    Customer customer = getCustomer(partner.getPartnerCode(), j);
+
+                    List<Shipping> shippings = IntStream.range(0, 2).collect(ArrayList::new, (list2, k) -> {
+                        Shipping shipping = getShipping(partner.getPartnerCode(), k, j);
+                        list2.add(shipping);
+                    }, ArrayList::addAll);
+
+                    customer = Customer.of(customer, shippings);
+                    list.add(customer);
+                }, ArrayList::addAll);
+
+                repository.save(Partner.of(partner, customers));
+            });
+
+            assertEquals(10, repository.selectAll().asList().size());
+            assertEquals(20, repository.selectAll().asList().stream().map(Partner::getCustomers).mapToInt(List::size).sum());
+            assertEquals(40, repository.selectAll().asList().stream().map(Partner::getCustomers).mapToInt(list -> list.stream().map(Customer::getShippings).mapToInt(List::size).sum()).sum());
+        }
+
+        @Test
+        @DisplayName("出荷先を登録できる")
+        void shouldRegisterShipping() {
+            Partner partner = getPartner("P001");
+            Customer customer = getCustomer(partner.getPartnerCode(), 1);
+            Shipping shipping = getShipping(partner.getPartnerCode(), 1, 1);
+            customer = Customer.of(customer, List.of(shipping));
+            Partner savePartner = Partner.of(partner, List.of(customer));
+            repository.save(savePartner);
+
+            Partner actual = repository.findById("P001").orElseThrow();
+
+            assertEquals(1, actual.getCustomers().size());
+            assertEquals(1, actual.getCustomers().getFirst().getShippings().size());
+            assertEquals(shipping, actual.getCustomers().getFirst().getShippings().getFirst());
+        }
+
+        @Test
+        @DisplayName("出荷先を更新できる")
+        void shouldUpdateShipping() {
+            Partner partner = getPartner("P001");
+            Customer customer = getCustomer(partner.getPartnerCode(), 1);
+            Shipping shipping = getShipping(partner.getPartnerCode(), 1, 1);
+            customer = Customer.of(customer, List.of(shipping));
+            Partner savePartner = Partner.of(partner, List.of(customer));
+            repository.save(savePartner);
+
+            Shipping updatedShipping = getShipping(partner.getPartnerCode(), 1, 1);
+            updatedShipping = Shipping.of(
+                    updatedShipping.getCustomerCode(),
+                    updatedShipping.getDestinationNumber(),
+                    updatedShipping.getCustomerBranchNumber(),
+                    "出荷先名B",
+                    updatedShipping.getRegionCode(),
+                    updatedShipping.getDestinationPostalCode(),
+                    updatedShipping.getDestinationAddress1(),
+                    updatedShipping.getDestinationAddress2()
+            );
+            customer = Customer.of(customer, List.of(updatedShipping));
+            Partner updatedPartner = Partner.of(partner, List.of(customer));
+            repository.save(updatedPartner);
+
+            Partner actual = repository.findById("P001").orElseThrow();
+            assertEquals("出荷先名B", actual.getCustomers().getFirst().getShippings().getFirst().getDestinationName());
+        }
+    }
 
     @Nested
     @DisplayName("取引先ページング")
@@ -277,7 +366,7 @@ public class PartnerRepositoryTest {
     }
 
     @Nested
-    @DisplayName("取引先ページング")
+    @DisplayName("顧客ページング")
     class CustomerPaginationTest {
         @Test
         @DisplayName("ページング情報を取得できる")

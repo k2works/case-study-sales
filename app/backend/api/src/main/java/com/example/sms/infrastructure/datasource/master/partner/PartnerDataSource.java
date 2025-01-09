@@ -4,12 +4,15 @@ import com.example.sms.domain.model.master.partner.Customer;
 import com.example.sms.domain.model.master.partner.Partner;
 import com.example.sms.domain.model.master.partner.PartnerList;
 import com.example.sms.infrastructure.PageInfoHelper;
+import com.example.sms.infrastructure.datasource.autogen.mapper.出荷先マスタMapper;
 import com.example.sms.infrastructure.datasource.autogen.mapper.取引先マスタMapper;
 import com.example.sms.infrastructure.datasource.autogen.mapper.顧客マスタMapper;
+import com.example.sms.infrastructure.datasource.autogen.model.出荷先マスタ;
 import com.example.sms.infrastructure.datasource.autogen.model.取引先マスタ;
 import com.example.sms.infrastructure.datasource.autogen.model.顧客マスタ;
 import com.example.sms.infrastructure.datasource.master.partner.customer.CustomerCustomEntity;
 import com.example.sms.infrastructure.datasource.master.partner.customer.CustomerCustomMapper;
+import com.example.sms.infrastructure.datasource.master.partner.customer.shipping.ShippingCustomMapper;
 import com.example.sms.service.master.partner.PartnerRepository;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.core.Authentication;
@@ -27,17 +30,22 @@ public class PartnerDataSource implements PartnerRepository {
     final PartnerEntityMapper partnerEntityMapper;
     final 顧客マスタMapper customerMapper;
     final CustomerCustomMapper customerCustomMapper;
+    final 出荷先マスタMapper shippingMapper;
+    final ShippingCustomMapper shippingCustomMapper;
 
-    public PartnerDataSource(取引先マスタMapper partnerMapper, PartnerCustomMapper partnerCustomMapper, PartnerEntityMapper partnerEntityMapper, 顧客マスタMapper customerMapper, CustomerCustomMapper customerCustomMapper) {
+    public PartnerDataSource(取引先マスタMapper partnerMapper, PartnerCustomMapper partnerCustomMapper, PartnerEntityMapper partnerEntityMapper, 顧客マスタMapper customerMapper, CustomerCustomMapper customerCustomMapper, 出荷先マスタMapper shippingMapper, ShippingCustomMapper shippingCustomMapper) {
         this.partnerMapper = partnerMapper;
         this.partnerCustomMapper = partnerCustomMapper;
         this.partnerEntityMapper = partnerEntityMapper;
         this.customerMapper = customerMapper;
         this.customerCustomMapper = customerCustomMapper;
+        this.shippingMapper = shippingMapper;
+        this.shippingCustomMapper = shippingCustomMapper;
     }
 
     @Override
     public void deleteAll() {
+        shippingCustomMapper.deleteAll();
         customerCustomMapper.deleteAll();
         partnerCustomMapper.deleteAll();
     }
@@ -56,14 +64,34 @@ public class PartnerDataSource implements PartnerRepository {
             updatePartnerEntity.set更新者名(username);
             partnerMapper.updateByPrimaryKey(updatePartnerEntity);
             if(partner.getCustomers() != null) {
-                customerCustomMapper.deleteByCustomerCode(updatePartnerEntity.get取引先コード());
+                if (partner.getCustomers().isEmpty()) {
+                    shippingCustomMapper.deleteByCustomerCode(updatePartnerEntity.get取引先コード());
+                    customerCustomMapper.deleteByCustomerCode(updatePartnerEntity.get取引先コード());
+                }
                 partner.getCustomers().forEach(customer -> {
                     顧客マスタ customerEntity = partnerEntityMapper.mapToEntity(customer);
                     customerEntity.set作成日時(partnerCustomEntity.get().get作成日時());
                     customerEntity.set作成者名(partnerCustomEntity.get().get作成者名());
                     customerEntity.set更新日時(partnerCustomEntity.get().get更新日時());
                     customerEntity.set更新者名(username);
-                    customerMapper.insert(customerEntity);
+
+                    if (customer.getShippings() != null) {
+                        shippingCustomMapper.deleteByCustomerCode(customerEntity.get顧客コード());
+                        customerCustomMapper.deleteByCustomerCode(updatePartnerEntity.get取引先コード());
+                        customerMapper.insert(customerEntity);
+
+                        customer.getShippings().forEach(shipping -> {
+                            出荷先マスタ shippingEntity = partnerEntityMapper.mapToEntity(shipping);
+                            shippingEntity.set作成日時(partnerCustomEntity.get().get作成日時());
+                            shippingEntity.set作成者名(partnerCustomEntity.get().get作成者名());
+                            shippingEntity.set更新日時(partnerCustomEntity.get().get更新日時());
+                            shippingEntity.set更新者名(username);
+                            shippingMapper.insert(shippingEntity);
+                        });
+                    } else {
+                        customerCustomMapper.deleteByCustomerCode(updatePartnerEntity.get取引先コード());
+                        customerMapper.insert(customerEntity);
+                    }
                 });
             }
         } else {
@@ -81,6 +109,17 @@ public class PartnerDataSource implements PartnerRepository {
                     customerEntity.set更新日時(insertPartnerEntity.get更新日時());
                     customerEntity.set更新者名(username);
                     customerMapper.insert(customerEntity);
+
+                    if (customer.getShippings() != null) {
+                        customer.getShippings().forEach(shipping -> {
+                            出荷先マスタ shippingEntity = partnerEntityMapper.mapToEntity(shipping);
+                            shippingEntity.set作成日時(insertPartnerEntity.get作成日時());
+                            shippingEntity.set作成者名(username);
+                            shippingEntity.set更新日時(insertPartnerEntity.get更新日時());
+                            shippingEntity.set更新者名(username);
+                            shippingMapper.insert(shippingEntity);
+                        });
+                    }
                 });
             }
         }
