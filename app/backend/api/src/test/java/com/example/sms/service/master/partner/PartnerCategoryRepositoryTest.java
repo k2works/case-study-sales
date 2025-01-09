@@ -1,5 +1,6 @@
 package com.example.sms.service.master.partner;
 
+import com.example.sms.domain.model.master.partner.PartnerCategoryItem;
 import com.example.sms.domain.model.master.partner.PartnerCategoryList;
 import com.example.sms.domain.model.master.partner.PartnerCategoryType;
 import com.github.pagehelper.PageInfo;
@@ -17,6 +18,10 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.IntStream;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -30,19 +35,28 @@ public class PartnerCategoryRepositoryTest {
                     .withUsername("root")
                     .withPassword("password")
                     .withDatabaseName("postgres");
+
     @DynamicPropertySource
     static void setup(DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", postgres::getJdbcUrl);
     }
+
     @Autowired
     private PartnerCategoryRepository repository;
+
     @BeforeEach
     void setUp() {
         repository.deleteAll();
     }
+
     private PartnerCategoryType getPartnerCategoryType(String categoryCode) {
-        return new PartnerCategoryType(categoryCode, "取引先カテゴリー1");
+        return PartnerCategoryType.of(categoryCode, "取引先カテゴリー1");
     }
+
+    private PartnerCategoryItem getPartnerCategoryItem(String categoryCode, String itemCode) {
+        return new PartnerCategoryItem(categoryCode, itemCode, "取引先カテゴリー1");
+    }
+
     @Nested
     @DisplayName("取引先分類種別")
     class PartnerCategoryTest {
@@ -68,7 +82,7 @@ public class PartnerCategoryRepositoryTest {
         void shouldUpdatePartnerCategory() {
             PartnerCategoryType partnerCategoryType = getPartnerCategoryType("1");
             repository.save(partnerCategoryType);
-            PartnerCategoryType updatedPartnerCategory = new PartnerCategoryType("1", "取引先カテゴリー2");
+            PartnerCategoryType updatedPartnerCategory = PartnerCategoryType.of("1", "取引先カテゴリー2");
             repository.save(updatedPartnerCategory);
             PartnerCategoryType actual = repository.findById("1").orElse(null);
             assertEquals(updatedPartnerCategory, actual);
@@ -91,6 +105,76 @@ public class PartnerCategoryRepositoryTest {
             PageInfo<PartnerCategoryType> pageInfo = repository.selectAllWithPageInfo();
 
             assertEquals(3, pageInfo.getList().size());
+        }
+    }
+
+    @Nested
+    @DisplayName("取引先分類")
+    class PartnerCategoryItemTest {
+        @Test
+        @DisplayName("取引先分類一覧を取得できる")
+        void shouldReturnPartnerCategoryList() {
+            IntStream.range(0, 10).forEach(i -> {
+                PartnerCategoryType partnerCategoryType = getPartnerCategoryType(String.valueOf(i));
+                List<PartnerCategoryItem> partnerCategoryItems = IntStream.range(0, 2).collect(ArrayList::new, (list, j) -> {
+                    PartnerCategoryItem partnerCategoryItem = getPartnerCategoryItem(partnerCategoryType.getPartnerCategoryTypeCode(), String.valueOf(j));
+                    list.add(partnerCategoryItem);
+                }, ArrayList::addAll);
+                repository.save(PartnerCategoryType.of(partnerCategoryType, partnerCategoryItems));
+            });
+
+            PartnerCategoryList actual = repository.selectAll();
+
+            assertEquals(10, actual.size());
+            assertEquals(20, actual.asList().stream().map(PartnerCategoryType::getPartnerCategoryItems).mapToInt(List::size).sum());
+        }
+
+        @Test
+        @DisplayName("取引先分類を登録できる")
+        void shouldRegisterPartnerCategoryItem() {
+            PartnerCategoryType partnerCategoryType = getPartnerCategoryType("1");
+            PartnerCategoryItem partnerCategoryItem = getPartnerCategoryItem(partnerCategoryType.getPartnerCategoryTypeCode(), "1");
+            repository.save(PartnerCategoryType.of(partnerCategoryType, List.of(partnerCategoryItem)));
+
+            PartnerCategoryType actual = repository.findById("1").orElse(null);
+
+            assertNotNull(actual);
+            assertEquals(1, actual.getPartnerCategoryItems().size());
+            assertEquals(partnerCategoryItem, actual.getPartnerCategoryItems().getFirst());
+        }
+
+        @Test
+        @DisplayName("取引先分類を更新できる")
+        void shouldUpdatePartnerCategoryItem() {
+            PartnerCategoryType partnerCategoryType = getPartnerCategoryType("1");
+            PartnerCategoryItem partnerCategoryItem = getPartnerCategoryItem(partnerCategoryType.getPartnerCategoryTypeCode(), "1");
+            PartnerCategoryItem partnerCategoryItem2 = getPartnerCategoryItem(partnerCategoryType.getPartnerCategoryTypeCode(), "2");
+            repository.save(PartnerCategoryType.of(partnerCategoryType, List.of(partnerCategoryItem, partnerCategoryItem2)));
+
+            PartnerCategoryItem updatedPartnerCategoryItem = new PartnerCategoryItem(partnerCategoryType.getPartnerCategoryTypeCode(), "1", "取引先カテゴリー2");
+            repository.save(PartnerCategoryType.of(partnerCategoryType, List.of(updatedPartnerCategoryItem)));
+
+            PartnerCategoryType actual = repository.findById("1").orElse(null);
+
+            assertNotNull(actual);
+            assertEquals(2, actual.getPartnerCategoryItems().size());
+            assertEquals(updatedPartnerCategoryItem, actual.getPartnerCategoryItems().getLast());
+        }
+
+        @Test
+        @DisplayName("取引先分類を削除できる")
+        void shouldDeletePartnerCategoryItem() {
+            PartnerCategoryType partnerCategoryType = getPartnerCategoryType("1");
+            PartnerCategoryItem partnerCategoryItem = getPartnerCategoryItem(partnerCategoryType.getPartnerCategoryTypeCode(), "1");
+            PartnerCategoryItem partnerCategoryItem2 = getPartnerCategoryItem(partnerCategoryType.getPartnerCategoryTypeCode(), "2");
+            repository.save(PartnerCategoryType.of(partnerCategoryType, List.of(partnerCategoryItem, partnerCategoryItem2)));
+
+            repository.save(PartnerCategoryType.of(partnerCategoryType, List.of()));
+
+            PartnerCategoryType actual = repository.findById("1").orElse(null);
+
+            assertNotNull(actual);
+            assertEquals(0, actual.getPartnerCategoryItems().size());
         }
     }
 }

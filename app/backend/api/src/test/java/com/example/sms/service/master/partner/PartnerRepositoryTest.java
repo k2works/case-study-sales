@@ -235,6 +235,7 @@ public class PartnerRepositoryTest {
         @Test
         @DisplayName("顧客を更新できる")
         void shouldUpdateCustomer() {
+            //TODO:複数レコード検証
             Partner partner = getPartner("P001");
             Customer customer = getCustomer(partner.getPartnerCode(), 1);
             Partner savePartner = Partner.ofWithCustomers(partner, List.of(customer));
