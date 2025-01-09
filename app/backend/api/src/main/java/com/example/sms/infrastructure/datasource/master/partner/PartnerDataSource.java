@@ -61,13 +61,14 @@ public class PartnerDataSource implements PartnerRepository {
     public void save(Partner partner) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication != null && authentication.getName() != null ? authentication.getName() : "system";
+        LocalDateTime updateDateTime = LocalDateTime.now();
 
         Optional<PartnerCustomEntity> partnerCustomEntity = Optional.ofNullable(partnerCustomMapper.selectByPrimaryKey(partner.getPartnerCode()));
         if (partnerCustomEntity.isPresent()) {
             取引先マスタ updatePartnerEntity = partnerEntityMapper.mapToEntity(partner);
             updatePartnerEntity.set作成日時(partnerCustomEntity.get().get作成日時());
             updatePartnerEntity.set作成者名(partnerCustomEntity.get().get作成者名());
-            updatePartnerEntity.set更新日時(partnerCustomEntity.get().get更新日時());
+            updatePartnerEntity.set更新日時(updateDateTime);
             updatePartnerEntity.set更新者名(username);
             partnerMapper.updateByPrimaryKey(updatePartnerEntity);
 
@@ -80,7 +81,7 @@ public class PartnerDataSource implements PartnerRepository {
                     顧客マスタ customerEntity = partnerEntityMapper.mapToEntity(customer);
                     customerEntity.set作成日時(partnerCustomEntity.get().get作成日時());
                     customerEntity.set作成者名(partnerCustomEntity.get().get作成者名());
-                    customerEntity.set更新日時(partnerCustomEntity.get().get更新日時());
+                    customerEntity.set更新日時(updateDateTime);
                     customerEntity.set更新者名(username);
 
                     if (customer.getShippings() != null) {
@@ -92,7 +93,7 @@ public class PartnerDataSource implements PartnerRepository {
                             出荷先マスタ shippingEntity = partnerEntityMapper.mapToEntity(shipping);
                             shippingEntity.set作成日時(partnerCustomEntity.get().get作成日時());
                             shippingEntity.set作成者名(partnerCustomEntity.get().get作成者名());
-                            shippingEntity.set更新日時(partnerCustomEntity.get().get更新日時());
+                            shippingEntity.set更新日時(updateDateTime);
                             shippingEntity.set更新者名(username);
                             shippingMapper.insert(shippingEntity);
                         });
@@ -114,7 +115,7 @@ public class PartnerDataSource implements PartnerRepository {
                     仕入先マスタ vendorEntity = partnerEntityMapper.mapToEntity(vendor);
                     vendorEntity.set作成日時(partnerCustomEntity.get().get作成日時());
                     vendorEntity.set作成者名(partnerCustomEntity.get().get作成者名());
-                    vendorEntity.set更新日時(partnerCustomEntity.get().get更新日時());
+                    vendorEntity.set更新日時(updateDateTime);
                     vendorEntity.set更新者名(username);
                     vendorMapper.insert(vendorEntity);
                 });
