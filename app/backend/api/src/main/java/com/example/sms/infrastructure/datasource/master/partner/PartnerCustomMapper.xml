@@ -13,6 +13,13 @@
                 fetchType="eager"
     />
 
+    <collection property="仕入先マスタ"
+                javaType="ArrayList"
+                column="取引先コード"
+                select="com.example.sms.infrastructure.datasource.master.partner.vendor.VendorCustomMapper.selectByVendorCode"
+                fetchType="eager"
+    />
+
   </resultMap>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">

@@ -3,10 +3,13 @@ package com.example.sms.infrastructure.datasource.master.partner;
 import com.example.sms.domain.model.master.partner.Customer;
 import com.example.sms.domain.model.master.partner.Partner;
 import com.example.sms.domain.model.master.partner.Shipping;
+import com.example.sms.domain.model.master.partner.Vendor;
+import com.example.sms.infrastructure.datasource.autogen.model.仕入先マスタ;
 import com.example.sms.infrastructure.datasource.autogen.model.出荷先マスタ;
 import com.example.sms.infrastructure.datasource.autogen.model.取引先マスタ;
 import com.example.sms.infrastructure.datasource.autogen.model.顧客マスタ;
 import com.example.sms.infrastructure.datasource.master.partner.customer.CustomerCustomEntity;
+import com.example.sms.infrastructure.datasource.master.partner.vendor.VendorCustomEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -32,7 +35,7 @@ public class PartnerEntityMapper {
         return partnerEntity;
     }
 
-    public Partner mapToDomain(PartnerCustomEntity partnerCustomEntity) {
+    public Partner mapToDomainModel(PartnerCustomEntity partnerCustomEntity) {
         List<Customer> customers = partnerCustomEntity.get顧客マスタ().stream()
                 .map(customer -> {
                     Customer newCustomer = Customer.of(
@@ -88,6 +91,28 @@ public class PartnerEntityMapper {
                 })
                 .toList();
 
+        List<Vendor> vendors = partnerCustomEntity.get仕入先マスタ().stream()
+                .map(vendor -> Vendor.of(
+                        vendor.get仕入先コード(),
+                        vendor.get仕入先枝番(),
+                        vendor.get仕入先名(),
+                        vendor.get仕入先名カナ(),
+                        vendor.get仕入先担当者名(),
+                        vendor.get仕入先部門名(),
+                        vendor.get仕入先郵便番号(),
+                        vendor.get仕入先都道府県(),
+                        vendor.get仕入先住所１(),
+                        vendor.get仕入先住所２(),
+                        vendor.get仕入先電話番号(),
+                        vendor.get仕入先ｆａｘ番号(),
+                        vendor.get仕入先メールアドレス(),
+                        vendor.get仕入先締日(),
+                        vendor.get仕入先支払月(),
+                        vendor.get仕入先支払日(),
+                        vendor.get仕入先支払方法()
+                ))
+                .toList();
+
         Partner partner = Partner.of(
                 partnerCustomEntity.get取引先コード(),
                 partnerCustomEntity.get取引先名(),
@@ -104,7 +129,11 @@ public class PartnerEntityMapper {
                 partnerCustomEntity.get与信一時増加枠()
         );
 
-        return Partner.of(partner, customers);
+        if (!vendors.isEmpty()) {
+            return Partner.ofWithVendors(partner, vendors);
+        } else {
+            return Partner.ofWithCustomers(partner, customers);
+        }
     }
 
     public 顧客マスタ mapToEntity(Customer customer) {
@@ -141,7 +170,7 @@ public class PartnerEntityMapper {
         return customerEntity;
     }
 
-    public Customer mapToDomain(CustomerCustomEntity customerCustomEntity) {
+    public Customer mapToDomainModel(CustomerCustomEntity customerCustomEntity) {
         return Customer.of(
                 customerCustomEntity.get顧客コード(),
                 customerCustomEntity.get顧客枝番(),
@@ -186,5 +215,50 @@ public class PartnerEntityMapper {
         shippingEntity.set出荷先住所２(shipping.getDestinationAddress2());
 
         return shippingEntity;
+    }
+
+    public 仕入先マスタ mapToEntity(Vendor vendor) {
+        仕入先マスタ vendorEntity = new 仕入先マスタ();
+        vendorEntity.set仕入先コード(vendor.getVendorCode());
+        vendorEntity.set仕入先枝番(vendor.getVendorBranchCode());
+        vendorEntity.set仕入先名(vendor.getVendorName());
+        vendorEntity.set仕入先名カナ(vendor.getVendorNameKana());
+        vendorEntity.set仕入先担当者名(vendor.getVendorContactName());
+        vendorEntity.set仕入先部門名(vendor.getVendorDepartmentName());
+        vendorEntity.set仕入先郵便番号(vendor.getVendorPostalCode());
+        vendorEntity.set仕入先都道府県(vendor.getVendorPrefecture());
+        vendorEntity.set仕入先住所１(vendor.getVendorAddress1());
+        vendorEntity.set仕入先住所２(vendor.getVendorAddress2());
+        vendorEntity.set仕入先電話番号(vendor.getVendorPhoneNumber());
+        vendorEntity.set仕入先ｆａｘ番号(vendor.getVendorFaxNumber());
+        vendorEntity.set仕入先メールアドレス(vendor.getVendorEmailAddress());
+        vendorEntity.set仕入先締日(vendor.getVendorClosingDate());
+        vendorEntity.set仕入先支払月(vendor.getVendorPaymentMonth());
+        vendorEntity.set仕入先支払日(vendor.getVendorPaymentDate());
+        vendorEntity.set仕入先支払方法(vendor.getVendorPaymentMethod());
+
+        return vendorEntity;
+    }
+
+    public Vendor mapToDomainModel(VendorCustomEntity vendorCustomEntity) {
+        return Vendor.of(
+                vendorCustomEntity.get仕入先コード(),
+                vendorCustomEntity.get仕入先枝番(),
+                vendorCustomEntity.get仕入先名(),
+                vendorCustomEntity.get仕入先名カナ(),
+                vendorCustomEntity.get仕入先担当者名(),
+                vendorCustomEntity.get仕入先部門名(),
+                vendorCustomEntity.get仕入先郵便番号(),
+                vendorCustomEntity.get仕入先都道府県(),
+                vendorCustomEntity.get仕入先住所１(),
+                vendorCustomEntity.get仕入先住所２(),
+                vendorCustomEntity.get仕入先電話番号(),
+                vendorCustomEntity.get仕入先ｆａｘ番号(),
+                vendorCustomEntity.get仕入先メールアドレス(),
+                vendorCustomEntity.get仕入先締日(),
+                vendorCustomEntity.get仕入先支払月(),
+                vendorCustomEntity.get仕入先支払日(),
+                vendorCustomEntity.get仕入先支払方法()
+        );
     }
 }

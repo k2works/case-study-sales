@@ -3,16 +3,18 @@ package com.example.sms.infrastructure.datasource.master.partner;
 import com.example.sms.domain.model.master.partner.Customer;
 import com.example.sms.domain.model.master.partner.Partner;
 import com.example.sms.domain.model.master.partner.PartnerList;
+import com.example.sms.domain.model.master.partner.Vendor;
 import com.example.sms.infrastructure.PageInfoHelper;
+import com.example.sms.infrastructure.datasource.autogen.mapper.仕入先マスタMapper;
 import com.example.sms.infrastructure.datasource.autogen.mapper.出荷先マスタMapper;
 import com.example.sms.infrastructure.datasource.autogen.mapper.取引先マスタMapper;
 import com.example.sms.infrastructure.datasource.autogen.mapper.顧客マスタMapper;
-import com.example.sms.infrastructure.datasource.autogen.model.出荷先マスタ;
-import com.example.sms.infrastructure.datasource.autogen.model.取引先マスタ;
-import com.example.sms.infrastructure.datasource.autogen.model.顧客マスタ;
+import com.example.sms.infrastructure.datasource.autogen.model.*;
 import com.example.sms.infrastructure.datasource.master.partner.customer.CustomerCustomEntity;
 import com.example.sms.infrastructure.datasource.master.partner.customer.CustomerCustomMapper;
 import com.example.sms.infrastructure.datasource.master.partner.customer.shipping.ShippingCustomMapper;
+import com.example.sms.infrastructure.datasource.master.partner.vendor.VendorCustomEntity;
+import com.example.sms.infrastructure.datasource.master.partner.vendor.VendorCustomMapper;
 import com.example.sms.service.master.partner.PartnerRepository;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.core.Authentication;
@@ -32,8 +34,10 @@ public class PartnerDataSource implements PartnerRepository {
     final CustomerCustomMapper customerCustomMapper;
     final 出荷先マスタMapper shippingMapper;
     final ShippingCustomMapper shippingCustomMapper;
+    final 仕入先マスタMapper vendorMapper;
+    final VendorCustomMapper vendorCustomMapper;
 
-    public PartnerDataSource(取引先マスタMapper partnerMapper, PartnerCustomMapper partnerCustomMapper, PartnerEntityMapper partnerEntityMapper, 顧客マスタMapper customerMapper, CustomerCustomMapper customerCustomMapper, 出荷先マスタMapper shippingMapper, ShippingCustomMapper shippingCustomMapper) {
+    public PartnerDataSource(取引先マスタMapper partnerMapper, PartnerCustomMapper partnerCustomMapper, PartnerEntityMapper partnerEntityMapper, 顧客マスタMapper customerMapper, CustomerCustomMapper customerCustomMapper, 出荷先マスタMapper shippingMapper, ShippingCustomMapper shippingCustomMapper, 仕入先マスタMapper vendorMapper, VendorCustomMapper vendorCustomMapper) {
         this.partnerMapper = partnerMapper;
         this.partnerCustomMapper = partnerCustomMapper;
         this.partnerEntityMapper = partnerEntityMapper;
@@ -41,12 +45,15 @@ public class PartnerDataSource implements PartnerRepository {
         this.customerCustomMapper = customerCustomMapper;
         this.shippingMapper = shippingMapper;
         this.shippingCustomMapper = shippingCustomMapper;
+        this.vendorMapper = vendorMapper;
+        this.vendorCustomMapper = vendorCustomMapper;
     }
 
     @Override
     public void deleteAll() {
         shippingCustomMapper.deleteAll();
         customerCustomMapper.deleteAll();
+        vendorCustomMapper.deleteAll();
         partnerCustomMapper.deleteAll();
     }
 
@@ -63,6 +70,7 @@ public class PartnerDataSource implements PartnerRepository {
             updatePartnerEntity.set更新日時(partnerCustomEntity.get().get更新日時());
             updatePartnerEntity.set更新者名(username);
             partnerMapper.updateByPrimaryKey(updatePartnerEntity);
+
             if(partner.getCustomers() != null) {
                 if (partner.getCustomers().isEmpty()) {
                     shippingCustomMapper.deleteByCustomerCode(updatePartnerEntity.get取引先コード());
@@ -94,6 +102,23 @@ public class PartnerDataSource implements PartnerRepository {
                     }
                 });
             }
+
+            if(partner.getVendors() != null) {
+                if (partner.getVendors().isEmpty()) {
+                    vendorCustomMapper.deleteByVendorCode(updatePartnerEntity.get取引先コード());
+                }
+
+                partner.getVendors().forEach(vendor -> {
+                    vendorCustomMapper.deleteByVendorCode(updatePartnerEntity.get取引先コード());
+
+                    仕入先マスタ vendorEntity = partnerEntityMapper.mapToEntity(vendor);
+                    vendorEntity.set作成日時(partnerCustomEntity.get().get作成日時());
+                    vendorEntity.set作成者名(partnerCustomEntity.get().get作成者名());
+                    vendorEntity.set更新日時(partnerCustomEntity.get().get更新日時());
+                    vendorEntity.set更新者名(username);
+                    vendorMapper.insert(vendorEntity);
+                });
+            }
         } else {
             取引先マスタ insertPartnerEntity = partnerEntityMapper.mapToEntity(partner);
             insertPartnerEntity.set作成日時(LocalDateTime.now());
@@ -101,6 +126,7 @@ public class PartnerDataSource implements PartnerRepository {
             insertPartnerEntity.set更新日時(LocalDateTime.now());
             insertPartnerEntity.set更新者名(username);
             partnerMapper.insert(insertPartnerEntity);
+
             if (partner.getCustomers() != null) {
                 partner.getCustomers().forEach(customer -> {
                     顧客マスタ customerEntity = partnerEntityMapper.mapToEntity(customer);
@@ -122,6 +148,17 @@ public class PartnerDataSource implements PartnerRepository {
                     }
                 });
             }
+
+            if(partner.getVendors() != null) {
+                partner.getVendors().forEach(vendor -> {
+                    仕入先マスタ vendorEntity = partnerEntityMapper.mapToEntity(vendor);
+                    vendorEntity.set作成日時(insertPartnerEntity.get作成日時());
+                    vendorEntity.set作成者名(username);
+                    vendorEntity.set更新日時(insertPartnerEntity.get更新日時());
+                    vendorEntity.set更新者名(username);
+                    vendorMapper.insert(vendorEntity);
+                });
+            }
         }
     }
 
@@ -130,7 +167,7 @@ public class PartnerDataSource implements PartnerRepository {
         List<PartnerCustomEntity> partnerCustomEntities = partnerCustomMapper.selectAll();
 
         return new PartnerList(partnerCustomEntities.stream()
-                .map(partnerEntityMapper::mapToDomain)
+                .map(partnerEntityMapper::mapToDomainModel)
                 .toList());
     }
 
@@ -138,7 +175,7 @@ public class PartnerDataSource implements PartnerRepository {
     public Optional<Partner> findById(String partnerCode) {
         PartnerCustomEntity partnerCustomEntity = partnerCustomMapper.selectByPrimaryKey(partnerCode);
         if (partnerCustomEntity != null) {
-            return Optional.of(partnerEntityMapper.mapToDomain(partnerCustomEntity));
+            return Optional.of(partnerEntityMapper.mapToDomainModel(partnerCustomEntity));
         }
         return Optional.empty();
     }
@@ -153,7 +190,7 @@ public class PartnerDataSource implements PartnerRepository {
         List<PartnerCustomEntity> partnerCustomEntities = partnerCustomMapper.selectAll();
         PageInfo<PartnerCustomEntity> pageInfo = new PageInfo<>(partnerCustomEntities);
 
-        return PageInfoHelper.of(pageInfo, partnerEntityMapper::mapToDomain);
+        return PageInfoHelper.of(pageInfo, partnerEntityMapper::mapToDomainModel);
     }
 
     @Override
@@ -161,6 +198,14 @@ public class PartnerDataSource implements PartnerRepository {
         List<CustomerCustomEntity> customerCustomEntities = customerCustomMapper.selectAll();
         PageInfo<CustomerCustomEntity> pageInfo = new PageInfo<>(customerCustomEntities);
 
-        return PageInfoHelper.of(pageInfo, partnerEntityMapper::mapToDomain);
+        return PageInfoHelper.of(pageInfo, partnerEntityMapper::mapToDomainModel);
+    }
+
+    @Override
+    public PageInfo<Vendor> selectAllVendorWithPageInfo() {
+        List<VendorCustomEntity> vendorCustomEntities = vendorCustomMapper.selectAll();
+        PageInfo<VendorCustomEntity> pageInfo = new PageInfo<>(vendorCustomEntities);
+
+        return PageInfoHelper.of(pageInfo, partnerEntityMapper::mapToDomainModel);
     }
 }
