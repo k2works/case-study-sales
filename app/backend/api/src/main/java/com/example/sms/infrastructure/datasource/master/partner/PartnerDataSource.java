@@ -64,31 +64,29 @@ public class PartnerDataSource implements PartnerRepository {
         LocalDateTime updateDateTime = LocalDateTime.now();
 
         Optional<PartnerCustomEntity> partnerCustomEntity = Optional.ofNullable(partnerCustomMapper.selectByPrimaryKey(partner.getPartnerCode()));
+
         if (partnerCustomEntity.isPresent()) {
             取引先マスタ updatePartnerEntity = partnerEntityMapper.mapToEntity(partner);
             updatePartnerEntity.set作成日時(partnerCustomEntity.get().get作成日時());
             updatePartnerEntity.set作成者名(partnerCustomEntity.get().get作成者名());
             updatePartnerEntity.set更新日時(updateDateTime);
             updatePartnerEntity.set更新者名(username);
+
             partnerMapper.updateByPrimaryKey(updatePartnerEntity);
 
             if(partner.getCustomers() != null) {
-                if (partner.getCustomers().isEmpty()) {
-                    shippingCustomMapper.deleteByCustomerCode(updatePartnerEntity.get取引先コード());
-                    customerCustomMapper.deleteByCustomerCode(updatePartnerEntity.get取引先コード());
-                }
+                shippingCustomMapper.deleteByCustomerCode(updatePartnerEntity.get取引先コード());
+                customerCustomMapper.deleteByCustomerCode(updatePartnerEntity.get取引先コード());
+
                 partner.getCustomers().forEach(customer -> {
                     顧客マスタ customerEntity = partnerEntityMapper.mapToEntity(customer);
                     customerEntity.set作成日時(partnerCustomEntity.get().get作成日時());
                     customerEntity.set作成者名(partnerCustomEntity.get().get作成者名());
                     customerEntity.set更新日時(updateDateTime);
                     customerEntity.set更新者名(username);
+                    customerMapper.insert(customerEntity);
 
                     if (customer.getShippings() != null) {
-                        shippingCustomMapper.deleteByCustomerCode(customerEntity.get顧客コード());
-                        customerCustomMapper.deleteByCustomerCode(updatePartnerEntity.get取引先コード());
-                        customerMapper.insert(customerEntity);
-
                         customer.getShippings().forEach(shipping -> {
                             出荷先マスタ shippingEntity = partnerEntityMapper.mapToEntity(shipping);
                             shippingEntity.set作成日時(partnerCustomEntity.get().get作成日時());
@@ -97,21 +95,14 @@ public class PartnerDataSource implements PartnerRepository {
                             shippingEntity.set更新者名(username);
                             shippingMapper.insert(shippingEntity);
                         });
-                    } else {
-                        customerCustomMapper.deleteByCustomerCode(updatePartnerEntity.get取引先コード());
-                        customerMapper.insert(customerEntity);
                     }
                 });
             }
 
             if(partner.getVendors() != null) {
-                if (partner.getVendors().isEmpty()) {
-                    vendorCustomMapper.deleteByVendorCode(updatePartnerEntity.get取引先コード());
-                }
+                vendorCustomMapper.deleteByVendorCode(updatePartnerEntity.get取引先コード());
 
                 partner.getVendors().forEach(vendor -> {
-                    vendorCustomMapper.deleteByVendorCode(updatePartnerEntity.get取引先コード());
-
                     仕入先マスタ vendorEntity = partnerEntityMapper.mapToEntity(vendor);
                     vendorEntity.set作成日時(partnerCustomEntity.get().get作成日時());
                     vendorEntity.set作成者名(partnerCustomEntity.get().get作成者名());
