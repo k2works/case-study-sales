@@ -64,34 +64,21 @@ public class PartnerCategoryDataSource implements PartnerCategoryRepository {
             partnerCategoryTypeMapper.updateByPrimaryKey(partnerCategoryTypeCustomEntity);
 
             if (partnerCategoryType.getPartnerCategoryItems() != null) {
-                if (partnerCategoryType.getPartnerCategoryItems().isEmpty()) {
-                    partnerCategoryAffiliationCustomMapper.deleteByCategoryTypeCode(partnerCategoryType.getPartnerCategoryTypeCode());
-                    partnerCategoryItemCustomMapper.deleteByCategoryTypeCode(partnerCategoryType.getPartnerCategoryTypeCode());
-                }
+                partnerCategoryAffiliationCustomMapper.deleteByCategoryTypeCode(partnerCategoryType.getPartnerCategoryTypeCode());
+                partnerCategoryItemCustomMapper.deleteByCategoryTypeCode(partnerCategoryType.getPartnerCategoryTypeCode());
+
                 partnerCategoryType.getPartnerCategoryItems().forEach(partnerCategoryItem -> {
                     取引先分類マスタ partnerCategoryItemEntity = partnerCategoryEntityMapper.mapToEntity(partnerCategoryItem);
                     partnerCategoryItemEntity.set作成日時(partnerCategoryTypeOptional.get().get作成日時());
                     partnerCategoryItemEntity.set作成者名(partnerCategoryTypeOptional.get().get作成者名());
                     partnerCategoryItemEntity.set更新日時(updateDateTime);
                     partnerCategoryItemEntity.set更新者名(username);
+                    partnerCategoryItemMapper.insert(partnerCategoryItemEntity);
+                });
 
+                partnerCategoryType.getPartnerCategoryItems().forEach(partnerCategoryItem -> {
                     if (partnerCategoryItem.getPartnerCategoryAffiliations() != null) {
-                        if (partnerCategoryItem.getPartnerCategoryAffiliations().isEmpty()) {
-                            partnerCategoryAffiliationCustomMapper.deleteByCategoryTypeCode(partnerCategoryType.getPartnerCategoryTypeCode());
-                        } else {
-                            取引先分類マスタKey partnerCategoryItemKey = new 取引先分類マスタKey();
-                            partnerCategoryItemKey.set取引先分類種別コード(partnerCategoryItem.getPartnerCategoryTypeCode());
-                            partnerCategoryItemKey.set取引先分類コード(partnerCategoryItem.getPartnerCategoryItemCode());
-                            partnerCategoryAffiliationCustomMapper.deleteByCategoryTypeCodeAndItemCode(partnerCategoryItemKey);
-                        }
-
                         partnerCategoryItem.getPartnerCategoryAffiliations().forEach(partnerCategoryAffiliation -> {
-                            取引先分類マスタKey key = new 取引先分類マスタKey();
-                            key.set取引先分類種別コード(partnerCategoryItem.getPartnerCategoryTypeCode());
-                            key.set取引先分類コード(partnerCategoryItem.getPartnerCategoryItemCode());
-                            partnerCategoryItemMapper.deleteByPrimaryKey(key);
-                            partnerCategoryItemMapper.insert(partnerCategoryItemEntity);
-
                             取引先分類所属マスタ partnerCategoryAffiliationEntity = partnerCategoryEntityMapper.mapToEntity(partnerCategoryAffiliation);
                             partnerCategoryAffiliationEntity.set作成日時(partnerCategoryTypeOptional.get().get作成日時());
                             partnerCategoryAffiliationEntity.set作成者名(partnerCategoryTypeOptional.get().get作成者名());
@@ -101,12 +88,6 @@ public class PartnerCategoryDataSource implements PartnerCategoryRepository {
                             partnerCategoryAffiliationMapper.insert(partnerCategoryAffiliationEntity);
                         });
                     }
-
-                    取引先分類マスタKey key = new 取引先分類マスタKey();
-                    key.set取引先分類種別コード(partnerCategoryItem.getPartnerCategoryTypeCode());
-                    key.set取引先分類コード(partnerCategoryItem.getPartnerCategoryItemCode());
-                    partnerCategoryItemMapper.deleteByPrimaryKey(key);
-                    partnerCategoryItemMapper.insert(partnerCategoryItemEntity);
                 });
             }
         } else {

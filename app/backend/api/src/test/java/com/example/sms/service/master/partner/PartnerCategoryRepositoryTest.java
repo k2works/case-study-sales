@@ -175,13 +175,13 @@ public class PartnerCategoryRepositoryTest {
             repository.save(PartnerCategoryType.of(partnerCategoryType, List.of(partnerCategoryItem, partnerCategoryItem2)));
 
             PartnerCategoryItem updatedPartnerCategoryItem = PartnerCategoryItem.of(partnerCategoryType.getPartnerCategoryTypeCode(), "1", "取引先カテゴリー2");
-            repository.save(PartnerCategoryType.of(partnerCategoryType, List.of(updatedPartnerCategoryItem)));
+            repository.save(PartnerCategoryType.of(partnerCategoryType, List.of(updatedPartnerCategoryItem, partnerCategoryItem2)));
 
             PartnerCategoryType actual = repository.findById("1").orElse(null);
 
             assertNotNull(actual);
             assertEquals(2, actual.getPartnerCategoryItems().size());
-            assertEquals(updatedPartnerCategoryItem, actual.getPartnerCategoryItems().getLast());
+            assertEquals(updatedPartnerCategoryItem, actual.getPartnerCategoryItems().getFirst());
         }
 
         @Test
@@ -262,13 +262,14 @@ public class PartnerCategoryRepositoryTest {
             repository.save(PartnerCategoryType.of(partnerCategoryType, partnerCategoryItems));
 
             PartnerCategoryAffiliation updatedPartnerCategoryAffiliation = getPartnerCategoryAffiliation(partnerCategoryType.getPartnerCategoryTypeCode(), partnerCode, "2");
-            repository.save(PartnerCategoryType.of(partnerCategoryType, List.of(PartnerCategoryItem.of(partnerCategoryItem, List.of(updatedPartnerCategoryAffiliation)))));
+            List<PartnerCategoryItem> updatedPartnerCategoryItems = List.of(PartnerCategoryItem.of(partnerCategoryItem, List.of(updatedPartnerCategoryAffiliation)), partnerCategoryItem2);
+            repository.save(PartnerCategoryType.of(partnerCategoryType, updatedPartnerCategoryItems));
 
             PartnerCategoryType actual = repository.findById("1").orElse(null);
             assertNotNull(actual);
             assertEquals(2, actual.getPartnerCategoryItems().size());
-            assertEquals(1, actual.getPartnerCategoryItems().getFirst().getPartnerCategoryAffiliations().size());
-            assertEquals(updatedPartnerCategoryAffiliation, actual.getPartnerCategoryItems().getFirst().getPartnerCategoryAffiliations().getFirst());
+            assertEquals(1, actual.getPartnerCategoryItems().getLast().getPartnerCategoryAffiliations().size());
+            assertEquals(updatedPartnerCategoryAffiliation, actual.getPartnerCategoryItems().getLast().getPartnerCategoryAffiliations().getFirst());
         }
 
         @Test
@@ -283,7 +284,8 @@ public class PartnerCategoryRepositoryTest {
             List<PartnerCategoryItem> partnerCategoryItems = List.of(PartnerCategoryItem.of(partnerCategoryItem, List.of(partnerCategoryAffiliation)), partnerCategoryItem2);
             repository.save(PartnerCategoryType.of(partnerCategoryType, partnerCategoryItems));
 
-            repository.save(PartnerCategoryType.of(partnerCategoryType, List.of(PartnerCategoryItem.of(partnerCategoryItem, List.of()))));
+            partnerCategoryItems = List.of(PartnerCategoryItem.of(partnerCategoryItem, List.of()), partnerCategoryItem2);
+            repository.save(PartnerCategoryType.of(partnerCategoryType, partnerCategoryItems));
 
             PartnerCategoryType actual = repository.findById("1").orElse(null);
             assertNotNull(actual);
