@@ -4,11 +4,11 @@ import com.example.sms.domain.model.master.partner.PartnerCategoryList;
 import com.example.sms.domain.model.master.partner.PartnerCategoryType;
 import com.example.sms.infrastructure.PageInfoHelper;
 import com.example.sms.infrastructure.datasource.autogen.mapper.取引先分類マスタMapper;
+import com.example.sms.infrastructure.datasource.autogen.mapper.取引先分類所属マスタMapper;
 import com.example.sms.infrastructure.datasource.autogen.mapper.取引先分類種別マスタMapper;
-import com.example.sms.infrastructure.datasource.autogen.model.取引先分類マスタ;
-import com.example.sms.infrastructure.datasource.autogen.model.取引先分類マスタKey;
-import com.example.sms.infrastructure.datasource.autogen.model.取引先分類種別マスタ;
+import com.example.sms.infrastructure.datasource.autogen.model.*;
 import com.example.sms.infrastructure.datasource.master.partner_category.item.PartnerCategoryItemCustomMapper;
+import com.example.sms.infrastructure.datasource.master.partner_category.item.affiliation.PartnerCategoryAffiliationCustomMapper;
 import com.example.sms.service.master.partner.PartnerCategoryRepository;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.core.Authentication;
@@ -26,17 +26,22 @@ public class PartnerCategoryDataSource implements PartnerCategoryRepository {
     final PartnerCategoryEntityMapper partnerCategoryEntityMapper;
     final 取引先分類マスタMapper partnerCategoryItemMapper;
     final PartnerCategoryItemCustomMapper partnerCategoryItemCustomMapper;
+    final 取引先分類所属マスタMapper partnerCategoryAffiliationMapper;
+    final PartnerCategoryAffiliationCustomMapper partnerCategoryAffiliationCustomMapper;
 
-    public PartnerCategoryDataSource(取引先分類種別マスタMapper partnerCategoryTypeMapper, PartnerCategoryTypeCustomMapper partnerCategoryTypeCustomMapper, PartnerCategoryEntityMapper partnerCategoryEntityMapper, 取引先分類マスタMapper partnerCategoryItemMapper, PartnerCategoryItemCustomMapper partnerCategoryItemCustomMapper) {
+    public PartnerCategoryDataSource(取引先分類種別マスタMapper partnerCategoryTypeMapper, PartnerCategoryTypeCustomMapper partnerCategoryTypeCustomMapper, PartnerCategoryEntityMapper partnerCategoryEntityMapper, 取引先分類マスタMapper partnerCategoryItemMapper, PartnerCategoryItemCustomMapper partnerCategoryItemCustomMapper, 取引先分類所属マスタMapper partnerCategoryAffiliationMapper, PartnerCategoryAffiliationCustomMapper partnerCategoryAffiliationCustomMapper) {
         this.partnerCategoryTypeMapper = partnerCategoryTypeMapper;
         this.partnerCategoryTypeCustomMapper = partnerCategoryTypeCustomMapper;
         this.partnerCategoryEntityMapper = partnerCategoryEntityMapper;
         this.partnerCategoryItemMapper = partnerCategoryItemMapper;
         this.partnerCategoryItemCustomMapper = partnerCategoryItemCustomMapper;
+        this.partnerCategoryAffiliationMapper = partnerCategoryAffiliationMapper;
+        this.partnerCategoryAffiliationCustomMapper = partnerCategoryAffiliationCustomMapper;
     }
 
     @Override
     public void deleteAll() {
+        partnerCategoryAffiliationCustomMapper.deleteAll();
         partnerCategoryItemCustomMapper.deleteAll();
         partnerCategoryTypeCustomMapper.deleteAll();
     }
@@ -60,6 +65,7 @@ public class PartnerCategoryDataSource implements PartnerCategoryRepository {
 
             if (partnerCategoryType.getPartnerCategoryItems() != null) {
                 if (partnerCategoryType.getPartnerCategoryItems().isEmpty()) {
+                    partnerCategoryAffiliationCustomMapper.deleteByCategoryTypeCode(partnerCategoryType.getPartnerCategoryTypeCode());
                     partnerCategoryItemCustomMapper.deleteByCategoryTypeCode(partnerCategoryType.getPartnerCategoryTypeCode());
                 }
                 partnerCategoryType.getPartnerCategoryItems().forEach(partnerCategoryItem -> {
@@ -68,6 +74,33 @@ public class PartnerCategoryDataSource implements PartnerCategoryRepository {
                     partnerCategoryItemEntity.set作成者名(partnerCategoryTypeOptional.get().get作成者名());
                     partnerCategoryItemEntity.set更新日時(updateDateTime);
                     partnerCategoryItemEntity.set更新者名(username);
+
+                    if (partnerCategoryItem.getPartnerCategoryAffiliations() != null) {
+                        if (partnerCategoryItem.getPartnerCategoryAffiliations().isEmpty()) {
+                            partnerCategoryAffiliationCustomMapper.deleteByCategoryTypeCode(partnerCategoryType.getPartnerCategoryTypeCode());
+                        } else {
+                            取引先分類マスタKey partnerCategoryItemKey = new 取引先分類マスタKey();
+                            partnerCategoryItemKey.set取引先分類種別コード(partnerCategoryItem.getPartnerCategoryTypeCode());
+                            partnerCategoryItemKey.set取引先分類コード(partnerCategoryItem.getPartnerCategoryItemCode());
+                            partnerCategoryAffiliationCustomMapper.deleteByCategoryTypeCodeAndItemCode(partnerCategoryItemKey);
+                        }
+
+                        partnerCategoryItem.getPartnerCategoryAffiliations().forEach(partnerCategoryAffiliation -> {
+                            取引先分類マスタKey key = new 取引先分類マスタKey();
+                            key.set取引先分類種別コード(partnerCategoryItem.getPartnerCategoryTypeCode());
+                            key.set取引先分類コード(partnerCategoryItem.getPartnerCategoryItemCode());
+                            partnerCategoryItemMapper.deleteByPrimaryKey(key);
+                            partnerCategoryItemMapper.insert(partnerCategoryItemEntity);
+
+                            取引先分類所属マスタ partnerCategoryAffiliationEntity = partnerCategoryEntityMapper.mapToEntity(partnerCategoryAffiliation);
+                            partnerCategoryAffiliationEntity.set作成日時(partnerCategoryTypeOptional.get().get作成日時());
+                            partnerCategoryAffiliationEntity.set作成者名(partnerCategoryTypeOptional.get().get作成者名());
+                            partnerCategoryAffiliationEntity.set更新日時(updateDateTime);
+                            partnerCategoryAffiliationEntity.set更新者名(username);
+
+                            partnerCategoryAffiliationMapper.insert(partnerCategoryAffiliationEntity);
+                        });
+                    }
 
                     取引先分類マスタKey key = new 取引先分類マスタKey();
                     key.set取引先分類種別コード(partnerCategoryItem.getPartnerCategoryTypeCode());
@@ -94,6 +127,18 @@ public class PartnerCategoryDataSource implements PartnerCategoryRepository {
                     partnerCategoryItemEntity.set更新者名(username);
 
                     partnerCategoryItemMapper.insert(partnerCategoryItemEntity);
+
+                    if (partnerCategoryItem.getPartnerCategoryAffiliations() != null) {
+                        partnerCategoryItem.getPartnerCategoryAffiliations().forEach(partnerCategoryAffiliation -> {
+                            取引先分類所属マスタ partnerCategoryAffiliationEntity = partnerCategoryEntityMapper.mapToEntity(partnerCategoryAffiliation);
+                            partnerCategoryAffiliationEntity.set作成日時(updateDateTime);
+                            partnerCategoryAffiliationEntity.set作成者名(username);
+                            partnerCategoryAffiliationEntity.set更新日時(updateDateTime);
+                            partnerCategoryAffiliationEntity.set更新者名(username);
+
+                            partnerCategoryAffiliationMapper.insert(partnerCategoryAffiliationEntity);
+                        });
+                    }
                 });
             }
         }
