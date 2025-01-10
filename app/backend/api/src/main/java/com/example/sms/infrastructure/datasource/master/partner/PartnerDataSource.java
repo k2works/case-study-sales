@@ -85,7 +85,9 @@ public class PartnerDataSource implements PartnerRepository {
                     customerEntity.set更新日時(updateDateTime);
                     customerEntity.set更新者名(username);
                     customerMapper.insert(customerEntity);
+                });
 
+                partner.getCustomers().forEach(customer -> {
                     if (customer.getShippings() != null) {
                         customer.getShippings().forEach(shipping -> {
                             出荷先マスタ shippingEntity = partnerEntityMapper.mapToEntity(shipping);
