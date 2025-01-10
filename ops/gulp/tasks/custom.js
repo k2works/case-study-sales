@@ -46,7 +46,12 @@ const app = {
     },
     cleanApp: async () => {
         await fs.remove(appCwd + '/dist');
-    }
+    },
+    openApp: () => {
+        const command = isWindows ? 'start' : 'open';
+        return src(appNpmPath, {read: false})
+            .pipe(exec(`${command} http://localhost:5173`));
+    },
 }
 
 const jig = {
