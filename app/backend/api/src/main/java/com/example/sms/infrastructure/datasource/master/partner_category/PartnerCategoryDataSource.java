@@ -48,80 +48,84 @@ public class PartnerCategoryDataSource implements PartnerCategoryRepository {
 
     @Override
     public void save(PartnerCategoryType partnerCategoryType) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication != null && authentication.getName() != null ? authentication.getName() : "system";
+        String username = getCurrentUsername();
         LocalDateTime updateDateTime = LocalDateTime.now();
 
-        Optional<PartnerCategoryTypeCustomEntity> partnerCategoryTypeOptional = Optional.ofNullable(partnerCategoryTypeCustomMapper.selectByPrimaryKey(partnerCategoryType.getPartnerCategoryTypeCode()));
+        Optional<PartnerCategoryTypeCustomEntity> existingEntity = Optional.ofNullable(
+                partnerCategoryTypeCustomMapper.selectByPrimaryKey(partnerCategoryType.getPartnerCategoryTypeCode())
+        );
 
-        if (partnerCategoryTypeOptional.isPresent()) {
-            取引先分類種別マスタ partnerCategoryTypeCustomEntity = partnerCategoryEntityMapper.mapToEntity(partnerCategoryType);
-            partnerCategoryTypeCustomEntity.set作成日時(partnerCategoryTypeOptional.get().get作成日時());
-            partnerCategoryTypeCustomEntity.set作成者名(partnerCategoryTypeOptional.get().get作成者名());
-            partnerCategoryTypeCustomEntity.set更新日時(updateDateTime);
-            partnerCategoryTypeCustomEntity.set更新者名(username);
+        existingEntity.ifPresentOrElse(
+                entity -> updatePartnerCategoryType(partnerCategoryType, username, updateDateTime, entity),
+                () -> insertPartnerCategoryType(partnerCategoryType, username, updateDateTime)
+        );
+    }
 
-            partnerCategoryTypeMapper.updateByPrimaryKey(partnerCategoryTypeCustomEntity);
+    private String getCurrentUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication != null && authentication.getName() != null ? authentication.getName() : "system";
+    }
 
-            if (partnerCategoryType.getPartnerCategoryItems() != null) {
-                partnerCategoryAffiliationCustomMapper.deleteByCategoryTypeCode(partnerCategoryType.getPartnerCategoryTypeCode());
-                partnerCategoryItemCustomMapper.deleteByCategoryTypeCode(partnerCategoryType.getPartnerCategoryTypeCode());
+    private void updatePartnerCategoryType(PartnerCategoryType partnerCategoryType, String username, LocalDateTime updateDateTime, PartnerCategoryTypeCustomEntity existingEntity) {
+        取引先分類種別マスタ updatedEntity = partnerCategoryEntityMapper.mapToEntity(partnerCategoryType);
+        setCommonFields(updatedEntity, existingEntity.get作成日時(), existingEntity.get作成者名(), updateDateTime, username);
+        partnerCategoryTypeMapper.updateByPrimaryKey(updatedEntity);
 
-                partnerCategoryType.getPartnerCategoryItems().forEach(partnerCategoryItem -> {
-                    取引先分類マスタ partnerCategoryItemEntity = partnerCategoryEntityMapper.mapToEntity(partnerCategoryItem);
-                    partnerCategoryItemEntity.set作成日時(partnerCategoryTypeOptional.get().get作成日時());
-                    partnerCategoryItemEntity.set作成者名(partnerCategoryTypeOptional.get().get作成者名());
-                    partnerCategoryItemEntity.set更新日時(updateDateTime);
-                    partnerCategoryItemEntity.set更新者名(username);
-                    partnerCategoryItemMapper.insert(partnerCategoryItemEntity);
-                });
+        deleteExistingCategories(partnerCategoryType.getPartnerCategoryTypeCode());
+        processPartnerCategoryItems(partnerCategoryType, username, updateDateTime, existingEntity.get作成日時(), existingEntity.get作成者名());
+    }
 
-                partnerCategoryType.getPartnerCategoryItems().forEach(partnerCategoryItem -> {
-                    if (partnerCategoryItem.getPartnerCategoryAffiliations() != null) {
-                        partnerCategoryItem.getPartnerCategoryAffiliations().forEach(partnerCategoryAffiliation -> {
-                            取引先分類所属マスタ partnerCategoryAffiliationEntity = partnerCategoryEntityMapper.mapToEntity(partnerCategoryAffiliation);
-                            partnerCategoryAffiliationEntity.set作成日時(partnerCategoryTypeOptional.get().get作成日時());
-                            partnerCategoryAffiliationEntity.set作成者名(partnerCategoryTypeOptional.get().get作成者名());
-                            partnerCategoryAffiliationEntity.set更新日時(updateDateTime);
-                            partnerCategoryAffiliationEntity.set更新者名(username);
+    private void insertPartnerCategoryType(PartnerCategoryType partnerCategoryType, String username, LocalDateTime updateDateTime) {
+        取引先分類種別マスタ newEntity = partnerCategoryEntityMapper.mapToEntity(partnerCategoryType);
+        setCommonFields(newEntity, updateDateTime, username, updateDateTime, username);
+        partnerCategoryTypeMapper.insert(newEntity);
 
-                            partnerCategoryAffiliationMapper.insert(partnerCategoryAffiliationEntity);
-                        });
-                    }
-                });
-            }
-        } else {
-            取引先分類種別マスタ partnerCategoryTypeCustomEntity = partnerCategoryEntityMapper.mapToEntity(partnerCategoryType);
-            partnerCategoryTypeCustomEntity.set作成日時(updateDateTime);
-            partnerCategoryTypeCustomEntity.set作成者名(username);
-            partnerCategoryTypeCustomEntity.set更新日時(updateDateTime);
-            partnerCategoryTypeCustomEntity.set更新者名(username);
+        processPartnerCategoryItems(partnerCategoryType, username, updateDateTime, newEntity.get作成日時(), username);
+    }
 
-            partnerCategoryTypeMapper.insert(partnerCategoryTypeCustomEntity);
+    private void deleteExistingCategories(String partnerCategoryTypeCode) {
+        partnerCategoryAffiliationCustomMapper.deleteByCategoryTypeCode(partnerCategoryTypeCode);
+        partnerCategoryItemCustomMapper.deleteByCategoryTypeCode(partnerCategoryTypeCode);
+    }
 
-            if (partnerCategoryType.getPartnerCategoryItems() != null) {
-                partnerCategoryType.getPartnerCategoryItems().forEach(partnerCategoryItem -> {
-                    取引先分類マスタ partnerCategoryItemEntity = partnerCategoryEntityMapper.mapToEntity(partnerCategoryItem);
-                    partnerCategoryItemEntity.set作成日時(updateDateTime);
-                    partnerCategoryItemEntity.set作成者名(username);
-                    partnerCategoryItemEntity.set更新日時(updateDateTime);
-                    partnerCategoryItemEntity.set更新者名(username);
+    private void processPartnerCategoryItems(PartnerCategoryType partnerCategoryType, String username, LocalDateTime updateDateTime, LocalDateTime createdTime, String creatorName) {
+        if (partnerCategoryType.getPartnerCategoryItems() != null) {
+            partnerCategoryType.getPartnerCategoryItems().forEach(item -> {
+                取引先分類マスタ itemEntity = partnerCategoryEntityMapper.mapToEntity(item);
+                setCommonFields(itemEntity, createdTime, creatorName, updateDateTime, username);
+                partnerCategoryItemMapper.insert(itemEntity);
+            });
+        }
 
-                    partnerCategoryItemMapper.insert(partnerCategoryItemEntity);
+        if (partnerCategoryType.getPartnerCategoryItems() != null) {
+            partnerCategoryType.getPartnerCategoryItems().forEach(item -> {
+                if (item.getPartnerCategoryAffiliations() != null) {
+                    item.getPartnerCategoryAffiliations().forEach(affiliation -> {
+                        取引先分類所属マスタ affiliationEntity = partnerCategoryEntityMapper.mapToEntity(affiliation);
+                        setCommonFields(affiliationEntity, createdTime, creatorName, updateDateTime, username);
+                        partnerCategoryAffiliationMapper.insert(affiliationEntity);
+                    });
+                }
+            });
+        }
+    }
 
-                    if (partnerCategoryItem.getPartnerCategoryAffiliations() != null) {
-                        partnerCategoryItem.getPartnerCategoryAffiliations().forEach(partnerCategoryAffiliation -> {
-                            取引先分類所属マスタ partnerCategoryAffiliationEntity = partnerCategoryEntityMapper.mapToEntity(partnerCategoryAffiliation);
-                            partnerCategoryAffiliationEntity.set作成日時(updateDateTime);
-                            partnerCategoryAffiliationEntity.set作成者名(username);
-                            partnerCategoryAffiliationEntity.set更新日時(updateDateTime);
-                            partnerCategoryAffiliationEntity.set更新者名(username);
-
-                            partnerCategoryAffiliationMapper.insert(partnerCategoryAffiliationEntity);
-                        });
-                    }
-                });
-            }
+    private void setCommonFields(Object entity, LocalDateTime createdTime, String creatorName, LocalDateTime updatedTime, String updaterName) {
+        if (entity instanceof 取引先分類種別マスタ partnerCategoryTypeEntity) {
+            partnerCategoryTypeEntity.set作成日時(createdTime);
+            partnerCategoryTypeEntity.set作成者名(creatorName);
+            partnerCategoryTypeEntity.set更新日時(updatedTime);
+            partnerCategoryTypeEntity.set更新者名(updaterName);
+        } else if (entity instanceof 取引先分類マスタ partnerCategoryItemEntity) {
+            partnerCategoryItemEntity.set作成日時(createdTime);
+            partnerCategoryItemEntity.set作成者名(creatorName);
+            partnerCategoryItemEntity.set更新日時(updatedTime);
+            partnerCategoryItemEntity.set更新者名(updaterName);
+        } else if (entity instanceof 取引先分類所属マスタ partnerCategoryAffiliationEntity) {
+            partnerCategoryAffiliationEntity.set作成日時(createdTime);
+            partnerCategoryAffiliationEntity.set作成者名(creatorName);
+            partnerCategoryAffiliationEntity.set更新日時(updatedTime);
+            partnerCategoryAffiliationEntity.set更新者名(updaterName);
         }
     }
 

@@ -59,100 +59,94 @@ public class PartnerDataSource implements PartnerRepository {
 
     @Override
     public void save(Partner partner) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication != null && authentication.getName() != null ? authentication.getName() : "system";
+        String username = getCurrentUsername();
         LocalDateTime updateDateTime = LocalDateTime.now();
 
-        Optional<PartnerCustomEntity> partnerCustomEntity = Optional.ofNullable(partnerCustomMapper.selectByPrimaryKey(partner.getPartnerCode()));
+        Optional<PartnerCustomEntity> existingEntity = Optional.ofNullable(partnerCustomMapper.selectByPrimaryKey(partner.getPartnerCode()));
+        existingEntity.ifPresentOrElse(
+                entity -> updatePartner(partner, username, updateDateTime, entity),
+                () -> insertPartner(partner, username, updateDateTime)
+        );
+    }
 
-        if (partnerCustomEntity.isPresent()) {
-            取引先マスタ updatePartnerEntity = partnerEntityMapper.mapToEntity(partner);
-            updatePartnerEntity.set作成日時(partnerCustomEntity.get().get作成日時());
-            updatePartnerEntity.set作成者名(partnerCustomEntity.get().get作成者名());
-            updatePartnerEntity.set更新日時(updateDateTime);
-            updatePartnerEntity.set更新者名(username);
+    private String getCurrentUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication != null && authentication.getName() != null ? authentication.getName() : "system";
+    }
 
-            partnerMapper.updateByPrimaryKey(updatePartnerEntity);
+    private void updatePartner(Partner partner, String username, LocalDateTime updateDateTime, PartnerCustomEntity entity) {
+        取引先マスタ updatedEntity = partnerEntityMapper.mapToEntity(partner);
+        setCommonFields(updatedEntity, entity.get作成日時(), entity.get作成者名(), updateDateTime, username);
 
-            if(partner.getCustomers() != null) {
-                shippingCustomMapper.deleteByCustomerCode(updatePartnerEntity.get取引先コード());
-                customerCustomMapper.deleteByCustomerCode(updatePartnerEntity.get取引先コード());
+        partnerMapper.updateByPrimaryKey(updatedEntity);
+        processCustomers(partner, username, updateDateTime, entity.get作成日時(), entity.get作成者名(), true, updatedEntity.get取引先コード());
+        processVendors(partner, username, updateDateTime, entity.get作成日時(), entity.get作成者名(), true, updatedEntity.get取引先コード());
+    }
 
-                partner.getCustomers().forEach(customer -> {
-                    顧客マスタ customerEntity = partnerEntityMapper.mapToEntity(customer);
-                    customerEntity.set作成日時(partnerCustomEntity.get().get作成日時());
-                    customerEntity.set作成者名(partnerCustomEntity.get().get作成者名());
-                    customerEntity.set更新日時(updateDateTime);
-                    customerEntity.set更新者名(username);
-                    customerMapper.insert(customerEntity);
-                });
+    private void insertPartner(Partner partner, String username, LocalDateTime updateDateTime) {
+        取引先マスタ newEntity = partnerEntityMapper.mapToEntity(partner);
+        setCommonFields(newEntity, updateDateTime, username, updateDateTime, username);
 
-                partner.getCustomers().forEach(customer -> {
-                    if (customer.getShippings() != null) {
-                        customer.getShippings().forEach(shipping -> {
-                            出荷先マスタ shippingEntity = partnerEntityMapper.mapToEntity(shipping);
-                            shippingEntity.set作成日時(partnerCustomEntity.get().get作成日時());
-                            shippingEntity.set作成者名(partnerCustomEntity.get().get作成者名());
-                            shippingEntity.set更新日時(updateDateTime);
-                            shippingEntity.set更新者名(username);
-                            shippingMapper.insert(shippingEntity);
-                        });
-                    }
-                });
+        partnerMapper.insert(newEntity);
+        processCustomers(partner, username, updateDateTime, newEntity.get作成日時(), username, false, newEntity.get取引先コード());
+        processVendors(partner, username, updateDateTime, newEntity.get作成日時(), username, false, newEntity.get取引先コード());
+    }
+
+    private void processCustomers(Partner partner, String username, LocalDateTime updateDateTime, LocalDateTime createdTime, String creatorName, boolean isUpdate, String partnerCode) {
+        if (partner.getCustomers() != null) {
+            if (isUpdate) {
+                shippingCustomMapper.deleteByCustomerCode(partnerCode);
+                customerCustomMapper.deleteByCustomerCode(partnerCode);
             }
+            partner.getCustomers().forEach(customer -> {
+                顧客マスタ customerEntity = partnerEntityMapper.mapToEntity(customer);
+                setCommonFields(customerEntity, createdTime, creatorName, updateDateTime, username);
+                customerMapper.insert(customerEntity);
+            });
+            partner.getCustomers().forEach(customer -> {
+                if (customer.getShippings() != null) {
+                    customer.getShippings().forEach(shipping -> {
+                        出荷先マスタ shippingEntity = partnerEntityMapper.mapToEntity(shipping);
+                        setCommonFields(shippingEntity, createdTime, creatorName, updateDateTime, username);
+                        shippingMapper.insert(shippingEntity);
+                    });
+                }
+            });
+        }
+    }
 
-            if(partner.getVendors() != null) {
-                vendorCustomMapper.deleteByVendorCode(updatePartnerEntity.get取引先コード());
+    private void processVendors(Partner partner, String username, LocalDateTime updateDateTime, LocalDateTime createdTime, String creatorName, boolean isUpdate, String partnerCode) {
+        if (partner.getVendors() != null) {
+            if (isUpdate) vendorCustomMapper.deleteByVendorCode(partnerCode);
+            partner.getVendors().forEach(vendor -> {
+                仕入先マスタ vendorEntity = partnerEntityMapper.mapToEntity(vendor);
+                setCommonFields(vendorEntity, createdTime, creatorName, updateDateTime, username);
+                vendorMapper.insert(vendorEntity);
+            });
+        }
+    }
 
-                partner.getVendors().forEach(vendor -> {
-                    仕入先マスタ vendorEntity = partnerEntityMapper.mapToEntity(vendor);
-                    vendorEntity.set作成日時(partnerCustomEntity.get().get作成日時());
-                    vendorEntity.set作成者名(partnerCustomEntity.get().get作成者名());
-                    vendorEntity.set更新日時(updateDateTime);
-                    vendorEntity.set更新者名(username);
-                    vendorMapper.insert(vendorEntity);
-                });
-            }
-        } else {
-            取引先マスタ insertPartnerEntity = partnerEntityMapper.mapToEntity(partner);
-            insertPartnerEntity.set作成日時(LocalDateTime.now());
-            insertPartnerEntity.set作成者名(username);
-            insertPartnerEntity.set更新日時(LocalDateTime.now());
-            insertPartnerEntity.set更新者名(username);
-            partnerMapper.insert(insertPartnerEntity);
-
-            if (partner.getCustomers() != null) {
-                partner.getCustomers().forEach(customer -> {
-                    顧客マスタ customerEntity = partnerEntityMapper.mapToEntity(customer);
-                    customerEntity.set作成日時(insertPartnerEntity.get作成日時());
-                    customerEntity.set作成者名(username);
-                    customerEntity.set更新日時(insertPartnerEntity.get更新日時());
-                    customerEntity.set更新者名(username);
-                    customerMapper.insert(customerEntity);
-
-                    if (customer.getShippings() != null) {
-                        customer.getShippings().forEach(shipping -> {
-                            出荷先マスタ shippingEntity = partnerEntityMapper.mapToEntity(shipping);
-                            shippingEntity.set作成日時(insertPartnerEntity.get作成日時());
-                            shippingEntity.set作成者名(username);
-                            shippingEntity.set更新日時(insertPartnerEntity.get更新日時());
-                            shippingEntity.set更新者名(username);
-                            shippingMapper.insert(shippingEntity);
-                        });
-                    }
-                });
-            }
-
-            if(partner.getVendors() != null) {
-                partner.getVendors().forEach(vendor -> {
-                    仕入先マスタ vendorEntity = partnerEntityMapper.mapToEntity(vendor);
-                    vendorEntity.set作成日時(insertPartnerEntity.get作成日時());
-                    vendorEntity.set作成者名(username);
-                    vendorEntity.set更新日時(insertPartnerEntity.get更新日時());
-                    vendorEntity.set更新者名(username);
-                    vendorMapper.insert(vendorEntity);
-                });
-            }
+    private void setCommonFields(Object entity, LocalDateTime createdTime, String creatorName, LocalDateTime updatedTime, String updaterName) {
+        if (entity instanceof 取引先マスタ partnerEntity) {
+            partnerEntity.set作成日時(createdTime);
+            partnerEntity.set作成者名(creatorName);
+            partnerEntity.set更新日時(updatedTime);
+            partnerEntity.set更新者名(updaterName);
+        } else if (entity instanceof 顧客マスタ customerEntity) {
+            customerEntity.set作成日時(createdTime);
+            customerEntity.set作成者名(creatorName);
+            customerEntity.set更新日時(updatedTime);
+            customerEntity.set更新者名(updaterName);
+        } else if (entity instanceof 出荷先マスタ shippingEntity) {
+            shippingEntity.set作成日時(createdTime);
+            shippingEntity.set作成者名(creatorName);
+            shippingEntity.set更新日時(updatedTime);
+            shippingEntity.set更新者名(updaterName);
+        } else if (entity instanceof 仕入先マスタ vendorEntity) {
+            vendorEntity.set作成日時(createdTime);
+            vendorEntity.set作成者名(creatorName);
+            vendorEntity.set更新日時(updatedTime);
+            vendorEntity.set更新者名(updaterName);
         }
     }
 
