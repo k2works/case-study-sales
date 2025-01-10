@@ -197,6 +197,23 @@ public class PartnerRepositoryTest {
             Optional<Partner> actual = repository.findById("P001");
             assertEquals(Optional.empty(), actual);
         }
+
+        @Test
+        @DisplayName("取引先を削除できる")
+        void shouldDeletePartnerWithReference() {
+            Partner partner = getPartner("P001");
+            Customer customer = getCustomer(partner.getPartnerCode(), 1);
+            Shipping shipping = getShipping(partner.getPartnerCode(), 1, 1);
+            Shipping shipping2 = getShipping(partner.getPartnerCode(), 2, 1);
+            customer = Customer.of(customer, List.of(shipping, shipping2));
+            Partner savePartner = Partner.ofWithCustomers(partner, List.of(customer));
+            repository.save(savePartner);
+
+            repository.deleteById(partner);
+            Optional<Partner> actual = repository.findById("P001");
+            assertEquals(Optional.empty(), actual);
+        }
+
     }
 
     @Nested

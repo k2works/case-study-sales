@@ -170,6 +170,9 @@ public class PartnerDataSource implements PartnerRepository {
 
     @Override
     public void deleteById(Partner partnerCode) {
+        shippingCustomMapper.deleteByCustomerCode(partnerCode.getPartnerCode());
+        customerCustomMapper.deleteByCustomerCode(partnerCode.getPartnerCode());
+        vendorCustomMapper.deleteByVendorCode(partnerCode.getPartnerCode());
         partnerMapper.deleteByPrimaryKey(partnerCode.getPartnerCode());
     }
 
