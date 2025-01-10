@@ -149,6 +149,8 @@ public class PartnerCategoryDataSource implements PartnerCategoryRepository {
 
     @Override
     public void deleteById(PartnerCategoryType partnerCategoryType) {
+        partnerCategoryAffiliationCustomMapper.deleteByCategoryTypeCode(partnerCategoryType.getPartnerCategoryTypeCode());
+        partnerCategoryItemCustomMapper.deleteByCategoryTypeCode(partnerCategoryType.getPartnerCategoryTypeCode());
         partnerCategoryTypeMapper.deleteByPrimaryKey(partnerCategoryType.getPartnerCategoryTypeCode());
     }
 

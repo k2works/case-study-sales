@@ -120,6 +120,22 @@ public class PartnerCategoryRepositoryTest {
             assertNull(actual);
         }
         @Test
+        @DisplayName("取引先分類種別を削除できる")
+        void shouldDeletePartnerCategoryById() {
+            String partnerCode = "1";
+            partnerRepository.save(getPartner(partnerCode));
+            PartnerCategoryType partnerCategoryType = getPartnerCategoryType("1");
+            PartnerCategoryItem partnerCategoryItem = getPartnerCategoryItem(partnerCategoryType.getPartnerCategoryTypeCode(), "1");
+            PartnerCategoryItem partnerCategoryItem2 = getPartnerCategoryItem(partnerCategoryType.getPartnerCategoryTypeCode(), "2");
+            PartnerCategoryAffiliation partnerCategoryAffiliation = getPartnerCategoryAffiliation(partnerCategoryType.getPartnerCategoryTypeCode(), partnerCode, "1");
+            List<PartnerCategoryItem> partnerCategoryItems = List.of(PartnerCategoryItem.of(partnerCategoryItem,List.of(partnerCategoryAffiliation)), partnerCategoryItem2);
+            repository.save(PartnerCategoryType.of(partnerCategoryType, partnerCategoryItems));
+
+            repository.deleteById(partnerCategoryType);
+            PartnerCategoryType actual = repository.findById(partnerCategoryType.getPartnerCategoryTypeCode()).orElse(null);
+            assertNull(actual);
+        }
+        @Test
         @DisplayName("ページング情報付きで取引先分類種別一覧を取得できる")
         void shouldReturnPartnerCategoryListWithPageInfo() {
             repository.save(getPartnerCategoryType("1"));
