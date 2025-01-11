@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.master.partner;
 
+import com.example.sms.domain.type.partner.CustomerType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -49,7 +50,7 @@ public class CustomerTest {
         assertAll(
                 () -> assertEquals("001", customer.getCustomerCode().getPartnerCode().getValue()),
                 () -> assertEquals(1, customer.getCustomerCode().getCustomerBranchNumber()),
-                () -> assertEquals(1, customer.getCustomerCategory()),
+                () -> assertEquals(CustomerType.顧客, customer.getCustomerType()),
                 () -> assertEquals("B001", customer.getBillingCode()),
                 () -> assertEquals(1, customer.getBillingBranchNumber()),
                 () -> assertEquals("C001", customer.getCollectionCode()),
@@ -85,7 +86,6 @@ public class CustomerTest {
         assertThrows(IllegalArgumentException.class, () -> CustomerCode.of(null, 1));
         assertThrows(IllegalArgumentException.class, () -> CustomerCode.of("001", -1));
         assertThrows(IllegalArgumentException.class, () -> CustomerCode.of("001", 1000));
-
     }
 
 }

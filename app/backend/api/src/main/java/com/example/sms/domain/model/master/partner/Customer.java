@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.master.partner;
 
+import com.example.sms.domain.type.partner.CustomerType;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;
@@ -14,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor(force = true)
 public class Customer {
     CustomerCode customerCode; // 顧客コード
-    Integer customerCategory; // 顧客区分
+    CustomerType customerType; // 顧客区分
     String billingCode; // 請求先コード
     Integer billingBranchNumber; // 請求先枝番
     String collectionCode; // 回収先コード
@@ -74,7 +75,7 @@ public class Customer {
     ) {
         return new Customer(
                 CustomerCode.of(customerCode, customerBranchNumber),
-                customerCategory,
+                CustomerType.fromCode(customerCategory),
                 billingCode,
                 billingBranchNumber,
                 collectionCode,
@@ -107,7 +108,7 @@ public class Customer {
     public static Customer of(Customer customer, List<Shipping> shippings) {
         return new Customer(
                 customer.customerCode,
-                customer.customerCategory,
+                customer.customerType,
                 customer.billingCode,
                 customer.billingBranchNumber,
                 customer.collectionCode,

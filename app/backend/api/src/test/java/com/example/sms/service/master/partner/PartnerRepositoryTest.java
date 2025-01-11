@@ -262,7 +262,7 @@ class PartnerRepositoryTest {
             updatedCustomer =  Customer.of(
                     updatedCustomer.getCustomerCode().getPartnerCode().getValue(),
                     updatedCustomer.getCustomerCode().getCustomerBranchNumber(),
-                    updatedCustomer.getCustomerCategory(),
+                    updatedCustomer.getCustomerType().getValue(),
                     updatedCustomer.getCollectionCode(),
                     updatedCustomer.getCollectionBranchNumber(),
                     updatedCustomer.getBillingCode(),
