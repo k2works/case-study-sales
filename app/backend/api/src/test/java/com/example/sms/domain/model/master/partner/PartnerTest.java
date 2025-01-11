@@ -19,7 +19,7 @@ class PartnerTest {
                 "住所２",
                 0,
                 0,
-                "取引先グループコード",
+                "0001",
                 100000,
                 100000
         );
@@ -41,7 +41,7 @@ class PartnerTest {
                 () -> assertEquals("住所２", partner.getAddress().getAddress2()),
                 () -> assertEquals(0, partner.getTradeProhibitedFlag()),
                 () -> assertEquals(0, partner.getMiscellaneousType()),
-                () -> assertEquals("取引先グループコード", partner.getPartnerGroupCode()),
+                () -> assertEquals("0001", partner.getPartnerGroupCode().getValue()),
                 () -> assertEquals(100000, partner.getCreditLimit()),
                 () -> assertEquals(100000, partner.getTemporaryCreditIncrease()),
                 () -> assertEquals(0, partner.getCustomers().size()),

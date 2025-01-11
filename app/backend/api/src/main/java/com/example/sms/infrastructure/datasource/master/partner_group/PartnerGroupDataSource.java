@@ -38,7 +38,7 @@ public class PartnerGroupDataSource implements PartnerGroupRepository {
         String username = authentication != null && authentication.getName() != null ? authentication.getName() : "system";
         LocalDateTime updateDateTime = LocalDateTime.now();
 
-        Optional<PartnerGroupCustomEntity> partnerGroupOptional = Optional.ofNullable(partnerGroupCustomMapper.selectByPrimaryKey(partnerGroup.getPartnerGroupCode()));
+        Optional<PartnerGroupCustomEntity> partnerGroupOptional = Optional.ofNullable(partnerGroupCustomMapper.selectByPrimaryKey(partnerGroup.getPartnerGroupCode().getValue()));
 
         if (partnerGroupOptional.isPresent()) {
             取引先グループマスタ partnerGroupCustomEntity = partnerGroupEntityMapper.mapToEntity(partnerGroup);
@@ -79,7 +79,7 @@ public class PartnerGroupDataSource implements PartnerGroupRepository {
 
     @Override
     public void deleteById(PartnerGroup partnerGroup) {
-        partnerGroupMapper.deleteByPrimaryKey(partnerGroup.getPartnerGroupCode());
+        partnerGroupMapper.deleteByPrimaryKey(partnerGroup.getPartnerGroupCode().getValue());
     }
 
     @Override

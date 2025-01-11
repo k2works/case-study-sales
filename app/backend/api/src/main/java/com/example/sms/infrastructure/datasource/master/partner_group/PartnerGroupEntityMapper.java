@@ -9,7 +9,7 @@ public class PartnerGroupEntityMapper {
     public 取引先グループマスタ mapToEntity(PartnerGroup partnerGroup) {
         取引先グループマスタ partnerGroupEntity = new 取引先グループマスタ();
 
-        partnerGroupEntity.set取引先グループコード(partnerGroup.getPartnerGroupCode());
+        partnerGroupEntity.set取引先グループコード(partnerGroup.getPartnerGroupCode().getValue());
         partnerGroupEntity.set取引先グループ名(partnerGroup.getPartnerGroupName());
 
         return partnerGroupEntity;

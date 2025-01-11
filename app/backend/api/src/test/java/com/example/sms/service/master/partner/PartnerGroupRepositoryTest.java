@@ -51,57 +51,48 @@ public class PartnerGroupRepositoryTest {
     @Nested
     @DisplayName("取引先グループ")
     class PartnerGroupTest {
+
+        private static final String GROUP_CODE_1 = "0001";
+        private static final String GROUP_CODE_2 = "0002";
+        private static final String GROUP_CODE_3 = "0003";
+
         @Test
         @DisplayName("取引先グループ一覧を取得できる")
         void shouldReturnPartnerGroupList() {
-            repository.save(getPartnerGroup("1"));
-            repository.save(getPartnerGroup("2"));
-            repository.save(getPartnerGroup("3"));
-
+            repository.save(getPartnerGroup(GROUP_CODE_1));
+            repository.save(getPartnerGroup(GROUP_CODE_2));
+            repository.save(getPartnerGroup(GROUP_CODE_3));
             PartnerGroupList partnerGroupList = repository.selectAll();
-
             assertEquals(3, partnerGroupList.size());
         }
 
         @Test
         @DisplayName("取引先グループを登録できる")
         void shouldRegisterPartnerGroup() {
-            PartnerGroup partnerGroup = getPartnerGroup("1");
-
+            PartnerGroup partnerGroup = getPartnerGroup(GROUP_CODE_1);
             repository.save(partnerGroup);
-
-            PartnerGroup actual = repository.findById("1").orElse(null);
-
+            PartnerGroup actual = repository.findById(GROUP_CODE_1).orElse(null);
             assertEquals(partnerGroup, actual);
         }
 
         @Test
         @DisplayName("取引先グループを更新できる")
         void shouldUpdatePartnerGroup() {
-            PartnerGroup partnerGroup = getPartnerGroup("1");
-
+            PartnerGroup partnerGroup = getPartnerGroup(GROUP_CODE_1);
             repository.save(partnerGroup);
-
-            PartnerGroup updatedPartnerGroup = PartnerGroup.of("1", "取引先グループ2");
-
+            PartnerGroup updatedPartnerGroup = PartnerGroup.of(GROUP_CODE_1, "取引先グループ2");
             repository.save(updatedPartnerGroup);
-
-            PartnerGroup actual = repository.findById("1").orElse(null);
-
+            PartnerGroup actual = repository.findById(GROUP_CODE_1).orElse(null);
             assertEquals(updatedPartnerGroup, actual);
         }
 
         @Test
         @DisplayName("取引先グループを削除できる")
         void shouldDeletePartnerGroup() {
-            PartnerGroup partnerGroup = getPartnerGroup("1");
-
+            PartnerGroup partnerGroup = getPartnerGroup(GROUP_CODE_1);
             repository.save(partnerGroup);
-
             repository.deleteById(partnerGroup);
-
-            PartnerGroup actual = repository.findById("1").orElse(null);
-
+            PartnerGroup actual = repository.findById(GROUP_CODE_1).orElse(null);
             assertNull(actual);
         }
     }

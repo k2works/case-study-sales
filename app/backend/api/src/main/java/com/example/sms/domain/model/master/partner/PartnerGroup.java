@@ -11,7 +11,7 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 public class PartnerGroup {
-    String partnerGroupCode; // 取引先グループコード
+    PartnerGroupCode partnerGroupCode; // 取引先グループコード
     String partnerGroupName; // 取引先グループ名
 
     public static PartnerGroup of(
@@ -19,7 +19,7 @@ public class PartnerGroup {
             String partnerGroupName
     ) {
         return new PartnerGroup(
-                partnerGroupCode,
+                PartnerGroupCode.of(partnerGroupCode),
                 partnerGroupName
         );
     }

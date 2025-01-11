@@ -2,6 +2,9 @@ package com.example.sms.domain.model.master.partner;
 
 import lombok.Getter;
 
+/**
+ * 都道府県
+ */
 @Getter
 public enum Prefecture {
     // 都道府県一覧 (都道府県コード順)

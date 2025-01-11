@@ -25,7 +25,7 @@ public class PartnerCode {
             return;
         }
 
-        if (!partnerCode.matches("^[0-9]{3}$")) {
+        if (!partnerCode.matches("^\\d{3}$")) {
             throw new IllegalArgumentException("取引先コードは3桁の数字である必要があります:" + partnerCode);
         }
 

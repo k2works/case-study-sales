@@ -20,7 +20,7 @@ public class Partner {
     Address address;             // 住所
     Integer tradeProhibitedFlag; // 取引禁止フラグ
     Integer miscellaneousType;   // 雑区分
-    String partnerGroupCode;     // 取引先グループコード
+    PartnerGroupCode partnerGroupCode;     // 取引先グループコード
     Integer creditLimit;         // 与信限度額
     Integer temporaryCreditIncrease; // 与信一時増加枠
     List<Customer> customers;   // 顧客
@@ -48,7 +48,7 @@ public class Partner {
                 Address.of(postalCode, prefecture, address1, address2),
                 tradeProhibitedFlag,
                 miscellaneousType,
-                partnerGroupCode,
+                PartnerGroupCode.of(partnerGroupCode),
                 creditLimit,
                 temporaryCreditIncrease,
                 List.of(),
