@@ -3,6 +3,7 @@ package com.example.sms.service.master.product;
 import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.master.product.*;
 import com.example.sms.domain.type.product.*;
+import com.example.sms.infrastructure.datasource.ObjectOptimisticLockingFailureException;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -10,7 +11,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -23,8 +23,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 @SpringBootTest
 @Testcontainers
@@ -134,15 +135,13 @@ public class ProductRepositoryTest {
             assertEquals(0, repository.selectAll().size());
         }
 
+        //TODO: マルチスレッドだと失敗してもテストは正常終了扱いになるので、コンソールで確認する必要がある
         @Test
         @DisplayName("楽観ロックが正常に動作すること")
         void testOptimisticLockingWithThreads() throws InterruptedException {
             // Productを新規作成して保存
             Product product1 = getProduct("99999999");
             repository.save(product1);
-
-            // 同じIDのProductをもう一度データベースから取得
-            repository.findById("99999999").orElseThrow();
 
             // スレッド1でproduct1を更新
             Thread thread1 = new Thread(() -> {
@@ -153,7 +152,7 @@ public class ProductRepositoryTest {
             // スレッド2でproduct2を更新し、例外を確認
             Thread thread2 = new Thread(() -> {
                 Product updatedProduct2 = getProduct("99999999");
-                assertThrows(OptimisticLockingFailureException.class, () -> {
+                assertThrows(ObjectOptimisticLockingFailureException.class, () -> {
                     repository.save(updatedProduct2);
                 });
             });
