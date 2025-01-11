@@ -78,7 +78,7 @@ public class ProductDataSource implements ProductRepository {
             updateProductEntity.set更新者名(username);
             updateProductEntity.setVersion(productEntity.get().getVersion());
         }
-        int updateCount = productMapper.updateByPrimaryKey(updateProductEntity);
+        int updateCount = productCustomMapper.updateByPrimaryKeyForOptimisticLock(updateProductEntity);
         if (updateCount == 0) {
             throw new ObjectOptimisticLockingFailureException(商品マスタ.class, product.getProductCode().getValue());
         }
@@ -144,7 +144,7 @@ public class ProductDataSource implements ProductRepository {
         newProductEntity.set作成者名(username);
         newProductEntity.set更新日時(LocalDateTime.now());
         newProductEntity.set更新者名(username);
-        productMapper.insert(newProductEntity);
+        productCustomMapper.insertForOptimisticLock(newProductEntity);
 
         if (product.getSubstituteProduct() != null) {
             product.getSubstituteProduct().forEach(substituteProduct -> {
