@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.master.partner;
 
+import com.example.sms.domain.type.partner.TradeProhibitedFlag;
 import com.example.sms.domain.type.partner.VendorType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,7 +41,7 @@ class PartnerTest {
                 () -> assertEquals("東京都", partner.getAddress().getPrefecture().toString()),
                 () -> assertEquals("住所１", partner.getAddress().getAddress1()),
                 () -> assertEquals("住所２", partner.getAddress().getAddress2()),
-                () -> assertEquals(0, partner.getTradeProhibitedFlag()),
+                () -> assertEquals(TradeProhibitedFlag.OFF, partner.getTradeProhibitedFlag()),
                 () -> assertEquals(0, partner.getMiscellaneousType()),
                 () -> assertEquals("0001", partner.getPartnerGroupCode().getValue()),
                 () -> assertEquals(100000, partner.getCredit().getCreditLimit().getAmount()),

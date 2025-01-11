@@ -1,8 +1,11 @@
 package com.example.sms.domain.type.partner;
 
+import lombok.Getter;
+
 /**
  * 仕入先区分
  */
+@Getter
 public enum VendorType {
     仕入先でない(0),
     仕入先(1);
@@ -22,7 +25,4 @@ public enum VendorType {
         throw new IllegalArgumentException("仕入先区分未登録:" + vendorType);
     }
 
-    public int getValue() {
-        return value;
-    }
 }
