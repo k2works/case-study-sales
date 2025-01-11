@@ -138,8 +138,8 @@ public class PartnerEntityMapper {
 
     public 顧客マスタ mapToEntity(Customer customer) {
         顧客マスタ customerEntity = new 顧客マスタ();
-        customerEntity.set顧客コード(customer.getCustomerCode());
-        customerEntity.set顧客枝番(customer.getCustomerBranchNumber());
+        customerEntity.set顧客コード(customer.getCustomerCode().getPartnerCode().getValue());
+        customerEntity.set顧客枝番(customer.getCustomerCode().getCustomerBranchNumber());
         customerEntity.set顧客区分(customer.getCustomerCategory());
         customerEntity.set請求先コード(customer.getBillingCode());
         customerEntity.set請求先枝番(customer.getBillingBranchNumber());

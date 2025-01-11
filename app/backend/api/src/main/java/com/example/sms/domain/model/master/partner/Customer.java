@@ -13,8 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 public class Customer {
-    String customerCode; //顧客コード
-    Integer customerBranchNumber; //顧客枝番
+    CustomerCode customerCode; // 顧客コード
     Integer customerCategory; // 顧客区分
     String billingCode; // 請求先コード
     Integer billingBranchNumber; // 請求先枝番
@@ -74,8 +73,7 @@ public class Customer {
             Integer customerPaymentMethod2
     ) {
         return new Customer(
-                customerCode,
-                customerBranchNumber,
+                CustomerCode.of(customerCode, customerBranchNumber),
                 customerCategory,
                 billingCode,
                 billingBranchNumber,
@@ -109,7 +107,6 @@ public class Customer {
     public static Customer of(Customer customer, List<Shipping> shippings) {
         return new Customer(
                 customer.customerCode,
-                customer.customerBranchNumber,
                 customer.customerCategory,
                 customer.billingCode,
                 customer.billingBranchNumber,
