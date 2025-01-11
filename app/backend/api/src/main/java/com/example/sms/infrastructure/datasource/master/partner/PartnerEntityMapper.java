@@ -22,10 +22,10 @@ public class PartnerEntityMapper {
         partnerEntity.set取引先名(partner.getPartnerName().getName());
         partnerEntity.set取引先名カナ(partner.getPartnerName().getNameKana());
         partnerEntity.set仕入先区分(partner.getSupplierType());
-        partnerEntity.set郵便番号(partner.getPostalCode().getValue());
-        partnerEntity.set都道府県(partner.getPrefecture());
-        partnerEntity.set住所１(partner.getAddress1());
-        partnerEntity.set住所２(partner.getAddress2());
+        partnerEntity.set郵便番号(partner.getAddress().getPostalCode().getValue());
+        partnerEntity.set都道府県(partner.getAddress().getPrefecture().toString());
+        partnerEntity.set住所１(partner.getAddress().getAddress1());
+        partnerEntity.set住所２(partner.getAddress().getAddress2());
         partnerEntity.set取引禁止フラグ(partner.getTradeProhibitedFlag());
         partnerEntity.set雑区分(partner.getMiscellaneousType());
         partnerEntity.set取引先グループコード(partner.getPartnerGroupCode());

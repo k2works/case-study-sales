@@ -17,10 +17,7 @@ public class Partner {
     PartnerCode partnerCode;          // 取引先コード
     PartnerName partnerName;          // 取引先名
     Integer supplierType;        // 仕入先区分
-    PostalCode postalCode;           // 郵便番号
-    String prefecture;           // 都道府県
-    String address1;             // 住所１
-    String address2;             // 住所２
+    Address address;             // 住所
     Integer tradeProhibitedFlag; // 取引禁止フラグ
     Integer miscellaneousType;   // 雑区分
     String partnerGroupCode;     // 取引先グループコード
@@ -48,10 +45,7 @@ public class Partner {
                 PartnerCode.of(partnerCode),
                 PartnerName.of(partnerName, partnerNameKana),
                 supplierType,
-                PostalCode.of(postalCode),
-                prefecture,
-                address1,
-                address2,
+                Address.of(postalCode, prefecture, address1, address2),
                 tradeProhibitedFlag,
                 miscellaneousType,
                 partnerGroupCode,
@@ -67,10 +61,7 @@ public class Partner {
                 partner.partnerCode,
                 partner.partnerName,
                 partner.supplierType,
-                partner.postalCode,
-                partner.prefecture,
-                partner.address1,
-                partner.address2,
+                partner.address,
                 partner.tradeProhibitedFlag,
                 partner.miscellaneousType,
                 partner.partnerGroupCode,
@@ -86,10 +77,7 @@ public class Partner {
                 partner.partnerCode,
                 partner.partnerName,
                 partner.supplierType,
-                partner.postalCode,
-                partner.prefecture,
-                partner.address1,
-                partner.address2,
+                partner.address,
                 partner.tradeProhibitedFlag,
                 partner.miscellaneousType,
                 partner.partnerGroupCode,

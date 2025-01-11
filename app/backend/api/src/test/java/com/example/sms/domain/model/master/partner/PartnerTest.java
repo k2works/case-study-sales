@@ -35,10 +35,10 @@ class PartnerTest {
                 () -> assertEquals("取引先名", partner.getPartnerName().getName()),
                 () -> assertEquals("取引先名カナ", partner.getPartnerName().getNameKana()),
                 () -> assertEquals(1, partner.getSupplierType()),
-                () -> assertEquals("1234567", partner.getPostalCode().getValue()),
-                () -> assertEquals("東京都", partner.getPrefecture()),
-                () -> assertEquals("住所１", partner.getAddress1()),
-                () -> assertEquals("住所２", partner.getAddress2()),
+                () -> assertEquals("1234567", partner.getAddress().getPostalCode().getValue()),
+                () -> assertEquals("東京都", partner.getAddress().getPrefecture().toString()),
+                () -> assertEquals("住所１", partner.getAddress().getAddress1()),
+                () -> assertEquals("住所２", partner.getAddress().getAddress2()),
                 () -> assertEquals(0, partner.getTradeProhibitedFlag()),
                 () -> assertEquals(0, partner.getMiscellaneousType()),
                 () -> assertEquals("取引先グループコード", partner.getPartnerGroupCode()),
@@ -81,4 +81,19 @@ class PartnerTest {
         assertThrows(IllegalArgumentException.class, () -> PostalCode.of("-123456"));
         assertThrows(IllegalArgumentException.class, () -> PostalCode.of("1-23456"));
     }
+
+    @Test
+    @DisplayName("住所は以下の条件を満たす")
+    void shouldCreateAddress() {
+        assertDoesNotThrow(() -> Address.of("1234567", "東京都", "住所１", "住所２"));
+        assertDoesNotThrow(() -> Address.of("1234567", "東京都", "住".repeat(40), "住".repeat(40)));
+        assertThrows(IllegalArgumentException.class, () -> Address.of(null, "東京都", "住所１", "住所２"));
+        assertThrows(IllegalArgumentException.class, () -> Address.of("1234567", "東京都", "住".repeat(41), "住所２"));
+        assertThrows(IllegalArgumentException.class, () -> Address.of("1234567", "東京都", "住所１", "住".repeat(41)));
+        assertThrows(IllegalArgumentException.class, () -> Address.of("1234567", "東京都", "住".repeat(100), "住".repeat(100)));
+        assertThrows(IllegalArgumentException.class, () -> Address.of("1234567", null, "住所１", "住所２"));
+        assertThrows(IllegalArgumentException.class, () -> Address.of("1234567", "東京都", null, "住所２"));
+        assertThrows(IllegalArgumentException.class, () -> Address.of("1234567", "東京都", "住所１", null));
+        assertThrows(IllegalArgumentException.class, () -> Address.of("1234567", "異世界", "住所１", "住所２"));
+        }
 }
