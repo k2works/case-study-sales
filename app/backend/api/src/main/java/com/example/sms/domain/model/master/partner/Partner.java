@@ -15,8 +15,7 @@ import java.util.List;
 @NoArgsConstructor(force = true)
 public class Partner {
     PartnerCode partnerCode;          // 取引先コード
-    String partnerName;          // 取引先名
-    String partnerNameKana;      // 取引先名カナ
+    PartnerName partnerName;          // 取引先名
     Integer supplierType;        // 仕入先区分
     String postalCode;           // 郵便番号
     String prefecture;           // 都道府県
@@ -47,8 +46,7 @@ public class Partner {
     ) {
         return new Partner(
                 PartnerCode.of(partnerCode),
-                partnerName,
-                partnerNameKana,
+                PartnerName.of(partnerName, partnerNameKana),
                 supplierType,
                 postalCode,
                 prefecture,
@@ -68,7 +66,6 @@ public class Partner {
         return new Partner(
                 partner.partnerCode,
                 partner.partnerName,
-                partner.partnerNameKana,
                 partner.supplierType,
                 partner.postalCode,
                 partner.prefecture,
@@ -88,7 +85,6 @@ public class Partner {
         return new Partner(
                 partner.partnerCode,
                 partner.partnerName,
-                partner.partnerNameKana,
                 partner.supplierType,
                 partner.postalCode,
                 partner.prefecture,
