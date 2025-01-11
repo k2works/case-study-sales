@@ -1,5 +1,7 @@
 package com.example.sms.domain.model.master.partner;
 
+import com.example.sms.domain.model.master.employee.FaxNumber;
+import com.example.sms.domain.model.master.employee.PhoneNumber;
 import com.example.sms.domain.type.partner.CustomerType;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -22,12 +24,9 @@ public class Customer {
     String companyRepresentativeCode; // 自社担当者コード
     String customerRepresentativeName; // 顧客担当者名
     String customerDepartmentName; // 顧客部門名
-    String customerPostalCode; // 顧客郵便番号
-    String customerPrefecture; // 顧客都道府県
-    String customerAddress1; // 顧客住所１
-    String customerAddress2; // 顧客住所２
-    String customerPhoneNumber; // 顧客電話番号
-    String customerFaxNumber; // 顧客ｆａｘ番号
+    Address customerAddress; // 顧客住所
+    PhoneNumber customerPhoneNumber; // 顧客電話番号
+    FaxNumber customerFaxNumber; // 顧客ｆａｘ番号
     String customerEmailAddress; // 顧客メールアドレス
     Integer customerBillingCategory; // 顧客請求区分
     Integer customerClosingDay1; // 顧客締日１
@@ -79,12 +78,14 @@ public class Customer {
                 companyRepresentativeCode,
                 customerRepresentativeName,
                 customerDepartmentName,
-                customerPostalCode,
-                customerPrefecture,
-                customerAddress1,
-                customerAddress2,
-                customerPhoneNumber,
-                customerFaxNumber,
+                Address.of(
+                        customerPostalCode,
+                        customerPrefecture,
+                        customerAddress1,
+                        customerAddress2
+                ),
+                PhoneNumber.of(customerPhoneNumber),
+                FaxNumber.of(customerFaxNumber),
                 customerEmailAddress,
                 customerBillingCategory,
                 customerClosingDay1,
@@ -109,10 +110,7 @@ public class Customer {
                 customer.companyRepresentativeCode,
                 customer.customerRepresentativeName,
                 customer.customerDepartmentName,
-                customer.customerPostalCode,
-                customer.customerPrefecture,
-                customer.customerAddress1,
-                customer.customerAddress2,
+                customer.customerAddress,
                 customer.customerPhoneNumber,
                 customer.customerFaxNumber,
                 customer.customerEmailAddress,
