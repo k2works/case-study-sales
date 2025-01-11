@@ -27,4 +27,23 @@
     <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.取引先分類種別マスタMapper.Base_Column_List" />
     from public.取引先分類種別マスタ
   </select>
+
+  <insert id="insertForOptimisticLock" parameterType="com.example.sms.infrastructure.datasource.autogen.model.取引先分類種別マスタ">
+    insert into public.取引先分類種別マスタ (取引先分類種別コード, 取引先分類種別名, 作成日時,
+                                             作成者名, 更新日時, 更新者名)
+    values (#{取引先分類種別コード,jdbcType=VARCHAR}, #{取引先分類種別名,jdbcType=VARCHAR}, #{作成日時,jdbcType=TIMESTAMP},
+            #{作成者名,jdbcType=VARCHAR}, #{更新日時,jdbcType=TIMESTAMP}, #{更新者名,jdbcType=VARCHAR})
+  </insert>
+
+  <update id="updateByPrimaryKeyForOptimisticLock" parameterType="com.example.sms.infrastructure.datasource.autogen.model.取引先分類種別マスタ">
+    update public.取引先分類種別マスタ
+    set 取引先分類種別名 = #{取引先分類種別名,jdbcType=VARCHAR},
+    作成日時 = #{作成日時,jdbcType=TIMESTAMP},
+    作成者名 = #{作成者名,jdbcType=VARCHAR},
+    更新日時 = #{更新日時,jdbcType=TIMESTAMP},
+    更新者名 = #{更新者名,jdbcType=VARCHAR},
+    version = #{version,jdbcType=INTEGER} + 1
+    where 取引先分類種別コード = #{取引先分類種別コード,jdbcType=VARCHAR}
+    and version = #{version,jdbcType=INTEGER}
+  </update>
 </mapper>

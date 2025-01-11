@@ -1,6 +1,7 @@
 package com.example.sms.service.master.partner;
 
 import com.example.sms.domain.model.master.partner.*;
+import com.example.sms.infrastructure.datasource.ObjectOptimisticLockingFailureException;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Testcontainers
 @ActiveProfiles("container")
 @DisplayName("取引先カテゴリーリポジトリ")
-public class PartnerCategoryRepositoryTest {
+class PartnerCategoryRepositoryTest {
     @Container
     private static final PostgreSQLContainer<?> postgres =
             new PostgreSQLContainer<>(DockerImageName.parse("postgres:15"))
@@ -308,5 +309,33 @@ public class PartnerCategoryRepositoryTest {
             assertEquals(2, actual.getPartnerCategoryItems().size());
             assertEquals(0, actual.getPartnerCategoryItems().getFirst().getPartnerCategoryAffiliations().size());
         }
+    }
+
+    //TODO: マルチスレッドだと失敗してもテストは正常終了扱いになるので、コンソールで確認する必要がある
+    @Test
+    @DisplayName("楽観ロックが正常に動作すること")
+    void testOptimisticLockingWithThreads() throws InterruptedException {
+        PartnerCategoryType partnerCategoryType = getPartnerCategoryType("1");
+        repository.save(partnerCategoryType);
+
+        Thread thread1 = new Thread(() -> {
+            PartnerCategoryType updatedPartnerCategoryType = getPartnerCategoryType("1");
+            repository.save(updatedPartnerCategoryType);
+        });
+
+        Thread thread2 = new Thread(() -> {
+            PartnerCategoryType updatedPartnerCategoryType2 = getPartnerCategoryType("1");
+            assertThrows(ObjectOptimisticLockingFailureException.class, () -> {
+                repository.save(updatedPartnerCategoryType2);
+            });
+        });
+
+        // スレッドを開始
+        thread1.start();
+        thread2.start();
+
+        // スレッドの終了を待機
+        thread1.join();
+        thread2.join();
     }
 }

@@ -3,6 +3,7 @@ package com.example.sms.infrastructure.datasource.master.partner_category;
 import com.example.sms.domain.model.master.partner.PartnerCategoryList;
 import com.example.sms.domain.model.master.partner.PartnerCategoryType;
 import com.example.sms.infrastructure.PageInfoHelper;
+import com.example.sms.infrastructure.datasource.ObjectOptimisticLockingFailureException;
 import com.example.sms.infrastructure.datasource.autogen.mapper.取引先分類マスタMapper;
 import com.example.sms.infrastructure.datasource.autogen.mapper.取引先分類所属マスタMapper;
 import com.example.sms.infrastructure.datasource.autogen.mapper.取引先分類種別マスタMapper;
@@ -69,7 +70,12 @@ public class PartnerCategoryDataSource implements PartnerCategoryRepository {
     private void updatePartnerCategoryType(PartnerCategoryType partnerCategoryType, String username, LocalDateTime updateDateTime, PartnerCategoryTypeCustomEntity existingEntity) {
         取引先分類種別マスタ updatedEntity = partnerCategoryEntityMapper.mapToEntity(partnerCategoryType);
         setCommonFields(updatedEntity, existingEntity.get作成日時(), existingEntity.get作成者名(), updateDateTime, username);
-        partnerCategoryTypeMapper.updateByPrimaryKey(updatedEntity);
+        updatedEntity.setVersion(existingEntity.getVersion());
+
+        int updateCount = partnerCategoryTypeCustomMapper.updateByPrimaryKeyForOptimisticLock(updatedEntity);
+        if (updateCount == 0) {
+            throw new ObjectOptimisticLockingFailureException(取引先分類種別マスタ.class, partnerCategoryType.getPartnerCategoryTypeCode());
+        }
 
         deleteExistingCategories(partnerCategoryType.getPartnerCategoryTypeCode());
         processPartnerCategoryItems(partnerCategoryType, username, updateDateTime, existingEntity.get作成日時(), existingEntity.get作成者名());
@@ -78,7 +84,7 @@ public class PartnerCategoryDataSource implements PartnerCategoryRepository {
     private void insertPartnerCategoryType(PartnerCategoryType partnerCategoryType, String username, LocalDateTime updateDateTime) {
         取引先分類種別マスタ newEntity = partnerCategoryEntityMapper.mapToEntity(partnerCategoryType);
         setCommonFields(newEntity, updateDateTime, username, updateDateTime, username);
-        partnerCategoryTypeMapper.insert(newEntity);
+        partnerCategoryTypeCustomMapper.insertForOptimisticLock(newEntity);
 
         processPartnerCategoryItems(partnerCategoryType, username, updateDateTime, newEntity.get作成日時(), username);
     }

@@ -158,7 +158,8 @@ create table if not exists 取引先分類種別マスタ
     作成日時             timestamp(6) default CURRENT_DATE not null,
     作成者名             varchar(12),
     更新日時             timestamp(6) default CURRENT_DATE not null,
-    更新者名             varchar(12)
+    更新者名             varchar(12),
+    version         integer      default 0
     );
 
 create table if not exists 取引先分類マスタ
