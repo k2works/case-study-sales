@@ -150,10 +150,10 @@ public class PartnerEntityMapper {
         customerEntity.set自社担当者コード(customer.getCompanyRepresentativeCode());
         customerEntity.set顧客担当者名(customer.getCustomerRepresentativeName());
         customerEntity.set顧客部門名(customer.getCustomerDepartmentName());
-        customerEntity.set顧客郵便番号(customer.getCustomerPostalCode());
-        customerEntity.set顧客都道府県(customer.getCustomerPrefecture());
-        customerEntity.set顧客住所１(customer.getCustomerAddress1());
-        customerEntity.set顧客住所２(customer.getCustomerAddress2());
+        customerEntity.set顧客郵便番号(customer.getCustomerAddress().getPostalCode().getValue());
+        customerEntity.set顧客都道府県(customer.getCustomerAddress().getPrefecture().toString());
+        customerEntity.set顧客住所１(customer.getCustomerAddress().getAddress1());
+        customerEntity.set顧客住所２(customer.getCustomerAddress().getAddress2());
         customerEntity.set顧客電話番号(customer.getCustomerPhoneNumber());
         customerEntity.set顧客ｆａｘ番号(customer.getCustomerFaxNumber());
         customerEntity.set顧客メールアドレス(customer.getCustomerEmailAddress());
