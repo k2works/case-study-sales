@@ -18,7 +18,7 @@ import java.util.List;
 public class PartnerEntityMapper {
     public 取引先マスタ mapToEntity(Partner partner) {
         取引先マスタ partnerEntity = new 取引先マスタ();
-        partnerEntity.set取引先コード(partner.getPartnerCode());
+        partnerEntity.set取引先コード(partner.getPartnerCode().getValue());
         partnerEntity.set取引先名(partner.getPartnerName());
         partnerEntity.set取引先名カナ(partner.getPartnerNameKana());
         partnerEntity.set仕入先区分(partner.getSupplierType());

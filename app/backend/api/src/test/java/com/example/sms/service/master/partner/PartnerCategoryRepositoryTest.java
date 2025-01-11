@@ -60,7 +60,7 @@ class PartnerCategoryRepositoryTest {
     }
 
     private PartnerCategoryAffiliation getPartnerCategoryAffiliation(String categoryCode, String partnerCode, String itemCode) {
-        return new PartnerCategoryAffiliation(categoryCode, partnerCode, itemCode);
+        return PartnerCategoryAffiliation.of(categoryCode, partnerCode, itemCode);
     }
 
     private Partner getPartner(String partnerCode) {
@@ -123,7 +123,7 @@ class PartnerCategoryRepositoryTest {
         @Test
         @DisplayName("取引先分類種別を削除できる")
         void shouldDeletePartnerCategoryById() {
-            String partnerCode = "1";
+            String partnerCode = "001";
             partnerRepository.save(getPartner(partnerCode));
             PartnerCategoryType partnerCategoryType = getPartnerCategoryType("1");
             PartnerCategoryItem partnerCategoryItem = getPartnerCategoryItem(partnerCategoryType.getPartnerCategoryTypeCode(), "1");
@@ -230,8 +230,9 @@ class PartnerCategoryRepositoryTest {
                     PartnerCategoryItem partnerCategoryItem = getPartnerCategoryItem(partnerCategoryType.getPartnerCategoryTypeCode(), String.valueOf(j));
 
                     List<PartnerCategoryAffiliation> partnerCategoryAffiliations = IntStream.range(0, 2).collect(ArrayList::new, (affiliations, k) -> {
-                        partnerRepository.save(getPartner(String.valueOf(k)));
-                        PartnerCategoryAffiliation partnerCategoryAffiliation = getPartnerCategoryAffiliation(partnerCategoryType.getPartnerCategoryTypeCode(), String.valueOf(k), String.valueOf(j));
+                        String partnerCode = String.format("%03d", k);
+                        partnerRepository.save(getPartner(partnerCode));
+                        PartnerCategoryAffiliation partnerCategoryAffiliation = getPartnerCategoryAffiliation(partnerCategoryType.getPartnerCategoryTypeCode(), partnerCode, String.valueOf(j));
                         affiliations.add(partnerCategoryAffiliation);
                     }, ArrayList::addAll);
 
@@ -252,7 +253,7 @@ class PartnerCategoryRepositoryTest {
         @Test
         @DisplayName("取引先分類所属を登録できる")
         void shouldRegisterPartnerCategoryAffiliation() {
-            String partnerCode = "1";
+            String partnerCode = "001";
             partnerRepository.save(getPartner(partnerCode));
             PartnerCategoryType partnerCategoryType = getPartnerCategoryType("1");
             PartnerCategoryItem partnerCategoryItem = getPartnerCategoryItem(partnerCategoryType.getPartnerCategoryTypeCode(), "1");
@@ -269,7 +270,7 @@ class PartnerCategoryRepositoryTest {
         @Test
         @DisplayName("取引先分類所属を更新できる")
         void shouldUpdatePartnerCategoryAffiliation() {
-            String partnerCode = "1";
+            String partnerCode = "001";
             partnerRepository.save(getPartner(partnerCode));
             PartnerCategoryType partnerCategoryType = getPartnerCategoryType("1");
             PartnerCategoryItem partnerCategoryItem = getPartnerCategoryItem(partnerCategoryType.getPartnerCategoryTypeCode(), "1");
@@ -292,7 +293,7 @@ class PartnerCategoryRepositoryTest {
         @Test
         @DisplayName("取引先分類所属を削除できる")
         void shouldDeletePartnerCategoryAffiliation() {
-            String partnerCode = "1";
+            String partnerCode = "001";
             partnerRepository.save(getPartner(partnerCode));
             PartnerCategoryType partnerCategoryType = getPartnerCategoryType("1");
             PartnerCategoryItem partnerCategoryItem = getPartnerCategoryItem(partnerCategoryType.getPartnerCategoryTypeCode(), "1");

@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 public class Partner {
-    String partnerCode;          // 取引先コード
+    PartnerCode partnerCode;          // 取引先コード
     String partnerName;          // 取引先名
     String partnerNameKana;      // 取引先名カナ
     Integer supplierType;        // 仕入先区分
@@ -46,7 +46,7 @@ public class Partner {
             Integer temporaryCreditIncrease
     ) {
         return new Partner(
-                partnerCode,
+                PartnerCode.of(partnerCode),
                 partnerName,
                 partnerNameKana,
                 supplierType,

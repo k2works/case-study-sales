@@ -12,10 +12,10 @@ import lombok.Value;
 @NoArgsConstructor(force = true)
 public class PartnerCategoryAffiliation {
     String partnerCategoryTypeCode; //取引先分類種別コード
-    String partnerCode;          // 取引先コード
+    PartnerCode partnerCode;          // 取引先コード
     String partnerCategoryItemCode; //取引先分類コード
 
     public static PartnerCategoryAffiliation of(String partnerCategoryTypeCode, String partnerCode, String partnerCategoryItemCode) {
-        return new PartnerCategoryAffiliation(partnerCategoryTypeCode, partnerCode, partnerCategoryItemCode);
+        return new PartnerCategoryAffiliation(partnerCategoryTypeCode, PartnerCode.of(partnerCode), partnerCategoryItemCode);
     }
 }

@@ -66,7 +66,7 @@ public class PartnerCategoryEntityMapper {
     public 取引先分類所属マスタ mapToEntity(PartnerCategoryAffiliation partnerCategoryAffiliation) {
         取引先分類所属マスタ entity = new 取引先分類所属マスタ();
         entity.set取引先分類種別コード(partnerCategoryAffiliation.getPartnerCategoryTypeCode());
-        entity.set取引先コード(partnerCategoryAffiliation.getPartnerCode());
+        entity.set取引先コード(partnerCategoryAffiliation.getPartnerCode().getValue());
         entity.set取引先分類コード(partnerCategoryAffiliation.getPartnerCategoryItemCode());
 
         return entity;

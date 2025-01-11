@@ -81,7 +81,7 @@ class PartnerRepositoryTest {
                 1,  // collectionBranchNumber（回収先枝番）
                 "山田太郎",  // customerName（顧客名）
                 "ヤマダタロウ",  // customerNameKana（顧客名カナ）
-                "REP001",  // companyRepresentativeCode（自社担当者コード）
+                "RE001",  // companyRepresentativeCode（自社担当者コード）
                 "花子",  // customerRepresentativeName（顧客担当者名）
                 "営業部",  // customerDepartmentName（顧客部門名）
                 "123-4567",  // customerPostalCode（顧客郵便番号）
@@ -145,7 +145,7 @@ class PartnerRepositoryTest {
         @DisplayName("取引先一覧を取得できる")
         void shouldRetrieveAllPartners() {
             IntStream.range(0, 10).forEach(i -> {
-                Partner partner = getPartner(String.format("P%03d", i));
+                Partner partner = getPartner(String.format("%03d", i));
                 repository.save(partner);
             });
             assertEquals(10, repository.selectAll().asList().size());
@@ -154,20 +154,20 @@ class PartnerRepositoryTest {
         @Test
         @DisplayName("取引先を登録できる")
         void shouldRegisterPartner() {
-            Partner partner = getPartner("P001");
+            Partner partner = getPartner("001");
             repository.save(partner);
-            Partner actual = repository.findById("P001").orElseThrow();
+            Partner actual = repository.findById("001").orElseThrow();
             assertEquals(partner, actual);
         }
 
         @Test
         @DisplayName("取引先を更新できる")
         void shouldUpdatePartner() {
-            Partner partner = getPartner("P001");
+            Partner partner = getPartner("001");
             repository.save(partner);
 
             Partner updatedPartner = Partner.of(
-                    "P001",
+                    "001",
                     "取引先名B",
                     "トリヒキサキメイエー",
                     1,
@@ -183,7 +183,7 @@ class PartnerRepositoryTest {
             );
             repository.save(updatedPartner);
 
-            Partner actual = repository.findById("P001").orElseThrow();
+            Partner actual = repository.findById("001").orElseThrow();
             assertEquals(updatedPartner.getPartnerName(), actual.getPartnerName());
             assertNotEquals(partner, actual);
         }
@@ -191,27 +191,27 @@ class PartnerRepositoryTest {
         @Test
         @DisplayName("取引先を削除できる")
         void shouldDeletePartner() {
-            Partner partner = getPartner("P001");
+            Partner partner = getPartner("001");
             repository.save(partner);
 
             repository.deleteById(partner);
-            Optional<Partner> actual = repository.findById("P001");
+            Optional<Partner> actual = repository.findById("001");
             assertEquals(Optional.empty(), actual);
         }
 
         @Test
         @DisplayName("取引先を削除できる")
         void shouldDeletePartnerWithReference() {
-            Partner partner = getPartner("P001");
-            Customer customer = getCustomer(partner.getPartnerCode(), 1);
-            Shipping shipping = getShipping(partner.getPartnerCode(), 1, 1);
-            Shipping shipping2 = getShipping(partner.getPartnerCode(), 2, 1);
+            Partner partner = getPartner("001");
+            Customer customer = getCustomer(partner.getPartnerCode().getValue(), 1);
+            Shipping shipping = getShipping(partner.getPartnerCode().getValue(), 1, 1);
+            Shipping shipping2 = getShipping(partner.getPartnerCode().getValue(), 2, 1);
             customer = Customer.of(customer, List.of(shipping, shipping2));
             Partner savePartner = Partner.ofWithCustomers(partner, List.of(customer));
             repository.save(savePartner);
 
             repository.deleteById(partner);
-            Optional<Partner> actual = repository.findById("P001");
+            Optional<Partner> actual = repository.findById("001");
             assertEquals(Optional.empty(), actual);
         }
     }
@@ -223,9 +223,9 @@ class PartnerRepositoryTest {
         @DisplayName("顧客一覧を取得できる")
         void shouldRetrieveAllCustomers() {
             IntStream.range(0, 10).forEach(i -> {
-                Partner partner = getPartner(String.format("P%03d", i));
+                Partner partner = getPartner(String.format("%03d", i));
                 List<Customer> customers = IntStream.range(0, 2).collect(ArrayList::new, (list, j) -> {
-                    Customer customer = getCustomer(partner.getPartnerCode(), j);
+                    Customer customer = getCustomer(partner.getPartnerCode().getValue(), j);
                     list.add(customer);
                 }, ArrayList::addAll);
                 repository.save(Partner.ofWithCustomers(partner, customers));
@@ -238,12 +238,12 @@ class PartnerRepositoryTest {
         @Test
         @DisplayName("顧客を登録できる")
         void shouldRegisterCustomer() {
-            Partner partner = getPartner("P001");
-            Customer customer = getCustomer(partner.getPartnerCode(), 1);
+            Partner partner = getPartner("001");
+            Customer customer = getCustomer(partner.getPartnerCode().getValue(), 1);
             Partner savePartner = Partner.ofWithCustomers(partner, List.of(customer));
             repository.save(savePartner);
 
-            Partner actual = repository.findById("P001").orElseThrow();
+            Partner actual = repository.findById("001").orElseThrow();
 
             assertEquals(1, actual.getCustomers().size());
             assertEquals(customer, actual.getCustomers().getFirst());
@@ -252,13 +252,13 @@ class PartnerRepositoryTest {
         @Test
         @DisplayName("顧客を更新できる")
         void shouldUpdateCustomer() {
-            Partner partner = getPartner("P001");
-            Customer customer = getCustomer(partner.getPartnerCode(), 1);
-            Customer customer2 = getCustomer(partner.getPartnerCode(), 2);
+            Partner partner = getPartner("001");
+            Customer customer = getCustomer(partner.getPartnerCode().getValue(), 1);
+            Customer customer2 = getCustomer(partner.getPartnerCode().getValue(), 2);
             Partner savePartner = Partner.ofWithCustomers(partner, List.of(customer, customer2));
             repository.save(savePartner);
 
-            Customer updatedCustomer = getCustomer(partner.getPartnerCode(), 1);
+            Customer updatedCustomer = getCustomer(partner.getPartnerCode().getValue(), 1);
             updatedCustomer =  Customer.of(
                     updatedCustomer.getCustomerCode(),
                     updatedCustomer.getCustomerBranchNumber(),
@@ -292,7 +292,7 @@ class PartnerRepositoryTest {
             Partner updatedPartner = Partner.ofWithCustomers(partner, List.of(updatedCustomer, customer2));
             repository.save(updatedPartner);
 
-            Partner actual = repository.findById("P001").orElseThrow();
+            Partner actual = repository.findById("001").orElseThrow();
             assertEquals(2, actual.getCustomers().size());
             assertEquals("顧客名B", actual.getCustomers().getFirst().getCustomerName());
         }
@@ -300,9 +300,9 @@ class PartnerRepositoryTest {
         @Test
         @DisplayName("顧客を削除できる")
         void shouldDeleteCustomer() {
-            Partner partner = getPartner("P001");
+            Partner partner = getPartner("001");
             List<Customer> customers = IntStream.range(0, 2).collect(ArrayList::new, (list, j) -> {
-                Customer customer = getCustomer(partner.getPartnerCode(), j);
+                Customer customer = getCustomer(partner.getPartnerCode().getValue(), j);
                 list.add(customer);
             }, ArrayList::addAll);
             Partner savePartner = Partner.ofWithCustomers(partner, customers);
@@ -311,7 +311,7 @@ class PartnerRepositoryTest {
             savePartner = Partner.ofWithCustomers(partner, List.of());
             repository.save(savePartner);
 
-            Partner actual = repository.findById("P001").orElseThrow();
+            Partner actual = repository.findById("001").orElseThrow();
             assertEquals(0, actual.getCustomers().size());
         }
     }
@@ -323,12 +323,12 @@ class PartnerRepositoryTest {
         @DisplayName("出荷先一覧を取得できる")
         void shouldRetrieveAllShipping() {
             IntStream.range(0, 10).forEach(i -> {
-                Partner partner = getPartner(String.format("P%03d", i));
+                Partner partner = getPartner(String.format("%03d", i));
                 List<Customer> customers = IntStream.range(0, 2).collect(ArrayList::new, (list, j) -> {
-                    Customer customer = getCustomer(partner.getPartnerCode(), j);
+                    Customer customer = getCustomer(partner.getPartnerCode().getValue(), j);
 
                     List<Shipping> shippings = IntStream.range(0, 2).collect(ArrayList::new, (list2, k) -> {
-                        Shipping shipping = getShipping(partner.getPartnerCode(), k, j);
+                        Shipping shipping = getShipping(partner.getPartnerCode().getValue(), k, j);
                         list2.add(shipping);
                     }, ArrayList::addAll);
 
@@ -347,14 +347,14 @@ class PartnerRepositoryTest {
         @Test
         @DisplayName("出荷先を登録できる")
         void shouldRegisterShipping() {
-            Partner partner = getPartner("P001");
-            Customer customer = getCustomer(partner.getPartnerCode(), 1);
-            Shipping shipping = getShipping(partner.getPartnerCode(), 1, 1);
+            Partner partner = getPartner("001");
+            Customer customer = getCustomer(partner.getPartnerCode().getValue(), 1);
+            Shipping shipping = getShipping(partner.getPartnerCode().getValue(), 1, 1);
             customer = Customer.of(customer, List.of(shipping));
             Partner savePartner = Partner.ofWithCustomers(partner, List.of(customer));
             repository.save(savePartner);
 
-            Partner actual = repository.findById("P001").orElseThrow();
+            Partner actual = repository.findById("001").orElseThrow();
 
             assertEquals(1, actual.getCustomers().size());
             assertEquals(1, actual.getCustomers().getFirst().getShippings().size());
@@ -364,15 +364,15 @@ class PartnerRepositoryTest {
         @Test
         @DisplayName("出荷先を更新できる")
         void shouldUpdateShipping() {
-            Partner partner = getPartner("P001");
-            Customer customer = getCustomer(partner.getPartnerCode(), 1);
-            Shipping shipping = getShipping(partner.getPartnerCode(), 1, 1);
-            Shipping shipping2 = getShipping(partner.getPartnerCode(), 2, 1);
+            Partner partner = getPartner("001");
+            Customer customer = getCustomer(partner.getPartnerCode().getValue(), 1);
+            Shipping shipping = getShipping(partner.getPartnerCode().getValue(), 1, 1);
+            Shipping shipping2 = getShipping(partner.getPartnerCode().getValue(), 2, 1);
             customer = Customer.of(customer, List.of(shipping, shipping2));
             Partner savePartner = Partner.ofWithCustomers(partner, List.of(customer));
             repository.save(savePartner);
 
-            Shipping updatedShipping = getShipping(partner.getPartnerCode(), 1, 1);
+            Shipping updatedShipping = getShipping(partner.getPartnerCode().getValue(), 1, 1);
             updatedShipping = Shipping.of(
                     updatedShipping.getCustomerCode(),
                     updatedShipping.getDestinationNumber(),
@@ -387,7 +387,7 @@ class PartnerRepositoryTest {
             Partner updatedPartner = Partner.ofWithCustomers(partner, List.of(customer));
             repository.save(updatedPartner);
 
-            Partner actual = repository.findById("P001").orElseThrow();
+            Partner actual = repository.findById("001").orElseThrow();
 
             assertEquals(1, actual.getCustomers().size());
             assertEquals(2, actual.getCustomers().getFirst().getShippings().size());
@@ -397,10 +397,10 @@ class PartnerRepositoryTest {
         @Test
         @DisplayName("出荷先を削除できる")
         void shouldDeleteShipping() {
-            Partner partner = getPartner("P001");
-            Customer customer = getCustomer(partner.getPartnerCode(), 1);
-            Shipping shipping = getShipping(partner.getPartnerCode(), 1, 1);
-            Shipping shipping2 = getShipping(partner.getPartnerCode(), 2, 1);
+            Partner partner = getPartner("001");
+            Customer customer = getCustomer(partner.getPartnerCode().getValue(), 1);
+            Shipping shipping = getShipping(partner.getPartnerCode().getValue(), 1, 1);
+            Shipping shipping2 = getShipping(partner.getPartnerCode().getValue(), 2, 1);
             customer = Customer.of(customer, List.of(shipping, shipping2));
             Partner savePartner = Partner.ofWithCustomers(partner, List.of(customer));
             repository.save(savePartner);
@@ -409,7 +409,7 @@ class PartnerRepositoryTest {
             Partner updatedPartner = Partner.ofWithCustomers(partner, List.of(customer));
             repository.save(updatedPartner);
 
-            Partner actual = repository.findById("P001").orElseThrow();
+            Partner actual = repository.findById("001").orElseThrow();
 
             assertEquals(1, actual.getCustomers().size());
             assertEquals(0, actual.getCustomers().getFirst().getShippings().size());
@@ -423,9 +423,9 @@ class PartnerRepositoryTest {
         @DisplayName("仕入先一覧を取得できる")
         void shouldRetrieveAllVendors() {
             IntStream.range(0, 10).forEach(i -> {
-                Partner partner = getPartner(String.format("P%03d", i));
+                Partner partner = getPartner(String.format("%03d", i));
                 List<Vendor> vendors = IntStream.range(0, 2).collect(ArrayList::new, (list, j) -> {
-                    Vendor vendor = getVendor(partner.getPartnerCode(), j);
+                    Vendor vendor = getVendor(partner.getPartnerCode().getValue(), j);
                     list.add(vendor);
                 }, ArrayList::addAll);
                 repository.save(Partner.ofWithVendors(partner, vendors));
@@ -438,12 +438,12 @@ class PartnerRepositoryTest {
         @Test
         @DisplayName("仕入先を登録できる")
         void shouldRegisterVendor() {
-            Partner partner = getPartner("P001");
-            Vendor vendor = getVendor(partner.getPartnerCode(), 1);
+            Partner partner = getPartner("001");
+            Vendor vendor = getVendor(partner.getPartnerCode().getValue(), 1);
             Partner savePartner = Partner.ofWithVendors(partner, List.of(vendor));
             repository.save(savePartner);
 
-            Partner actual = repository.findById("P001").orElseThrow();
+            Partner actual = repository.findById("001").orElseThrow();
 
             assertEquals(1, actual.getVendors().size());
             assertEquals(vendor, actual.getVendors().getFirst());
@@ -452,13 +452,13 @@ class PartnerRepositoryTest {
         @Test
         @DisplayName("仕入先を更新できる")
         void shouldUpdateVendor() {
-            Partner partner = getPartner("P001");
-            Vendor vendor = getVendor(partner.getPartnerCode(), 1);
-            Vendor vendor2 = getVendor(partner.getPartnerCode(), 2);
+            Partner partner = getPartner("001");
+            Vendor vendor = getVendor(partner.getPartnerCode().getValue(), 1);
+            Vendor vendor2 = getVendor(partner.getPartnerCode().getValue(), 2);
             Partner savePartner = Partner.ofWithVendors(partner, List.of(vendor, vendor2));
             repository.save(savePartner);
 
-            Vendor updatedVendor = getVendor(partner.getPartnerCode(), 1);
+            Vendor updatedVendor = getVendor(partner.getPartnerCode().getValue(), 1);
             updatedVendor = Vendor.of(
                     updatedVendor.getVendorCode(),
                     updatedVendor.getVendorBranchCode(),
@@ -481,7 +481,7 @@ class PartnerRepositoryTest {
             Partner updatedPartner = Partner.ofWithVendors(partner, List.of(updatedVendor, vendor2));
             repository.save(updatedPartner);
 
-            Partner actual = repository.findById("P001").orElseThrow();
+            Partner actual = repository.findById("001").orElseThrow();
             assertEquals(2, actual.getVendors().size());
             assertEquals("仕入先名B", actual.getVendors().getFirst().getVendorName());
         }
@@ -489,15 +489,15 @@ class PartnerRepositoryTest {
         @Test
         @DisplayName("仕入先を削除できる")
         void shouldDeleteVendor() {
-            Partner partner = getPartner("P001");
-            Vendor vendor = getVendor(partner.getPartnerCode(), 1);
+            Partner partner = getPartner("001");
+            Vendor vendor = getVendor(partner.getPartnerCode().getValue(), 1);
             Partner savePartner = Partner.ofWithVendors(partner, List.of(vendor));
             repository.save(savePartner);
 
             savePartner = Partner.ofWithVendors(partner, List.of());
             repository.save(savePartner);
 
-            Partner actual = repository.findById("P001").orElseThrow();
+            Partner actual = repository.findById("001").orElseThrow();
             assertEquals(0, actual.getVendors().size());
         }
     }
@@ -509,7 +509,7 @@ class PartnerRepositoryTest {
         @DisplayName("ページング情報を取得できる")
         void shouldRetrieveAllPartnersWithPageInfo() {
             IntStream.range(0, 15).forEach(i -> {
-                Partner partner = getPartner(String.format("P%03d", i));
+                Partner partner = getPartner(String.format("%03d", i));
                 repository.save(partner);
             });
 
@@ -524,13 +524,13 @@ class PartnerRepositoryTest {
         @Test
         @DisplayName("ページング情報を取得できる")
         void shouldRetrieveAllPartnersWithPageInfo() {
-            Partner partner = getPartner("P001");
+            Partner partner = getPartner("001");
             Partner finalPartner = partner;
             List<Customer> customers = IntStream.range(0, 15).collect(ArrayList::new, (list, j) -> {
-                Customer customer = getCustomer(finalPartner.getPartnerCode(), j);
+                Customer customer = getCustomer(finalPartner.getPartnerCode().getValue(), j);
                 list.add(customer);
             }, ArrayList::addAll);
-            partner = Partner.ofWithCustomers(getPartner("P001"), customers);
+            partner = Partner.ofWithCustomers(getPartner("001"), customers);
             repository.save(partner);
 
             PageInfo<Customer> pageInfo = repository.selectAllCustomerWithPageInfo();
@@ -545,13 +545,13 @@ class PartnerRepositoryTest {
         @Test
         @DisplayName("ページング情報を取得できる")
         void shouldRetrieveAllPartnersWithPageInfo() {
-            Partner partner = getPartner("P001");
+            Partner partner = getPartner("001");
             Partner finalPartner = partner;
             List<Vendor> vendors = IntStream.range(0, 15).collect(ArrayList::new, (list, j) -> {
-                Vendor vendor = getVendor(finalPartner.getPartnerCode(), j);
+                Vendor vendor = getVendor(finalPartner.getPartnerCode().getValue(), j);
                 list.add(vendor);
             }, ArrayList::addAll);
-            partner = Partner.ofWithVendors(getPartner("P001"), vendors);
+            partner = Partner.ofWithVendors(getPartner("001"), vendors);
             repository.save(partner);
 
             PageInfo<Vendor> pageInfo = repository.selectAllVendorWithPageInfo();

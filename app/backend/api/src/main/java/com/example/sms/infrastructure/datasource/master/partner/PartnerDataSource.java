@@ -63,7 +63,7 @@ public class PartnerDataSource implements PartnerRepository {
         String username = getCurrentUsername();
         LocalDateTime updateDateTime = LocalDateTime.now();
 
-        Optional<PartnerCustomEntity> existingEntity = Optional.ofNullable(partnerCustomMapper.selectByPrimaryKey(partner.getPartnerCode()));
+        Optional<PartnerCustomEntity> existingEntity = Optional.ofNullable(partnerCustomMapper.selectByPrimaryKey(partner.getPartnerCode().getValue()));
         existingEntity.ifPresentOrElse(
                 entity -> updatePartner(partner, username, updateDateTime, entity),
                 () -> insertPartner(partner, username, updateDateTime)
@@ -82,7 +82,7 @@ public class PartnerDataSource implements PartnerRepository {
 
         int updateCount = partnerCustomMapper.updateByPrimaryKeyForOptimisticLock(updatedEntity);
         if (updateCount == 0) {
-            throw new ObjectOptimisticLockingFailureException(取引先マスタ.class, partner.getPartnerCode());
+            throw new ObjectOptimisticLockingFailureException(取引先マスタ.class, partner.getPartnerCode().getValue());
         }
         processCustomers(partner, username, updateDateTime, entity.get作成日時(), entity.get作成者名(), true, updatedEntity.get取引先コード());
         processVendors(partner, username, updateDateTime, entity.get作成日時(), entity.get作成者名(), true, updatedEntity.get取引先コード());
@@ -175,10 +175,10 @@ public class PartnerDataSource implements PartnerRepository {
 
     @Override
     public void deleteById(Partner partnerCode) {
-        shippingCustomMapper.deleteByCustomerCode(partnerCode.getPartnerCode());
-        customerCustomMapper.deleteByCustomerCode(partnerCode.getPartnerCode());
-        vendorCustomMapper.deleteByVendorCode(partnerCode.getPartnerCode());
-        partnerMapper.deleteByPrimaryKey(partnerCode.getPartnerCode());
+        shippingCustomMapper.deleteByCustomerCode(partnerCode.getPartnerCode().getValue());
+        customerCustomMapper.deleteByCustomerCode(partnerCode.getPartnerCode().getValue());
+        vendorCustomMapper.deleteByVendorCode(partnerCode.getPartnerCode().getValue());
+        partnerMapper.deleteByPrimaryKey(partnerCode.getPartnerCode().getValue());
     }
 
     @Override
