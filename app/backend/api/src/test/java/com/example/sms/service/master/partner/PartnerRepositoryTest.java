@@ -77,7 +77,7 @@ class PartnerRepositoryTest {
                 1,  // customerCategory（顧客区分）
                 "001",  // billingCode（請求先コード）
                 1,  // billingBranchNumber（請求先枝番）
-                "C001",  // collectionCode（回収先コード）
+                "001",  // collectionCode（回収先コード）
                 1,  // collectionBranchNumber（回収先枝番）
                 "山田太郎",  // customerName（顧客名）
                 "ヤマダタロウ",  // customerNameKana（顧客名カナ）
@@ -265,8 +265,8 @@ class PartnerRepositoryTest {
                     updatedCustomer.getCustomerType().getValue(),
                     updatedCustomer.getBillingCode().getCode().getValue(),
                     updatedCustomer.getBillingCode().getBranchNumber(),
-                    updatedCustomer.getCollectionCode(),
-                    updatedCustomer.getCollectionBranchNumber(),
+                    updatedCustomer.getCollectionCode().getCode().getValue(),
+                    updatedCustomer.getCollectionCode().getBranchNumber(),
                     "顧客名B",
                     updatedCustomer.getCustomerNameKana(),
                     updatedCustomer.getCompanyRepresentativeCode(),

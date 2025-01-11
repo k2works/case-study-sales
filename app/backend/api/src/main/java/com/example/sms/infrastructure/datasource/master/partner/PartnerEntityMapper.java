@@ -143,8 +143,8 @@ public class PartnerEntityMapper {
         customerEntity.set顧客区分(customer.getCustomerType().getValue());
         customerEntity.set請求先コード(customer.getBillingCode().getCode().getValue());
         customerEntity.set請求先枝番(customer.getBillingCode().getBranchNumber());
-        customerEntity.set回収先コード(customer.getCollectionCode());
-        customerEntity.set回収先枝番(customer.getCollectionBranchNumber());
+        customerEntity.set回収先コード(customer.getCollectionCode().getCode().getValue());
+        customerEntity.set回収先枝番(customer.getCollectionCode().getBranchNumber());
         customerEntity.set顧客名(customer.getCustomerName());
         customerEntity.set顧客名カナ(customer.getCustomerNameKana());
         customerEntity.set自社担当者コード(customer.getCompanyRepresentativeCode());

@@ -1,6 +1,8 @@
 package com.example.sms.domain.model.master.partner;
 
 import com.example.sms.domain.type.partner.CustomerType;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -8,15 +10,16 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("顧客")
-public class CustomerTest {
-    private Customer getCustomer() {
+class CustomerTest {
+    @Contract(" -> new")
+    private @NotNull Customer getCustomer() {
         return Customer.of(
                 "001",  // customerCode（顧客コード）
                 1,  // customerBranchNumber（顧客枝番）
                 1,  // customerCategory（顧客区分）
                 "001",  // billingCode（請求先コード）
                 1,  // billingBranchNumber（請求先枝番）
-                "C001",  // collectionCode（回収先コード）
+                "001",  // collectionCode（回収先コード）
                 1,  // collectionBranchNumber（回収先枝番）
                 "山田太郎",  // customerName（顧客名）
                 "ヤマダタロウ",  // customerNameKana（顧客名カナ）
@@ -53,8 +56,8 @@ public class CustomerTest {
                 () -> assertEquals(CustomerType.顧客, customer.getCustomerType()),
                 () -> assertEquals("001", customer.getBillingCode().getCode().getValue()),
                 () -> assertEquals(1, customer.getBillingCode().getBranchNumber()),
-                () -> assertEquals("C001", customer.getCollectionCode()),
-                () -> assertEquals(1, customer.getCollectionBranchNumber()),
+                () -> assertEquals("001", customer.getCollectionCode().getCode().getValue()),
+                () -> assertEquals(1, customer.getCollectionCode().getBranchNumber()),
                 () -> assertEquals("山田太郎", customer.getCustomerName()),
                 () -> assertEquals("ヤマダタロウ", customer.getCustomerNameKana()),
                 () -> assertEquals("RE001", customer.getCompanyRepresentativeCode()),
@@ -86,6 +89,24 @@ public class CustomerTest {
         assertThrows(IllegalArgumentException.class, () -> CustomerCode.of(null, 1));
         assertThrows(IllegalArgumentException.class, () -> CustomerCode.of("001", -1));
         assertThrows(IllegalArgumentException.class, () -> CustomerCode.of("001", 1000));
+    }
+
+    @Test
+    @DisplayName("請求先コードは以下の条件を満たす")
+    void shouldCreateBillingCode() {
+        assertDoesNotThrow(() -> BillingCode.of("001", 0));
+        assertThrows(IllegalArgumentException.class, () -> BillingCode.of(null, 1));
+        assertThrows(IllegalArgumentException.class, () -> BillingCode.of("001", -1));
+        assertThrows(IllegalArgumentException.class, () -> BillingCode.of("001", 1000));
+    }
+
+    @Test
+    @DisplayName("回収先コードは以下の条件を満たす")
+    void shouldCreateCollectionCode() {
+        assertDoesNotThrow(() -> CollectionCode.of("001", 0));
+        assertThrows(IllegalArgumentException.class, () -> CollectionCode.of(null, 1));
+        assertThrows(IllegalArgumentException.class, () -> CollectionCode.of("001", -1));
+        assertThrows(IllegalArgumentException.class, () -> CollectionCode.of("001", 1000));
     }
 
 }
