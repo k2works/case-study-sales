@@ -1,2 +1,2 @@
-ALTER TABLE "商品マスタ"
+ALTER TABLE "取引先マスタ"
     ADD COLUMN "version" INT DEFAULT 0;

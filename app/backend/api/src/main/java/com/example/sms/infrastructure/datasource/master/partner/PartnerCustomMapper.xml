@@ -34,4 +34,42 @@
     <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.取引先マスタMapper.Base_Column_List" />
     from public.取引先マスタ
   </select>
+
+  <insert id="insertForOptimisticLock" parameterType="com.example.sms.infrastructure.datasource.autogen.model.取引先マスタ">
+    insert into public.取引先マスタ (取引先コード, 取引先名, 取引先名カナ,
+    仕入先区分, 郵便番号, 都道府県, 住所１,
+    住所２, 取引禁止フラグ, 雑区分,
+    取引先グループコード, 与信限度額, 与信一時増加枠,
+    作成日時, 作成者名, 更新日時,
+    更新者名)
+    values (#{取引先コード,jdbcType=VARCHAR}, #{取引先名,jdbcType=VARCHAR}, #{取引先名カナ,jdbcType=VARCHAR},
+    #{仕入先区分,jdbcType=INTEGER}, #{郵便番号,jdbcType=CHAR}, #{都道府県,jdbcType=VARCHAR}, #{住所１,jdbcType=VARCHAR},
+    #{住所２,jdbcType=VARCHAR}, #{取引禁止フラグ,jdbcType=INTEGER}, #{雑区分,jdbcType=INTEGER},
+    #{取引先グループコード,jdbcType=VARCHAR}, #{与信限度額,jdbcType=INTEGER}, #{与信一時増加枠,jdbcType=INTEGER},
+    #{作成日時,jdbcType=TIMESTAMP}, #{作成者名,jdbcType=VARCHAR}, #{更新日時,jdbcType=TIMESTAMP},
+    #{更新者名,jdbcType=VARCHAR})
+  </insert>
+
+  <update id="updateByPrimaryKeyForOptimisticLock" parameterType="com.example.sms.infrastructure.datasource.autogen.model.取引先マスタ">
+    update public.取引先マスタ
+    set 取引先名 = #{取引先名,jdbcType=VARCHAR},
+    取引先名カナ = #{取引先名カナ,jdbcType=VARCHAR},
+    仕入先区分 = #{仕入先区分,jdbcType=INTEGER},
+    郵便番号 = #{郵便番号,jdbcType=CHAR},
+    都道府県 = #{都道府県,jdbcType=VARCHAR},
+    住所１ = #{住所１,jdbcType=VARCHAR},
+    住所２ = #{住所２,jdbcType=VARCHAR},
+    取引禁止フラグ = #{取引禁止フラグ,jdbcType=INTEGER},
+    雑区分 = #{雑区分,jdbcType=INTEGER},
+    取引先グループコード = #{取引先グループコード,jdbcType=VARCHAR},
+    与信限度額 = #{与信限度額,jdbcType=INTEGER},
+    与信一時増加枠 = #{与信一時増加枠,jdbcType=INTEGER},
+    作成日時 = #{作成日時,jdbcType=TIMESTAMP},
+    作成者名 = #{作成者名,jdbcType=VARCHAR},
+    更新日時 = #{更新日時,jdbcType=TIMESTAMP},
+    更新者名 = #{更新者名,jdbcType=VARCHAR},
+    version = #{version,jdbcType=INTEGER} + 1
+    where 取引先コード = #{取引先コード,jdbcType=VARCHAR}
+    and version = #{version,jdbcType=INTEGER}
+  </update>
 </mapper>

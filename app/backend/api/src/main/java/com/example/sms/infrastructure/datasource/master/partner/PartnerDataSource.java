@@ -5,6 +5,7 @@ import com.example.sms.domain.model.master.partner.Partner;
 import com.example.sms.domain.model.master.partner.PartnerList;
 import com.example.sms.domain.model.master.partner.Vendor;
 import com.example.sms.infrastructure.PageInfoHelper;
+import com.example.sms.infrastructure.datasource.ObjectOptimisticLockingFailureException;
 import com.example.sms.infrastructure.datasource.autogen.mapper.仕入先マスタMapper;
 import com.example.sms.infrastructure.datasource.autogen.mapper.出荷先マスタMapper;
 import com.example.sms.infrastructure.datasource.autogen.mapper.取引先マスタMapper;
@@ -77,8 +78,12 @@ public class PartnerDataSource implements PartnerRepository {
     private void updatePartner(Partner partner, String username, LocalDateTime updateDateTime, PartnerCustomEntity entity) {
         取引先マスタ updatedEntity = partnerEntityMapper.mapToEntity(partner);
         setCommonFields(updatedEntity, entity.get作成日時(), entity.get作成者名(), updateDateTime, username);
+        updatedEntity.setVersion(entity.getVersion());
 
-        partnerMapper.updateByPrimaryKey(updatedEntity);
+        int updateCount = partnerCustomMapper.updateByPrimaryKeyForOptimisticLock(updatedEntity);
+        if (updateCount == 0) {
+            throw new ObjectOptimisticLockingFailureException(取引先マスタ.class, partner.getPartnerCode());
+        }
         processCustomers(partner, username, updateDateTime, entity.get作成日時(), entity.get作成者名(), true, updatedEntity.get取引先コード());
         processVendors(partner, username, updateDateTime, entity.get作成日時(), entity.get作成者名(), true, updatedEntity.get取引先コード());
     }
@@ -87,7 +92,7 @@ public class PartnerDataSource implements PartnerRepository {
         取引先マスタ newEntity = partnerEntityMapper.mapToEntity(partner);
         setCommonFields(newEntity, updateDateTime, username, updateDateTime, username);
 
-        partnerMapper.insert(newEntity);
+        partnerCustomMapper.insertForOptimisticLock(newEntity);
         processCustomers(partner, username, updateDateTime, newEntity.get作成日時(), username, false, newEntity.get取引先コード());
         processVendors(partner, username, updateDateTime, newEntity.get作成日時(), username, false, newEntity.get取引先コード());
     }

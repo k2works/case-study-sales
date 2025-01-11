@@ -4,6 +4,7 @@ import com.example.sms.domain.model.master.partner.Customer;
 import com.example.sms.domain.model.master.partner.Partner;
 import com.example.sms.domain.model.master.partner.Shipping;
 import com.example.sms.domain.model.master.partner.Vendor;
+import com.example.sms.infrastructure.datasource.ObjectOptimisticLockingFailureException;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -30,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Testcontainers
 @ActiveProfiles("container")
 @DisplayName("取引先レポジトリ")
-public class PartnerRepositoryTest {
+class PartnerRepositoryTest {
     @Container
     private static final PostgreSQLContainer<?> postgres =
             new PostgreSQLContainer<>(DockerImageName.parse("postgres:15"))
@@ -213,7 +214,6 @@ public class PartnerRepositoryTest {
             Optional<Partner> actual = repository.findById("P001");
             assertEquals(Optional.empty(), actual);
         }
-
     }
 
     @Nested
@@ -558,5 +558,33 @@ public class PartnerRepositoryTest {
 
             assertEquals(15, pageInfo.getList().size());
         }
+    }
+
+    //TODO: マルチスレッドだと失敗してもテストは正常終了扱いになるので、コンソールで確認する必要がある
+    @Test
+    @DisplayName("楽観ロックが正常に動作すること")
+    void testOptimisticLockingWithThreads() throws InterruptedException {
+        Partner partner = getPartner("999");
+        repository.save(partner);
+
+        Thread thread1 = new Thread(() -> {
+            Partner updatedPartner1 = getPartner("999");
+            repository.save(updatedPartner1);
+        });
+
+        Thread thread2 = new Thread(() -> {
+            Partner updatedPartner2 = getPartner("999");
+            assertThrows(ObjectOptimisticLockingFailureException.class, () -> {
+                repository.save(updatedPartner2);
+            });
+        });
+
+        // スレッドを開始
+        thread1.start();
+        thread2.start();
+
+        // スレッドの終了を待機
+        thread1.join();
+        thread2.join();
     }
 }
