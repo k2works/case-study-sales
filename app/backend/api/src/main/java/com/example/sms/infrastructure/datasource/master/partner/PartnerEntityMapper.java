@@ -27,7 +27,7 @@ public class PartnerEntityMapper {
         partnerEntity.set住所１(partner.getAddress().getAddress1());
         partnerEntity.set住所２(partner.getAddress().getAddress2());
         partnerEntity.set取引禁止フラグ(partner.getTradeProhibitedFlag().getValue());
-        partnerEntity.set雑区分(partner.getMiscellaneousType());
+        partnerEntity.set雑区分(partner.getMiscellaneousType().getCode());
         partnerEntity.set取引先グループコード(partner.getPartnerGroupCode().getValue());
         partnerEntity.set与信限度額(partner.getCredit().getCreditLimit().getAmount());
         partnerEntity.set与信一時増加枠(partner.getCredit().getTemporaryCreditIncrease().getAmount());

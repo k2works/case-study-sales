@@ -63,7 +63,7 @@ class PartnerRepositoryTest {
                 "中央区銀座1-1-1",
                 "ビル名201",
                 0,
-                2,
+                0,
                 "PG01",
                 1000000,
                 50000
@@ -176,7 +176,7 @@ class PartnerRepositoryTest {
                     "中央区銀座1-1-1",
                     "ビル名201",
                     0,
-                    2,
+                    0,
                     "PG01",
                     1000000,
                     50000

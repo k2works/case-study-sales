@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.master.partner;
 
+import com.example.sms.domain.type.partner.MiscellaneousType;
 import com.example.sms.domain.type.partner.TradeProhibitedFlag;
 import com.example.sms.domain.type.partner.VendorType;
 import lombok.AllArgsConstructor;
@@ -21,7 +22,7 @@ public class Partner {
     VendorType vendorType;        // 仕入先区分
     Address address;             // 住所
     TradeProhibitedFlag tradeProhibitedFlag; // 取引禁止フラグ
-    Integer miscellaneousType;   // 雑区分
+    MiscellaneousType miscellaneousType;   // 雑区分
     PartnerGroupCode partnerGroupCode;     // 取引先グループコード
     Credit credit;               // 与信
     List<Customer> customers;   // 顧客
@@ -48,7 +49,7 @@ public class Partner {
                 VendorType.fromCode(vendorType),
                 Address.of(postalCode, prefecture, address1, address2),
                 TradeProhibitedFlag.fromCode(tradeProhibitedFlag),
-                miscellaneousType,
+                MiscellaneousType.fromCode(miscellaneousType),
                 PartnerGroupCode.of(partnerGroupCode),
                 Credit.of(creditLimit, temporaryCreditIncrease),
                 List.of(),
