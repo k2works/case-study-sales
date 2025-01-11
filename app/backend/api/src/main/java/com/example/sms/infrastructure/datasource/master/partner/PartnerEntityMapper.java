@@ -22,7 +22,7 @@ public class PartnerEntityMapper {
         partnerEntity.set取引先名(partner.getPartnerName().getName());
         partnerEntity.set取引先名カナ(partner.getPartnerName().getNameKana());
         partnerEntity.set仕入先区分(partner.getSupplierType());
-        partnerEntity.set郵便番号(partner.getPostalCode());
+        partnerEntity.set郵便番号(partner.getPostalCode().getValue());
         partnerEntity.set都道府県(partner.getPrefecture());
         partnerEntity.set住所１(partner.getAddress1());
         partnerEntity.set住所２(partner.getAddress2());

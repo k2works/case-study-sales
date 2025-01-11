@@ -4,9 +4,8 @@ import lombok.NoArgsConstructor;
 import lombok.Value;
 
 /**
- * 取引先コード
+ * 取引先名称
  */
-
 @Value
 @NoArgsConstructor(force = true)
 public class PartnerName {

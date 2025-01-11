@@ -13,7 +13,7 @@ class PartnerTest {
                 "取引先名",
                 "取引先名カナ",
                 1,
-                "123-4567",
+                "1234567",
                 "東京都",
                 "住所１",
                 "住所２",
@@ -33,7 +33,19 @@ class PartnerTest {
         assertAll(
                 () -> assertEquals("001", partner.getPartnerCode().getValue()),
                 () -> assertEquals("取引先名", partner.getPartnerName().getName()),
-                () -> assertEquals("取引先名カナ", partner.getPartnerName().getNameKana())
+                () -> assertEquals("取引先名カナ", partner.getPartnerName().getNameKana()),
+                () -> assertEquals(1, partner.getSupplierType()),
+                () -> assertEquals("1234567", partner.getPostalCode().getValue()),
+                () -> assertEquals("東京都", partner.getPrefecture()),
+                () -> assertEquals("住所１", partner.getAddress1()),
+                () -> assertEquals("住所２", partner.getAddress2()),
+                () -> assertEquals(0, partner.getTradeProhibitedFlag()),
+                () -> assertEquals(0, partner.getMiscellaneousType()),
+                () -> assertEquals("取引先グループコード", partner.getPartnerGroupCode()),
+                () -> assertEquals(100000, partner.getCreditLimit()),
+                () -> assertEquals(100000, partner.getTemporaryCreditIncrease()),
+                () -> assertEquals(0, partner.getCustomers().size()),
+                () -> assertEquals(0, partner.getVendors().size())
         );
     }
 
@@ -55,5 +67,18 @@ class PartnerTest {
         assertThrows(IllegalArgumentException.class, () -> PartnerName.of("取引先名", "取引先カナ名".repeat(50)));
         assertThrows(IllegalArgumentException.class, () -> PartnerName.of("取引先名".repeat(50), "取引先カナ名"));
         assertThrows(IllegalArgumentException.class, () -> PartnerName.of("取引先名".repeat(50), "取引先カナ名".repeat(50)));
+    }
+
+    @Test
+    @DisplayName("郵便番号は以下の条件を満たす")
+    void shouldCreatePostalCode() {
+        assertDoesNotThrow(() -> PostalCode.of("1234567"));
+        assertDoesNotThrow(() -> PostalCode.of("123-4567"));
+        assertThrows(IllegalArgumentException.class, () -> PostalCode.of(null));
+        assertThrows(IllegalArgumentException.class, () -> PostalCode.of("12345678"));
+        assertThrows(IllegalArgumentException.class, () -> PostalCode.of("XX34567"));
+        assertThrows(IllegalArgumentException.class, () -> PostalCode.of("123456-"));
+        assertThrows(IllegalArgumentException.class, () -> PostalCode.of("-123456"));
+        assertThrows(IllegalArgumentException.class, () -> PostalCode.of("1-23456"));
     }
 }

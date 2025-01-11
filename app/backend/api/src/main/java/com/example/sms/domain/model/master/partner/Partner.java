@@ -17,7 +17,7 @@ public class Partner {
     PartnerCode partnerCode;          // 取引先コード
     PartnerName partnerName;          // 取引先名
     Integer supplierType;        // 仕入先区分
-    String postalCode;           // 郵便番号
+    PostalCode postalCode;           // 郵便番号
     String prefecture;           // 都道府県
     String address1;             // 住所１
     String address2;             // 住所２
@@ -48,7 +48,7 @@ public class Partner {
                 PartnerCode.of(partnerCode),
                 PartnerName.of(partnerName, partnerNameKana),
                 supplierType,
-                postalCode,
+                PostalCode.of(postalCode),
                 prefecture,
                 address1,
                 address2,
