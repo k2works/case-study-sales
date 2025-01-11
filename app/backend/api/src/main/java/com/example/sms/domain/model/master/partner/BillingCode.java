@@ -4,15 +4,15 @@ import lombok.NoArgsConstructor;
 import lombok.Value;
 
 /**
- * 顧客コード
+ * 請求先コード
  */
 @Value
 @NoArgsConstructor(force = true)
-public class CustomerCode {
+public class BillingCode {
     PartnerCode code;
     Integer branchNumber;
 
-    public CustomerCode(String code, Integer branchNumber) {
+    public BillingCode(String code, Integer branchNumber) {
         if (branchNumber < 0) {
             throw new IllegalArgumentException("枝番は0以上である必要があります");
         }
@@ -23,8 +23,7 @@ public class CustomerCode {
         this.branchNumber = branchNumber;
     }
 
-    public static CustomerCode of(String partnerCode, Integer customerBranchNumber) {
-        return new CustomerCode(partnerCode, customerBranchNumber);
+    public static BillingCode of(String code, Integer branchNumber) {
+        return new BillingCode(code, branchNumber);
     }
-
 }

@@ -16,8 +16,7 @@ import java.util.List;
 public class Customer {
     CustomerCode customerCode; // 顧客コード
     CustomerType customerType; // 顧客区分
-    String billingCode; // 請求先コード
-    Integer billingBranchNumber; // 請求先枝番
+    BillingCode billingCode; // 請求先コード
     String collectionCode; // 回収先コード
     Integer collectionBranchNumber; // 回収先枝番
     String customerName; // 顧客名
@@ -76,8 +75,7 @@ public class Customer {
         return new Customer(
                 CustomerCode.of(customerCode, customerBranchNumber),
                 CustomerType.fromCode(customerCategory),
-                billingCode,
-                billingBranchNumber,
+                BillingCode.of(billingCode, billingBranchNumber),
                 collectionCode,
                 collectionBranchNumber,
                 customerName,
@@ -110,7 +108,6 @@ public class Customer {
                 customer.customerCode,
                 customer.customerType,
                 customer.billingCode,
-                customer.billingBranchNumber,
                 customer.collectionCode,
                 customer.collectionBranchNumber,
                 customer.customerName,

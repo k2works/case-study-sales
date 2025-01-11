@@ -14,7 +14,7 @@ public class CustomerTest {
                 "001",  // customerCode（顧客コード）
                 1,  // customerBranchNumber（顧客枝番）
                 1,  // customerCategory（顧客区分）
-                "B001",  // billingCode（請求先コード）
+                "001",  // billingCode（請求先コード）
                 1,  // billingBranchNumber（請求先枝番）
                 "C001",  // collectionCode（回収先コード）
                 1,  // collectionBranchNumber（回収先枝番）
@@ -48,11 +48,11 @@ public class CustomerTest {
         Customer customer = getCustomer();
 
         assertAll(
-                () -> assertEquals("001", customer.getCustomerCode().getPartnerCode().getValue()),
-                () -> assertEquals(1, customer.getCustomerCode().getCustomerBranchNumber()),
+                () -> assertEquals("001", customer.getCustomerCode().getCode().getValue()),
+                () -> assertEquals(1, customer.getCustomerCode().getBranchNumber()),
                 () -> assertEquals(CustomerType.顧客, customer.getCustomerType()),
-                () -> assertEquals("B001", customer.getBillingCode()),
-                () -> assertEquals(1, customer.getBillingBranchNumber()),
+                () -> assertEquals("001", customer.getBillingCode().getCode().getValue()),
+                () -> assertEquals(1, customer.getBillingCode().getBranchNumber()),
                 () -> assertEquals("C001", customer.getCollectionCode()),
                 () -> assertEquals(1, customer.getCollectionBranchNumber()),
                 () -> assertEquals("山田太郎", customer.getCustomerName()),
