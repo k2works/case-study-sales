@@ -42,8 +42,8 @@ class PartnerTest {
                 () -> assertEquals(0, partner.getTradeProhibitedFlag()),
                 () -> assertEquals(0, partner.getMiscellaneousType()),
                 () -> assertEquals("0001", partner.getPartnerGroupCode().getValue()),
-                () -> assertEquals(100000, partner.getCreditLimit()),
-                () -> assertEquals(100000, partner.getTemporaryCreditIncrease()),
+                () -> assertEquals(100000, partner.getCredit().getCreditLimit().getAmount()),
+                () -> assertEquals(100000, partner.getCredit().getTemporaryCreditIncrease().getAmount()),
                 () -> assertEquals(0, partner.getCustomers().size()),
                 () -> assertEquals(0, partner.getVendors().size())
         );
@@ -96,4 +96,13 @@ class PartnerTest {
         assertThrows(IllegalArgumentException.class, () -> Address.of("1234567", "東京都", "住所１", null));
         assertThrows(IllegalArgumentException.class, () -> Address.of("1234567", "異世界", "住所１", "住所２"));
         }
+
+    @Test
+    @DisplayName("与信は以下の条件を満たす")
+    void shouldCreateCredit() {
+        assertDoesNotThrow(() -> Credit.of(100000, 100000));
+        assertThrows(IllegalArgumentException.class, () -> Credit.of(100000001, 100000));
+        assertThrows(IllegalArgumentException.class, () -> Credit.of(100000, 10000001));
+        assertThrows(IllegalArgumentException.class, () -> Credit.of(100000001, 10000001));
+    }
 }

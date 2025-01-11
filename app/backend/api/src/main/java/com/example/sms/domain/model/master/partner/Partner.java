@@ -21,8 +21,7 @@ public class Partner {
     Integer tradeProhibitedFlag; // 取引禁止フラグ
     Integer miscellaneousType;   // 雑区分
     PartnerGroupCode partnerGroupCode;     // 取引先グループコード
-    Integer creditLimit;         // 与信限度額
-    Integer temporaryCreditIncrease; // 与信一時増加枠
+    Credit credit;               // 与信
     List<Customer> customers;   // 顧客
     List<Vendor> vendors;       // 仕入先
 
@@ -49,8 +48,7 @@ public class Partner {
                 tradeProhibitedFlag,
                 miscellaneousType,
                 PartnerGroupCode.of(partnerGroupCode),
-                creditLimit,
-                temporaryCreditIncrease,
+                Credit.of(creditLimit, temporaryCreditIncrease),
                 List.of(),
                 List.of()
         );
@@ -65,8 +63,7 @@ public class Partner {
                 partner.tradeProhibitedFlag,
                 partner.miscellaneousType,
                 partner.partnerGroupCode,
-                partner.creditLimit,
-                partner.temporaryCreditIncrease,
+                partner.credit,
                 customers,
                 Collections.emptyList()
         );
@@ -81,8 +78,7 @@ public class Partner {
                 partner.tradeProhibitedFlag,
                 partner.miscellaneousType,
                 partner.partnerGroupCode,
-                partner.creditLimit,
-                partner.temporaryCreditIncrease,
+                partner.credit,
                 Collections.emptyList(),
                 vendors
         );
