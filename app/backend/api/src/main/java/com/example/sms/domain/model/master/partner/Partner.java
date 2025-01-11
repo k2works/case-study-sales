@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.master.partner;
 
+import com.example.sms.domain.type.partner.VendorType;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;
@@ -16,7 +17,7 @@ import java.util.List;
 public class Partner {
     PartnerCode partnerCode;          // 取引先コード
     PartnerName partnerName;          // 取引先名
-    Integer supplierType;        // 仕入先区分
+    VendorType vendorType;        // 仕入先区分
     Address address;             // 住所
     Integer tradeProhibitedFlag; // 取引禁止フラグ
     Integer miscellaneousType;   // 雑区分
@@ -29,7 +30,7 @@ public class Partner {
             String partnerCode,
             String partnerName,
             String partnerNameKana,
-            Integer supplierType,
+            Integer vendorType,
             String postalCode,
             String prefecture,
             String address1,
@@ -43,7 +44,7 @@ public class Partner {
         return new Partner(
                 PartnerCode.of(partnerCode),
                 PartnerName.of(partnerName, partnerNameKana),
-                supplierType,
+                VendorType.fromCode(vendorType),
                 Address.of(postalCode, prefecture, address1, address2),
                 tradeProhibitedFlag,
                 miscellaneousType,
@@ -58,7 +59,7 @@ public class Partner {
         return new Partner(
                 partner.partnerCode,
                 partner.partnerName,
-                partner.supplierType,
+                partner.vendorType,
                 partner.address,
                 partner.tradeProhibitedFlag,
                 partner.miscellaneousType,
@@ -73,7 +74,7 @@ public class Partner {
         return new Partner(
                 partner.partnerCode,
                 partner.partnerName,
-                partner.supplierType,
+                partner.vendorType,
                 partner.address,
                 partner.tradeProhibitedFlag,
                 partner.miscellaneousType,

@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.master.partner;
 
+import com.example.sms.domain.type.partner.VendorType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -34,7 +35,7 @@ class PartnerTest {
                 () -> assertEquals("001", partner.getPartnerCode().getValue()),
                 () -> assertEquals("取引先名", partner.getPartnerName().getName()),
                 () -> assertEquals("取引先名カナ", partner.getPartnerName().getNameKana()),
-                () -> assertEquals(1, partner.getSupplierType()),
+                () -> assertEquals(VendorType.仕入先, partner.getVendorType()),
                 () -> assertEquals("1234567", partner.getAddress().getPostalCode().getValue()),
                 () -> assertEquals("東京都", partner.getAddress().getPrefecture().toString()),
                 () -> assertEquals("住所１", partner.getAddress().getAddress1()),
