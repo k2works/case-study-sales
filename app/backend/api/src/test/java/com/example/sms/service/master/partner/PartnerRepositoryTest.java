@@ -268,7 +268,7 @@ class PartnerRepositoryTest {
                     updatedCustomer.getCollectionCode().getCode().getValue(),
                     updatedCustomer.getCollectionCode().getBranchNumber(),
                     "顧客名B",
-                    updatedCustomer.getCustomerNameKana(),
+                    updatedCustomer.getCustomerName().getValue().getNameKana(),
                     updatedCustomer.getCompanyRepresentativeCode(),
                     updatedCustomer.getCustomerRepresentativeName(),
                     updatedCustomer.getCustomerDepartmentName(),
@@ -294,7 +294,7 @@ class PartnerRepositoryTest {
 
             Partner actual = repository.findById("001").orElseThrow();
             assertEquals(2, actual.getCustomers().size());
-            assertEquals("顧客名B", actual.getCustomers().getFirst().getCustomerName());
+            assertEquals("顧客名B", actual.getCustomers().getFirst().getCustomerName().getValue().getName());
         }
 
         @Test

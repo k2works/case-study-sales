@@ -18,8 +18,7 @@ public class Customer {
     CustomerType customerType; // 顧客区分
     BillingCode billingCode; // 請求先コード
     CollectionCode collectionCode; // 回収先コード
-    String customerName; // 顧客名
-    String customerNameKana; // 顧客名カナ
+    CustomerName customerName; // 顧客名
     String companyRepresentativeCode; // 自社担当者コード
     String customerRepresentativeName; // 顧客担当者名
     String customerDepartmentName; // 顧客部門名
@@ -76,8 +75,7 @@ public class Customer {
                 CustomerType.fromCode(customerCategory),
                 BillingCode.of(billingCode, billingBranchNumber),
                 CollectionCode.of(collectionCode, collectionBranchNumber),
-                customerName,
-                customerNameKana,
+                CustomerName.of(customerName, customerNameKana),
                 companyRepresentativeCode,
                 customerRepresentativeName,
                 customerDepartmentName,
@@ -108,7 +106,6 @@ public class Customer {
                 customer.billingCode,
                 customer.collectionCode,
                 customer.customerName,
-                customer.customerNameKana,
                 customer.companyRepresentativeCode,
                 customer.customerRepresentativeName,
                 customer.customerDepartmentName,
