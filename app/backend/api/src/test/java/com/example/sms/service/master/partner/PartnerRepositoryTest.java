@@ -280,14 +280,14 @@ class PartnerRepositoryTest {
                     updatedCustomer.getCustomerFaxNumber().getValue(),
                     updatedCustomer.getCustomerEmailAddress().getValue(),
                     updatedCustomer.getInvoice().getCustomerBillingCategory().getValue(),
-                    updatedCustomer.getInvoice().getClosingInvoice1().getCustomerClosingDay().getValue(),
-                    updatedCustomer.getInvoice().getClosingInvoice1().getCustomerPaymentMonth().getValue(),
-                    updatedCustomer.getInvoice().getClosingInvoice1().getCustomerPaymentDay().getValue(),
-                    updatedCustomer.getInvoice().getClosingInvoice1().getCustomerPaymentMethod().getValue(),
-                    updatedCustomer.getInvoice().getClosingInvoice2().getCustomerClosingDay().getValue(),
-                    updatedCustomer.getInvoice().getClosingInvoice2().getCustomerPaymentMonth().getValue(),
-                    updatedCustomer.getInvoice().getClosingInvoice2().getCustomerPaymentDay().getValue(),
-                    updatedCustomer.getInvoice().getClosingInvoice2().getCustomerPaymentMethod().getValue()
+                    updatedCustomer.getInvoice().getClosingInvoice1().getClosingDay().getValue(),
+                    updatedCustomer.getInvoice().getClosingInvoice1().getPaymentMonth().getValue(),
+                    updatedCustomer.getInvoice().getClosingInvoice1().getPaymentDay().getValue(),
+                    updatedCustomer.getInvoice().getClosingInvoice1().getPaymentMethod().getValue(),
+                    updatedCustomer.getInvoice().getClosingInvoice2().getClosingDay().getValue(),
+                    updatedCustomer.getInvoice().getClosingInvoice2().getPaymentMonth().getValue(),
+                    updatedCustomer.getInvoice().getClosingInvoice2().getPaymentDay().getValue(),
+                    updatedCustomer.getInvoice().getClosingInvoice2().getPaymentMethod().getValue()
             );
             Partner updatedPartner = Partner.ofWithCustomers(partner, List.of(updatedCustomer, customer2));
             repository.save(updatedPartner);
@@ -473,10 +473,10 @@ class PartnerRepositoryTest {
                     updatedVendor.getVendorPhoneNumber().getValue(),
                     updatedVendor.getVendorFaxNumber().getValue(),
                     updatedVendor.getVendorEmailAddress().getValue(),
-                    updatedVendor.getVendorClosingInvoice().getCustomerClosingDay().getValue(),
-                    updatedVendor.getVendorClosingInvoice().getCustomerPaymentMonth().getValue(),
-                    updatedVendor.getVendorClosingInvoice().getCustomerPaymentDay().getValue(),
-                    updatedVendor.getVendorClosingInvoice().getCustomerPaymentMethod().getValue()
+                    updatedVendor.getVendorClosingInvoice().getClosingDay().getValue(),
+                    updatedVendor.getVendorClosingInvoice().getPaymentMonth().getValue(),
+                    updatedVendor.getVendorClosingInvoice().getPaymentDay().getValue(),
+                    updatedVendor.getVendorClosingInvoice().getPaymentMethod().getValue()
             );
             Partner updatedPartner = Partner.ofWithVendors(partner, List.of(updatedVendor, vendor2));
             repository.save(updatedPartner);

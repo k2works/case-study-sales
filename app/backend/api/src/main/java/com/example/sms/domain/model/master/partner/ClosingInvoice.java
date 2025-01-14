@@ -9,24 +9,24 @@ import lombok.Value;
 @Value
 @NoArgsConstructor(force = true)
 public class ClosingInvoice {
-    ClosingDate customerClosingDay; // 顧客締日
-    PaymentMonth customerPaymentMonth; // 顧客支払月
-    PaymentDay customerPaymentDay; // 顧客支払日
-    PaymentMethod customerPaymentMethod; // 顧客支払方法
+    ClosingDate closingDay; // 締日
+    PaymentMonth paymentMonth; // 支払月
+    PaymentDay paymentDay; // 支払日
+    PaymentMethod paymentMethod; // 支払方法
 
-    public ClosingInvoice(Integer customerClosingDay, Integer customerPaymentMonth, Integer customerPaymentDay, Integer customerPaymentMethod) {
-        this.customerClosingDay = ClosingDate.fromCode(customerClosingDay);
-        this.customerPaymentMonth = PaymentMonth.fromCode(customerPaymentMonth);
-        this.customerPaymentDay = PaymentDay.fromCode(customerPaymentDay);
-        this.customerPaymentMethod = PaymentMethod.fromCode(customerPaymentMethod);
+    public ClosingInvoice(Integer closingDay, Integer paymentMonth, Integer paymentDay, Integer paymentMethod) {
+        this.closingDay = ClosingDate.fromCode(closingDay);
+        this.paymentMonth = PaymentMonth.fromCode(paymentMonth);
+        this.paymentDay = PaymentDay.fromCode(paymentDay);
+        this.paymentMethod = PaymentMethod.fromCode(paymentMethod);
     }
 
-    public static ClosingInvoice of(Integer customerClosingDay, Integer customerPaymentMonth, Integer customerPaymentDay, Integer customerPaymentMethod) {
+    public static ClosingInvoice of(Integer closingDay, Integer paymentMonth, Integer paymentDay, Integer paymentMethod) {
         return new ClosingInvoice(
-                customerClosingDay,
-                customerPaymentMonth,
-                customerPaymentDay,
-                customerPaymentMethod
+                closingDay,
+                paymentMonth,
+                paymentDay,
+                paymentMethod
         );
     }
 }

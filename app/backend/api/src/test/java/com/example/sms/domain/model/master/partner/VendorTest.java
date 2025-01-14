@@ -49,10 +49,10 @@ class VendorTest {
                 () -> assertEquals("03-1234-5678", vendor.getVendorPhoneNumber().getValue()),
                 () -> assertEquals("03-1234-5679", vendor.getVendorFaxNumber().getValue()),
                 () -> assertEquals("test@example.comw", vendor.getVendorEmailAddress().getValue()),
-                () -> assertEquals(ClosingDate.十日, vendor.getVendorClosingInvoice().getCustomerClosingDay()),
-                () -> assertEquals(PaymentMonth.翌月, vendor.getVendorClosingInvoice().getCustomerPaymentMonth()),
-                () -> assertEquals(PaymentDay.二十日, vendor.getVendorClosingInvoice().getCustomerPaymentDay()),
-                () -> assertEquals(PaymentMethod.手形, vendor.getVendorClosingInvoice().getCustomerPaymentMethod())
+                () -> assertEquals(ClosingDate.十日, vendor.getVendorClosingInvoice().getClosingDay()),
+                () -> assertEquals(PaymentMonth.翌月, vendor.getVendorClosingInvoice().getPaymentMonth()),
+                () -> assertEquals(PaymentDay.二十日, vendor.getVendorClosingInvoice().getPaymentDay()),
+                () -> assertEquals(PaymentMethod.手形, vendor.getVendorClosingInvoice().getPaymentMethod())
         );
     }
 }
