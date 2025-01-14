@@ -229,8 +229,8 @@ public class PartnerEntityMapper {
         vendorEntity.set仕入先都道府県(vendor.getVendorAddress().getPrefecture().toString());
         vendorEntity.set仕入先住所１(vendor.getVendorAddress().getAddress1());
         vendorEntity.set仕入先住所２(vendor.getVendorAddress().getAddress2());
-        vendorEntity.set仕入先電話番号(vendor.getVendorPhoneNumber());
-        vendorEntity.set仕入先ｆａｘ番号(vendor.getVendorFaxNumber());
+        vendorEntity.set仕入先電話番号(vendor.getVendorPhoneNumber().getValue());
+        vendorEntity.set仕入先ｆａｘ番号(vendor.getVendorFaxNumber().getValue());
         vendorEntity.set仕入先メールアドレス(vendor.getVendorEmailAddress());
         vendorEntity.set仕入先締日(vendor.getVendorClosingDate());
         vendorEntity.set仕入先支払月(vendor.getVendorPaymentMonth());

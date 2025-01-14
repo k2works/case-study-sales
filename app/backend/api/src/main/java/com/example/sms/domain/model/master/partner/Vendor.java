@@ -1,5 +1,7 @@
 package com.example.sms.domain.model.master.partner;
 
+import com.example.sms.domain.model.master.employee.FaxNumber;
+import com.example.sms.domain.model.master.employee.PhoneNumber;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;
@@ -16,8 +18,8 @@ public class Vendor {
     String vendorContactName; // 仕入先担当者名
     String vendorDepartmentName; // 仕入先部門名
     Address vendorAddress; // 仕入先住所
-    String vendorPhoneNumber; // 仕入先電話番号
-    String vendorFaxNumber; // 仕入先ｆａｘ番号
+    PhoneNumber vendorPhoneNumber; // 仕入先電話番号
+    FaxNumber vendorFaxNumber; // 仕入先ｆａｘ番号
     String vendorEmailAddress; // 仕入先メールアドレス
     Integer vendorClosingDate; // 仕入先締日
     Integer vendorPaymentMonth; // 仕入先支払月
@@ -49,8 +51,8 @@ public class Vendor {
                 vendorContactName,
                 vendorDepartmentName,
                 Address.of(vendorPostalCode, vendorPrefecture, vendorAddress1, vendorAddress2),
-                vendorPhoneNumber,
-                vendorFaxNumber,
+                PhoneNumber.of(vendorPhoneNumber),
+                FaxNumber.of(vendorFaxNumber),
                 vendorEmailAddress,
                 vendorClosingDate,
                 vendorPaymentMonth,
