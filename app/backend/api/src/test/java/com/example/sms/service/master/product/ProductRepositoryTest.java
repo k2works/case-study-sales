@@ -53,11 +53,11 @@ public class ProductRepositoryTest {
     }
 
     private Product getProduct(String productCode) {
-        return TestDataFactoryImpl.product(productCode, "商品正式名", "商品略称", "商品名カナ", ProductType.その他, 1000, 2000, 3000, TaxType.外税, "00000000", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "00000000", 5);
+        return TestDataFactoryImpl.product(productCode, "商品正式名", "商品略称", "商品名カナ", ProductType.その他, 1000, 2000, 3000, TaxType.外税, "00000000", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "000", 5);
     }
 
     private Product getProductForBom(String productCode, ProductType productType) {
-        return TestDataFactoryImpl.product(productCode, "商品正式名", "商品略称", "商品名カナ", productType, 1000, 2000, 3000, TaxType.外税, "00000000", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "00000000", 5);
+        return TestDataFactoryImpl.product(productCode, "商品正式名", "商品略称", "商品名カナ", productType, 1000, 2000, 3000, TaxType.外税, "00000000", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "000", 5);
     }
 
     private SubstituteProduct getSubstituteProduct(String productCode, String substituteProductCode) {
@@ -107,7 +107,7 @@ public class ProductRepositoryTest {
             assertEquals(product.getMiscellaneousType(), actual.getMiscellaneousType());
             assertEquals(product.getStockManagementTargetType(), actual.getStockManagementTargetType());
             assertEquals(product.getStockAllocationType(), actual.getStockAllocationType());
-            assertEquals(product.getSupplierCode(), actual.getSupplierCode());
+            assertEquals(product.getVendorCode(), actual.getVendorCode());
         }
 
         @Test
@@ -117,7 +117,7 @@ public class ProductRepositoryTest {
             repository.save(product);
 
             product = repository.findById(product.getProductCode().getValue()).get();
-            Product updatedProduct = Product.of(product.getProductCode().getValue(), "更新後商品正式名", "更新後商品略称", "更新後商品名カナ", ProductType.商品, 2000, 3000, 4000, TaxType.内税, "99999999", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "99999999", 6);
+            Product updatedProduct = Product.of(product.getProductCode().getValue(), "更新後商品正式名", "更新後商品略称", "更新後商品名カナ", ProductType.商品, 2000, 3000, 4000, TaxType.内税, "99999999", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "999", 6);
             repository.save(updatedProduct);
 
             Product actual = repository.findById(product.getProductCode().getValue()).get();

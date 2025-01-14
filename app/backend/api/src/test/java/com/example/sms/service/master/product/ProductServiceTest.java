@@ -62,7 +62,7 @@ public class ProductServiceTest {
                 Product product = testDataFactory.Product();
                 productService.register(product);
 
-                Product updateProduct = Product.of(product.getProductCode().getValue(), "更新後商品正式名", "更新後商品略称", "更新後商品名カナ", ProductType.商品, 2000, 3000, 4000, TaxType.内税, "99999999", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "99999999", 6);
+                Product updateProduct = Product.of(product.getProductCode().getValue(), "更新後商品正式名", "更新後商品略称", "更新後商品名カナ", ProductType.商品, 2000, 3000, 4000, TaxType.内税, "99999999", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "999", 6);
                 productService.save(updateProduct);
 
                 Product result = productService.find(product.getProductCode().getValue());
@@ -89,7 +89,7 @@ public class ProductServiceTest {
                 @DisplayName("商品をコードで検索できる")
                 void case1() {
                     Product product = testDataFactory.Product();
-                    Product searchProduct = Product.of("10101001", product.getProductName().getProductFormalName(), product.getProductName().getProductAbbreviation(), product.getProductName().getProductNameKana(), product.getProductType(), product.getSellingPrice().getAmount(), product.getPurchasePrice().getAmount(), product.getCostOfSales().getAmount(), product.getTaxType(), product.getTaxType().name(), product.getMiscellaneousType(), product.getStockManagementTargetType(), product.getStockAllocationType(), product.getSupplierCode().getValue(), product.getSupplierCode().getBranchNumber());
+                    Product searchProduct = Product.of("10101001", product.getProductName().getProductFormalName(), product.getProductName().getProductAbbreviation(), product.getProductName().getProductNameKana(), product.getProductType(), product.getSellingPrice().getAmount(), product.getPurchasePrice().getAmount(), product.getCostOfSales().getAmount(), product.getTaxType(), product.getTaxType().name(), product.getMiscellaneousType(), product.getStockManagementTargetType(), product.getStockAllocationType(), product.getVendorCode().getCode().getValue(), product.getVendorCode().getBranchNumber());
                     productService.register(searchProduct);
                     ProductCriteria criteria = ProductCriteria.builder().productCode("10101001").build();
 
@@ -104,7 +104,7 @@ public class ProductServiceTest {
                 @DisplayName("商品を正式名で検索できる")
                 void case2() {
                     Product product = testDataFactory.Product();
-                    Product searchProduct = Product.of(product.getProductCode().getValue(), "検索用商品名", product.getProductName().getProductAbbreviation(), product.getProductName().getProductNameKana(), product.getProductType(), product.getSellingPrice().getAmount(), product.getPurchasePrice().getAmount(), product.getCostOfSales().getAmount(), product.getTaxType(), product.getProductCategoryCode().getValue(), product.getMiscellaneousType(), product.getStockManagementTargetType(), product.getStockAllocationType(), product.getSupplierCode().getValue(), product.getSupplierCode().getBranchNumber());
+                    Product searchProduct = Product.of(product.getProductCode().getValue(), "検索用商品名", product.getProductName().getProductAbbreviation(), product.getProductName().getProductNameKana(), product.getProductType(), product.getSellingPrice().getAmount(), product.getPurchasePrice().getAmount(), product.getCostOfSales().getAmount(), product.getTaxType(), product.getProductCategoryCode().getValue(), product.getMiscellaneousType(), product.getStockManagementTargetType(), product.getStockAllocationType(), product.getVendorCode().getCode().getValue(), product.getVendorCode().getBranchNumber());
                     productService.register(searchProduct);
                     ProductCriteria criteria = ProductCriteria.builder().productNameFormal("検索用商品名").build();
 
@@ -119,7 +119,7 @@ public class ProductServiceTest {
                 @DisplayName("商品を略称で検索できる")
                 void case3() {
                     Product product = testDataFactory.Product();
-                    Product searchProduct = Product.of(product.getProductCode().getValue(), product.getProductName().getProductFormalName(), "検索用商品略称", product.getProductName().getProductNameKana(), product.getProductType(), product.getSellingPrice().getAmount(), product.getPurchasePrice().getAmount(), product.getCostOfSales().getAmount(), product.getTaxType(), product.getProductCategoryCode().getValue(), product.getMiscellaneousType(), product.getStockManagementTargetType(), product.getStockAllocationType(), product.getSupplierCode().getValue(), product.getSupplierCode().getBranchNumber());
+                    Product searchProduct = Product.of(product.getProductCode().getValue(), product.getProductName().getProductFormalName(), "検索用商品略称", product.getProductName().getProductNameKana(), product.getProductType(), product.getSellingPrice().getAmount(), product.getPurchasePrice().getAmount(), product.getCostOfSales().getAmount(), product.getTaxType(), product.getProductCategoryCode().getValue(), product.getMiscellaneousType(), product.getStockManagementTargetType(), product.getStockAllocationType(), product.getVendorCode().getCode().getValue(), product.getVendorCode().getBranchNumber());
                     productService.register(searchProduct);
                     ProductCriteria criteria = ProductCriteria.builder().productNameAbbreviation("検索用商品略称").build();
 
@@ -134,7 +134,7 @@ public class ProductServiceTest {
                 @DisplayName("商品をカナで検索できる")
                 void case4() {
                     Product product = testDataFactory.Product();
-                    Product searchProduct = Product.of(product.getProductCode().getValue(), product.getProductName().getProductFormalName(), product.getProductName().getProductAbbreviation(), "カナ", product.getProductType(), product.getSellingPrice().getAmount(), product.getPurchasePrice().getAmount(), product.getCostOfSales().getAmount(), product.getTaxType(), product.getProductCategoryCode().getValue(), product.getMiscellaneousType(), product.getStockManagementTargetType(), product.getStockAllocationType(), product.getSupplierCode().getValue(), product.getSupplierCode().getBranchNumber());
+                    Product searchProduct = Product.of(product.getProductCode().getValue(), product.getProductName().getProductFormalName(), product.getProductName().getProductAbbreviation(), "カナ", product.getProductType(), product.getSellingPrice().getAmount(), product.getPurchasePrice().getAmount(), product.getCostOfSales().getAmount(), product.getTaxType(), product.getProductCategoryCode().getValue(), product.getMiscellaneousType(), product.getStockManagementTargetType(), product.getStockAllocationType(), product.getVendorCode().getCode().getValue(), product.getVendorCode().getBranchNumber());
                     productService.register(searchProduct);
                     ProductCriteria criteria = ProductCriteria.builder().productNameKana("カナ").build();
 
@@ -149,7 +149,7 @@ public class ProductServiceTest {
                 @DisplayName("商品を商品分類コードで検索できる")
                 void case5() {
                     Product product = testDataFactory.Product();
-                    Product searchProduct = Product.of(product.getProductCode().getValue(), product.getProductName().getProductFormalName(), product.getProductName().getProductAbbreviation(), product.getProductName().getProductNameKana(), product.getProductType(), product.getSellingPrice().getAmount(), product.getPurchasePrice().getAmount(), product.getCostOfSales().getAmount(), product.getTaxType(), "99999999", product.getMiscellaneousType(), product.getStockManagementTargetType(), product.getStockAllocationType(), product.getSupplierCode().getValue(), product.getSupplierCode().getBranchNumber());
+                    Product searchProduct = Product.of(product.getProductCode().getValue(), product.getProductName().getProductFormalName(), product.getProductName().getProductAbbreviation(), product.getProductName().getProductNameKana(), product.getProductType(), product.getSellingPrice().getAmount(), product.getPurchasePrice().getAmount(), product.getCostOfSales().getAmount(), product.getTaxType(), "99999999", product.getMiscellaneousType(), product.getStockManagementTargetType(), product.getStockAllocationType(), product.getVendorCode().getCode().getValue(), product.getVendorCode().getBranchNumber());
                     productService.register(searchProduct);
                     ProductCriteria criteria = ProductCriteria.builder().productCategoryCode("99999999").build();
 
@@ -164,9 +164,9 @@ public class ProductServiceTest {
                 @DisplayName("商品を仕入先コードで検索できる")
                 void case6() {
                     Product product = testDataFactory.Product();
-                    Product searchProduct = Product.of(product.getProductCode().getValue(), product.getProductName().getProductFormalName(), product.getProductName().getProductAbbreviation(), product.getProductName().getProductNameKana(), product.getProductType(), product.getSellingPrice().getAmount(), product.getPurchasePrice().getAmount(), product.getCostOfSales().getAmount(), product.getTaxType(), product.getProductCategoryCode().getValue(), product.getMiscellaneousType(), product.getStockManagementTargetType(), product.getStockAllocationType(), "99999999", product.getSupplierCode().getBranchNumber());
+                    Product searchProduct = Product.of(product.getProductCode().getValue(), product.getProductName().getProductFormalName(), product.getProductName().getProductAbbreviation(), product.getProductName().getProductNameKana(), product.getProductType(), product.getSellingPrice().getAmount(), product.getPurchasePrice().getAmount(), product.getCostOfSales().getAmount(), product.getTaxType(), product.getProductCategoryCode().getValue(), product.getMiscellaneousType(), product.getStockManagementTargetType(), product.getStockAllocationType(), "999", product.getVendorCode().getBranchNumber());
                     productService.register(searchProduct);
-                    ProductCriteria criteria = ProductCriteria.builder().supplierCode("99999999").build();
+                    ProductCriteria criteria = ProductCriteria.builder().supplierCode("999").build();
 
                     PageInfo<Product> result = productService.searchProductWithPageInfo(criteria);
 
@@ -179,7 +179,7 @@ public class ProductServiceTest {
                 @DisplayName("商品を商品区分で検索できる")
                 void case7() {
                     Product product = testDataFactory.Product();
-                    Product searchProduct = Product.of(product.getProductCode().getValue(), product.getProductName().getProductFormalName(), product.getProductName().getProductAbbreviation(), product.getProductName().getProductNameKana(), ProductType.商品, product.getSellingPrice().getAmount(), product.getPurchasePrice().getAmount(), product.getCostOfSales().getAmount(), product.getTaxType(), product.getProductCategoryCode().getValue(), product.getMiscellaneousType(), product.getStockManagementTargetType(), product.getStockAllocationType(), product.getSupplierCode().getValue(), product.getSupplierCode().getBranchNumber());
+                    Product searchProduct = Product.of(product.getProductCode().getValue(), product.getProductName().getProductFormalName(), product.getProductName().getProductAbbreviation(), product.getProductName().getProductNameKana(), ProductType.商品, product.getSellingPrice().getAmount(), product.getPurchasePrice().getAmount(), product.getCostOfSales().getAmount(), product.getTaxType(), product.getProductCategoryCode().getValue(), product.getMiscellaneousType(), product.getStockManagementTargetType(), product.getStockAllocationType(), product.getVendorCode().getCode().getValue(), product.getVendorCode().getBranchNumber());
                     productService.register(searchProduct);
                     ProductCriteria criteria = ProductCriteria.builder().productType(ProductType.商品.getCode()).build();
 
@@ -194,7 +194,7 @@ public class ProductServiceTest {
                 @DisplayName("商品を税区分で検索できる")
                 void case8() {
                     Product product = testDataFactory.Product();
-                    Product searchProduct = Product.of(product.getProductCode().getValue(), product.getProductName().getProductFormalName(), product.getProductName().getProductAbbreviation(), product.getProductName().getProductNameKana(), product.getProductType(), product.getSellingPrice().getAmount(), product.getPurchasePrice().getAmount(), product.getCostOfSales().getAmount(), TaxType.その他, product.getProductCategoryCode().getValue(), product.getMiscellaneousType(), product.getStockManagementTargetType(), product.getStockAllocationType(), product.getSupplierCode().getValue(), product.getSupplierCode().getBranchNumber());
+                    Product searchProduct = Product.of(product.getProductCode().getValue(), product.getProductName().getProductFormalName(), product.getProductName().getProductAbbreviation(), product.getProductName().getProductNameKana(), product.getProductType(), product.getSellingPrice().getAmount(), product.getPurchasePrice().getAmount(), product.getCostOfSales().getAmount(), TaxType.その他, product.getProductCategoryCode().getValue(), product.getMiscellaneousType(), product.getStockManagementTargetType(), product.getStockAllocationType(), product.getVendorCode().getCode().getValue(), product.getVendorCode().getBranchNumber());
                     productService.register(searchProduct);
                     ProductCriteria criteria = ProductCriteria.builder().taxType(TaxType.その他.getCode()).build();
 
@@ -209,7 +209,7 @@ public class ProductServiceTest {
                 @DisplayName("商品を雑費区分で検索できる")
                 void case9() {
                     Product product = testDataFactory.Product();
-                    Product searchProduct = Product.of(product.getProductCode().getValue(), product.getProductName().getProductFormalName(), product.getProductName().getProductAbbreviation(), product.getProductName().getProductNameKana(), product.getProductType(), product.getSellingPrice().getAmount(), product.getPurchasePrice().getAmount(), product.getCostOfSales().getAmount(), product.getTaxType(), product.getProductCategoryCode().getValue(), MiscellaneousType.適用, product.getStockManagementTargetType(), product.getStockAllocationType(), product.getSupplierCode().getValue(), product.getSupplierCode().getBranchNumber());
+                    Product searchProduct = Product.of(product.getProductCode().getValue(), product.getProductName().getProductFormalName(), product.getProductName().getProductAbbreviation(), product.getProductName().getProductNameKana(), product.getProductType(), product.getSellingPrice().getAmount(), product.getPurchasePrice().getAmount(), product.getCostOfSales().getAmount(), product.getTaxType(), product.getProductCategoryCode().getValue(), MiscellaneousType.適用, product.getStockManagementTargetType(), product.getStockAllocationType(), product.getVendorCode().getCode().getValue(), product.getVendorCode().getBranchNumber());
                     productService.register(searchProduct);
                     ProductCriteria criteria = ProductCriteria.builder().miscellaneousType(MiscellaneousType.適用.getCode()).build();
 
@@ -224,7 +224,7 @@ public class ProductServiceTest {
                 @DisplayName("商品を在庫管理対象区分で検索できる")
                 void case10() {
                     Product product = testDataFactory.Product();
-                    Product searchProduct = Product.of(product.getProductCode().getValue(), product.getProductName().getProductFormalName(), product.getProductName().getProductAbbreviation(), product.getProductName().getProductNameKana(), product.getProductType(), product.getSellingPrice().getAmount(), product.getPurchasePrice().getAmount(), product.getCostOfSales().getAmount(), product.getTaxType(), product.getProductCategoryCode().getValue(), product.getMiscellaneousType(), StockManagementTargetType.対象外, product.getStockAllocationType(), product.getSupplierCode().getValue(), product.getSupplierCode().getBranchNumber());
+                    Product searchProduct = Product.of(product.getProductCode().getValue(), product.getProductName().getProductFormalName(), product.getProductName().getProductAbbreviation(), product.getProductName().getProductNameKana(), product.getProductType(), product.getSellingPrice().getAmount(), product.getPurchasePrice().getAmount(), product.getCostOfSales().getAmount(), product.getTaxType(), product.getProductCategoryCode().getValue(), product.getMiscellaneousType(), StockManagementTargetType.対象外, product.getStockAllocationType(), product.getVendorCode().getCode().getValue(), product.getVendorCode().getBranchNumber());
                     productService.register(searchProduct);
                     ProductCriteria criteria = ProductCriteria.builder().stockManagementTargetType(StockManagementTargetType.対象外.getCode()).build();
 
@@ -239,7 +239,7 @@ public class ProductServiceTest {
                 @DisplayName("商品を在庫引当区分で検索できる")
                 void case11() {
                     Product product = testDataFactory.Product();
-                    Product searchProduct = Product.of(product.getProductCode().getValue(), product.getProductName().getProductFormalName(), product.getProductName().getProductAbbreviation(), product.getProductName().getProductNameKana(), product.getProductType(), product.getSellingPrice().getAmount(), product.getPurchasePrice().getAmount(), product.getCostOfSales().getAmount(), product.getTaxType(), product.getProductCategoryCode().getValue(), product.getMiscellaneousType(), product.getStockManagementTargetType(), StockAllocationType.未引当, product.getSupplierCode().getValue(), product.getSupplierCode().getBranchNumber());
+                    Product searchProduct = Product.of(product.getProductCode().getValue(), product.getProductName().getProductFormalName(), product.getProductName().getProductAbbreviation(), product.getProductName().getProductNameKana(), product.getProductType(), product.getSellingPrice().getAmount(), product.getPurchasePrice().getAmount(), product.getCostOfSales().getAmount(), product.getTaxType(), product.getProductCategoryCode().getValue(), product.getMiscellaneousType(), product.getStockManagementTargetType(), StockAllocationType.未引当, product.getVendorCode().getCode().getValue(), product.getVendorCode().getBranchNumber());
                     productService.register(searchProduct);
                     ProductCriteria criteria = ProductCriteria.builder().stockAllocationType(StockAllocationType.未引当.getCode()).build();
 
@@ -253,7 +253,7 @@ public class ProductServiceTest {
                 @Test
                 @DisplayName("商品を複合条件で検索できる")
                 void case12() {
-                    Product searchProduct = Product.of("10101001", "検索用商品正式名", "検索用商品略称", "検索用商品名カナ", ProductType.商品, 2000, 3000, 4000, TaxType.内税, "99999999", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "99999999", 6);
+                    Product searchProduct = Product.of("10101001", "検索用商品正式名", "検索用商品略称", "検索用商品名カナ", ProductType.商品, 2000, 3000, 4000, TaxType.内税, "99999999", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "999", 6);
                     productService.register(searchProduct);
                     ProductCriteria criteria = ProductCriteria.builder().productCode("10101001").productNameFormal("検索用商品正式名").productNameAbbreviation("検索用商品略称").productNameKana("検索用商品名カナ").productType(ProductType.商品.getCode()).taxType(TaxType.内税.getCode()).miscellaneousType(MiscellaneousType.適用外.getCode()).stockManagementTargetType(StockManagementTargetType.対象.getCode()).stockAllocationType(StockAllocationType.引当済.getCode()).build();
 

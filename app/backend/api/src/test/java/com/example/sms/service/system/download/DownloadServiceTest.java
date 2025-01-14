@@ -138,7 +138,7 @@ public class DownloadServiceTest {
             assertEquals(MiscellaneousType.適用外.getCode(), result.getFirst().getMiscellaneousCategory());
             assertEquals(StockManagementTargetType.対象.getCode(), result.getFirst().getInventoryManagementCategory());
             assertEquals(StockAllocationType.引当済.getCode(), result.getFirst().getInventoryAllocationCategory());
-            assertEquals("サプライヤ9", result.getFirst().getSupplierCode());
+            assertEquals("009", result.getFirst().getSupplierCode());
             assertEquals(9, result.getFirst().getSupplierBranchNumber());
         }
     }
