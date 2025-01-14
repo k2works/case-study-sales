@@ -29,9 +29,7 @@ public class Customer {
     PhoneNumber customerPhoneNumber; // 顧客電話番号
     FaxNumber customerFaxNumber; // 顧客ｆａｘ番号
     Email customerEmailAddress; // 顧客メールアドレス
-    CustomerBillingCategory customerBillingCategory; // 顧客請求区分
-    ClosingInvoice closingInvoice1; // 締請求1
-    ClosingInvoice closingInvoice2; // 締請求2
+    Invoice invoice; // 請求
     List<Shipping> shippings; // 出荷先
 
     public static Customer of(
@@ -82,18 +80,20 @@ public class Customer {
                 PhoneNumber.of(customerPhoneNumber),
                 FaxNumber.of(customerFaxNumber),
                 Email.of(customerEmailAddress),
-                CustomerBillingCategory.fromCode(customerBillingCategory),
-                ClosingInvoice.of(
-                        customerClosingDay1,
-                        customerPaymentMonth1,
-                        customerPaymentDay1,
-                        customerPaymentMethod1
-                ),
-                ClosingInvoice.of(
-                        customerClosingDay2,
-                        customerPaymentMonth2,
-                        customerPaymentDay2,
-                        customerPaymentMethod2
+                Invoice.of(
+                        CustomerBillingCategory.fromCode(customerBillingCategory),
+                        ClosingInvoice.of(
+                                customerClosingDay1,
+                                customerPaymentMonth1,
+                                customerPaymentDay1,
+                                customerPaymentMethod1
+                        ),
+                        ClosingInvoice.of(
+                                customerClosingDay2,
+                                customerPaymentMonth2,
+                                customerPaymentDay2,
+                                customerPaymentMethod2
+                        )
                 ),
                 List.of()
         );
@@ -113,9 +113,7 @@ public class Customer {
                 customer.customerPhoneNumber,
                 customer.customerFaxNumber,
                 customer.customerEmailAddress,
-                customer.customerBillingCategory,
-                customer.closingInvoice1,
-                customer.closingInvoice2,
+                customer.invoice,
                 shippings
         );
     }

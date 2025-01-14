@@ -93,13 +93,13 @@ class PartnerRepositoryTest {
                 "example@example.com",  // customerEmailAddress（顧客メールアドレス）
                 2,  // customerBillingCategory（顧客請求区分）
                 10,  // customerClosingDay1（顧客締日１）
-                1,  // customerPaymentMonth1（顧客支払月１）
-                15,  // customerPaymentDay1（顧客支払日１）
-                3,  // customerPaymentMethod1（顧客支払方法１）
+                0,  // customerPaymentMonth1（顧客支払月１）
+                10,  // customerPaymentDay1（顧客支払日１）
+                1,  // customerPaymentMethod1（顧客支払方法１）
                 20,  // customerClosingDay2（顧客締日２）
-                2,  // customerPaymentMonth2（顧客支払月２）
-                30,  // customerPaymentDay2（顧客支払日２）
-                4   // customerPaymentMethod2（顧客支払方法２）
+                1,  // customerPaymentMonth2（顧客支払月２）
+                99,  // customerPaymentDay2（顧客支払日２）
+                2   // customerPaymentMethod2（顧客支払方法２）
         );
     }
 
@@ -279,15 +279,15 @@ class PartnerRepositoryTest {
                     updatedCustomer.getCustomerPhoneNumber().getValue(),
                     updatedCustomer.getCustomerFaxNumber().getValue(),
                     updatedCustomer.getCustomerEmailAddress().getValue(),
-                    updatedCustomer.getCustomerBillingCategory().getValue(),
-                    updatedCustomer.getClosingInvoice1().getCustomerClosingDay().getValue(),
-                    updatedCustomer.getClosingInvoice1().getCustomerPaymentMonth().getValue(),
-                    updatedCustomer.getClosingInvoice1().getCustomerPaymentDay().getValue(),
-                    updatedCustomer.getClosingInvoice1().getCustomerPaymentMethod().getValue(),
-                    updatedCustomer.getClosingInvoice2().getCustomerClosingDay().getValue(),
-                    updatedCustomer.getClosingInvoice2().getCustomerPaymentMonth().getValue(),
-                    updatedCustomer.getClosingInvoice2().getCustomerPaymentDay().getValue(),
-                    updatedCustomer.getClosingInvoice2().getCustomerPaymentMethod().getValue()
+                    updatedCustomer.getInvoice().getCustomerBillingCategory().getValue(),
+                    updatedCustomer.getInvoice().getClosingInvoice1().getCustomerClosingDay().getValue(),
+                    updatedCustomer.getInvoice().getClosingInvoice1().getCustomerPaymentMonth().getValue(),
+                    updatedCustomer.getInvoice().getClosingInvoice1().getCustomerPaymentDay().getValue(),
+                    updatedCustomer.getInvoice().getClosingInvoice1().getCustomerPaymentMethod().getValue(),
+                    updatedCustomer.getInvoice().getClosingInvoice2().getCustomerClosingDay().getValue(),
+                    updatedCustomer.getInvoice().getClosingInvoice2().getCustomerPaymentMonth().getValue(),
+                    updatedCustomer.getInvoice().getClosingInvoice2().getCustomerPaymentDay().getValue(),
+                    updatedCustomer.getInvoice().getClosingInvoice2().getCustomerPaymentMethod().getValue()
             );
             Partner updatedPartner = Partner.ofWithCustomers(partner, List.of(updatedCustomer, customer2));
             repository.save(updatedPartner);
