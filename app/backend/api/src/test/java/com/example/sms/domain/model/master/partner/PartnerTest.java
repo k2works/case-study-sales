@@ -12,6 +12,7 @@ import com.example.sms.domain.model.master.partner.invoice.PaymentDay;
 import com.example.sms.domain.model.master.partner.invoice.PaymentMethod;
 import com.example.sms.domain.model.master.partner.invoice.PaymentMonth;
 import com.example.sms.domain.model.master.partner.vendor.Vendor;
+import com.example.sms.domain.model.master.partner.vendor.VendorCode;
 import com.example.sms.domain.type.partner.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -283,6 +284,15 @@ class PartnerTest {
                     () -> assertEquals(PaymentDay.二十日, vendor.getVendorClosingInvoice().getPaymentDay()),
                     () -> assertEquals(PaymentMethod.手形, vendor.getVendorClosingInvoice().getPaymentMethod())
             );
+        }
+
+        @Test
+        @DisplayName("仕入先コードは以下の条件を満たす")
+        void shouldCreateVendorCode() {
+            assertDoesNotThrow(() -> VendorCode.of("001", 0));
+            assertThrows(IllegalArgumentException.class, () -> VendorCode.of(null, 1));
+            assertThrows(IllegalArgumentException.class, () -> VendorCode.of("001", -1));
+            assertThrows(IllegalArgumentException.class, () -> VendorCode.of("001", 1000));
         }
     }
 }
