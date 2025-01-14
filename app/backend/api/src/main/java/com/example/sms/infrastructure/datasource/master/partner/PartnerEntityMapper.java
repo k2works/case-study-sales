@@ -225,10 +225,10 @@ public class PartnerEntityMapper {
         vendorEntity.set仕入先名カナ(vendor.getVendorName().getValue().getNameKana());
         vendorEntity.set仕入先担当者名(vendor.getVendorContactName());
         vendorEntity.set仕入先部門名(vendor.getVendorDepartmentName());
-        vendorEntity.set仕入先郵便番号(vendor.getVendorPostalCode());
-        vendorEntity.set仕入先都道府県(vendor.getVendorPrefecture());
-        vendorEntity.set仕入先住所１(vendor.getVendorAddress1());
-        vendorEntity.set仕入先住所２(vendor.getVendorAddress2());
+        vendorEntity.set仕入先郵便番号(vendor.getVendorAddress().getPostalCode().getValue());
+        vendorEntity.set仕入先都道府県(vendor.getVendorAddress().getPrefecture().toString());
+        vendorEntity.set仕入先住所１(vendor.getVendorAddress().getAddress1());
+        vendorEntity.set仕入先住所２(vendor.getVendorAddress().getAddress2());
         vendorEntity.set仕入先電話番号(vendor.getVendorPhoneNumber());
         vendorEntity.set仕入先ｆａｘ番号(vendor.getVendorFaxNumber());
         vendorEntity.set仕入先メールアドレス(vendor.getVendorEmailAddress());

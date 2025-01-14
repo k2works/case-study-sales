@@ -15,10 +15,7 @@ public class Vendor {
     VendorName vendorName; // 仕入先名
     String vendorContactName; // 仕入先担当者名
     String vendorDepartmentName; // 仕入先部門名
-    String vendorPostalCode; // 仕入先郵便番号
-    String vendorPrefecture; // 仕入先都道府県
-    String vendorAddress1; // 仕入先住所１
-    String vendorAddress2; // 仕入先住所２
+    Address vendorAddress; // 仕入先住所
     String vendorPhoneNumber; // 仕入先電話番号
     String vendorFaxNumber; // 仕入先ｆａｘ番号
     String vendorEmailAddress; // 仕入先メールアドレス
@@ -51,10 +48,7 @@ public class Vendor {
                 VendorName.of(vendorName, vendorNameKana),
                 vendorContactName,
                 vendorDepartmentName,
-                vendorPostalCode,
-                vendorPrefecture,
-                vendorAddress1,
-                vendorAddress2,
+                Address.of(vendorPostalCode, vendorPrefecture, vendorAddress1, vendorAddress2),
                 vendorPhoneNumber,
                 vendorFaxNumber,
                 vendorEmailAddress,
