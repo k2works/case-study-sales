@@ -157,7 +157,7 @@ public class PartnerEntityMapper {
         customerEntity.set顧客電話番号(customer.getCustomerPhoneNumber().getValue());
         customerEntity.set顧客ｆａｘ番号(customer.getCustomerFaxNumber().getValue());
         customerEntity.set顧客メールアドレス(customer.getCustomerEmailAddress().getValue());
-        customerEntity.set顧客請求区分(customer.getCustomerBillingCategory());
+        customerEntity.set顧客請求区分(customer.getCustomerBillingCategory().getValue());
         customerEntity.set顧客締日１(customer.getCustomerClosingDay1());
         customerEntity.set顧客支払月１(customer.getCustomerPaymentMonth1());
         customerEntity.set顧客支払日１(customer.getCustomerPaymentDay1());

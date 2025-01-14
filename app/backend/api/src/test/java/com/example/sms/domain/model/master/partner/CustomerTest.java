@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.master.partner;
 
+import com.example.sms.domain.type.partner.CustomerBillingCategory;
 import com.example.sms.domain.type.partner.CustomerType;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -70,7 +71,7 @@ class CustomerTest {
                 () -> assertEquals("03-1234-5678", customer.getCustomerPhoneNumber().getValue()),
                 () -> assertEquals("03-1234-5679", customer.getCustomerFaxNumber().getValue()),
                 () -> assertEquals("example@example.com", customer.getCustomerEmailAddress().getValue()),
-                () -> assertEquals(2, customer.getCustomerBillingCategory()),
+                () -> assertEquals(CustomerBillingCategory.締請求, customer.getCustomerBillingCategory()),
                 () -> assertEquals(10, customer.getCustomerClosingDay1()),
                 () -> assertEquals(1, customer.getCustomerPaymentMonth1()),
                 () -> assertEquals(15, customer.getCustomerPaymentDay1()),

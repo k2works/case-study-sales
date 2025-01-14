@@ -2,6 +2,7 @@ package com.example.sms.domain.model.master.partner;
 
 import com.example.sms.domain.model.master.employee.FaxNumber;
 import com.example.sms.domain.model.master.employee.PhoneNumber;
+import com.example.sms.domain.type.partner.CustomerBillingCategory;
 import com.example.sms.domain.type.partner.CustomerType;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -28,7 +29,7 @@ public class Customer {
     PhoneNumber customerPhoneNumber; // 顧客電話番号
     FaxNumber customerFaxNumber; // 顧客ｆａｘ番号
     Email customerEmailAddress; // 顧客メールアドレス
-    Integer customerBillingCategory; // 顧客請求区分
+    CustomerBillingCategory customerBillingCategory; // 顧客請求区分
     Integer customerClosingDay1; // 顧客締日１
     Integer customerPaymentMonth1; // 顧客支払月１
     Integer customerPaymentDay1; // 顧客支払日１
@@ -87,7 +88,7 @@ public class Customer {
                 PhoneNumber.of(customerPhoneNumber),
                 FaxNumber.of(customerFaxNumber),
                 Email.of(customerEmailAddress),
-                customerBillingCategory,
+                CustomerBillingCategory.fromCode(customerBillingCategory),
                 customerClosingDay1,
                 customerPaymentMonth1,
                 customerPaymentDay1,
