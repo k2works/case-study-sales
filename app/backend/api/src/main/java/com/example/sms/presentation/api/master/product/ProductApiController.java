@@ -177,7 +177,7 @@ public class ProductApiController {
                 productResource1.getStockManagementTargetType(),
                 productResource1.getStockAllocationType(),
                 productResource1.getVendorCode(),
-                productResource1.getSupplierBranchNumber()
+                productResource1.getVendorBranchNumber()
         );
         product = Product.of(
                 product,

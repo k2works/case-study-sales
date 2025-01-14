@@ -150,7 +150,7 @@ public class ProductCategoryApiController {
                                 resource.getStockManagementTargetType(),
                                 resource.getStockAllocationType(),
                                 resource.getVendorCode(),
-                                resource.getSupplierBranchNumber()
+                                resource.getVendorBranchNumber()
                         ))
                         .toList();
     }
@@ -174,7 +174,7 @@ public class ProductCategoryApiController {
                                 resource.getStockManagementTargetType(),
                                 resource.getStockAllocationType(),
                                 resource.getVendorCode(),
-                                resource.getSupplierBranchNumber()
+                                resource.getVendorBranchNumber()
                         ))
                         .toList();
     }
