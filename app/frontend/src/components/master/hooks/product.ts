@@ -65,7 +65,7 @@ export const useProduct = () => {
         miscellaneousType: "",
         stockManagementTargetType: "",
         stockAllocationType: "",
-        supplierCode: {
+        vendorCode: {
             value: "",
             branchNumber: 0,
         },

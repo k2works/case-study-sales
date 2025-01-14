@@ -24,7 +24,7 @@ type QuantityType = {
     unit: string;
 }
 
-type SupplierCodeType = {
+type VendorCodeType = {
     value: string;
     branchNumber: number;
 };
@@ -63,7 +63,7 @@ export type ProductType = {
     miscellaneousType: string;
     stockManagementTargetType: string;
     stockAllocationType: string;
-    supplierCode: SupplierCodeType;
+    vendorCode: VendorCodeType;
     substituteProduct: SubstituteProductType[];
     boms: BomType[];
     customerSpecificSellingPrices: CustomerSpecificSellingPriceType[];
@@ -110,8 +110,8 @@ export type ProductResourceType = {
     miscellaneousType?: string;
     stockManagementTargetType?: string;
     stockAllocationType?: string;
-    supplierCode: string;
-    supplierBranchNumber?: number;
+    vendorCode: string;
+    vendorBranchNumber?: number;
     substituteProduct?: SubstituteProductType[];
     boms?: BomType[];
     customerSpecificSellingPrices?: CustomerSpecificSellingPriceType[];
@@ -181,8 +181,8 @@ export const mapToProductResource = (product: ProductType): ProductResourceType 
         miscellaneousType: product.miscellaneousType,
         stockManagementTargetType: product.stockManagementTargetType,
         stockAllocationType: product.stockAllocationType,
-        supplierCode: product.supplierCode.value,
-        supplierBranchNumber: product.supplierCode.branchNumber,
+        vendorCode: product.vendorCode.value,
+        vendorBranchNumber: product.vendorCode.branchNumber,
         substituteProduct: product.substituteProduct,
         boms: product.boms,
         customerSpecificSellingPrices: product.customerSpecificSellingPrices,
