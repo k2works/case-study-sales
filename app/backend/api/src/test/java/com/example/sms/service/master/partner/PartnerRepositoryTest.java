@@ -460,8 +460,8 @@ class PartnerRepositoryTest {
 
             Vendor updatedVendor = getVendor(partner.getPartnerCode().getValue(), 1);
             updatedVendor = Vendor.of(
-                    updatedVendor.getVendorCode(),
-                    updatedVendor.getVendorBranchCode(),
+                    updatedVendor.getVendorCode().getCode().getValue(),
+                    updatedVendor.getVendorCode().getBranchNumber(),
                     "仕入先名B",
                     updatedVendor.getVendorNameKana(),
                     updatedVendor.getVendorContactName(),

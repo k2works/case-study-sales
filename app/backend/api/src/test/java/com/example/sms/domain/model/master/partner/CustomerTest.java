@@ -2,8 +2,6 @@ package com.example.sms.domain.model.master.partner;
 
 import com.example.sms.domain.type.partner.CustomerBillingCategory;
 import com.example.sms.domain.type.partner.CustomerType;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -12,8 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("顧客")
 class CustomerTest {
-    @Contract(" -> new")
-    private @NotNull Customer getCustomer() {
+    private Customer getCustomer() {
         return Customer.of(
                 "001",  // customerCode（顧客コード）
                 1,  // customerBranchNumber（顧客枝番）

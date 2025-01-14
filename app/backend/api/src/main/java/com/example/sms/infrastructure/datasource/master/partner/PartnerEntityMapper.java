@@ -219,8 +219,8 @@ public class PartnerEntityMapper {
 
     public 仕入先マスタ mapToEntity(Vendor vendor) {
         仕入先マスタ vendorEntity = new 仕入先マスタ();
-        vendorEntity.set仕入先コード(vendor.getVendorCode());
-        vendorEntity.set仕入先枝番(vendor.getVendorBranchCode());
+        vendorEntity.set仕入先コード(vendor.getVendorCode().getCode().getValue());
+        vendorEntity.set仕入先枝番(vendor.getVendorCode().getBranchNumber());
         vendorEntity.set仕入先名(vendor.getVendorName());
         vendorEntity.set仕入先名カナ(vendor.getVendorNameKana());
         vendorEntity.set仕入先担当者名(vendor.getVendorContactName());

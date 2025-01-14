@@ -11,8 +11,7 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 public class Vendor {
-    String vendorCode; // 仕入先コード
-    Integer vendorBranchCode; // 仕入先枝番
+    VendorCode vendorCode; // 仕入先コード
     String vendorName; // 仕入先名
     String vendorNameKana; // 仕入先名カナ
     String vendorContactName; // 仕入先担当者名
@@ -49,8 +48,7 @@ public class Vendor {
             Integer vendorPaymentMethod
     ) {
         return new Vendor(
-                vendorCode,
-                vendorBranchCode,
+                VendorCode.of(vendorCode, vendorBranchCode),
                 vendorName,
                 vendorNameKana,
                 vendorContactName,

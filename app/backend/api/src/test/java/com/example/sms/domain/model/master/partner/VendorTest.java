@@ -1,0 +1,59 @@
+package com.example.sms.domain.model.master.partner;
+
+import org.jetbrains.annotations.Contract;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@DisplayName("仕入先")
+class VendorTest {
+    private Vendor getVendor() {
+        return Vendor.of(
+                "001",
+                1,
+                "仕入先名A",
+                "シリヒキサキメイエー",
+                "担当者名A",
+                "部門名A",
+                "123-4567",
+                "東京都",
+                "新宿区1-1-1",
+                "マンション101号室",
+                "03-1234-5678",
+                "03-1234-5679",
+                "test@example.comw",
+                10,
+                1,
+                15,
+                3
+        );
+    }
+
+    @Test
+    @DisplayName("仕入先を作成できる")
+    void createVendor() {
+        Vendor vendor = getVendor();
+
+        assertAll(
+                () -> assertEquals("001", vendor.getVendorCode().getCode().getValue()),
+                () -> assertEquals(1, vendor.getVendorCode().getBranchNumber()),
+                () -> assertEquals("仕入先名A", vendor.getVendorName()),
+                () -> assertEquals("シリヒキサキメイエー", vendor.getVendorNameKana()),
+                () -> assertEquals("担当者名A", vendor.getVendorContactName()),
+                () -> assertEquals("部門名A", vendor.getVendorDepartmentName()),
+                () -> assertEquals("123-4567", vendor.getVendorPostalCode()),
+                () -> assertEquals("東京都", vendor.getVendorPrefecture()),
+                () -> assertEquals("新宿区1-1-1", vendor.getVendorAddress1()),
+                () -> assertEquals("マンション101号室", vendor.getVendorAddress2()),
+                () -> assertEquals("03-1234-5678", vendor.getVendorPhoneNumber()),
+                () -> assertEquals("03-1234-5679", vendor.getVendorFaxNumber()),
+                () -> assertEquals("test@example.comw", vendor.getVendorEmailAddress()),
+                () -> assertEquals(10, vendor.getVendorClosingDate()),
+                () -> assertEquals(1, vendor.getVendorPaymentMonth()),
+                () -> assertEquals(15, vendor.getVendorPaymentDate()),
+                () -> assertEquals(3, vendor.getVendorPaymentMethod())
+        );
+    }
+}
