@@ -20,7 +20,7 @@ public class Vendor {
     Address vendorAddress; // 仕入先住所
     PhoneNumber vendorPhoneNumber; // 仕入先電話番号
     FaxNumber vendorFaxNumber; // 仕入先ｆａｘ番号
-    String vendorEmailAddress; // 仕入先メールアドレス
+    Email vendorEmailAddress; // 仕入先メールアドレス
     Integer vendorClosingDate; // 仕入先締日
     Integer vendorPaymentMonth; // 仕入先支払月
     Integer vendorPaymentDate; // 仕入先支払日
@@ -53,7 +53,7 @@ public class Vendor {
                 Address.of(vendorPostalCode, vendorPrefecture, vendorAddress1, vendorAddress2),
                 PhoneNumber.of(vendorPhoneNumber),
                 FaxNumber.of(vendorFaxNumber),
-                vendorEmailAddress,
+                Email.of(vendorEmailAddress),
                 vendorClosingDate,
                 vendorPaymentMonth,
                 vendorPaymentDate,

@@ -48,7 +48,7 @@ class VendorTest {
                 () -> assertEquals("マンション101号室", vendor.getVendorAddress().getAddress2()),
                 () -> assertEquals("03-1234-5678", vendor.getVendorPhoneNumber().getValue()),
                 () -> assertEquals("03-1234-5679", vendor.getVendorFaxNumber().getValue()),
-                () -> assertEquals("test@example.comw", vendor.getVendorEmailAddress()),
+                () -> assertEquals("test@example.comw", vendor.getVendorEmailAddress().getValue()),
                 () -> assertEquals(10, vendor.getVendorClosingDate()),
                 () -> assertEquals(1, vendor.getVendorPaymentMonth()),
                 () -> assertEquals(15, vendor.getVendorPaymentDate()),

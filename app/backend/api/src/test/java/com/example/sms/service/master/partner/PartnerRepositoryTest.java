@@ -472,7 +472,7 @@ class PartnerRepositoryTest {
                     updatedVendor.getVendorAddress().getAddress2(),
                     updatedVendor.getVendorPhoneNumber().getValue(),
                     updatedVendor.getVendorFaxNumber().getValue(),
-                    updatedVendor.getVendorEmailAddress(),
+                    updatedVendor.getVendorEmailAddress().getValue(),
                     updatedVendor.getVendorClosingDate(),
                     updatedVendor.getVendorPaymentMonth(),
                     updatedVendor.getVendorPaymentDate(),
