@@ -278,7 +278,7 @@ class PartnerRepositoryTest {
                     updatedCustomer.getCustomerAddress().getAddress2(),
                     updatedCustomer.getCustomerPhoneNumber().getValue(),
                     updatedCustomer.getCustomerFaxNumber().getValue(),
-                    updatedCustomer.getCustomerEmailAddress(),
+                    updatedCustomer.getCustomerEmailAddress().getValue(),
                     updatedCustomer.getCustomerBillingCategory(),
                     updatedCustomer.getCustomerClosingDay1(),
                     updatedCustomer.getCustomerPaymentMonth1(),

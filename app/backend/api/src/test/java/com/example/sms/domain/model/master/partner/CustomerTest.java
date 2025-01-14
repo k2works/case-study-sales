@@ -69,7 +69,7 @@ class CustomerTest {
                 () -> assertEquals("マンション101号室", customer.getCustomerAddress().getAddress2()),
                 () -> assertEquals("03-1234-5678", customer.getCustomerPhoneNumber().getValue()),
                 () -> assertEquals("03-1234-5679", customer.getCustomerFaxNumber().getValue()),
-                () -> assertEquals("example@example.com", customer.getCustomerEmailAddress()),
+                () -> assertEquals("example@example.com", customer.getCustomerEmailAddress().getValue()),
                 () -> assertEquals(2, customer.getCustomerBillingCategory()),
                 () -> assertEquals(10, customer.getCustomerClosingDay1()),
                 () -> assertEquals(1, customer.getCustomerPaymentMonth1()),
@@ -109,4 +109,16 @@ class CustomerTest {
         assertThrows(IllegalArgumentException.class, () -> CollectionCode.of("001", 1000));
     }
 
+    @Test
+    @DisplayName("メールアドレスは以下の条件を満たす")
+    void shouldCreateEmailAddress() {
+        assertDoesNotThrow(() -> Email.of("test@example.com"));
+        assertThrows(IllegalArgumentException.class, () -> Email.of(null));
+        assertThrows(IllegalArgumentException.class, () -> Email.of("test"));
+        assertThrows(IllegalArgumentException.class, () -> Email.of("test@"));
+        assertThrows(IllegalArgumentException.class, () -> Email.of("test@example"));
+        assertThrows(IllegalArgumentException.class, () -> Email.of("test@example."));
+        assertThrows(IllegalArgumentException.class, () -> Email.of("test@example.c"));
+        assertThrows(IllegalArgumentException.class, () -> Email.of("test@example.com."));
+    }
 }

@@ -27,7 +27,7 @@ public class Customer {
     Address customerAddress; // 顧客住所
     PhoneNumber customerPhoneNumber; // 顧客電話番号
     FaxNumber customerFaxNumber; // 顧客ｆａｘ番号
-    String customerEmailAddress; // 顧客メールアドレス
+    Email customerEmailAddress; // 顧客メールアドレス
     Integer customerBillingCategory; // 顧客請求区分
     Integer customerClosingDay1; // 顧客締日１
     Integer customerPaymentMonth1; // 顧客支払月１
@@ -86,7 +86,7 @@ public class Customer {
                 ),
                 PhoneNumber.of(customerPhoneNumber),
                 FaxNumber.of(customerFaxNumber),
-                customerEmailAddress,
+                Email.of(customerEmailAddress),
                 customerBillingCategory,
                 customerClosingDay1,
                 customerPaymentMonth1,
