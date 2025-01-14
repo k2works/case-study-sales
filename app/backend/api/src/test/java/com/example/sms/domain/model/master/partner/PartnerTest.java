@@ -4,10 +4,7 @@ import com.example.sms.domain.model.common.Email;
 import com.example.sms.domain.model.common.address.Address;
 import com.example.sms.domain.model.common.address.PostalCode;
 import com.example.sms.domain.model.master.partner.customer.*;
-import com.example.sms.domain.model.master.partner.invoice.ClosingDate;
-import com.example.sms.domain.model.master.partner.invoice.PaymentDay;
-import com.example.sms.domain.model.master.partner.invoice.PaymentMethod;
-import com.example.sms.domain.model.master.partner.invoice.PaymentMonth;
+import com.example.sms.domain.model.master.partner.invoice.*;
 import com.example.sms.domain.model.master.partner.vendor.Vendor;
 import com.example.sms.domain.model.master.partner.vendor.VendorCode;
 import com.example.sms.domain.type.partner.*;
@@ -19,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("取引先")
 class PartnerTest {
-    private Partner getPartner () {
+    Partner getPartner () {
         return Partner.of(
                 "001",
                 "取引先名",
@@ -121,7 +118,7 @@ class PartnerTest {
     @Nested
     @DisplayName("顧客")
     class CustomerTest {
-        private Customer getCustomer() {
+        Customer getCustomer() {
             return Customer.of(
                     "001",  // customerCode（顧客コード）
                     1,  // customerBranchNumber（顧客枝番）
@@ -234,7 +231,7 @@ class PartnerTest {
         @Nested
         @DisplayName("出荷先")
         class ShippingTest {
-            private Shipping getShipping() {
+            Shipping getShipping() {
                 return Shipping.of(
                         "001",
                         1,
@@ -264,12 +261,78 @@ class PartnerTest {
                 );
             }
         }
+
+        @Nested
+        @DisplayName("請求")
+        class InvoiceTest {
+            @Test
+            @DisplayName("20日締翌月末現金払い条件を設定できる")
+            void shouldCreateClosingInvoice() {
+                Customer customer = getCustomer();
+                ClosingInvoice closingInvoice = ClosingInvoice.of(20, 1, 99, 1);
+                Customer invoiceCustomer = customer.of(
+                        getCustomer(),
+                        closingInvoice,
+                        null
+                );
+
+                assertAll(
+                        () -> assertEquals(ClosingDate.二十日, closingInvoice.getClosingDay()),
+                        () -> assertEquals(PaymentMonth.翌月, closingInvoice.getPaymentMonth()),
+                        () -> assertEquals(PaymentDay.末日, closingInvoice.getPaymentDay()),
+                        () -> assertEquals(PaymentMethod.振込, closingInvoice.getPaymentMethod()),
+                        () -> assertEquals(CustomerBillingCategory.締請求, invoiceCustomer.getInvoice().getCustomerBillingCategory()),
+                        () -> assertEquals(invoiceCustomer.getInvoice().getClosingInvoice1(), closingInvoice)
+                );
+            }
+
+            @Test
+            @DisplayName("20日締翌月末現金払い条件と10日締翌月手形払い条件を設定できる")
+            void shouldCreateClosingInvoice2() {
+                Customer customer = getCustomer();
+                ClosingInvoice closingInvoice1 = ClosingInvoice.of(20, 1, 99, 1);
+                ClosingInvoice closingInvoice2 = ClosingInvoice.of(10, 1, 10, 2);
+                Customer invoiceCustomer = customer.of(
+                        getCustomer(),
+                        closingInvoice1,
+                        closingInvoice2
+                );
+
+                assertAll(
+                        () -> assertEquals(ClosingDate.二十日, closingInvoice1.getClosingDay()),
+                        () -> assertEquals(PaymentMonth.翌月, closingInvoice1.getPaymentMonth()),
+                        () -> assertEquals(PaymentDay.末日, closingInvoice1.getPaymentDay()),
+                        () -> assertEquals(PaymentMethod.振込, closingInvoice1.getPaymentMethod()),
+                        () -> assertEquals(ClosingDate.十日, closingInvoice2.getClosingDay()),
+                        () -> assertEquals(PaymentMonth.翌月, closingInvoice2.getPaymentMonth()),
+                        () -> assertEquals(PaymentDay.十日, closingInvoice2.getPaymentDay()),
+                        () -> assertEquals(PaymentMethod.手形, closingInvoice2.getPaymentMethod()),
+                        () -> assertEquals(CustomerBillingCategory.締請求, invoiceCustomer.getInvoice().getCustomerBillingCategory()),
+                        () -> assertEquals(invoiceCustomer.getInvoice().getClosingInvoice1(), closingInvoice1),
+                        () -> assertEquals(invoiceCustomer.getInvoice().getClosingInvoice2(), closingInvoice2)
+                );
+            }
+
+
+            @Test
+            @DisplayName("１つめがnullの場合は２つめを設定できない")
+            void shouldNotCreateInvoice() {
+                Customer customer = getCustomer();
+                ClosingInvoice closingInvoice2 = ClosingInvoice.of(10, 0, 10, 2);
+
+                assertThrows(IllegalArgumentException.class, () -> customer.of(
+                        getCustomer(),
+                        null,
+                        closingInvoice2
+                ));
+            }
+        }
     }
 
     @Nested
     @DisplayName("仕入先")
     class VendorTest {
-        private Vendor getVendor() {
+        Vendor getVendor() {
             return Vendor.of(
                     "001",
                     1,

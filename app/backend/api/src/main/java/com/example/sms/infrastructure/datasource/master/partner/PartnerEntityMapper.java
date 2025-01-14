@@ -157,15 +157,24 @@ public class PartnerEntityMapper {
         customerEntity.set顧客電話番号(customer.getCustomerPhoneNumber().getValue());
         customerEntity.set顧客ｆａｘ番号(customer.getCustomerFaxNumber().getValue());
         customerEntity.set顧客メールアドレス(customer.getCustomerEmailAddress().getValue());
-        customerEntity.set顧客請求区分(customer.getInvoice().getCustomerBillingCategory().getValue());
-        customerEntity.set顧客締日１(customer.getInvoice().getClosingInvoice1().getClosingDay().getValue());
-        customerEntity.set顧客支払月１(customer.getInvoice().getClosingInvoice1().getPaymentMonth().getValue());
-        customerEntity.set顧客支払日１(customer.getInvoice().getClosingInvoice1().getPaymentDay().getValue());
-        customerEntity.set顧客支払方法１(customer.getInvoice().getClosingInvoice1().getPaymentMethod().getValue());
-        customerEntity.set顧客締日２(customer.getInvoice().getClosingInvoice2().getClosingDay().getValue());
-        customerEntity.set顧客支払月２(customer.getInvoice().getClosingInvoice2().getPaymentMonth().getValue());
-        customerEntity.set顧客支払日２(customer.getInvoice().getClosingInvoice2().getPaymentDay().getValue());
-        customerEntity.set顧客支払方法２(customer.getInvoice().getClosingInvoice2().getPaymentMethod().getValue());
+
+        if (customer.getInvoice() != null) {
+            customerEntity.set顧客請求区分(customer.getInvoice().getCustomerBillingCategory().getValue());
+
+            if (customer.getInvoice().getClosingInvoice1() != null) {
+                customerEntity.set顧客締日１(customer.getInvoice().getClosingInvoice1().getClosingDay().getValue());
+                customerEntity.set顧客支払月１(customer.getInvoice().getClosingInvoice1().getPaymentMonth().getValue());
+                customerEntity.set顧客支払日１(customer.getInvoice().getClosingInvoice1().getPaymentDay().getValue());
+                customerEntity.set顧客支払方法１(customer.getInvoice().getClosingInvoice1().getPaymentMethod().getValue());
+            }
+            if (customer.getInvoice().getClosingInvoice2() != null) {
+                customerEntity.set顧客締日２(customer.getInvoice().getClosingInvoice2().getClosingDay().getValue());
+                customerEntity.set顧客締日２(customer.getInvoice().getClosingInvoice2().getClosingDay().getValue());
+                customerEntity.set顧客支払月２(customer.getInvoice().getClosingInvoice2().getPaymentMonth().getValue());
+                customerEntity.set顧客支払日２(customer.getInvoice().getClosingInvoice2().getPaymentDay().getValue());
+                customerEntity.set顧客支払方法２(customer.getInvoice().getClosingInvoice2().getPaymentMethod().getValue());
+            }
+        }
 
         return customerEntity;
     }
@@ -232,10 +241,13 @@ public class PartnerEntityMapper {
         vendorEntity.set仕入先電話番号(vendor.getVendorPhoneNumber().getValue());
         vendorEntity.set仕入先ｆａｘ番号(vendor.getVendorFaxNumber().getValue());
         vendorEntity.set仕入先メールアドレス(vendor.getVendorEmailAddress().getValue());
-        vendorEntity.set仕入先締日(vendor.getVendorClosingInvoice().getClosingDay().getValue());
-        vendorEntity.set仕入先支払月(vendor.getVendorClosingInvoice().getPaymentMonth().getValue());
-        vendorEntity.set仕入先支払日(vendor.getVendorClosingInvoice().getPaymentDay().getValue());
-        vendorEntity.set仕入先支払方法(vendor.getVendorClosingInvoice().getPaymentMethod().getValue());
+
+        if (vendor.getVendorClosingInvoice() != null) {
+            vendorEntity.set仕入先締日(vendor.getVendorClosingInvoice().getClosingDay().getValue());
+            vendorEntity.set仕入先支払月(vendor.getVendorClosingInvoice().getPaymentMonth().getValue());
+            vendorEntity.set仕入先支払日(vendor.getVendorClosingInvoice().getPaymentDay().getValue());
+            vendorEntity.set仕入先支払方法(vendor.getVendorClosingInvoice().getPaymentMethod().getValue());
+        }
 
         return vendorEntity;
     }
