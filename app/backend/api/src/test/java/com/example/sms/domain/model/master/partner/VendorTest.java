@@ -1,6 +1,5 @@
 package com.example.sms.domain.model.master.partner;
 
-import org.jetbrains.annotations.Contract;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -39,8 +38,8 @@ class VendorTest {
         assertAll(
                 () -> assertEquals("001", vendor.getVendorCode().getCode().getValue()),
                 () -> assertEquals(1, vendor.getVendorCode().getBranchNumber()),
-                () -> assertEquals("仕入先名A", vendor.getVendorName()),
-                () -> assertEquals("シリヒキサキメイエー", vendor.getVendorNameKana()),
+                () -> assertEquals("仕入先名A", vendor.getVendorName().getValue().getName()),
+                () -> assertEquals("シリヒキサキメイエー", vendor.getVendorName().getValue().getNameKana()),
                 () -> assertEquals("担当者名A", vendor.getVendorContactName()),
                 () -> assertEquals("部門名A", vendor.getVendorDepartmentName()),
                 () -> assertEquals("123-4567", vendor.getVendorPostalCode()),

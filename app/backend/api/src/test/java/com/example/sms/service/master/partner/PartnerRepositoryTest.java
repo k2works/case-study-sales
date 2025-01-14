@@ -463,7 +463,7 @@ class PartnerRepositoryTest {
                     updatedVendor.getVendorCode().getCode().getValue(),
                     updatedVendor.getVendorCode().getBranchNumber(),
                     "仕入先名B",
-                    updatedVendor.getVendorNameKana(),
+                    updatedVendor.getVendorName().getValue().getNameKana(),
                     updatedVendor.getVendorContactName(),
                     updatedVendor.getVendorDepartmentName(),
                     updatedVendor.getVendorPostalCode(),
@@ -483,7 +483,7 @@ class PartnerRepositoryTest {
 
             Partner actual = repository.findById("001").orElseThrow();
             assertEquals(2, actual.getVendors().size());
-            assertEquals("仕入先名B", actual.getVendors().getFirst().getVendorName());
+            assertEquals("仕入先名B", actual.getVendors().getFirst().getVendorName().getValue().getName());
         }
 
         @Test
