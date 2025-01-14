@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.master.partner;
 
+import com.example.sms.domain.model.common.Email;
 import com.example.sms.domain.type.partner.CustomerBillingCategory;
 import com.example.sms.domain.type.partner.CustomerType;
 import org.junit.jupiter.api.DisplayName;

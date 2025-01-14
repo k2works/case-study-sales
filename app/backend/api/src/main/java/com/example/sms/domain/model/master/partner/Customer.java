@@ -1,7 +1,9 @@
 package com.example.sms.domain.model.master.partner;
 
-import com.example.sms.domain.model.master.employee.FaxNumber;
-import com.example.sms.domain.model.master.employee.PhoneNumber;
+import com.example.sms.domain.model.common.Email;
+import com.example.sms.domain.model.common.FaxNumber;
+import com.example.sms.domain.model.common.PhoneNumber;
+import com.example.sms.domain.model.common.address.Address;
 import com.example.sms.domain.type.partner.CustomerBillingCategory;
 import com.example.sms.domain.type.partner.CustomerType;
 import lombok.AllArgsConstructor;

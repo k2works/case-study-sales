@@ -1,5 +1,6 @@
-package com.example.sms.domain.model.master.partner;
+package com.example.sms.domain.model.common.address;
 
+import com.example.sms.domain.model.master.partner.PostalCode;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 

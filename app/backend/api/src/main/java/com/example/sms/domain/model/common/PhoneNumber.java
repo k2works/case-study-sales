@@ -1,4 +1,4 @@
-package com.example.sms.domain.model.master.employee;
+package com.example.sms.domain.model.common;
 
 import lombok.NoArgsConstructor;
 import lombok.Value;

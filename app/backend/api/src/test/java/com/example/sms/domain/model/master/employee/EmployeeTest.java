@@ -1,5 +1,7 @@
 package com.example.sms.domain.model.master.employee;
 
+import com.example.sms.domain.model.common.FaxNumber;
+import com.example.sms.domain.model.common.PhoneNumber;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
