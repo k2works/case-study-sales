@@ -3,10 +3,7 @@ package com.example.sms.domain.model.master.partner;
 import com.example.sms.domain.model.common.Email;
 import com.example.sms.domain.model.common.address.Address;
 import com.example.sms.domain.model.common.address.PostalCode;
-import com.example.sms.domain.model.master.partner.customer.BillingCode;
-import com.example.sms.domain.model.master.partner.customer.CollectionCode;
-import com.example.sms.domain.model.master.partner.customer.Customer;
-import com.example.sms.domain.model.master.partner.customer.CustomerCode;
+import com.example.sms.domain.model.master.partner.customer.*;
 import com.example.sms.domain.model.master.partner.invoice.ClosingDate;
 import com.example.sms.domain.model.master.partner.invoice.PaymentDay;
 import com.example.sms.domain.model.master.partner.invoice.PaymentMethod;
@@ -232,6 +229,40 @@ class PartnerTest {
             assertThrows(IllegalArgumentException.class, () -> Email.of("test@example."));
             assertThrows(IllegalArgumentException.class, () -> Email.of("test@example.c"));
             assertThrows(IllegalArgumentException.class, () -> Email.of("test@example.com."));
+        }
+
+        @Nested
+        @DisplayName("出荷先")
+        class ShippingTest {
+            private Shipping getShipping() {
+                return Shipping.of(
+                        "001",
+                        1,
+                        1,
+                        "出荷先",
+                        "10",
+                        "123-4567",
+                        "新宿区1-1-1",
+                        "マンション101号室"
+                );
+            }
+
+            @Test
+            @DisplayName("出荷先を作成できる")
+            void shouldCreateShipping() {
+                Shipping shipping = getShipping();
+
+                assertAll(
+                        () -> assertEquals("001", shipping.getShippingCode().getCustomerCode().getCode().getValue()),
+                        () -> assertEquals(1, shipping.getShippingCode().getCustomerCode().getBranchNumber()),
+                        () -> assertEquals(1, shipping.getShippingCode().getDestinationNumber()),
+                        () -> assertEquals("出荷先", shipping.getDestinationName()),
+                        () -> assertEquals("10", shipping.getRegionCode()),
+                        () -> assertEquals("1234567", shipping.getShippingAddress().getPostalCode().getValue()),
+                        () -> assertEquals("新宿区1-1-1", shipping.getShippingAddress().getAddress1()),
+                        () -> assertEquals("マンション101号室", shipping.getShippingAddress().getAddress2())
+                );
+            }
         }
     }
 

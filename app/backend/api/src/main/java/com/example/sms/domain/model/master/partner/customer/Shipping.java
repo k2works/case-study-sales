@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.master.partner.customer;
 
+import com.example.sms.domain.model.common.address.Address;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;
@@ -14,9 +15,7 @@ public class Shipping {
     ShippingCode shippingCode; // 出荷先コード
     String destinationName; // 出荷先名
     String regionCode; // 地域コード
-    String destinationPostalCode; // 出荷先郵便番号
-    String destinationAddress1; // 出荷先住所１
-    String destinationAddress2; // 出荷先住所２
+    Address shippingAddress; // 出荷先住所
 
     public static Shipping of(
             String customerCode,
@@ -32,9 +31,11 @@ public class Shipping {
                 ShippingCode.of(customerCode, destinationNumber, customerBranchNumber),
                 destinationName,
                 regionCode,
-                destinationPostalCode,
-                destinationAddress1,
-                destinationAddress2
+                Address.of(
+                        destinationPostalCode,
+                        destinationAddress1,
+                        destinationAddress2
+                )
         );
     }
 }

@@ -379,9 +379,9 @@ class PartnerRepositoryTest {
                     updatedShipping.getShippingCode().getCustomerCode().getBranchNumber(),
                     "出荷先名B",
                     updatedShipping.getRegionCode(),
-                    updatedShipping.getDestinationPostalCode(),
-                    updatedShipping.getDestinationAddress1(),
-                    updatedShipping.getDestinationAddress2()
+                    updatedShipping.getShippingAddress().getPostalCode().getValue(),
+                    updatedShipping.getShippingAddress().getAddress1(),
+                    updatedShipping.getShippingAddress().getAddress2()
             );
             customer = Customer.of(customer, List.of(updatedShipping, shipping2));
             Partner updatedPartner = Partner.ofWithCustomers(partner, List.of(customer));

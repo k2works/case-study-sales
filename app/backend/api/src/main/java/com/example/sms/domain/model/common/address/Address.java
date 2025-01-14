@@ -48,4 +48,16 @@ public class Address {
                 address2
         );
     }
+
+    public static Address of(String destinationPostalCode, String destinationAddress1, String destinationAddress2) {
+        PostalCode postalCode = PostalCode.of(destinationPostalCode);
+        Prefecture prefecture = Prefecture.fromName(PostalCode.getRegionName(postalCode.getRegionCode()));
+
+        return new Address(
+                postalCode,
+                prefecture,
+                destinationAddress1,
+                destinationAddress2
+        );
+    }
 }

@@ -210,9 +210,9 @@ public class PartnerEntityMapper {
         shippingEntity.set顧客枝番(shipping.getShippingCode().getCustomerCode().getBranchNumber());
         shippingEntity.set出荷先名(shipping.getDestinationName());
         shippingEntity.set地域コード(shipping.getRegionCode());
-        shippingEntity.set出荷先郵便番号(shipping.getDestinationPostalCode());
-        shippingEntity.set出荷先住所１(shipping.getDestinationAddress1());
-        shippingEntity.set出荷先住所２(shipping.getDestinationAddress2());
+        shippingEntity.set出荷先郵便番号(shipping.getShippingAddress().getPostalCode().getValue());
+        shippingEntity.set出荷先住所１(shipping.getShippingAddress().getAddress1());
+        shippingEntity.set出荷先住所２(shipping.getShippingAddress().getAddress2());
 
         return shippingEntity;
     }
