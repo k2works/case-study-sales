@@ -166,7 +166,7 @@ public class ProductServiceTest {
                     Product product = testDataFactory.Product();
                     Product searchProduct = Product.of(product.getProductCode().getValue(), product.getProductName().getProductFormalName(), product.getProductName().getProductAbbreviation(), product.getProductName().getProductNameKana(), product.getProductType(), product.getSellingPrice().getAmount(), product.getPurchasePrice().getAmount(), product.getCostOfSales().getAmount(), product.getTaxType(), product.getProductCategoryCode().getValue(), product.getMiscellaneousType(), product.getStockManagementTargetType(), product.getStockAllocationType(), "999", product.getVendorCode().getBranchNumber());
                     productService.register(searchProduct);
-                    ProductCriteria criteria = ProductCriteria.builder().supplierCode("999").build();
+                    ProductCriteria criteria = ProductCriteria.builder().vendorCode("999").build();
 
                     PageInfo<Product> result = productService.searchProductWithPageInfo(criteria);
 

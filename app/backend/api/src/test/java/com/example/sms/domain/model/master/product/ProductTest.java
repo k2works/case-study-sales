@@ -11,7 +11,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("商品")
-public class ProductTest {
+class ProductTest {
 
     @Test
     @DisplayName("商品を作成できる")
@@ -32,7 +32,7 @@ public class ProductTest {
         assertEquals(MiscellaneousType.適用, product.getMiscellaneousType(), "Mismatch in miscellaneousCategory");
         assertEquals(StockManagementTargetType.対象, product.getStockManagementTargetType(), "Mismatch in stockManagementTargetCategory");
         assertEquals(StockAllocationType.引当済, product.getStockAllocationType(), "Mismatch in stockAllocationCategory");
-        assertEquals("100", product.getVendorCode().getCode().getValue(), "Mismatch in supplierCode");
+        assertEquals("100", product.getVendorCode().getCode().getValue(), "Mismatch in vendorCode");
         assertEquals(1, product.getVendorCode().getBranchNumber(), "Mismatch in supplierBranchNumber");
         assertTrue(product.getSubstituteProduct().isEmpty(), "SubstituteProduct list is not empty");
         assertTrue(product.getBoms().isEmpty(), "Boms list is not empty");

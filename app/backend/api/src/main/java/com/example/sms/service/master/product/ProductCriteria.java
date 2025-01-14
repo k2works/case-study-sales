@@ -1,6 +1,5 @@
 package com.example.sms.service.master.product;
 
-import com.example.sms.domain.type.product.*;
 import lombok.Builder;
 import lombok.Value;
 
@@ -15,7 +14,7 @@ public class ProductCriteria {
     String productNameAbbreviation;
     String productNameKana;
     String productCategoryCode;
-    String supplierCode;
+    String vendorCode;
     String productType;
     Integer taxType;
     Integer miscellaneousType;

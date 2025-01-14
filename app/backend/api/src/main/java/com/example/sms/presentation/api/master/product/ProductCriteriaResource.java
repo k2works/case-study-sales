@@ -19,7 +19,7 @@ public class ProductCriteriaResource implements Serializable {
     String productNameAbbreviation;
     String productNameKana;
     String productCategoryCode;
-    String supplierCode;
+    String vendorCode;
     String productType;
     String taxType;
     String miscellaneousType;

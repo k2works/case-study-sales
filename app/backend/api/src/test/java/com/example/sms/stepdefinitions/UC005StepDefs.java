@@ -103,7 +103,7 @@ public class UC005StepDefs extends SpringAcceptanceTest {
         productResource.setMiscellaneousType(MiscellaneousType.適用);
         productResource.setStockManagementTargetType(StockManagementTargetType.対象);
         productResource.setStockAllocationType(StockAllocationType.引当済);
-        productResource.setSupplierCode("000");
+        productResource.setVendorCode("000");
         productResource.setSupplierBranchNumber(0);
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -152,7 +152,7 @@ public class UC005StepDefs extends SpringAcceptanceTest {
         productResource.setMiscellaneousType(MiscellaneousType.適用);
         productResource.setStockManagementTargetType(StockManagementTargetType.対象);
         productResource.setStockAllocationType(StockAllocationType.引当済);
-        productResource.setSupplierCode("000");
+        productResource.setVendorCode("000");
         productResource.setSupplierBranchNumber(0);
 
         ObjectMapper objectMapper = new ObjectMapper();

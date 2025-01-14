@@ -13,7 +13,6 @@ import com.example.sms.service.system.audit.AuditAnnotation;
 import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -149,7 +148,7 @@ public class ProductApiController {
                 .productNameAbbreviation(resource.getProductNameAbbreviation())
                 .productNameKana(resource.getProductNameKana())
                 .productCategoryCode(resource.getProductCategoryCode())
-                .supplierCode(resource.getSupplierCode())
+                .vendorCode(resource.getVendorCode())
                 .productType(mapStringToCode(resource.getProductType(), ProductType::getCodeByName))
                 .taxType(mapStringToCode(resource.getTaxType(), TaxType::getCodeByName))
                 .miscellaneousType(mapStringToCode(resource.getMiscellaneousType(), MiscellaneousType::getCodeByName))
@@ -177,7 +176,7 @@ public class ProductApiController {
                 productResource1.getMiscellaneousType(),
                 productResource1.getStockManagementTargetType(),
                 productResource1.getStockAllocationType(),
-                productResource1.getSupplierCode(),
+                productResource1.getVendorCode(),
                 productResource1.getSupplierBranchNumber()
         );
         product = Product.of(

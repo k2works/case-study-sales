@@ -171,8 +171,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
         );
     }
 
-    public static Product product(String productCode, String productFormalName, String productAbbreviation, String productNameKana, ProductType productType, Integer sellingPrice, Integer purchasePrice, Integer costOfSales, TaxType taxType, String productClassificationCode, MiscellaneousType miscellaneousType, StockManagementTargetType stockManagementTargetType, StockAllocationType stockAllocationType, String supplierCode, Integer supplierBranchNumber) {
-        return Product.of(productCode, productFormalName, productAbbreviation, productNameKana, productType, sellingPrice, purchasePrice, costOfSales, taxType, productClassificationCode, miscellaneousType, stockManagementTargetType, stockAllocationType, supplierCode, supplierBranchNumber);
+    public static Product product(String productCode, String productFormalName, String productAbbreviation, String productNameKana, ProductType productType, Integer sellingPrice, Integer purchasePrice, Integer costOfSales, TaxType taxType, String productClassificationCode, MiscellaneousType miscellaneousType, StockManagementTargetType stockManagementTargetType, StockAllocationType stockAllocationType, String vendorCode, Integer supplierBranchNumber) {
+        return Product.of(productCode, productFormalName, productAbbreviation, productNameKana, productType, sellingPrice, purchasePrice, costOfSales, taxType, productClassificationCode, miscellaneousType, stockManagementTargetType, stockAllocationType, vendorCode, supplierBranchNumber);
     }
 
     public static SubstituteProduct substituteProduct(String productCode, String substituteProductCode, Integer priority) {

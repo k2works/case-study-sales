@@ -80,8 +80,8 @@
             <if test="productCategoryCode != null">
                 and 商品分類コード = #{productCategoryCode,jdbcType=VARCHAR}
             </if>
-            <if test="supplierCode != null">
-                and 仕入先コード = #{supplierCode,jdbcType=VARCHAR}
+            <if test="vendorCode != null">
+                and 仕入先コード = #{vendorCode,jdbcType=VARCHAR}
             </if>
             <if test="productType != null">
                 and 商品区分 = #{productType,jdbcType=VARCHAR}

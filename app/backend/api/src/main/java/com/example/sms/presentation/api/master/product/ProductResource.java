@@ -41,7 +41,7 @@ public class ProductResource implements Serializable {
     StockManagementTargetType stockManagementTargetType; // 在庫管理対象区分
     StockAllocationType stockAllocationType; // 在庫引当区分
     @NotNull
-    String supplierCode; // 仕入先コード
+    String vendorCode; // 仕入先コード
     Integer supplierBranchNumber; // 仕入先枝番
     List<SubstituteProduct> substituteProduct; // 代替商品
     List<Bom> boms; // 部品表

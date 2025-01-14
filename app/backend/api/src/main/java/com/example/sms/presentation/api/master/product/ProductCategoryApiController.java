@@ -149,7 +149,7 @@ public class ProductCategoryApiController {
                                 resource.getMiscellaneousType(),
                                 resource.getStockManagementTargetType(),
                                 resource.getStockAllocationType(),
-                                resource.getSupplierCode(),
+                                resource.getVendorCode(),
                                 resource.getSupplierBranchNumber()
                         ))
                         .toList();
@@ -173,7 +173,7 @@ public class ProductCategoryApiController {
                                 resource.getMiscellaneousType(),
                                 resource.getStockManagementTargetType(),
                                 resource.getStockAllocationType(),
-                                resource.getSupplierCode(),
+                                resource.getVendorCode(),
                                 resource.getSupplierBranchNumber()
                         ))
                         .toList();
