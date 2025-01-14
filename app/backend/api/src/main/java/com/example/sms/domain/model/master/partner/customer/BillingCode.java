@@ -1,18 +1,19 @@
-package com.example.sms.domain.model.master.partner;
+package com.example.sms.domain.model.master.partner.customer;
 
+import com.example.sms.domain.model.master.partner.PartnerCode;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
 /**
- * 仕入先コード
+ * 請求先コード
  */
 @Value
 @NoArgsConstructor(force = true)
-public class VendorCode {
+public class BillingCode {
     PartnerCode code;
     Integer branchNumber;
 
-    public VendorCode(String code, Integer branchNumber) {
+    public BillingCode(String code, Integer branchNumber) {
         if (branchNumber < 0) {
             throw new IllegalArgumentException("枝番は0以上である必要があります");
         }
@@ -23,7 +24,7 @@ public class VendorCode {
         this.branchNumber = branchNumber;
     }
 
-    public static VendorCode of(String partnerCode, Integer vendorBranchNumber) {
-        return new VendorCode(partnerCode, vendorBranchNumber);
+    public static BillingCode of(String code, Integer branchNumber) {
+        return new BillingCode(code, branchNumber);
     }
 }

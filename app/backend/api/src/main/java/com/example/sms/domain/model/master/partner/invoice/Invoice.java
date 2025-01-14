@@ -1,4 +1,4 @@
-package com.example.sms.domain.model.master.partner;
+package com.example.sms.domain.model.master.partner.invoice;
 
 import com.example.sms.domain.type.partner.CustomerBillingCategory;
 import lombok.NoArgsConstructor;

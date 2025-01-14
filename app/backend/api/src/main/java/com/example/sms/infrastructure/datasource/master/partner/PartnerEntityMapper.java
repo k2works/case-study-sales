@@ -1,9 +1,9 @@
 package com.example.sms.infrastructure.datasource.master.partner;
 
-import com.example.sms.domain.model.master.partner.Customer;
+import com.example.sms.domain.model.master.partner.customer.Customer;
 import com.example.sms.domain.model.master.partner.Partner;
-import com.example.sms.domain.model.master.partner.Shipping;
-import com.example.sms.domain.model.master.partner.Vendor;
+import com.example.sms.domain.model.master.partner.customer.Shipping;
+import com.example.sms.domain.model.master.partner.vendor.Vendor;
 import com.example.sms.infrastructure.datasource.autogen.model.仕入先マスタ;
 import com.example.sms.infrastructure.datasource.autogen.model.出荷先マスタ;
 import com.example.sms.infrastructure.datasource.autogen.model.取引先マスタ;

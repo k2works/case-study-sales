@@ -1,5 +1,10 @@
 package com.example.sms.domain.model.master.partner;
 
+import com.example.sms.domain.model.master.partner.invoice.ClosingDate;
+import com.example.sms.domain.model.master.partner.invoice.PaymentDay;
+import com.example.sms.domain.model.master.partner.invoice.PaymentMethod;
+import com.example.sms.domain.model.master.partner.invoice.PaymentMonth;
+import com.example.sms.domain.model.master.partner.vendor.Vendor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

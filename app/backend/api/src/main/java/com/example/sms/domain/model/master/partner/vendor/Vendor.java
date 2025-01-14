@@ -1,9 +1,10 @@
-package com.example.sms.domain.model.master.partner;
+package com.example.sms.domain.model.master.partner.vendor;
 
 import com.example.sms.domain.model.common.Email;
 import com.example.sms.domain.model.common.FaxNumber;
 import com.example.sms.domain.model.common.PhoneNumber;
 import com.example.sms.domain.model.common.address.Address;
+import com.example.sms.domain.model.master.partner.invoice.ClosingInvoice;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;

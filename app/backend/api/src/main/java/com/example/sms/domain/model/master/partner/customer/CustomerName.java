@@ -1,5 +1,6 @@
-package com.example.sms.domain.model.master.partner;
+package com.example.sms.domain.model.master.partner.customer;
 
+import com.example.sms.domain.model.master.partner.PartnerName;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 

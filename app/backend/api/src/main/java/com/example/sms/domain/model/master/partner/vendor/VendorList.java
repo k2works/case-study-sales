@@ -1,4 +1,4 @@
-package com.example.sms.domain.model.master.partner;
+package com.example.sms.domain.model.master.partner.vendor;
 
 import java.util.Collections;
 import java.util.List;

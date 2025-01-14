@@ -1,6 +1,14 @@
 package com.example.sms.domain.model.master.partner;
 
 import com.example.sms.domain.model.common.Email;
+import com.example.sms.domain.model.master.partner.customer.BillingCode;
+import com.example.sms.domain.model.master.partner.customer.CollectionCode;
+import com.example.sms.domain.model.master.partner.customer.Customer;
+import com.example.sms.domain.model.master.partner.customer.CustomerCode;
+import com.example.sms.domain.model.master.partner.invoice.ClosingDate;
+import com.example.sms.domain.model.master.partner.invoice.PaymentDay;
+import com.example.sms.domain.model.master.partner.invoice.PaymentMethod;
+import com.example.sms.domain.model.master.partner.invoice.PaymentMonth;
 import com.example.sms.domain.type.partner.CustomerBillingCategory;
 import com.example.sms.domain.type.partner.CustomerType;
 import org.junit.jupiter.api.DisplayName;
