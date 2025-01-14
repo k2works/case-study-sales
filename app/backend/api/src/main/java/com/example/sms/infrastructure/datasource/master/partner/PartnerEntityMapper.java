@@ -205,9 +205,9 @@ public class PartnerEntityMapper {
 
     public 出荷先マスタ mapToEntity(Shipping shipping) {
         出荷先マスタ shippingEntity = new 出荷先マスタ();
-        shippingEntity.set顧客コード(shipping.getCustomerCode());
-        shippingEntity.set出荷先番号(shipping.getDestinationNumber());
-        shippingEntity.set顧客枝番(shipping.getCustomerBranchNumber());
+        shippingEntity.set顧客コード(shipping.getShippingCode().getCustomerCode().getCode().getValue());
+        shippingEntity.set出荷先番号(shipping.getShippingCode().getDestinationNumber());
+        shippingEntity.set顧客枝番(shipping.getShippingCode().getCustomerCode().getBranchNumber());
         shippingEntity.set出荷先名(shipping.getDestinationName());
         shippingEntity.set地域コード(shipping.getRegionCode());
         shippingEntity.set出荷先郵便番号(shipping.getDestinationPostalCode());

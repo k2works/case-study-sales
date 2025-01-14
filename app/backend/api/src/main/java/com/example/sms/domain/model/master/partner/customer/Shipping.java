@@ -11,9 +11,7 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 public class Shipping {
-    String customerCode; // 顧客コード
-    Integer destinationNumber; // 出荷先番号
-    Integer customerBranchNumber; // 顧客枝番
+    ShippingCode shippingCode; // 出荷先コード
     String destinationName; // 出荷先名
     String regionCode; // 地域コード
     String destinationPostalCode; // 出荷先郵便番号
@@ -31,9 +29,7 @@ public class Shipping {
             String destinationAddress2
     ) {
         return new Shipping(
-                customerCode,
-                destinationNumber,
-                customerBranchNumber,
+                ShippingCode.of(customerCode, destinationNumber, customerBranchNumber),
                 destinationName,
                 regionCode,
                 destinationPostalCode,
