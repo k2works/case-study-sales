@@ -30,14 +30,8 @@ public class Customer {
     FaxNumber customerFaxNumber; // 顧客ｆａｘ番号
     Email customerEmailAddress; // 顧客メールアドレス
     CustomerBillingCategory customerBillingCategory; // 顧客請求区分
-    Integer customerClosingDay1; // 顧客締日１
-    Integer customerPaymentMonth1; // 顧客支払月１
-    Integer customerPaymentDay1; // 顧客支払日１
-    Integer customerPaymentMethod1; // 顧客支払方法１
-    Integer customerClosingDay2; // 顧客締日２
-    Integer customerPaymentMonth2; // 顧客支払月２
-    Integer customerPaymentDay2; // 顧客支払日２
-    Integer customerPaymentMethod2; // 顧客支払方法２
+    ClosingInvoice closingInvoice1; // 締請求1
+    ClosingInvoice closingInvoice2; // 締請求2
     List<Shipping> shippings; // 出荷先
 
     public static Customer of(
@@ -89,14 +83,18 @@ public class Customer {
                 FaxNumber.of(customerFaxNumber),
                 Email.of(customerEmailAddress),
                 CustomerBillingCategory.fromCode(customerBillingCategory),
-                customerClosingDay1,
-                customerPaymentMonth1,
-                customerPaymentDay1,
-                customerPaymentMethod1,
-                customerClosingDay2,
-                customerPaymentMonth2,
-                customerPaymentDay2,
-                customerPaymentMethod2,
+                ClosingInvoice.of(
+                        customerClosingDay1,
+                        customerPaymentMonth1,
+                        customerPaymentDay1,
+                        customerPaymentMethod1
+                ),
+                ClosingInvoice.of(
+                        customerClosingDay2,
+                        customerPaymentMonth2,
+                        customerPaymentDay2,
+                        customerPaymentMethod2
+                ),
                 List.of()
         );
     }
@@ -116,14 +114,8 @@ public class Customer {
                 customer.customerFaxNumber,
                 customer.customerEmailAddress,
                 customer.customerBillingCategory,
-                customer.customerClosingDay1,
-                customer.customerPaymentMonth1,
-                customer.customerPaymentDay1,
-                customer.customerPaymentMethod1,
-                customer.customerClosingDay2,
-                customer.customerPaymentMonth2,
-                customer.customerPaymentDay2,
-                customer.customerPaymentMethod2,
+                customer.closingInvoice1,
+                customer.closingInvoice2,
                 shippings
         );
     }

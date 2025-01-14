@@ -158,14 +158,14 @@ public class PartnerEntityMapper {
         customerEntity.set顧客ｆａｘ番号(customer.getCustomerFaxNumber().getValue());
         customerEntity.set顧客メールアドレス(customer.getCustomerEmailAddress().getValue());
         customerEntity.set顧客請求区分(customer.getCustomerBillingCategory().getValue());
-        customerEntity.set顧客締日１(customer.getCustomerClosingDay1());
-        customerEntity.set顧客支払月１(customer.getCustomerPaymentMonth1());
-        customerEntity.set顧客支払日１(customer.getCustomerPaymentDay1());
-        customerEntity.set顧客支払方法１(customer.getCustomerPaymentMethod1());
-        customerEntity.set顧客締日２(customer.getCustomerClosingDay2());
-        customerEntity.set顧客支払月２(customer.getCustomerPaymentMonth2());
-        customerEntity.set顧客支払日２(customer.getCustomerPaymentDay2());
-        customerEntity.set顧客支払方法２(customer.getCustomerPaymentMethod2());
+        customerEntity.set顧客締日１(customer.getClosingInvoice1().getCustomerClosingDay().getValue());
+        customerEntity.set顧客支払月１(customer.getClosingInvoice1().getCustomerPaymentMonth().getValue());
+        customerEntity.set顧客支払日１(customer.getClosingInvoice1().getCustomerPaymentDay().getValue());
+        customerEntity.set顧客支払方法１(customer.getClosingInvoice1().getCustomerPaymentMethod().getValue());
+        customerEntity.set顧客締日２(customer.getClosingInvoice2().getCustomerClosingDay().getValue());
+        customerEntity.set顧客支払月２(customer.getClosingInvoice2().getCustomerPaymentMonth().getValue());
+        customerEntity.set顧客支払日２(customer.getClosingInvoice2().getCustomerPaymentDay().getValue());
+        customerEntity.set顧客支払方法２(customer.getClosingInvoice2().getCustomerPaymentMethod().getValue());
 
         return customerEntity;
     }

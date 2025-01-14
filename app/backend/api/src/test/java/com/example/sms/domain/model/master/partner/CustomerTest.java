@@ -36,13 +36,13 @@ class CustomerTest {
                 "example@example.com",  // customerEmailAddress（顧客メールアドレス）
                 2,  // customerBillingCategory（顧客請求区分）
                 10,  // customerClosingDay1（顧客締日１）
-                1,  // customerPaymentMonth1（顧客支払月１）
-                15,  // customerPaymentDay1（顧客支払日１）
-                3,  // customerPaymentMethod1（顧客支払方法１）
+                0,  // customerPaymentMonth1（顧客支払月１）
+                10,  // customerPaymentDay1（顧客支払日１）
+                1,  // customerPaymentMethod1（顧客支払方法１）
                 20,  // customerClosingDay2（顧客締日２）
-                2,  // customerPaymentMonth2（顧客支払月２）
-                30,  // customerPaymentDay2（顧客支払日２）
-                4   // customerPaymentMethod2（顧客支払方法２）
+                1,  // customerPaymentMonth2（顧客支払月２）
+                99,  // customerPaymentDay2（顧客支払日２）
+                2   // customerPaymentMethod2（顧客支払方法２）
         );
     }
 
@@ -72,14 +72,14 @@ class CustomerTest {
                 () -> assertEquals("03-1234-5679", customer.getCustomerFaxNumber().getValue()),
                 () -> assertEquals("example@example.com", customer.getCustomerEmailAddress().getValue()),
                 () -> assertEquals(CustomerBillingCategory.締請求, customer.getCustomerBillingCategory()),
-                () -> assertEquals(10, customer.getCustomerClosingDay1()),
-                () -> assertEquals(1, customer.getCustomerPaymentMonth1()),
-                () -> assertEquals(15, customer.getCustomerPaymentDay1()),
-                () -> assertEquals(3, customer.getCustomerPaymentMethod1()),
-                () -> assertEquals(20, customer.getCustomerClosingDay2()),
-                () -> assertEquals(2, customer.getCustomerPaymentMonth2()),
-                () -> assertEquals(30, customer.getCustomerPaymentDay2()),
-                () -> assertEquals(4, customer.getCustomerPaymentMethod2())
+                () -> assertEquals(ClosingDate.十日, customer.getClosingInvoice1().getCustomerClosingDay()),
+                () -> assertEquals(PaymentMonth.当月, customer.getClosingInvoice1().getCustomerPaymentMonth()),
+                () -> assertEquals(PaymentDay.十日, customer.getClosingInvoice1().getCustomerPaymentDay()),
+                () -> assertEquals(PaymentMethod.振込, customer.getClosingInvoice1().getCustomerPaymentMethod()),
+                () -> assertEquals(ClosingDate.二十日, customer.getClosingInvoice2().getCustomerClosingDay()),
+                () -> assertEquals(PaymentMonth.翌月, customer.getClosingInvoice2().getCustomerPaymentMonth()),
+                () -> assertEquals(PaymentDay.末日, customer.getClosingInvoice2().getCustomerPaymentDay()),
+                () -> assertEquals(PaymentMethod.手形, customer.getClosingInvoice2().getCustomerPaymentMethod())
         );
     }
 
