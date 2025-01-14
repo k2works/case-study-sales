@@ -232,10 +232,10 @@ public class PartnerEntityMapper {
         vendorEntity.set仕入先電話番号(vendor.getVendorPhoneNumber().getValue());
         vendorEntity.set仕入先ｆａｘ番号(vendor.getVendorFaxNumber().getValue());
         vendorEntity.set仕入先メールアドレス(vendor.getVendorEmailAddress().getValue());
-        vendorEntity.set仕入先締日(vendor.getVendorClosingDate());
-        vendorEntity.set仕入先支払月(vendor.getVendorPaymentMonth());
-        vendorEntity.set仕入先支払日(vendor.getVendorPaymentDate());
-        vendorEntity.set仕入先支払方法(vendor.getVendorPaymentMethod());
+        vendorEntity.set仕入先締日(vendor.getVendorClosingInvoice().getCustomerClosingDay().getValue());
+        vendorEntity.set仕入先支払月(vendor.getVendorClosingInvoice().getCustomerPaymentMonth().getValue());
+        vendorEntity.set仕入先支払日(vendor.getVendorClosingInvoice().getCustomerPaymentDay().getValue());
+        vendorEntity.set仕入先支払方法(vendor.getVendorClosingInvoice().getCustomerPaymentMethod().getValue());
 
         return vendorEntity;
     }

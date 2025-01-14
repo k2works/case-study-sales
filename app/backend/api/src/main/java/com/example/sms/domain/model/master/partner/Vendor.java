@@ -21,10 +21,7 @@ public class Vendor {
     PhoneNumber vendorPhoneNumber; // 仕入先電話番号
     FaxNumber vendorFaxNumber; // 仕入先ｆａｘ番号
     Email vendorEmailAddress; // 仕入先メールアドレス
-    Integer vendorClosingDate; // 仕入先締日
-    Integer vendorPaymentMonth; // 仕入先支払月
-    Integer vendorPaymentDate; // 仕入先支払日
-    Integer vendorPaymentMethod; // 仕入先支払方法
+    ClosingInvoice vendorClosingInvoice; // 仕入先締請求
 
     public static Vendor of(
             String vendorCode,
@@ -54,10 +51,7 @@ public class Vendor {
                 PhoneNumber.of(vendorPhoneNumber),
                 FaxNumber.of(vendorFaxNumber),
                 Email.of(vendorEmailAddress),
-                vendorClosingDate,
-                vendorPaymentMonth,
-                vendorPaymentDate,
-                vendorPaymentMethod
+                ClosingInvoice.of(vendorClosingDate, vendorPaymentMonth, vendorPaymentDate, vendorPaymentMethod)
         );
     }
 }

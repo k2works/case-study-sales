@@ -133,8 +133,8 @@ class PartnerRepositoryTest {
                 "test@example.comw",
                 10,
                 1,
-                15,
-                3
+                20,
+                2
         );
     }
 
@@ -473,10 +473,10 @@ class PartnerRepositoryTest {
                     updatedVendor.getVendorPhoneNumber().getValue(),
                     updatedVendor.getVendorFaxNumber().getValue(),
                     updatedVendor.getVendorEmailAddress().getValue(),
-                    updatedVendor.getVendorClosingDate(),
-                    updatedVendor.getVendorPaymentMonth(),
-                    updatedVendor.getVendorPaymentDate(),
-                    updatedVendor.getVendorPaymentMethod()
+                    updatedVendor.getVendorClosingInvoice().getCustomerClosingDay().getValue(),
+                    updatedVendor.getVendorClosingInvoice().getCustomerPaymentMonth().getValue(),
+                    updatedVendor.getVendorClosingInvoice().getCustomerPaymentDay().getValue(),
+                    updatedVendor.getVendorClosingInvoice().getCustomerPaymentMethod().getValue()
             );
             Partner updatedPartner = Partner.ofWithVendors(partner, List.of(updatedVendor, vendor2));
             repository.save(updatedPartner);
