@@ -1,5 +1,6 @@
 package com.example.sms.service.master.partner;
 
+import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.master.partner.PartnerGroup;
 import com.example.sms.domain.model.master.partner.PartnerGroupList;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,7 +46,7 @@ public class PartnerGroupRepositoryTest {
     }
 
     private PartnerGroup getPartnerGroup(String groupCode) {
-        return PartnerGroup.of(groupCode, "取引先グループ1");
+        return TestDataFactoryImpl.partnerGroup(groupCode);
     }
 
     @Nested

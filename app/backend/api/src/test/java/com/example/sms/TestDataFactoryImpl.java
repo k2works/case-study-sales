@@ -3,7 +3,7 @@ package com.example.sms;
 import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.employee.Employee;
-import com.example.sms.domain.model.master.partner.Partner;
+import com.example.sms.domain.model.master.partner.PartnerGroup;
 import com.example.sms.domain.model.master.product.*;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
 import com.example.sms.domain.model.system.user.User;
@@ -13,6 +13,7 @@ import com.example.sms.domain.type.product.*;
 import com.example.sms.domain.type.user.RoleName;
 import com.example.sms.service.master.department.DepartmentRepository;
 import com.example.sms.service.master.employee.EmployeeRepository;
+import com.example.sms.service.master.partner.PartnerGroupRepository;
 import com.example.sms.service.master.product.ProductCategoryRepository;
 import com.example.sms.service.master.product.ProductRepository;
 import com.example.sms.service.system.audit.AuditRepository;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.IntStream;
 
 @Component
 public class TestDataFactoryImpl implements TestDataFactory {
@@ -37,6 +39,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
     ProductCategoryRepository productCategoryRepository;
     @Autowired
     AuditRepository auditRepository;
+    @Autowired
+    PartnerGroupRepository partnerGroupRepository;
 
     @Override
     public void setUpForAuthApiService() {
@@ -151,6 +155,14 @@ public class TestDataFactoryImpl implements TestDataFactory {
         productRepository.save(product("99999997", "商品3", "商品3", "ショウヒンサン", ProductType.その他, 700, 630, 70, TaxType.その他, "カテゴリ7", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "007", 7));
     }
 
+    @Override
+    public void setUpForPartnerGroupService() {
+        partnerGroupRepository.deleteAll();
+        IntStream.rangeClosed(0, 9).forEach(i -> {
+            partnerGroupRepository.save(partnerGroup("000" + i));
+        });
+    }
+
     private static User user() {
         return User.of("U999999", "$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK", "first", "last", RoleName.USER);
     }
@@ -191,35 +203,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
         return ProductCategory.of(productCategoryCode, productCategoryName, productCategoryHierarchy, productCategoryPath, lowestLevelDivision);
     }
 
-    public static Partner partner(
-            String partnerCode,
-            String partnerName,
-            String partnerNameKana,
-            Integer supplierType,
-            String postalCode,
-            String prefecture,
-            String address1,
-            String address2,
-            Integer tradeProhibitedFlag,
-            Integer miscellaneousType,
-            String partnerGroupCode,
-            Integer creditLimit,
-            Integer temporaryCreditIncrease
-    ) {
-        return  Partner.of(
-                partnerCode,
-                partnerName,
-                partnerNameKana,
-                supplierType,
-                postalCode,
-                prefecture,
-                address1,
-                address2,
-                tradeProhibitedFlag,
-                miscellaneousType,
-                partnerGroupCode,
-                creditLimit,
-                temporaryCreditIncrease
-        );
+    public static PartnerGroup partnerGroup(String groupCode) {
+        return PartnerGroup.of(groupCode, "取引先グループ1");
     }
 }

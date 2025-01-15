@@ -30,4 +30,6 @@ public interface TestDataFactory {
     void setUpForAuditService();
 
     void setUpForDownloadService();
+
+    void setUpForPartnerGroupService();
 }
