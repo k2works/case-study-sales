@@ -24,6 +24,18 @@ values
     ('001', 1, 2, '横浜営業所', 'R001', '123-4567', '横浜2丁目', '倉庫B区画', CURRENT_TIMESTAMP, '作成者A', CURRENT_TIMESTAMP, '更新者A'),
     ('001', 1, 3, '中之島営業所', 'R001', '123-4567', '千代田区丸の内2丁目', '倉庫区画', CURRENT_TIMESTAMP, '作成者A', CURRENT_TIMESTAMP, '更新者A');
 
+-- 地域マスタのサンプルデータ
+INSERT INTO 地域マスタ (地域コード, 地域名, 作成日時, 作成者名, 更新日時, 更新者名)
+VALUES
+    ('R001', '北海道', CURRENT_TIMESTAMP, '管理者', CURRENT_TIMESTAMP, '管理者'),
+    ('R002', '東北', CURRENT_TIMESTAMP, '管理者', CURRENT_TIMESTAMP, '管理者'),
+    ('R003', '関東', CURRENT_TIMESTAMP, '管理者', CURRENT_TIMESTAMP, '管理者'),
+    ('R004', '中部', CURRENT_TIMESTAMP, '管理者', CURRENT_TIMESTAMP, '管理者'),
+    ('R005', '近畿', CURRENT_TIMESTAMP, '管理者', CURRENT_TIMESTAMP, '管理者'),
+    ('R006', '中国', CURRENT_TIMESTAMP, '管理者', CURRENT_TIMESTAMP, '管理者'),
+    ('R007', '四国', CURRENT_TIMESTAMP, '管理者', CURRENT_TIMESTAMP, '管理者'),
+    ('R008', '九州', CURRENT_TIMESTAMP, '管理者', CURRENT_TIMESTAMP, '管理者');
+
 -- 仕入先マスタのサンプルデータ
 insert into 仕入先マスタ (仕入先コード, 仕入先枝番, 仕入先名, 仕入先名カナ, 仕入先担当者名, 仕入先部門名, 仕入先郵便番号, 仕入先都道府県, 仕入先住所１, 仕入先住所２, 仕入先電話番号, 仕入先ＦＡＸ番号, 仕入先メールアドレス, 仕入先締日, 仕入先支払月, 仕入先支払日, 仕入先支払方法, 作成日時, 作成者名, 更新日時, 更新者名)
 values

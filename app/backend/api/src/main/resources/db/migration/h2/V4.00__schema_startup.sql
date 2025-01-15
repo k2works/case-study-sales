@@ -100,6 +100,18 @@ create table if not exists 出荷先マスタ
     on update cascade on delete restrict
     );
 
+create table if not exists 地域マスタ
+(
+    地域コード varchar(10)                       not null
+    constraint pk_area
+    primary key,
+    地域名     varchar(20),
+    作成日時   timestamp(6) default CURRENT_DATE not null,
+    作成者名   varchar(12),
+    更新日時   timestamp(6) default CURRENT_DATE not null,
+    更新者名   varchar(12)
+    );
+
 create table if not exists 仕入先マスタ
 (
     仕入先コード         varchar(8)                        not null

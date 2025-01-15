@@ -117,18 +117,6 @@ create table if not exists 売上データ明細
         primary key (売上番号, 売上行番号)
 );
 
-create table if not exists 地域マスタ
-(
-    地域コード varchar(10)                       not null
-        constraint pk_area
-            primary key,
-    地域名     varchar(20),
-    作成日時   timestamp(6) default CURRENT_DATE not null,
-    作成者名   varchar(12),
-    更新日時   timestamp(6) default CURRENT_DATE not null,
-    更新者名   varchar(12)
-);
-
 create table if not exists 請求データ
 (
     請求番号     varchar(10)                       not null
