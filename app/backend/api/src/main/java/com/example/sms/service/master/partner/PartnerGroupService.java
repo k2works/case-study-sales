@@ -2,6 +2,7 @@ package com.example.sms.service.master.partner;
 
 import com.example.sms.domain.model.master.partner.PartnerGroup;
 import com.example.sms.domain.model.master.partner.PartnerGroupList;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,5 +51,12 @@ public class PartnerGroupService {
      */
     public PartnerGroup select(String partnerGroupCode) {
         return partnerGroupRepository.findById(partnerGroupCode).orElse(null);
+    }
+
+    /**
+     * 商品検索 (ページング)
+     */
+    public PageInfo<PartnerGroup> searchWithPageInfo(PartnerGroupCriteria criteria) {
+        return partnerGroupRepository.searchWithPageInfo(criteria);
     }
 }

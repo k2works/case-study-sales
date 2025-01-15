@@ -2,9 +2,11 @@ package com.example.sms.infrastructure.datasource.master.partner_group;
 
 import com.example.sms.domain.model.master.partner.PartnerGroup;
 import com.example.sms.domain.model.master.partner.PartnerGroupList;
+import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.infrastructure.PageInfoHelper;
 import com.example.sms.infrastructure.datasource.autogen.mapper.取引先グループマスタMapper;
 import com.example.sms.infrastructure.datasource.autogen.model.取引先グループマスタ;
+import com.example.sms.service.master.partner.PartnerGroupCriteria;
 import com.example.sms.service.master.partner.PartnerGroupRepository;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.core.Authentication;
@@ -85,6 +87,14 @@ public class PartnerGroupDataSource implements PartnerGroupRepository {
     @Override
     public PageInfo<PartnerGroup> selectAllWithPageInfo() {
         List<PartnerGroupCustomEntity> partnerGroupEntities = partnerGroupCustomMapper.selectAll();
+        PageInfo<PartnerGroupCustomEntity> pageInfo = new PageInfo<>(partnerGroupEntities);
+
+        return PageInfoHelper.of(pageInfo, partnerGroupEntityMapper::mapToDomainModel);
+    }
+
+    @Override
+    public PageInfo<PartnerGroup> searchWithPageInfo(PartnerGroupCriteria criteria) {
+        List<PartnerGroupCustomEntity> partnerGroupEntities = partnerGroupCustomMapper.selectByCriteria(criteria);
         PageInfo<PartnerGroupCustomEntity> pageInfo = new PageInfo<>(partnerGroupEntities);
 
         return PageInfoHelper.of(pageInfo, partnerGroupEntityMapper::mapToDomainModel);

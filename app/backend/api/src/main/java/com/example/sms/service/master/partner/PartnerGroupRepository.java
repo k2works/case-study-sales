@@ -18,4 +18,6 @@ public interface PartnerGroupRepository {
     void deleteById(PartnerGroup partnerGroup);
 
     PageInfo<PartnerGroup> selectAllWithPageInfo();
+
+    PageInfo<PartnerGroup> searchWithPageInfo(PartnerGroupCriteria criteria);
 }

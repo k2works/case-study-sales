@@ -20,4 +20,18 @@
       <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.取引先グループマスタMapper.Base_Column_List" />
       from public.取引先グループマスタ
     </select>
+
+  <select id="selectByCriteria" resultMap="BaseResultMap">
+    select
+    <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.取引先グループマスタMapper.Base_Column_List" />
+    from public.取引先グループマスタ
+    <where>
+        <if test="partnerGroupCode != null">
+            取引先グループコード = #{partnerGroupCode,jdbcType=VARCHAR}
+        </if>
+        <if test="partnerGroupName != null">
+            and 取引先グループ名 like concat(#{partnerGroupName,jdbcType=VARCHAR}, '%')
+        </if>
+    </where>
+  </select>
 </mapper>

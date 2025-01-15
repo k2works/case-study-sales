@@ -159,7 +159,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
     public void setUpForPartnerGroupService() {
         partnerGroupRepository.deleteAll();
         IntStream.rangeClosed(0, 9).forEach(i -> {
-            partnerGroupRepository.save(partnerGroup("000" + i));
+            PartnerGroup partnerGroup = partnerGroup("000" + i);
+            partnerGroupRepository.save(PartnerGroup.of(partnerGroup.getPartnerGroupCode().getValue(), "取引先グループ" + i));
         });
     }
 
