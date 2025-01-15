@@ -32,4 +32,6 @@ public interface TestDataFactory {
     void setUpForDownloadService();
 
     void setUpForPartnerGroupService();
+
+    void setUpForPartnerCategoryService();
 }

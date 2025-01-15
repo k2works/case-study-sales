@@ -1,5 +1,6 @@
 package com.example.sms.service.master.partner;
 
+import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.master.partner.*;
 import com.example.sms.infrastructure.datasource.ObjectOptimisticLockingFailureException;
 import com.github.pagehelper.PageInfo;
@@ -52,33 +53,19 @@ class PartnerCategoryRepositoryTest {
     }
 
     private PartnerCategoryType getPartnerCategoryType(String categoryCode) {
-        return PartnerCategoryType.of(categoryCode, "取引先カテゴリー1");
+        return TestDataFactoryImpl.getPartnerCategoryType(categoryCode);
     }
 
     private PartnerCategoryItem getPartnerCategoryItem(String categoryCode, String itemCode) {
-        return PartnerCategoryItem.of(categoryCode, itemCode, "取引先カテゴリー1");
+        return TestDataFactoryImpl.getPartnerCategoryItem(categoryCode, itemCode);
     }
 
     private PartnerCategoryAffiliation getPartnerCategoryAffiliation(String categoryCode, String partnerCode, String itemCode) {
-        return PartnerCategoryAffiliation.of(categoryCode, partnerCode, itemCode);
+        return TestDataFactoryImpl.getPartnerCategoryAffiliation(categoryCode, partnerCode, itemCode);
     }
 
     private Partner getPartner(String partnerCode) {
-        return  Partner.of(
-                partnerCode,
-                "取引先名A",
-                "トリヒキサキメイエー",
-                1,
-                "1234567",
-                "東京都",
-                "中央区銀座1-1-1",
-                "ビル名201",
-                0,
-                0,
-                "PG01",
-                1000000,
-                50000
-        );
+        return TestDataFactoryImpl.getPartner(partnerCode);
     }
 
     @Nested

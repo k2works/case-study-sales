@@ -18,4 +18,6 @@ public interface PartnerCategoryRepository {
     void deleteById(PartnerCategoryType partnerCategoryType);
 
     PageInfo<PartnerCategoryType> selectAllWithPageInfo();
+
+    PageInfo<PartnerCategoryType> searchWithPageInfo(PartnerCategoryCriteria criteria);
 }

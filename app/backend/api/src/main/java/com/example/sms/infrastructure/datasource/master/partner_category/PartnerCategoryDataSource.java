@@ -10,6 +10,7 @@ import com.example.sms.infrastructure.datasource.autogen.mapper.取引先分類�
 import com.example.sms.infrastructure.datasource.autogen.model.*;
 import com.example.sms.infrastructure.datasource.master.partner_category.item.PartnerCategoryItemCustomMapper;
 import com.example.sms.infrastructure.datasource.master.partner_category.item.affiliation.PartnerCategoryAffiliationCustomMapper;
+import com.example.sms.service.master.partner.PartnerCategoryCriteria;
 import com.example.sms.service.master.partner.PartnerCategoryRepository;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.core.Authentication;
@@ -163,6 +164,14 @@ public class PartnerCategoryDataSource implements PartnerCategoryRepository {
     @Override
     public PageInfo<PartnerCategoryType> selectAllWithPageInfo() {
         List<PartnerCategoryTypeCustomEntity> partnerCategoryTypeCustomEntities = partnerCategoryTypeCustomMapper.selectAll();
+        PageInfo<PartnerCategoryTypeCustomEntity> pageInfo = new PageInfo<>(partnerCategoryTypeCustomEntities);
+
+        return PageInfoHelper.of(pageInfo, partnerCategoryEntityMapper::mapToDomainModel);
+    }
+
+    @Override
+    public PageInfo<PartnerCategoryType> searchWithPageInfo(PartnerCategoryCriteria criteria) {
+        List<PartnerCategoryTypeCustomEntity> partnerCategoryTypeCustomEntities = partnerCategoryTypeCustomMapper.selectByCriteria(criteria);
         PageInfo<PartnerCategoryTypeCustomEntity> pageInfo = new PageInfo<>(partnerCategoryTypeCustomEntities);
 
         return PageInfoHelper.of(pageInfo, partnerCategoryEntityMapper::mapToDomainModel);

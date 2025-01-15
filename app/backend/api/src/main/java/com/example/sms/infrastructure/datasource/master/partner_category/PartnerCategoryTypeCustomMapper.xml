@@ -46,4 +46,29 @@
     where 取引先分類種別コード = #{取引先分類種別コード,jdbcType=VARCHAR}
     and version = #{version,jdbcType=INTEGER}
   </update>
+
+  <select id="selectByCriteria" resultMap="BaseResultMap">
+    select
+    種別.取引先分類種別コード, 種別.取引先分類種別名 , 分類.取引先分類コード, 分類.取引先分類名, 所属.取引先コード
+    from public.取引先分類種別マスタ 種別
+    join public.取引先分類マスタ 分類 on 種別.取引先分類種別コード = 分類.取引先分類種別コード
+    join public.取引先分類所属マスタ 所属 on 分類.取引先分類種別コード = 所属.取引先分類種別コード and 分類.取引先分類コード = 所属.取引先分類コード
+    <where>
+      <if test="partnerCategoryTypeCode != null">
+        種別.取引先分類種別コード = #{partnerCategoryTypeCode,jdbcType=VARCHAR}
+      </if>
+      <if test="partnerCategoryTypeName != null">
+        and 種別.取引先分類種別名 like concat(#{partnerCategoryTypeName,jdbcType=VARCHAR}, '%')
+      </if>
+      <if test="partnerCategoryItemCode != null">
+        and 分類.取引先分類コード = #{partnerCategoryItemCode,jdbcType=VARCHAR}
+      </if>
+      <if test="partnerCategoryItemName != null">
+        and 分類.取引先分類名 like concat(#{partnerCategoryItemName,jdbcType=VARCHAR}, '%')
+      </if>
+      <if test="partnerCode != null">
+        and 所属.取引先コード = #{partnerCode,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
 </mapper>

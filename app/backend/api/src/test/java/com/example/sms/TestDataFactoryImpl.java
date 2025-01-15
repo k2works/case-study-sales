@@ -3,7 +3,7 @@ package com.example.sms;
 import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.employee.Employee;
-import com.example.sms.domain.model.master.partner.PartnerGroup;
+import com.example.sms.domain.model.master.partner.*;
 import com.example.sms.domain.model.master.product.*;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
 import com.example.sms.domain.model.system.user.User;
@@ -13,7 +13,9 @@ import com.example.sms.domain.type.product.*;
 import com.example.sms.domain.type.user.RoleName;
 import com.example.sms.service.master.department.DepartmentRepository;
 import com.example.sms.service.master.employee.EmployeeRepository;
+import com.example.sms.service.master.partner.PartnerCategoryRepository;
 import com.example.sms.service.master.partner.PartnerGroupRepository;
+import com.example.sms.service.master.partner.PartnerRepository;
 import com.example.sms.service.master.product.ProductCategoryRepository;
 import com.example.sms.service.master.product.ProductRepository;
 import com.example.sms.service.system.audit.AuditRepository;
@@ -41,6 +43,10 @@ public class TestDataFactoryImpl implements TestDataFactory {
     AuditRepository auditRepository;
     @Autowired
     PartnerGroupRepository partnerGroupRepository;
+    @Autowired
+    PartnerCategoryRepository partnerCategoryRepository;
+    @Autowired
+    PartnerRepository partnerRepository;
 
     @Override
     public void setUpForAuthApiService() {
@@ -164,6 +170,29 @@ public class TestDataFactoryImpl implements TestDataFactory {
         });
     }
 
+    @Override
+    public void setUpForPartnerCategoryService() {
+        partnerCategoryRepository.deleteAll();
+        partnerRepository.deleteAll();
+
+        IntStream.rangeClosed(1, 4).forEach(i -> {
+            Partner partner = getPartner("00" + i);
+            partnerRepository.save(partner);
+        });
+
+        PartnerCategoryAffiliation partnerCategoryAffiliation = getPartnerCategoryAffiliation("1", "001", "01");
+        PartnerCategoryAffiliation partnerCategoryAffiliation2 = getPartnerCategoryAffiliation("1", "002", "01");
+        List<PartnerCategoryAffiliation> partnerCategoryAffiliations = List.of(partnerCategoryAffiliation, partnerCategoryAffiliation2);
+        PartnerCategoryAffiliation partnerCategoryAffiliation3 = getPartnerCategoryAffiliation("1", "003", "02");
+        PartnerCategoryAffiliation partnerCategoryAffiliation4 = getPartnerCategoryAffiliation("1", "004", "02");
+        List<PartnerCategoryAffiliation> partnerCategoryAffiliations2 = List.of(partnerCategoryAffiliation3, partnerCategoryAffiliation4);
+        PartnerCategoryItem partnerCategoryItem = PartnerCategoryItem.of(getPartnerCategoryItem("1", "01"), partnerCategoryAffiliations);
+        PartnerCategoryItem partnerCategoryItem2 = PartnerCategoryItem.of(getPartnerCategoryItem("1", "02"), partnerCategoryAffiliations2);
+        List<PartnerCategoryItem> partnerCategoryItems = List.of(partnerCategoryItem, partnerCategoryItem2);
+        PartnerCategoryType partnerCategoryType = PartnerCategoryType.of(getPartnerCategoryType("1"), partnerCategoryItems);
+        partnerCategoryRepository.save(partnerCategoryType);
+    }
+
     private static User user() {
         return User.of("U999999", "$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK", "first", "last", RoleName.USER);
     }
@@ -205,6 +234,36 @@ public class TestDataFactoryImpl implements TestDataFactory {
     }
 
     public static PartnerGroup partnerGroup(String groupCode) {
-        return PartnerGroup.of(groupCode, "取引先グループ1");
+        return PartnerGroup.of(groupCode, "取引先グループ");
+    }
+
+    public static PartnerCategoryType getPartnerCategoryType(String categoryCode) {
+        return PartnerCategoryType.of(categoryCode, "取引先分類種別名");
+    }
+
+    public static PartnerCategoryItem getPartnerCategoryItem(String categoryCode, String itemCode) {
+        return PartnerCategoryItem.of(categoryCode, itemCode, "取引先分類名");
+    }
+
+    public static PartnerCategoryAffiliation getPartnerCategoryAffiliation(String categoryCode, String partnerCode, String itemCode) {
+        return PartnerCategoryAffiliation.of(categoryCode, partnerCode, itemCode);
+    }
+
+    public static Partner getPartner(String partnerCode) {
+        return  Partner.of(
+                partnerCode,
+                "取引先名A",
+                "トリヒキサキメイエー",
+                1,
+                "1234567",
+                "東京都",
+                "中央区銀座1-1-1",
+                "ビル名201",
+                0,
+                0,
+                "PG01",
+                1000000,
+                50000
+        );
     }
 }
