@@ -17,7 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/partner-group")
+@RequestMapping("/api/partner-groups")
 @Tag(name = "PartnerGroup", description = "取引先グループ")
 @PreAuthorize("hasRole('ADMIN')")
 public class PartnerGroupApiController {
