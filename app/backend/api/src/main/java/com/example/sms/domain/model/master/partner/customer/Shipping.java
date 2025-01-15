@@ -1,6 +1,7 @@
 package com.example.sms.domain.model.master.partner.customer;
 
 import com.example.sms.domain.model.common.address.Address;
+import com.example.sms.domain.model.common.region.RegionCode;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;
@@ -14,7 +15,7 @@ import lombok.Value;
 public class Shipping {
     ShippingCode shippingCode; // 出荷先コード
     String destinationName; // 出荷先名
-    String regionCode; // 地域コード
+    RegionCode regionCode; // 地域コード
     Address shippingAddress; // 出荷先住所
 
     public static Shipping of(
@@ -30,7 +31,7 @@ public class Shipping {
         return new Shipping(
                 ShippingCode.of(customerCode, destinationNumber, customerBranchNumber),
                 destinationName,
-                regionCode,
+                RegionCode.of(regionCode),
                 Address.of(
                         destinationPostalCode,
                         destinationAddress1,

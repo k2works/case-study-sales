@@ -38,7 +38,7 @@ public class RegionDataSource implements RegionRepository {
         String username = authentication != null && authentication.getName() != null ? authentication.getName() : "system";
         LocalDateTime updateDateTime = LocalDateTime.now();
 
-        Optional<RegionCustomEntity> regionOptional = Optional.ofNullable(regionCustomMapper.selectByPrimaryKey(region.getRegionCode()));
+        Optional<RegionCustomEntity> regionOptional = Optional.ofNullable(regionCustomMapper.selectByPrimaryKey(region.getRegionCode().getValue()));
 
         if (regionOptional.isPresent()) {
             地域マスタ regionCustomEntity = regionEntityMapper.mapToEntity(region);
@@ -79,7 +79,7 @@ public class RegionDataSource implements RegionRepository {
 
     @Override
     public void deleteById(Region region) {
-        regionMapper.deleteByPrimaryKey(region.getRegionCode());
+        regionMapper.deleteByPrimaryKey(region.getRegionCode().getValue());
     }
 
     @Override

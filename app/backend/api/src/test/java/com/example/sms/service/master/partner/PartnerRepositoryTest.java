@@ -378,7 +378,7 @@ class PartnerRepositoryTest {
                     updatedShipping.getShippingCode().getDestinationNumber(),
                     updatedShipping.getShippingCode().getCustomerCode().getBranchNumber(),
                     "出荷先名B",
-                    updatedShipping.getRegionCode(),
+                    updatedShipping.getRegionCode().getValue(),
                     updatedShipping.getShippingAddress().getPostalCode().getValue(),
                     updatedShipping.getShippingAddress().getAddress1(),
                     updatedShipping.getShippingAddress().getAddress2()

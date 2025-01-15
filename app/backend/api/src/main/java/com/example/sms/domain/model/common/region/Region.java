@@ -12,10 +12,10 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 public class Region {
-    String regionCode; //地域コード
+    RegionCode regionCode; //地域コード
     String regionName;  //地域名
 
     public static Region of(String regionCode, String regionName) {
-        return new Region(regionCode, regionName);
+        return new Region(RegionCode.of(regionCode), regionName);
     }
 }

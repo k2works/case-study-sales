@@ -237,7 +237,7 @@ class PartnerTest {
                         1,
                         1,
                         "出荷先",
-                        "10",
+                        "R001",
                         "123-4567",
                         "新宿区1-1-1",
                         "マンション101号室"
@@ -254,7 +254,7 @@ class PartnerTest {
                         () -> assertEquals(1, shipping.getShippingCode().getCustomerCode().getBranchNumber()),
                         () -> assertEquals(1, shipping.getShippingCode().getDestinationNumber()),
                         () -> assertEquals("出荷先", shipping.getDestinationName()),
-                        () -> assertEquals("10", shipping.getRegionCode()),
+                        () -> assertEquals("R001", shipping.getRegionCode().getValue()),
                         () -> assertEquals("1234567", shipping.getShippingAddress().getPostalCode().getValue()),
                         () -> assertEquals("新宿区1-1-1", shipping.getShippingAddress().getAddress1()),
                         () -> assertEquals("マンション101号室", shipping.getShippingAddress().getAddress2())

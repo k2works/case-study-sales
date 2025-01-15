@@ -3,6 +3,9 @@ package com.example.sms.domain.model.common.region;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * 地域リスト
+ */
 public class RegionList {
     List<Region> value;
 

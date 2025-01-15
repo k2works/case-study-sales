@@ -218,7 +218,7 @@ public class PartnerEntityMapper {
         shippingEntity.set出荷先番号(shipping.getShippingCode().getDestinationNumber());
         shippingEntity.set顧客枝番(shipping.getShippingCode().getCustomerCode().getBranchNumber());
         shippingEntity.set出荷先名(shipping.getDestinationName());
-        shippingEntity.set地域コード(shipping.getRegionCode());
+        shippingEntity.set地域コード(shipping.getRegionCode().getValue());
         shippingEntity.set出荷先郵便番号(shipping.getShippingAddress().getPostalCode().getValue());
         shippingEntity.set出荷先住所１(shipping.getShippingAddress().getAddress1());
         shippingEntity.set出荷先住所２(shipping.getShippingAddress().getAddress2());
