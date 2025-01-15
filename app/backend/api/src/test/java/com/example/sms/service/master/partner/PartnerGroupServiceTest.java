@@ -46,7 +46,7 @@ class PartnerGroupServiceTest {
             PartnerGroup partnerGroup = TestDataFactoryImpl.partnerGroup("1000");
 
             partnerGroupService.register(partnerGroup);
-            PartnerGroup result = partnerGroupService.select("1000");
+            PartnerGroup result = partnerGroupService.find("1000");
 
             assertEquals(partnerGroup, result);
         }
@@ -59,7 +59,7 @@ class PartnerGroupServiceTest {
             partnerGroupService.save(partnerGroup);
 
             partnerGroupService.save(updatePartnerGroup);
-            PartnerGroup result = partnerGroupService.select("1000");
+            PartnerGroup result = partnerGroupService.find("1000");
 
             assertNotEquals(partnerGroup, result);
             assertEquals(updatePartnerGroup, result);
@@ -72,7 +72,7 @@ class PartnerGroupServiceTest {
             partnerGroupService.register(partnerGroup);
 
             partnerGroupService.delete(partnerGroup);
-            PartnerGroup result = partnerGroupService.select("1000");
+            PartnerGroup result = partnerGroupService.find("1000");
 
             assertEquals(null, result);
         }

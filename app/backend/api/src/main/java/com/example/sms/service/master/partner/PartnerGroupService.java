@@ -49,7 +49,7 @@ public class PartnerGroupService {
     /**
      * 取引先グループ検索
      */
-    public PartnerGroup select(String partnerGroupCode) {
+    public PartnerGroup find(String partnerGroupCode) {
         return partnerGroupRepository.findById(partnerGroupCode).orElse(null);
     }
 
@@ -59,4 +59,12 @@ public class PartnerGroupService {
     public PageInfo<PartnerGroup> searchWithPageInfo(PartnerGroupCriteria criteria) {
         return partnerGroupRepository.searchWithPageInfo(criteria);
     }
+
+    /**
+     * 取引先グループ一覧 (ページング)
+     */
+    public PageInfo<PartnerGroup> selectAllWithPageInfo() {
+        return partnerGroupRepository.selectAllWithPageInfo();
+    }
+
 }
