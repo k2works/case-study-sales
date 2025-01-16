@@ -1,4 +1,4 @@
-package com.example.sms.service.master.common;
+package com.example.sms.service.master.region;
 
 import lombok.Builder;
 import lombok.Value;

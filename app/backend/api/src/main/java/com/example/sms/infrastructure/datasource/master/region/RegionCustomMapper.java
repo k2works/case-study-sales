@@ -1,6 +1,6 @@
 package com.example.sms.infrastructure.datasource.master.region;
 
-import com.example.sms.service.master.common.RegionCriteria;
+import com.example.sms.service.master.region.RegionCriteria;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 

@@ -1,12 +1,12 @@
 package com.example.sms.infrastructure.datasource.master.region;
 
-import com.example.sms.domain.model.common.region.Region;
-import com.example.sms.domain.model.common.region.RegionList;
+import com.example.sms.domain.model.master.region.Region;
+import com.example.sms.domain.model.master.region.RegionList;
 import com.example.sms.infrastructure.PageInfoHelper;
 import com.example.sms.infrastructure.datasource.autogen.mapper.地域マスタMapper;
 import com.example.sms.infrastructure.datasource.autogen.model.地域マスタ;
-import com.example.sms.service.master.common.RegionCriteria;
-import com.example.sms.service.master.common.RegionRepository;
+import com.example.sms.service.master.region.RegionCriteria;
+import com.example.sms.service.master.region.RegionRepository;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

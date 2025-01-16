@@ -1,9 +1,9 @@
 package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
-import com.example.sms.domain.model.common.region.Region;
-import com.example.sms.presentation.api.common.region.RegionResource;
-import com.example.sms.service.master.common.RegionCriteria;
+import com.example.sms.domain.model.master.region.Region;
+import com.example.sms.presentation.api.master.region.RegionResource;
+import com.example.sms.service.master.region.RegionCriteria;
 import com.example.sms.stepdefinitions.utils.MessageResponse;
 import com.example.sms.stepdefinitions.utils.ListResponse;
 import com.example.sms.stepdefinitions.utils.SpringAcceptanceTest;

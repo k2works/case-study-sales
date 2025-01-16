@@ -1,4 +1,4 @@
-package com.example.sms.domain.model.common.region;
+package com.example.sms.domain.model.master.region;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

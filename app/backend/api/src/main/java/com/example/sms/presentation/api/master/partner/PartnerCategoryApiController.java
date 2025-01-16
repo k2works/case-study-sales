@@ -16,6 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * 取引先分類API
+ */
 @RestController
 @RequestMapping("/api/partner-categories")
 @Tag(name = "PartnerCategory", description = "取引先分類種別")

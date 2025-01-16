@@ -1,13 +1,13 @@
-package com.example.sms.presentation.api.common.region;
+package com.example.sms.presentation.api.master.region;
 
-import com.example.sms.domain.model.common.region.Region;
+import com.example.sms.domain.model.master.region.Region;
 import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
 import com.example.sms.domain.type.audit.ApplicationExecutionProcessType;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
-import com.example.sms.service.master.common.RegionCriteria;
-import com.example.sms.service.master.common.RegionService;
+import com.example.sms.service.master.region.RegionCriteria;
+import com.example.sms.service.master.region.RegionService;
 import com.example.sms.service.system.audit.AuditAnnotation;
 import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,6 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * 地域コードAPI
+ */
 @RestController
 @RequestMapping("/api/regions")
 @Tag(name = "Region", description = "地域管理")

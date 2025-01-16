@@ -1,6 +1,6 @@
 package com.example.sms.infrastructure.datasource.master.region;
 
-import com.example.sms.domain.model.common.region.Region;
+import com.example.sms.domain.model.master.region.Region;
 import com.example.sms.infrastructure.datasource.autogen.model.地域マスタ;
 import org.springframework.stereotype.Component;
 

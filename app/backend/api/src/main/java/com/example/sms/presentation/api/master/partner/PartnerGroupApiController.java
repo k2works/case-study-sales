@@ -16,6 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * 取引先グループAPI
+ */
 @RestController
 @RequestMapping("/api/partner-groups")
 @Tag(name = "PartnerGroup", description = "取引先グループ")
