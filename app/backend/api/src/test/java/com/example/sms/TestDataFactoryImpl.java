@@ -171,6 +171,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
         IntStream.rangeClosed(1, 3).forEach(i -> {
             Region region = getRegion("R00" + i);
+            region = Region.of(region.getRegionCode().getValue(), "地域名" + i);
             regionRepository.save(region);
         });
     }
