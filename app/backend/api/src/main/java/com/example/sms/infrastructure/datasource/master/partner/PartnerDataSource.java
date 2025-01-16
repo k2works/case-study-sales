@@ -16,6 +16,7 @@ import com.example.sms.infrastructure.datasource.master.partner.customer.Custome
 import com.example.sms.infrastructure.datasource.master.partner.customer.shipping.ShippingCustomMapper;
 import com.example.sms.infrastructure.datasource.master.partner.vendor.VendorCustomEntity;
 import com.example.sms.infrastructure.datasource.master.partner.vendor.VendorCustomMapper;
+import com.example.sms.service.master.partner.PartnerCriteria;
 import com.example.sms.service.master.partner.PartnerRepository;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.core.Authentication;
@@ -201,6 +202,14 @@ public class PartnerDataSource implements PartnerRepository {
     public PageInfo<Vendor> selectAllVendorWithPageInfo() {
         List<VendorCustomEntity> vendorCustomEntities = vendorCustomMapper.selectAll();
         PageInfo<VendorCustomEntity> pageInfo = new PageInfo<>(vendorCustomEntities);
+
+        return PageInfoHelper.of(pageInfo, partnerEntityMapper::mapToDomainModel);
+    }
+
+    @Override
+    public PageInfo<Partner> searchWithPageInfo(PartnerCriteria criteria) {
+        List<PartnerCustomEntity> partnerCustomEntities = partnerCustomMapper.selectByCriteria(criteria);
+        PageInfo<PartnerCustomEntity> pageInfo = new PageInfo<>(partnerCustomEntities);
 
         return PageInfoHelper.of(pageInfo, partnerEntityMapper::mapToDomainModel);
     }

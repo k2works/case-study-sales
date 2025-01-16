@@ -72,4 +72,51 @@
     where 取引先コード = #{取引先コード,jdbcType=VARCHAR}
     and version = #{version,jdbcType=INTEGER}
   </update>
+
+  <select id="selectByCriteria" resultMap="BaseResultMap">
+    select
+    <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.取引先マスタMapper.Base_Column_List" />
+    from public.取引先マスタ
+    <where>
+        <if test="partnerCode != null">
+            取引先コード = #{partnerCode,jdbcType=VARCHAR}
+        </if>
+        <if test="partnerName != null">
+            and 取引先名 like concat(#{partnerName,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="partnerNameKana != null">
+            and 取引先名カナ like concat(#{partnerNameKana,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="vendorType != null">
+            and 仕入先区分 = #{vendorType,jdbcType=INTEGER}
+        </if>
+        <if test="postalCode != null">
+            and 郵便番号 = #{postalCode,jdbcType=CHAR}
+        </if>
+        <if test="prefecture != null">
+            and 都道府県 = #{prefecture,jdbcType=VARCHAR}
+        </if>
+        <if test="address1 != null">
+            and 住所１ like concat(#{address1,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="address2 != null">
+            and 住所２ like concat(#{address2,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="tradeProhibitedFlag != null">
+          and 取引禁止フラグ = #{tradeProhibitedFlag,jdbcType=INTEGER}
+        </if>
+        <if test="miscellaneousType != null">
+          and 雑区分 = #{miscellaneousType,jdbcType=INTEGER}
+        </if>
+        <if test="partnerGroupCode != null">
+            and 取引先グループコード = #{partnerGroupCode,jdbcType=VARCHAR}
+        </if>
+        <if test="creditLimit != null">
+            and 与信限度額 = #{creditLimit,jdbcType=INTEGER}
+        </if>
+        <if test="temporaryCreditIncrease != null">
+            and 与信一時増加枠 = #{temporaryCreditIncrease,jdbcType=INTEGER}
+        </if>
+    </where>
+  </select>
 </mapper>

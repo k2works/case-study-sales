@@ -24,4 +24,6 @@ public interface PartnerRepository {
     PageInfo<Customer> selectAllCustomerWithPageInfo();
 
     PageInfo<Vendor> selectAllVendorWithPageInfo();
+
+    PageInfo<Partner> searchWithPageInfo(PartnerCriteria criteria);
 }

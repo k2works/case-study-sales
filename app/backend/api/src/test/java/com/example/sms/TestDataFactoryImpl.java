@@ -208,6 +208,17 @@ public class TestDataFactoryImpl implements TestDataFactory {
         partnerCategoryRepository.save(partnerCategoryType);
     }
 
+    @Override
+    public void setUpForPartnerService() {
+        partnerCategoryRepository.deleteAll();
+        partnerRepository.deleteAll();
+
+        IntStream.rangeClosed(1, 4).forEach(i -> {
+            Partner partner = getPartner("00" + i);
+            partnerRepository.save(partner);
+        });
+    }
+
     private static User user() {
         return User.of("U999999", "$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK", "first", "last", RoleName.USER);
     }

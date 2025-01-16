@@ -60,6 +60,32 @@ public class Partner {
         );
     }
 
+    public static Partner of(
+            PartnerCode partnerCode,
+            PartnerName partnerName,
+            VendorType vendorType,
+            Address address,
+            TradeProhibitedFlag tradeProhibitedFlag,
+            MiscellaneousType miscellaneousType,
+            PartnerGroupCode partnerGroupCode,
+            Credit credit,
+            List<Customer> customers,
+            List<Vendor> vendors
+    ) {
+        return new Partner(
+                partnerCode,
+                partnerName,
+                vendorType,
+                address,
+                tradeProhibitedFlag,
+                miscellaneousType,
+                partnerGroupCode,
+                credit,
+                customers,
+                vendors
+        );
+    }
+
     public static Partner ofWithCustomers(Partner partner, List<Customer> customers) {
         return new Partner(
                 partner.partnerCode,
