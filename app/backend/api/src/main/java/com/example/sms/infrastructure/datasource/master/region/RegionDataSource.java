@@ -5,6 +5,7 @@ import com.example.sms.domain.model.common.region.RegionList;
 import com.example.sms.infrastructure.PageInfoHelper;
 import com.example.sms.infrastructure.datasource.autogen.mapper.地域マスタMapper;
 import com.example.sms.infrastructure.datasource.autogen.model.地域マスタ;
+import com.example.sms.service.master.common.RegionCriteria;
 import com.example.sms.service.master.common.RegionRepository;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.core.Authentication;
@@ -85,6 +86,14 @@ public class RegionDataSource implements RegionRepository {
     @Override
     public PageInfo<Region> selectAllWithPageInfo() {
         List<RegionCustomEntity> regions = regionCustomMapper.selectAll();
+        PageInfo<RegionCustomEntity> pageInfo = new PageInfo<>(regions);
+
+        return PageInfoHelper.of(pageInfo, regionEntityMapper::mapToDomainModel);
+    }
+
+    @Override
+    public PageInfo<Region> searchWithPageInfo(RegionCriteria criteria) {
+        List<RegionCustomEntity> regions = regionCustomMapper.selectByCriteria(criteria);
         PageInfo<RegionCustomEntity> pageInfo = new PageInfo<>(regions);
 
         return PageInfoHelper.of(pageInfo, regionEntityMapper::mapToDomainModel);

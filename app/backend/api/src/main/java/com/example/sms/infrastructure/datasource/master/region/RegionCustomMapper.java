@@ -1,5 +1,6 @@
 package com.example.sms.infrastructure.datasource.master.region;
 
+import com.example.sms.service.master.common.RegionCriteria;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -13,4 +14,6 @@ public interface RegionCustomMapper {
 
     @Delete("DELETE FROM public.地域マスタ")
     void deleteAll();
+
+    List<RegionCustomEntity> selectByCriteria(RegionCriteria criteria);
 }

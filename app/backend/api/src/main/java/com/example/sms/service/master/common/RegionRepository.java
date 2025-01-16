@@ -18,4 +18,6 @@ public interface RegionRepository {
     void deleteById(Region region);
 
     PageInfo<Region> selectAllWithPageInfo();
+
+    PageInfo<Region> searchWithPageInfo(RegionCriteria criteria);
 }

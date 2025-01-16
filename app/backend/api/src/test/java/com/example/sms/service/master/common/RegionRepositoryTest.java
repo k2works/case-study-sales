@@ -1,5 +1,6 @@
 package com.example.sms.service.master.common;
 
+import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.common.region.Region;
 import com.example.sms.domain.model.common.region.RegionList;
 import com.github.pagehelper.PageInfo;
@@ -47,7 +48,7 @@ public class RegionRepositoryTest {
     }
 
     private Region getRegion(String regionCode) {
-        return Region.of(regionCode, "地域1");
+        return TestDataFactoryImpl.getRegion(regionCode);
     }
 
     @Nested

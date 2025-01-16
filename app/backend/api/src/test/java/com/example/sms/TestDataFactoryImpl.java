@@ -1,5 +1,6 @@
 package com.example.sms;
 
+import com.example.sms.domain.model.common.region.Region;
 import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.employee.Employee;
@@ -11,6 +12,7 @@ import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
 import com.example.sms.domain.type.audit.ApplicationExecutionProcessFlag;
 import com.example.sms.domain.type.product.*;
 import com.example.sms.domain.type.user.RoleName;
+import com.example.sms.service.master.common.RegionRepository;
 import com.example.sms.service.master.department.DepartmentRepository;
 import com.example.sms.service.master.employee.EmployeeRepository;
 import com.example.sms.service.master.partner.PartnerCategoryRepository;
@@ -41,6 +43,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
     ProductCategoryRepository productCategoryRepository;
     @Autowired
     AuditRepository auditRepository;
+    @Autowired
+    RegionRepository regionRepository;
     @Autowired
     PartnerGroupRepository partnerGroupRepository;
     @Autowired
@@ -162,6 +166,16 @@ public class TestDataFactoryImpl implements TestDataFactory {
     }
 
     @Override
+    public void setUpForRegionService() {
+        regionRepository.deleteAll();
+
+        IntStream.rangeClosed(1, 3).forEach(i -> {
+            Region region = getRegion("R00" + i);
+            regionRepository.save(region);
+        });
+    }
+
+    @Override
     public void setUpForPartnerGroupService() {
         partnerGroupRepository.deleteAll();
         IntStream.rangeClosed(0, 9).forEach(i -> {
@@ -231,6 +245,10 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
     public static ProductCategory getProductCategory(String productCategoryCode, String productCategoryName, int productCategoryHierarchy, String productCategoryPath, int lowestLevelDivision) {
         return ProductCategory.of(productCategoryCode, productCategoryName, productCategoryHierarchy, productCategoryPath, lowestLevelDivision);
+    }
+
+    public static Region getRegion(String regionCode) {
+        return Region.of(regionCode, "地域名");
     }
 
     public static PartnerGroup partnerGroup(String groupCode) {
