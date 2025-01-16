@@ -1,5 +1,6 @@
 package com.example.sms.service.master.partner;
 
+import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.master.partner.customer.Customer;
 import com.example.sms.domain.model.master.partner.Partner;
 import com.example.sms.domain.model.master.partner.customer.Shipping;
@@ -53,21 +54,7 @@ class PartnerRepositoryTest {
     }
 
     private Partner getPartner(String partnerCode) {
-        return  Partner.of(
-                partnerCode,
-                "取引先名A",
-                "トリヒキサキメイエー",
-                1,
-                "1234567",
-                "東京都",
-                "中央区銀座1-1-1",
-                "ビル名201",
-                0,
-                0,
-                "PG01",
-                1000000,
-                50000
-        );
+        return TestDataFactoryImpl.getPartner(partnerCode);
     }
 
     private Customer getCustomer(String customerCode, Integer customerBranchNumber) {

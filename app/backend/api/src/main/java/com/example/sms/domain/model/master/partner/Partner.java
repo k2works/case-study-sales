@@ -7,6 +7,7 @@ import com.example.sms.domain.type.partner.MiscellaneousType;
 import com.example.sms.domain.type.partner.TradeProhibitedFlag;
 import com.example.sms.domain.type.partner.VendorType;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
