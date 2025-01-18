@@ -2,8 +2,7 @@ package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
 import com.example.sms.domain.model.master.partner.customer.Customer;
-import com.example.sms.domain.type.partner.CustomerBillingCategory;
-import com.example.sms.domain.type.partner.CustomerType;
+import com.example.sms.domain.type.partner.*;
 import com.example.sms.presentation.api.master.partner.CustomerResource;
 import com.example.sms.presentation.api.master.partner.PartnerResource;
 import com.example.sms.service.master.partner.CustomerCriteria;
@@ -77,13 +76,13 @@ public class UC012StepDefs extends SpringAcceptanceTest {
         partnerResource.setPartnerCode(code);
         partnerResource.setPartnerName(name);
         partnerResource.setPartnerNameKana("テスト");
-        partnerResource.setVendorType(1);
+        partnerResource.setVendorType(VendorType.仕入先);
         partnerResource.setPostalCode("123-4567");
         partnerResource.setPrefecture("東京都");
         partnerResource.setAddress1("千代田区");
         partnerResource.setAddress2("丸の内1-1-1");
-        partnerResource.setTradeProhibitedFlag(0);
-        partnerResource.setMiscellaneousType(1);
+        partnerResource.setTradeProhibitedFlag(TradeProhibitedFlag.OFF);
+        partnerResource.setMiscellaneousType(MiscellaneousType.対象外);
         partnerResource.setPartnerGroupCode("9999");
         partnerResource.setCreditLimit(100000);
         partnerResource.setTemporaryCreditIncrease(0);

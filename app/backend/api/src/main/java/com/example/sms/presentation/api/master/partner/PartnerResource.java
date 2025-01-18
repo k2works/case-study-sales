@@ -1,5 +1,8 @@
 package com.example.sms.presentation.api.master.partner;
 
+import com.example.sms.domain.type.partner.MiscellaneousType;
+import com.example.sms.domain.type.partner.TradeProhibitedFlag;
+import com.example.sms.domain.type.partner.VendorType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,13 +20,13 @@ public class PartnerResource implements Serializable {
     String partnerCode;          // 取引先コード
     String partnerName;          // 取引先名
     String partnerNameKana;      // 取引先名カナ
-    Integer vendorType;        // 仕入先区分
+    VendorType vendorType;        // 仕入先区分
     String postalCode;
     String prefecture;
     String address1;
     String address2;
-    Integer tradeProhibitedFlag; // 取引禁止フラグ
-    Integer miscellaneousType;   // 雑区分
+    TradeProhibitedFlag tradeProhibitedFlag; // 取引禁止フラグ
+    MiscellaneousType miscellaneousType;   // 雑区分
     String partnerGroupCode;     // 取引先グループコード
     Integer creditLimit; // 与信限度額
     Integer temporaryCreditIncrease; // 与信一時増加枠
