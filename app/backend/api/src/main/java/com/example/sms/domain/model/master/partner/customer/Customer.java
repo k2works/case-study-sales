@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 import lombok.Value;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * 顧客
@@ -123,7 +122,7 @@ public class Customer {
         );
     }
 
-    public Customer of(Customer customer, ClosingInvoice closingInvoice1, ClosingInvoice  closingInvoice2) {
+    public static Customer of(Customer customer, ClosingInvoice closingInvoice1, ClosingInvoice  closingInvoice2) {
         if (closingInvoice1 == null && closingInvoice2 == null) {
             throw new IllegalArgumentException("締請求が設定されていません");
         }
@@ -151,6 +150,40 @@ public class Customer {
                         closingInvoice2
                 ),
                 customer.shippings
+        );
+    }
+
+    public static Customer of(
+            CustomerCode customerCode,
+            CustomerType customerType,
+            BillingCode billingCode,
+            CollectionCode collectionCode,
+            CustomerName customerName,
+            String companyRepresentativeCode,
+            String customerRepresentativeName,
+            String customerDepartmentName,
+            Address customerAddress,
+            PhoneNumber customerPhoneNumber,
+            FaxNumber customerFaxNumber,
+            Email customerEmailAddress,
+            Invoice invoice,
+            List<Shipping> shippings
+    ) {
+        return new Customer(
+                customerCode,
+                customerType,
+                billingCode,
+                collectionCode,
+                customerName,
+                companyRepresentativeCode,
+                customerRepresentativeName,
+                customerDepartmentName,
+                customerAddress,
+                customerPhoneNumber,
+                customerFaxNumber,
+                customerEmailAddress,
+                invoice,
+                shippings
         );
     }
 }

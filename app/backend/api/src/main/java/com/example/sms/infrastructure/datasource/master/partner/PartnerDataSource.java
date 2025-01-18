@@ -3,6 +3,8 @@ package com.example.sms.infrastructure.datasource.master.partner;
 import com.example.sms.domain.model.master.partner.customer.Customer;
 import com.example.sms.domain.model.master.partner.Partner;
 import com.example.sms.domain.model.master.partner.PartnerList;
+import com.example.sms.domain.model.master.partner.customer.CustomerCode;
+import com.example.sms.domain.model.master.partner.customer.CustomerList;
 import com.example.sms.domain.model.master.partner.vendor.Vendor;
 import com.example.sms.infrastructure.PageInfoHelper;
 import com.example.sms.infrastructure.datasource.ObjectOptimisticLockingFailureException;
@@ -16,6 +18,7 @@ import com.example.sms.infrastructure.datasource.master.partner.customer.Custome
 import com.example.sms.infrastructure.datasource.master.partner.customer.shipping.ShippingCustomMapper;
 import com.example.sms.infrastructure.datasource.master.partner.vendor.VendorCustomEntity;
 import com.example.sms.infrastructure.datasource.master.partner.vendor.VendorCustomMapper;
+import com.example.sms.service.master.partner.CustomerCriteria;
 import com.example.sms.service.master.partner.PartnerCriteria;
 import com.example.sms.service.master.partner.PartnerRepository;
 import com.github.pagehelper.PageInfo;
@@ -213,4 +216,35 @@ public class PartnerDataSource implements PartnerRepository {
 
         return PageInfoHelper.of(pageInfo, partnerEntityMapper::mapToDomainModel);
     }
+
+    @Override
+    public CustomerList selectAllCustomer() {
+        List<CustomerCustomEntity> customerCustomEntities = customerCustomMapper.selectAll();
+
+        return new CustomerList(customerCustomEntities.stream()
+                .map(partnerEntityMapper::mapToDomainModel)
+                .toList());
+    }
+
+    @Override
+    public Optional<Customer> findCustomerById(CustomerCode customerCode) {
+        顧客マスタKey key = new 顧客マスタKey();
+        key.set顧客コード(customerCode.getCode().getValue());
+        key.set顧客枝番(customerCode.getBranchNumber());
+
+        CustomerCustomEntity customerEntity = customerCustomMapper.selectByPrimaryKey(key);
+        if (customerEntity != null) {
+            return Optional.of(partnerEntityMapper.mapToDomainModel(customerEntity));
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public PageInfo<Customer> searchCustomerWithPageInfo(CustomerCriteria criteria) {
+        List<CustomerCustomEntity> customerCustomEntities = customerCustomMapper.selectByCriteria(criteria);
+        PageInfo<CustomerCustomEntity> pageInfo = new PageInfo<>(customerCustomEntities);
+
+        return PageInfoHelper.of(pageInfo, partnerEntityMapper::mapToDomainModel);
+    }
+
 }

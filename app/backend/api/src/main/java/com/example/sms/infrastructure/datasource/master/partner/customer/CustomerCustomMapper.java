@@ -1,6 +1,7 @@
 package com.example.sms.infrastructure.datasource.master.partner.customer;
 
 import com.example.sms.infrastructure.datasource.autogen.model.顧客マスタKey;
+import com.example.sms.service.master.partner.CustomerCriteria;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -18,4 +19,6 @@ public interface CustomerCustomMapper {
     List<CustomerCustomEntity> selectByCustomerCode(String customerCode);
 
     void deleteByCustomerCode(String customerCode);
+
+    List<CustomerCustomEntity> selectByCriteria(CustomerCriteria criteria);
 }

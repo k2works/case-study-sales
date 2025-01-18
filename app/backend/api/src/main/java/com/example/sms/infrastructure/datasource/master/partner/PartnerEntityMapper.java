@@ -180,7 +180,7 @@ public class PartnerEntityMapper {
     }
 
     public Customer mapToDomainModel(CustomerCustomEntity customerCustomEntity) {
-        return Customer.of(
+        Customer customer = Customer.of(
                 customerCustomEntity.get顧客コード(),
                 customerCustomEntity.get顧客枝番(),
                 customerCustomEntity.get顧客区分(),
@@ -210,6 +210,21 @@ public class PartnerEntityMapper {
                 customerCustomEntity.get顧客支払日２(),
                 customerCustomEntity.get顧客支払方法２()
         );
+
+        List<Shipping> shippings = customerCustomEntity.get出荷先マスタ().stream()
+                .map(shipping -> Shipping.of(
+                        shipping.get顧客コード(),
+                        shipping.get出荷先番号(),
+                        shipping.get顧客枝番(),
+                        shipping.get出荷先名(),
+                        shipping.get地域コード(),
+                        shipping.get出荷先郵便番号(),
+                        shipping.get出荷先住所１(),
+                        shipping.get出荷先住所２()
+                ))
+                .toList();
+
+        return Customer.of(customer, shippings);
     }
 
     public 出荷先マスタ mapToEntity(Shipping shipping) {

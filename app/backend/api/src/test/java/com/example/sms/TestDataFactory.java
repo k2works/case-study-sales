@@ -38,4 +38,6 @@ public interface TestDataFactory {
     void setUpForPartnerCategoryService();
 
     void setUpForPartnerService();
+
+    void setUpForCustomerService();
 }

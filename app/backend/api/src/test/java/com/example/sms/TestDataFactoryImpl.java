@@ -1,5 +1,7 @@
 package com.example.sms;
 
+import com.example.sms.domain.model.master.partner.customer.Customer;
+import com.example.sms.domain.model.master.partner.customer.Shipping;
 import com.example.sms.domain.model.master.region.Region;
 import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentId;
@@ -219,6 +221,20 @@ public class TestDataFactoryImpl implements TestDataFactory {
         });
     }
 
+    @Override
+    public void setUpForCustomerService() {
+        partnerCategoryRepository.deleteAll();
+        partnerRepository.deleteAll();
+
+        IntStream.rangeClosed(1, 1).forEach(i -> {
+            Partner partner = getPartner("00" + i);
+            List<Customer> customers = IntStream.rangeClosed(1, 3)
+                .mapToObj(j -> getCustomer("00" + i, j))
+                .toList();
+            partnerRepository.save(Partner.ofWithCustomers(partner,customers));
+        });
+    }
+
     private static User user() {
         return User.of("U999999", "$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK", "first", "last", RoleName.USER);
     }
@@ -294,6 +310,52 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 "PG01",
                 1000000,
                 50000
+        );
+    }
+
+    public static Customer getCustomer(String customerCode, Integer customerBranchNumber) {
+        return Customer.of(
+                customerCode,  // customerCode（顧客コード）
+                customerBranchNumber,  // customerBranchNumber（顧客枝番）
+                1,  // customerCategory（顧客区分）
+                "001",  // billingCode（請求先コード）
+                1,  // billingBranchNumber（請求先枝番）
+                "001",  // collectionCode（回収先コード）
+                1,  // collectionBranchNumber（回収先枝番）
+                "山田太郎",  // customerName（顧客名）
+                "ヤマダタロウ",  // customerNameKana（顧客名カナ）
+                "RE001",  // companyRepresentativeCode（自社担当者コード）
+                "花子",  // customerRepresentativeName（顧客担当者名）
+                "営業部",  // customerDepartmentName（顧客部門名）
+                "123-4567",  // customerPostalCode（顧客郵便番号）
+                "東京都",  // customerPrefecture（顧客都道府県）
+                "新宿区1-1-1",  // customerAddress1（顧客住所１）
+                "マンション101号室",  // customerAddress2（顧客住所２）
+                "03-1234-5678",  // customerPhoneNumber（顧客電話番号）
+                "03-1234-5679",  // customerFaxNumber（顧客FAX番号）
+                "example@example.com",  // customerEmailAddress（顧客メールアドレス）
+                2,  // customerBillingCategory（顧客請求区分）
+                10,  // customerClosingDay1（顧客締日１）
+                0,  // customerPaymentMonth1（顧客支払月１）
+                10,  // customerPaymentDay1（顧客支払日１）
+                1,  // customerPaymentMethod1（顧客支払方法１）
+                20,  // customerClosingDay2（顧客締日２）
+                1,  // customerPaymentMonth2（顧客支払月２）
+                99,  // customerPaymentDay2（顧客支払日２）
+                2   // customerPaymentMethod2（顧客支払方法２）
+        );
+    }
+
+    public static Shipping getShipping(String customerCode, Integer destinationNumber, Integer customerBranchNumber) {
+        return Shipping.of(
+                customerCode,
+                destinationNumber,
+                customerBranchNumber,
+                "出荷先名A",
+                "R001",
+                "123-4567",
+                "東京都",
+                "新宿区1-1-1"
         );
     }
 }

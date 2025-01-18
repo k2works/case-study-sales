@@ -39,4 +39,18 @@ public class Shipping {
                 )
         );
     }
+
+    public static Shipping of(
+            ShippingCode shippingCode,
+            String destinationName,
+            RegionCode regionCode,
+            Address shippingAddress
+    ) {
+        return new Shipping(
+                shippingCode,
+                destinationName,
+                regionCode,
+                shippingAddress
+        );
+    }
 }
