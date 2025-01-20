@@ -1,6 +1,5 @@
 package com.example.sms.service.master.product;
 
-import com.example.sms.domain.type.product.*;
 import lombok.Builder;
 import lombok.Value;
 
