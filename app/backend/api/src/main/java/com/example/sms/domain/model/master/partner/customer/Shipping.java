@@ -1,6 +1,6 @@
 package com.example.sms.domain.model.master.partner.customer;
 
-import com.example.sms.domain.model.common.address.Address;
+import com.example.sms.domain.type.address.Address;
 import com.example.sms.domain.model.master.region.RegionCode;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

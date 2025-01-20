@@ -1,7 +1,7 @@
 package com.example.sms.domain.model.master.employee;
 
-import com.example.sms.domain.model.common.FaxNumber;
-import com.example.sms.domain.model.common.PhoneNumber;
+import com.example.sms.domain.type.FaxNumber;
+import com.example.sms.domain.type.PhoneNumber;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("社員")
-public class EmployeeTest {
+class EmployeeTest {
 
     @Test
     @DisplayName("社員を作成できる")

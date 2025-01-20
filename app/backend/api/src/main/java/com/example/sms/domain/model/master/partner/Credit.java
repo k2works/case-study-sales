@@ -1,6 +1,6 @@
 package com.example.sms.domain.model.master.partner;
 
-import com.example.sms.domain.model.common.money.Money;
+import com.example.sms.domain.type.money.Money;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 

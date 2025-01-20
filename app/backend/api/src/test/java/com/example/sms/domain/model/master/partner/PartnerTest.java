@@ -1,8 +1,8 @@
 package com.example.sms.domain.model.master.partner;
 
-import com.example.sms.domain.model.common.Email;
-import com.example.sms.domain.model.common.address.Address;
-import com.example.sms.domain.model.common.address.PostalCode;
+import com.example.sms.domain.type.Email;
+import com.example.sms.domain.type.address.Address;
+import com.example.sms.domain.type.address.PostalCode;
 import com.example.sms.domain.model.master.partner.customer.*;
 import com.example.sms.domain.model.master.partner.invoice.*;
 import com.example.sms.domain.model.master.partner.vendor.Vendor;

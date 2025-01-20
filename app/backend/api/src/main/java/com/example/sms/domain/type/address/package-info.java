@@ -1,4 +1,4 @@
 /**
  * 住所
  */
-package com.example.sms.domain.model.common.address;
+package com.example.sms.domain.type.address;

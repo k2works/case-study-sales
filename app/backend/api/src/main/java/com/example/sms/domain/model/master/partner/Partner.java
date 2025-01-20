@@ -1,8 +1,8 @@
 package com.example.sms.domain.model.master.partner;
 
-import com.example.sms.domain.model.common.address.Address;
 import com.example.sms.domain.model.master.partner.customer.Customer;
 import com.example.sms.domain.model.master.partner.vendor.Vendor;
+import com.example.sms.domain.type.address.Address;
 import com.example.sms.domain.type.partner.MiscellaneousType;
 import com.example.sms.domain.type.partner.TradeProhibitedFlag;
 import com.example.sms.domain.type.partner.VendorType;

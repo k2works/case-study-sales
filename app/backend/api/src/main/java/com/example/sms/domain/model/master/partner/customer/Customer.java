@@ -1,9 +1,9 @@
 package com.example.sms.domain.model.master.partner.customer;
 
-import com.example.sms.domain.model.common.Email;
-import com.example.sms.domain.model.common.FaxNumber;
-import com.example.sms.domain.model.common.PhoneNumber;
-import com.example.sms.domain.model.common.address.Address;
+import com.example.sms.domain.type.Email;
+import com.example.sms.domain.type.FaxNumber;
+import com.example.sms.domain.type.PhoneNumber;
+import com.example.sms.domain.type.address.Address;
 import com.example.sms.domain.model.master.partner.invoice.ClosingInvoice;
 import com.example.sms.domain.model.master.partner.invoice.Invoice;
 import com.example.sms.domain.type.partner.CustomerBillingCategory;
