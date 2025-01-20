@@ -59,7 +59,7 @@ public class ProductServiceTest {
             Product product = TestDataFactoryImpl.getProduct("99999999");
             productService.register(product);
 
-            Product updateProduct = Product.of(product.getProductCode().getValue(), "更新後商品正式名", "更新後商品略称", "更新後商品名カナ", ProductType.商品, 2000, 3000, 4000, TaxType.内税, "99999999", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "99999999", 6);
+            Product updateProduct = Product.of(product.getProductCode().getValue(), "更新後商品正式名", "更新後商品略称", "更新後商品名カナ", ProductType.商品, 2000, 3000, 4000, TaxType.内税, "99999999", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "999", 6);
             productService.save(updateProduct);
 
             Product result = productService.find(product.getProductCode().getValue());

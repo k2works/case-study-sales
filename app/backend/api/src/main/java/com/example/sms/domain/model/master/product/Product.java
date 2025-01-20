@@ -104,7 +104,7 @@ public class Product {
             MiscellaneousType miscellaneousType,
             StockManagementTargetType stockManagementTargetType,
             StockAllocationType stockAllocationType,
-            SupplierCode supplierCode,
+            VendorCode vendorCode,
             List<SubstituteProduct> substituteProduct,
             List<Bom> boms,
             List<CustomerSpecificSellingPrice> customerSpecificSellingPrices
@@ -121,7 +121,7 @@ public class Product {
                 miscellaneousType,
                 stockManagementTargetType,
                 stockAllocationType,
-                supplierCode,
+                vendorCode,
                 substituteProduct,
                 boms,
                 customerSpecificSellingPrices
