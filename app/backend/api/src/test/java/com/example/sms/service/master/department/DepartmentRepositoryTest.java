@@ -46,7 +46,7 @@ class DepartmentRepositoryTest {
     }
 
     private Department getDepartment() {
-        return TestDataFactoryImpl.department("10000", LocalDateTime.of(2021, 1, 1, 0, 0), "全社");
+        return TestDataFactoryImpl.getDepartment("10000", LocalDateTime.of(2021, 1, 1, 0, 0), "全社");
     }
 
     @Test

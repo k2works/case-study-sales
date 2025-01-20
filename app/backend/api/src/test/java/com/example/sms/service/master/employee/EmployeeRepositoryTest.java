@@ -50,11 +50,11 @@ class EmployeeRepositoryTest {
     }
 
     private Employee getEmployee() {
-        return TestDataFactoryImpl.employee("EMP999", "10000", LocalDateTime.of(2021, 1, 1, 0, 0));
+        return TestDataFactoryImpl.getEmployee("EMP999", "10000", LocalDateTime.of(2021, 1, 1, 0, 0));
     }
 
     private Department getDepartment() {
-        return TestDataFactoryImpl.department("10000", LocalDateTime.of(2021, 1, 1, 0, 0), "部署名");
+        return TestDataFactoryImpl.getDepartment("10000", LocalDateTime.of(2021, 1, 1, 0, 0), "部署名");
     }
 
     @Test

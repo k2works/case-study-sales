@@ -53,19 +53,19 @@ public class ProductRepositoryTest {
     }
 
     private Product getProduct(String productCode) {
-        return TestDataFactoryImpl.product(productCode, "商品正式名", "商品略称", "商品名カナ", ProductType.その他, 1000, 2000, 3000, TaxType.外税, "00000000", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "000", 5);
+        return TestDataFactoryImpl.getProduct(productCode, "商品正式名", "商品略称", "商品名カナ", ProductType.その他, 1000, 2000, 3000, TaxType.外税, "00000000", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "000", 5);
     }
 
     private Product getProductForBom(String productCode, ProductType productType) {
-        return TestDataFactoryImpl.product(productCode, "商品正式名", "商品略称", "商品名カナ", productType, 1000, 2000, 3000, TaxType.外税, "00000000", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "000", 5);
+        return TestDataFactoryImpl.getProduct(productCode, "商品正式名", "商品略称", "商品名カナ", productType, 1000, 2000, 3000, TaxType.外税, "00000000", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "000", 5);
     }
 
     private SubstituteProduct getSubstituteProduct(String productCode, String substituteProductCode) {
-        return TestDataFactoryImpl.substituteProduct(productCode, substituteProductCode, 1);
+        return TestDataFactoryImpl.getSubstituteProduct(productCode, substituteProductCode, 1);
     }
 
     private Bom getBom(String productCode, String componentCode) {
-        return TestDataFactoryImpl.bom(productCode, componentCode, 1);
+        return TestDataFactoryImpl.getBom(productCode, componentCode, 1);
     }
 
     private CustomerSpecificSellingPrice getCustomerSpecificSellingPrice(String productCode, String format) {
