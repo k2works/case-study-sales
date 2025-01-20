@@ -1352,32 +1352,32 @@
 <title>com.example.sms.service.system.audit.AuditService#end(com.example.sms.domain.model.system.audit.ApplicationExecutionHistory)&#45;&gt;com.example.sms.domain.model.system.audit.ApplicationExecutionProcess</title>
 <path fill="none" stroke="black" stroke-dasharray="1,5" d="M1746.79,-405.27C1784.89,-410.02 1827.95,-415.38 1867.45,-420.3"/>
 </g>
-<!-- com.example.sms.domain.type.audit.ApplicationExecutionHistoryType -->
+<!-- com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType -->
 <g id="node73" class="node">
-<title>com.example.sms.domain.type.audit.ApplicationExecutionHistoryType</title>
+<title>com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType</title>
 <g id="a_node73"><a xlink:title="ApplicationExecutionHistoryType">
 <polygon fill="whitesmoke" stroke="black" points="2013.5,-365.57 1756,-365.57 1756,-329.57 2013.5,-329.57 2013.5,-365.57"/>
 <text text-anchor="middle" x="1884.75" y="-341.4" font-family="Times New Roman,serif" font-size="14.00">アプリケーション実行履歴区分</text>
 </a>
 </g>
 </g>
-<!-- com.example.sms.service.system.audit.AuditService#end(com.example.sms.domain.model.system.audit.ApplicationExecutionHistory)&#45;&gt;com.example.sms.domain.type.audit.ApplicationExecutionHistoryType -->
+<!-- com.example.sms.service.system.audit.AuditService#end(com.example.sms.domain.model.system.audit.ApplicationExecutionHistory)&#45;&gt;com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType -->
 <g id="edge104" class="edge">
-<title>com.example.sms.service.system.audit.AuditService#end(com.example.sms.domain.model.system.audit.ApplicationExecutionHistory)&#45;&gt;com.example.sms.domain.type.audit.ApplicationExecutionHistoryType</title>
+<title>com.example.sms.service.system.audit.AuditService#end(com.example.sms.domain.model.system.audit.ApplicationExecutionHistory)&#45;&gt;com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType</title>
 <path fill="none" stroke="black" stroke-dasharray="1,5" d="M1724.68,-376.01C1742.78,-372.8 1762.01,-369.38 1780.62,-366.07"/>
 </g>
-<!-- com.example.sms.domain.type.audit.ApplicationExecutionProcessFlag -->
+<!-- com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag -->
 <g id="node74" class="node">
-<title>com.example.sms.domain.type.audit.ApplicationExecutionProcessFlag</title>
+<title>com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag</title>
 <g id="a_node74"><a xlink:title="ApplicationExecutionProcessFlag">
 <polygon fill="whitesmoke" stroke="black" points="2153.12,-410.26 1843.87,-410.26 1843.87,-374.26 2153.12,-374.26 2153.12,-410.26"/>
 <text text-anchor="middle" x="1998.49" y="-386.09" font-family="Times New Roman,serif" font-size="14.00">アプリケーション実行プロセスフラグ</text>
 </a>
 </g>
 </g>
-<!-- com.example.sms.service.system.audit.AuditService#end(com.example.sms.domain.model.system.audit.ApplicationExecutionHistory)&#45;&gt;com.example.sms.domain.type.audit.ApplicationExecutionProcessFlag -->
+<!-- com.example.sms.service.system.audit.AuditService#end(com.example.sms.domain.model.system.audit.ApplicationExecutionHistory)&#45;&gt;com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag -->
 <g id="edge106" class="edge">
-<title>com.example.sms.service.system.audit.AuditService#end(com.example.sms.domain.model.system.audit.ApplicationExecutionHistory)&#45;&gt;com.example.sms.domain.type.audit.ApplicationExecutionProcessFlag</title>
+<title>com.example.sms.service.system.audit.AuditService#end(com.example.sms.domain.model.system.audit.ApplicationExecutionHistory)&#45;&gt;com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag</title>
 <path fill="none" stroke="black" stroke-dasharray="1,5" d="M1801.08,-391.9C1815.17,-391.92 1829.4,-391.95 1843.42,-391.97"/>
 </g>
 <!-- com.example.sms.domain.model.system.audit.ApplicationExecutionHistory -->
@@ -1413,18 +1413,18 @@
 <title>com.example.sms.domain.model.system.audit.ApplicationExecutionHistory&#45;&gt;com.example.sms.service.system.audit.AuditService#find(java.lang.String)</title>
 <path fill="none" stroke="black" stroke-width="2" d="M1968.28,-498.64C1948.4,-532.42 1906.01,-604.44 1886.05,-638.34"/>
 </g>
-<!-- com.example.sms.service.system.audit.AuditService#start(com.example.sms.domain.type.audit.ApplicationExecutionProcessType, com.example.sms.domain.type.audit.ApplicationExecutionHistoryType) -->
+<!-- com.example.sms.service.system.audit.AuditService#start(com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType, com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType) -->
 <g id="node84" class="node">
-<title>com.example.sms.service.system.audit.AuditService#start(com.example.sms.domain.type.audit.ApplicationExecutionProcessType, com.example.sms.domain.type.audit.ApplicationExecutionHistoryType)</title>
+<title>com.example.sms.service.system.audit.AuditService#start(com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType, com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType)</title>
 <g id="a_node84"><a xlink:href="./application.html#com.example.sms.service.system.audit.AuditService" xlink:title="AuditService.start(ApplicationExecutionProcessType, ApplicationExecutionHistoryType)">
 <ellipse fill="lemonchiffon" stroke="black" cx="1523.37" cy="-258.45" rx="163.78" ry="18"/>
 <text text-anchor="middle" x="1523.37" y="-252.27" font-family="Times New Roman,serif" font-size="14.00">アプリケーション実行履歴開始</text>
 </a>
 </g>
 </g>
-<!-- com.example.sms.domain.model.system.audit.ApplicationExecutionHistory&#45;&gt;com.example.sms.service.system.audit.AuditService#start(com.example.sms.domain.type.audit.ApplicationExecutionProcessType, com.example.sms.domain.type.audit.ApplicationExecutionHistoryType) -->
+<!-- com.example.sms.domain.model.system.audit.ApplicationExecutionHistory&#45;&gt;com.example.sms.service.system.audit.AuditService#start(com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType, com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType) -->
 <g id="edge128" class="edge">
-<title>com.example.sms.domain.model.system.audit.ApplicationExecutionHistory&#45;&gt;com.example.sms.service.system.audit.AuditService#start(com.example.sms.domain.type.audit.ApplicationExecutionProcessType, com.example.sms.domain.type.audit.ApplicationExecutionHistoryType)</title>
+<title>com.example.sms.domain.model.system.audit.ApplicationExecutionHistory&#45;&gt;com.example.sms.service.system.audit.AuditService#start(com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType, com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType)</title>
 <path fill="none" stroke="black" stroke-width="2" d="M1941.32,-462.09C1855.29,-420.17 1645.28,-317.84 1560.14,-276.36"/>
 </g>
 <!-- com.example.sms.service.system.audit.AuditService#error(com.example.sms.domain.model.system.audit.ApplicationExecutionHistory, java.lang.String)&#45;&gt;com.example.sms.domain.model.system.user.User -->
@@ -1442,14 +1442,14 @@
 <title>com.example.sms.service.system.audit.AuditService#error(com.example.sms.domain.model.system.audit.ApplicationExecutionHistory, java.lang.String)&#45;&gt;com.example.sms.domain.model.system.audit.ApplicationExecutionProcess</title>
 <path fill="none" stroke="black" stroke-dasharray="1,5" d="M1739.18,-503.87C1793.4,-489.65 1870.37,-469.46 1925.98,-454.86"/>
 </g>
-<!-- com.example.sms.service.system.audit.AuditService#error(com.example.sms.domain.model.system.audit.ApplicationExecutionHistory, java.lang.String)&#45;&gt;com.example.sms.domain.type.audit.ApplicationExecutionHistoryType -->
+<!-- com.example.sms.service.system.audit.AuditService#error(com.example.sms.domain.model.system.audit.ApplicationExecutionHistory, java.lang.String)&#45;&gt;com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType -->
 <g id="edge110" class="edge">
-<title>com.example.sms.service.system.audit.AuditService#error(com.example.sms.domain.model.system.audit.ApplicationExecutionHistory, java.lang.String)&#45;&gt;com.example.sms.domain.type.audit.ApplicationExecutionHistoryType</title>
+<title>com.example.sms.service.system.audit.AuditService#error(com.example.sms.domain.model.system.audit.ApplicationExecutionHistory, java.lang.String)&#45;&gt;com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType</title>
 <path fill="none" stroke="black" stroke-dasharray="1,5" d="M1696.07,-502.77C1736.57,-469.46 1822.05,-399.14 1862.56,-365.82"/>
 </g>
-<!-- com.example.sms.service.system.audit.AuditService#error(com.example.sms.domain.model.system.audit.ApplicationExecutionHistory, java.lang.String)&#45;&gt;com.example.sms.domain.type.audit.ApplicationExecutionProcessFlag -->
+<!-- com.example.sms.service.system.audit.AuditService#error(com.example.sms.domain.model.system.audit.ApplicationExecutionHistory, java.lang.String)&#45;&gt;com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag -->
 <g id="edge112" class="edge">
-<title>com.example.sms.service.system.audit.AuditService#error(com.example.sms.domain.model.system.audit.ApplicationExecutionHistory, java.lang.String)&#45;&gt;com.example.sms.domain.type.audit.ApplicationExecutionProcessFlag</title>
+<title>com.example.sms.service.system.audit.AuditService#error(com.example.sms.domain.model.system.audit.ApplicationExecutionHistory, java.lang.String)&#45;&gt;com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag</title>
 <path fill="none" stroke="black" stroke-dasharray="1,5" d="M1718.7,-503.24C1780.09,-478.89 1889.83,-435.36 1952.06,-410.68"/>
 </g>
 <!-- com.example.sms.service.system.audit.AuditService#find(java.lang.String)&#45;&gt;java.lang.String -->
@@ -1481,14 +1481,14 @@
 <title>com.example.sms.service.system.audit.AuditService#register(com.example.sms.domain.model.system.audit.ApplicationExecutionHistory, com.example.sms.domain.model.system.user.UserId)&#45;&gt;com.example.sms.domain.model.system.audit.ApplicationExecutionProcess</title>
 <path fill="none" stroke="black" stroke-dasharray="1,5" d="M1589.89,-319.85C1678.28,-345.18 1841.84,-392.06 1932.24,-417.96"/>
 </g>
-<!-- com.example.sms.service.system.audit.AuditService#register(com.example.sms.domain.model.system.audit.ApplicationExecutionHistory, com.example.sms.domain.model.system.user.UserId)&#45;&gt;com.example.sms.domain.type.audit.ApplicationExecutionHistoryType -->
+<!-- com.example.sms.service.system.audit.AuditService#register(com.example.sms.domain.model.system.audit.ApplicationExecutionHistory, com.example.sms.domain.model.system.user.UserId)&#45;&gt;com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType -->
 <g id="edge120" class="edge">
-<title>com.example.sms.service.system.audit.AuditService#register(com.example.sms.domain.model.system.audit.ApplicationExecutionHistory, com.example.sms.domain.model.system.user.UserId)&#45;&gt;com.example.sms.domain.type.audit.ApplicationExecutionHistoryType</title>
+<title>com.example.sms.service.system.audit.AuditService#register(com.example.sms.domain.model.system.audit.ApplicationExecutionHistory, com.example.sms.domain.model.system.user.UserId)&#45;&gt;com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType</title>
 <path fill="none" stroke="black" stroke-dasharray="1,5" d="M1643.72,-317C1679.44,-321.53 1719.08,-326.56 1755.73,-331.21"/>
 </g>
-<!-- com.example.sms.service.system.audit.AuditService#register(com.example.sms.domain.model.system.audit.ApplicationExecutionHistory, com.example.sms.domain.model.system.user.UserId)&#45;&gt;com.example.sms.domain.type.audit.ApplicationExecutionProcessFlag -->
+<!-- com.example.sms.service.system.audit.AuditService#register(com.example.sms.domain.model.system.audit.ApplicationExecutionHistory, com.example.sms.domain.model.system.user.UserId)&#45;&gt;com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag -->
 <g id="edge119" class="edge">
-<title>com.example.sms.service.system.audit.AuditService#register(com.example.sms.domain.model.system.audit.ApplicationExecutionHistory, com.example.sms.domain.model.system.user.UserId)&#45;&gt;com.example.sms.domain.type.audit.ApplicationExecutionProcessFlag</title>
+<title>com.example.sms.service.system.audit.AuditService#register(com.example.sms.domain.model.system.audit.ApplicationExecutionHistory, com.example.sms.domain.model.system.user.UserId)&#45;&gt;com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag</title>
 <path fill="none" stroke="black" stroke-dasharray="1,5" d="M1615.08,-318.9C1696.13,-334.41 1817.54,-357.64 1901.95,-373.79"/>
 </g>
 <!-- com.example.sms.domain.model.system.user.UserId -->
@@ -1542,38 +1542,38 @@
 <title>com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryList&#45;&gt;com.example.sms.service.system.audit.AuditService#selectAll()</title>
 <path fill="none" stroke="black" stroke-width="2" d="M1970.28,-1411.15C1967.73,-1407.9 1965.08,-1404.52 1962.53,-1401.27"/>
 </g>
-<!-- com.example.sms.service.system.audit.AuditService#start(com.example.sms.domain.type.audit.ApplicationExecutionProcessType, com.example.sms.domain.type.audit.ApplicationExecutionHistoryType)&#45;&gt;com.example.sms.domain.model.system.user.User -->
+<!-- com.example.sms.service.system.audit.AuditService#start(com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType, com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType)&#45;&gt;com.example.sms.domain.model.system.user.User -->
 <g id="edge131" class="edge">
-<title>com.example.sms.service.system.audit.AuditService#start(com.example.sms.domain.type.audit.ApplicationExecutionProcessType, com.example.sms.domain.type.audit.ApplicationExecutionHistoryType)&#45;&gt;com.example.sms.domain.model.system.user.User</title>
+<title>com.example.sms.service.system.audit.AuditService#start(com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType, com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType)&#45;&gt;com.example.sms.domain.model.system.user.User</title>
 <path fill="none" stroke="black" stroke-dasharray="1,5" d="M1495.65,-276.55C1440.52,-312.53 1317.68,-392.72 1262.27,-428.88"/>
 </g>
-<!-- com.example.sms.service.system.audit.AuditService#start(com.example.sms.domain.type.audit.ApplicationExecutionProcessType, com.example.sms.domain.type.audit.ApplicationExecutionHistoryType)&#45;&gt;com.example.sms.domain.type.audit.ApplicationExecutionHistoryType -->
+<!-- com.example.sms.service.system.audit.AuditService#start(com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType, com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType)&#45;&gt;com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType -->
 <g id="edge129" class="edge">
-<title>com.example.sms.service.system.audit.AuditService#start(com.example.sms.domain.type.audit.ApplicationExecutionProcessType, com.example.sms.domain.type.audit.ApplicationExecutionHistoryType)&#45;&gt;com.example.sms.domain.type.audit.ApplicationExecutionHistoryType</title>
+<title>com.example.sms.service.system.audit.AuditService#start(com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType, com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType)&#45;&gt;com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType</title>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M1591.35,-275.21C1653.6,-290.56 1745.58,-313.25 1809.91,-329.12"/>
 </g>
-<!-- com.example.sms.service.system.audit.AuditService#start(com.example.sms.domain.type.audit.ApplicationExecutionProcessType, com.example.sms.domain.type.audit.ApplicationExecutionHistoryType)&#45;&gt;com.example.sms.domain.type.audit.ApplicationExecutionProcessFlag -->
+<!-- com.example.sms.service.system.audit.AuditService#start(com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType, com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType)&#45;&gt;com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag -->
 <g id="edge132" class="edge">
-<title>com.example.sms.service.system.audit.AuditService#start(com.example.sms.domain.type.audit.ApplicationExecutionProcessType, com.example.sms.domain.type.audit.ApplicationExecutionHistoryType)&#45;&gt;com.example.sms.domain.type.audit.ApplicationExecutionProcessFlag</title>
+<title>com.example.sms.service.system.audit.AuditService#start(com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType, com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType)&#45;&gt;com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag</title>
 <path fill="none" stroke="black" stroke-dasharray="1,5" d="M1584.03,-275.53C1673.59,-300.75 1840.54,-347.78 1932.87,-373.78"/>
 </g>
-<!-- com.example.sms.service.system.audit.AuditService#start(com.example.sms.domain.type.audit.ApplicationExecutionProcessType, com.example.sms.domain.type.audit.ApplicationExecutionHistoryType)&#45;&gt;com.example.sms.domain.model.system.user.UserId -->
+<!-- com.example.sms.service.system.audit.AuditService#start(com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType, com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType)&#45;&gt;com.example.sms.domain.model.system.user.UserId -->
 <g id="edge133" class="edge">
-<title>com.example.sms.service.system.audit.AuditService#start(com.example.sms.domain.type.audit.ApplicationExecutionProcessType, com.example.sms.domain.type.audit.ApplicationExecutionHistoryType)&#45;&gt;com.example.sms.domain.model.system.user.UserId</title>
+<title>com.example.sms.service.system.audit.AuditService#start(com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType, com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType)&#45;&gt;com.example.sms.domain.model.system.user.UserId</title>
 <path fill="none" stroke="black" stroke-dasharray="1,5" d="M1490.13,-240.47C1481.33,-235.71 1471.81,-230.57 1462.98,-225.79"/>
 </g>
-<!-- com.example.sms.domain.type.audit.ApplicationExecutionProcessType -->
+<!-- com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType -->
 <g id="node85" class="node">
-<title>com.example.sms.domain.type.audit.ApplicationExecutionProcessType</title>
+<title>com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType</title>
 <g id="a_node85"><a xlink:title="ApplicationExecutionProcessType">
 <polygon fill="whitesmoke" stroke="black" points="1888.62,-140.27 1596.62,-140.27 1596.62,-104.27 1888.62,-104.27 1888.62,-140.27"/>
 <text text-anchor="middle" x="1742.62" y="-116.1" font-family="Times New Roman,serif" font-size="14.00">アプリケーション実行プロセス区分</text>
 </a>
 </g>
 </g>
-<!-- com.example.sms.service.system.audit.AuditService#start(com.example.sms.domain.type.audit.ApplicationExecutionProcessType, com.example.sms.domain.type.audit.ApplicationExecutionHistoryType)&#45;&gt;com.example.sms.domain.type.audit.ApplicationExecutionProcessType -->
+<!-- com.example.sms.service.system.audit.AuditService#start(com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType, com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType)&#45;&gt;com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType -->
 <g id="edge130" class="edge">
-<title>com.example.sms.service.system.audit.AuditService#start(com.example.sms.domain.type.audit.ApplicationExecutionProcessType, com.example.sms.domain.type.audit.ApplicationExecutionHistoryType)&#45;&gt;com.example.sms.domain.type.audit.ApplicationExecutionProcessType</title>
+<title>com.example.sms.service.system.audit.AuditService#start(com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType, com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType)&#45;&gt;com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType</title>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M1552.49,-240.36C1594.3,-214.39 1670.96,-166.78 1713.03,-140.65"/>
 </g>
 <!-- com.example.sms.service.system.auth.AuthApiService#authenticateUser(org.springframework.security.core.Authentication, java.lang.String, java.lang.String)&#45;&gt;java.lang.String -->
@@ -1736,18 +1736,18 @@
 <title>com.example.sms.service.system.download.DownloadService#convert(com.example.sms.domain.model.system.download.DownloadCriteria)&#45;&gt;com.example.sms.domain.model.system.download.DownloadCriteria</title>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M597.26,-1026.15C593.05,-1026.77 588.72,-1027.41 584.36,-1028.06"/>
 </g>
-<!-- com.example.sms.domain.type.download.DownloadTarget -->
+<!-- com.example.sms.domain.model.system.download.DownloadTarget -->
 <g id="node98" class="node">
-<title>com.example.sms.domain.type.download.DownloadTarget</title>
+<title>com.example.sms.domain.model.system.download.DownloadTarget</title>
 <g id="a_node98"><a xlink:title="DownloadTarget">
 <polygon fill="whitesmoke" stroke="black" points="646.84,-1140.59 492.84,-1140.59 492.84,-1104.59 646.84,-1104.59 646.84,-1140.59"/>
 <text text-anchor="middle" x="569.84" y="-1116.41" font-family="Times New Roman,serif" font-size="14.00">ダウンロード対象</text>
 </a>
 </g>
 </g>
-<!-- com.example.sms.service.system.download.DownloadService#convert(com.example.sms.domain.model.system.download.DownloadCriteria)&#45;&gt;com.example.sms.domain.type.download.DownloadTarget -->
+<!-- com.example.sms.service.system.download.DownloadService#convert(com.example.sms.domain.model.system.download.DownloadCriteria)&#45;&gt;com.example.sms.domain.model.system.download.DownloadTarget -->
 <g id="edge149" class="edge">
-<title>com.example.sms.service.system.download.DownloadService#convert(com.example.sms.domain.model.system.download.DownloadCriteria)&#45;&gt;com.example.sms.domain.type.download.DownloadTarget</title>
+<title>com.example.sms.service.system.download.DownloadService#convert(com.example.sms.domain.model.system.download.DownloadCriteria)&#45;&gt;com.example.sms.domain.model.system.download.DownloadTarget</title>
 <path fill="none" stroke="black" stroke-dasharray="1,5" d="M632.83,-1036.55C619.05,-1055.37 597.28,-1085.1 583.28,-1104.22"/>
 </g>
 <!-- com.example.sms.service.system.download.DownloadService#convertDepartments(com.example.sms.domain.model.system.download.DownloadCriteria)&#45;&gt;com.example.sms.domain.model.master.department.DepartmentList -->
@@ -1804,9 +1804,9 @@
 <title>com.example.sms.service.system.download.DownloadService#count(com.example.sms.domain.model.system.download.DownloadCriteria)&#45;&gt;com.example.sms.domain.model.system.download.DownloadCriteria</title>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M427.8,-1175.63C445.14,-1145.9 479.2,-1087.51 496.53,-1057.8"/>
 </g>
-<!-- com.example.sms.service.system.download.DownloadService#count(com.example.sms.domain.model.system.download.DownloadCriteria)&#45;&gt;com.example.sms.domain.type.download.DownloadTarget -->
+<!-- com.example.sms.service.system.download.DownloadService#count(com.example.sms.domain.model.system.download.DownloadCriteria)&#45;&gt;com.example.sms.domain.model.system.download.DownloadTarget -->
 <g id="edge164" class="edge">
-<title>com.example.sms.service.system.download.DownloadService#count(com.example.sms.domain.model.system.download.DownloadCriteria)&#45;&gt;com.example.sms.domain.type.download.DownloadTarget</title>
+<title>com.example.sms.service.system.download.DownloadService#count(com.example.sms.domain.model.system.download.DownloadCriteria)&#45;&gt;com.example.sms.domain.model.system.download.DownloadTarget</title>
 <path fill="none" stroke="black" stroke-dasharray="1,5" d="M454.48,-1176.5C477.52,-1165.73 507.05,-1151.93 530.46,-1140.99"/>
 </g>
 <!-- int -->
@@ -1932,9 +1932,9 @@
 <title>com.example.sms.service.system.download.DownloadService#download(java.io.OutputStreamWriter, com.example.sms.domain.model.system.download.DownloadCriteria)&#45;&gt;com.example.sms.domain.model.system.download.DownloadCriteria</title>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M434.89,-1219.72C450.06,-1181.9 484.71,-1095.56 499.87,-1057.77"/>
 </g>
-<!-- com.example.sms.service.system.download.DownloadService#download(java.io.OutputStreamWriter, com.example.sms.domain.model.system.download.DownloadCriteria)&#45;&gt;com.example.sms.domain.type.download.DownloadTarget -->
+<!-- com.example.sms.service.system.download.DownloadService#download(java.io.OutputStreamWriter, com.example.sms.domain.model.system.download.DownloadCriteria)&#45;&gt;com.example.sms.domain.model.system.download.DownloadTarget -->
 <g id="edge176" class="edge">
-<title>com.example.sms.service.system.download.DownloadService#download(java.io.OutputStreamWriter, com.example.sms.domain.model.system.download.DownloadCriteria)&#45;&gt;com.example.sms.domain.type.download.DownloadTarget</title>
+<title>com.example.sms.service.system.download.DownloadService#download(java.io.OutputStreamWriter, com.example.sms.domain.model.system.download.DownloadCriteria)&#45;&gt;com.example.sms.domain.model.system.download.DownloadTarget</title>
 <path fill="none" stroke="black" stroke-dasharray="1,5" d="M449.15,-1220.51C475.58,-1199.06 520.13,-1162.92 547.08,-1141.05"/>
 </g>
 <!-- java.io.OutputStreamWriter -->

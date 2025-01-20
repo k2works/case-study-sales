@@ -1,7 +1,7 @@
 package com.example.sms.service.system.audit;
 
-import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
-import com.example.sms.domain.type.audit.ApplicationExecutionProcessType;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

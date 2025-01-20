@@ -994,18 +994,18 @@
 <title>com.example.sms.service.system.download.DownloadService#count(com.example.sms.domain.model.system.download.DownloadCriteria)&#45;&gt;com.example.sms.domain.model.system.download.DownloadCriteria</title>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M2361.19,-947C2363.26,-944.53 2365.38,-942 2367.45,-939.54"/>
 </g>
-<!-- com.example.sms.domain.type.download.DownloadTarget -->
+<!-- com.example.sms.domain.model.system.download.DownloadTarget -->
 <g id="node60" class="node">
-<title>com.example.sms.domain.type.download.DownloadTarget</title>
+<title>com.example.sms.domain.model.system.download.DownloadTarget</title>
 <g id="a_node60"><a xlink:title="DownloadTarget">
 <polygon fill="whitesmoke" stroke="black" points="2473.26,-1027.21 2319.26,-1027.21 2319.26,-991.21 2473.26,-991.21 2473.26,-1027.21"/>
 <text text-anchor="middle" x="2396.26" y="-1003.03" font-family="Times New Roman,serif" font-size="14.00">ダウンロード対象</text>
 </a>
 </g>
 </g>
-<!-- com.example.sms.service.system.download.DownloadService#count(com.example.sms.domain.model.system.download.DownloadCriteria)&#45;&gt;com.example.sms.domain.type.download.DownloadTarget -->
+<!-- com.example.sms.service.system.download.DownloadService#count(com.example.sms.domain.model.system.download.DownloadCriteria)&#45;&gt;com.example.sms.domain.model.system.download.DownloadTarget -->
 <g id="edge86" class="edge">
-<title>com.example.sms.service.system.download.DownloadService#count(com.example.sms.domain.model.system.download.DownloadCriteria)&#45;&gt;com.example.sms.domain.type.download.DownloadTarget</title>
+<title>com.example.sms.service.system.download.DownloadService#count(com.example.sms.domain.model.system.download.DownloadCriteria)&#45;&gt;com.example.sms.domain.model.system.download.DownloadTarget</title>
 <path fill="none" stroke="black" stroke-dasharray="1,5" d="M2366.7,-983.33C2369.52,-985.79 2372.41,-988.33 2375.23,-990.79"/>
 </g>
 <!-- int -->
@@ -1055,9 +1055,9 @@
 <title>com.example.sms.service.system.download.DownloadService#download(java.io.OutputStreamWriter, com.example.sms.domain.model.system.download.DownloadCriteria)&#45;&gt;com.example.sms.domain.model.system.download.DownloadCriteria</title>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M2536.35,-931.8C2512.02,-930.11 2484.87,-928.22 2460.25,-926.51"/>
 </g>
-<!-- com.example.sms.service.system.download.DownloadService#download(java.io.OutputStreamWriter, com.example.sms.domain.model.system.download.DownloadCriteria)&#45;&gt;com.example.sms.domain.type.download.DownloadTarget -->
+<!-- com.example.sms.service.system.download.DownloadService#download(java.io.OutputStreamWriter, com.example.sms.domain.model.system.download.DownloadCriteria)&#45;&gt;com.example.sms.domain.model.system.download.DownloadTarget -->
 <g id="edge90" class="edge">
-<title>com.example.sms.service.system.download.DownloadService#download(java.io.OutputStreamWriter, com.example.sms.domain.model.system.download.DownloadCriteria)&#45;&gt;com.example.sms.domain.type.download.DownloadTarget</title>
+<title>com.example.sms.service.system.download.DownloadService#download(java.io.OutputStreamWriter, com.example.sms.domain.model.system.download.DownloadCriteria)&#45;&gt;com.example.sms.domain.model.system.download.DownloadTarget</title>
 <path fill="none" stroke="black" stroke-dasharray="1,5" d="M2565.44,-951.88C2532.11,-963.17 2486.23,-978.72 2450.65,-990.78"/>
 </g>
 <!-- java.io.OutputStreamWriter -->

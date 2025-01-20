@@ -1,4 +1,4 @@
-package com.example.sms.domain.type.download;
+package com.example.sms.domain.model.system.download;
 
 import lombok.Getter;
 

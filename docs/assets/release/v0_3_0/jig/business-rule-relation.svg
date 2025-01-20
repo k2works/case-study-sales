@@ -934,35 +934,35 @@
 <path fill="none" stroke="black" d="M2916.23,-300.69C2845.87,-284.3 2745.84,-261 2684.85,-246.79"/>
 <polygon fill="black" stroke="black" points="2685.94,-243.45 2675.4,-244.59 2684.35,-250.27 2685.94,-243.45"/>
 </g>
-<!-- com.example.sms.domain.type.audit.ApplicationExecutionHistoryType -->
+<!-- com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType -->
 <g id="node49" class="node">
-<title>com.example.sms.domain.type.audit.ApplicationExecutionHistoryType</title>
-<g id="a_node49"><a xlink:href="./domain.html#com.example.sms.domain.type.audit.ApplicationExecutionHistoryType" xlink:title="アプリケーション実行履歴区分\nApplicationExecutionHistoryType">
+<title>com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType</title>
+<g id="a_node49"><a xlink:href="./domain.html#com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType" xlink:title="アプリケーション実行履歴区分\nApplicationExecutionHistoryType">
 <polygon fill="#eedd82" stroke="black" points="3407.75,-252.62 3150.25,-252.62 3150.25,-213.88 3407.75,-213.88 3407.75,-252.62"/>
 <text text-anchor="middle" x="3279" y="-235.32" font-family="Times New Roman,serif" font-size="14.00">アプリケーション実行履歴区分</text>
 <text text-anchor="middle" x="3279" y="-221.07" font-family="Times New Roman,serif" font-size="14.00">ApplicationExecutionHistoryType</text>
 </a>
 </g>
 </g>
-<!-- com.example.sms.domain.model.system.audit.ApplicationExecutionHistory&#45;&gt;com.example.sms.domain.type.audit.ApplicationExecutionHistoryType -->
+<!-- com.example.sms.domain.model.system.audit.ApplicationExecutionHistory&#45;&gt;com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType -->
 <g id="edge65" class="edge">
-<title>com.example.sms.domain.model.system.audit.ApplicationExecutionHistory&#45;&gt;com.example.sms.domain.type.audit.ApplicationExecutionHistoryType</title>
+<title>com.example.sms.domain.model.system.audit.ApplicationExecutionHistory&#45;&gt;com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType</title>
 <path fill="none" stroke="black" d="M3087.75,-300.68C3107.11,-296.07 3127.34,-290.82 3146,-285.12 3172.04,-277.18 3200.29,-266.66 3224.03,-257.24"/>
 <polygon fill="black" stroke="black" points="3225.21,-260.54 3233.19,-253.57 3222.61,-254.04 3225.21,-260.54"/>
 </g>
-<!-- com.example.sms.domain.type.audit.ApplicationExecutionProcessFlag -->
+<!-- com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag -->
 <g id="node50" class="node">
-<title>com.example.sms.domain.type.audit.ApplicationExecutionProcessFlag</title>
-<g id="a_node50"><a xlink:href="./domain.html#com.example.sms.domain.type.audit.ApplicationExecutionProcessFlag" xlink:title="アプリケーション実行プロセスフラグ\nApplicationExecutionProcessFlag">
+<title>com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag</title>
+<g id="a_node50"><a xlink:href="./domain.html#com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag" xlink:title="アプリケーション実行プロセスフラグ\nApplicationExecutionProcessFlag">
 <polygon fill="#eedd82" stroke="black" points="3734.62,-252.62 3425.38,-252.62 3425.38,-213.88 3734.62,-213.88 3734.62,-252.62"/>
 <text text-anchor="middle" x="3580" y="-235.32" font-family="Times New Roman,serif" font-size="14.00">アプリケーション実行プロセスフラグ</text>
 <text text-anchor="middle" x="3580" y="-221.07" font-family="Times New Roman,serif" font-size="14.00">ApplicationExecutionProcessFlag</text>
 </a>
 </g>
 </g>
-<!-- com.example.sms.domain.model.system.audit.ApplicationExecutionHistory&#45;&gt;com.example.sms.domain.type.audit.ApplicationExecutionProcessFlag -->
+<!-- com.example.sms.domain.model.system.audit.ApplicationExecutionHistory&#45;&gt;com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag -->
 <g id="edge66" class="edge">
-<title>com.example.sms.domain.model.system.audit.ApplicationExecutionHistory&#45;&gt;com.example.sms.domain.type.audit.ApplicationExecutionProcessFlag</title>
+<title>com.example.sms.domain.model.system.audit.ApplicationExecutionHistory&#45;&gt;com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag</title>
 <path fill="none" stroke="black" d="M3108.66,-317.4C3194.72,-314.12 3316.31,-305.83 3421,-285.12 3454.68,-278.46 3491.23,-267.07 3520.79,-256.76"/>
 <polygon fill="black" stroke="black" points="3521.66,-260.16 3529.92,-253.52 3519.32,-253.57 3521.66,-260.16"/>
 </g>
@@ -982,19 +982,19 @@
 <path fill="none" stroke="black" d="M2997,-388.25C2997,-377.49 2997,-363.67 2997,-351.4"/>
 <polygon fill="black" stroke="black" points="3000.5,-351.77 2997,-341.77 2993.5,-351.77 3000.5,-351.77"/>
 </g>
-<!-- com.example.sms.domain.type.audit.ApplicationExecutionProcessType -->
+<!-- com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType -->
 <g id="node51" class="node">
-<title>com.example.sms.domain.type.audit.ApplicationExecutionProcessType</title>
-<g id="a_node51"><a xlink:href="./domain.html#com.example.sms.domain.type.audit.ApplicationExecutionProcessType" xlink:title="アプリケーション実行プロセス区分\nApplicationExecutionProcessType">
+<title>com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType</title>
+<g id="a_node51"><a xlink:href="./domain.html#com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType" xlink:title="アプリケーション実行プロセス区分\nApplicationExecutionProcessType">
 <polygon fill="#eedd82" stroke="black" points="3442,-165.38 3150,-165.38 3150,-126.62 3442,-126.62 3442,-165.38"/>
 <text text-anchor="middle" x="3296" y="-148.07" font-family="Times New Roman,serif" font-size="14.00">アプリケーション実行プロセス区分</text>
 <text text-anchor="middle" x="3296" y="-133.82" font-family="Times New Roman,serif" font-size="14.00">ApplicationExecutionProcessType</text>
 </a>
 </g>
 </g>
-<!-- com.example.sms.domain.model.system.audit.ApplicationExecutionProcess&#45;&gt;com.example.sms.domain.type.audit.ApplicationExecutionProcessType -->
+<!-- com.example.sms.domain.model.system.audit.ApplicationExecutionProcess&#45;&gt;com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType -->
 <g id="edge68" class="edge">
-<title>com.example.sms.domain.model.system.audit.ApplicationExecutionProcess&#45;&gt;com.example.sms.domain.type.audit.ApplicationExecutionProcessType</title>
+<title>com.example.sms.domain.model.system.audit.ApplicationExecutionProcess&#45;&gt;com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType</title>
 <path fill="none" stroke="black" d="M3062.99,-213.44C3109.02,-200.31 3170.6,-182.75 3218.89,-168.98"/>
 <polygon fill="black" stroke="black" points="3219.81,-172.36 3228.47,-166.25 3217.89,-165.63 3219.81,-172.36"/>
 </g>
@@ -1088,25 +1088,25 @@
 <path fill="none" stroke="black" d="M5141.17,-467.2C5111.43,-456.41 5073.88,-442.8 5042.51,-431.42"/>
 <polygon fill="black" stroke="black" points="5043.71,-428.13 5033.12,-428.02 5041.33,-434.71 5043.71,-428.13"/>
 </g>
-<!-- com.example.sms.domain.type.download.DownloadTarget -->
+<!-- com.example.sms.domain.model.system.download.DownloadTarget -->
 <g id="node54" class="node">
-<title>com.example.sms.domain.type.download.DownloadTarget</title>
-<g id="a_node54"><a xlink:href="./domain.html#com.example.sms.domain.type.download.DownloadTarget" xlink:title="ダウンロード対象\nDownloadTarget">
+<title>com.example.sms.domain.model.system.download.DownloadTarget</title>
+<g id="a_node54"><a xlink:href="./domain.html#com.example.sms.domain.model.system.download.DownloadTarget" xlink:title="ダウンロード対象\nDownloadTarget">
 <polygon fill="#eedd82" stroke="black" points="5200,-339.88 5046,-339.88 5046,-301.12 5200,-301.12 5200,-339.88"/>
 <text text-anchor="middle" x="5123" y="-322.57" font-family="Times New Roman,serif" font-size="14.00">ダウンロード対象</text>
 <text text-anchor="middle" x="5123" y="-308.32" font-family="Times New Roman,serif" font-size="14.00">DownloadTarget</text>
 </a>
 </g>
 </g>
-<!-- com.example.sms.domain.model.system.download.Department&#45;&gt;com.example.sms.domain.type.download.DownloadTarget -->
+<!-- com.example.sms.domain.model.system.download.Department&#45;&gt;com.example.sms.domain.model.system.download.DownloadTarget -->
 <g id="edge74" class="edge">
-<title>com.example.sms.domain.model.system.download.Department&#45;&gt;com.example.sms.domain.type.download.DownloadTarget</title>
+<title>com.example.sms.domain.model.system.download.Department&#45;&gt;com.example.sms.domain.model.system.download.DownloadTarget</title>
 <path fill="none" stroke="black" d="M5184.97,-467.13C5172.84,-438.62 5149.74,-384.34 5135.43,-350.7"/>
 <polygon fill="black" stroke="black" points="5138.67,-349.37 5131.53,-341.54 5132.22,-352.11 5138.67,-349.37"/>
 </g>
-<!-- com.example.sms.domain.model.system.download.DownloadCriteria&#45;&gt;com.example.sms.domain.type.download.DownloadTarget -->
+<!-- com.example.sms.domain.model.system.download.DownloadCriteria&#45;&gt;com.example.sms.domain.model.system.download.DownloadTarget -->
 <g id="edge75" class="edge">
-<title>com.example.sms.domain.model.system.download.DownloadCriteria&#45;&gt;com.example.sms.domain.type.download.DownloadTarget</title>
+<title>com.example.sms.domain.model.system.download.DownloadCriteria&#45;&gt;com.example.sms.domain.model.system.download.DownloadTarget</title>
 <path fill="none" stroke="black" d="M5011.38,-388.04C5032.15,-375.66 5059.6,-359.3 5082.08,-345.9"/>
 <polygon fill="black" stroke="black" points="5083.59,-349.07 5090.39,-340.94 5080.01,-343.05 5083.59,-349.07"/>
 </g>
@@ -1126,9 +1126,9 @@
 <path fill="none" stroke="black" d="M5305.48,-468.62C5234.42,-455.54 5137.74,-437.76 5068.25,-424.98"/>
 <polygon fill="black" stroke="black" points="5069.29,-421.61 5058.82,-423.25 5068.02,-428.5 5069.29,-421.61"/>
 </g>
-<!-- com.example.sms.domain.model.system.download.Employee&#45;&gt;com.example.sms.domain.type.download.DownloadTarget -->
+<!-- com.example.sms.domain.model.system.download.Employee&#45;&gt;com.example.sms.domain.model.system.download.DownloadTarget -->
 <g id="edge77" class="edge">
-<title>com.example.sms.domain.model.system.download.Employee&#45;&gt;com.example.sms.domain.type.download.DownloadTarget</title>
+<title>com.example.sms.domain.model.system.download.Employee&#45;&gt;com.example.sms.domain.model.system.download.DownloadTarget</title>
 <path fill="none" stroke="black" d="M5368.22,-467.13C5317.92,-437.26 5219.97,-379.08 5164.29,-346.02"/>
 <polygon fill="black" stroke="black" points="5166.09,-343.02 5155.71,-340.92 5162.52,-349.04 5166.09,-343.02"/>
 </g>
@@ -1148,9 +1148,9 @@
 <path fill="none" stroke="black" d="M4802.19,-467.2C4835.43,-456.27 4877.51,-442.44 4912.39,-430.98"/>
 <polygon fill="black" stroke="black" points="4913.12,-434.42 4921.53,-427.97 4910.93,-427.77 4913.12,-434.42"/>
 </g>
-<!-- com.example.sms.domain.model.system.download.Product&#45;&gt;com.example.sms.domain.type.download.DownloadTarget -->
+<!-- com.example.sms.domain.model.system.download.Product&#45;&gt;com.example.sms.domain.model.system.download.DownloadTarget -->
 <g id="edge79" class="edge">
-<title>com.example.sms.domain.model.system.download.Product&#45;&gt;com.example.sms.domain.type.download.DownloadTarget</title>
+<title>com.example.sms.domain.model.system.download.Product&#45;&gt;com.example.sms.domain.model.system.download.DownloadTarget</title>
 <path fill="none" stroke="black" d="M4839.58,-468.72C4842.75,-468.32 4845.9,-467.95 4849,-467.62 4861,-466.35 5056.1,-466.52 5066,-459.62 5066.6,-459.21 5094.42,-391.38 5110.96,-350.94"/>
 <polygon fill="black" stroke="black" points="5114.18,-352.32 5114.73,-341.74 5107.7,-349.67 5114.18,-352.32"/>
 </g>
@@ -1170,9 +1170,9 @@
 <path fill="none" stroke="black" d="M4971.66,-467.3C4972.88,-458.73 4974.36,-448.35 4975.73,-438.73"/>
 <polygon fill="black" stroke="black" points="4979.17,-439.44 4977.11,-429.04 4972.24,-438.45 4979.17,-439.44"/>
 </g>
-<!-- com.example.sms.domain.model.system.download.ProductCategory&#45;&gt;com.example.sms.domain.type.download.DownloadTarget -->
+<!-- com.example.sms.domain.model.system.download.ProductCategory&#45;&gt;com.example.sms.domain.model.system.download.DownloadTarget -->
 <g id="edge81" class="edge">
-<title>com.example.sms.domain.model.system.download.ProductCategory&#45;&gt;com.example.sms.domain.type.download.DownloadTarget</title>
+<title>com.example.sms.domain.model.system.download.ProductCategory&#45;&gt;com.example.sms.domain.model.system.download.DownloadTarget</title>
 <path fill="none" stroke="black" d="M5080.73,-469.45C5088.89,-466.64 5095.35,-463.38 5099,-459.62 5126.71,-431.12 5128.83,-382.77 5126.74,-351.5"/>
 <polygon fill="black" stroke="black" points="5130.22,-351.19 5125.86,-341.54 5123.25,-351.81 5130.22,-351.19"/>
 </g>

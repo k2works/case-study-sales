@@ -59,10 +59,10 @@
 </a>
 </g>
 </g>
-<!-- com.example.sms.domain.type.audit.ApplicationExecutionProcessFlag -->
+<!-- com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag -->
 <g id="node2" class="node">
-<title>com.example.sms.domain.type.audit.ApplicationExecutionProcessFlag</title>
-<g id="a_node2"><a xlink:href="./enum.html#com.example.sms.domain.type.audit.ApplicationExecutionProcessFlag" xlink:title="&lt;TABLE&gt;">
+<title>com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag</title>
+<g id="a_node2"><a xlink:href="./enum.html#com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag" xlink:title="&lt;TABLE&gt;">
 <polygon fill="#eedd82" stroke="black" points="741.94,-342 428.69,-342 428.69,-218.25 741.94,-218.25 741.94,-342"/>
 <text text-anchor="start" x="438.69" y="-322.7" font-family="Times New Roman,serif" font-size="14.00">アプリケーション実行プロセスフラグ</text>
 <text text-anchor="start" x="493.44" y="-306.2" font-family="Times New Roman,serif" font-size="14.00">ApplicationExecutionProcessFlag</text>
@@ -77,10 +77,10 @@
 </a>
 </g>
 </g>
-<!-- com.example.sms.domain.type.audit.ApplicationExecutionHistoryType -->
+<!-- com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType -->
 <g id="node3" class="node">
-<title>com.example.sms.domain.type.audit.ApplicationExecutionHistoryType</title>
-<g id="a_node3"><a xlink:href="./enum.html#com.example.sms.domain.type.audit.ApplicationExecutionHistoryType" xlink:title="&lt;TABLE&gt;">
+<title>com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType</title>
+<g id="a_node3"><a xlink:href="./enum.html#com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType" xlink:title="&lt;TABLE&gt;">
 <polygon fill="#eedd82" stroke="black" points="691.06,-489.75 429.56,-489.75 429.56,-406.5 691.06,-406.5 691.06,-489.75"/>
 <text text-anchor="start" x="439.56" y="-470.45" font-family="Times New Roman,serif" font-size="14.00">アプリケーション実行履歴区分</text>
 <text text-anchor="start" x="467.31" y="-453.95" font-family="Times New Roman,serif" font-size="14.00">ApplicationExecutionHistoryType</text>
@@ -91,10 +91,10 @@
 </a>
 </g>
 </g>
-<!-- com.example.sms.domain.type.audit.ApplicationExecutionProcessType -->
+<!-- com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType -->
 <g id="node4" class="node">
-<title>com.example.sms.domain.type.audit.ApplicationExecutionProcessType</title>
-<g id="a_node4"><a xlink:href="./enum.html#com.example.sms.domain.type.audit.ApplicationExecutionProcessType" xlink:title="&lt;TABLE&gt;">
+<title>com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType</title>
+<g id="a_node4"><a xlink:href="./enum.html#com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType" xlink:title="&lt;TABLE&gt;">
 <polygon fill="#eedd82" stroke="black" points="374.31,-604.62 78.31,-604.62 78.31,-217.62 374.31,-217.62 374.31,-604.62"/>
 <text text-anchor="start" x="88.31" y="-585.33" font-family="Times New Roman,serif" font-size="14.00">アプリケーション実行プロセス区分</text>
 <text text-anchor="start" x="132.94" y="-568.83" font-family="Times New Roman,serif" font-size="14.00">ApplicationExecutionProcessType</text>
@@ -135,10 +135,10 @@
 </a>
 </g>
 </g>
-<!-- com.example.sms.domain.type.download.DownloadTarget -->
+<!-- com.example.sms.domain.model.system.download.DownloadTarget -->
 <g id="node5" class="node">
-<title>com.example.sms.domain.type.download.DownloadTarget</title>
-<g id="a_node5"><a xlink:href="./enum.html#com.example.sms.domain.type.download.DownloadTarget" xlink:title="&lt;TABLE&gt;">
+<title>com.example.sms.domain.model.system.download.DownloadTarget</title>
+<g id="a_node5"><a xlink:href="./enum.html#com.example.sms.domain.model.system.download.DownloadTarget" xlink:title="&lt;TABLE&gt;">
 <polygon fill="#eedd82" stroke="black" points="1006.12,-132 848.12,-132 848.12,-8.25 1006.12,-8.25 1006.12,-132"/>
 <text text-anchor="start" x="858.12" y="-112.7" font-family="Times New Roman,serif" font-size="14.00">ダウンロード対象</text>
 <text text-anchor="start" x="881.75" y="-96.2" font-family="Times New Roman,serif" font-size="14.00">DownloadTarget</text>

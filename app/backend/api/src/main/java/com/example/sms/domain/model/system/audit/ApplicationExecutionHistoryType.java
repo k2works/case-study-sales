@@ -1,4 +1,4 @@
-package com.example.sms.domain.type.audit;
+package com.example.sms.domain.model.system.audit;
 
 /**
  * アプリケーション実行履歴区分

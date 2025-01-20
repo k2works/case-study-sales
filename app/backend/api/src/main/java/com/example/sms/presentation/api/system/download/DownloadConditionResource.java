@@ -1,7 +1,7 @@
 package com.example.sms.presentation.api.system.download;
 
 import com.example.sms.domain.model.system.download.*;
-import com.example.sms.domain.type.download.DownloadTarget;
+import com.example.sms.domain.model.system.download.DownloadTarget;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
