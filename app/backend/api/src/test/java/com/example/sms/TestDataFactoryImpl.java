@@ -14,27 +14,22 @@ public class TestDataFactoryImpl implements TestDataFactory {
     @Override
     public void setUpForAuthApiService() {
         userRepository.deleteAll();
-        userRepository.save(user());
-        userRepository.save(admin());
-    }
-
-    @Override
-    public User User() {
-        return user();
+        userRepository.save(getUser());
+        userRepository.save(getAdmin());
     }
 
     @Override
     public void setUpForUserManagementService() {
         userRepository.deleteAll();
-        userRepository.save(user());
-        userRepository.save(admin());
+        userRepository.save(getUser());
+        userRepository.save(getAdmin());
     }
 
-    private static User user() {
+    public static User getUser() {
         return User.of("U999999", "$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK", "first", "last", RoleName.USER);
     }
 
-    private static User admin() {
+    public static User getAdmin() {
         return User.of("U888888", "$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK", "first", "last", RoleName.USER);
     }
 }
