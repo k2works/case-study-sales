@@ -4,20 +4,12 @@ import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.ProductCategory;
 import com.example.sms.domain.model.master.product.ProductCategoryList;
-import com.example.sms.domain.type.product.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
 
 import java.util.List;
 import java.util.stream.IntStream;
@@ -25,22 +17,8 @@ import java.util.stream.IntStream;
 import static org.junit.Assert.assertEquals;
 
 @SpringBootTest
-@Testcontainers
-@ActiveProfiles("container")
 @DisplayName("商品分類レポジトリ")
 public class ProductCategoryRepositoryTest {
-    @Container
-    private static final PostgreSQLContainer<?> postgres =
-            new PostgreSQLContainer<>(DockerImageName.parse("postgres:15"))
-                    .withUsername("root")
-                    .withPassword("password")
-                    .withDatabaseName("postgres");
-
-    @DynamicPropertySource
-    static void setup(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgres::getJdbcUrl);
-    }
-
     @Autowired
     private ProductCategoryRepository repository;
     @Autowired
@@ -53,11 +31,11 @@ public class ProductCategoryRepositoryTest {
     }
 
     private ProductCategory getProductCategory(String productCategoryCode) {
-        return TestDataFactoryImpl.getProductCategory(productCategoryCode, "商品分類名", 0, "商品分類パス", 1);
+        return TestDataFactoryImpl.getProductCategory(productCategoryCode);
     }
 
     private Product getProduct(String productCode) {
-        return TestDataFactoryImpl.getProduct(productCode, "商品正式名", "商品略称", "商品名カナ", ProductType.その他, 1000, 2000, 3000, TaxType.外税, "99999999", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "000", 5);
+        return TestDataFactoryImpl.getProduct(productCode);
     }
 
     @Nested

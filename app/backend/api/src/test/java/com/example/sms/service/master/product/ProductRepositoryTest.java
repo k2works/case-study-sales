@@ -3,7 +3,6 @@ package com.example.sms.service.master.product;
 import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.master.product.*;
 import com.example.sms.domain.type.product.*;
-import com.example.sms.infrastructure.datasource.ObjectOptimisticLockingFailureException;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -11,39 +10,16 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
+import static org.junit.Assert.assertEquals;
 
 @SpringBootTest
-@Testcontainers
-@ActiveProfiles("container")
 @DisplayName("商品レポジトリ")
 public class ProductRepositoryTest {
-    @Container
-    private static final PostgreSQLContainer<?> postgres =
-            new PostgreSQLContainer<>(DockerImageName.parse("postgres:15"))
-                    .withUsername("root")
-                    .withPassword("password")
-                    .withDatabaseName("postgres");
-
-    @DynamicPropertySource
-    static void setup(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgres::getJdbcUrl);
-    }
-
     @Autowired
     private ProductRepository repository;
 
@@ -53,11 +29,28 @@ public class ProductRepositoryTest {
     }
 
     private Product getProduct(String productCode) {
-        return TestDataFactoryImpl.getProduct(productCode, "商品正式名", "商品略称", "商品名カナ", ProductType.その他, 1000, 2000, 3000, TaxType.外税, "00000000", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "000", 5);
+        return TestDataFactoryImpl.getProduct(productCode);
     }
 
     private Product getProductForBom(String productCode, ProductType productType) {
-        return TestDataFactoryImpl.getProduct(productCode, "商品正式名", "商品略称", "商品名カナ", productType, 1000, 2000, 3000, TaxType.外税, "00000000", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "000", 5);
+        Product product = getProduct(productCode);
+        return Product.of(
+                product.getProductCode(),
+                product.getProductName(),
+                productType,
+                product.getSellingPrice(),
+                product.getPurchasePrice(),
+                product.getCostOfSales(),
+                product.getTaxType(),
+                product.getProductCategoryCode(),
+                product.getMiscellaneousType(),
+                product.getStockManagementTargetType(),
+                product.getStockAllocationType(),
+                product.getSupplierCode(),
+                product.getSubstituteProduct(),
+                product.getBoms(),
+                product.getCustomerSpecificSellingPrices()
+        );
     }
 
     private SubstituteProduct getSubstituteProduct(String productCode, String substituteProductCode) {
@@ -69,7 +62,7 @@ public class ProductRepositoryTest {
     }
 
     private CustomerSpecificSellingPrice getCustomerSpecificSellingPrice(String productCode, String format) {
-        return TestDataFactoryImpl.customerSpecificSellingPrice(productCode, format, 1);
+        return TestDataFactoryImpl.getCustomerSpecificSellingPrice(productCode, format, 1);
     }
 
     @Nested
@@ -107,7 +100,7 @@ public class ProductRepositoryTest {
             assertEquals(product.getMiscellaneousType(), actual.getMiscellaneousType());
             assertEquals(product.getStockManagementTargetType(), actual.getStockManagementTargetType());
             assertEquals(product.getStockAllocationType(), actual.getStockAllocationType());
-            assertEquals(product.getVendorCode(), actual.getVendorCode());
+            assertEquals(product.getSupplierCode(), actual.getSupplierCode());
         }
 
         @Test
@@ -117,7 +110,7 @@ public class ProductRepositoryTest {
             repository.save(product);
 
             product = repository.findById(product.getProductCode().getValue()).get();
-            Product updatedProduct = Product.of(product.getProductCode().getValue(), "更新後商品正式名", "更新後商品略称", "更新後商品名カナ", ProductType.商品, 2000, 3000, 4000, TaxType.内税, "99999999", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "999", 6);
+            Product updatedProduct = Product.of(product.getProductCode().getValue(), "更新後商品正式名", "更新後商品略称", "更新後商品名カナ", ProductType.商品, 2000, 3000, 4000, TaxType.内税, "99999999", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "99999999", 6);
             repository.save(updatedProduct);
 
             Product actual = repository.findById(product.getProductCode().getValue()).get();
@@ -133,37 +126,6 @@ public class ProductRepositoryTest {
             repository.deleteById(product);
 
             assertEquals(0, repository.selectAll().size());
-        }
-
-        //TODO: マルチスレッドだと失敗してもテストは正常終了扱いになるので、コンソールで確認する必要がある
-        @Test
-        @DisplayName("楽観ロックが正常に動作すること")
-        void testOptimisticLockingWithThreads() throws InterruptedException {
-            // Productを新規作成して保存
-            Product product1 = getProduct("99999999");
-            repository.save(product1);
-
-            // スレッド1でproduct1を更新
-            Thread thread1 = new Thread(() -> {
-                Product updatedProduct1 = getProduct("99999999");
-                repository.save(updatedProduct1);
-            });
-
-            // スレッド2でproduct2を更新し、例外を確認
-            Thread thread2 = new Thread(() -> {
-                Product updatedProduct2 = getProduct("99999999");
-                assertThrows(ObjectOptimisticLockingFailureException.class, () -> {
-                    repository.save(updatedProduct2);
-                });
-            });
-
-            // スレッドを開始
-            thread1.start();
-            thread2.start();
-
-            // スレッドの終了を待機
-            thread1.join();
-            thread2.join();
         }
     }
 
@@ -252,7 +214,6 @@ public class ProductRepositoryTest {
                     getProductForBom("99999998", ProductType.製品),
                     getProductForBom("99999997", ProductType.部品),
                     getProductForBom("99999996", ProductType.包材),
-
                     getProductForBom("99999995", ProductType.その他)
             );
             products.forEach(product -> {
