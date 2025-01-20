@@ -77,9 +77,9 @@ public class ProductApiController {
     @Operation(summary = "商品を登録する")
     @PostMapping
     @AuditAnnotation(process = ApplicationExecutionProcessType.商品登録, type = ApplicationExecutionHistoryType.同期)
-    public ResponseEntity<?> create(@RequestBody ProductResource productResource) {
+    public ResponseEntity<?> create(@RequestBody ProductResource resource) {
         try {
-            Product product = createProduct(productResource.getProductCode(), productResource);
+            Product product = convertToEntity(resource);
             if (productService.find(product.getProductCode().getValue()) != null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.product.already.exist")));
             }
@@ -93,9 +93,10 @@ public class ProductApiController {
     @Operation(summary = "商品を更新する")
     @PutMapping("/{productCode}")
     @AuditAnnotation(process = ApplicationExecutionProcessType.商品更新, type = ApplicationExecutionHistoryType.同期)
-    public ResponseEntity<?> update(@PathVariable String productCode, @RequestBody ProductResource productResource) {
+    public ResponseEntity<?> update(@PathVariable String productCode, @RequestBody ProductResource resource) {
         try {
-            Product product = createProduct(productCode, productResource);
+            resource.setProductCode(productCode);
+            Product product = convertToEntity(resource);
             if (productService.find(product.getProductCode().getValue()) == null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.product.not.exist")));
             }
@@ -140,6 +141,33 @@ public class ProductApiController {
         }
     }
 
+    private Product convertToEntity(ProductResource resource) {
+        Product product = Product.of(
+                resource.getProductCode(),
+                resource.getProductFormalName(),
+                resource.getProductAbbreviation(),
+                resource.getProductNameKana(),
+                resource.getProductType(),
+                resource.getSellingPrice(),
+                resource.getPurchasePrice(),
+                resource.getCostOfSales(),
+                resource.getTaxType(),
+                resource.getProductClassificationCode(),
+                resource.getMiscellaneousType(),
+                resource.getStockManagementTargetType(),
+                resource.getStockAllocationType(),
+                resource.getVendorCode(),
+                resource.getVendorBranchNumber()
+        );
+        product = Product.of(
+                product,
+                resource.getSubstituteProduct(),
+                resource.getBoms(),
+                resource.getCustomerSpecificSellingPrices()
+        );
+        return product;
+    }
+
     private ProductCriteria convertToCriteria(ProductCriteriaResource resource) {
         return ProductCriteria.builder()
                 .productCode(resource.getProductCode())
@@ -159,32 +187,4 @@ public class ProductApiController {
     private <T> T mapStringToCode(String value, Function<String, T> mapper) {
         return value != null ? mapper.apply(value) : null;
     }
-
-    private static Product createProduct(String productResource, ProductResource productResource1) {
-        Product product = Product.of(
-                productResource,
-                productResource1.getProductFormalName(),
-                productResource1.getProductAbbreviation(),
-                productResource1.getProductNameKana(),
-                productResource1.getProductType(),
-                productResource1.getSellingPrice(),
-                productResource1.getPurchasePrice(),
-                productResource1.getCostOfSales(),
-                productResource1.getTaxType(),
-                productResource1.getProductClassificationCode(),
-                productResource1.getMiscellaneousType(),
-                productResource1.getStockManagementTargetType(),
-                productResource1.getStockAllocationType(),
-                productResource1.getVendorCode(),
-                productResource1.getVendorBranchNumber()
-        );
-        product = Product.of(
-                product,
-                productResource1.getSubstituteProduct(),
-                productResource1.getBoms(),
-                productResource1.getCustomerSpecificSellingPrices()
-        );
-        return product;
-    }
-
 }
