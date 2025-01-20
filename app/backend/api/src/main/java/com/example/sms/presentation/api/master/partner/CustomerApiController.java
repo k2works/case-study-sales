@@ -133,7 +133,7 @@ public class CustomerApiController {
                 resource.getCollectionBranchNumber(),
                 resource.getCustomerName(),
                 resource.getCustomerNameKana(),
-                resource.companyRepresentativeCode,
+                resource.getCompanyRepresentativeCode(),
                 resource.getCustomerRepresentativeName(),
                 resource.getCustomerDepartmentName(),
                 resource.getCustomerPostalCode(),
