@@ -7,7 +7,7 @@ import com.example.sms.domain.model.system.user.Name;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.user.UserId;
 import com.example.sms.domain.model.system.user.UserList;
-import com.example.sms.domain.type.user.RoleName;
+import com.example.sms.domain.model.system.user.RoleName;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

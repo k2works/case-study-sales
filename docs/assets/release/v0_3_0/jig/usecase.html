@@ -1087,16 +1087,16 @@ classDef lambda fill:#999,font-size:80%;</pre>
                 </section>
 
                 <section class="method">
-                    <h3 id="c_e_s_s_s_a_AuditService_start_c_e_s_d_t_a_ApplicationExecutionProcessType__c_e_s_d_t_a_ApplicationExecutionHistoryType_">アプリケーション実行履歴開始</h3>
+                    <h3 id="c_e_s_s_s_a_AuditService_start_c_e_s_d_m_s_a_ApplicationExecutionProcessType__c_e_s_d_m_s_a_ApplicationExecutionHistoryType_">アプリケーション実行履歴開始</h3>
                     <div class="fully-qualified-name">start(ApplicationExecutionProcessType, ApplicationExecutionHistoryType):ApplicationExecutionHistory</div>
 
                     <pre class="mermaid">graph LR
 c_e_s_s_s_a_AuthApiService_getCurrentUserId__(["現在のユーザーIDの取得"])
 click c_e_s_s_s_a_AuthApiService_getCurrentUserId__ "#c_e_s_s_s_a_AuthApiService_getCurrentUserId__"
-c_e_s_s_s_a_AuditService_start_c_e_s_d_t_a_ApplicationExecutionProcessType__c_e_s_d_t_a_ApplicationExecutionHistoryType_(["アプリケーション実行履歴開始"])
-style c_e_s_s_s_a_AuditService_start_c_e_s_d_t_a_ApplicationExecutionProcessType__c_e_s_d_t_a_ApplicationExecutionHistoryType_ font-weight:bold
-c_e_s_s_s_a_AuditService_start_c_e_s_d_t_a_ApplicationExecutionProcessType__c_e_s_d_t_a_ApplicationExecutionHistoryType_ --> c_e_s_s_s_a_AuthApiService_getCurrentUserId__
-c_e_s_s_s_a_AuditService_start_c_e_s_d_t_a_ApplicationExecutionProcessType__c_e_s_d_t_a_ApplicationExecutionHistoryType_ --> com_example_sms_service_system_audit_AuditRepository
+c_e_s_s_s_a_AuditService_start_c_e_s_d_m_s_a_ApplicationExecutionProcessType__c_e_s_d_m_s_a_ApplicationExecutionHistoryType_(["アプリケーション実行履歴開始"])
+style c_e_s_s_s_a_AuditService_start_c_e_s_d_m_s_a_ApplicationExecutionProcessType__c_e_s_d_m_s_a_ApplicationExecutionHistoryType_ font-weight:bold
+c_e_s_s_s_a_AuditService_start_c_e_s_d_m_s_a_ApplicationExecutionProcessType__c_e_s_d_m_s_a_ApplicationExecutionHistoryType_ --> c_e_s_s_s_a_AuthApiService_getCurrentUserId__
+c_e_s_s_s_a_AuditService_start_c_e_s_d_m_s_a_ApplicationExecutionProcessType__c_e_s_d_m_s_a_ApplicationExecutionHistoryType_ --> com_example_sms_service_system_audit_AuditRepository
 com_example_sms_service_system_audit_AuditRepository[AuditRepository]:::others
 classDef others fill:#AAA,font-size:90%;
 classDef lambda fill:#999,font-size:80%;</pre>
@@ -1104,10 +1104,10 @@ classDef lambda fill:#999,font-size:80%;</pre>
                     <dl class="depends">
                         <dt>要求するもの（引数）</dt>
                         <dd>
-                            <a class="method-argument-item" href="./domain.html#com.example.sms.domain.type.audit.ApplicationExecutionHistoryType">アプリケーション実行履歴区分</a>
+                            <a class="method-argument-item" href="./domain.html#com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType">アプリケーション実行履歴区分</a>
                         </dd>
                         <dd>
-                            <a class="method-argument-item" href="./domain.html#com.example.sms.domain.type.audit.ApplicationExecutionProcessType">アプリケーション実行プロセス区分</a>
+                            <a class="method-argument-item" href="./domain.html#com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType">アプリケーション実行プロセス区分</a>
                         </dd>
                         <dt>得られるもの（戻り値）</dt>
                         <dd><a href="./domain.html#com.example.sms.domain.model.system.audit.ApplicationExecutionHistory">アプリケーション実行履歴</a></dd>

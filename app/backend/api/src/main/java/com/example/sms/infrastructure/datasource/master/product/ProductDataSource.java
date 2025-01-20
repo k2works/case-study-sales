@@ -2,7 +2,7 @@ package com.example.sms.infrastructure.datasource.master.product;
 
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.ProductList;
-import com.example.sms.domain.type.product.ProductType;
+import com.example.sms.domain.model.master.product.ProductType;
 import com.example.sms.infrastructure.PageInfoHelper;
 import com.example.sms.infrastructure.datasource.ObjectOptimisticLockingFailureException;
 import com.example.sms.infrastructure.datasource.autogen.mapper.代替商品Mapper;

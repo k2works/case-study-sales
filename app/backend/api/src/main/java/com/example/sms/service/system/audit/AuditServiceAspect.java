@@ -1,8 +1,8 @@
 package com.example.sms.service.system.audit;
 
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
-import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
-import com.example.sms.domain.type.audit.ApplicationExecutionProcessType;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

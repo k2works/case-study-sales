@@ -2,10 +2,10 @@ package com.example.sms.service.system.audit;
 
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryList;
+import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.domain.model.system.user.User;
-import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
-import com.example.sms.domain.type.audit.ApplicationExecutionProcessFlag;
-import com.example.sms.domain.type.user.RoleName;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag;
 import com.example.sms.service.system.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

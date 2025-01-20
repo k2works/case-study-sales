@@ -1,7 +1,7 @@
 package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
-import com.example.sms.domain.type.download.DownloadTarget;
+import com.example.sms.domain.model.system.download.DownloadTarget;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
 import com.example.sms.presentation.api.system.download.DownloadConditionResource;
 import com.example.sms.stepdefinitions.utils.SpringAcceptanceTest;

@@ -2,8 +2,8 @@ package com.example.sms.presentation.api.master.product;
 
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.ProductCategory;
-import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
-import com.example.sms.domain.type.audit.ApplicationExecutionProcessType;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;

@@ -1,9 +1,6 @@
 package com.example.sms.presentation.api.master.product;
 
-import com.example.sms.domain.model.master.product.Bom;
-import com.example.sms.domain.model.master.product.CustomerSpecificSellingPrice;
-import com.example.sms.domain.model.master.product.SubstituteProduct;
-import com.example.sms.domain.type.product.*;
+import com.example.sms.domain.model.master.product.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;

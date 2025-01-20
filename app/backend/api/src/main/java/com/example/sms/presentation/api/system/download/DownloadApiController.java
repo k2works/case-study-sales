@@ -1,8 +1,8 @@
 package com.example.sms.presentation.api.system.download;
 
 import com.example.sms.domain.model.system.download.DownloadCriteria;
-import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
-import com.example.sms.domain.type.audit.ApplicationExecutionProcessType;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
 import com.example.sms.service.system.audit.AuditAnnotation;
 import com.example.sms.service.system.download.DownloadService;

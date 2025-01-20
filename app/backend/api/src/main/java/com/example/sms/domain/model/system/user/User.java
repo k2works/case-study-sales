@@ -1,6 +1,5 @@
 package com.example.sms.domain.model.system.user;
 
-import com.example.sms.domain.type.user.RoleName;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

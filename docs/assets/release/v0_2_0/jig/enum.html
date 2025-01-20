@@ -14,33 +14,48 @@
     <nav class="tree">
         <details open>
             <summary class="package">
-                <a href="#com.example.sms.domain.type">区分</a>
+                <a href="#com.example.sms.domain">ドメイン層</a>
             </summary>
             <details open>
             <summary class="package">
-                <a href="#com.example.sms.domain.type.user">ユーザー</a>
+                <a href="#com.example.sms.domain.type">ドメインモデル(基本型)</a>
             </summary>
-            <div><a href="#com.example.sms.domain.type.user.RoleName">役割</a></div>
-        </details><details open>
+            <details open>
             <summary class="package">
                 <a href="#com.example.sms.domain.type.quantity">数量</a>
             </summary>
             <div><a href="#com.example.sms.domain.type.quantity.UnitType">単位区分</a></div>
         </details><details open>
             <summary class="package">
-                <a href="#com.example.sms.domain.type.product">商品</a>
+                <a href="#com.example.sms.domain.type.money">通貨</a>
             </summary>
-            <div><a href="#com.example.sms.domain.type.product.BusinessType">事業区分</a></div><div><a href="#com.example.sms.domain.type.product.ItemType">品目区分</a></div><div><a href="#com.example.sms.domain.type.product.LiveStockType">畜産区分</a></div><div><a href="#com.example.sms.domain.type.product.MiscellaneousType">雑区分</a></div><div><a href="#com.example.sms.domain.type.product.ProductType">商品区分</a></div><div><a href="#com.example.sms.domain.type.product.StockAllocationType">在庫引当区分</a></div><div><a href="#com.example.sms.domain.type.product.StockManagementTargetType">在庫管理対象区分</a></div><div><a href="#com.example.sms.domain.type.product.TaxType">税区分</a></div>
+            <div><a href="#com.example.sms.domain.type.money.CurrencyType">通貨タイプ</a></div>
+        </details>
         </details><details open>
             <summary class="package">
-                <a href="#com.example.sms.domain.type.money">数量</a>
+                <a href="#com.example.sms.domain.model">ドメインモデル(複合型)</a>
             </summary>
-            <div><a href="#com.example.sms.domain.type.money.CurrencyType">通過タイプ</a></div>
+            <details open>
+            <summary class="package">
+                <a href="#com.example.sms.domain.model.system">システム</a>
+            </summary>
+            <div><a href="#com.example.sms.domain.model.system.user.RoleName">役割</a></div>
         </details><details open>
             <summary class="package">
-                <a href="#com.example.sms.domain.type.department">部門</a>
+                <a href="#com.example.sms.domain.model.master">マスタ</a>
             </summary>
-            <div><a href="#com.example.sms.domain.type.department.DepartmentLowerType">最下層区分</a></div><div><a href="#com.example.sms.domain.type.department.SlitYnType">伝票入力可否</a></div>
+            <details open>
+            <summary class="package">
+                <a href="#com.example.sms.domain.model.master.department">部門</a>
+            </summary>
+            <div><a href="#com.example.sms.domain.model.master.department.DepartmentLowerType">最下層区分</a></div><div><a href="#com.example.sms.domain.model.master.department.SlitYnType">伝票入力可否</a></div>
+        </details><details open>
+            <summary class="package">
+                <a href="#com.example.sms.domain.model.master.product">商品</a>
+            </summary>
+            <div><a href="#com.example.sms.domain.model.master.product.BusinessType">事業区分</a></div><div><a href="#com.example.sms.domain.model.master.product.ItemType">品目区分</a></div><div><a href="#com.example.sms.domain.model.master.product.LiveStockType">畜産区分</a></div><div><a href="#com.example.sms.domain.model.master.product.MiscellaneousType">雑区分</a></div><div><a href="#com.example.sms.domain.model.master.product.ProductType">商品区分</a></div><div><a href="#com.example.sms.domain.model.master.product.StockAllocationType">在庫引当区分</a></div><div><a href="#com.example.sms.domain.model.master.product.StockManagementTargetType">在庫管理対象区分</a></div><div><a href="#com.example.sms.domain.model.master.product.TaxType">税区分</a></div>
+        </details>
+        </details>
         </details>
         </details>
         
@@ -48,8 +63,8 @@
 
     <main>
         <section class="type">
-            <h2><a name="com.example.sms.domain.type.department.DepartmentLowerType">最下層区分</a></h2>
-            <div class="fully-qualified-name">com.example.sms.domain.type.department.DepartmentLowerType</div>
+            <h2><a name="com.example.sms.domain.model.master.department.DepartmentLowerType">最下層区分</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.master.department.DepartmentLowerType</div>
 
             
                 
@@ -128,15 +143,15 @@
                     <td>
                         <a class="method-argument-item" href="#int">int</a>
                     </td>
-                    <td><a href="./domain.html#com.example.sms.domain.type.department.DepartmentLowerType">最下層区分</a></td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.master.department.DepartmentLowerType">最下層区分</a></td>
                     <td class="markdown javadoc"></td>
                 </tr>
             </table>
         
         </section>
         <section class="type">
-            <h2><a name="com.example.sms.domain.type.department.SlitYnType">伝票入力可否</a></h2>
-            <div class="fully-qualified-name">com.example.sms.domain.type.department.SlitYnType</div>
+            <h2><a name="com.example.sms.domain.model.master.department.SlitYnType">伝票入力可否</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.master.department.SlitYnType</div>
 
             
                 
@@ -215,54 +230,15 @@
                     <td>
                         <a class="method-argument-item" href="#int">int</a>
                     </td>
-                    <td><a href="./domain.html#com.example.sms.domain.type.department.SlitYnType">伝票入力可否</a></td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.master.department.SlitYnType">伝票入力可否</a></td>
                     <td class="markdown javadoc"></td>
                 </tr>
             </table>
         
         </section>
         <section class="type">
-            <h2><a name="com.example.sms.domain.type.money.CurrencyType">通過タイプ</a></h2>
-            <div class="fully-qualified-name">com.example.sms.domain.type.money.CurrencyType</div>
-
-            
-                
-            
-
-            <table class="fields">
-                <thead>
-                <tr>
-                    <th>列挙定数名</th>
-                    
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td class="method-name">JPY</td>
-                    
-                </tr>
-                <tr>
-                    <td class="method-name">USD</td>
-                    
-                </tr>
-                <tr>
-                    <td class="method-name">CHF</td>
-                    
-                </tr>
-            </table>
-
-            
-
-            
-            
-        
-            
-            
-        
-        </section>
-        <section class="type">
-            <h2><a name="com.example.sms.domain.type.product.BusinessType">事業区分</a></h2>
-            <div class="fully-qualified-name">com.example.sms.domain.type.product.BusinessType</div>
+            <h2><a name="com.example.sms.domain.model.master.product.BusinessType">事業区分</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.master.product.BusinessType</div>
 
             
                 
@@ -327,15 +303,15 @@
                     <td>
                         <a class="method-argument-item" href="#java.lang.String">String</a>
                     </td>
-                    <td><a href="./domain.html#com.example.sms.domain.type.product.BusinessType">事業区分</a></td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.master.product.BusinessType">事業区分</a></td>
                     <td class="markdown javadoc"></td>
                 </tr>
             </table>
         
         </section>
         <section class="type">
-            <h2><a name="com.example.sms.domain.type.product.ItemType">品目区分</a></h2>
-            <div class="fully-qualified-name">com.example.sms.domain.type.product.ItemType</div>
+            <h2><a name="com.example.sms.domain.model.master.product.ItemType">品目区分</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.master.product.ItemType</div>
 
             
                 
@@ -400,15 +376,15 @@
                     <td>
                         <a class="method-argument-item" href="#java.lang.String">String</a>
                     </td>
-                    <td><a href="./domain.html#com.example.sms.domain.type.product.ItemType">品目区分</a></td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.master.product.ItemType">品目区分</a></td>
                     <td class="markdown javadoc"></td>
                 </tr>
             </table>
         
         </section>
         <section class="type">
-            <h2><a name="com.example.sms.domain.type.product.LiveStockType">畜産区分</a></h2>
-            <div class="fully-qualified-name">com.example.sms.domain.type.product.LiveStockType</div>
+            <h2><a name="com.example.sms.domain.model.master.product.LiveStockType">畜産区分</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.master.product.LiveStockType</div>
 
             
                 
@@ -481,15 +457,15 @@
                     <td>
                         <a class="method-argument-item" href="#java.lang.String">String</a>
                     </td>
-                    <td><a href="./domain.html#com.example.sms.domain.type.product.LiveStockType">畜産区分</a></td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.master.product.LiveStockType">畜産区分</a></td>
                     <td class="markdown javadoc"></td>
                 </tr>
             </table>
         
         </section>
         <section class="type">
-            <h2><a name="com.example.sms.domain.type.product.MiscellaneousType">雑区分</a></h2>
-            <div class="fully-qualified-name">com.example.sms.domain.type.product.MiscellaneousType</div>
+            <h2><a name="com.example.sms.domain.model.master.product.MiscellaneousType">雑区分</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.master.product.MiscellaneousType</div>
 
             
                 
@@ -568,15 +544,15 @@
                     <td>
                         <a class="method-argument-item" href="#java.lang.Integer">Integer</a>
                     </td>
-                    <td><a href="./domain.html#com.example.sms.domain.type.product.MiscellaneousType">雑区分</a></td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.master.product.MiscellaneousType">雑区分</a></td>
                     <td class="markdown javadoc"></td>
                 </tr>
             </table>
         
         </section>
         <section class="type">
-            <h2><a name="com.example.sms.domain.type.product.ProductType">商品区分</a></h2>
-            <div class="fully-qualified-name">com.example.sms.domain.type.product.ProductType</div>
+            <h2><a name="com.example.sms.domain.model.master.product.ProductType">商品区分</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.master.product.ProductType</div>
 
             
                 
@@ -667,15 +643,15 @@
                     <td>
                         <a class="method-argument-item" href="#java.lang.String">String</a>
                     </td>
-                    <td><a href="./domain.html#com.example.sms.domain.type.product.ProductType">商品区分</a></td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.master.product.ProductType">商品区分</a></td>
                     <td class="markdown javadoc"></td>
                 </tr>
             </table>
         
         </section>
         <section class="type">
-            <h2><a name="com.example.sms.domain.type.product.StockAllocationType">在庫引当区分</a></h2>
-            <div class="fully-qualified-name">com.example.sms.domain.type.product.StockAllocationType</div>
+            <h2><a name="com.example.sms.domain.model.master.product.StockAllocationType">在庫引当区分</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.master.product.StockAllocationType</div>
 
             
                 
@@ -754,15 +730,15 @@
                     <td>
                         <a class="method-argument-item" href="#java.lang.Integer">Integer</a>
                     </td>
-                    <td><a href="./domain.html#com.example.sms.domain.type.product.StockAllocationType">在庫引当区分</a></td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.master.product.StockAllocationType">在庫引当区分</a></td>
                     <td class="markdown javadoc"></td>
                 </tr>
             </table>
         
         </section>
         <section class="type">
-            <h2><a name="com.example.sms.domain.type.product.StockManagementTargetType">在庫管理対象区分</a></h2>
-            <div class="fully-qualified-name">com.example.sms.domain.type.product.StockManagementTargetType</div>
+            <h2><a name="com.example.sms.domain.model.master.product.StockManagementTargetType">在庫管理対象区分</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.master.product.StockManagementTargetType</div>
 
             
                 
@@ -841,15 +817,15 @@
                     <td>
                         <a class="method-argument-item" href="#java.lang.Integer">Integer</a>
                     </td>
-                    <td><a href="./domain.html#com.example.sms.domain.type.product.StockManagementTargetType">在庫管理対象区分</a></td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.master.product.StockManagementTargetType">在庫管理対象区分</a></td>
                     <td class="markdown javadoc"></td>
                 </tr>
             </table>
         
         </section>
         <section class="type">
-            <h2><a name="com.example.sms.domain.type.product.TaxType">税区分</a></h2>
-            <div class="fully-qualified-name">com.example.sms.domain.type.product.TaxType</div>
+            <h2><a name="com.example.sms.domain.model.master.product.TaxType">税区分</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.master.product.TaxType</div>
 
             
                 
@@ -936,10 +912,84 @@
                     <td>
                         <a class="method-argument-item" href="#java.lang.Integer">Integer</a>
                     </td>
-                    <td><a href="./domain.html#com.example.sms.domain.type.product.TaxType">税区分</a></td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.master.product.TaxType">税区分</a></td>
                     <td class="markdown javadoc"></td>
                 </tr>
             </table>
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.model.system.user.RoleName">役割</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.system.user.RoleName</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">ADMIN</td>
+                    
+                </tr>
+                <tr>
+                    <td class="method-name">USER</td>
+                    
+                </tr>
+            </table>
+
+            
+
+            
+            
+        
+            
+            
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.type.money.CurrencyType">通貨タイプ</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.type.money.CurrencyType</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">JPY</td>
+                    
+                </tr>
+                <tr>
+                    <td class="method-name">USD</td>
+                    
+                </tr>
+                <tr>
+                    <td class="method-name">CHF</td>
+                    
+                </tr>
+            </table>
+
+            
+
+            
+            
+        
+            
+            
         
         </section>
         <section class="type">
@@ -1029,41 +1079,6 @@
                     <td class="markdown javadoc"></td>
                 </tr>
             </table>
-        
-        </section>
-        <section class="type">
-            <h2><a name="com.example.sms.domain.type.user.RoleName">役割</a></h2>
-            <div class="fully-qualified-name">com.example.sms.domain.type.user.RoleName</div>
-
-            
-                
-            
-
-            <table class="fields">
-                <thead>
-                <tr>
-                    <th>列挙定数名</th>
-                    
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td class="method-name">ADMIN</td>
-                    
-                </tr>
-                <tr>
-                    <td class="method-name">USER</td>
-                    
-                </tr>
-            </table>
-
-            
-
-            
-            
-        
-            
-            
         
         </section>
     </main>

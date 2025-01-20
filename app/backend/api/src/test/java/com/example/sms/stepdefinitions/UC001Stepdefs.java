@@ -1,7 +1,7 @@
 package com.example.sms.stepdefinitions;
 
 import com.example.sms.domain.model.system.user.User;
-import com.example.sms.domain.type.user.RoleName;
+import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.service.system.user.UserRepository;
 import com.example.sms.stepdefinitions.utils.SpringAcceptanceTest;
 import io.cucumber.java.ja.ならば;

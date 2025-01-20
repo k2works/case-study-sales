@@ -4,8 +4,8 @@ import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.department.DepartmentList;
 import com.example.sms.domain.model.master.employee.Employee;
-import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
-import com.example.sms.domain.type.audit.ApplicationExecutionProcessType;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.master.employee.EmployeeResource;
@@ -25,7 +25,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 部門API

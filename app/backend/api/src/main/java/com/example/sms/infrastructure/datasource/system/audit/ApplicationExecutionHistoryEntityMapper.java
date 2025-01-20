@@ -1,10 +1,10 @@
 package com.example.sms.infrastructure.datasource.system.audit;
 
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
+import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.domain.model.system.user.User;
-import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
-import com.example.sms.domain.type.audit.ApplicationExecutionProcessFlag;
-import com.example.sms.domain.type.user.RoleName;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag;
 import com.example.sms.infrastructure.datasource.autogen.model.Usr;
 import org.springframework.stereotype.Component;
 

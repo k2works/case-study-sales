@@ -2,8 +2,9 @@ package com.example.sms.service.system.download;
 
 import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactory;
+import com.example.sms.domain.model.master.product.*;
 import com.example.sms.domain.model.system.download.*;
-import com.example.sms.domain.type.product.*;
+import com.example.sms.domain.model.system.download.Product;
 import com.example.sms.infrastructure.datasource.system.download.DepartmentDownloadCSV;
 import com.example.sms.infrastructure.datasource.system.download.EmployeeDownloadCSV;
 import com.example.sms.infrastructure.datasource.system.download.ProductDownloadCSV;

@@ -42,31 +42,10 @@
         </tr>
         <tr>
             <td class="term">model</td>
-            <td class="term">ドメインモデル</td>
+            <td class="term">ドメインモデル(複合型)</td>
             <td class="markdown javadoc"></td>
             <td class="kind">パッケージ</td>
             <td class="identifier">com.example.sms.domain.model</td>
-        </tr>
-        <tr>
-            <td class="term">common</td>
-            <td class="term">共通</td>
-            <td class="markdown javadoc"></td>
-            <td class="kind">パッケージ</td>
-            <td class="identifier">com.example.sms.domain.model.common</td>
-        </tr>
-        <tr>
-            <td class="term">money</td>
-            <td class="term">通貨</td>
-            <td class="markdown javadoc"></td>
-            <td class="kind">パッケージ</td>
-            <td class="identifier">com.example.sms.domain.model.common.money</td>
-        </tr>
-        <tr>
-            <td class="term">quantity</td>
-            <td class="term">数量</td>
-            <td class="markdown javadoc"></td>
-            <td class="kind">パッケージ</td>
-            <td class="identifier">com.example.sms.domain.model.common.quantity</td>
         </tr>
         <tr>
             <td class="term">master</td>
@@ -133,45 +112,17 @@
         </tr>
         <tr>
             <td class="term">type</td>
-            <td class="term">区分</td>
+            <td class="term">ドメインモデル(基本型)</td>
             <td class="markdown javadoc"></td>
             <td class="kind">パッケージ</td>
             <td class="identifier">com.example.sms.domain.type</td>
         </tr>
         <tr>
-            <td class="term">audit</td>
-            <td class="term">監査</td>
-            <td class="markdown javadoc"></td>
-            <td class="kind">パッケージ</td>
-            <td class="identifier">com.example.sms.domain.type.audit</td>
-        </tr>
-        <tr>
-            <td class="term">department</td>
-            <td class="term">部門</td>
-            <td class="markdown javadoc"></td>
-            <td class="kind">パッケージ</td>
-            <td class="identifier">com.example.sms.domain.type.department</td>
-        </tr>
-        <tr>
-            <td class="term">download</td>
-            <td class="term">ダウンロード</td>
-            <td class="markdown javadoc"></td>
-            <td class="kind">パッケージ</td>
-            <td class="identifier">com.example.sms.domain.type.download</td>
-        </tr>
-        <tr>
             <td class="term">money</td>
-            <td class="term">数量</td>
+            <td class="term">通貨</td>
             <td class="markdown javadoc"></td>
             <td class="kind">パッケージ</td>
             <td class="identifier">com.example.sms.domain.type.money</td>
-        </tr>
-        <tr>
-            <td class="term">product</td>
-            <td class="term">商品</td>
-            <td class="markdown javadoc"></td>
-            <td class="kind">パッケージ</td>
-            <td class="identifier">com.example.sms.domain.type.product</td>
         </tr>
         <tr>
             <td class="term">quantity</td>
@@ -179,13 +130,6 @@
             <td class="markdown javadoc"></td>
             <td class="kind">パッケージ</td>
             <td class="identifier">com.example.sms.domain.type.quantity</td>
-        </tr>
-        <tr>
-            <td class="term">user</td>
-            <td class="term">ユーザー</td>
-            <td class="markdown javadoc"></td>
-            <td class="kind">パッケージ</td>
-            <td class="identifier">com.example.sms.domain.type.user</td>
         </tr>
         <tr>
             <td class="term">infrastructure</td>
@@ -214,48 +158,6 @@
             <td class="markdown javadoc"></td>
             <td class="kind">パッケージ</td>
             <td class="identifier">com.example.sms.service</td>
-        </tr>
-        <tr>
-            <td class="term">Exchange</td>
-            <td class="term">為替</td>
-            <td class="markdown javadoc"></td>
-            <td class="kind">クラス</td>
-            <td class="identifier">com.example.sms.domain.model.common.money.Exchange</td>
-        </tr>
-        <tr>
-            <td class="term">Expression</td>
-            <td class="term">式</td>
-            <td class="markdown javadoc"></td>
-            <td class="kind">クラス</td>
-            <td class="identifier">com.example.sms.domain.model.common.money.Expression</td>
-        </tr>
-        <tr>
-            <td class="term">Money</td>
-            <td class="term">通貨</td>
-            <td class="markdown javadoc"></td>
-            <td class="kind">クラス</td>
-            <td class="identifier">com.example.sms.domain.model.common.money.Money</td>
-        </tr>
-        <tr>
-            <td class="term">Pair</td>
-            <td class="term">通貨ペア</td>
-            <td class="markdown javadoc"></td>
-            <td class="kind">クラス</td>
-            <td class="identifier">com.example.sms.domain.model.common.money.Pair</td>
-        </tr>
-        <tr>
-            <td class="term">Sum</td>
-            <td class="term">集計</td>
-            <td class="markdown javadoc"></td>
-            <td class="kind">クラス</td>
-            <td class="identifier">com.example.sms.domain.model.common.money.Sum</td>
-        </tr>
-        <tr>
-            <td class="term">Quantity</td>
-            <td class="term">数量</td>
-            <td class="markdown javadoc"></td>
-            <td class="kind">クラス</td>
-            <td class="identifier">com.example.sms.domain.model.common.quantity.Quantity</td>
         </tr>
         <tr>
             <td class="term">Department</td>
@@ -293,6 +195,13 @@
             <td class="identifier">com.example.sms.domain.model.master.department.DepartmentList</td>
         </tr>
         <tr>
+            <td class="term">DepartmentLowerType</td>
+            <td class="term">最下層区分</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.domain.model.master.department.DepartmentLowerType</td>
+        </tr>
+        <tr>
             <td class="term">DepartmentPath</td>
             <td class="term">部門パス</td>
             <td class="markdown javadoc"></td>
@@ -305,6 +214,13 @@
             <td class="markdown javadoc"></td>
             <td class="kind">クラス</td>
             <td class="identifier">com.example.sms.domain.model.master.department.DepartmentStartDate</td>
+        </tr>
+        <tr>
+            <td class="term">SlitYnType</td>
+            <td class="term">伝票入力可否</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.domain.model.master.department.SlitYnType</td>
         </tr>
         <tr>
             <td class="term">Employee</td>
@@ -363,11 +279,39 @@
             <td class="identifier">com.example.sms.domain.model.master.product.Bom</td>
         </tr>
         <tr>
+            <td class="term">BusinessType</td>
+            <td class="term">事業区分</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.domain.model.master.product.BusinessType</td>
+        </tr>
+        <tr>
             <td class="term">CustomerSpecificSellingPrice</td>
             <td class="term">顧客別販売単価</td>
             <td class="markdown javadoc"></td>
             <td class="kind">クラス</td>
             <td class="identifier">com.example.sms.domain.model.master.product.CustomerSpecificSellingPrice</td>
+        </tr>
+        <tr>
+            <td class="term">ItemType</td>
+            <td class="term">品目区分</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.domain.model.master.product.ItemType</td>
+        </tr>
+        <tr>
+            <td class="term">LiveStockType</td>
+            <td class="term">畜産区分</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.domain.model.master.product.LiveStockType</td>
+        </tr>
+        <tr>
+            <td class="term">MiscellaneousType</td>
+            <td class="term">雑区分</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.domain.model.master.product.MiscellaneousType</td>
         </tr>
         <tr>
             <td class="term">Product</td>
@@ -419,6 +363,27 @@
             <td class="identifier">com.example.sms.domain.model.master.product.ProductName</td>
         </tr>
         <tr>
+            <td class="term">ProductType</td>
+            <td class="term">商品区分</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.domain.model.master.product.ProductType</td>
+        </tr>
+        <tr>
+            <td class="term">StockAllocationType</td>
+            <td class="term">在庫引当区分</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.domain.model.master.product.StockAllocationType</td>
+        </tr>
+        <tr>
+            <td class="term">StockManagementTargetType</td>
+            <td class="term">在庫管理対象区分</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.domain.model.master.product.StockManagementTargetType</td>
+        </tr>
+        <tr>
             <td class="term">SubstituteProduct</td>
             <td class="term">代替商品</td>
             <td class="markdown javadoc"></td>
@@ -431,6 +396,13 @@
             <td class="markdown javadoc"></td>
             <td class="kind">クラス</td>
             <td class="identifier">com.example.sms.domain.model.master.product.SupplierCode</td>
+        </tr>
+        <tr>
+            <td class="term">TaxType</td>
+            <td class="term">税区分</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.domain.model.master.product.TaxType</td>
         </tr>
         <tr>
             <td class="term">ApplicationExecutionHistory</td>
@@ -447,11 +419,32 @@
             <td class="identifier">com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryList</td>
         </tr>
         <tr>
+            <td class="term">ApplicationExecutionHistoryType</td>
+            <td class="term">アプリケーション実行履歴区分</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType</td>
+        </tr>
+        <tr>
             <td class="term">ApplicationExecutionProcess</td>
             <td class="term">アプリケーション実行プロセス</td>
             <td class="markdown javadoc"></td>
             <td class="kind">クラス</td>
             <td class="identifier">com.example.sms.domain.model.system.audit.ApplicationExecutionProcess</td>
+        </tr>
+        <tr>
+            <td class="term">ApplicationExecutionProcessFlag</td>
+            <td class="term">アプリケーション実行プロセスフラグ</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag</td>
+        </tr>
+        <tr>
+            <td class="term">ApplicationExecutionProcessType</td>
+            <td class="term">アプリケーション実行プロセス区分</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType</td>
         </tr>
         <tr>
             <td class="term">AuthUserDetails</td>
@@ -473,6 +466,13 @@
             <td class="markdown javadoc"></td>
             <td class="kind">クラス</td>
             <td class="identifier">com.example.sms.domain.model.system.download.DownloadCriteria</td>
+        </tr>
+        <tr>
+            <td class="term">DownloadTarget</td>
+            <td class="term">ダウンロード対象</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.domain.model.system.download.DownloadTarget</td>
         </tr>
         <tr>
             <td class="term">Employee</td>
@@ -517,6 +517,13 @@
             <td class="identifier">com.example.sms.domain.model.system.user.PasswordException</td>
         </tr>
         <tr>
+            <td class="term">RoleName</td>
+            <td class="term">役割</td>
+            <td class="markdown javadoc"></td>
+            <td class="kind">クラス</td>
+            <td class="identifier">com.example.sms.domain.model.system.user.RoleName</td>
+        </tr>
+        <tr>
             <td class="term">User</td>
             <td class="term">ユーザー</td>
             <td class="markdown javadoc"></td>
@@ -552,48 +559,6 @@
             <td class="identifier">com.example.sms.domain.model.system.user.UserList</td>
         </tr>
         <tr>
-            <td class="term">ApplicationExecutionHistoryType</td>
-            <td class="term">アプリケーション実行履歴区分</td>
-            <td class="markdown javadoc"></td>
-            <td class="kind">クラス</td>
-            <td class="identifier">com.example.sms.domain.type.audit.ApplicationExecutionHistoryType</td>
-        </tr>
-        <tr>
-            <td class="term">ApplicationExecutionProcessFlag</td>
-            <td class="term">アプリケーション実行プロセスフラグ</td>
-            <td class="markdown javadoc"></td>
-            <td class="kind">クラス</td>
-            <td class="identifier">com.example.sms.domain.type.audit.ApplicationExecutionProcessFlag</td>
-        </tr>
-        <tr>
-            <td class="term">ApplicationExecutionProcessType</td>
-            <td class="term">アプリケーション実行プロセス区分</td>
-            <td class="markdown javadoc"></td>
-            <td class="kind">クラス</td>
-            <td class="identifier">com.example.sms.domain.type.audit.ApplicationExecutionProcessType</td>
-        </tr>
-        <tr>
-            <td class="term">DepartmentLowerType</td>
-            <td class="term">最下層区分</td>
-            <td class="markdown javadoc"></td>
-            <td class="kind">クラス</td>
-            <td class="identifier">com.example.sms.domain.type.department.DepartmentLowerType</td>
-        </tr>
-        <tr>
-            <td class="term">SlitYnType</td>
-            <td class="term">伝票入力可否</td>
-            <td class="markdown javadoc"></td>
-            <td class="kind">クラス</td>
-            <td class="identifier">com.example.sms.domain.type.department.SlitYnType</td>
-        </tr>
-        <tr>
-            <td class="term">DownloadTarget</td>
-            <td class="term">ダウンロード対象</td>
-            <td class="markdown javadoc"></td>
-            <td class="kind">クラス</td>
-            <td class="identifier">com.example.sms.domain.type.download.DownloadTarget</td>
-        </tr>
-        <tr>
             <td class="term">CurrencyType</td>
             <td class="term">通貨タイプ</td>
             <td class="markdown javadoc"></td>
@@ -601,60 +566,46 @@
             <td class="identifier">com.example.sms.domain.type.money.CurrencyType</td>
         </tr>
         <tr>
-            <td class="term">BusinessType</td>
-            <td class="term">事業区分</td>
+            <td class="term">Exchange</td>
+            <td class="term">為替</td>
             <td class="markdown javadoc"></td>
             <td class="kind">クラス</td>
-            <td class="identifier">com.example.sms.domain.type.product.BusinessType</td>
+            <td class="identifier">com.example.sms.domain.type.money.Exchange</td>
         </tr>
         <tr>
-            <td class="term">ItemType</td>
-            <td class="term">品目区分</td>
+            <td class="term">Expression</td>
+            <td class="term">式</td>
             <td class="markdown javadoc"></td>
             <td class="kind">クラス</td>
-            <td class="identifier">com.example.sms.domain.type.product.ItemType</td>
+            <td class="identifier">com.example.sms.domain.type.money.Expression</td>
         </tr>
         <tr>
-            <td class="term">LiveStockType</td>
-            <td class="term">畜産区分</td>
+            <td class="term">Money</td>
+            <td class="term">通貨</td>
             <td class="markdown javadoc"></td>
             <td class="kind">クラス</td>
-            <td class="identifier">com.example.sms.domain.type.product.LiveStockType</td>
+            <td class="identifier">com.example.sms.domain.type.money.Money</td>
         </tr>
         <tr>
-            <td class="term">MiscellaneousType</td>
-            <td class="term">雑区分</td>
+            <td class="term">Pair</td>
+            <td class="term">通貨ペア</td>
             <td class="markdown javadoc"></td>
             <td class="kind">クラス</td>
-            <td class="identifier">com.example.sms.domain.type.product.MiscellaneousType</td>
+            <td class="identifier">com.example.sms.domain.type.money.Pair</td>
         </tr>
         <tr>
-            <td class="term">ProductType</td>
-            <td class="term">商品区分</td>
+            <td class="term">Sum</td>
+            <td class="term">集計</td>
             <td class="markdown javadoc"></td>
             <td class="kind">クラス</td>
-            <td class="identifier">com.example.sms.domain.type.product.ProductType</td>
+            <td class="identifier">com.example.sms.domain.type.money.Sum</td>
         </tr>
         <tr>
-            <td class="term">StockAllocationType</td>
-            <td class="term">在庫引当区分</td>
+            <td class="term">Quantity</td>
+            <td class="term">数量</td>
             <td class="markdown javadoc"></td>
             <td class="kind">クラス</td>
-            <td class="identifier">com.example.sms.domain.type.product.StockAllocationType</td>
-        </tr>
-        <tr>
-            <td class="term">StockManagementTargetType</td>
-            <td class="term">在庫管理対象区分</td>
-            <td class="markdown javadoc"></td>
-            <td class="kind">クラス</td>
-            <td class="identifier">com.example.sms.domain.type.product.StockManagementTargetType</td>
-        </tr>
-        <tr>
-            <td class="term">TaxType</td>
-            <td class="term">税区分</td>
-            <td class="markdown javadoc"></td>
-            <td class="kind">クラス</td>
-            <td class="identifier">com.example.sms.domain.type.product.TaxType</td>
+            <td class="identifier">com.example.sms.domain.type.quantity.Quantity</td>
         </tr>
         <tr>
             <td class="term">UnitType</td>
@@ -662,13 +613,6 @@
             <td class="markdown javadoc"></td>
             <td class="kind">クラス</td>
             <td class="identifier">com.example.sms.domain.type.quantity.UnitType</td>
-        </tr>
-        <tr>
-            <td class="term">RoleName</td>
-            <td class="term">役割</td>
-            <td class="markdown javadoc"></td>
-            <td class="kind">クラス</td>
-            <td class="identifier">com.example.sms.domain.type.user.RoleName</td>
         </tr>
         <tr>
             <td class="term">DepartmentApiController</td>
