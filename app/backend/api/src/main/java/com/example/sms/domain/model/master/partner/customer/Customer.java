@@ -6,8 +6,6 @@ import com.example.sms.domain.type.PhoneNumber;
 import com.example.sms.domain.type.address.Address;
 import com.example.sms.domain.model.master.partner.invoice.ClosingInvoice;
 import com.example.sms.domain.model.master.partner.invoice.Invoice;
-import com.example.sms.domain.type.partner.CustomerBillingCategory;
-import com.example.sms.domain.type.partner.CustomerType;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;

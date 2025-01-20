@@ -1,8 +1,8 @@
 package com.example.sms.presentation.api.master.partner;
 
 import com.example.sms.domain.model.master.partner.customer.Shipping;
-import com.example.sms.domain.type.partner.CustomerBillingCategory;
-import com.example.sms.domain.type.partner.CustomerType;
+import com.example.sms.domain.model.master.partner.customer.CustomerBillingCategory;
+import com.example.sms.domain.model.master.partner.customer.CustomerType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;

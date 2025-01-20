@@ -7,9 +7,7 @@ import com.example.sms.domain.type.address.Address;
 import com.example.sms.domain.type.address.PostalCode;
 import com.example.sms.domain.type.address.Prefecture;
 import com.example.sms.domain.model.master.partner.*;
-import com.example.sms.domain.type.partner.MiscellaneousType;
-import com.example.sms.domain.type.partner.TradeProhibitedFlag;
-import com.example.sms.domain.type.partner.VendorType;
+import com.example.sms.domain.model.master.partner.vendor.VendorType;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -323,7 +321,7 @@ class PartnerServiceTest {
                         originalPartner.getPartnerName(),
                         originalPartner.getVendorType(),
                         originalPartner.getAddress(),
-                        TradeProhibitedFlag.ON,
+                        PartnerCategoryType.TradeProhibitedFlag.ON,
                         originalPartner.getMiscellaneousType(),
                         originalPartner.getPartnerGroupCode(),
                         originalPartner.getCredit(),
@@ -333,7 +331,7 @@ class PartnerServiceTest {
 
                 partnerService.save(updatedPartner);
                 PartnerCriteria criteria = PartnerCriteria.builder()
-                        .tradeProhibitedFlag(TradeProhibitedFlag.ON.getValue())
+                        .tradeProhibitedFlag(PartnerCategoryType.TradeProhibitedFlag.ON.getValue())
                         .build();
                 PageInfo<Partner> result = partnerService.searchWithPageInfo(criteria);
 
@@ -351,7 +349,7 @@ class PartnerServiceTest {
                         originalPartner.getVendorType(),
                         originalPartner.getAddress(),
                         originalPartner.getTradeProhibitedFlag(),
-                        MiscellaneousType.対象,
+                        PartnerCategoryList.MiscellaneousType.対象,
                         originalPartner.getPartnerGroupCode(),
                         originalPartner.getCredit(),
                         List.of(),
@@ -360,7 +358,7 @@ class PartnerServiceTest {
 
                 partnerService.save(updatedPartner);
                 PartnerCriteria criteria = PartnerCriteria.builder()
-                        .miscellaneousType(MiscellaneousType.対象.getCode())
+                        .miscellaneousType(PartnerCategoryList.MiscellaneousType.対象.getCode())
                         .build();
                 PageInfo<Partner> result = partnerService.searchWithPageInfo(criteria);
 

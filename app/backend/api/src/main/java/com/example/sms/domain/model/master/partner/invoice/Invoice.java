@@ -1,6 +1,6 @@
 package com.example.sms.domain.model.master.partner.invoice;
 
-import com.example.sms.domain.type.partner.CustomerBillingCategory;
+import com.example.sms.domain.model.master.partner.customer.CustomerBillingCategory;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 

@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.master.partner;
 
+import com.example.sms.domain.model.master.partner.vendor.VendorType;
 import com.example.sms.domain.type.Email;
 import com.example.sms.domain.type.address.Address;
 import com.example.sms.domain.type.address.PostalCode;
@@ -7,7 +8,6 @@ import com.example.sms.domain.model.master.partner.customer.*;
 import com.example.sms.domain.model.master.partner.invoice.*;
 import com.example.sms.domain.model.master.partner.vendor.Vendor;
 import com.example.sms.domain.model.master.partner.vendor.VendorCode;
-import com.example.sms.domain.type.partner.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -48,8 +48,8 @@ class PartnerTest {
                 () -> assertEquals("東京都", partner.getAddress().getPrefecture().toString()),
                 () -> assertEquals("住所１", partner.getAddress().getAddress1()),
                 () -> assertEquals("住所２", partner.getAddress().getAddress2()),
-                () -> assertEquals(TradeProhibitedFlag.OFF, partner.getTradeProhibitedFlag()),
-                () -> assertEquals(MiscellaneousType.対象外, partner.getMiscellaneousType()),
+                () -> assertEquals(PartnerCategoryType.TradeProhibitedFlag.OFF, partner.getTradeProhibitedFlag()),
+                () -> assertEquals(PartnerCategoryList.MiscellaneousType.対象外, partner.getMiscellaneousType()),
                 () -> assertEquals("0001", partner.getPartnerGroupCode().getValue()),
                 () -> assertEquals(100000, partner.getCredit().getCreditLimit().getAmount()),
                 () -> assertEquals(100000, partner.getCredit().getTemporaryCreditIncrease().getAmount()),

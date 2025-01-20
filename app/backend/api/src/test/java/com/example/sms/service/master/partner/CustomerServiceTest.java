@@ -7,7 +7,7 @@ import com.example.sms.domain.type.Email;
 import com.example.sms.domain.type.FaxNumber;
 import com.example.sms.domain.type.PhoneNumber;
 import com.example.sms.domain.type.address.Address;
-import com.example.sms.domain.type.partner.CustomerType;
+import com.example.sms.domain.model.master.partner.customer.CustomerType;
 import com.example.sms.domain.model.master.partner.Partner;
 import com.example.sms.domain.model.master.partner.customer.*;
 import com.example.sms.domain.model.master.region.RegionCode;

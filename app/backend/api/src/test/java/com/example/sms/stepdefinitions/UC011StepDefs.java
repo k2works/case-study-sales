@@ -2,9 +2,9 @@ package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
 import com.example.sms.domain.model.master.partner.Partner;
-import com.example.sms.domain.type.partner.MiscellaneousType;
-import com.example.sms.domain.type.partner.TradeProhibitedFlag;
-import com.example.sms.domain.type.partner.VendorType;
+import com.example.sms.domain.model.master.partner.PartnerCategoryList;
+import com.example.sms.domain.model.master.partner.PartnerCategoryType;
+import com.example.sms.domain.model.master.partner.vendor.VendorType;
 import com.example.sms.presentation.api.master.partner.PartnerResource;
 import com.example.sms.service.master.partner.PartnerCriteria;
 import com.example.sms.stepdefinitions.utils.MessageResponse;
@@ -80,8 +80,8 @@ public class UC011StepDefs extends SpringAcceptanceTest {
         partnerResource.setPrefecture("東京都");
         partnerResource.setAddress1("千代田区");
         partnerResource.setAddress2("丸の内1-1-1");
-        partnerResource.setTradeProhibitedFlag(TradeProhibitedFlag.OFF);
-        partnerResource.setMiscellaneousType(MiscellaneousType.対象外);
+        partnerResource.setTradeProhibitedFlag(PartnerCategoryType.TradeProhibitedFlag.OFF);
+        partnerResource.setMiscellaneousType(PartnerCategoryList.MiscellaneousType.対象外);
         partnerResource.setPartnerGroupCode("9999");
         partnerResource.setCreditLimit(100000);
         partnerResource.setTemporaryCreditIncrease(0);
@@ -126,8 +126,8 @@ public class UC011StepDefs extends SpringAcceptanceTest {
         partnerResource.setPrefecture("東京都");
         partnerResource.setAddress1("千代田区");
         partnerResource.setAddress2("丸の内1-1-1");
-        partnerResource.setTradeProhibitedFlag(TradeProhibitedFlag.OFF);
-        partnerResource.setMiscellaneousType(MiscellaneousType.対象外);
+        partnerResource.setTradeProhibitedFlag(PartnerCategoryType.TradeProhibitedFlag.OFF);
+        partnerResource.setMiscellaneousType(PartnerCategoryList.MiscellaneousType.対象外);
         partnerResource.setPartnerGroupCode("9999");
         partnerResource.setCreditLimit(100000);
         partnerResource.setTemporaryCreditIncrease(0);
