@@ -1,7 +1,7 @@
 package com.example.sms.domain.model.master.employee;
 
-import com.example.sms.domain.type.FaxNumber;
-import com.example.sms.domain.type.PhoneNumber;
+import com.example.sms.domain.type.phone.FaxNumber;
+import com.example.sms.domain.type.phone.PhoneNumber;
 import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.system.user.User;
 import lombok.AllArgsConstructor;

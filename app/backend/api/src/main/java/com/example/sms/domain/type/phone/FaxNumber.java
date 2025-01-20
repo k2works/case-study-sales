@@ -1,4 +1,4 @@
-package com.example.sms.domain.type;
+package com.example.sms.domain.type.phone;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

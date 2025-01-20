@@ -1,4 +1,4 @@
-package com.example.sms.domain.type;
+package com.example.sms.domain.type.mail;
 
 import lombok.NoArgsConstructor;
 import lombok.Value;
