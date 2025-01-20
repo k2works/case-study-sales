@@ -80,12 +80,7 @@ public class EmployeeApiController {
     @AuditAnnotation(process = ApplicationExecutionProcessType.社員更新, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> create(@RequestBody @Validated EmployeeResource resource) {
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
-            resource.setDepartmentStartDate(Optional.ofNullable(resource.getDepartmentStartDate())
-                    .map(date -> LocalDateTime.parse(date, formatter))
-                    .map(date -> date.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
-                    .orElse(null));
-            Employee employee = createEmployee(resource);
+            Employee employee = convertEntity(resource);
             if (employeeManagementService.find(employee.getEmpCode()) != null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.employee.already.exist")));
             }
@@ -101,12 +96,8 @@ public class EmployeeApiController {
     @AuditAnnotation(process = ApplicationExecutionProcessType.社員更新, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> update(@PathVariable String employeeCode, @RequestBody EmployeeResource resource) {
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
-            resource.setDepartmentStartDate(Optional.ofNullable(resource.getDepartmentStartDate())
-                    .map(date -> LocalDateTime.parse(date, formatter))
-                    .map(date -> date.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
-                    .orElse(null));
-            Employee employee = createEmployee(employeeCode, resource);
+            resource.setEmpCode(employeeCode);
+            Employee employee = convertEntity(resource);
             employeeManagementService.save(employee);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.employee.updated")));
         } catch (Exception e) {
@@ -139,16 +130,7 @@ public class EmployeeApiController {
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
             PageNation.startPage(page, pageSize);
-            EmployeeCriteria criteria = EmployeeCriteria.builder()
-                    .employeeCode(resource.getEmployeeCode())
-                    .employeeFirstName(resource.getEmployeeFirstName())
-                    .employeeLastName(resource.getEmployeeLastName())
-                    .employeeFirstNameKana(resource.getEmployeeFirstNameKana())
-                    .employeeLastNameKana(resource.getEmployeeLastNameKana())
-                    .phoneNumber(resource.getPhoneNumber())
-                    .faxNumber(resource.getFaxNumber())
-                    .departmentCode(resource.getDepartmentCode())
-                    .build();
+            EmployeeCriteria criteria = convertCriteria(resource);
             PageInfo<Employee> result = employeeManagementService.searchWithPageInfo(criteria);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
@@ -156,11 +138,13 @@ public class EmployeeApiController {
         }
     }
 
-    private Employee createEmployee(EmployeeResource resource) {
-        return createEmployee(resource.getEmpCode(), resource);
-    }
+    private Employee convertEntity(EmployeeResource resource) {
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
+        resource.setDepartmentStartDate(Optional.ofNullable(resource.getDepartmentStartDate())
+                .map(date -> LocalDateTime.parse(date, formatter))
+                .map(date -> date.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
+                .orElse(null));
 
-    private Employee createEmployee(String employeeCode, EmployeeResource resource) {
         Department department = Optional.ofNullable(resource.getDepartmentCode())
                 .flatMap(code -> Optional.ofNullable(resource.getDepartmentStartDate())
                         .map(date -> departmentService.find(DepartmentId.of(code, LocalDateTime.parse(date)))))
@@ -177,7 +161,7 @@ public class EmployeeApiController {
         }
 
         Employee employee = Employee.of(
-                employeeCode,
+                resource.getEmpCode(),
                 resource.getEmpName(),
                 resource.getEmpNameKana(),
                 resource.getTel(),
@@ -185,5 +169,18 @@ public class EmployeeApiController {
                 resource.getOccuCode());
 
         return Employee.of(employee, department, user);
+    }
+
+    private EmployeeCriteria convertCriteria(EmployeeCriteriaResource resource) {
+        return EmployeeCriteria.builder()
+                .employeeCode(resource.getEmployeeCode())
+                .employeeFirstName(resource.getEmployeeFirstName())
+                .employeeLastName(resource.getEmployeeLastName())
+                .employeeFirstNameKana(resource.getEmployeeFirstNameKana())
+                .employeeLastNameKana(resource.getEmployeeLastNameKana())
+                .phoneNumber(resource.getPhoneNumber())
+                .faxNumber(resource.getFaxNumber())
+                .departmentCode(resource.getDepartmentCode())
+                .build();
     }
 }
