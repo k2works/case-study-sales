@@ -1,7 +1,7 @@
 package com.example.sms.presentation.api.master.partner;
 
-import com.example.sms.domain.model.master.partner.PartnerCategoryList;
-import com.example.sms.domain.model.master.partner.PartnerCategoryType;
+import com.example.sms.domain.model.master.partner.MiscellaneousType;
+import com.example.sms.domain.model.master.partner.TradeProhibitedFlag;
 import com.example.sms.domain.model.master.partner.vendor.VendorType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -25,8 +25,8 @@ public class PartnerResource implements Serializable {
     String prefecture;
     String address1;
     String address2;
-    PartnerCategoryType.TradeProhibitedFlag tradeProhibitedFlag; // 取引禁止フラグ
-    PartnerCategoryList.MiscellaneousType miscellaneousType;   // 雑区分
+    TradeProhibitedFlag tradeProhibitedFlag; // 取引禁止フラグ
+    MiscellaneousType miscellaneousType;   // 雑区分
     String partnerGroupCode;     // 取引先グループコード
     Integer creditLimit; // 与信限度額
     Integer temporaryCreditIncrease; // 与信一時増加枠

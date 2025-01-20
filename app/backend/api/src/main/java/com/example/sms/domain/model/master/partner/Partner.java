@@ -22,8 +22,8 @@ public class Partner {
     PartnerName partnerName;          // 取引先名
     VendorType vendorType;        // 仕入先区分
     Address address;             // 住所
-    PartnerCategoryType.TradeProhibitedFlag tradeProhibitedFlag; // 取引禁止フラグ
-    PartnerCategoryList.MiscellaneousType miscellaneousType;   // 雑区分
+    TradeProhibitedFlag tradeProhibitedFlag; // 取引禁止フラグ
+    MiscellaneousType miscellaneousType;   // 雑区分
     PartnerGroupCode partnerGroupCode;     // 取引先グループコード
     Credit credit;               // 与信
     List<Customer> customers;   // 顧客
@@ -49,8 +49,8 @@ public class Partner {
                 PartnerName.of(partnerName, partnerNameKana),
                 VendorType.fromCode(vendorType),
                 Address.of(postalCode, prefecture, address1, address2),
-                PartnerCategoryType.TradeProhibitedFlag.fromCode(tradeProhibitedFlag),
-                PartnerCategoryList.MiscellaneousType.fromCode(miscellaneousType),
+                TradeProhibitedFlag.fromCode(tradeProhibitedFlag),
+                MiscellaneousType.fromCode(miscellaneousType),
                 PartnerGroupCode.of(partnerGroupCode),
                 Credit.of(creditLimit, temporaryCreditIncrease),
                 List.of(),
@@ -63,8 +63,8 @@ public class Partner {
             PartnerName partnerName,
             VendorType vendorType,
             Address address,
-            PartnerCategoryType.TradeProhibitedFlag tradeProhibitedFlag,
-            PartnerCategoryList.MiscellaneousType miscellaneousType,
+            TradeProhibitedFlag tradeProhibitedFlag,
+            MiscellaneousType miscellaneousType,
             PartnerGroupCode partnerGroupCode,
             Credit credit,
             List<Customer> customers,

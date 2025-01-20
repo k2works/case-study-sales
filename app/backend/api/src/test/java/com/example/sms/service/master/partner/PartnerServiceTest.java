@@ -321,7 +321,7 @@ class PartnerServiceTest {
                         originalPartner.getPartnerName(),
                         originalPartner.getVendorType(),
                         originalPartner.getAddress(),
-                        PartnerCategoryType.TradeProhibitedFlag.ON,
+                        TradeProhibitedFlag.ON,
                         originalPartner.getMiscellaneousType(),
                         originalPartner.getPartnerGroupCode(),
                         originalPartner.getCredit(),
@@ -331,7 +331,7 @@ class PartnerServiceTest {
 
                 partnerService.save(updatedPartner);
                 PartnerCriteria criteria = PartnerCriteria.builder()
-                        .tradeProhibitedFlag(PartnerCategoryType.TradeProhibitedFlag.ON.getValue())
+                        .tradeProhibitedFlag(TradeProhibitedFlag.ON.getValue())
                         .build();
                 PageInfo<Partner> result = partnerService.searchWithPageInfo(criteria);
 
@@ -349,7 +349,7 @@ class PartnerServiceTest {
                         originalPartner.getVendorType(),
                         originalPartner.getAddress(),
                         originalPartner.getTradeProhibitedFlag(),
-                        PartnerCategoryList.MiscellaneousType.対象,
+                        MiscellaneousType.対象,
                         originalPartner.getPartnerGroupCode(),
                         originalPartner.getCredit(),
                         List.of(),
@@ -358,7 +358,7 @@ class PartnerServiceTest {
 
                 partnerService.save(updatedPartner);
                 PartnerCriteria criteria = PartnerCriteria.builder()
-                        .miscellaneousType(PartnerCategoryList.MiscellaneousType.対象.getCode())
+                        .miscellaneousType(MiscellaneousType.対象.getCode())
                         .build();
                 PageInfo<Partner> result = partnerService.searchWithPageInfo(criteria);
 

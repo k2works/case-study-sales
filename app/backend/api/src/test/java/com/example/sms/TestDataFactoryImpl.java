@@ -3,6 +3,7 @@ package com.example.sms;
 import com.example.sms.domain.model.master.partner.customer.Customer;
 import com.example.sms.domain.model.master.partner.customer.Shipping;
 import com.example.sms.domain.model.master.partner.vendor.Vendor;
+import com.example.sms.domain.model.master.product.MiscellaneousType;
 import com.example.sms.domain.model.master.region.Region;
 import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentId;
