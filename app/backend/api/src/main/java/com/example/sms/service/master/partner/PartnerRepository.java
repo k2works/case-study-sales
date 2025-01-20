@@ -6,6 +6,8 @@ import com.example.sms.domain.model.master.partner.PartnerList;
 import com.example.sms.domain.model.master.partner.customer.CustomerCode;
 import com.example.sms.domain.model.master.partner.customer.CustomerList;
 import com.example.sms.domain.model.master.partner.vendor.Vendor;
+import com.example.sms.domain.model.master.partner.vendor.VendorCode;
+import com.example.sms.domain.model.master.partner.vendor.VendorList;
 import com.github.pagehelper.PageInfo;
 
 import java.util.Optional;
@@ -34,4 +36,10 @@ public interface PartnerRepository {
     Optional<Customer> findCustomerById(CustomerCode customerCode);
 
     PageInfo<Customer> searchCustomerWithPageInfo(CustomerCriteria criteria);
+
+    VendorList selectAllVendor();
+
+    Optional<Vendor> findVendorById(VendorCode vendorCode);
+
+    PageInfo<Vendor> searchVendorWithPageInfo(VendorCriteria criteria);
 }

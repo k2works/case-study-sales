@@ -66,25 +66,7 @@ class PartnerRepositoryTest {
     }
 
     private Vendor getVendor(String vendorCode, Integer vendorBranchCode) {
-        return Vendor.of(
-                vendorCode,
-                vendorBranchCode,
-                "仕入先名A",
-                "シリヒキサキメイエー",
-                "担当者名A",
-                "部門名A",
-                "123-4567",
-                "東京都",
-                "新宿区1-1-1",
-                "マンション101号室",
-                "03-1234-5678",
-                "03-1234-5679",
-                "test@example.comw",
-                10,
-                1,
-                20,
-                2
-        );
+        return TestDataFactoryImpl.getVendor(vendorCode, vendorBranchCode);
     }
 
     @Nested

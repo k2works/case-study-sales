@@ -6,6 +6,8 @@ import com.example.sms.domain.model.master.partner.PartnerList;
 import com.example.sms.domain.model.master.partner.customer.CustomerCode;
 import com.example.sms.domain.model.master.partner.customer.CustomerList;
 import com.example.sms.domain.model.master.partner.vendor.Vendor;
+import com.example.sms.domain.model.master.partner.vendor.VendorCode;
+import com.example.sms.domain.model.master.partner.vendor.VendorList;
 import com.example.sms.infrastructure.PageInfoHelper;
 import com.example.sms.infrastructure.datasource.ObjectOptimisticLockingFailureException;
 import com.example.sms.infrastructure.datasource.autogen.mapper.仕入先マスタMapper;
@@ -21,6 +23,7 @@ import com.example.sms.infrastructure.datasource.master.partner.vendor.VendorCus
 import com.example.sms.service.master.partner.CustomerCriteria;
 import com.example.sms.service.master.partner.PartnerCriteria;
 import com.example.sms.service.master.partner.PartnerRepository;
+import com.example.sms.service.master.partner.VendorCriteria;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -243,6 +246,36 @@ public class PartnerDataSource implements PartnerRepository {
     public PageInfo<Customer> searchCustomerWithPageInfo(CustomerCriteria criteria) {
         List<CustomerCustomEntity> customerCustomEntities = customerCustomMapper.selectByCriteria(criteria);
         PageInfo<CustomerCustomEntity> pageInfo = new PageInfo<>(customerCustomEntities);
+
+        return PageInfoHelper.of(pageInfo, partnerEntityMapper::mapToDomainModel);
+    }
+
+    @Override
+    public VendorList selectAllVendor() {
+        List<VendorCustomEntity> vendorCustomEntities = vendorCustomMapper.selectAll();
+
+        return new VendorList(vendorCustomEntities.stream()
+                .map(partnerEntityMapper::mapToDomainModel)
+                .toList());
+    }
+
+    @Override
+    public Optional<Vendor> findVendorById(VendorCode vendorCode) {
+        仕入先マスタKey key = new 仕入先マスタKey();
+        key.set仕入先コード(vendorCode.getCode().getValue());
+        key.set仕入先枝番(vendorCode.getBranchNumber());
+
+        VendorCustomEntity vendorEntity = vendorCustomMapper.selectByPrimaryKey(key);
+        if (vendorEntity != null) {
+            return Optional.of(partnerEntityMapper.mapToDomainModel(vendorEntity));
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public PageInfo<Vendor> searchVendorWithPageInfo(VendorCriteria criteria) {
+        List<VendorCustomEntity> vendorCustomEntities = vendorCustomMapper.selectByCriteria(criteria);
+        PageInfo<VendorCustomEntity> pageInfo = new PageInfo<>(vendorCustomEntities);
 
         return PageInfoHelper.of(pageInfo, partnerEntityMapper::mapToDomainModel);
     }

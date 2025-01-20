@@ -2,6 +2,7 @@ package com.example.sms;
 
 import com.example.sms.domain.model.master.partner.customer.Customer;
 import com.example.sms.domain.model.master.partner.customer.Shipping;
+import com.example.sms.domain.model.master.partner.vendor.Vendor;
 import com.example.sms.domain.model.master.region.Region;
 import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentId;
@@ -235,6 +236,21 @@ public class TestDataFactoryImpl implements TestDataFactory {
         });
     }
 
+    @Override
+    public void setUpForVendorService() {
+        partnerCategoryRepository.deleteAll();
+        partnerRepository.deleteAll();
+
+        IntStream.rangeClosed(1, 1).forEach(i -> {
+            Partner partner = getPartner("00" + i);
+            List<Vendor> vendors = IntStream.rangeClosed(1, 3)
+                .mapToObj(j -> getVendor("00" + i, j))
+                .toList();
+            partnerRepository.save(Partner.ofWithVendors(partner,vendors));
+        });
+    }
+
+    //TODO:メソッド名の変更
     private static User user() {
         return User.of("U999999", "$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK", "first", "last", RoleName.USER);
     }
@@ -356,6 +372,28 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 "123-4567",
                 "東京都",
                 "新宿区1-1-1"
+        );
+    }
+
+    public static Vendor getVendor(String vendorCode, Integer vendorBranchCode) {
+        return Vendor.of(
+                vendorCode,
+                vendorBranchCode,
+                "仕入先名A",
+                "シリヒキサキメイエー",
+                "担当者名A",
+                "部門名A",
+                "123-4567",
+                "東京都",
+                "新宿区1-1-1",
+                "マンション101号室",
+                "03-1234-5678",
+                "03-1234-5679",
+                "test@example.comw",
+                10,
+                1,
+                20,
+                2
         );
     }
 }

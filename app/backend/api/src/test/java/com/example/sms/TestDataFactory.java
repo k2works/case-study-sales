@@ -40,4 +40,6 @@ public interface TestDataFactory {
     void setUpForPartnerService();
 
     void setUpForCustomerService();
+
+    void setUpForVendorService();
 }

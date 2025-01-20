@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.master.partner.vendor;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -18,8 +19,14 @@ public class VendorList {
     }
 
     public VendorList add(Vendor vendor) {
-        List<Vendor> newValue = value;
+        List<Vendor> newValue = new ArrayList<>(value);
         newValue.add(vendor);
+        return new VendorList(newValue);
+    }
+
+    public VendorList add(List<Vendor> vendors) {
+        List<Vendor> newValue = new ArrayList<>(value);
+        newValue.addAll(vendors);
         return new VendorList(newValue);
     }
 

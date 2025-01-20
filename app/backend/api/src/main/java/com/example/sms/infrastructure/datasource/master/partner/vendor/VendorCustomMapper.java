@@ -1,6 +1,7 @@
 package com.example.sms.infrastructure.datasource.master.partner.vendor;
 
 import com.example.sms.infrastructure.datasource.autogen.model.仕入先マスタKey;
+import com.example.sms.service.master.partner.VendorCriteria;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -18,4 +19,6 @@ public interface VendorCustomMapper {
     List<VendorCustomEntity> selectByVendorCode(String vendorCode);
 
     void deleteByVendorCode(String vendorCode);
+
+    List<VendorCustomEntity> selectByCriteria(VendorCriteria criteria);
 }

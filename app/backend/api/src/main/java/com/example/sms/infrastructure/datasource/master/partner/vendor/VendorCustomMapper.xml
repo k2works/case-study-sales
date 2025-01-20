@@ -29,4 +29,45 @@
     delete from public.仕入先マスタ
     where 仕入先コード = #{vendorCode,jdbcType=VARCHAR}
   </delete>
+
+  <select id="selectByCriteria" resultMap="BaseResultMap">
+    select
+    <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.仕入先マスタMapper.Base_Column_List" />
+    from public.仕入先マスタ
+    <where>
+      <if test="vendorCode != null">
+        仕入先コード = #{vendorCode,jdbcType=VARCHAR}
+      </if>
+      <if test="vendorName != null">
+        and 仕入先名 like '%' || #{vendorName,jdbcType=VARCHAR} || '%'
+      </if>
+      <if test="vendorContactName != null">
+        and 仕入先担当者名 like '%' || #{vendorContactName,jdbcType=VARCHAR} || '%'
+      </if>
+      <if test="vendorDepartmentName != null">
+        and 仕入先部門名 like '%' || #{vendorDepartmentName,jdbcType=VARCHAR} || '%'
+      </if>
+      <if test="postalCode != null">
+        and 仕入先郵便番号 = #{postalCode,jdbcType=VARCHAR}
+      </if>
+      <if test="prefecture != null">
+        and 仕入先都道府県 = #{prefecture,jdbcType=VARCHAR}
+      </if>
+      <if test="address1 != null">
+        and 仕入先住所１ like '%' || #{address1,jdbcType=VARCHAR} || '%'
+      </if>
+      <if test="address2 != null">
+        and 仕入先住所２ like '%' || #{address2,jdbcType=VARCHAR} || '%'
+      </if>
+      <if test="vendorPhoneNumber != null">
+        and 仕入先電話番号 = #{vendorPhoneNumber,jdbcType=VARCHAR}
+      </if>
+      <if test="vendorFaxNumber != null">
+        and 仕入先ＦＡＸ番号 = #{vendorFaxNumber,jdbcType=VARCHAR}
+      </if>
+      <if test="vendorEmailAddress != null">
+        and 仕入先メールアドレス = #{vendorEmailAddress,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
 </mapper>

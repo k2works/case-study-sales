@@ -57,4 +57,28 @@ public class Vendor {
                 ClosingInvoice.of(vendorClosingDate, vendorPaymentMonth, vendorPaymentDate, vendorPaymentMethod)
         );
     }
+
+    public static Vendor of(
+            VendorCode vendorCode,
+            VendorName vendorName,
+            String vendorContactName,
+            String vendorDepartmentName,
+            Address vendorAddress,
+            PhoneNumber vendorPhoneNumber,
+            FaxNumber vendorFaxNumber,
+            Email vendorEmailAddress,
+            ClosingInvoice vendorClosingInvoice
+    ) {
+        return new Vendor(
+                vendorCode,
+                vendorName,
+                vendorContactName,
+                vendorDepartmentName,
+                vendorAddress,
+                vendorPhoneNumber,
+                vendorFaxNumber,
+                vendorEmailAddress,
+                vendorClosingInvoice
+        );
+    }
 }
