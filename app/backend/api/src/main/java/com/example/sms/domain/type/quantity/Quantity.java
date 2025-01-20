@@ -1,6 +1,5 @@
-package com.example.sms.domain.model.common.quantity;
+package com.example.sms.domain.type.quantity;
 
-import com.example.sms.domain.type.quantity.UnitType;
 import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
 import lombok.Value;

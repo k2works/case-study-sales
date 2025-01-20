@@ -4,7 +4,7 @@ import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.system.user.User;
-import com.example.sms.domain.type.user.RoleName;
+import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.infrastructure.datasource.autogen.model.Usr;
 import com.example.sms.infrastructure.datasource.autogen.model.社員マスタ;
 import com.example.sms.infrastructure.datasource.autogen.model.部門マスタ;

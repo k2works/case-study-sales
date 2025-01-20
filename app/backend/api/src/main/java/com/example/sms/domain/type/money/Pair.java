@@ -1,6 +1,4 @@
-package com.example.sms.domain.model.common.money;
-
-import com.example.sms.domain.type.money.CurrencyType;
+package com.example.sms.domain.type.money;
 
 /**
  * 通貨ペア

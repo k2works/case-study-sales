@@ -1,6 +1,5 @@
-package com.example.sms.domain.model.common.money;
+package com.example.sms.domain.type.money;
 
-import com.example.sms.domain.type.money.CurrencyType;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;

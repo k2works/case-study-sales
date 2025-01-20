@@ -1,8 +1,6 @@
 package com.example.sms.infrastructure.datasource.master.product_category;
 
-import com.example.sms.domain.model.master.product.Product;
-import com.example.sms.domain.model.master.product.ProductCategory;
-import com.example.sms.domain.type.product.*;
+import com.example.sms.domain.model.master.product.*;
 import com.example.sms.infrastructure.datasource.autogen.model.商品マスタ;
 import com.example.sms.infrastructure.datasource.autogen.model.商品分類マスタ;
 import org.springframework.stereotype.Component;
