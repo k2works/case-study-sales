@@ -75,12 +75,16 @@ public class AuditApiController {
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
             PageNation.startPage(page, pageSize);
-            AuditCriteria criteria = AuditCriteria.of(resource.getProcess().getProcessType(), resource.getType(), resource.getProcessFlag());
+            AuditCriteria criteria = convertToCriteria(resource);
             PageInfo<ApplicationExecutionHistory> result = auditService.searchWithPageInfo(criteria);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
+    }
+
+    private AuditCriteria convertToCriteria(AuditCriteriaResource resource) {
+        return AuditCriteria.of(resource.getProcess().getProcessType(), resource.getType(), resource.getProcessFlag());
     }
 }
 
