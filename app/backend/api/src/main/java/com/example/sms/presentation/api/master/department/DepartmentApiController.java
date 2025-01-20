@@ -75,16 +75,7 @@ public class DepartmentApiController {
     @AuditAnnotation(process = ApplicationExecutionProcessType.部門登録, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> create(@RequestBody @Validated DepartmentResource resource) {
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
-            Department department = Department.of(
-                    DepartmentId.of(resource.getDepartmentCode(), LocalDateTime.parse(resource.getStartDate(), formatter)),
-                    LocalDateTime.parse(resource.getEndDate(), formatter),
-                    resource.getDepartmentName(),
-                    Integer.parseInt(resource.getLayer()),
-                    resource.getPath(),
-                    resource.getLowerType().getValue(),
-                    resource.getSlitYn().getValue()
-            );
+            Department department = convertToEntity(resource);
             Department departmentOptional = departmentManagementService.find(department.getDepartmentId());
             if (departmentOptional != null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.department.already.exist")));
@@ -101,17 +92,9 @@ public class DepartmentApiController {
     @AuditAnnotation(process = ApplicationExecutionProcessType.部門更新, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> update(@PathVariable String departmentCode, @PathVariable String departmentStartDate, @RequestBody DepartmentResource departmentResource) {
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
-            DepartmentId departmentId = DepartmentId.of(departmentCode, LocalDateTime.parse(departmentStartDate, formatter));
-            Department department = Department.of(
-                    departmentId,
-                    LocalDateTime.parse(departmentResource.getEndDate(), formatter),
-                    departmentResource.getDepartmentName(),
-                    Integer.parseInt(departmentResource.getLayer()),
-                    departmentResource.getPath(),
-                    departmentResource.getLowerType().getValue(),
-                    departmentResource.getSlitYn().getValue()
-            );
+            departmentResource.setDepartmentCode(departmentCode);
+            departmentResource.setStartDate(departmentStartDate);
+            Department department = convertToEntity(departmentResource);
             List<Employee> addEmployees = getAddFilteredEmployees(departmentResource);
             List<Employee> deleteEmployees = getDeleteFilteredEmployees(departmentResource);
 
@@ -147,14 +130,8 @@ public class DepartmentApiController {
             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
             PageNation.startPage(page, pageSize);
-            DepartmentCriteria criteria = DepartmentCriteria.builder()
-                    .departmentCode(resource.getDepartmentCode())
-                    .departmentName(resource.getDepartmentName())
-                    .startDate(resource.getStartDate() != null ? LocalDateTime.parse(resource.getStartDate(), formatter) : null)
-                    .endDate(resource.getEndDate() != null ? LocalDateTime.parse(resource.getEndDate(), formatter) : null)
-                    .build();
+            DepartmentCriteria criteria = convertToCriteria(resource);
             PageInfo<Department> result = departmentManagementService.searchWithPageInfo(criteria);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
@@ -190,6 +167,29 @@ public class DepartmentApiController {
                                 employeeResource.getOccuCode()
                         ))
                         .toList();
+    }
+
+    private Department convertToEntity(DepartmentResource resource) {
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
+        return Department.of(
+                DepartmentId.of(resource.getDepartmentCode(), LocalDateTime.parse(resource.getStartDate(), formatter)),
+                LocalDateTime.parse(resource.getEndDate(), formatter),
+                resource.getDepartmentName(),
+                Integer.parseInt(resource.getLayer()),
+                resource.getPath(),
+                resource.getLowerType().getValue(),
+                resource.getSlitYn().getValue()
+        );
+    }
+
+    private DepartmentCriteria convertToCriteria(DepartmentCriteriaResource resource) {
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
+        return DepartmentCriteria.builder()
+                .departmentCode(resource.getDepartmentCode())
+                .departmentName(resource.getDepartmentName())
+                .startDate(resource.getStartDate() != null ? LocalDateTime.parse(resource.getStartDate(), formatter) : null)
+                .endDate(resource.getEndDate() != null ? LocalDateTime.parse(resource.getEndDate(), formatter) : null)
+                .build();
     }
 }
 
