@@ -2,6 +2,7 @@ package com.example.sms.service.master.department;
 
 import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactory;
+import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentList;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,6 +10,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -40,7 +43,7 @@ public class DepartmentServiceTest {
         @Test
         @DisplayName("部門を新規登録できる")
         void registerNewDepartment() {
-            Department newDepartment = testDataFactory.Department();
+            Department newDepartment = TestDataFactoryImpl.getDepartment("30000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門3");
 
             departmentService.register(newDepartment);
 
@@ -52,7 +55,7 @@ public class DepartmentServiceTest {
         @Test
         @DisplayName("部門の登録情報を編集できる")
         void editDepartmentDetails() {
-            Department department = testDataFactory.Department();
+            Department department = TestDataFactoryImpl.getDepartment("30000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門3");
 
             Department updateDepartment = Department.of(department.getDepartmentId(), department.getEndDate().getValue(), "editedDepartmentName", department.getLayer(), department.getPath().getValue(), department.getLowerType().getValue(), department.getSlitYn().getValue());
             departmentService.save(updateDepartment);
@@ -64,7 +67,7 @@ public class DepartmentServiceTest {
         @Test
         @DisplayName("部門を削除できる")
         void deleteDepartment() {
-            Department department = testDataFactory.Department();
+            Department department = TestDataFactoryImpl.getDepartment("30000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門3");
 
             departmentService.delete(department.getDepartmentId());
 
@@ -75,7 +78,7 @@ public class DepartmentServiceTest {
         @Test
         @DisplayName("部門を検索できる")
         void findDepartment() {
-            Department department = testDataFactory.Department();
+            Department department = TestDataFactoryImpl.getDepartment("30000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門3");
 
             departmentService.register(department);
 

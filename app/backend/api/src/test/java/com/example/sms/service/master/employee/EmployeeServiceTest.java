@@ -2,6 +2,7 @@ package com.example.sms.service.master.employee;
 
 import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactory;
+import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.master.employee.EmployeeList;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,11 +10,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @IntegrationTest
 @DisplayName("社員サービス")
-public class EmployeeServiceTest {
+class EmployeeServiceTest {
     @Autowired
     private EmployeeService employeeService;
 
@@ -35,7 +38,7 @@ public class EmployeeServiceTest {
     @Test
     @DisplayName("社員を新規登録できる")
     void shouldRegisterNewEmployee() {
-        Employee newEmployee = testDataFactory.Employee();
+        Employee newEmployee = TestDataFactoryImpl.getEmployee("EMP999", "10000", LocalDateTime.of(2021, 1, 1, 0, 0));
 
         employeeService.register(newEmployee);
 
@@ -46,7 +49,7 @@ public class EmployeeServiceTest {
     @Test
     @DisplayName("社員の登録情報を編集できる")
     void shouldEditEmployeeDetails() {
-        Employee employee = testDataFactory.Employee();
+        Employee employee = TestDataFactoryImpl.getEmployee("EMP999", "10000", LocalDateTime.of(2021, 1, 1, 0, 0));
         Employee updateEmployee = Employee.of(
                 Employee.of(employee.getEmpCode().getValue(), "edited EmployeeName", employee.getEmpName().NameKana(), employee.getTel().getValue(), employee.getFax().getValue(), employee.getOccuCode().getValue()),
                 employee.getDepartment(),
@@ -62,7 +65,7 @@ public class EmployeeServiceTest {
     @Test
     @DisplayName("社員を削除できる")
     void shouldDeleteEmployee() {
-        Employee employee = testDataFactory.Employee();
+        Employee employee = TestDataFactoryImpl.getEmployee("EMP999", "10000", LocalDateTime.of(2021, 1, 1, 0, 0));
 
         employeeService.delete(employee.getEmpCode());
 
@@ -73,7 +76,8 @@ public class EmployeeServiceTest {
     @Test
     @DisplayName("社員を検索できる")
     void shouldFindEmployee() {
-        Employee employee = testDataFactory.Employee();
+        Employee employee = TestDataFactoryImpl.getEmployee("EMP999", "10000", LocalDateTime.of(2021, 1, 1, 0, 0));
+
         employeeService.register(employee);
 
         Employee result = employeeService.find(employee.getEmpCode());

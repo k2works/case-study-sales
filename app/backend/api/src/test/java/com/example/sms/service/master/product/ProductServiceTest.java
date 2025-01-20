@@ -2,6 +2,7 @@ package com.example.sms.service.master.product;
 
 import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactory;
+import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.ProductCategory;
 import com.example.sms.domain.model.master.product.ProductCategoryList;
@@ -42,7 +43,7 @@ public class ProductServiceTest {
         @Test
         @DisplayName("商品を新規登録できる")
         void shouldRegisterNewProduct() {
-            Product newProduct = testDataFactory.Product();
+            Product newProduct = TestDataFactoryImpl.getProduct("99999999");
 
             productService.register(newProduct);
 
@@ -55,7 +56,7 @@ public class ProductServiceTest {
         @Test
         @DisplayName("商品の登録情報を編集できる")
         void shouldEditProductDetails() {
-            Product product = testDataFactory.Product();
+            Product product = TestDataFactoryImpl.getProduct("99999999");
             productService.register(product);
 
             Product updateProduct = Product.of(product.getProductCode().getValue(), "更新後商品正式名", "更新後商品略称", "更新後商品名カナ", ProductType.商品, 2000, 3000, 4000, TaxType.内税, "99999999", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "99999999", 6);
@@ -69,7 +70,7 @@ public class ProductServiceTest {
         @Test
         @DisplayName("商品を削除できる")
         void shouldDeleteProduct() {
-            Product product = testDataFactory.Product();
+            Product product = TestDataFactoryImpl.getProduct("99999999");
             productService.register(product);
 
             productService.delete(product);
@@ -92,7 +93,7 @@ public class ProductServiceTest {
         @Test
         @DisplayName("商品分類を新規登録できる")
         void shouldRegisterNewProductCategory() {
-            ProductCategory newProductCategory = testDataFactory.ProductCategory();
+            ProductCategory newProductCategory = TestDataFactoryImpl.getProductCategory("99999999");
             productService.registerCategory(newProductCategory);
 
             ProductCategoryList result = productService.selectAllCategory();
@@ -104,7 +105,7 @@ public class ProductServiceTest {
         @Test
         @DisplayName("商品分類の登録情報を編集できる")
         void shouldEditProductCategoryDetails() {
-            ProductCategory productCategory = testDataFactory.ProductCategory();
+            ProductCategory productCategory = TestDataFactoryImpl.getProductCategory("99999999");
             productService.registerCategory(productCategory);
 
             ProductCategory updateProductCategory = ProductCategory.of(productCategory.getProductCategoryCode().getValue(), "更新後商品分類名", productCategory.getProductCategoryHierarchy(), productCategory.getProductCategoryPath(), productCategory.getLowestLevelDivision());
@@ -118,7 +119,7 @@ public class ProductServiceTest {
         @Test
         @DisplayName("商品分類を削除できる")
         void shouldDeleteProductCategory() {
-            ProductCategory productCategory = testDataFactory.ProductCategory();
+            ProductCategory productCategory = TestDataFactoryImpl.getProductCategory("99999999");
             productService.registerCategory(productCategory);
 
             productService.deleteCategory(productCategory);

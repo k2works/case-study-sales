@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @IntegrationTest
 @DisplayName("認証APIサービス")
-public class AuthApiServiceTest {
+class AuthApiServiceTest {
 
     @Autowired
     AuthApiService authApiService;

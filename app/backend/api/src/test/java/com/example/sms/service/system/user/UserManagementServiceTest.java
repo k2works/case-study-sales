@@ -2,6 +2,7 @@ package com.example.sms.service.system.user;
 
 import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactory;
+import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.system.user.Name;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.user.UserId;
@@ -18,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @IntegrationTest
 @DisplayName("ユーザー管理サービス")
-public class UserManagementServiceTest {
+class UserManagementServiceTest {
     @Autowired
     UserManagementService userManagementService;
 
@@ -55,7 +56,7 @@ public class UserManagementServiceTest {
         @WithMockUser(username = "admin", roles = "ADMIN")
         @DisplayName("ユーザーの登録情報を編集できる")
         void editUserDetails() {
-            User user = testDataFactory.User();
+            User user = TestDataFactoryImpl.getUser();
             User updateUser = new User(user.getUserId(), user.getPassword(), new Name("editedFirstName", "editedLastName"), user.getRoleName());
             userManagementService.save(updateUser);
             User result = userManagementService.find(user.getUserId());
@@ -67,7 +68,7 @@ public class UserManagementServiceTest {
         @WithMockUser(username = "admin", roles = "ADMIN")
         @DisplayName("ユーザーを削除できる")
         void deleteUser() {
-            User user = testDataFactory.User();
+            User user = TestDataFactoryImpl.getUser();
             userManagementService.delete(user.getUserId());
             UserList result = userManagementService.selectAll();
             assertEquals(1, result.asList().size());
@@ -77,7 +78,7 @@ public class UserManagementServiceTest {
         @WithMockUser(username = "admin", roles = "ADMIN")
         @DisplayName("ユーザーを検索できる")
         void searchUser() {
-            User user = testDataFactory.User();
+            User user = TestDataFactoryImpl.getUser();
             User result = userManagementService.find(user.getUserId());
             assertEquals(new UserId("U999999"), result.getUserId());
         }

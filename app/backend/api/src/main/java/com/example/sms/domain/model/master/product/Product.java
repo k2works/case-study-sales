@@ -90,4 +90,40 @@ public class Product {
                 value.customerSpecificSellingPrices
         );
     }
+
+    public static Product of(
+            ProductCode productCode,
+            ProductName productName,
+            ProductType productType,
+            Money sellingPrice,
+            Money purchasePrice,
+            Money costOfSales,
+            TaxType taxType,
+            ProductCategoryCode productCategoryCode,
+            MiscellaneousType miscellaneousType,
+            StockManagementTargetType stockManagementTargetType,
+            StockAllocationType stockAllocationType,
+            SupplierCode supplierCode,
+            List<SubstituteProduct> substituteProduct,
+            List<Bom> boms,
+            List<CustomerSpecificSellingPrice> customerSpecificSellingPrices
+    ) {
+        return new Product(
+                productCode,
+                productName,
+                productType,
+                sellingPrice,
+                purchasePrice,
+                costOfSales,
+                taxType,
+                productCategoryCode,
+                miscellaneousType,
+                stockManagementTargetType,
+                stockAllocationType,
+                supplierCode,
+                substituteProduct,
+                boms,
+                customerSpecificSellingPrices
+        );
+    }
 }

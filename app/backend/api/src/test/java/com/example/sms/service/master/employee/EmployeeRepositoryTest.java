@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @DisplayName("社員レポジトリ")
-public class EmployeeRepositoryTest {
+class EmployeeRepositoryTest {
     @Autowired
     private EmployeeRepository repository;
 
@@ -24,7 +24,7 @@ public class EmployeeRepositoryTest {
     }
 
     private Employee getEmployee() {
-        return TestDataFactoryImpl.employee("EMP999", "10000", LocalDateTime.of(2021, 1, 1, 0, 0));
+        return TestDataFactoryImpl.getEmployee("EMP999", "10000", LocalDateTime.of(2021, 1, 1, 0, 0));
     }
 
     @Test
