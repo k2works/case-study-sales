@@ -1,8 +1,6 @@
 package com.example.sms.domain.model.master.department;
 
 import com.example.sms.domain.model.master.employee.Employee;
-import com.example.sms.domain.type.department.DepartmentLowerType;
-import com.example.sms.domain.type.department.SlitYnType;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 

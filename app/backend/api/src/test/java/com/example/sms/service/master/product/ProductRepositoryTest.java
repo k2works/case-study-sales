@@ -2,7 +2,6 @@ package com.example.sms.service.master.product;
 
 import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.master.product.*;
-import com.example.sms.domain.type.product.*;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

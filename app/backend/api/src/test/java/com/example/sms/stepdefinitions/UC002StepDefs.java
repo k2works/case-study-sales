@@ -1,7 +1,7 @@
 package com.example.sms.stepdefinitions;
 
 import com.example.sms.domain.model.system.user.User;
-import com.example.sms.domain.type.user.RoleName;
+import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.presentation.api.system.user.UserResource;
 import com.example.sms.stepdefinitions.utils.ListResponse;
 import com.example.sms.stepdefinitions.utils.MessageResponse;

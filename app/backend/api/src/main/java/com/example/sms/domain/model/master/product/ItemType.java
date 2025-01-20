@@ -1,4 +1,4 @@
-package com.example.sms.domain.type.product;
+package com.example.sms.domain.model.master.product;
 
 /**
  * 品目区分
