@@ -63,9 +63,9 @@ public class RegionApiController {
     @Operation(summary = "地域を登録")
     @PostMapping
     @AuditAnnotation(process = ApplicationExecutionProcessType.地域登録, type = ApplicationExecutionHistoryType.同期)
-    public ResponseEntity<?> register(@RequestBody RegionResource regionResource) {
+    public ResponseEntity<?> register(@RequestBody RegionResource resource) {
         try {
-            Region region = Region.of(regionResource.getRegionCode(), regionResource.getRegionName());
+            Region region = convertToEntity(resource);
             if (regionService.find(region.getRegionCode().getValue()) != null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.region.already.exist")));
             }
@@ -81,9 +81,10 @@ public class RegionApiController {
     @AuditAnnotation(process = ApplicationExecutionProcessType.地域更新, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> update(
             @PathVariable("regionCode") String regionCode,
-            @RequestBody RegionResource regionResource) {
+            @RequestBody RegionResource resource) {
         try {
-            Region region = Region.of(regionCode, regionResource.getRegionName());
+            resource.setRegionCode(regionCode);
+            Region region = convertToEntity(resource);
             if (regionService.find(region.getRegionCode().getValue()) == null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.region.not.exist")));
             }
@@ -124,6 +125,10 @@ public class RegionApiController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
+    }
+
+    private Region convertToEntity(RegionResource resource) {
+        return Region.of(resource.getRegionCode(), resource.getRegionName());
     }
 
     private RegionCriteria convertToCriteria(RegionCriteriaResource resource) {
