@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Schema(description = "ダウンロード条件")
-public class DownloadConditionResource implements Serializable {
+public class DownloadCriteriaResource implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 

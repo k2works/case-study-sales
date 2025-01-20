@@ -3,7 +3,7 @@ package com.example.sms.stepdefinitions;
 import com.example.sms.TestDataFactory;
 import com.example.sms.domain.model.system.download.DownloadTarget;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
-import com.example.sms.presentation.api.system.download.DownloadConditionResource;
+import com.example.sms.presentation.api.system.download.DownloadCriteriaResource;
 import com.example.sms.stepdefinitions.utils.SpringAcceptanceTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,13 +46,13 @@ public class UC007StepDefs extends SpringAcceptanceTest {
     @もし(":UC007 {string} ダウンロード件数を取得する")
     public void toGet(String target) throws IOException {
         String url = DOWNLOAD_API_URL + "/count";
-        DownloadConditionResource downloadConditionResource = new DownloadConditionResource();
+        DownloadCriteriaResource downloadCriteriaResource = new DownloadCriteriaResource();
         if (target.equals("部門")) {
-            downloadConditionResource = new DownloadConditionResource();
-            downloadConditionResource.setTarget(DownloadTarget.部門);
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.部門);
         }
         ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(downloadConditionResource);
+        String json = objectMapper.writeValueAsString(downloadCriteriaResource);
         executePost(url, json);
     }
 
@@ -68,13 +68,13 @@ public class UC007StepDefs extends SpringAcceptanceTest {
     @もし(":UC007 {string} ダウンロードを実行する")
     public void exec(String target) throws IOException {
         String url = DOWNLOAD_API_URL + "/download";
-        DownloadConditionResource downloadConditionResource = new DownloadConditionResource();
+        DownloadCriteriaResource downloadCriteriaResource = new DownloadCriteriaResource();
         if (target.equals("部門")) {
-            downloadConditionResource = new DownloadConditionResource();
-            downloadConditionResource.setTarget(DownloadTarget.部門);
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.部門);
         }
         ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(downloadConditionResource);
+        String json = objectMapper.writeValueAsString(downloadCriteriaResource);
         executePost(url, json);
     }
 
