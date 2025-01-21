@@ -62,7 +62,7 @@ public class PartnerGroupApiController {
     @AuditAnnotation(process = ApplicationExecutionProcessType.取引先グループ登録, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> register(@RequestBody PartnerGroupResource partnerGroupResource) {
         try {
-            PartnerGroup partnerGroup = PartnerGroup.of(partnerGroupResource.getPartnerGroupCode(), partnerGroupResource.getPartnerGroupName());
+            PartnerGroup partnerGroup = convertToEntity(partnerGroupResource);
             if (partnerGroupService.find(partnerGroup.getPartnerGroupCode().getValue()) != null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.partner-group.already.exist")));
             }
@@ -78,7 +78,7 @@ public class PartnerGroupApiController {
     @AuditAnnotation(process = ApplicationExecutionProcessType.取引先グループ更新, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> update(@PathVariable("partnerGroupCode") String partnerGroupCode, @RequestBody PartnerGroupResource partnerGroupResource) {
         try {
-            PartnerGroup partnerGroup = PartnerGroup.of(partnerGroupCode, partnerGroupResource.getPartnerGroupName());
+            PartnerGroup partnerGroup = convertToEntity(partnerGroupResource);
             if (partnerGroupService.find(partnerGroup.getPartnerGroupCode().getValue()) == null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.partner-group.not.exist")));
             }
@@ -121,6 +121,10 @@ public class PartnerGroupApiController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
+    }
+
+    private PartnerGroup convertToEntity(PartnerGroupResource resource) {
+        return PartnerGroup.of(resource.getPartnerGroupCode(), resource.getPartnerGroupName());
     }
 
     private PartnerGroupCriteria convertToCriteria(PartnerGroupCriteriaResource resource) {
