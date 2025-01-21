@@ -1,5 +1,7 @@
 package com.example.sms.presentation.api.master.partner;
 
+import com.example.sms.domain.model.master.partner.PartnerCategoryAffiliation;
+import com.example.sms.domain.model.master.partner.PartnerCategoryItem;
 import com.example.sms.domain.model.master.partner.PartnerCategoryType;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType;
@@ -15,6 +17,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 取引先分類API
@@ -61,12 +65,9 @@ public class PartnerCategoryApiController {
     @Operation(summary = "取引先分類種別を登録する")
     @PostMapping
     @AuditAnnotation(process = ApplicationExecutionProcessType.取引先分類種別登録, type = ApplicationExecutionHistoryType.同期)
-    public ResponseEntity<?> register(@RequestBody PartnerCategoryResource partnerCategoryResource) {
+    public ResponseEntity<?> register(@RequestBody PartnerCategoryTypeResource partnerCategoryResource) {
         try {
-            PartnerCategoryType partnerCategoryType = PartnerCategoryType.of(
-                    partnerCategoryResource.getPartnerCategoryCode(),
-                    partnerCategoryResource.getPartnerCategoryName()
-            );
+            PartnerCategoryType partnerCategoryType = convertToEntity(partnerCategoryResource);
 
             if (partnerCategoryService.find(partnerCategoryType.getPartnerCategoryTypeCode()) != null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.partner-category.already.exist")));
@@ -84,12 +85,10 @@ public class PartnerCategoryApiController {
     @AuditAnnotation(process = ApplicationExecutionProcessType.取引先分類種別更新, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> update(
             @PathVariable("partnerCategoryTypeCode") String partnerCategoryTypeCode,
-            @RequestBody PartnerCategoryResource partnerCategoryResource) {
+            @RequestBody PartnerCategoryTypeResource partnerCategoryResource) {
         try {
-            PartnerCategoryType partnerCategoryType = PartnerCategoryType.of(
-                    partnerCategoryTypeCode, 
-                    partnerCategoryResource.getPartnerCategoryName()
-            );
+            PartnerCategoryType partnerCategoryType = convertToEntity(partnerCategoryResource);
+
             if (partnerCategoryService.find(partnerCategoryType.getPartnerCategoryTypeCode()) == null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.partner-category.not.exist")));
             }
@@ -133,6 +132,33 @@ public class PartnerCategoryApiController {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
+    private PartnerCategoryType convertToEntity(PartnerCategoryTypeResource resource) {
+        List<PartnerCategoryItem> items = resource.getPartnerCategoryItems().stream()
+                .map(item -> {
+                    List<PartnerCategoryAffiliation> affiliations = item.getPartnerCategoryAffiliations().stream()
+                            .map(affiliation -> PartnerCategoryAffiliation.of(
+                                    resource.getPartnerCategoryTypeCode(),
+                                    affiliation.getPartnerCode(),
+                                    affiliation.getPartnerCategoryItemCode()
+                            ))
+                            .toList();
+                    PartnerCategoryItem partnerCategoryItem = PartnerCategoryItem.of(
+                            resource.getPartnerCategoryTypeCode(),
+                            item.getPartnerCategoryItemCode(),
+                            item.getPartnerCategoryItemName()
+                    );
+                    return PartnerCategoryItem.of(partnerCategoryItem, affiliations);
+                })
+                .toList();
+
+        PartnerCategoryType partnerCategoryType = PartnerCategoryType.of(
+                resource.getPartnerCategoryTypeCode(),
+                resource.getPartnerCategoryTypeName()
+        );
+
+        return PartnerCategoryType.of(partnerCategoryType, items);
+    }
+
 
     private PartnerCategoryCriteria convertToCriteria(PartnerCategoryCriteriaResource resource) {
         return PartnerCategoryCriteria.builder()

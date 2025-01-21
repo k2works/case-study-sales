@@ -2,7 +2,7 @@ package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
 import com.example.sms.domain.model.master.partner.PartnerCategoryType;
-import com.example.sms.presentation.api.master.partner.PartnerCategoryResource;
+import com.example.sms.presentation.api.master.partner.PartnerCategoryTypeResource;
 import com.example.sms.stepdefinitions.utils.MessageResponse;
 import com.example.sms.service.master.partner.PartnerCategoryCriteria;
 import com.example.sms.stepdefinitions.utils.ListResponse;
@@ -17,6 +17,7 @@ import io.cucumber.java.ja.もし;
 import io.cucumber.java.ja.前提;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -69,11 +70,28 @@ public class UC009StepDefs extends SpringAcceptanceTest {
 
     @もし(":UC009 取引先分類コード {string} 取引先分類名 {string} で新規登録する")
     public void toRegist(String code, String name) throws IOException {
-        PartnerCategoryResource partnerCategoryResource = new PartnerCategoryResource();
-        partnerCategoryResource.setPartnerCategoryCode(code);
-        partnerCategoryResource.setPartnerCategoryName(name);
+        // PartnerCategoryAffiliationResource のインスタンス生成
+        PartnerCategoryTypeResource.PartnerCategoryItemResource.PartnerCategoryAffiliationResource affiliation =
+                new PartnerCategoryTypeResource.PartnerCategoryItemResource.PartnerCategoryAffiliationResource();
+        affiliation.setPartnerCategoryTypeCode(code);
+        affiliation.setPartnerCode("001");
+        affiliation.setPartnerCategoryItemCode("ITEM001");
+
+        // PartnerCategoryItemResource のインスタンス生成
+        PartnerCategoryTypeResource.PartnerCategoryItemResource item =
+                new PartnerCategoryTypeResource.PartnerCategoryItemResource();
+        item.setPartnerCategoryItemCode("ITEM001");
+        item.setPartnerCategoryItemName("取引先分類項目名1");
+        item.setPartnerCategoryAffiliations(Collections.singletonList(affiliation));
+
+        // PartnerCategoryTypeResource のインスタンス生成
+        PartnerCategoryTypeResource typeResource = new PartnerCategoryTypeResource();
+        typeResource.setPartnerCategoryTypeCode(code);
+        typeResource.setPartnerCategoryTypeName(name);
+        typeResource.setPartnerCategoryItems(Collections.singletonList(item));
+
         ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(partnerCategoryResource);
+        String json = objectMapper.writeValueAsString(typeResource);
         executePost(PARTNER_CATEGORY_API_URL, json);
     }
 
@@ -103,11 +121,28 @@ public class UC009StepDefs extends SpringAcceptanceTest {
     @かつ(":UC009 取引先分類コード {string} の情報を更新する \\(取引先分類名 {string})")
     public void toUpdate(String code, String name) throws IOException {
         String url = PARTNER_CATEGORY_API_URL + "/" + code;
-        PartnerCategoryResource partnerCategoryResource = new PartnerCategoryResource();
-        partnerCategoryResource.setPartnerCategoryCode(code);
-        partnerCategoryResource.setPartnerCategoryName(name);
+        // PartnerCategoryAffiliationResource のインスタンス生成
+        PartnerCategoryTypeResource.PartnerCategoryItemResource.PartnerCategoryAffiliationResource affiliation =
+                new PartnerCategoryTypeResource.PartnerCategoryItemResource.PartnerCategoryAffiliationResource();
+        affiliation.setPartnerCategoryTypeCode(code);
+        affiliation.setPartnerCode("001");
+        affiliation.setPartnerCategoryItemCode("ITEM001");
+
+        // PartnerCategoryItemResource のインスタンス生成
+        PartnerCategoryTypeResource.PartnerCategoryItemResource item =
+                new PartnerCategoryTypeResource.PartnerCategoryItemResource();
+        item.setPartnerCategoryItemCode("ITEM001");
+        item.setPartnerCategoryItemName("取引先分類項目名1");
+        item.setPartnerCategoryAffiliations(Collections.singletonList(affiliation));
+
+        // PartnerCategoryTypeResource のインスタンス生成
+        PartnerCategoryTypeResource typeResource = new PartnerCategoryTypeResource();
+        typeResource.setPartnerCategoryTypeCode(code);
+        typeResource.setPartnerCategoryTypeName(name);
+        typeResource.setPartnerCategoryItems(Collections.singletonList(item));
+
         ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(partnerCategoryResource);
+        String json = objectMapper.writeValueAsString(typeResource);
         executePut(url, json);
     }
 
