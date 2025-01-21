@@ -16,6 +16,7 @@ import {Audit} from "../system/Audit.tsx";
 import {Download} from "../system/Download.tsx";
 import {Partner} from "../master/Partner.tsx";
 import {Code} from "../master/Code.tsx";
+import {Region} from "../master/Region.tsx";
 
 export const RouteConfig: React.FC = () => {
     const ProductCategoryPage = () => {
@@ -30,6 +31,14 @@ export const RouteConfig: React.FC = () => {
         return (
             <SiteLayout>
                 <ProductItem/>
+            </SiteLayout>
+        );
+    }
+
+    const RegionPage = () => {
+        return (
+            <SiteLayout>
+                <Region/>
             </SiteLayout>
         );
     }
@@ -57,6 +66,8 @@ export const RouteConfig: React.FC = () => {
                                                                      allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/code" element={<RouteAuthGuard component={<Code/>} redirectPath="/"
                                                                 allowedRoles={[RoleType.ADMIN]}/>}/>
+                <Route path="/region" element={<RouteAuthGuard component={<RegionPage/>} redirectPath="/"
+                                                             allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/logout" element={<Logout/>}/>
                 <Route path="*" element={<NotFound/>}/>

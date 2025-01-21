@@ -68,7 +68,7 @@ const NaveItems: React.FC = () => {
                             )}
                             <SubNavItem id="side-nav-code-nav" to="/code">コード</SubNavItem>
                             <ul className="nav-sub-list">
-                                <SubNavItem id="side-nav-area-nav" to="/area">地域</SubNavItem>
+                                <SubNavItem id="side-nav-code-nav" to="/region">地域</SubNavItem>
                             </ul>
                         </ul>
                     </li>

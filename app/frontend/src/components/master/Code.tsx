@@ -1,6 +1,7 @@
 import React from "react";
 import {useTab} from "../application/hooks.ts";
 import {SiteLayout} from "../../views/SiteLayout.tsx";
+import {Region} from "./Region.tsx";
 
 export const Code: React.FC = () => {
     const {
@@ -17,7 +18,7 @@ export const Code: React.FC = () => {
                     <Tab>地域</Tab>
                 </TabList>
                 <TabPanel>
-                    <></>
+                    <Region/>
                 </TabPanel>
             </Tabs>
         );
