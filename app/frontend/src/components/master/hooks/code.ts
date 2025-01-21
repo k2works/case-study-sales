@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {RegionService, RegionServiceType} from "../../../services/master/region_service.ts";
+import {RegionService, RegionServiceType} from "../../../services/master/region.ts";
 import {RegionType, RegionCriteriaType} from "../../../models";
 import {useFetchEntities} from "../../application/hooks.ts";
 import {PageNationType} from "../../../views/application/PageNation.tsx";

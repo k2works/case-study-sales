@@ -1,6 +1,7 @@
 import React from "react";
 import {useTab} from "../application/hooks.ts";
 import {SiteLayout} from "../../views/SiteLayout.tsx";
+import {PartnerCategory} from "./PartnerCategory.tsx";
 
 export const Partner: React.FC = () => {
     const {
@@ -21,7 +22,7 @@ export const Partner: React.FC = () => {
                     <Tab>仕入先</Tab>
                 </TabList>
                 <TabPanel>
-                    <></>
+                    <PartnerCategory/>
                 </TabPanel>
                 <TabPanel>
                     <></>

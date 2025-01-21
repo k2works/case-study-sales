@@ -17,6 +17,7 @@ import {Download} from "../system/Download.tsx";
 import {Partner} from "../master/Partner.tsx";
 import {Code} from "../master/Code.tsx";
 import {Region} from "../master/Region.tsx";
+import {PartnerCategory} from "../master/PartnerCategory.tsx";
 
 export const RouteConfig: React.FC = () => {
     const ProductCategoryPage = () => {
@@ -43,6 +44,14 @@ export const RouteConfig: React.FC = () => {
         );
     }
 
+    const PartnerCategoryPage = () => {
+        return (
+            <SiteLayout>
+                <PartnerCategory/>
+            </SiteLayout>
+        );
+    }
+
     return (
             <Routes>
                 <Route path="/" element={<RouteAuthGuard component={<Home/>} redirectPath="/login"/>}/>
@@ -64,6 +73,8 @@ export const RouteConfig: React.FC = () => {
                                                                 allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/partner" element={<RouteAuthGuard component={<Partner/>} redirectPath="/"
                                                                      allowedRoles={[RoleType.ADMIN]}/>}/>
+                <Route path="/partner-category" element={<RouteAuthGuard component={<PartnerCategoryPage/>} redirectPath="/"
+                                                                allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/code" element={<RouteAuthGuard component={<Code/>} redirectPath="/"
                                                                 allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/region" element={<RouteAuthGuard component={<RegionPage/>} redirectPath="/"
