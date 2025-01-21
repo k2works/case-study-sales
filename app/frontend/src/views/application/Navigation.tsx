@@ -50,12 +50,26 @@ const NaveItems: React.FC = () => {
                             <SubNavItem id="side-nav-department-nav" to="/department">部門</SubNavItem>
                             <SubNavItem id="side-nav-employee-nav" to="/employee">社員</SubNavItem>
                             <SubNavItem id="side-nav-product-nav" to="/product">商品</SubNavItem>
-                            { !Env.isProduction() && (
+                            {!Env.isProduction() && (
                                 <ul className="nav-sub-list">
                                     <SubNavItem id="side-nav-product-nav" to="/product-category">分類</SubNavItem>
                                     <SubNavItem id="side-nav-product-nav" to="/product-item">アイテム</SubNavItem>
                                 </ul>
                             )}
+                            <SubNavItem id="side-nav-partner-nav" to="/partner">取引先</SubNavItem>
+                            {!Env.isProduction() && (
+                                <ul className="nav-sub-list">
+                                    <SubNavItem id="side-nav-partner-nav" to="/partner-category">分類</SubNavItem>
+                                    <SubNavItem id="side-nav-partner-nav" to="/partner-groupe">グループ</SubNavItem>
+                                    <SubNavItem id="side-nav-partner-nav" to="/partner-collection">一覧</SubNavItem>
+                                    <SubNavItem id="side-nav-partner-nav" to="/customer">顧客</SubNavItem>
+                                    <SubNavItem id="side-nav-partner-nav" to="/vendor">仕入先</SubNavItem>
+                                </ul>
+                            )}
+                            <SubNavItem id="side-nav-code-nav" to="/code">コード</SubNavItem>
+                            <ul className="nav-sub-list">
+                                <SubNavItem id="side-nav-area-nav" to="/area">地域</SubNavItem>
+                            </ul>
                         </ul>
                     </li>
                 </>

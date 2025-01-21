@@ -14,6 +14,8 @@ import {ProductCategory} from "../master/ProductCategory.tsx";
 import {ProductItem} from "../master/ProductItem.tsx";
 import {Audit} from "../system/Audit.tsx";
 import {Download} from "../system/Download.tsx";
+import {Partner} from "../master/Partner.tsx";
+import {Code} from "../master/Code.tsx";
 
 export const RouteConfig: React.FC = () => {
     const ProductCategoryPage = () => {
@@ -33,7 +35,6 @@ export const RouteConfig: React.FC = () => {
     }
 
     return (
-        <>
             <Routes>
                 <Route path="/" element={<RouteAuthGuard component={<Home/>} redirectPath="/login"/>}/>
                 <Route path="/user" element={<RouteAuthGuard component={<User/>} redirectPath="/"
@@ -52,10 +53,13 @@ export const RouteConfig: React.FC = () => {
                                                                 allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/product-item" element={<RouteAuthGuard component={<ProductDetailPage/>} redirectPath="/"
                                                                 allowedRoles={[RoleType.ADMIN]}/>}/>
+                <Route path="/partner" element={<RouteAuthGuard component={<Partner/>} redirectPath="/"
+                                                                     allowedRoles={[RoleType.ADMIN]}/>}/>
+                <Route path="/code" element={<RouteAuthGuard component={<Code/>} redirectPath="/"
+                                                                allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/logout" element={<Logout/>}/>
                 <Route path="*" element={<NotFound/>}/>
             </Routes>
-        </>
     );
 }
