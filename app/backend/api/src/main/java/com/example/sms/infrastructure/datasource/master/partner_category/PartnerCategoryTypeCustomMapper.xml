@@ -51,8 +51,8 @@
     select
     種別.取引先分類種別コード, 種別.取引先分類種別名 , 分類.取引先分類コード, 分類.取引先分類名, 所属.取引先コード
     from public.取引先分類種別マスタ 種別
-    join public.取引先分類マスタ 分類 on 種別.取引先分類種別コード = 分類.取引先分類種別コード
-    join public.取引先分類所属マスタ 所属 on 分類.取引先分類種別コード = 所属.取引先分類種別コード and 分類.取引先分類コード = 所属.取引先分類コード
+    left outer join public.取引先分類マスタ 分類 on 種別.取引先分類種別コード = 分類.取引先分類種別コード
+    left outer join public.取引先分類所属マスタ 所属 on 分類.取引先分類種別コード = 所属.取引先分類種別コード and 分類.取引先分類コード = 所属.取引先分類コード
     <where>
       <if test="partnerCategoryTypeCode != null">
         種別.取引先分類種別コード = #{partnerCategoryTypeCode,jdbcType=VARCHAR}
