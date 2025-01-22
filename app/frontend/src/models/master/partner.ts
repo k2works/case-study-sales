@@ -12,8 +12,6 @@ export type PartnerCategoryItemType = {
     partnerCategoryItemCode: string; // 取引先分類コード
     partnerCategoryItemName: string; // 取引先分類名
     partnerCategoryAffiliations: PartnerCategoryAffiliationType[]; // 取引先分類所属
-    addFlag: boolean;
-    deleteFlag: boolean;
 };
 
 export type PartnerCodeType = {
@@ -24,8 +22,6 @@ export type PartnerCategoryAffiliationType = {
     partnerCategoryTypeCode: string; // 取引先分類種別コード
     partnerCode: PartnerCodeType;    // 取引先コード
     partnerCategoryItemCode: string; // 取引先分類コード
-    addFlag: boolean;
-    deleteFlag: boolean;
 };
 
 export type PartnerCategoryCriteriaType = {

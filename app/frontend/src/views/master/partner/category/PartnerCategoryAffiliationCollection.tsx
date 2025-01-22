@@ -37,8 +37,6 @@ export const PartnerCategoryAffiliationCollectionAddListView: React.FC<PartnerCa
             partnerCategoryTypeCode: partnerCategoryItem.partnerCategoryTypeCode,
             partnerCategoryItemCode: partnerCategoryItem.partnerCategoryItemCode,
             partnerCode: {value: "001"},
-            addFlag: true,
-            deleteFlag: false
         });
     }
 

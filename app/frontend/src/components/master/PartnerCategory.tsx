@@ -56,7 +56,6 @@ export const PartnerCategory: React.FC = () => {
             fetchPartnerCategories.load();
         }, []);
 
-        // Modalロジック
         const modalView = () => {
             const editModal = () => {
                 const handleOpenModal = (partnerCategory?: PartnerCategoryType) => {
@@ -94,13 +93,11 @@ export const PartnerCategory: React.FC = () => {
                             {isEditing && (
                                 <PartnerCategoryItemCollectionAddListView
                                     partnerCategory = {newPartnerCategory}
-                                    partnerCategoryItems={newPartnerCategory.partnerCategoryItems.filter((e) => !e.deleteFlag)}
+                                    partnerCategoryItems={newPartnerCategory.partnerCategoryItems}
                                     handleNew={(partnerCategoryItem: PartnerCategoryItemType) => {
                                         const newPartnerCategoryItems = newPartnerCategory.partnerCategoryItems.filter((e) => e.partnerCategoryItemCode !== partnerCategoryItem.partnerCategoryItemCode);
                                         newPartnerCategoryItems.push({
-                                            ...partnerCategoryItem,
-                                            addFlag: true,
-                                            deleteFlag: false
+                                            ...partnerCategoryItem
                                         });
                                         setNewPartnerCategory({
                                             ...newPartnerCategory,
@@ -118,17 +115,9 @@ export const PartnerCategory: React.FC = () => {
                                         }
                                     }}
                                     handleDelete={(partnerCategoryItem: PartnerCategoryItemType) => {
-                                        const newPartnerCategoryItems = newPartnerCategory.partnerCategoryItems.filter((e) => e.partnerCategoryItemCode !== partnerCategoryItem.partnerCategoryItemCode);
-                                        if (partnerCategoryItem.partnerCategoryItemCode) {
-                                            newPartnerCategoryItems.push({
-                                                ...partnerCategoryItem,
-                                                addFlag: false,
-                                                deleteFlag: true
-                                            });
-                                        }
                                         setNewPartnerCategory({
                                             ...newPartnerCategory,
-                                            partnerCategoryItems: newPartnerCategoryItems
+                                            partnerCategoryItems: newPartnerCategory.partnerCategoryItems.filter((e) => e.partnerCategoryItemCode !== partnerCategoryItem.partnerCategoryItemCode)
                                         });
                                     }}
                                 />
@@ -209,6 +198,7 @@ export const PartnerCategory: React.FC = () => {
                     setCategoryItemEditId(null);
                 }
 
+                //TODO:取引先コード一覧の追加
                 const partnerCategoryItemModalView = () => {
                     return (
                         <Modal
@@ -227,8 +217,6 @@ export const PartnerCategory: React.FC = () => {
                                     const newPartnerCategoryAffiliations = newPartnerCategoryItem.partnerCategoryAffiliations.filter((e) => e.partnerCode.value !== partnerCategoryAffiliation.partnerCode.value);
                                     newPartnerCategoryAffiliations.push({
                                         ...partnerCategoryAffiliation,
-                                        addFlag: true,
-                                        deleteFlag: false
                                     });
                                     setNewPartnerCategoryItem({
                                         ...newPartnerCategoryItem,
@@ -246,18 +234,20 @@ export const PartnerCategory: React.FC = () => {
                                     });
                                 }}
                                 handleDelete={(partnerCategoryAffiliation) => {
-                                    const newPartnerCategoryAffiliations = newPartnerCategoryItem.partnerCategoryAffiliations.filter((e) => e.partnerCode.value !== partnerCategoryAffiliation.partnerCode.value);
-                                    if (partnerCategoryAffiliation.partnerCode.value) {
-                                        newPartnerCategoryAffiliations.push({
-                                            ...partnerCategoryAffiliation,
-                                            addFlag: false,
-                                            deleteFlag: true
-                                        });
-                                    }
                                     setNewPartnerCategoryItem({
                                         ...newPartnerCategoryItem,
-                                        partnerCategoryAffiliations: newPartnerCategoryAffiliations
+                                        partnerCategoryAffiliations: newPartnerCategoryItem.partnerCategoryAffiliations.filter((e) => e.partnerCode.value !== partnerCategoryAffiliation.partnerCode.value)
                                     });
+
+                                    const newPartnerCategoryItems = newPartnerCategory.partnerCategoryItems.filter((e) => e.partnerCategoryItemCode !== newPartnerCategoryItem.partnerCategoryItemCode);
+                                    newPartnerCategoryItems.push({
+                                        ...newPartnerCategoryItem,
+                                        partnerCategoryAffiliations: newPartnerCategoryItem.partnerCategoryAffiliations.filter((e) => e.partnerCode.value !== partnerCategoryAffiliation.partnerCode.value)
+                                    });
+                                    setNewPartnerCategory({
+                                        ...newPartnerCategory,
+                                        partnerCategoryItems: newPartnerCategoryItems
+                                    })
                                 }}
                                 handleClose={handleClosePartnerCategoryItemModal}
                             />
@@ -371,7 +361,6 @@ export const PartnerCategory: React.FC = () => {
             );
         };
 
-        // 編集用モーダルのシングルビュー
         const singleView = () => {
             const { handleCloseModal } = modalView().editModal();
             const handleCreateOrUpdatePartnerCategory = async () => {

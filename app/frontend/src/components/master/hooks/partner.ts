@@ -18,8 +18,6 @@ export const usePartnerCategory = () => {
         partnerCategoryItemCode: "",
         partnerCategoryItemName: "",
         partnerCategoryAffiliations: [],
-        addFlag: false,
-        deleteFlag: false
     }
 
     const [partnerCategories, setPartnerCategories] = useState<PartnerCategoryType[]>([]);

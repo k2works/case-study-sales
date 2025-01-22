@@ -55,8 +55,6 @@ export const PartnerCategoryItemCollectionAddListView: React.FC<PartnerCategoryI
             partnerCategoryItemCode: "99",
             partnerCategoryItemName: "名前",
             partnerCategoryAffiliations: [],
-            addFlag: true,
-            deleteFlag: false
         });
     }
     const addItem = (e: React.MouseEvent<HTMLButtonElement>) => {
