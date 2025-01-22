@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PartnerCategoryType, PartnerCategoryCriteriaType } from "../../../models"; // モデルからインポート
+import {PartnerCategoryType, PartnerCategoryCriteriaType, PartnerCategoryItemType} from "../../../models"; // モデルからインポート
 import { useFetchEntities } from "../../application/hooks.ts"; // 共通フックのインポート
 import { PageNationType } from "../../../views/application/PageNation.tsx"; // ページネーションモデル
 import { PartnerCategoryService, PartnerCategoryServiceType } from "../../../services/master/partner_category.ts"; // サービス
@@ -13,8 +13,18 @@ export const usePartnerCategory = () => {
         checked: false
     };
 
+    const initialPartnerCategoryItem: PartnerCategoryItemType = {
+        partnerCategoryTypeCode: "",
+        partnerCategoryItemCode: "",
+        partnerCategoryItemName: "",
+        partnerCategoryAffiliations: [],
+        addFlag: false,
+        deleteFlag: false
+    }
+
     const [partnerCategories, setPartnerCategories] = useState<PartnerCategoryType[]>([]);
     const [newPartnerCategory, setNewPartnerCategory] = useState<PartnerCategoryType>(initialPartnerCategory);
+    const [newPartnerCategoryItem, setNewPartnerCategoryItem] = useState<PartnerCategoryItemType>(initialPartnerCategoryItem);
     const [searchPartnerCategoryCriteria, setSearchPartnerCategoryCriteria] = useState<PartnerCategoryCriteriaType>({});
     const partnerCategoryService = PartnerCategoryService();
 
@@ -22,7 +32,9 @@ export const usePartnerCategory = () => {
         initialPartnerCategory,
         partnerCategories,
         newPartnerCategory,
+        newPartnerCategoryItem,
         setNewPartnerCategory,
+        setNewPartnerCategoryItem,
         searchPartnerCategoryCriteria,
         setSearchPartnerCategoryCriteria,
         setPartnerCategories,

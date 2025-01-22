@@ -4,12 +4,18 @@ import { useMessage } from "../application/Message.tsx";
 import { useModal } from "../application/hooks.ts";
 import { usePageNation } from "../../views/application/PageNation.tsx";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
-import { PartnerCategoryCriteriaType, PartnerCategoryType } from "../../models";
+import {PartnerCategoryCriteriaType, PartnerCategoryItemType, PartnerCategoryType} from "../../models";
 import { useFetchPartnerCategories, usePartnerCategory } from "./hooks";
 import Modal from "react-modal";
 import {PartnerCategorySearchView} from "../../views/master/partner/category/PartnerCategorySearch.tsx";
 import {PartnerCategoryCollectionView} from "../../views/master/partner/category/PartnerCategoryCollection.tsx";
 import {PartnerCategorySingleView} from "../../views/master/partner/category/PartnerCategorySingle.tsx";
+import {
+    PartnerCategoryItemCollectionAddListView
+} from "../../views/master/partner/category/ParnterCategoryItemCollection.tsx";
+import {
+    PartnerCategoryAffiliationCollectionAddListView
+} from "../../views/master/partner/category/PartnerCategoryAffiliationCollection.tsx";
 
 export const PartnerCategory: React.FC = () => {
     const Content: React.FC = () => {
@@ -18,9 +24,24 @@ export const PartnerCategory: React.FC = () => {
         const { pageNation, setPageNation, criteria, setCriteria } = usePageNation<PartnerCategoryCriteriaType>();
         const { modalIsOpen, setModalIsOpen, isEditing, setIsEditing, editId, setEditId } = useModal();
         const {modalIsOpen: searchModalIsOpen, setModalIsOpen: setSearchModalIsOpen,} = useModal();
-        const { initialPartnerCategory, partnerCategories, setPartnerCategories, newPartnerCategory,
-            setNewPartnerCategory, searchPartnerCategoryCriteria,
-            setSearchPartnerCategoryCriteria, partnerCategoryService } = usePartnerCategory();
+        const {
+            modalIsOpen: categoryItemModalIsOpen,
+            setModalIsOpen: setCategoryItemModalIsOpen,
+            setIsEditing: setCategoryItemIsEditing,
+            setEditId: setCategoryItemEditId
+        } = useModal();
+        const {
+            initialPartnerCategory,
+            partnerCategories,
+            setPartnerCategories,
+            newPartnerCategory,
+            newPartnerCategoryItem,
+            setNewPartnerCategoryItem,
+            setNewPartnerCategory,
+            searchPartnerCategoryCriteria,
+            setSearchPartnerCategoryCriteria,
+            partnerCategoryService
+        } = usePartnerCategory();
 
         const fetchPartnerCategories = useFetchPartnerCategories(
             setLoading,
@@ -69,6 +90,50 @@ export const PartnerCategory: React.FC = () => {
                             bodyOpenClassName="modal-open"
                         >
                             {singleView()}
+
+                            {isEditing && (
+                                <PartnerCategoryItemCollectionAddListView
+                                    partnerCategory = {newPartnerCategory}
+                                    partnerCategoryItems={newPartnerCategory.partnerCategoryItems.filter((e) => !e.deleteFlag)}
+                                    handleNew={(partnerCategoryItem: PartnerCategoryItemType) => {
+                                        const newPartnerCategoryItems = newPartnerCategory.partnerCategoryItems.filter((e) => e.partnerCategoryItemCode !== partnerCategoryItem.partnerCategoryItemCode);
+                                        newPartnerCategoryItems.push({
+                                            ...partnerCategoryItem,
+                                            addFlag: true,
+                                            deleteFlag: false
+                                        });
+                                        setNewPartnerCategory({
+                                            ...newPartnerCategory,
+                                            partnerCategoryItems: newPartnerCategoryItems
+                                        });
+                                    }}
+                                    handleAdd={(code) => {
+                                        setMessage("");
+                                        setError("");
+                                        setCategoryItemIsEditing(true);
+                                        setCategoryItemModalIsOpen(true);
+                                        const newPartnerCategoryItem = newPartnerCategory.partnerCategoryItems.find((e) => e.partnerCategoryItemCode == code);
+                                        if (newPartnerCategoryItem) {
+                                           setNewPartnerCategoryItem({...newPartnerCategoryItem});
+                                        }
+                                    }}
+                                    handleDelete={(partnerCategoryItem: PartnerCategoryItemType) => {
+                                        const newPartnerCategoryItems = newPartnerCategory.partnerCategoryItems.filter((e) => e.partnerCategoryItemCode !== partnerCategoryItem.partnerCategoryItemCode);
+                                        if (partnerCategoryItem.partnerCategoryItemCode) {
+                                            newPartnerCategoryItems.push({
+                                                ...partnerCategoryItem,
+                                                addFlag: false,
+                                                deleteFlag: true
+                                            });
+                                        }
+                                        setNewPartnerCategory({
+                                            ...newPartnerCategory,
+                                            partnerCategoryItems: newPartnerCategoryItems
+                                        });
+                                    }}
+                                />
+                            )
+                            }
                         </Modal>
                     );
                 };
@@ -137,10 +202,79 @@ export const PartnerCategory: React.FC = () => {
                 };
             };
 
+            const partnerCategoryItemModal = () => {
+                const handleClosePartnerCategoryItemModal = () => {
+                    setError("");
+                    setCategoryItemModalIsOpen(false);
+                    setCategoryItemEditId(null);
+                }
+
+                const partnerCategoryItemModalView = () => {
+                    return (
+                        <Modal
+                            isOpen={categoryItemModalIsOpen}
+                            onRequestClose={handleClosePartnerCategoryItemModal}
+                            contentLabel="取引先分類情報を入力"
+                            className="modal"
+                            overlayClassName="modal-overlay"
+                            bodyOpenClassName="modal-open"
+                        >
+
+                            <PartnerCategoryAffiliationCollectionAddListView
+                                partnerCategoryItem={newPartnerCategoryItem}
+                                partnerCategoryAffiliations={newPartnerCategoryItem.partnerCategoryAffiliations}
+                                handleNew={(partnerCategoryAffiliation) => {
+                                    const newPartnerCategoryAffiliations = newPartnerCategoryItem.partnerCategoryAffiliations.filter((e) => e.partnerCode.value !== partnerCategoryAffiliation.partnerCode.value);
+                                    newPartnerCategoryAffiliations.push({
+                                        ...partnerCategoryAffiliation,
+                                        addFlag: true,
+                                        deleteFlag: false
+                                    });
+                                    setNewPartnerCategoryItem({
+                                        ...newPartnerCategoryItem,
+                                        partnerCategoryAffiliations: newPartnerCategoryAffiliations
+                                    });
+
+                                    const newPartnerCategoryItems = newPartnerCategory.partnerCategoryItems.filter((e) => e.partnerCategoryItemCode !== newPartnerCategoryItem.partnerCategoryItemCode);
+                                    newPartnerCategoryItems.push({
+                                        ...newPartnerCategoryItem,
+                                        partnerCategoryAffiliations: newPartnerCategoryAffiliations
+                                    });
+                                    setNewPartnerCategory({
+                                        ...newPartnerCategory,
+                                        partnerCategoryItems: newPartnerCategoryItems
+                                    });
+                                }}
+                                handleDelete={(partnerCategoryAffiliation) => {
+                                    const newPartnerCategoryAffiliations = newPartnerCategoryItem.partnerCategoryAffiliations.filter((e) => e.partnerCode.value !== partnerCategoryAffiliation.partnerCode.value);
+                                    if (partnerCategoryAffiliation.partnerCode.value) {
+                                        newPartnerCategoryAffiliations.push({
+                                            ...partnerCategoryAffiliation,
+                                            addFlag: false,
+                                            deleteFlag: true
+                                        });
+                                    }
+                                    setNewPartnerCategoryItem({
+                                        ...newPartnerCategoryItem,
+                                        partnerCategoryAffiliations: newPartnerCategoryAffiliations
+                                    });
+                                }}
+                                handleClose={handleClosePartnerCategoryItemModal}
+                            />
+                        </Modal>
+                    );
+                }
+
+                return {
+                    partnerCategoryItemModalView
+                };
+            }
+
             const init = () => (
                 <>
                     {editModal().editModalView()}
                     {searchModal().searchModalView()}
+                    {partnerCategoryItemModal().partnerCategoryItemModalView()}
                 </>
             );
 

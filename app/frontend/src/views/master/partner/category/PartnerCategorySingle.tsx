@@ -97,7 +97,7 @@ export const PartnerCategorySingleView = ({
         <Message error={error} message={message} />
         <div className="single-view-header">
             <Header
-                title="取引先分類"
+                title="取引先分類種別"
                 subtitle={isEditing ? "編集" : "新規作成"}
                 isEditing={isEditing}
                 handleCreateOrUpdatePartnerCategory={handleCreateOrUpdatePartnerCategory}

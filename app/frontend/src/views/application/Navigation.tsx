@@ -67,9 +67,11 @@ const NaveItems: React.FC = () => {
                                 </ul>
                             )}
                             <SubNavItem id="side-nav-code-nav" to="/code">コード</SubNavItem>
-                            <ul className="nav-sub-list">
-                                <SubNavItem id="side-nav-code-nav" to="/region">地域</SubNavItem>
-                            </ul>
+                            {!Env.isProduction() && (
+                                <ul className="nav-sub-list">
+                                    <SubNavItem id="side-nav-code-nav" to="/region">地域</SubNavItem>
+                                </ul>
+                            )}
                         </ul>
                     </li>
                 </>
