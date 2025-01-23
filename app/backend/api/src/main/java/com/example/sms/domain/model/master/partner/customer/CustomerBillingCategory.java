@@ -24,4 +24,13 @@ public enum CustomerBillingCategory {
         }
         throw new IllegalArgumentException("顧客請求区分未登録:" + customerBillingCategory);
     }
+
+    public static Integer getCodeByName(String s) {
+        for (CustomerBillingCategory category : CustomerBillingCategory.values()) {
+            if (category.name().equals(s)) {
+                return category.value;
+            }
+        }
+        throw new IllegalArgumentException("顧客請求区分未登録:" + s);
+    }
 }

@@ -1,7 +1,9 @@
 package com.example.sms.presentation.api.master.partner;
 
 import com.example.sms.domain.model.master.partner.customer.Customer;
+import com.example.sms.domain.model.master.partner.customer.CustomerBillingCategory;
 import com.example.sms.domain.model.master.partner.customer.CustomerCode;
+import com.example.sms.domain.model.master.partner.customer.CustomerType;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
@@ -13,6 +15,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.function.Function;
 
 /**
  * 顧客 API
@@ -144,14 +148,14 @@ public class CustomerApiController {
                 resource.getCustomerFaxNumber(),
                 resource.getCustomerEmailAddress(),
                 resource.getCustomerBillingType().getValue(),
-                resource.getCustomerClosingDay1(),
-                resource.getCustomerPaymentMonth1(),
-                resource.getCustomerPaymentDay1(),
-                resource.getCustomerPaymentMethod1(),
-                resource.getCustomerClosingDay2(),
-                resource.getCustomerPaymentMonth2(),
-                resource.getCustomerPaymentDay2(),
-                resource.getCustomerPaymentMethod2()
+                resource.getCustomerClosingDay1().getValue(),
+                resource.getCustomerPaymentMonth1().getValue(),
+                resource.getCustomerPaymentDay1().getValue(),
+                resource.getCustomerPaymentMethod1().getValue(),
+                resource.getCustomerClosingDay2().getValue(),
+                resource.getCustomerPaymentMonth2().getValue(),
+                resource.getCustomerPaymentDay2().getValue(),
+                resource.getCustomerPaymentMethod2().getValue()
         );
 
         return Customer.of(customer, resource.getShippings());
@@ -162,6 +166,7 @@ public class CustomerApiController {
                 .customerCode(resource.getCustomerCode())
                 .customerName(resource.getCustomerName())
                 .customerNameKana(resource.getCustomerNameKana())
+                .customerType(mapStringToCode(resource.getCustomerType(), CustomerType::getCodeByName))
                 .companyRepresentativeCode(resource.getCompanyRepresentativeCode())
                 .customerRepresentativeName(resource.getCustomerRepresentativeName())
                 .customerDepartmentName(resource.getCustomerDepartmentName())
@@ -172,7 +177,11 @@ public class CustomerApiController {
                 .customerPhoneNumber(resource.getCustomerPhoneNumber())
                 .customerFaxNumber(resource.getCustomerFaxNumber())
                 .customerEmailAddress(resource.getCustomerEmailAddress())
-                .customerBillingCategory(resource.getCustomerBillingCategory())
+                .customerBillingCategory(mapStringToCode(resource.getCustomerBillingCategory(), CustomerBillingCategory::getCodeByName))
                 .build();
+    }
+
+    private <T> T mapStringToCode(String value, Function<String, T> mapper) {
+        return value != null ? mapper.apply(value) : null;
     }
 }

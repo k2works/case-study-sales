@@ -17,7 +17,7 @@ public class CustomerCriteriaResource implements Serializable {
     String customerCode;          // 顧客コード
     String customerName;          // 顧客名
     String customerNameKana;      // 顧客名カナ
-    Integer customerType;          // 顧客区分
+    String customerType;          // 顧客区分
     String billingCode;           // 請求先コード
     String collectionCode; // 回収先コード
     String companyRepresentativeCode; // 自社担当者コード
@@ -30,5 +30,5 @@ public class CustomerCriteriaResource implements Serializable {
     String customerPhoneNumber; // 顧客電話番号
     String customerFaxNumber; // 顧客ｆａｘ番号
     String customerEmailAddress; // 顧客メールアドレス
-    Integer customerBillingCategory; // 顧客請求区分
+    String customerBillingCategory; // 顧客請求区分
 }

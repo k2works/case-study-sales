@@ -24,4 +24,13 @@ public enum CustomerType {
         }
         throw new IllegalArgumentException("顧客区分未登録:" + customerType);
     }
+
+    public static Integer getCodeByName(String s) {
+        for (CustomerType type : CustomerType.values()) {
+            if (type.name().equals(s)) {
+                return type.value;
+            }
+        }
+        throw new IllegalArgumentException("顧客区分未登録:" + s);
+    }
 }
