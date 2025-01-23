@@ -24,4 +24,13 @@ public enum MiscellaneousType {
         }
         throw new IllegalArgumentException("雑区分に該当する値が存在しません。");
     }
+
+    public static Integer getCodeByName(String s) {
+        for (MiscellaneousType value : values()) {
+            if (value.name().equals(s)) {
+                return value.code;
+            }
+        }
+        throw new IllegalArgumentException("雑区分に該当する値が存在しません。");
+    }
 }

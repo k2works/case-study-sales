@@ -1,6 +1,9 @@
 package com.example.sms.presentation.api.master.partner;
 
 import com.example.sms.domain.model.master.partner.Partner;
+import com.example.sms.domain.model.master.partner.TradeProhibitedFlag;
+import com.example.sms.domain.model.master.partner.vendor.VendorType;
+import com.example.sms.domain.model.master.partner.MiscellaneousType;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
@@ -12,6 +15,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.function.Function;
 
 /**
  * 取引先 API
@@ -144,16 +149,20 @@ public class PartnerApiController {
                 .partnerCode(resource.getPartnerCode())
                 .partnerName(resource.getPartnerName())
                 .partnerNameKana(resource.getPartnerNameKana())
-                .vendorType(resource.getVendorType())
+                .vendorType(mapStringToCode(resource.getVendorType(), VendorType::getCodeByName))
                 .postalCode(resource.getPostalCode())
                 .prefecture(resource.getPrefecture())
                 .address1(resource.getAddress1())
                 .address2(resource.getAddress2())
-                .tradeProhibitedFlag(resource.getTradeProhibitedFlag())
-                .miscellaneousType(resource.getMiscellaneousType())
+                .tradeProhibitedFlag(mapStringToCode(resource.getTradeProhibitedFlag(), TradeProhibitedFlag::getCodeByName))
+                .miscellaneousType(mapStringToCode(resource.getMiscellaneousType(), MiscellaneousType::getCodeByName))
                 .partnerGroupCode(resource.getPartnerGroupCode())
                 .creditLimit(resource.getCreditLimit())
                 .temporaryCreditIncrease(resource.getTemporaryCreditIncrease())
                 .build();
+    }
+
+    private <T> T mapStringToCode(String value, Function<String, T> mapper) {
+        return value != null ? mapper.apply(value) : null;
     }
 }

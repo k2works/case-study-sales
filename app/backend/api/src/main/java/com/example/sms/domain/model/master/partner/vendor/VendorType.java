@@ -25,4 +25,12 @@ public enum VendorType {
         throw new IllegalArgumentException("仕入先区分未登録:" + vendorType);
     }
 
+    public static Integer getCodeByName(String s) {
+        for (VendorType type : VendorType.values()) {
+            if (type.name().equals(s)) {
+                return type.value;
+            }
+        }
+        throw new IllegalArgumentException("仕入先区分未登録:" + s);
+    }
 }

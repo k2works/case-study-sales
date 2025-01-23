@@ -25,4 +25,12 @@ public enum TradeProhibitedFlag {
         throw new IllegalArgumentException("取引禁止フラグ未登録:" + tradeProhibitedFlag);
     }
 
+    public static Integer getCodeByName(String s) {
+        for (TradeProhibitedFlag flag : TradeProhibitedFlag.values()) {
+            if (flag.name().equals(s)) {
+                return flag.value;
+            }
+        }
+        throw new IllegalArgumentException("取引禁止フラグ未登録:" + s);
+    }
 }
