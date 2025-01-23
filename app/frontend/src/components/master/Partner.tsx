@@ -4,6 +4,7 @@ import {SiteLayout} from "../../views/SiteLayout.tsx";
 import {PartnerCategory} from "./PartnerCategory.tsx";
 import {PartnerGroup} from "./PartnerGroup.tsx";
 import {PartnerList} from "./PartnerList.tsx";
+import {Customer} from "./Customer.tsx";
 
 export const Partner: React.FC = () => {
     const {
@@ -33,7 +34,7 @@ export const Partner: React.FC = () => {
                     <PartnerList/>
                 </TabPanel>
                 <TabPanel>
-                    <></>
+                    <Customer/>
                 </TabPanel>
                 <TabPanel>
                     <></>

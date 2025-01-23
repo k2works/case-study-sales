@@ -8,15 +8,24 @@ import {
     PartnerType,
     VendorEnumType,
     PrefectureEnumType,
-    TradeProhibitedFlagEnumType, MiscellaneousEnumType, PartnerCriteriaType
+    TradeProhibitedFlagEnumType,
+    MiscellaneousEnumType,
+    PartnerCriteriaType,
+    CustomerType,
+    CustomerEnumType,
+    CustomerBillingCategoryEnumType,
+    ClosingDateEnumType,
+    PaymentMonthEnumType,
+    PaymentDayEnumType,
+    PaymentMethodEnumType, CustomerCriteriaType
 } from "../../../models/master/partner"; // モデルからインポート
 import { useFetchEntities } from "../../application/hooks.ts"; // 共通フックのインポート
 import { PageNationType } from "../../../views/application/PageNation.tsx"; // ページネーションモデル
 import { PartnerCategoryService, PartnerCategoryServiceType } from "../../../services/master/partner_category.ts";
 import {PartnerGroupService, PartnerGroupServiceType} from "../../../services/master/partner_group.ts";
-import {PartnerService, PartnerServiceType} from "../../../services/master/partner.ts"; // サービス
+import {PartnerService, PartnerServiceType} from "../../../services/master/partner.ts";
+import {CustomerService, CustomerServiceType} from "../../../services/master/customer.ts"; // サービス
 
-/** 初期状態で利用するPartnerCategoryの実装 */
 export const usePartnerCategory = () => {
     const initialPartnerCategory: PartnerCategoryType = {
         partnerCategoryTypeCode: "",
@@ -52,9 +61,6 @@ export const usePartnerCategory = () => {
     };
 };
 
-/**
- * PartnerCategoryデータをフェッチするための共通フック
- */
 export const useFetchPartnerCategories = (
     setLoading: (loading: boolean) => void,
     setList: (list: PartnerCategoryType[]) => void,
@@ -74,7 +80,6 @@ export const useFetchPartnerCategories = (
     );
 };
 
-/** 初期状態で利用するPartnerGroupの実装 */
 export const usePartnerGroup = () => {
     const initialPartnerGroup: PartnerGroupType = {
         partnerGroupCode: { value: "" },
@@ -99,9 +104,6 @@ export const usePartnerGroup = () => {
     };
 };
 
-/**
- * PartnerGroupデータをフェッチするための共通フック
- */
 export const useFetchPartnerGroups = (
     setLoading: (loading: boolean) => void,
     setList: (list: PartnerGroupType[]) => void,
@@ -121,7 +123,6 @@ export const useFetchPartnerGroups = (
     );
 };
 
-/** 初期状態で利用するPartnerの実装 */
 export const usePartner = () => {
     const initialPartner: PartnerType = {
         partnerCode: { value: "" },
@@ -139,7 +140,8 @@ export const usePartner = () => {
         credit: {
             creditLimit: { amount: 0, currency: "JPY" },
             temporaryCreditIncrease: { amount: 0, currency: "JPY" }
-        }
+        },
+        checked: false
     };
 
     const [partners, setPartners] = useState<PartnerType[]>([]);
@@ -159,9 +161,6 @@ export const usePartner = () => {
     };
 };
 
-/**
- * Partnerデータをフェッチするための共通フック
- */
 export const useFetchPartners = (
     setLoading: (loading: boolean) => void,
     setList: (list: PartnerType[]) => void,
@@ -178,5 +177,79 @@ export const useFetchPartners = (
         showErrorMessage,
         service,
         "取引先情報の取得に失敗しました:"
+    );
+};
+
+export const useCustomer = () => {
+    const initialCustomer: CustomerType = {
+        customerCode: { code: { value: "" }, branchNumber: 0 },
+        customerType: CustomerEnumType.顧客でない,
+        billingCode: { code: { value: "" }, branchNumber: 0 },
+        collectionCode: { code: { value: "" }, branchNumber: 0 },
+        customerName: { value: { name: "", nameKana: "" } },
+        companyRepresentativeCode: "",
+        customerRepresentativeName: "",
+        customerDepartmentName: "",
+        customerAddress: {
+            postalCode: { value: "", regionCode: "" },
+            prefecture: PrefectureEnumType.東京都,
+            address1: "",
+            address2: ""
+        },
+        customerPhoneNumber: { value: "", areaCode: "", localExchange: "", subscriberNumber: "" },
+        customerFaxNumber: { value: "", areaCode: "", localExchange: "", subscriberNumber: "" },
+        customerEmailAddress: { value: "" },
+        invoice: {
+            customerBillingCategory: CustomerBillingCategoryEnumType.都度請求,
+            closingInvoice1: {
+                closingDay: ClosingDateEnumType.末日,
+                paymentMonth: PaymentMonthEnumType.当月,
+                paymentDay: PaymentDayEnumType.末日,
+                paymentMethod: PaymentMethodEnumType.振込
+            },
+            closingInvoice2: {
+                closingDay: ClosingDateEnumType.末日,
+                paymentMonth: PaymentMonthEnumType.当月,
+                paymentDay: PaymentDayEnumType.末日,
+                paymentMethod: PaymentMethodEnumType.振込
+            }
+        },
+        shippings: [],
+        checked: false
+    };
+
+    const [customers, setCustomers] = useState<CustomerType[]>([]);
+    const [newCustomer, setNewCustomer] = useState<CustomerType>(initialCustomer);
+    const [searchCustomerCriteria, setSearchCustomerCriteria] = useState<CustomerCriteriaType>({});
+    const customerService = CustomerService(); // 実装済みのサービス関数
+
+    return {
+        initialCustomer,
+        customers,
+        newCustomer,
+        setNewCustomer,
+        searchCustomerCriteria,
+        setSearchCustomerCriteria,
+        setCustomers,
+        customerService,
+    };
+};
+
+export const useFetchCustomers = (
+    setLoading: (loading: boolean) => void,
+    setList: (list: CustomerType[]) => void,
+    setPageNation: (pageNation: PageNationType) => void,
+    setError: (error: string) => void,
+    showErrorMessage: (message: string, callback: (error: string) => void) => void,
+    service: CustomerServiceType
+) => {
+    return useFetchEntities<CustomerType, CustomerServiceType, CustomerCriteriaType>(
+        setLoading,
+        setList,
+        setPageNation,
+        setError,
+        showErrorMessage,
+        service,
+        "顧客情報の取得に失敗しました:"
     );
 };
