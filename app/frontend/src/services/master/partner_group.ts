@@ -6,7 +6,7 @@ import {
     PartnerGroupCriteriaType,
     mapToPartnerGroupResource,
     mapToPartnerGroupCriteriaResource,
-} from "../../models";
+} from "../../models/master/partner";
 
 export interface PartnerGroupServiceType {
     select: (page?: number, pageSize?: number) => Promise<PartnerGroupFetchType>;

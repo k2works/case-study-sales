@@ -4,7 +4,7 @@ import { useMessage } from "../application/Message.tsx";
 import { useModal } from "../application/hooks.ts";
 import { usePageNation } from "../../views/application/PageNation.tsx";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
-import {PartnerCategoryCriteriaType, PartnerCategoryItemType, PartnerCategoryType} from "../../models";
+import {PartnerCategoryCriteriaType, PartnerCategoryItemType, PartnerCategoryType} from "../../models/master/partner";
 import { useFetchPartnerCategories, usePartnerCategory } from "./hooks";
 import Modal from "react-modal";
 import {PartnerCategorySearchView} from "../../views/master/partner/category/PartnerCategorySearch.tsx";

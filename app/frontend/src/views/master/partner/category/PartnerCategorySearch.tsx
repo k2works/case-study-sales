@@ -1,5 +1,5 @@
 import React, {MouseEventHandler} from "react";
-import {PartnerCategoryCriteriaType} from "../../../../models";
+import {PartnerCategoryCriteriaType} from "../../../../models/master/partner";
 import {FormInput, SingleViewHeaderItem} from "../../../Common.tsx";
 
 interface PartnerCategoryFormProps {

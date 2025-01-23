@@ -1,5 +1,5 @@
 import React from 'react';
-import {PartnerCategoryItemType, PartnerCategoryType} from "../../../../models";
+import {PartnerCategoryItemType, PartnerCategoryType} from "../../../../models/master/partner";
 
 interface PartnerCategoryItemCollectionAddListProps {
     partnerCategory: PartnerCategoryType;

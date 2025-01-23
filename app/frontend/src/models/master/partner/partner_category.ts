@@ -1,4 +1,5 @@
 import {PageNationType} from "../../../views/application/PageNation.tsx";
+import {PartnerCodeType} from "./partner.ts";
 
 export type PartnerCategoryType = {
     partnerCategoryTypeCode: string; // 取引先分類種別コード
@@ -12,10 +13,6 @@ export type PartnerCategoryItemType = {
     partnerCategoryItemCode: string; // 取引先分類コード
     partnerCategoryItemName: string; // 取引先分類名
     partnerCategoryAffiliations: PartnerCategoryAffiliationType[]; // 取引先分類所属
-};
-
-export type PartnerCodeType = {
-    value: string; // PartnerCode の内部で使用される値
 };
 
 export type PartnerCategoryAffiliationType = {

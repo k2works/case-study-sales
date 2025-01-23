@@ -1,6 +1,6 @@
 import React from "react";
 import { Message } from "../../../../components/application/Message.tsx";
-import { PartnerGroupType } from "../../../../models";
+import { PartnerGroupType } from "../../../../models/master/partner";
 import { FormInput, SingleViewHeaderActions, SingleViewHeaderItem } from "../../../Common.tsx";
 
 interface HeaderProps {

@@ -1,5 +1,5 @@
 import React, { MouseEventHandler } from "react";
-import {PartnerGroupCriteriaType } from "../../../../models";
+import {PartnerGroupCriteriaType } from "../../../../models/master/partner";
 import { FormInput, SingleViewHeaderItem } from "../../../Common.tsx";
 
 interface PartnerGroupFormProps {

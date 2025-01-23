@@ -5,7 +5,7 @@ import { Search } from "../../../Common.tsx";
 import {
     PartnerCategoryType,
     PartnerCategoryCriteriaType
-} from "../../../../models";
+} from "../../../../models/master/partner";
 
 interface PartnerCategoryItemProps {
     categoryItem: PartnerCategoryType;

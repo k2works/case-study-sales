@@ -6,7 +6,7 @@ import {
     PartnerCategoryCriteriaType,
     mapToPartnerCategoryTypeResource,
     mapToPartnerCategoryCriteriaResource
-} from "../../models";
+} from "../../models/master/partner";
 
 export interface PartnerCategoryServiceType {
     select: (page?: number, pageSize?: number) => Promise<PartnerCategoryFetchType>;

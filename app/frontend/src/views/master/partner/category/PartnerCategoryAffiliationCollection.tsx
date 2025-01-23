@@ -1,5 +1,5 @@
 import React from 'react';
-import {PartnerCategoryAffiliationType, PartnerCategoryItemType} from '../../../../models';
+import {PartnerCategoryAffiliationType, PartnerCategoryItemType} from '../../../../models/master/partner';
 import {FaTimes} from "react-icons/fa";
 
 interface PartnerCategoryAffiliationCollectionAddListProps {

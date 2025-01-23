@@ -2,7 +2,7 @@ import React from "react";
 import { Message } from "../../../../components/application/Message.tsx";
 import { PageNation, PageNationType } from "../../../application/PageNation.tsx";
 import { Search } from "../../../Common.tsx";
-import {PartnerGroupCriteriaType, PartnerGroupType} from "../../../../models";
+import {PartnerGroupCriteriaType, PartnerGroupType} from "../../../../models/master/partner";
 
 interface PartnerGroupItemProps {
     groupItem: PartnerGroupType;

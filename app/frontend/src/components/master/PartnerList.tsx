@@ -1,58 +1,58 @@
-// PartnerGroup.tsx
 import React, { useEffect, useState } from 'react';
 import { showErrorMessage } from "../application/utils.ts";
 import { useMessage } from "../application/Message.tsx";
 import { useModal } from "../application/hooks.ts";
 import { usePageNation } from "../../views/application/PageNation.tsx";
-import { PartnerGroupCriteriaType, PartnerGroupType } from "../../models/master/partner";
-import { useFetchPartnerGroups, usePartnerGroup } from "./hooks";
 import Modal from "react-modal";
-import { PartnerGroupSearchView } from "../../views/master/partner/group/PartnerGroupSearch.tsx";
-import { PartnerGroupCollectionView } from "../../views/master/partner/group/PartnerGroupCollection.tsx";
-import { PartnerGroupSingleView } from "../../views/master/partner/group/PartnerGroupSingle.tsx";
+import {PartnerCriteriaType, PartnerType} from "../../models/master/partner";
+import {useFetchPartners, usePartner} from "./hooks";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
+import {PartnerSearchView} from "../../views/master/partner/PartnerSearch.tsx";
+import {PartnerCollectionView} from "../../views/master/partner/PartnerCollection.tsx";
+import {PartnerSingleView} from "../../views/master/partner/PartnerSingle.tsx";
 
-export const PartnerGroup: React.FC = () => {
+export const PartnerList: React.FC = () => {
     const Content: React.FC = () => {
         const [loading, setLoading] = useState<boolean>(false);
         const { message, setMessage, error, setError } = useMessage();
-        const { pageNation, setPageNation, criteria, setCriteria } = usePageNation<PartnerGroupCriteriaType>();
+        const { pageNation, setPageNation, criteria, setCriteria } = usePageNation<PartnerCriteriaType>();
         const { modalIsOpen, setModalIsOpen, isEditing, setIsEditing, editId, setEditId } = useModal();
         const { modalIsOpen: searchModalIsOpen, setModalIsOpen: setSearchModalIsOpen } = useModal();
         const {
-            initialPartnerGroup,
-            partnerGroups,
-            setPartnerGroups,
-            newPartnerGroup,
-            setNewPartnerGroup,
-            searchPartnerGroupCriteria,
-            setSearchPartnerGroupCriteria,
-            partnerGroupService
-        } = usePartnerGroup();
-        const fetchPartnerGroups = useFetchPartnerGroups(
+            initialPartner,
+            partners,
+            setPartners,
+            newPartner,
+            setNewPartner,
+            searchPartnerCriteria,
+            setSearchPartnerCriteria,
+            partnerService
+        } = usePartner();
+
+        const fetchPartners = useFetchPartners(
             setLoading,
-            setPartnerGroups,
+            setPartners,
             setPageNation,
             setError,
             showErrorMessage,
-            partnerGroupService
+            partnerService
         );
 
         useEffect(() => {
-            fetchPartnerGroups.load();
+            fetchPartners.load();
         }, []);
 
         const modalView = () => {
             const editModal = () => {
-                const handleOpenModal = (partnerGroup?: PartnerGroupType) => {
+                const handleOpenModal = (partner?: PartnerType) => {
                     setMessage("");
                     setError("");
-                    if (partnerGroup) {
-                        setNewPartnerGroup(partnerGroup);
-                        setEditId(partnerGroup.partnerGroupCode.value);
+                    if (partner) {
+                        setNewPartner(partner);
+                        setEditId(partner.partnerCode.value);
                         setIsEditing(true);
                     } else {
-                        setNewPartnerGroup(initialPartnerGroup);
+                        setNewPartner(initialPartner);
                         setIsEditing(false);
                     }
                     setModalIsOpen(true);
@@ -68,7 +68,7 @@ export const PartnerGroup: React.FC = () => {
                     <Modal
                         isOpen={modalIsOpen}
                         onRequestClose={handleCloseModal}
-                        contentLabel="取引先グループ情報を入力"
+                        contentLabel="取引先情報を入力"
                         className="modal"
                         overlayClassName="modal-overlay"
                         bodyOpenClassName="modal-open"
@@ -98,20 +98,19 @@ export const PartnerGroup: React.FC = () => {
                         overlayClassName="modal-overlay"
                         bodyOpenClassName="modal-open"
                     >
-                        <PartnerGroupSearchView
-                            criteria={searchPartnerGroupCriteria}
-                            setCondition={setSearchPartnerGroupCriteria}
+                        <PartnerSearchView
+                            criteria={searchPartnerCriteria}
+                            setCondition={setSearchPartnerCriteria}
                             handleSelect={async () => {
-                                if (!searchPartnerGroupCriteria) return;
-
+                                if (!searchPartnerCriteria) return;
                                 setLoading(true);
                                 try {
-                                    const result = await partnerGroupService.search(searchPartnerGroupCriteria);
-                                    setPartnerGroups(result ? result.list : []);
+                                    const result = await partnerService.search(searchPartnerCriteria);
+                                    setPartners(result ? result.list : []);
                                     if (result.list.length === 0) {
                                         showErrorMessage("検索結果は0件です", setError);
                                     } else {
-                                        setCriteria(searchPartnerGroupCriteria);
+                                        setCriteria(searchPartnerCriteria);
                                         setPageNation(result);
                                         setMessage("");
                                         setError("");
@@ -144,82 +143,77 @@ export const PartnerGroup: React.FC = () => {
             const { handleOpenModal } = modalView().editModal();
             const { handleOpenSearchModal } = modalView().searchModal();
 
-            const handleDeletePartnerGroup = async (partnerGroupTypeCode: string) => {
+            const handleDeletePartner = async (partnerCode: string) => {
                 try {
-                    if (!window.confirm(`取引先グループコード:${partnerGroupTypeCode} を削除しますか？`))
-                        return;
-                    await partnerGroupService.destroy(partnerGroupTypeCode);
-                    await fetchPartnerGroups.load();
-                    setMessage("取引先グループを削除しました。");
+                    if (!window.confirm(`取引先コード:${partnerCode} を削除しますか？`)) return;
+                    await partnerService.destroy(partnerCode);
+                    await fetchPartners.load();
+                    setMessage("取引先を削除しました。");
                 } catch (error: any) {
-                    showErrorMessage(`取引先グループの削除に失敗しました: ${error?.message}`, setError);
+                    showErrorMessage(`取引先の削除に失敗しました: ${error?.message}`, setError);
                 }
             };
 
-            const handleCheckPartnerGroup = (partnerGroup: PartnerGroupType) => {
-                const newPartnerGroups = partnerGroups.map((group) => {
-                    if (group.partnerGroupCode === partnerGroup.partnerGroupCode) {
-                        return { ...group, checked: !group.checked };
+            const handleCheckPartner = (partner: PartnerType) => {
+                const newPartners = partners.map((p) => {
+                    if (p.partnerCode.value === partner.partnerCode.value) {
+                        return { ...p, checked: !p.checked };
                     }
-                    return group;
+                    return p;
                 });
-                setPartnerGroups(newPartnerGroups);
-            };
+                setPartners(newPartners);
+            }
 
-            const handleCheckAllPartnerGroup = () => {
-                const newPartnerGroups = partnerGroups.map((group) => ({
-                    ...group,
-                    checked: !partnerGroups.every((group) => group.checked),
-                }));
-                setPartnerGroups(newPartnerGroups);
-            };
+            const handleCheckAllPartners = () => {
+                const newPartners = partners.map((p) => {
+                    return { ...p, checked: !p.checked };
+                });
+                setPartners(newPartners);
+            }
 
-            const handleDeleteCheckedCollection = async () => {
-                const checkedPartnerGroups = partnerGroups.filter((group) => group.checked);
-                if (!checkedPartnerGroups.length) {
-                    setError("削除する取引先グループを選択してください。");
+            const handleDeleteCheckCollection = async () => {
+                const checkedPartners = partners.filter((p) => p.checked);
+                if (checkedPartners.length === 0) {
+                    showErrorMessage("削除する取引先を選択してください", setError);
                     return;
                 }
                 try {
-                    if (!window.confirm("選択した取引先グループを削除しますか？")) return;
+                    if (!window.confirm("選択した取引先を削除しますか？")) return;
                     await Promise.all(
-                        checkedPartnerGroups.map((group) =>
-                            partnerGroupService.destroy(group.partnerGroupCode.value)
+                        checkedPartners.map((partners) =>
+                            partnerService.destroy(partners.partnerCode.value)
                         )
                     );
-                    await fetchPartnerGroups.load();
-                    setMessage("選択した取引先グループを削除しました。");
+                    await fetchPartners.load();
+                    setMessage("選択した取引先を削除しました。");
                 } catch (error: any) {
-                    showErrorMessage(
-                        `選択した取引先グループの削除に失敗しました: ${error?.message}`,
-                        setError
-                    );
+                    showErrorMessage(`選択した取引先の削除に失敗しました: ${error?.message}`, setError);
                 }
-            };
+            }
 
             return (
-                <PartnerGroupCollectionView
+                <PartnerCollectionView
                     error={error}
                     message={message}
                     searchItems={{
-                        searchPartnerGroupCriteria,
-                        setSearchPartnerGroupCriteria,
+                        searchPartnerCriteria,
+                        setSearchPartnerCriteria,
                         handleOpenSearchModal,
                     }}
                     headerItems={{
                         handleOpenModal,
-                        handleCheckToggleCollection: handleCheckAllPartnerGroup,
-                        handleDeleteCheckedCollection,
+                        handleCheckToggleCollection: handleCheckAllPartners,
+                        handleDeleteCheckedCollection: handleDeleteCheckCollection,
                     }}
                     collectionItems={{
-                        partnerGroups,
+                        partners,
                         handleOpenModal,
-                        handleDeletePartnerGroup,
-                        handleCheckPartnerGroup,
+                        handleDeletePartner,
+                        handleCheckPartner,
                     }}
                     pageNationItems={{
                         pageNation,
-                        fetchGroups: fetchPartnerGroups.load,
+                        fetchPartners: fetchPartners.load,
                         criteria,
                     }}
                 />
@@ -228,40 +222,33 @@ export const PartnerGroup: React.FC = () => {
 
         const singleView = () => {
             const { handleCloseModal } = modalView().editModal();
-            const handleCreateOrUpdatePartnerGroup = async () => {
-                const validatePartnerGroup = (): boolean => {
-                    if (!newPartnerGroup.partnerGroupCode.value.trim() ||
-                        !newPartnerGroup.partnerGroupName.trim()) {
-                        setError("取引先グループコードと名称は必須項目です。");
-                        return false;
-                    }
-                    return true;
-                };
-
-                if (!validatePartnerGroup()) return;
-
+            const handleCreateOrUpdatePartner = async () => {
+                if (!newPartner.partnerCode.value.trim() || !newPartner.partnerName.name.trim()) {
+                    setError("取引先コードと名称は必須項目です。");
+                    return;
+                }
                 try {
                     if (isEditing && editId) {
-                        await partnerGroupService.update(newPartnerGroup);
+                        await partnerService.update(newPartner);
                     } else {
-                        await partnerGroupService.create(newPartnerGroup);
+                        await partnerService.create(newPartner);
                     }
-                    setNewPartnerGroup({ ...initialPartnerGroup });
-                    await fetchPartnerGroups.load();
-                    setMessage(isEditing ? "取引先グループを更新しました。" : "取引先グループを作成しました。");
+                    setNewPartner({ ...initialPartner });
+                    await fetchPartners.load();
+                    setMessage(isEditing ? "取引先を更新しました。" : "取引先を作成しました。");
                     handleCloseModal();
                 } catch (error: any) {
-                    showErrorMessage(`取引先グループの作成または更新に失敗しました: ${error?.message}`, setError);
+                    showErrorMessage(`取引先の作成または更新に失敗しました: ${error?.message}`, setError);
                 }
             };
 
             return (
-                <PartnerGroupSingleView
+                <PartnerSingleView
                     error={error}
                     message={message}
                     isEditing={isEditing}
-                    headerItems={{ handleCreateOrUpdatePartnerGroup, handleCloseModal }}
-                    formItems={{ newPartnerGroup, setNewPartnerGroup }}
+                    headerItems={{ handleCreateOrUpdatePartner, handleCloseModal }}
+                    formItems={{ newPartner, setNewPartner }}
                 />
             );
         };

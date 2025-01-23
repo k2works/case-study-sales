@@ -6,5 +6,3 @@ export * from './master/department.ts';
 export * from './master/employee.ts';
 export * from './master/product.ts';
 export * from './master/code.ts';
-export * from './master/partner/partner_category.ts';
-export * from './master/partner/partner_group.ts';
