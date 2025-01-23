@@ -1,4 +1,4 @@
-import {PageNationType} from "../../views/application/PageNation.tsx";
+import {PageNationType} from "../../../views/application/PageNation.tsx";
 
 export type PartnerCategoryType = {
     partnerCategoryTypeCode: string; // 取引先分類種別コード
