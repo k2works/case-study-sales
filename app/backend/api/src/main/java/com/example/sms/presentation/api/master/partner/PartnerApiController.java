@@ -128,7 +128,7 @@ public class PartnerApiController {
     }
 
     private Partner convertToEntity(PartnerResource resource) {
-        return Partner.of(
+        Partner partner = Partner.of(
                 resource.getPartnerCode(),
                 resource.getPartnerName(),
                 resource.getPartnerNameKana(),
@@ -142,6 +142,19 @@ public class PartnerApiController {
                 resource.getPartnerGroupCode(),
                 resource.getCreditLimit(),
                 resource.getTemporaryCreditIncrease()
+        );
+
+        return Partner.of(
+                partner.getPartnerCode(),
+                partner.getPartnerName(),
+                partner.getVendorType(),
+                partner.getAddress(),
+                partner.getTradeProhibitedFlag(),
+                partner.getMiscellaneousType(),
+                partner.getPartnerGroupCode(),
+                partner.getCredit(),
+                resource.getCustomers(),
+                resource.getVendors()
         );
     }
 

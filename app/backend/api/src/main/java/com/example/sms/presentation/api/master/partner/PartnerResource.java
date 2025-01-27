@@ -2,6 +2,8 @@ package com.example.sms.presentation.api.master.partner;
 
 import com.example.sms.domain.model.master.partner.MiscellaneousType;
 import com.example.sms.domain.model.master.partner.TradeProhibitedFlag;
+import com.example.sms.domain.model.master.partner.customer.Customer;
+import com.example.sms.domain.model.master.partner.vendor.Vendor;
 import com.example.sms.domain.model.master.partner.vendor.VendorType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -9,6 +11,7 @@ import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 @Setter
 @Getter
@@ -30,4 +33,6 @@ public class PartnerResource implements Serializable {
     String partnerGroupCode;     // 取引先グループコード
     Integer creditLimit; // 与信限度額
     Integer temporaryCreditIncrease; // 与信一時増加枠
+    List<Customer> customers; // 取引先顧客
+    List<Vendor> vendors; // 取引先仕入先
 }
