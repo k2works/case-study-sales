@@ -30,6 +30,10 @@ const VendorItem: React.FC<VendorItemProps> = ({
             <div className="collection-object-item-content-details">仕入先コード</div>
             <div className="collection-object-item-content-name">{vendor.vendorCode.code.value}</div>
         </div>
+        <div className="collection-object-item-content" data-id={vendor.vendorCode.branchNumber}>
+            <div className="collection-object-item-content-details">仕入先コード枝番</div>
+            <div className="collection-object-item-content-name">{vendor.vendorCode.branchNumber}</div>
+        </div>
         <div className="collection-object-item-content" data-id={vendor.vendorCode.code.value}>
             <div className="collection-object-item-content-details">仕入先名</div>
             <div className="collection-object-item-content-name">{vendor.vendorName.value.name}</div>

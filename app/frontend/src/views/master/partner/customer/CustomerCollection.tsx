@@ -30,6 +30,10 @@ const CustomerItem: React.FC<CustomerItemProps> = ({
             <div className="collection-object-item-content-details">顧客コード</div>
             <div className="collection-object-item-content-name">{customer.customerCode.code.value}</div>
         </div>
+        <div className="collection-object-item-content" data-id={customer.customerCode.branchNumber}>
+            <div className="collection-object-item-content-details">顧客コード枝番</div>
+            <div className="collection-object-item-content-name">{customer.customerCode.branchNumber}</div>
+        </div>
         <div className="collection-object-item-content" data-id={customer.customerCode.code.value}>
             <div className="collection-object-item-content-details">顧客名</div>
             <div className="collection-object-item-content-name">{customer.customerName.value.name}</div>

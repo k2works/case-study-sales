@@ -22,7 +22,7 @@ export type CustomerType = {
 // 顧客コード型
 export type CustomerCodeType = {
     code: PartnerCodeType; // 顧客コード (取引先コード)
-    branchNumber: number; // 支店番号
+    branchNumber: number; // 枝番
 };
 
 // 顧客区分列挙型
@@ -34,7 +34,7 @@ export enum CustomerEnumType {
 // 請求先コード型
 export type BillingCodeType = {
     code: PartnerCodeType; // 請求先コード (取引先コード)
-    branchNumber: number; // 支店番号
+    branchNumber: number; // 枝番
 };
 
 // 回収先コード型

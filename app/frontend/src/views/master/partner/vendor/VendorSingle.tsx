@@ -63,14 +63,14 @@ const Form = ({ isEditing, newVendor, setNewVendor }: FormProps) => {
                 disabled={isEditing}
             />
 
-            {/* 支店番号 */}
+            {/* 仕入先コード枝番 */}
             <FormInput
-                label="支店番号"
+                label="仕入先コード枝番"
                 id="branchNumber"
                 type="text"
                 className="single-view-content-item-form-item-input"
-                placeholder="支店番号"
-                value={newVendor.vendorCode.branchNumber.toString()}
+                placeholder="仕入先コード枝番"
+                value={newVendor.vendorCode.branchNumber}
                 onChange={(e) =>
                     setNewVendor({
                         ...newVendor,

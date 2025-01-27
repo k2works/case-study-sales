@@ -63,6 +63,25 @@ const Form = ({ isEditing, newCustomer, setNewCustomer }: FormProps) => {
                 }
                 disabled={isEditing}
             />
+            {/* 顧客コード枝番 */}
+            <FormInput
+                label="顧客コード枝番"
+                id="customerBranchNumber"
+                type="text"
+                className="single-view-content-item-form-item-input"
+                placeholder="顧客コード枝番"
+                value={newCustomer.customerCode?.branchNumber ?? ""}
+                onChange={(e) =>
+                    setNewCustomer({
+                        ...newCustomer,
+                        customerCode: {
+                            ...newCustomer.customerCode,
+                            branchNumber: parseInt(e.target.value),
+                        },
+                    })
+                }
+                disabled={isEditing}
+            />
 
             {/* 顧客区分 */}
             <FormSelect
