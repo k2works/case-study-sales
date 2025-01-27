@@ -21,6 +21,7 @@ import {PartnerCategory} from "../master/PartnerCategory.tsx";
 import {PartnerGroup} from "../master/PartnerGroup.tsx";
 import {PartnerList} from "../master/PartnerList.tsx";
 import {Customer} from "../master/Customer.tsx";
+import {Vendor} from "../master/Vendor.tsx";
 
 export const RouteConfig: React.FC = () => {
     const ProductCategoryPage = () => {
@@ -79,6 +80,14 @@ export const RouteConfig: React.FC = () => {
         );
     }
 
+    const VendorPage = () => {
+        return (
+            <SiteLayout>
+                <Vendor/>
+            </SiteLayout>
+        );
+    }
+
     return (
             <Routes>
                 <Route path="/" element={<RouteAuthGuard component={<Home/>} redirectPath="/login"/>}/>
@@ -107,6 +116,8 @@ export const RouteConfig: React.FC = () => {
                 <Route path="/partner-list" element={<RouteAuthGuard component={<PartnerListPage/>} redirectPath="/"
                                                                       allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/customer" element={<RouteAuthGuard component={<CustomerPage/>} redirectPath="/"
+                                                                     allowedRoles={[RoleType.ADMIN]}/>}/>
+                <Route path="/vendor" element={<RouteAuthGuard component={<VendorPage/>} redirectPath="/"
                                                                      allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/code" element={<RouteAuthGuard component={<Code/>} redirectPath="/"
                                                                 allowedRoles={[RoleType.ADMIN]}/>}/>

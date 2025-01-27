@@ -5,6 +5,7 @@ import {PartnerCategory} from "./PartnerCategory.tsx";
 import {PartnerGroup} from "./PartnerGroup.tsx";
 import {PartnerList} from "./PartnerList.tsx";
 import {Customer} from "./Customer.tsx";
+import {Vendor} from "./Vendor.tsx";
 
 export const Partner: React.FC = () => {
     const {
@@ -37,10 +38,7 @@ export const Partner: React.FC = () => {
                     <Customer/>
                 </TabPanel>
                 <TabPanel>
-                    <></>
-                </TabPanel>
-                <TabPanel>
-                    <></>
+                    <Vendor/>
                 </TabPanel>
             </Tabs>
         );
