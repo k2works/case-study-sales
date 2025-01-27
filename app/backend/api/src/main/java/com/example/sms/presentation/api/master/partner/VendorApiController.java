@@ -134,10 +134,10 @@ public class VendorApiController {
                 resource.getVendorPhoneNumber(),
                 resource.getVendorFaxNumber(),
                 resource.getVendorEmailAddress(),
-                resource.getVendorClosingDate(),
-                resource.getVendorPaymentMonth(),
-                resource.getVendorPaymentDate(),
-                resource.getVendorPaymentMethod()
+                resource.getVendorClosingDate().getValue(),
+                resource.getVendorPaymentMonth().getValue(),
+                resource.getVendorPaymentDate().getValue(),
+                resource.getVendorPaymentMethod().getValue()
         );
     }
 

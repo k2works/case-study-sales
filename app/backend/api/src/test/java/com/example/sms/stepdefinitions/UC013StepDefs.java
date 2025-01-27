@@ -3,6 +3,10 @@ package com.example.sms.stepdefinitions;
 import com.example.sms.TestDataFactory;
 import com.example.sms.domain.model.master.partner.MiscellaneousType;
 import com.example.sms.domain.model.master.partner.TradeProhibitedFlag;
+import com.example.sms.domain.model.master.partner.invoice.ClosingDate;
+import com.example.sms.domain.model.master.partner.invoice.PaymentDay;
+import com.example.sms.domain.model.master.partner.invoice.PaymentMethod;
+import com.example.sms.domain.model.master.partner.invoice.PaymentMonth;
 import com.example.sms.domain.model.master.partner.vendor.Vendor;
 import com.example.sms.domain.model.master.partner.vendor.VendorType;
 import com.example.sms.presentation.api.master.partner.PartnerResource;
@@ -111,10 +115,10 @@ public class UC013StepDefs extends SpringAcceptanceTest {
         vendorResource.setVendorPhoneNumber("03-1234-5678");
         vendorResource.setVendorFaxNumber("03-1234-5679");
         vendorResource.setVendorEmailAddress("test@example.com");
-        vendorResource.setVendorClosingDate(10);
-        vendorResource.setVendorPaymentMonth(1);
-        vendorResource.setVendorPaymentDate(20);
-        vendorResource.setVendorPaymentMethod(2);
+        vendorResource.setVendorClosingDate(ClosingDate.十日);
+        vendorResource.setVendorPaymentMonth(PaymentMonth.翌月);
+        vendorResource.setVendorPaymentDate(PaymentDay.二十日);
+        vendorResource.setVendorPaymentMethod(PaymentMethod.手形);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(vendorResource);
@@ -160,10 +164,10 @@ public class UC013StepDefs extends SpringAcceptanceTest {
         vendorResource.setVendorPhoneNumber("03-1234-5678");
         vendorResource.setVendorFaxNumber("03-1234-5679");
         vendorResource.setVendorEmailAddress("test@example.com");
-        vendorResource.setVendorClosingDate(10);
-        vendorResource.setVendorPaymentMonth(1);
-        vendorResource.setVendorPaymentDate(20);
-        vendorResource.setVendorPaymentMethod(2);
+        vendorResource.setVendorClosingDate(ClosingDate.十日);
+        vendorResource.setVendorPaymentMonth(PaymentMonth.翌月);
+        vendorResource.setVendorPaymentDate(PaymentDay.二十日);
+        vendorResource.setVendorPaymentMethod(PaymentMethod.手形);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(vendorResource);

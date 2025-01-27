@@ -63,6 +63,7 @@ public class PartnerApiController {
         }
     }
 
+    //TODO:監査アノテーション追加
     @Operation(summary = "取引先を登録する")
     @PostMapping
     public ResponseEntity<?> register(@RequestBody PartnerResource partnerResource) {
