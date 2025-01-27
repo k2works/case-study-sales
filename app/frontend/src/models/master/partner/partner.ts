@@ -1,5 +1,7 @@
 import {PartnerGroupCodeType} from "./partner_group.ts";
 import {PageNationType} from "../../../views/application/PageNation.tsx";
+import {CustomerType} from "./customer.ts";
+import {VendorType} from "./vendor.ts";
 
 export type PartnerType = {
     partnerCode: PartnerCodeType; // 取引先コード
@@ -10,6 +12,8 @@ export type PartnerType = {
     miscellaneousType: MiscellaneousEnumType; // 雑区分
     partnerGroupCode: PartnerGroupCodeType; // 取引先グループコード
     credit: CreditType; // 与信
+    customers: CustomerType[]; // 取引先顧客リスト
+    vendors: VendorType[]; // 取引先仕入先リスト
     checked: boolean;
 };
 
@@ -141,6 +145,8 @@ export type PartnerResourceType = {
     partnerGroupCode: string; // 取引先グループコード
     creditLimit: number; // 与信限度額
     temporaryCreditIncrease: number; // 与信一時増加枠
+    customers: CustomerType[]; // 取引先顧客リスト
+    vendors: VendorType[]; // 取引先仕入先リスト
 };
 
 export type PartnerCriteriaResourceType = {
@@ -174,6 +180,8 @@ export const mapToPartnerResource = (partner: PartnerType): PartnerResourceType 
         partnerGroupCode: partner.partnerGroupCode.value,
         creditLimit: partner.credit.creditLimit.amount,
         temporaryCreditIncrease: partner.credit.temporaryCreditIncrease.amount,
+        customers: partner.customers,
+        vendors: partner.vendors
     }
 }
 
