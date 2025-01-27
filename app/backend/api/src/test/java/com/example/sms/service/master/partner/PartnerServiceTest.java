@@ -3,11 +3,14 @@ package com.example.sms.service.master.partner;
 import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactory;
 import com.example.sms.TestDataFactoryImpl;
+import com.example.sms.domain.model.master.partner.customer.Customer;
+import com.example.sms.domain.model.master.partner.vendor.Vendor;
 import com.example.sms.domain.type.address.Address;
 import com.example.sms.domain.type.address.PostalCode;
 import com.example.sms.domain.type.address.Prefecture;
 import com.example.sms.domain.model.master.partner.*;
 import com.example.sms.domain.model.master.partner.vendor.VendorType;
+import com.example.sms.service.BusinessException;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,6 +28,9 @@ class PartnerServiceTest {
 
     @Autowired
     private PartnerService partnerService;
+
+    @Autowired
+    private PartnerCategoryService partnerCategoryService;
 
     @Autowired
     private TestDataFactory testDataFactory;
@@ -55,41 +61,180 @@ class PartnerServiceTest {
             assertEquals(newPartner, result);
         }
 
-        @Test
+        @Nested
         @DisplayName("取引先を編集できる")
-        void shouldSavePartner() {
-            Partner originalPartner = TestDataFactoryImpl.getPartner("009");
-            Partner updatedPartner = Partner.of(
-                    originalPartner.getPartnerCode(),
-                    PartnerName.of("取引先B", "取引先B"),
-                    originalPartner.getVendorType(),
-                    originalPartner.getAddress(),
-                    originalPartner.getTradeProhibitedFlag(),
-                    originalPartner.getMiscellaneousType(),
-                    originalPartner.getPartnerGroupCode(),
-                    originalPartner.getCredit(),
-                    List.of(),
-                    List.of()
-            );
+        class shouldSavePartner {
+            @Test
+            @DisplayName("取引先のみ存在する場合")
+            void case_1() {
+                Partner originalPartner = TestDataFactoryImpl.getPartner("009");
+                Partner updatedPartner = Partner.of(
+                        originalPartner.getPartnerCode(),
+                        PartnerName.of("取引先B", "取引先B"),
+                        originalPartner.getVendorType(),
+                        originalPartner.getAddress(),
+                        originalPartner.getTradeProhibitedFlag(),
+                        originalPartner.getMiscellaneousType(),
+                        originalPartner.getPartnerGroupCode(),
+                        originalPartner.getCredit(),
+                        List.of(),
+                        List.of()
+                );
 
-            partnerService.save(originalPartner);
-            partnerService.save(updatedPartner);
+                partnerService.save(originalPartner);
+                partnerService.save(updatedPartner);
 
-            Partner result = partnerService.find("009");
-            assertNotEquals(originalPartner, result);
-            assertEquals(updatedPartner, result);
+                Partner result = partnerService.find("009");
+                assertNotEquals(originalPartner, result);
+                assertEquals(updatedPartner, result);
+            }
+
+            @Test
+            @DisplayName("取引先と顧客が存在する場合")
+            void case_2() {
+                Partner originalPartner = TestDataFactoryImpl.getPartner("001");
+                Customer customer = TestDataFactoryImpl.getCustomer("001", 1);
+                Partner updatedPartner = Partner.of(
+                        originalPartner.getPartnerCode(),
+                        originalPartner.getPartnerName(),
+                        originalPartner.getVendorType(),
+                        originalPartner.getAddress(),
+                        originalPartner.getTradeProhibitedFlag(),
+                        originalPartner.getMiscellaneousType(),
+                        originalPartner.getPartnerGroupCode(),
+                        originalPartner.getCredit(),
+                        List.of(customer),
+                        List.of()
+                );
+
+                partnerService.save(updatedPartner);
+
+                Partner result = partnerService.find("001");
+                assertNotEquals(originalPartner, result);
+                assertEquals(updatedPartner, result);
+                assertEquals(customer, result.getCustomers().getFirst());
+            }
+
+            @Test
+            @DisplayName("取引先と仕入先が存在する場合")
+            void case_3() {
+                Partner originalPartner = TestDataFactoryImpl.getPartner("001");
+                Vendor vendor = TestDataFactoryImpl.getVendor("001", 1);
+                Partner updatedPartner = Partner.of(
+                        originalPartner.getPartnerCode(),
+                        originalPartner.getPartnerName(),
+                        VendorType.仕入先でない,
+                        originalPartner.getAddress(),
+                        originalPartner.getTradeProhibitedFlag(),
+                        originalPartner.getMiscellaneousType(),
+                        originalPartner.getPartnerGroupCode(),
+                        originalPartner.getCredit(),
+                        List.of(),
+                        List.of(vendor)
+                );
+
+                partnerService.save(updatedPartner);
+
+                Partner result = partnerService.find("001");
+                assertNotEquals(originalPartner, result);
+                assertEquals(updatedPartner, result);
+                assertEquals(vendor, result.getVendors().getFirst());
+            }
+
         }
 
-        @Test
+        @Nested
         @DisplayName("取引先を削除できる")
-        void shouldDeletePartner() {
-            Partner partner = TestDataFactoryImpl.getPartner("009");
-            partnerService.register(partner);
+        class shouldDeletePartner {
+            @Test
+            @DisplayName("取引先のみ存在する場合")
+            void case_1() throws BusinessException {
+                Partner originalPartner = TestDataFactoryImpl.getPartner("009");
+                partnerService.save(originalPartner);
+                partnerService.delete(originalPartner);
 
-            partnerService.delete(partner);
-            Partner result = partnerService.find("009");
+                Partner result = partnerService.find("009");
+                assertNull(result);
+            }
 
-            assertNull(result);
+            @Test
+            @DisplayName("取引先と顧客が存在する場合")
+            void case_2() throws BusinessException {
+                Partner originalPartner = TestDataFactoryImpl.getPartner("001");
+                Customer customer = TestDataFactoryImpl.getCustomer("001", 1);
+                Partner updatedPartner = Partner.of(
+                        originalPartner.getPartnerCode(),
+                        originalPartner.getPartnerName(),
+                        originalPartner.getVendorType(),
+                        originalPartner.getAddress(),
+                        originalPartner.getTradeProhibitedFlag(),
+                        originalPartner.getMiscellaneousType(),
+                        originalPartner.getPartnerGroupCode(),
+                        originalPartner.getCredit(),
+                        List.of(customer),
+                        List.of()
+                );
+
+                partnerService.save(updatedPartner);
+                partnerService.delete(updatedPartner);
+
+                Partner result = partnerService.find("001");
+                assertNull(result);
+            }
+
+            @Test
+            @DisplayName("取引先と仕入先が存在する場合")
+            void case_3() throws BusinessException {
+                Partner originalPartner = TestDataFactoryImpl.getPartner("001");
+                Vendor vendor = TestDataFactoryImpl.getVendor("001", 1);
+                Partner updatedPartner = Partner.of(
+                        originalPartner.getPartnerCode(),
+                        originalPartner.getPartnerName(),
+                        VendorType.仕入先でない,
+                        originalPartner.getAddress(),
+                        originalPartner.getTradeProhibitedFlag(),
+                        originalPartner.getMiscellaneousType(),
+                        originalPartner.getPartnerGroupCode(),
+                        originalPartner.getCredit(),
+                        List.of(),
+                        List.of(vendor)
+                );
+
+                partnerService.save(updatedPartner);
+                partnerService.delete(updatedPartner);
+
+                Partner result = partnerService.find("001");
+                assertNull(result);
+            }
+
+            @Test
+            @DisplayName("分類に紐づく取引先は削除できない")
+            void case_4() {
+                Partner originalPartner = TestDataFactoryImpl.getPartner("001");
+                Partner updatedPartner = Partner.of(
+                        originalPartner.getPartnerCode(),
+                        originalPartner.getPartnerName(),
+                        originalPartner.getVendorType(),
+                        originalPartner.getAddress(),
+                        originalPartner.getTradeProhibitedFlag(),
+                        originalPartner.getMiscellaneousType(),
+                        PartnerGroupCode.of("9999"),
+                        originalPartner.getCredit(),
+                        List.of(),
+                        List.of()
+                );
+                PartnerCategoryAffiliation partnerCategoryAffiliation = TestDataFactoryImpl.getPartnerCategoryAffiliation("1", "001", "01");
+                List<PartnerCategoryAffiliation> partnerCategoryAffiliations = List.of(partnerCategoryAffiliation);
+                PartnerCategoryItem partnerCategoryItem = PartnerCategoryItem.of(TestDataFactoryImpl.getPartnerCategoryItem("1", "01"), partnerCategoryAffiliations);
+                List<PartnerCategoryItem> partnerCategoryItems = List.of(partnerCategoryItem);
+                PartnerCategoryType partnerCategory = PartnerCategoryType.of(TestDataFactoryImpl.getPartnerCategoryType("1"), partnerCategoryItems);
+                partnerCategoryService.register(partnerCategory);
+
+                partnerService.save(updatedPartner);
+
+                assertThrows(BusinessException.class, () -> partnerService.delete(updatedPartner));
+            }
+
         }
 
         @Nested

@@ -162,6 +162,15 @@ public class PartnerCategoryDataSource implements PartnerCategoryRepository {
     }
 
     @Override
+    public PartnerCategoryList search(PartnerCategoryCriteria criteria) {
+        List<PartnerCategoryTypeCustomEntity> partnerCategoryTypeCustomEntities = partnerCategoryTypeCustomMapper.selectByCriteria(criteria);
+
+        return new PartnerCategoryList(partnerCategoryTypeCustomEntities.stream()
+                .map(partnerCategoryEntityMapper::mapToDomainModel)
+                .toList());
+    }
+
+    @Override
     public PageInfo<PartnerCategoryType> selectAllWithPageInfo() {
         List<PartnerCategoryTypeCustomEntity> partnerCategoryTypeCustomEntities = partnerCategoryTypeCustomMapper.selectAll();
         PageInfo<PartnerCategoryTypeCustomEntity> pageInfo = new PageInfo<>(partnerCategoryTypeCustomEntities);

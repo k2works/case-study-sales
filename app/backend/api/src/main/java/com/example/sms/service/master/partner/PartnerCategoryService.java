@@ -57,7 +57,7 @@ public class PartnerCategoryService {
     /**
      * 取引先分類種別検索 (ページング)
      */
-    public PageInfo<PartnerCategoryType> searchWithPageInfo(com.example.sms.service.master.partner.PartnerCategoryCriteria criteria) {
+    public PageInfo<PartnerCategoryType> searchWithPageInfo(PartnerCategoryCriteria criteria) {
         return partnerCategoryRepository.searchWithPageInfo(criteria);
     }
 
