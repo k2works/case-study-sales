@@ -12,12 +12,15 @@ import com.example.sms.domain.model.master.partner.vendor.Vendor;
 import com.example.sms.domain.model.master.partner.vendor.VendorCode;
 import com.example.sms.domain.model.master.partner.vendor.VendorList;
 import com.example.sms.domain.model.master.partner.vendor.VendorName;
+import com.example.sms.service.BusinessException;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 @IntegrationTest
@@ -50,7 +53,8 @@ class VendorServiceTest {
         @DisplayName("仕入先を新規登録できる")
         class RegisterVendorTest {
             @Test
-            void case_1() {
+            @DisplayName("対応する取引先が存在する場合")
+            void case_1() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("010");
                 partnerService.register(partner);
                 Vendor newVendor = TestDataFactoryImpl.getVendor("010", 1);
@@ -62,13 +66,64 @@ class VendorServiceTest {
             }
 
             @Test
+            @DisplayName("対応する取引先が存在しない場合")
             void case_2() {
                 Vendor newVendor = TestDataFactoryImpl.getVendor("010", 1);
 
+                assertThrows(BusinessException.class, () -> vendorService.register(newVendor));
+            }
+
+            @Test
+            @DisplayName("仕入先コードが重複している場合")
+            void case_3() throws BusinessException {
+                Partner partner = TestDataFactoryImpl.getPartner("010");
+                partnerService.register(partner);
+                Vendor vendor = TestDataFactoryImpl.getVendor("010", 1);
+                vendorService.register(vendor);
+                Vendor duplicateVendor = TestDataFactoryImpl.getVendor("010", 1);
+
+                assertThrows(BusinessException.class, () -> vendorService.register(duplicateVendor));
+            }
+            @Test
+            @DisplayName("仕入先コードが重複していない場合")
+            void case_4() throws BusinessException {
+                Partner partner = TestDataFactoryImpl.getPartner("010");
+                partnerService.register(partner);
+                Vendor vendor = TestDataFactoryImpl.getVendor("010", 1);
+                vendorService.register(vendor);
+                Vendor newVendor = TestDataFactoryImpl.getVendor("010", 2);
+
                 vendorService.register(newVendor);
 
-                Vendor result = vendorService.find(VendorCode.of("010", 1));
-                assertNull(result);
+                Vendor result = vendorService.find(VendorCode.of("010", 2));
+                assertEquals(newVendor, result);
+            }
+            @Test
+            @DisplayName("複数の仕入先を登録できる")
+            void case_5() throws BusinessException {
+                Partner partner = TestDataFactoryImpl.getPartner("010");
+                partnerService.register(partner);
+                Vendor vendor1 = TestDataFactoryImpl.getVendor("010", 1);
+                Vendor vendor2 = TestDataFactoryImpl.getVendor("010", 2);
+                partnerService.register(Partner.ofWithVendors(partner, List.of(vendor1, vendor2)));
+
+                Vendor vendor3 = TestDataFactoryImpl.getVendor("010", 3);
+                vendorService.register(vendor3);
+
+                Partner result = partnerService.find("010");
+                assertEquals(3, result.getVendors().size());
+            }
+            @Test
+            @DisplayName("複数の仕入先を登録できない")
+            void case_6() {
+                Partner partner = TestDataFactoryImpl.getPartner("010");
+                partnerService.register(partner);
+                Vendor vendor1 = TestDataFactoryImpl.getVendor("010", 1);
+                Vendor vendor2 = TestDataFactoryImpl.getVendor("010", 2);
+                partnerService.register(Partner.ofWithVendors(partner, List.of(vendor1, vendor2)));
+
+                Vendor vendor3 = TestDataFactoryImpl.getVendor("010", 1);
+                assertThrows(BusinessException.class, () -> vendorService.register(vendor3));
             }
         }
 
@@ -76,7 +131,8 @@ class VendorServiceTest {
         @DisplayName("仕入先を編集できる")
         class SaveVendorTest {
             @Test
-            void case_1() {
+            @DisplayName("仕入先情報を編集できる")
+            void case_1() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("010");
                 partnerService.register(partner);
                 Vendor originalVendor = TestDataFactoryImpl.getVendor("010", 1);
@@ -99,13 +155,55 @@ class VendorServiceTest {
                 assertNotEquals(originalVendor, result);
                 assertEquals(updatedVendor, result);
             }
+            @Test
+            @DisplayName("複数の仕入先情報を編集できる")
+            void case_2() throws BusinessException {
+                Partner partner = TestDataFactoryImpl.getPartner("010");
+                partnerService.register(partner);
+                Vendor originalVendor1 = TestDataFactoryImpl.getVendor("010", 1);
+                Vendor originalVendor2 = TestDataFactoryImpl.getVendor("010", 2);
+                vendorService.register(originalVendor1);
+                vendorService.register(originalVendor2);
+
+                Vendor updatedVendor1 = Vendor.of(
+                        originalVendor1.getVendorCode(),
+                        VendorName.of("仕入先A", "シイレサキエー"),
+                        originalVendor1.getVendorContactName(),
+                        originalVendor1.getVendorDepartmentName(),
+                        originalVendor1.getVendorAddress(),
+                        originalVendor1.getVendorPhoneNumber(),
+                        originalVendor1.getVendorFaxNumber(),
+                        originalVendor1.getVendorEmailAddress(),
+                        originalVendor1.getVendorClosingInvoice()
+                );
+                Vendor updatedVendor2 = Vendor.of(
+                        originalVendor2.getVendorCode(),
+                        VendorName.of("仕入先B", "シイレサキビー"),
+                        originalVendor2.getVendorContactName(),
+                        originalVendor2.getVendorDepartmentName(),
+                        originalVendor2.getVendorAddress(),
+                        originalVendor2.getVendorPhoneNumber(),
+                        originalVendor2.getVendorFaxNumber(),
+                        originalVendor2.getVendorEmailAddress(),
+                        originalVendor2.getVendorClosingInvoice()
+                );
+                vendorService.save(updatedVendor1);
+                vendorService.save(updatedVendor2);
+
+                Vendor result1 = vendorService.find(VendorCode.of("010", 1));
+                Vendor result2 = vendorService.find(VendorCode.of("010", 2));
+                assertNotEquals(originalVendor1, result1);
+                assertNotEquals(originalVendor2, result2);
+                assertEquals(updatedVendor1, result1);
+                assertEquals(updatedVendor2, result2);
+            }
         }
 
         @Nested
         @DisplayName("仕入先を削除できる")
         class DeleteVendorTest {
             @Test
-            void case_1() {
+            void case_1() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("010");
                 partnerService.register(partner);
                 Vendor vendor = TestDataFactoryImpl.getVendor("010", 1);
@@ -123,7 +221,7 @@ class VendorServiceTest {
         class VendorSearchTest {
             @Test
             @DisplayName("仕入先コードで検索できる")
-            void shouldSearchVendorByCode() {
+            void shouldSearchVendorByCode() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("010");
                 partnerService.register(partner);
                 Vendor originalVendor = TestDataFactoryImpl.getVendor("010", 1);
@@ -139,7 +237,7 @@ class VendorServiceTest {
 
             @Test
             @DisplayName("仕入先名で検索できる")
-            void shouldSearchVendorByName() {
+            void shouldSearchVendorByName() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("010");
                 partnerService.register(partner);
                 Vendor originalVendor = TestDataFactoryImpl.getVendor("010", 1);
@@ -165,7 +263,7 @@ class VendorServiceTest {
             }
             @Test
             @DisplayName("仕入先担当者名で検索できる")
-            void shouldSearchVendorByContactName() {
+            void shouldSearchVendorByContactName() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("010");
                 partnerService.register(partner);
                 Vendor originalVendor = TestDataFactoryImpl.getVendor("010", 1);
@@ -191,7 +289,7 @@ class VendorServiceTest {
             }
             @Test
             @DisplayName("仕入先部署名で検索できる")
-            void shouldSearchVendorByDepartmentName() {
+            void shouldSearchVendorByDepartmentName() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("010");
                 partnerService.register(partner);
                 Vendor originalVendor = TestDataFactoryImpl.getVendor("010", 1);
@@ -217,7 +315,7 @@ class VendorServiceTest {
             }
             @Test
             @DisplayName("仕入先住所で検索できる")
-            void shouldSearchVendorByAddress() {
+            void shouldSearchVendorByAddress() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("010");
                 partnerService.register(partner);
                 Vendor originalVendor = TestDataFactoryImpl.getVendor("010", 1);
@@ -246,7 +344,7 @@ class VendorServiceTest {
             }
             @Test
             @DisplayName("仕入先電話番号で検索できる")
-            void shouldSearchVendorByPhoneNumber() {
+            void shouldSearchVendorByPhoneNumber() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("010");
                 partnerService.register(partner);
                 Vendor originalVendor = TestDataFactoryImpl.getVendor("010", 1);
@@ -272,7 +370,7 @@ class VendorServiceTest {
             }
             @Test
             @DisplayName("仕入先FAX番号で検索できる")
-            void shouldSearchVendorByFaxNumber() {
+            void shouldSearchVendorByFaxNumber() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("010");
                 partnerService.register(partner);
                 Vendor originalVendor = TestDataFactoryImpl.getVendor("010", 1);
@@ -298,7 +396,7 @@ class VendorServiceTest {
             }
             @Test
             @DisplayName("仕入先メールアドレスで検索できる")
-            void shouldSearchVendorByEmailAddress() {
+            void shouldSearchVendorByEmailAddress() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("010");
                 partnerService.register(partner);
                 Vendor originalVendor = TestDataFactoryImpl.getVendor("010", 1);

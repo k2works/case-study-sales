@@ -33,4 +33,8 @@ public class VendorList {
     public List<Vendor> asList() {
         return value;
     }
+
+    public boolean isDuplicate(Vendor vendor) {
+        return value.stream().anyMatch(v -> v.getVendorCode().equals(vendor.getVendorCode()));
+    }
 }

@@ -4,6 +4,7 @@ import com.example.sms.domain.model.master.partner.Partner;
 import com.example.sms.domain.model.master.partner.vendor.Vendor;
 import com.example.sms.domain.model.master.partner.vendor.VendorCode;
 import com.example.sms.domain.model.master.partner.vendor.VendorList;
+import com.example.sms.service.BusinessException;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,12 +33,15 @@ public class VendorService {
     /**
      * 仕入先新規登録
      */
-    public void register(Vendor vendor) {
+    public void register(Vendor vendor) throws BusinessException {
         Partner partner = partnerRepository.findById(vendor.getVendorCode().getCode().getValue()).orElse(null);
-        if (partner != null) {
-            Partner newPartner = Partner.ofWithVendors(partner, List.of(vendor));
-            partnerRepository.save(newPartner);
-        }
+        if (partner == null) throw new BusinessException("対応する取引先が存在しません");
+
+        VendorList vendorList = new VendorList(partner.getVendors());
+        if (vendorList.isDuplicate(vendor)) throw new BusinessException("仕入先コードが重複しています");
+        VendorList saveVendorList = vendorList.add(vendor);
+        Partner newPartner = Partner.ofWithVendors(partner, saveVendorList.asList());
+        partnerRepository.save(newPartner);
     }
 
     /**
