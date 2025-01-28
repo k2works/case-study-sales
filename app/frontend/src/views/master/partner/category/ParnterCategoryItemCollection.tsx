@@ -52,7 +52,9 @@ export const PartnerCategoryItemCollectionAddListView: React.FC<PartnerCategoryI
     const addNew = () => {
         handleNew({
             partnerCategoryTypeCode: partnerCategory.partnerCategoryTypeCode,
-            partnerCategoryItemCode: "99",
+            partnerCategoryItemCode: partnerCategory.partnerCategoryItems.filter(item => item.partnerCategoryItemCode).length > 0
+                ? (Number(partnerCategory.partnerCategoryItems.filter(item => item.partnerCategoryItemCode).pop()!.partnerCategoryItemCode) + 1).toString().padStart(3, "0")
+                : "001",
             partnerCategoryItemName: "名前",
             partnerCategoryAffiliations: [],
         });

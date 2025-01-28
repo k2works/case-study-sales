@@ -4,8 +4,13 @@ import { useMessage } from "../application/Message.tsx";
 import { useModal } from "../application/hooks.ts";
 import { usePageNation } from "../../views/application/PageNation.tsx";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
-import {PartnerCategoryCriteriaType, PartnerCategoryItemType, PartnerCategoryType} from "../../models/master/partner";
-import { useFetchPartnerCategories, usePartnerCategory } from "./hooks";
+import {
+    PartnerCategoryCriteriaType,
+    PartnerCategoryItemType,
+    PartnerCategoryType, PartnerCriteriaType,
+    PartnerType
+} from "../../models/master/partner";
+import {useFetchPartnerCategories, useFetchPartners, usePartner, usePartnerCategory} from "./hooks";
 import Modal from "react-modal";
 import {PartnerCategorySearchView} from "../../views/master/partner/category/PartnerCategorySearch.tsx";
 import {PartnerCategoryCollectionView} from "../../views/master/partner/category/PartnerCategoryCollection.tsx";
@@ -16,12 +21,14 @@ import {
 import {
     PartnerCategoryAffiliationCollectionAddListView
 } from "../../views/master/partner/category/PartnerCategoryAffiliationCollection.tsx";
+import {PartnerCollectionSelectView} from "../../views/master/partner/PartnerSelect.tsx";
 
 export const PartnerCategory: React.FC = () => {
     const Content: React.FC = () => {
         const [loading, setLoading] = useState<boolean>(false);
         const { message, setMessage, error, setError } = useMessage();
         const { pageNation, setPageNation, criteria, setCriteria } = usePageNation<PartnerCategoryCriteriaType>();
+        const { pageNation: partnerPageNation, setPageNation: setPartnerPageNation } = usePageNation<PartnerCriteriaType>();
         const { modalIsOpen, setModalIsOpen, isEditing, setIsEditing, editId, setEditId } = useModal();
         const {modalIsOpen: searchModalIsOpen, setModalIsOpen: setSearchModalIsOpen,} = useModal();
         const {
@@ -52,8 +59,32 @@ export const PartnerCategory: React.FC = () => {
             partnerCategoryService
         );
 
+        const {
+            partners,
+            setPartners,
+            partnerService,
+        } = usePartner();
+
+        const fetchPartners = useFetchPartners(
+            setLoading,
+            setPartners,
+            setPartnerPageNation,
+            setError,
+            showErrorMessage,
+            partnerService
+        );
+
+        const {
+            modalIsOpen: partnerModalIsOpen,
+            setModalIsOpen: setPartnerModalIsOpen,
+            setIsEditing: setPartnerIsEditing,
+            setEditId: setPartnerEditId,
+        } = useModal();
+
         useEffect(() => {
-            fetchPartnerCategories.load();
+            fetchPartnerCategories.load().then(() => {
+                fetchPartners.load().then();
+            });
         }, []);
 
         const modalView = () => {
@@ -198,7 +229,6 @@ export const PartnerCategory: React.FC = () => {
                     setCategoryItemEditId(null);
                 }
 
-                //TODO:取引先コード一覧の追加
                 const partnerCategoryItemModalView = () => {
                     return (
                         <Modal
@@ -211,28 +241,8 @@ export const PartnerCategory: React.FC = () => {
                         >
 
                             <PartnerCategoryAffiliationCollectionAddListView
-                                partnerCategoryItem={newPartnerCategoryItem}
                                 partnerCategoryAffiliations={newPartnerCategoryItem.partnerCategoryAffiliations}
-                                handleNew={(partnerCategoryAffiliation) => {
-                                    const newPartnerCategoryAffiliations = newPartnerCategoryItem.partnerCategoryAffiliations.filter((e) => e.partnerCode.value !== partnerCategoryAffiliation.partnerCode.value);
-                                    newPartnerCategoryAffiliations.push({
-                                        ...partnerCategoryAffiliation,
-                                    });
-                                    setNewPartnerCategoryItem({
-                                        ...newPartnerCategoryItem,
-                                        partnerCategoryAffiliations: newPartnerCategoryAffiliations
-                                    });
-
-                                    const newPartnerCategoryItems = newPartnerCategory.partnerCategoryItems.filter((e) => e.partnerCategoryItemCode !== newPartnerCategoryItem.partnerCategoryItemCode);
-                                    newPartnerCategoryItems.push({
-                                        ...newPartnerCategoryItem,
-                                        partnerCategoryAffiliations: newPartnerCategoryAffiliations
-                                    });
-                                    setNewPartnerCategory({
-                                        ...newPartnerCategory,
-                                        partnerCategoryItems: newPartnerCategoryItems
-                                    });
-                                }}
+                                handleAdd={() => {partnerModal().handleOpenPartnerModal()}}
                                 handleDelete={(partnerCategoryAffiliation) => {
                                     setNewPartnerCategoryItem({
                                         ...newPartnerCategoryItem,
@@ -260,11 +270,87 @@ export const PartnerCategory: React.FC = () => {
                 };
             }
 
+            const partnerModal = () => {
+                const handleOpenPartnerModal = () => {
+                    setMessage("");
+                    setError("");
+                    setPartnerIsEditing(true);
+                    setPartnerModalIsOpen(true);
+                };
+
+                const handleClosePartnerModal = () => {
+                    setError("");
+                    setPartnerModalIsOpen(false);
+                    setPartnerEditId(null);
+                };
+
+                const handlePartnerCollectionSelect = (partner: PartnerType) => {
+                    const newPartnerCategoryAffiliations = newPartnerCategoryItem.partnerCategoryAffiliations;
+                    if (newPartnerCategoryAffiliations.some((e) => e.partnerCode.value === partner.partnerCode.value)) {
+                        showErrorMessage("既に追加されている取引先です", setError);
+                        return;
+                    }
+                    newPartnerCategoryAffiliations.push({
+                        partnerCategoryTypeCode: newPartnerCategory.partnerCategoryTypeCode,
+                        partnerCategoryItemCode: newPartnerCategoryItem.partnerCategoryItemCode,
+                        partnerCode: {value: partner.partnerCode.value},
+                    })
+                    setNewPartnerCategoryItem({
+                        ...newPartnerCategoryItem,
+                        partnerCategoryAffiliations: newPartnerCategoryAffiliations
+                    });
+                    setNewPartnerCategoryItem({
+                        ...newPartnerCategoryItem,
+                        partnerCategoryAffiliations: newPartnerCategoryAffiliations
+                    });
+                    const newPartnerCategoryItems = newPartnerCategory.partnerCategoryItems.filter((e) => e.partnerCategoryItemCode !== newPartnerCategoryItem.partnerCategoryItemCode);
+                    newPartnerCategoryItems.push({
+                        ...newPartnerCategoryItem,
+                        partnerCategoryAffiliations: newPartnerCategoryAffiliations
+                    });
+                    setNewPartnerCategory({
+                        ...newPartnerCategory,
+                        partnerCategoryItems: newPartnerCategoryItems
+                    });
+                    handleClosePartnerModal();
+                }
+
+
+                const partnerModalView = () => {
+                    return (
+                        <Modal
+                            isOpen={partnerModalIsOpen}
+                            onRequestClose={handleClosePartnerModal}
+                            contentLabel="取引先情報を入力"
+                            className="modal"
+                            overlayClassName="modal-overlay"
+                            bodyOpenClassName="modal-open"
+                        >
+                            {
+                                <PartnerCollectionSelectView
+                                    partners={partners}
+                                    handleSelect={handlePartnerCollectionSelect}
+                                    handleClose={handleClosePartnerModal}
+                                    pageNation={partnerPageNation}
+                                    fetchPartners={fetchPartners.load}
+                                />
+                            }
+                        </Modal>
+                    )
+                }
+
+                return {
+                    handleOpenPartnerModal,
+                    partnerModalView,
+                }
+            }
+
             const init = () => (
                 <>
                     {editModal().editModalView()}
                     {searchModal().searchModalView()}
                     {partnerCategoryItemModal().partnerCategoryItemModalView()}
+                    {partnerModal().partnerModalView()}
                 </>
             );
 

@@ -1,19 +1,17 @@
 import React from 'react';
-import {PartnerCategoryAffiliationType, PartnerCategoryItemType} from '../../../../models/master/partner';
+import {PartnerCategoryAffiliationType} from '../../../../models/master/partner';
 import {FaTimes} from "react-icons/fa";
 
 interface PartnerCategoryAffiliationCollectionAddListProps {
-    partnerCategoryItem: PartnerCategoryItemType;
     partnerCategoryAffiliations: PartnerCategoryAffiliationType[];
-    handleNew: (partnerCategoryAffiliation: PartnerCategoryAffiliationType) => void;
+    handleAdd: () => void;
     handleDelete: (partnerCategoryAffiliation: PartnerCategoryAffiliationType) => void;
     handleClose: () => void;
 }
 
 export const PartnerCategoryAffiliationCollectionAddListView: React.FC<PartnerCategoryAffiliationCollectionAddListProps> = ({
-                                                                                                                                partnerCategoryItem,
                                                                                                                                 partnerCategoryAffiliations,
-                                                                                                                                handleNew,
+                                                                                                                                handleAdd,
                                                                                                                                 handleDelete,
                                                                                                                                 handleClose
                                                                                                                             }) => {
@@ -33,11 +31,7 @@ export const PartnerCategoryAffiliationCollectionAddListView: React.FC<PartnerCa
     };
 
     const addNew = () => {
-        handleNew({
-            partnerCategoryTypeCode: partnerCategoryItem.partnerCategoryTypeCode,
-            partnerCategoryItemCode: partnerCategoryItem.partnerCategoryItemCode,
-            partnerCode: {value: "001"},
-        });
+        handleAdd();
     }
 
     return (
