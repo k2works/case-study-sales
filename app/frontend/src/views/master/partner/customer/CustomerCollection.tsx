@@ -1,5 +1,5 @@
 import React from "react";
-import { CustomerType, CustomerCriteriaType } from "../../../../models/master/partner";
+import {CustomerType, CustomerCriteriaType, CustomerCodeType} from "../../../../models/master/partner";
 import { PageNation, PageNationType } from "../../../application/PageNation.tsx";
 import { Message } from "../../../../components/application/Message.tsx";
 import { Search } from "../../../Common.tsx";
@@ -7,7 +7,7 @@ import { Search } from "../../../Common.tsx";
 interface CustomerItemProps {
     customer: CustomerType;
     onEdit: (customer: CustomerType) => void;
-    onDelete: (customerCode: string) => void;
+    onDelete: (customerCode: CustomerCodeType) => void;
     onCheck: (customer: CustomerType) => void;
 }
 
@@ -42,7 +42,7 @@ const CustomerItem: React.FC<CustomerItemProps> = ({
             <button className="action-button" onClick={() => onEdit(customer)} id="edit">編集</button>
         </div>
         <div className="collection-object-item-actions" data-id={customer.customerCode.code.value}>
-            <button className="action-button" onClick={() => onDelete(customer.customerCode.code.value)} id="delete">削除</button>
+            <button className="action-button" onClick={() => onDelete(customer.customerCode)} id="delete">削除</button>
         </div>
     </li>
 );
@@ -50,7 +50,7 @@ const CustomerItem: React.FC<CustomerItemProps> = ({
 interface CustomerListProps {
     customers: CustomerType[];
     onEdit: (customer: CustomerType) => void;
-    onDelete: (customerCode: string) => void;
+    onDelete: (customerCode: CustomerCodeType) => void;
     onCheck: (customer: CustomerType) => void;
 }
 
@@ -91,7 +91,7 @@ interface CustomerCollectionViewProps {
     collectionItems: {
         customers: CustomerType[];
         handleOpenModal: (customer?: CustomerType) => void;
-        handleDeleteCustomer: (customerCode: string) => void;
+        handleDeleteCustomer: (customerCode: CustomerCodeType) => void;
         handleCheckCustomer: (customer: CustomerType) => void;
     };
     pageNationItems: {

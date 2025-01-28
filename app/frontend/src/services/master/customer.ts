@@ -7,15 +7,15 @@ import {
     CustomerResourceType,
     CustomerCriteriaResourceType,
     mapToCustomerType,
-    mapToCustomerCriteriaType,
+    mapToCustomerCriteriaType, CustomerCodeType,
 } from "../../models/master/partner";
 
 export interface CustomerServiceType {
     select: (page?: number, pageSize?: number) => Promise<CustomerFetchType>;
-    find: (customerCode: string) => Promise<CustomerType>;
+    find: (customerCode: CustomerCodeType) => Promise<CustomerType>;
     create: (customer: CustomerType) => Promise<void>;
     update: (customer: CustomerType) => Promise<void>;
-    destroy: (customerCode: string) => Promise<void>;
+    destroy: (customerCode: CustomerCodeType) => Promise<void>;
     search: (criteria: CustomerCriteriaType, page?: number, pageSize?: number) => Promise<CustomerFetchType>;
 }
 
@@ -29,8 +29,8 @@ export const CustomerService = (): CustomerServiceType => {
         return await apiUtils.fetchGet(url);
     };
 
-    const find = async (customerCode: string): Promise<CustomerType> => {
-        const url = `${endPoint}/${customerCode}`;
+    const find = async (customerCode: CustomerCodeType): Promise<CustomerType> => {
+        const url = `${endPoint}/${customerCode.code.value}/${customerCode.branchNumber}`;
         return await apiUtils.fetchGet(url);
     };
 
@@ -45,8 +45,8 @@ export const CustomerService = (): CustomerServiceType => {
         await apiUtils.fetchPut(url, resource);
     };
 
-    const destroy = async (customerCode: string): Promise<void> => {
-        const url = `${endPoint}/${customerCode}`;
+    const destroy = async (customerCode: CustomerCodeType): Promise<void> => {
+        const url = `${endPoint}/${customerCode.code.value}/${customerCode.branchNumber}`;
         await apiUtils.fetchDelete(url);
     };
 

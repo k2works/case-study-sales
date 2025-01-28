@@ -4,7 +4,7 @@ import { useMessage } from "../application/Message.tsx";
 import { useModal } from "../application/hooks.ts";
 import { usePageNation } from "../../views/application/PageNation.tsx";
 import Modal from "react-modal";
-import { CustomerCriteriaType, CustomerType } from "../../models/master/partner";
+import {CustomerCodeType, CustomerCriteriaType, CustomerType} from "../../models/master/partner";
 import { useFetchCustomers, useCustomer } from "./hooks";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
 import { CustomerSearchView } from "../../views/master/partner/customer/CustomerSearch.tsx";
@@ -143,7 +143,7 @@ export const Customer: React.FC = () => {
             const { handleOpenModal } = modalView().editModal();
             const { handleOpenSearchModal } = modalView().searchModal();
 
-            const handleDeleteCustomer = async (customerCode: string) => {
+            const handleDeleteCustomer = async (customerCode: CustomerCodeType) => {
                 try {
                     if (!window.confirm(`顧客コード:${customerCode} を削除しますか？`)) return;
                     await customerService.destroy(customerCode);
@@ -181,7 +181,7 @@ export const Customer: React.FC = () => {
                     if (!window.confirm("選択した顧客を削除しますか？")) return;
                     await Promise.all(
                         checkedCustomers.map((customer) =>
-                            customerService.destroy(customer.customerCode.code.value)
+                            customerService.destroy(customer.customerCode)
                         )
                     );
                     await fetchCustomers.load();
