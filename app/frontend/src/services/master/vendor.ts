@@ -7,15 +7,15 @@ import {
     VendorResourceType,
     VendorCriteriaResourceType,
     mapToVendorResourceType,
-    mapToCriteriaResourceType,
+    mapToCriteriaResourceType, VendorCodeType,
 } from "../../models/master/partner";
 
 export interface VendorServiceType {
     select: (page?: number, pageSize?: number) => Promise<VendorFetchType>;
-    find: (vendorCode: string) => Promise<VendorType>;
+    find: (vendorCode: VendorCodeType) => Promise<VendorType>;
     create: (vendor: VendorType) => Promise<void>;
     update: (vendor: VendorType) => Promise<void>;
-    destroy: (vendorCode: string) => Promise<void>;
+    destroy: (vendorCode: VendorCodeType) => Promise<void>;
     search: (criteria: VendorCriteriaType, page?: number, pageSize?: number) => Promise<VendorFetchType>;
 }
 
@@ -29,8 +29,8 @@ export const VendorService = (): VendorServiceType => {
         return await apiUtils.fetchGet(url);
     };
 
-    const find = async (vendorCode: string): Promise<VendorType> => {
-        const url = `${endPoint}/${vendorCode}`;
+    const find = async (vendorCode: VendorCodeType): Promise<VendorType> => {
+        const url = `${endPoint}/${vendorCode.code.value}/${vendorCode.branchNumber}`;
         return await apiUtils.fetchGet(url);
     };
 
@@ -45,8 +45,8 @@ export const VendorService = (): VendorServiceType => {
         await apiUtils.fetchPut(url, resource);
     };
 
-    const destroy = async (vendorCode: string): Promise<void> => {
-        const url = `${endPoint}/${vendorCode}`;
+    const destroy = async (vendorCode: VendorCodeType): Promise<void> => {
+        const url = `${endPoint}/${vendorCode.code.value}/${vendorCode.branchNumber}`;
         await apiUtils.fetchDelete(url);
     };
 

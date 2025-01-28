@@ -1,5 +1,5 @@
 import React from "react";
-import { VendorType, VendorCriteriaType } from "../../../../models/master/partner";
+import {VendorType, VendorCriteriaType, VendorCodeType} from "../../../../models/master/partner";
 import { PageNation, PageNationType } from "../../../application/PageNation.tsx";
 import { Message } from "../../../../components/application/Message.tsx";
 import { Search } from "../../../Common.tsx";
@@ -7,7 +7,7 @@ import { Search } from "../../../Common.tsx";
 interface VendorItemProps {
     vendor: VendorType;
     onEdit: (vendor: VendorType) => void;
-    onDelete: (vendorCode: string) => void;
+    onDelete: (vendorCode: VendorCodeType) => void;
     onCheck: (vendor: VendorType) => void;
 }
 
@@ -42,7 +42,7 @@ const VendorItem: React.FC<VendorItemProps> = ({
             <button className="action-button" onClick={() => onEdit(vendor)} id="edit">編集</button>
         </div>
         <div className="collection-object-item-actions" data-id={vendor.vendorCode.code.value}>
-            <button className="action-button" onClick={() => onDelete(vendor.vendorCode.code.value)} id="delete">削除</button>
+            <button className="action-button" onClick={() => onDelete(vendor.vendorCode)} id="delete">削除</button>
         </div>
     </li>
 );
@@ -50,7 +50,7 @@ const VendorItem: React.FC<VendorItemProps> = ({
 interface VendorListProps {
     vendors: VendorType[];
     onEdit: (vendor: VendorType) => void;
-    onDelete: (vendorCode: string) => void;
+    onDelete: (vendorCode: VendorCodeType) => void;
     onCheck: (vendor: VendorType) => void;
 }
 
@@ -91,7 +91,7 @@ interface VendorCollectionViewProps {
     collectionItems: {
         vendors: VendorType[];
         handleOpenModal: (vendor?: VendorType) => void;
-        handleDeleteVendor: (vendorCode: string) => void;
+        handleDeleteVendor: (vendorCode: VendorCodeType) => void;
         handleCheckVendor: (vendor: VendorType) => void;
     };
     pageNationItems: {

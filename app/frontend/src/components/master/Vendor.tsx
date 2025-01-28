@@ -4,7 +4,7 @@ import { useMessage } from "../application/Message.tsx";
 import { useModal } from "../application/hooks.ts";
 import { usePageNation } from "../../views/application/PageNation.tsx";
 import Modal from "react-modal";
-import { VendorCriteriaType, VendorType } from "../../models/master/partner";
+import {VendorCodeType, VendorCriteriaType, VendorType} from "../../models/master/partner";
 import { useFetchVendors, useVendor } from "./hooks"; // 新規実装するカスタムフック
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
 import { VendorSearchView } from "../../views/master/partner/vendor/VendorSearch.tsx"; // 作成が必要
@@ -129,7 +129,7 @@ export const Vendor: React.FC = () => {
         const collectionView = () => {
             const { handleOpenModal } = modalView().editModal();
             const { handleOpenSearchModal } = modalView().searchModal();
-            const handleDeleteVendor = async (vendorCode: string) => {
+            const handleDeleteVendor = async (vendorCode: VendorCodeType) => {
                 try {
                     if (!window.confirm(`仕入先コード:${vendorCode} を削除しますか？`)) return;
                     await vendorService.destroy(vendorCode);
@@ -165,7 +165,7 @@ export const Vendor: React.FC = () => {
                     if (!window.confirm("選択した仕入先を削除しますか？")) return;
                     await Promise.all(
                         checkedVendors.map((vendor) =>
-                            vendorService.destroy(vendor.vendorCode.code.value)
+                            vendorService.destroy(vendor.vendorCode)
                         )
                     );
                     await fetchVendors.load();
