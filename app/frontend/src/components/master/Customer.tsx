@@ -145,7 +145,7 @@ export const Customer: React.FC = () => {
 
             const handleDeleteCustomer = async (customerCode: CustomerCodeType) => {
                 try {
-                    if (!window.confirm(`顧客コード:${customerCode} を削除しますか？`)) return;
+                    if (!window.confirm(`顧客コード:${customerCode.code.value} 枝番:${customerCode.branchNumber} を削除しますか？`)) return;
                     await customerService.destroy(customerCode);
                     await fetchCustomers.load();
                     setMessage("顧客を削除しました。");

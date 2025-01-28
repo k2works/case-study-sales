@@ -131,7 +131,7 @@ export const Vendor: React.FC = () => {
             const { handleOpenSearchModal } = modalView().searchModal();
             const handleDeleteVendor = async (vendorCode: VendorCodeType) => {
                 try {
-                    if (!window.confirm(`仕入先コード:${vendorCode} を削除しますか？`)) return;
+                    if (!window.confirm(`仕入先コード:${vendorCode.code.value} 枝番:${vendorCode.branchNumber} を削除しますか？`)) return;
                     await vendorService.destroy(vendorCode);
                     await fetchVendors.load();
                     setMessage("仕入先を削除しました。");
