@@ -137,6 +137,7 @@ class CustomerServiceTest {
         @DisplayName("顧客を編集できる")
         class SaveCustomerTest {
             @Test
+            @DisplayName("出荷先を持たない顧客を編集できる")
             void case_1() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("009");
                 partnerService.register(partner);
@@ -167,6 +168,7 @@ class CustomerServiceTest {
             }
 
             @Test
+            @DisplayName("出荷先を持つ顧客を編集できる")
             void case_2() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("009");
                 partnerService.register(partner);
@@ -199,6 +201,7 @@ class CustomerServiceTest {
             }
 
             @Test
+            @DisplayName("複数の顧客を編集できる")
             void case_3() {
                 Partner partner = TestDataFactoryImpl.getPartner("009");
                 partnerService.register(partner);
@@ -231,6 +234,7 @@ class CustomerServiceTest {
             }
 
             @Test
+            @DisplayName("出荷先を編集できる")
             void case_4() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("009");
                 partnerService.register(partner);
@@ -270,6 +274,7 @@ class CustomerServiceTest {
             }
 
             @Test
+            @DisplayName("複数の出荷先を編集できる")
             void case_5() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("009");
                 partnerService.register(partner);
@@ -315,6 +320,7 @@ class CustomerServiceTest {
         @DisplayName("顧客を削除できる")
         class DeleteCustomerTest {
             @Test
+            @DisplayName("出荷先を持たない顧客を削除できる")
             void case_1() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("009");
                 partnerService.register(partner);
@@ -329,6 +335,7 @@ class CustomerServiceTest {
                 assertEquals(0, partnerResult.getCustomers().size());
             }
             @Test
+            @DisplayName("出荷先を持つ顧客を削除できる")
             void case_2() {
                 Partner partner = TestDataFactoryImpl.getPartner("009");
                 partnerService.register(partner);
@@ -345,6 +352,7 @@ class CustomerServiceTest {
                 assertEquals(2, partnerResult.getCustomers().size());
             }
             @Test
+            @DisplayName("複数の顧客を削除できる")
             void case_3() {
                 Partner partner = TestDataFactoryImpl.getPartner("009");
                 partnerService.register(partner);
