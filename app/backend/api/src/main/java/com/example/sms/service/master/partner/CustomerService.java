@@ -4,6 +4,7 @@ import com.example.sms.domain.model.master.partner.Partner;
 import com.example.sms.domain.model.master.partner.customer.Customer;
 import com.example.sms.domain.model.master.partner.customer.CustomerCode;
 import com.example.sms.domain.model.master.partner.customer.CustomerList;
+import com.example.sms.service.BusinessException;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,12 +33,15 @@ public class CustomerService {
     /**
      * 顧客新規登録
      */
-    public void register(Customer customer) {
+    public void register(Customer customer) throws BusinessException {
         Partner partner = partnerRepository.findById(customer.getCustomerCode().getCode().getValue()).orElse(null);
-        if (partner != null) {
-            Partner newPartner = Partner.ofWithCustomers(partner, List.of(customer));
-            partnerRepository.save(newPartner);
-        }
+        if (partner == null) throw new BusinessException("対応する取引先が存在しません");
+
+        CustomerList customerList = new CustomerList(partner.getCustomers());
+        if (customerList.isDuplicate(customer)) throw new BusinessException("顧客コードが重複しています");
+        CustomerList saveCustomerList = customerList.add(customer);
+        Partner newPartner = Partner.ofWithCustomers(partner, saveCustomerList.asList());
+        partnerRepository.save(newPartner);
     }
 
     /**

@@ -11,6 +11,7 @@ import com.example.sms.domain.model.master.partner.customer.CustomerType;
 import com.example.sms.domain.model.master.partner.Partner;
 import com.example.sms.domain.model.master.partner.customer.*;
 import com.example.sms.domain.model.master.region.RegionCode;
+import com.example.sms.service.BusinessException;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -51,7 +52,8 @@ class CustomerServiceTest {
         @DisplayName("顧客を新規登録できる")
         class RegisterCustomerTest {
             @Test
-            void case_1() {
+            @DisplayName("出荷先を持たない顧客を新規登録できる")
+            void case_1() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("009");
                 partnerService.register(partner);
                 Customer newCustomer = TestDataFactoryImpl.getCustomer("009", 1);
@@ -62,7 +64,8 @@ class CustomerServiceTest {
                 assertEquals(newCustomer, result);
             }
             @Test
-            void case_2() {
+            @DisplayName("出荷先を持つ顧客を新規登録できる")
+            void case_2() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("009");
                 partnerService.register(partner);
                 Shipping shipping = TestDataFactoryImpl.getShipping("009", 1,1);
@@ -76,13 +79,57 @@ class CustomerServiceTest {
                 assertEquals(shipping, result.getShippings().getFirst());
             }
             @Test
+            @DisplayName("複数の顧客を新規登録できる")
             void case_3() {
+                Partner partner = TestDataFactoryImpl.getPartner("009");
+                partnerService.register(partner);
+                Customer newCustomer1 = TestDataFactoryImpl.getCustomer("009", 1);
+                Customer newCustomer2 = TestDataFactoryImpl.getCustomer("009", 2);
+                Customer newCustomer3 = TestDataFactoryImpl.getCustomer("009", 3);
+                partnerService.register(Partner.ofWithCustomers(partner, List.of(newCustomer1, newCustomer2, newCustomer3)));
+
+                Customer result1 = customerService.find(CustomerCode.of("009", 1));
+                Customer result2 = customerService.find(CustomerCode.of("009", 2));
+                Customer result3 = customerService.find(CustomerCode.of("009", 3));
+                assertEquals(newCustomer1, result1);
+                assertEquals(newCustomer2, result2);
+                assertEquals(newCustomer3, result3);
+            }
+            @Test
+            @DisplayName("複数の顧客を新規登録できる（既存の顧客コードと重複しない）")
+            void case_4() throws BusinessException {
+                Partner partner = TestDataFactoryImpl.getPartner("009");
+                partnerService.register(partner);
+                Customer newCustomer1 = TestDataFactoryImpl.getCustomer("009", 1);
+                Customer newCustomer2 = TestDataFactoryImpl.getCustomer("009", 2);
+                Customer newCustomer3 = TestDataFactoryImpl.getCustomer("009", 3);
+                partnerService.register(Partner.ofWithCustomers(partner, List.of(newCustomer1, newCustomer2, newCustomer3)));
+
+                Customer newCustomer4 = TestDataFactoryImpl.getCustomer("009", 4);
+                customerService.register(newCustomer4);
+
+                Partner partnerResult = partnerService.find("009");
+                assertEquals(4, partnerResult.getCustomers().size());
+            }
+            @Test
+            @DisplayName("対応する取引先コードが存在しない場合、顧客を新規登録できない")
+            void case_5() {
                 Customer newCustomer = TestDataFactoryImpl.getCustomer("009", 1);
 
-                customerService.register(newCustomer);
+                assertThrows(BusinessException.class, () -> customerService.register(newCustomer));
+            }
+            @Test
+            @DisplayName("既存の顧客コードと重複する場合、顧客を新規登録できない")
+            void case_6() {
+                Partner partner = TestDataFactoryImpl.getPartner("009");
+                partnerService.register(partner);
+                Customer newCustomer1 = TestDataFactoryImpl.getCustomer("009", 1);
+                Customer newCustomer2 = TestDataFactoryImpl.getCustomer("009", 2);
+                Customer newCustomer3 = TestDataFactoryImpl.getCustomer("009", 3);
+                partnerService.register(Partner.ofWithCustomers(partner, List.of(newCustomer1, newCustomer2, newCustomer3)));
 
-                Customer result = customerService.find(CustomerCode.of("009", 1));
-                assertNull(result);
+                Customer newCustomer4 = TestDataFactoryImpl.getCustomer("009", 2);
+                assertThrows(BusinessException.class, () -> customerService.register(newCustomer4));
             }
         }
 
@@ -90,7 +137,7 @@ class CustomerServiceTest {
         @DisplayName("顧客を編集できる")
         class SaveCustomerTest {
             @Test
-            void case_1() {
+            void case_1() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("009");
                 partnerService.register(partner);
                 Customer originalCustomer = TestDataFactoryImpl.getCustomer("009", 1);
@@ -120,7 +167,7 @@ class CustomerServiceTest {
             }
 
             @Test
-            void case_2() {
+            void case_2() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("009");
                 partnerService.register(partner);
                 Customer originalCustomer = TestDataFactoryImpl.getCustomer("009", 1);
@@ -184,7 +231,7 @@ class CustomerServiceTest {
             }
 
             @Test
-            void case_4() {
+            void case_4() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("009");
                 partnerService.register(partner);
                 Customer originalCustomer = TestDataFactoryImpl.getCustomer("009", 1);
@@ -223,7 +270,7 @@ class CustomerServiceTest {
             }
 
             @Test
-            void case_5() {
+            void case_5() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("009");
                 partnerService.register(partner);
                 Customer originalCustomer = TestDataFactoryImpl.getCustomer("009", 1);
@@ -268,7 +315,7 @@ class CustomerServiceTest {
         @DisplayName("顧客を削除できる")
         class DeleteCustomerTest {
             @Test
-            void case_1() {
+            void case_1() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("009");
                 partnerService.register(partner);
                 Customer customer = TestDataFactoryImpl.getCustomer("009", 1);
@@ -327,7 +374,7 @@ class CustomerServiceTest {
         class CustomerSearchTest {
             @Test
             @DisplayName("顧客コードで検索できる")
-            void shouldSearchCustomerByCode() {
+            void shouldSearchCustomerByCode() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("009");
                 partnerService.register(partner);
                 Customer originalCustomer = TestDataFactoryImpl.getCustomer("009", 1);
@@ -343,7 +390,7 @@ class CustomerServiceTest {
 
             @Test
             @DisplayName("顧客名で検索できる")
-            void shouldSearchCustomerByName() {
+            void shouldSearchCustomerByName() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("009");
                 partnerService.register(partner);
                 Customer originalCustomer = TestDataFactoryImpl.getCustomer("009",1);
@@ -375,7 +422,7 @@ class CustomerServiceTest {
 
             @Test
             @DisplayName("顧客名カナで検索できる")
-            void shouldSearchCustomerByNameKana() {
+            void shouldSearchCustomerByNameKana() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("009");
                 partnerService.register(partner);
                 Customer originalCustomer = TestDataFactoryImpl.getCustomer("009",1);
@@ -407,7 +454,7 @@ class CustomerServiceTest {
 
             @Test
             @DisplayName("顧客区分で検索できる")
-            void shouldSearchCustomerByType() {
+            void shouldSearchCustomerByType() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("009");
                 partnerService.register(partner);
                 Customer originalCustomer = TestDataFactoryImpl.getCustomer("009", 1);
@@ -439,7 +486,7 @@ class CustomerServiceTest {
 
             @Test
             @DisplayName("請求先コードで検索できる")
-            void shouldSearchCustomerByBillingCode() {
+            void shouldSearchCustomerByBillingCode() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("009");
                 partnerService.register(partner);
                 Customer originalCustomer = TestDataFactoryImpl.getCustomer("009", 1);
@@ -471,7 +518,7 @@ class CustomerServiceTest {
 
             @Test
             @DisplayName("回収先コードで検索できる")
-            void shouldSearchCustomerByCollectionCode() {
+            void shouldSearchCustomerByCollectionCode() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("009");
                 partnerService.register(partner);
                 Customer originalCustomer = TestDataFactoryImpl.getCustomer("009", 1);
@@ -503,7 +550,7 @@ class CustomerServiceTest {
 
             @Test
             @DisplayName("自社担当者コードで検索できる")
-            void shouldSearchCustomerByCompanyRepresentativeCode() {
+            void shouldSearchCustomerByCompanyRepresentativeCode() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("009");
                 partnerService.register(partner);
                 Customer originalCustomer = TestDataFactoryImpl.getCustomer("009", 1);
@@ -535,7 +582,7 @@ class CustomerServiceTest {
 
             @Test
             @DisplayName("顧客担当者名で検索できる")
-            void shouldSearchCustomerByCustomerRepresentativeName() {
+            void shouldSearchCustomerByCustomerRepresentativeName() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("009");
                 partnerService.register(partner);
                 Customer originalCustomer = TestDataFactoryImpl.getCustomer("009", 1);
@@ -567,7 +614,7 @@ class CustomerServiceTest {
 
             @Test
             @DisplayName("顧客部署名で検索できる")
-            void shouldSearchCustomerByCustomerDepartmentName() {
+            void shouldSearchCustomerByCustomerDepartmentName() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("009");
                 partnerService.register(partner);
                 Customer originalCustomer = TestDataFactoryImpl.getCustomer("009", 1);
@@ -599,7 +646,7 @@ class CustomerServiceTest {
 
             @Test
             @DisplayName("住所で検索できる")
-            void shouldSearchCustomerByAddress() {
+            void shouldSearchCustomerByAddress() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("009");
                 partnerService.register(partner);
                 Customer originalCustomer = TestDataFactoryImpl.getCustomer("009", 1);
@@ -634,7 +681,7 @@ class CustomerServiceTest {
 
             @Test
             @DisplayName("電話番号で検索できる")
-            void shouldSearchCustomerByPhoneNumber() {
+            void shouldSearchCustomerByPhoneNumber() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("009");
                 partnerService.register(partner);
                 Customer customer = TestDataFactoryImpl.getCustomer("009", 1);
@@ -666,7 +713,7 @@ class CustomerServiceTest {
 
             @Test
             @DisplayName("FAX番号で検索できる")
-            void shouldSearchCustomerByFaxNumber() {
+            void shouldSearchCustomerByFaxNumber() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("009");
                 partnerService.register(partner);
                 Customer customer = TestDataFactoryImpl.getCustomer("009", 1);
@@ -698,7 +745,7 @@ class CustomerServiceTest {
 
             @Test
             @DisplayName("メールアドレスで検索できる")
-            void shouldSearchCustomerByEmailAddress() {
+            void shouldSearchCustomerByEmailAddress() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("009");
                 partnerService.register(partner);
                 Customer customer = TestDataFactoryImpl.getCustomer("009", 1);
@@ -744,7 +791,7 @@ class CustomerServiceTest {
 
             @Test
             @DisplayName("複数条件で検索できる")
-            void shouldSearchCustomerByMultipleCriteria() {
+            void shouldSearchCustomerByMultipleCriteria() throws BusinessException {
                 Partner partner = TestDataFactoryImpl.getPartner("009");
                 partnerService.register(partner);
                 Customer customer = TestDataFactoryImpl.getCustomer("009", 1);

@@ -33,4 +33,8 @@ public class CustomerList {
     public List<Customer> asList() {
         return value;
     }
+
+    public boolean isDuplicate(Customer customer) {
+        return value.stream().anyMatch(c -> c.getCustomerCode().equals(customer.getCustomerCode()));
+    }
 }
