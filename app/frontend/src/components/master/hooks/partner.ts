@@ -145,6 +145,8 @@ export const usePartner = () => {
             creditLimit: { amount: 0, currency: "JPY" },
             temporaryCreditIncrease: { amount: 0, currency: "JPY" }
         },
+        customers: [],
+        vendors: [],
         checked: false
     };
 
