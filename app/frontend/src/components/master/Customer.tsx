@@ -1,15 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { showErrorMessage } from "../application/utils.ts";
-import { useMessage } from "../application/Message.tsx";
-import { useModal } from "../application/hooks.ts";
-import { usePageNation } from "../../views/application/PageNation.tsx";
+import React, {useEffect, useState} from 'react';
+import {showErrorMessage} from "../application/utils.ts";
+import {useMessage} from "../application/Message.tsx";
+import {useModal} from "../application/hooks.ts";
+import {usePageNation} from "../../views/application/PageNation.tsx";
 import Modal from "react-modal";
-import {CustomerCodeType, CustomerCriteriaType, CustomerType} from "../../models/master/partner";
-import { useFetchCustomers, useCustomer } from "./hooks";
+import {
+    CustomerCodeType,
+    CustomerCriteriaType,
+    CustomerType,
+    PrefectureEnumType,
+    ShippingType
+} from "../../models/master/partner";
+import {useCustomer, useFetchCustomers} from "./hooks";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
-import { CustomerSearchView } from "../../views/master/partner/customer/CustomerSearch.tsx";
-import { CustomerCollectionView } from "../../views/master/partner/customer/CustomerCollection.tsx";
-import { CustomerSingleView } from "../../views/master/partner/customer/CustomerSingle.tsx";
+import {CustomerSearchView} from "../../views/master/partner/customer/CustomerSearch.tsx";
+import {
+    CustomerCollectionView,
+    CustomerShippingCollectionAddListView
+} from "../../views/master/partner/customer/CustomerCollection.tsx";
+import {CustomerSingleView} from "../../views/master/partner/customer/CustomerSingle.tsx";
+import {Tab, TabList, TabPanel, Tabs} from "react-tabs";
+import {CustomerInvoiceSingleView} from "../../views/master/partner/customer/CustomerInvoiceSingle.tsx";
 
 export const Customer: React.FC = () => {
     const Content: React.FC = () => {
@@ -73,7 +84,62 @@ export const Customer: React.FC = () => {
                         overlayClassName="modal-overlay"
                         bodyOpenClassName="modal-open"
                     >
-                        {singleView()}
+                        <Tabs>
+                            <TabList>
+                                <Tab>基本情報</Tab>
+                                <Tab>請求情報</Tab>
+                                <Tab>出荷先情報</Tab>
+                            </TabList>
+                            <TabPanel>
+                                {singleView().basicInfo()}
+                            </TabPanel>
+                            <TabPanel>
+                                {singleView().invoiceInfo()}
+                            </TabPanel>
+                            <TabPanel>
+                                <CustomerShippingCollectionAddListView
+                                    shippings={newCustomer.shippings}
+                                    handleAddShipping={() => {
+                                        setMessage("");
+                                        setError("");
+                                        const maxDestinationNumber = Math.max(...newCustomer.shippings.map((shipping) => shipping.shippingCode.destinationNumber));
+                                        const initialDestinationNumber = maxDestinationNumber === -Infinity ? 1 : maxDestinationNumber + 1;
+                                        const shipping : ShippingType = {
+                                            shippingCode: {
+                                                customerCode: newCustomer.customerCode,
+                                                destinationNumber: initialDestinationNumber,
+                                            },
+                                            destinationName: "出荷先名",
+                                            regionCode: {
+                                                value: "R001",
+                                            },
+                                            shippingAddress: {
+                                                postalCode: {
+                                                    value: "1234567",
+                                                    regionCode: "",
+                                                },
+                                                prefecture: PrefectureEnumType.東京都,
+                                                address1: "住所1",
+                                                address2: "住所2",
+                                            },
+                                        }
+
+                                        setNewCustomer({
+                                            ...newCustomer,
+                                            shippings: [...newCustomer.shippings, shipping]
+                                        });
+                                    }}
+                                    handleDeleteShipping={(shippingAddress) => {
+                                        setNewCustomer({
+                                            ...newCustomer,
+                                            shippings: newCustomer.shippings.filter(
+                                                (shippingAddressItem) => shippingAddressItem.shippingAddress.postalCode !== shippingAddress.shippingAddress.postalCode
+                                            )
+                                        });
+                                    }}
+                                />
+                            </TabPanel>
+                        </Tabs>
                     </Modal>
                 );
 
@@ -242,15 +308,34 @@ export const Customer: React.FC = () => {
                 }
             };
 
-            return (
-                <CustomerSingleView
-                    error={error}
-                    message={message}
-                    isEditing={isEditing}
-                    headerItems={{ handleCreateOrUpdateCustomer, handleCloseModal }}
-                    formItems={{ newCustomer, setNewCustomer }}
-                />
-            );
+            const basicInfo = () => {
+                return (
+                    <CustomerSingleView
+                        error={error}
+                        message={message}
+                        isEditing={isEditing}
+                        headerItems={{ handleCreateOrUpdateCustomer, handleCloseModal }}
+                        formItems={{ newCustomer, setNewCustomer }}
+                    />
+                );
+            }
+
+            const invoiceInfo = () => {
+                return (
+                    <CustomerInvoiceSingleView
+                        error={error}
+                        message={message}
+                        isEditing={isEditing}
+                        headerItems={{ handleCreateOrUpdateCustomer, handleCloseModal }}
+                        formItems={{ newCustomer, setNewCustomer }}
+                    />
+                );
+            }
+
+            return {
+                basicInfo,
+                invoiceInfo
+            };
         };
 
         return (

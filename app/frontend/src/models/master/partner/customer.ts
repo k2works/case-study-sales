@@ -117,7 +117,8 @@ export type ShippingType = {
 
 // 出荷先コード型
 export type ShippingCodeType = {
-    value: string; // 出荷先コードの値
+    customerCode: CustomerCodeType;
+    destinationNumber: number; // 出荷先番号
 };
 
 // 地域コード型
