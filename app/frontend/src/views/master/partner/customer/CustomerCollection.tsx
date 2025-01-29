@@ -1,8 +1,8 @@
 import React, {useState} from "react";
-import {CustomerType, CustomerCriteriaType, CustomerCodeType, ShippingType} from "../../../../models/master/partner";
-import { PageNation, PageNationType } from "../../../application/PageNation.tsx";
-import { Message } from "../../../../components/application/Message.tsx";
-import { Search } from "../../../Common.tsx";
+import {CustomerCodeType, CustomerCriteriaType, CustomerType, ShippingType} from "../../../../models/master/partner";
+import {PageNation, PageNationType} from "../../../application/PageNation.tsx";
+import {Message} from "../../../../components/application/Message.tsx";
+import {Search} from "../../../Common.tsx";
 
 interface CustomerItemProps {
     customer: CustomerType;
@@ -171,21 +171,33 @@ export const CustomerCollectionView: React.FC<CustomerCollectionViewProps> = ({
 );
 
 interface CustomerShippingCollectionAddListViewProps {
+    setNewShipping: any;
     shippings: ShippingType[];
     handleAddShipping: () => void;
     handleDeleteShipping: (shipping: ShippingType) => void;
+    handleAddRegion: () => void;
 }
 
 export const CustomerShippingCollectionAddListView: React.FC<CustomerShippingCollectionAddListViewProps> = ({
+                                                                                                                setNewShipping,
                                                                                                                 shippings,
                                                                                                                 handleAddShipping,
                                                                                                                 handleDeleteShipping,
+                                                                                                                handleAddRegion,
                                                                                                             }) => {
     const [editingFieldIndex, setEditingFieldIndex] = useState<{
         index: number | null;
         field: "destinationName" | "regionCode" | "postalCode" | "address1" | "address2" | null;
     }>({ index: null, field: null });
     const [currentValue, setCurrentValue] = useState<string>("");
+
+    const handleRegionClick = (index: number) => {
+        const updatedShipping = { ...shippings[index] };
+        setNewShipping({
+            ...updatedShipping
+        })
+        handleAddRegion();
+    }
 
     const handleFieldClick = (index: number, field: "destinationName" | "regionCode" | "postalCode" | "address1" | "address2", value: string) => {
         setEditingFieldIndex({ index, field });
@@ -281,14 +293,14 @@ export const CustomerShippingCollectionAddListView: React.FC<CustomerShippingCol
                                                     autoFocus
                                                 />
                                             ) : (
-                                                <span onClick={() => handleFieldClick(index, "regionCode", shipping.regionCode.value)}>
+                                                <span onClick={() => handleRegionClick(index)}>
                                                     {shipping.regionCode.value}
                                                 </span>
                                             )}
                                         </div>
                                     </div>
                                     <div className="collection-object-item-content" data-id={shipping.shippingCode.customerCode.code}>
-                                        <div className="collection-object-item-content-details">出荷先住所 郵便番号</div>
+                                        <div className="collection-object-item-content-details">郵便番号</div>
                                         <div className="collection-object-item-content-name">
                                             {editingFieldIndex.index === index && editingFieldIndex.field === "postalCode" ? (
                                                 <input

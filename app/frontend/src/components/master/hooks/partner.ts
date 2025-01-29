@@ -16,7 +16,7 @@ import {
     PaymentDayEnumType,
     PaymentMethodEnumType,
     PaymentMonthEnumType,
-    PrefectureEnumType,
+    PrefectureEnumType, ShippingType,
     TradeProhibitedFlagEnumType,
     VendorCriteriaType,
     VendorEnumType,
@@ -224,10 +224,23 @@ export const useCustomer = () => {
         checked: false
     };
 
+    const initialShipping: ShippingType = {
+        shippingCode: { customerCode: { code: {value: ""}, branchNumber: 0 }, destinationNumber: 0 },
+        destinationName: "",
+        regionCode: { value: "" },
+        shippingAddress: {
+            postalCode: { value: "", regionCode: "" },
+            prefecture: PrefectureEnumType.東京都,
+            address1: "",
+            address2: ""
+        }
+    };
+
     const [customers, setCustomers] = useState<CustomerType[]>([]);
     const [newCustomer, setNewCustomer] = useState<CustomerType>(initialCustomer);
     const [searchCustomerCriteria, setSearchCustomerCriteria] = useState<CustomerCriteriaType>({});
     const customerService = CustomerService(); // 実装済みのサービス関数
+    const [newShipping, setNewShipping] = useState<ShippingType>(initialShipping);
 
     return {
         initialCustomer,
@@ -238,6 +251,8 @@ export const useCustomer = () => {
         setSearchCustomerCriteria,
         setCustomers,
         customerService,
+        newShipping,
+        setNewShipping
     };
 };
 

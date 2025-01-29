@@ -11,7 +11,7 @@ import {
     PrefectureEnumType,
     ShippingType
 } from "../../models/master/partner";
-import {useCustomer, useFetchCustomers} from "./hooks";
+import {useCustomer, useFetchCustomers, useFetchRegions, useRegion} from "./hooks";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
 import {CustomerSearchView} from "../../views/master/partner/customer/CustomerSearch.tsx";
 import {
@@ -21,14 +21,24 @@ import {
 import {CustomerSingleView} from "../../views/master/partner/customer/CustomerSingle.tsx";
 import {Tab, TabList, TabPanel, Tabs} from "react-tabs";
 import {CustomerInvoiceSingleView} from "../../views/master/partner/customer/CustomerInvoiceSingle.tsx";
+import {RegionCriteriaType, RegionType} from "../../models";
+import {RegionCodeCollectionSelectView} from "../../views/master/code/region/RegionSelect.tsx";
 
 export const Customer: React.FC = () => {
     const Content: React.FC = () => {
         const [loading, setLoading] = useState<boolean>(false);
         const { message, setMessage, error, setError } = useMessage();
         const { pageNation, setPageNation, criteria, setCriteria } = usePageNation<CustomerCriteriaType>();
+        const {pageNation: regionPageNation, setPageNation: setRegionPageNation} = usePageNation<RegionCriteriaType>();
         const { modalIsOpen, setModalIsOpen, isEditing, setIsEditing, editId, setEditId } = useModal();
         const { modalIsOpen: searchModalIsOpen, setModalIsOpen: setSearchModalIsOpen } = useModal();
+        const {
+            modalIsOpen: regionModalIsOpen,
+            setModalIsOpen: setRegionModalIsOpen,
+            setIsEditing: setRegionIsEditing,
+            setEditId: setRegionEditId
+        } = useModal();
+
         const {
             initialCustomer,
             customers,
@@ -37,7 +47,9 @@ export const Customer: React.FC = () => {
             setNewCustomer,
             searchCustomerCriteria,
             setSearchCustomerCriteria,
-            customerService
+            customerService,
+            newShipping,
+            setNewShipping
         } = useCustomer();
 
         const fetchCustomers = useFetchCustomers(
@@ -49,8 +61,27 @@ export const Customer: React.FC = () => {
             customerService
         );
 
+        const {
+            regions,
+            setRegions,
+            setNewRegion,
+            regionService
+        } = useRegion();
+
+        const fetchRegions = useFetchRegions(
+            setLoading,
+            setRegions,
+            setRegionPageNation,
+            setError,
+            showErrorMessage,
+            regionService
+        );
+
         useEffect(() => {
-            fetchCustomers.load();
+            fetchCustomers.load().then(() => {
+                fetchRegions.load().then(() => {
+                });
+            });
         }, []);
 
         const modalView = () => {
@@ -98,6 +129,7 @@ export const Customer: React.FC = () => {
                             </TabPanel>
                             <TabPanel>
                                 <CustomerShippingCollectionAddListView
+                                    setNewShipping={setNewShipping}
                                     shippings={newCustomer.shippings}
                                     handleAddShipping={() => {
                                         setMessage("");
@@ -136,6 +168,9 @@ export const Customer: React.FC = () => {
                                                 (shippingAddressItem) => shippingAddressItem.shippingAddress.postalCode !== shippingAddress.shippingAddress.postalCode
                                             )
                                         });
+                                    }}
+                                    handleAddRegion={() => {
+                                        regionModal().handleOpenRegionModal()
                                     }}
                                 />
                             </TabPanel>
@@ -195,10 +230,70 @@ export const Customer: React.FC = () => {
                 return { searchModalView, handleOpenSearchModal, handleCloseSearchModal };
             };
 
+            const regionModal = () => {
+                const handleOpenRegionModal = () => {
+                    setMessage(""); // メッセージをリセット
+                    setError(""); // エラーをリセット
+                    setRegionIsEditing(true); // 編集可能と設定
+                    setRegionModalIsOpen(true); // モーダルを開く
+                };
+
+                const handleCloseRegionModal = () => {
+                    setError(""); // エラーをリセット
+                    setRegionModalIsOpen(false); // モーダルを閉じる
+                };
+
+                const handleRegionCollectionSelect = (region: RegionType) => {
+                    setNewRegion(region);
+                    handleCloseRegionModal();
+                    const updateShippings = newCustomer.shippings.filter((shipping) => shipping.shippingCode !== newShipping.shippingCode)
+                    updateShippings.push({
+                        ...newShipping,
+                        regionCode: {
+                            value: region.regionCode.value,
+                        }
+                    })
+                    setNewCustomer({
+                        ...newCustomer,
+                        shippings: updateShippings
+                    });
+                };
+
+                const regionModalView = () => {
+                    return (
+                        <Modal
+                            isOpen={regionModalIsOpen}
+                            onRequestClose={handleCloseRegionModal}
+                            contentLabel="地域情報を入力"
+                            className="modal"
+                            overlayClassName="modal-overlay"
+                            bodyOpenClassName="modal-open"
+                        >
+                            {
+                                <RegionCodeCollectionSelectView
+                                    regions={regions} // 地域リスト
+                                    handleSelect={handleRegionCollectionSelect} // 地域選択ハンドラ
+                                    handleClose={handleCloseRegionModal} // 閉じるハンドラ
+                                    pageNation={regionPageNation} // ページネーション情報
+                                    fetchRegions={fetchRegions.load} // リージョンデータの取得関数
+                                />
+                            }
+                        </Modal>
+                    );
+                };
+
+                return {
+                    handleOpenRegionModal,
+                    handleCloseRegionModal,
+                    regionModalView,
+                };
+            };
+
             const init = () => (
                 <>
                     {editModal().editModalView()}
                     {searchModal().searchModalView()}
+                    {regionModal().regionModalView()}
                 </>
             );
 
