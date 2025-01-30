@@ -4,12 +4,16 @@ import { useMessage } from "../application/Message.tsx";
 import { useModal } from "../application/hooks.ts";
 import { usePageNation } from "../../views/application/PageNation.tsx";
 import Modal from "react-modal";
-import {PartnerCriteriaType, PartnerType} from "../../models/master/partner";
-import {useFetchPartners, usePartner} from "./hooks";
+import {PartnerCriteriaType, PartnerGroupCriteriaType, PartnerType} from "../../models/master/partner";
+import {useFetchPartnerGroups, useFetchPartners, usePartner, usePartnerGroup} from "./hooks";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
 import {PartnerSearchView} from "../../views/master/partner/PartnerSearch.tsx";
 import {PartnerCollectionView} from "../../views/master/partner/PartnerCollection.tsx";
 import {PartnerSingleView} from "../../views/master/partner/PartnerSingle.tsx";
+import {
+    PartnerGroupCollectionSelectView,
+    PartnerGroupSelectView
+} from "../../views/master/partner/group/PartnerGroupSelect.tsx";
 
 export const PartnerList: React.FC = () => {
     const Content: React.FC = () => {
@@ -38,9 +42,39 @@ export const PartnerList: React.FC = () => {
             partnerService
         );
 
+        const {
+            pageNation: partnerGroupPageNation,
+            setPageNation: setPartnerGroupPageNation,
+        } = usePageNation<PartnerGroupCriteriaType>();
+
+        const {
+            modalIsOpen: partnerGroupModalIsOpen,
+            setModalIsOpen: setPartnerGroupModalIsOpen,
+        } = useModal();
+
+
+        const {
+            partnerGroups,
+            setPartnerGroups,
+            partnerGroupService
+        } = usePartnerGroup();
+
+        const fetchPartnerGroups = useFetchPartnerGroups(
+            setLoading,
+            setPartnerGroups,
+            setPartnerGroupPageNation,
+            setError,
+            showErrorMessage,
+            partnerGroupService
+        );
+
         useEffect(() => {
-            fetchPartners.load();
+            fetchPartners.load().then(() => {
+                fetchPartnerGroups.load().then(() => {
+                });
+            });
         }, []);
+
 
         const modalView = () => {
             const editModal = () => {
@@ -74,6 +108,11 @@ export const PartnerList: React.FC = () => {
                         bodyOpenClassName="modal-open"
                     >
                         {singleView()}
+
+                        {partnerGroupModal().partnerGroupModalView()}
+                        <PartnerGroupSelectView
+                            handleSelect={() => setPartnerGroupModalIsOpen(true)}
+                        />
                     </Modal>
                 );
 
@@ -123,10 +162,80 @@ export const PartnerList: React.FC = () => {
                             }}
                             handleClose={handleCloseSearchModal}
                         />
+
+                        {partnerGroupModal().partnerGroupSearchModalView()}
+                        <PartnerGroupSelectView
+                            handleSelect={() => setPartnerGroupModalIsOpen(true)}
+                        />
                     </Modal>
                 );
 
                 return { searchModalView, handleOpenSearchModal, handleCloseSearchModal };
+            };
+
+            const partnerGroupModal = () => {
+                const partnerGroupModalView = () => {
+                    return (
+                        <Modal
+                            isOpen={partnerGroupModalIsOpen}
+                            onRequestClose={() => setPartnerGroupModalIsOpen(false)}
+                            contentLabel="取引先グループ情報を入力"
+                            className="modal"
+                            overlayClassName="modal-overlay"
+                            bodyOpenClassName="modal-open"
+                        >
+                            {
+                                <PartnerGroupCollectionSelectView
+                                    partnerGroups={partnerGroups}
+                                    handleSelect={(partnerGroup) => {
+                                        setNewPartner({
+                                            ...newPartner,
+                                            partnerGroupCode: partnerGroup.partnerGroupCode
+                                        })
+                                        setPartnerGroupModalIsOpen(false);
+                                    }}
+                                    handleClose={() => setPartnerGroupModalIsOpen(false)}
+                                    pageNation={partnerGroupPageNation}
+                                    fetchPartnerGroups={fetchPartnerGroups.load}
+                                />
+                            }
+                        </Modal>
+                    );
+                };
+
+                const partnerGroupSearchModalView = () => {
+                    return (
+                        <Modal
+                            isOpen={partnerGroupModalIsOpen}
+                            onRequestClose={() => setPartnerGroupModalIsOpen(false)}
+                            contentLabel="取引先グループ情報を検索"
+                            className="modal"
+                            overlayClassName="modal-overlay"
+                            bodyOpenClassName="modal-open"
+                        >
+                            {
+                                <PartnerGroupCollectionSelectView
+                                    partnerGroups={partnerGroups}
+                                    handleSelect={(partnerGroup) => {
+                                        setSearchPartnerCriteria({
+                                            ...searchPartnerCriteria,
+                                            partnerGroupCode: partnerGroup.partnerGroupCode.value
+                                        });
+                                        setPartnerGroupModalIsOpen(false);
+                                    }}
+                                    handleClose={() => setPartnerGroupModalIsOpen(false)}
+                                    pageNation={partnerGroupPageNation}
+                                    fetchPartnerGroups={fetchPartnerGroups.load}
+                                />
+                            }
+                        </Modal>
+                    );
+                };
+
+                return {
+                    partnerGroupModalView,
+                    partnerGroupSearchModalView,
+                };
             };
 
             const init = () => (
