@@ -9,7 +9,9 @@ import { useFetchVendors, useVendor } from "./hooks"; // 新規実装するカ�
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
 import { VendorSearchView } from "../../views/master/partner/vendor/VendorSearch.tsx"; // 作成が必要
 import { VendorCollectionView } from "../../views/master/partner/vendor/VendorCollection.tsx"; // 作成が必要
-import { VendorSingleView } from "../../views/master/partner/vendor/VendorSingle.tsx"; // 作成が必要
+import { VendorSingleView } from "../../views/master/partner/vendor/VendorSingle.tsx";
+import {Tab, TabList, TabPanel, Tabs} from "react-tabs";
+import {VendorInvoiceSingleView} from "../../views/master/partner/vendor/VendorInvoiceSingle.tsx"; // 作成が必要
 
 export const Vendor: React.FC = () => {
     const Content: React.FC = () => {
@@ -68,7 +70,18 @@ export const Vendor: React.FC = () => {
                         overlayClassName="modal-overlay"
                         bodyOpenClassName="modal-open"
                     >
-                        {singleView()}
+                        <Tabs>
+                           <TabList>
+                               <Tab>基本情報</Tab>
+                               <Tab>請求情報</Tab>
+                           </TabList>
+                           <TabPanel>
+                               {singleView().basicInfo()}
+                           </TabPanel>
+                            <TabPanel>
+                                {singleView().invoiceInfo()}
+                            </TabPanel>
+                        </Tabs>
                     </Modal>
                 );
                 return { editModalView, handleOpenModal, handleCloseModal };
@@ -223,15 +236,35 @@ export const Vendor: React.FC = () => {
                     showErrorMessage(`仕入先の作成または更新に失敗しました: ${error?.message}`, setError);
                 }
             };
-            return (
-                <VendorSingleView
-                    error={error}
-                    message={message}
-                    isEditing={isEditing}
-                    headerItems={{ handleCreateOrUpdateVendor, handleCloseModal }}
-                    formItems={{ newVendor, setNewVendor }}
-                />
-            );
+
+            const basicInfo = () => {
+                return (
+                    <VendorSingleView
+                        error={error}
+                        message={message}
+                        isEditing={isEditing}
+                        headerItems={{ handleCreateOrUpdateVendor, handleCloseModal }}
+                        formItems={{ newVendor, setNewVendor }}
+                    />
+                );
+            };
+
+            const invoiceInfo = () => {
+                return (
+                    <VendorInvoiceSingleView
+                        error={error}
+                        message={message}
+                        isEditing={isEditing}
+                        headerItems={{ handleCreateOrUpdateVendor, handleCloseModal }}
+                        formItems={{ newVendor, setNewVendor }}
+                    />
+                );
+            };
+
+            return{
+                basicInfo,
+                invoiceInfo
+            }
         };
         return (
             <>

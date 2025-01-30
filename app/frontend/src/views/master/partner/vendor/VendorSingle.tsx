@@ -233,68 +233,6 @@ const Form = ({ isEditing, newVendor, setNewVendor }: FormProps) => {
                     })
                 }
             />
-
-            {/* 支払締請求 */}
-            <FormSelect
-                id="closingDate"
-                label="締日"
-                value={newVendor.vendorClosingInvoice.closingDay}
-                options={ClosingDateEnumType}
-                onChange={(e) =>
-                    setNewVendor({
-                        ...newVendor,
-                        vendorClosingInvoice: {
-                            ...newVendor.vendorClosingInvoice,
-                            closingDay: e,
-                        },
-                    })
-                }
-            />
-            <FormSelect
-                id="paymentMonth"
-                label="支払月"
-                value={newVendor.vendorClosingInvoice.paymentMonth}
-                options={PaymentMonthEnumType}
-                onChange={(e) =>
-                    setNewVendor({
-                        ...newVendor,
-                        vendorClosingInvoice: {
-                            ...newVendor.vendorClosingInvoice,
-                            paymentMonth: e,
-                        },
-                    })
-                }
-            />
-            <FormSelect
-                id="paymentDay"
-                label="支払日"
-                value={newVendor.vendorClosingInvoice.paymentDay}
-                options={PaymentDayEnumType}
-                onChange={(e) =>
-                    setNewVendor({
-                        ...newVendor,
-                        vendorClosingInvoice: {
-                            ...newVendor.vendorClosingInvoice,
-                            paymentDay: e,
-                        },
-                    })
-                }
-            />
-            <FormSelect
-                id="paymentMethod"
-                label="支払方法"
-                value={newVendor.vendorClosingInvoice.paymentMethod}
-                options={PaymentMethodEnumType}
-                onChange={(e) =>
-                    setNewVendor({
-                        ...newVendor,
-                        vendorClosingInvoice: {
-                            ...newVendor.vendorClosingInvoice,
-                            paymentMethod: e,
-                        },
-                    })
-                }
-            />
         </div>
     );
 };

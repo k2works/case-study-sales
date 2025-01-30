@@ -137,36 +137,40 @@ export const PartnerList: React.FC = () => {
                         overlayClassName="modal-overlay"
                         bodyOpenClassName="modal-open"
                     >
-                        <PartnerSearchView
-                            criteria={searchPartnerCriteria}
-                            setCondition={setSearchPartnerCriteria}
-                            handleSelect={async () => {
-                                if (!searchPartnerCriteria) return;
-                                setLoading(true);
-                                try {
-                                    const result = await partnerService.search(searchPartnerCriteria);
-                                    setPartners(result ? result.list : []);
-                                    if (result.list.length === 0) {
-                                        showErrorMessage("検索結果は0件です", setError);
-                                    } else {
-                                        setCriteria(searchPartnerCriteria);
-                                        setPageNation(result);
-                                        setMessage("");
-                                        setError("");
-                                    }
-                                } catch (error: any) {
-                                    showErrorMessage(`検索に失敗しました: ${error?.message}`, setError);
-                                } finally {
-                                    setLoading(false);
-                                }
-                            }}
-                            handleClose={handleCloseSearchModal}
-                        />
+                        {
+                            <>
+                                <PartnerSearchView
+                                    criteria={searchPartnerCriteria}
+                                    setCondition={setSearchPartnerCriteria}
+                                    handleSelect={async () => {
+                                        if (!searchPartnerCriteria) return;
+                                        setLoading(true);
+                                        try {
+                                            const result = await partnerService.search(searchPartnerCriteria);
+                                            setPartners(result ? result.list : []);
+                                            if (result.list.length === 0) {
+                                                showErrorMessage("検索結果は0件です", setError);
+                                            } else {
+                                                setCriteria(searchPartnerCriteria);
+                                                setPageNation(result);
+                                                setMessage("");
+                                                setError("");
+                                            }
+                                        } catch (error: any) {
+                                            showErrorMessage(`検索に失敗しました: ${error?.message}`, setError);
+                                        } finally {
+                                            setLoading(false);
+                                        }
+                                    }}
+                                    handleClose={handleCloseSearchModal}
+                                />
 
-                        {partnerGroupModal().partnerGroupSearchModalView()}
-                        <PartnerGroupSelectView
-                            handleSelect={() => setPartnerGroupModalIsOpen(true)}
-                        />
+                                {partnerGroupModal().partnerGroupSearchModalView()}
+                                <PartnerGroupSelectView
+                                    handleSelect={() => setPartnerGroupModalIsOpen(true)}
+                                />
+                            </>
+                        }
                     </Modal>
                 );
 
