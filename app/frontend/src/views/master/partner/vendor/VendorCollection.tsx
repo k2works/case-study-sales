@@ -17,8 +17,8 @@ const VendorItem: React.FC<VendorItemProps> = ({
                                                    onDelete,
                                                    onCheck,
                                                }) => (
-    <li className="collection-object-item" key={vendor.vendorCode.code.value}>
-        <div className="collection-object-item-content" data-id={vendor.vendorCode.code.value}>
+    <li className="collection-object-item" key={vendor.vendorCode.code.value + "-" + vendor.vendorCode.branchNumber}>
+        <div className="collection-object-item-content" data-id={vendor.vendorCode.branchNumber}>
             <input
                 type="checkbox"
                 className="collection-object-item-checkbox"
@@ -26,7 +26,7 @@ const VendorItem: React.FC<VendorItemProps> = ({
                 onChange={() => onCheck(vendor)}
             />
         </div>
-        <div className="collection-object-item-content" data-id={vendor.vendorCode.code.value}>
+        <div className="collection-object-item-content" data-id={vendor.vendorCode.branchNumber}>
             <div className="collection-object-item-content-details">仕入先コード</div>
             <div className="collection-object-item-content-name">{vendor.vendorCode.code.value}</div>
         </div>
@@ -34,14 +34,14 @@ const VendorItem: React.FC<VendorItemProps> = ({
             <div className="collection-object-item-content-details">仕入先コード枝番</div>
             <div className="collection-object-item-content-name">{vendor.vendorCode.branchNumber}</div>
         </div>
-        <div className="collection-object-item-content" data-id={vendor.vendorCode.code.value}>
+        <div className="collection-object-item-content" data-id={vendor.vendorCode.branchNumber}>
             <div className="collection-object-item-content-details">仕入先名</div>
             <div className="collection-object-item-content-name">{vendor.vendorName.value.name}</div>
         </div>
-        <div className="collection-object-item-actions" data-id={vendor.vendorCode.code.value}>
+        <div className="collection-object-item-actions" data-id={vendor.vendorCode.branchNumber}>
             <button className="action-button" onClick={() => onEdit(vendor)} id="edit">編集</button>
         </div>
-        <div className="collection-object-item-actions" data-id={vendor.vendorCode.code.value}>
+        <div className="collection-object-item-actions" data-id={vendor.vendorCode.branchNumber}>
             <button className="action-button" onClick={() => onDelete(vendor.vendorCode)} id="delete">削除</button>
         </div>
     </li>
@@ -64,7 +64,7 @@ const VendorList: React.FC<VendorListProps> = ({
         <ul className="collection-object-list">
             {vendors.map((vendor) => (
                 <VendorItem
-                    key={vendor.vendorCode.code.value}
+                    key={vendor.vendorCode.code.value + "-" + vendor.vendorCode.branchNumber}
                     vendor={vendor}
                     onEdit={onEdit}
                     onDelete={onDelete}

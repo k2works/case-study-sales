@@ -17,8 +17,8 @@ const CustomerItem: React.FC<CustomerItemProps> = ({
                                                        onDelete,
                                                        onCheck,
                                                    }) => (
-    <li className="collection-object-item" key={customer.customerCode.code.value}>
-        <div className="collection-object-item-content" data-id={customer.customerCode.code.value}>
+    <li className="collection-object-item" key={customer.customerCode.code.value + "-" + customer.customerCode.branchNumber}>
+        <div className="collection-object-item-content" data-id={customer.customerCode.branchNumber}>
             <input
                 type="checkbox"
                 className="collection-object-item-checkbox"
@@ -26,7 +26,7 @@ const CustomerItem: React.FC<CustomerItemProps> = ({
                 onChange={() => onCheck(customer)}
             />
         </div>
-        <div className="collection-object-item-content" data-id={customer.customerCode.code.value}>
+        <div className="collection-object-item-content" data-id={customer.customerCode.branchNumber}>
             <div className="collection-object-item-content-details">顧客コード</div>
             <div className="collection-object-item-content-name">{customer.customerCode.code.value}</div>
         </div>
@@ -34,14 +34,14 @@ const CustomerItem: React.FC<CustomerItemProps> = ({
             <div className="collection-object-item-content-details">顧客コード枝番</div>
             <div className="collection-object-item-content-name">{customer.customerCode.branchNumber}</div>
         </div>
-        <div className="collection-object-item-content" data-id={customer.customerCode.code.value}>
+        <div className="collection-object-item-content" data-id={customer.customerCode.branchNumber}>
             <div className="collection-object-item-content-details">顧客名</div>
             <div className="collection-object-item-content-name">{customer.customerName.value.name}</div>
         </div>
-        <div className="collection-object-item-actions" data-id={customer.customerCode.code.value}>
+        <div className="collection-object-item-actions" data-id={customer.customerCode.branchNumber}>
             <button className="action-button" onClick={() => onEdit(customer)} id="edit">編集</button>
         </div>
-        <div className="collection-object-item-actions" data-id={customer.customerCode.code.value}>
+        <div className="collection-object-item-actions" data-id={customer.customerCode.branchNumber}>
             <button className="action-button" onClick={() => onDelete(customer.customerCode)} id="delete">削除</button>
         </div>
     </li>
@@ -64,7 +64,7 @@ const CustomerList: React.FC<CustomerListProps> = ({
         <ul className="collection-object-list">
             {customers.map((customer) => (
                 <CustomerItem
-                    key={customer.customerCode.code.value}
+                    key={customer.customerCode.code.value + "-" + customer.customerCode.branchNumber}
                     customer={customer}
                     onEdit={onEdit}
                     onDelete={onDelete}
