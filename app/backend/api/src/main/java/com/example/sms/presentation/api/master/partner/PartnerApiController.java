@@ -4,11 +4,14 @@ import com.example.sms.domain.model.master.partner.Partner;
 import com.example.sms.domain.model.master.partner.TradeProhibitedFlag;
 import com.example.sms.domain.model.master.partner.vendor.VendorType;
 import com.example.sms.domain.model.master.partner.MiscellaneousType;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
 import com.example.sms.service.master.partner.PartnerCriteria;
 import com.example.sms.service.master.partner.PartnerService;
+import com.example.sms.service.system.audit.AuditAnnotation;
 import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -63,9 +66,9 @@ public class PartnerApiController {
         }
     }
 
-    //TODO:監査アノテーション追加
     @Operation(summary = "取引先を登録する")
     @PostMapping
+    @AuditAnnotation(process = ApplicationExecutionProcessType.取引先登録, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> register(@RequestBody PartnerResource partnerResource) {
         try {
             Partner partner = convertToEntity(partnerResource);
@@ -81,6 +84,7 @@ public class PartnerApiController {
 
     @Operation(summary = "取引先を更新する")
     @PutMapping("/{partnerCode}")
+    @AuditAnnotation(process = ApplicationExecutionProcessType.取引先更新, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> update(
             @PathVariable("partnerCode") String partnerCode,
             @RequestBody PartnerResource partnerResource) {
@@ -98,6 +102,7 @@ public class PartnerApiController {
 
     @Operation(summary = "取引先を削除する")
     @DeleteMapping("/{partnerCode}")
+    @AuditAnnotation(process = ApplicationExecutionProcessType.取引先削除, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> delete(@PathVariable("partnerCode") String partnerCode) {
         try {
             Partner partner = partnerService.find(partnerCode);

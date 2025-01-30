@@ -4,11 +4,14 @@ import com.example.sms.domain.model.master.partner.customer.Customer;
 import com.example.sms.domain.model.master.partner.customer.CustomerBillingCategory;
 import com.example.sms.domain.model.master.partner.customer.CustomerCode;
 import com.example.sms.domain.model.master.partner.customer.CustomerType;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
 import com.example.sms.service.master.partner.CustomerCriteria;
 import com.example.sms.service.master.partner.CustomerService;
+import com.example.sms.service.system.audit.AuditAnnotation;
 import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -65,6 +68,7 @@ public class CustomerApiController {
 
     @Operation(summary = "顧客を登録する")
     @PostMapping
+    @AuditAnnotation(process = ApplicationExecutionProcessType.顧客登録, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> register(@RequestBody CustomerResource customerResource) {
         try {
             Customer customer = convertToEntity(customerResource);
@@ -80,6 +84,7 @@ public class CustomerApiController {
 
     @Operation(summary = "顧客を更新する")
     @PutMapping("/{customerCode}")
+    @AuditAnnotation(process = ApplicationExecutionProcessType.顧客更新, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> update(
             @PathVariable("customerCode") String customerCode,
             @RequestBody CustomerResource customerResource) {
@@ -97,6 +102,7 @@ public class CustomerApiController {
 
     @Operation(summary = "顧客を削除する")
     @DeleteMapping("/{customerCode}/{customerBranchCode}")
+    @AuditAnnotation(process = ApplicationExecutionProcessType.顧客削除, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> delete(@PathVariable("customerCode") String customerCode, @PathVariable("customerBranchCode") String customerBranchCode) {
         try {
             Customer customer = customerService.find(CustomerCode.of(customerCode, Integer.valueOf(customerBranchCode)));

@@ -2,11 +2,14 @@ package com.example.sms.presentation.api.master.partner;
 
 import com.example.sms.domain.model.master.partner.vendor.Vendor;
 import com.example.sms.domain.model.master.partner.vendor.VendorCode;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
 import com.example.sms.service.master.partner.VendorCriteria;
 import com.example.sms.service.master.partner.VendorService;
+import com.example.sms.service.system.audit.AuditAnnotation;
 import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -60,6 +63,7 @@ public class VendorApiController {
 
     @Operation(summary = "仕入先を登録する")
     @PostMapping
+    @AuditAnnotation(process = ApplicationExecutionProcessType.仕入先登録, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> register(@RequestBody VendorResource vendorResource) {
         try {
             Vendor vendor = convertToEntity(vendorResource);
@@ -75,6 +79,7 @@ public class VendorApiController {
 
     @Operation(summary = "仕入先を更新する")
     @PutMapping("/{vendorCode}")
+    @AuditAnnotation(process = ApplicationExecutionProcessType.仕入先更新, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> update(@PathVariable("vendorCode") String vendorCode,
                                    @RequestBody VendorResource vendorResource) {
         try {
@@ -91,6 +96,7 @@ public class VendorApiController {
 
     @Operation(summary = "仕入先を削除する")
     @DeleteMapping("/{vendorCode}/{vendorBranchCode}")
+    @AuditAnnotation(process = ApplicationExecutionProcessType.仕入先削除, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> delete(@PathVariable String vendorCode, @PathVariable String vendorBranchCode) {
         try {
             Vendor vendor = vendorService.find(VendorCode.of(vendorCode, Integer.valueOf(vendorBranchCode)));
