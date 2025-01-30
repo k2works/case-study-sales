@@ -40,6 +40,9 @@ describe('取引先管理', () => {
             cy.get('#creditLimit').type('5000000'); // 与信限度額
             cy.get('#temporaryCreditIncrease').type('1000000'); // 与信一時増加枠
 
+            cy.get('#select-partner-group').click();
+            cy.get('.collection-object-container-modal > .collection-object-list > :nth-child(1) > .collection-object-item-actions > .action-button').click();
+
             // 「保存」ボタンをクリック
             cy.get('#save').click();
 
