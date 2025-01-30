@@ -47,7 +47,7 @@ export const PartnerCategoryAffiliationCollectionAddListView: React.FC<PartnerCa
                 </div>
                 <div className="collection-view-content">
                     <div className="button-container">
-                        <button className="action-button" onClick={addNew} id="add">
+                        <button className="action-button" onClick={addNew} id="add-partner">
                             追加
                         </button>
                     </div>
