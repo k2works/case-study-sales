@@ -35,20 +35,14 @@ export const PartnerCollectionSelectView: React.FC<PartnerCollectionSelectProps>
                             {partners.map(partner => (
                                 <li className="collection-object-item" key={partner.partnerCode.value}>
                                     <div className="collection-object-item-content" data-id={partner.partnerCode.value}>
+                                        <div className="collection-object-item-content-details">取引先コード</div>
+                                        <div
+                                            className="collection-object-item-content-name">{partner.partnerCode.value}</div>
+                                    </div>
+                                    <div className="collection-object-item-content" data-id={partner.partnerCode.value}>
                                         <div className="collection-object-item-content-details">取引先名</div>
                                         <div
                                             className="collection-object-item-content-name">{partner.partnerName.name}</div>
-                                    </div>
-                                    <div className="collection-object-item-content" data-id={partner.partnerCode.value}>
-                                        <div className="collection-object-item-content-details">仕入先区分</div>
-                                        <div
-                                            className="collection-object-item-content-name">{partner.vendorType}</div>
-                                    </div>
-                                    <div className="collection-object-item-content" data-id={partner.partnerCode.value}>
-                                        <div className="collection-object-item-content-details">住所</div>
-                                        <div className="collection-object-item-content-name">
-                                            {partner.address.prefecture} {partner.address.address1} {partner.address.address2}
-                                        </div>
                                     </div>
                                     <div className="collection-object-item-actions" data-id={partner.partnerCode.value}>
                                         <button className="action-button" onClick={() => handleSelect(partner)}

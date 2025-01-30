@@ -165,7 +165,7 @@ export const Customer: React.FC = () => {
                                         setNewCustomer({
                                             ...newCustomer,
                                             shippings: newCustomer.shippings.filter(
-                                                (shippingAddressItem) => shippingAddressItem.shippingAddress.postalCode !== shippingAddress.shippingAddress.postalCode
+                                                (shippingAddressItem) => shippingAddressItem.shippingCode.destinationNumber !== shippingAddress.shippingCode.destinationNumber
                                             )
                                         });
                                     }}
