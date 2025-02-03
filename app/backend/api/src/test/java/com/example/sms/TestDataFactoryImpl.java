@@ -136,6 +136,18 @@ public class TestDataFactoryImpl implements TestDataFactory {
         productRepository.save(Product.of("99999999", "商品1", "商品1", "ショウヒンイチ", ProductType.その他, 900, 810, 90, TaxType.その他, "カテゴリ9", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "009", 9));
         productRepository.save(Product.of("99999998", "商品2", "商品2", "ショウヒン二", ProductType.その他, 800, 720, 80, TaxType.その他, "カテゴリ8", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "008", 8));
         productRepository.save(Product.of("99999997", "商品3", "商品3", "ショウヒンサン", ProductType.その他, 700, 630, 70, TaxType.その他, "カテゴリ7", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "007", 7));
+
+        partnerGroupRepository.deleteAll();
+        partnerGroupRepository.save(PartnerGroup.of("0001", "取引先グループ1"));
+        partnerGroupRepository.save(PartnerGroup.of("0002", "取引先グループ2"));
+
+        partnerCategoryRepository.deleteAll();
+        partnerRepository.deleteAll();
+        partnerRepository.save(getPartner("001"));
+        partnerRepository.save(getPartner("002"));
+        partnerRepository.save(getPartner("003"));
+        partnerRepository.save(Partner.ofWithCustomers(getPartner("001"), List.of(getCustomer("001", 1), getCustomer("001", 2), getCustomer("001", 3))));
+        partnerRepository.save(Partner.ofWithVendors(getPartner("002"), List.of(getVendor("002", 1), getVendor("002", 2), getVendor("002", 3))));
     }
 
     private void setUpUser() {

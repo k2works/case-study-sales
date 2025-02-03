@@ -51,18 +51,46 @@ public class UC007StepDefs extends SpringAcceptanceTest {
             downloadCriteriaResource = new DownloadCriteriaResource();
             downloadCriteriaResource.setTarget(DownloadTarget.部門);
         }
+        if (target.equals("社員")) {
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.社員);
+        }
+        if (target.equals("商品分類")) {
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.商品分類);
+        }
+        if (target.equals("商品")) {
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.商品);
+        }
+        if (target.equals("取引先グループ")) {
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.取引先グループ);
+        }
+        if (target.equals("取引先")) {
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.取引先);
+        }
+        if (target.equals("顧客")) {
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.顧客);
+        }
+        if (target.equals("仕入先")) {
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.仕入先);
+        }
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(downloadCriteriaResource);
         executePost(url, json);
     }
 
-    @ならば(":UC007 ダウンロード件数を取得できる")
-    public void canGet() {
+    @ならば(":UC007 {int}件のダウンロード件数を取得できる")
+    public void canGet(int count) {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
 
         String result = latestResponse.getBody();
-        assertEquals("3", result);
+        assertEquals(String.valueOf(count), result);
     }
 
     @もし(":UC007 {string} ダウンロードを実行する")
@@ -72,6 +100,34 @@ public class UC007StepDefs extends SpringAcceptanceTest {
         if (target.equals("部門")) {
             downloadCriteriaResource = new DownloadCriteriaResource();
             downloadCriteriaResource.setTarget(DownloadTarget.部門);
+        }
+        if (target.equals("社員")) {
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.社員);
+        }
+        if (target.equals("商品分類")) {
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.商品分類);
+        }
+        if (target.equals("商品")) {
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.商品);
+        }
+        if (target.equals("取引先グループ")) {
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.取引先グループ);
+        }
+        if (target.equals("取引先")) {
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.取引先);
+        }
+        if (target.equals("顧客")) {
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.顧客);
+        }
+        if (target.equals("仕入先")) {
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.仕入先);
         }
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(downloadCriteriaResource);
