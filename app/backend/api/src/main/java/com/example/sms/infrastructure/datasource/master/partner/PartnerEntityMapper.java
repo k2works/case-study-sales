@@ -12,6 +12,7 @@ import com.example.sms.infrastructure.datasource.master.partner.customer.Custome
 import com.example.sms.infrastructure.datasource.master.partner.vendor.VendorCustomEntity;
 import com.example.sms.infrastructure.datasource.system.download.CustomerDownloadCSV;
 import com.example.sms.infrastructure.datasource.system.download.PartnerDownloadCSV;
+import com.example.sms.infrastructure.datasource.system.download.VendorDownloadCSV;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -339,6 +340,28 @@ public class PartnerEntityMapper {
                 customer.getInvoice().getClosingInvoice2().getPaymentMonth().getValue(),
                 customer.getInvoice().getClosingInvoice2().getPaymentDay().getValue(),
                 customer.getInvoice().getClosingInvoice2().getPaymentMethod().getValue()
+        );
+    }
+
+    public VendorDownloadCSV  mapToCsvModel(Vendor vendor) {
+        return new VendorDownloadCSV(
+                vendor.getVendorCode().getCode().getValue(),
+                vendor.getVendorCode().getBranchNumber(),
+                vendor.getVendorName().getValue().getName(),
+                vendor.getVendorName().getValue().getNameKana(),
+                vendor.getVendorContactName(),
+                vendor.getVendorDepartmentName(),
+                vendor.getVendorAddress().getPostalCode().getValue(),
+                vendor.getVendorAddress().getPrefecture().toString(),
+                vendor.getVendorAddress().getAddress1(),
+                vendor.getVendorAddress().getAddress2(),
+                vendor.getVendorPhoneNumber().getValue(),
+                vendor.getVendorFaxNumber().getValue(),
+                vendor.getVendorEmailAddress().getValue(),
+                vendor.getVendorClosingInvoice().getClosingDay().getValue(),
+                vendor.getVendorClosingInvoice().getPaymentMonth().getValue(),
+                vendor.getVendorClosingInvoice().getPaymentDay().getValue(),
+                vendor.getVendorClosingInvoice().getPaymentMethod().getValue()
         );
     }
 }

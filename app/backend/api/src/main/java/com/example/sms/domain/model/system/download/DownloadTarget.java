@@ -13,7 +13,8 @@ public enum DownloadTarget {
     商品("product"),
     取引先グループ("partner_group"),
     取引先("partner"),
-    顧客("customer");
+    顧客("customer"),
+    仕入先("vendor");
 
     private final String value;
 
