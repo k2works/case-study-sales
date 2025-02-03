@@ -2,13 +2,11 @@ package com.example.sms.service.system.download;
 
 import com.example.sms.domain.model.master.department.DepartmentList;
 import com.example.sms.domain.model.master.employee.EmployeeList;
+import com.example.sms.domain.model.master.partner.PartnerGroupList;
 import com.example.sms.domain.model.master.product.ProductCategoryList;
 import com.example.sms.domain.model.master.product.ProductList;
 import com.example.sms.domain.model.system.download.DownloadCriteria;
-import com.example.sms.infrastructure.datasource.system.download.DepartmentDownloadCSV;
-import com.example.sms.infrastructure.datasource.system.download.EmployeeDownloadCSV;
-import com.example.sms.infrastructure.datasource.system.download.ProductCategoryDownloadCSV;
-import com.example.sms.infrastructure.datasource.system.download.ProductDownloadCSV;
+import com.example.sms.infrastructure.datasource.system.download.*;
 import org.springframework.stereotype.Service;
 
 import java.io.OutputStreamWriter;
@@ -26,12 +24,14 @@ public class DownloadService {
     private final EmployeeCSVRepository employeeCSVRepository;
     private final ProductCategoryCSVRepository productCategoryCSVRepository;
     private final ProductCSVRepository productCSVRepository;
+    private final PartnerGroupCSVRepository partnerGroupCSVRepository;
 
-    public DownloadService(DepartmentCSVRepository departmentCSVRepository, EmployeeCSVRepository employeeCSVRepository, ProductCategoryCSVRepository productCategoryCSVRepository, ProductCSVRepository productCSVRepository) {
+    public DownloadService(DepartmentCSVRepository departmentCSVRepository, EmployeeCSVRepository employeeCSVRepository, ProductCategoryCSVRepository productCategoryCSVRepository, ProductCSVRepository productCSVRepository, PartnerGroupCSVRepository partnerGroupCSVRepository) {
         this.departmentCSVRepository = departmentCSVRepository;
         this.employeeCSVRepository = employeeCSVRepository;
         this.productCategoryCSVRepository = productCategoryCSVRepository;
         this.productCSVRepository = productCSVRepository;
+        this.partnerGroupCSVRepository = partnerGroupCSVRepository;
     }
 
     /**
@@ -55,6 +55,11 @@ public class DownloadService {
                 checkPermission("ROLE_ADMIN");
                 yield countProducts(condition);
             }
+            case 取引先グループ -> {
+                checkPermission("ROLE_ADMIN");
+                yield countPartnerGroups(condition);
+            }
+            default -> 0;
         };
     }
 
@@ -67,6 +72,7 @@ public class DownloadService {
             case 社員 -> writeCsv(EmployeeDownloadCSV.class).accept(streamWriter, convert(condition));
             case 商品分類 -> writeCsv(ProductCategoryDownloadCSV.class).accept(streamWriter, convert(condition));
             case 商品 -> writeCsv(ProductDownloadCSV.class).accept(streamWriter, convert(condition));
+            case 取引先グループ -> writeCsv(PartnerGroupDownloadCSV.class).accept(streamWriter, convert(condition));
         }
     }
 
@@ -79,6 +85,7 @@ public class DownloadService {
             case 社員 -> (List<T>) convertEmployees(condition);
             case 商品分類 -> (List<T>) convertProductCategories(condition);
             case 商品 -> (List<T>) convertProducts(condition);
+            case 取引先グループ -> (List<T>) convertPartnerGroup(condition);
         };
     }
 
@@ -111,6 +118,13 @@ public class DownloadService {
     }
 
     /**
+     * 取引先グループダウンロード件数取得
+     */
+    private int countPartnerGroups(DownloadCriteria condition) {
+        return partnerGroupCSVRepository.countBy(condition);
+    }
+
+    /**
      * 部門CSV変換
      */
     private List<DepartmentDownloadCSV> convertDepartments(DownloadCriteria condition) {
@@ -140,5 +154,13 @@ public class DownloadService {
     private List<ProductDownloadCSV> convertProducts(DownloadCriteria condition) {
         ProductList productList = productCSVRepository.selectBy(condition);
         return productCSVRepository.convert(productList);
+    }
+
+    /**
+     * 取引先グループCSV変換
+     */
+    private List<PartnerGroupDownloadCSV> convertPartnerGroup(DownloadCriteria condition) {
+        PartnerGroupList partnerGroupList = partnerGroupCSVRepository.selectBy(condition);
+        return partnerGroupCSVRepository.convert(partnerGroupList);
     }
 }
