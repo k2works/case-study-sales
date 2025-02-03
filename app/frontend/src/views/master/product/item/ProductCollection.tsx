@@ -1,7 +1,7 @@
 import React from 'react';
 import {Message} from "../../../../components/application/Message.tsx";
 import {PageNation} from "../../../application/PageNation.tsx";
-import {ProductType} from "../../../../models";
+import {ProductType} from "../../../../models/master/product";
 
 interface SearchBarProps {
     searchValue: string;

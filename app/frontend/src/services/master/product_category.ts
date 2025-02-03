@@ -1,6 +1,6 @@
 import Config from "../config.ts";
 import Utils from "../utils.ts";
-import {mapToProductCategoryResource, ProductCategoryType} from "../../models";
+import {mapToProductCategoryResource, ProductCategoryType} from "../../models/master/product";
 
 export interface ProductCategoryServiceType {
     select: (page?: number, pageSize?: number) => Promise<any>;

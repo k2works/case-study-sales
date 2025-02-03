@@ -1,5 +1,5 @@
 import React from "react";
-import {ProductType} from "../../../../models"; // 正しいパスに修正してください
+import {ProductType} from "../../../../models/master/product";
 import {FaTimes} from "react-icons/fa";
 import {PageNation} from "../../../application/PageNation.tsx";
 

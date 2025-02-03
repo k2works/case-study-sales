@@ -1,5 +1,5 @@
 import React from "react";
-import {ProductCategoryType} from "../../../../models";
+import {ProductCategoryType} from "../../../../models/master/product";
 import {Message} from "../../../../components/application/Message.tsx";
 import {PageNation} from "../../../application/PageNation.tsx";
 

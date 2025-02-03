@@ -8,10 +8,10 @@ import {RoleType} from "../../models";
 import {Login, Logout} from "../system/Auth.tsx";
 import {Department} from "../master/Department.tsx";
 import {Employee} from "../master/Employee.tsx";
-import {Product} from "../master/Product.tsx";
+import {Product} from "../master/product/Product.tsx";
 import {SiteLayout} from "../../views/SiteLayout.tsx";
-import {ProductCategory} from "../master/ProductCategory.tsx";
-import {ProductItem} from "../master/ProductItem.tsx";
+import {ProductCategory} from "../master/product/ProductCategory.tsx";
+import {ProductItem} from "../master/product/ProductItem.tsx";
 
 export const RouteConfig: React.FC = () => {
     const ProductCategoryPage = () => {
@@ -31,7 +31,6 @@ export const RouteConfig: React.FC = () => {
     }
 
     return (
-        <>
             <Routes>
                 <Route path="/" element={<RouteAuthGuard component={<Home/>} redirectPath="/login"/>}/>
                 <Route path="/user" element={<RouteAuthGuard component={<User/>} redirectPath="/"
@@ -50,6 +49,5 @@ export const RouteConfig: React.FC = () => {
                 <Route path="/logout" element={<Logout/>}/>
                 <Route path="*" element={<NotFound/>}/>
             </Routes>
-        </>
     );
 }
