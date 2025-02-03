@@ -11,7 +11,8 @@ public enum DownloadTarget {
     社員("employee"),
     商品分類("product_category"),
     商品("product"),
-    取引先グループ("partner_group");
+    取引先グループ("partner_group"),
+    取引先("partner");
 
     private final String value;
 

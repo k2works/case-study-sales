@@ -28,6 +28,7 @@ public class DownloadCriteriaResource implements Serializable {
             case 商品分類 -> ProductCategory.of();
             case 商品 -> Product.of();
             case 取引先グループ -> PartnerGroup.of();
+            case 取引先 -> Partner.of();
         };
     }
 }

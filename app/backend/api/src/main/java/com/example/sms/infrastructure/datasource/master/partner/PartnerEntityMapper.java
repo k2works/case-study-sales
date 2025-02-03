@@ -10,6 +10,7 @@ import com.example.sms.infrastructure.datasource.autogen.model.取引先マス�
 import com.example.sms.infrastructure.datasource.autogen.model.顧客マスタ;
 import com.example.sms.infrastructure.datasource.master.partner.customer.CustomerCustomEntity;
 import com.example.sms.infrastructure.datasource.master.partner.vendor.VendorCustomEntity;
+import com.example.sms.infrastructure.datasource.system.download.PartnerDownloadCSV;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -286,6 +287,24 @@ public class PartnerEntityMapper {
                 vendorCustomEntity.get仕入先支払月(),
                 vendorCustomEntity.get仕入先支払日(),
                 vendorCustomEntity.get仕入先支払方法()
+        );
+    }
+
+    public PartnerDownloadCSV mapToCsvModel(Partner partner) {
+        return new PartnerDownloadCSV(
+                partner.getPartnerCode().getValue(),
+                partner.getPartnerName().getName(),
+                partner.getPartnerName().getNameKana(),
+                partner.getVendorType().getValue(),
+                partner.getAddress().getPostalCode().getValue(),
+                partner.getAddress().getPrefecture().toString(),
+                partner.getAddress().getAddress1(),
+                partner.getAddress().getAddress2(),
+                partner.getTradeProhibitedFlag().getValue(),
+                partner.getMiscellaneousType().getCode(),
+                partner.getPartnerGroupCode().getValue(),
+                partner.getCredit().getCreditLimit().getAmount(),
+                partner.getCredit().getTemporaryCreditIncrease().getAmount()
         );
     }
 }
