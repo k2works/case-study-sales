@@ -5,6 +5,7 @@ export enum DownloadTarget {
     商品 = "3",
     取引先グループ = "4",
     取引先  = "5",
+    顧客 = "6",
 }
 
 export type DownloadConditionType = {

@@ -10,6 +10,7 @@ import com.example.sms.infrastructure.datasource.autogen.model.取引先マス�
 import com.example.sms.infrastructure.datasource.autogen.model.顧客マスタ;
 import com.example.sms.infrastructure.datasource.master.partner.customer.CustomerCustomEntity;
 import com.example.sms.infrastructure.datasource.master.partner.vendor.VendorCustomEntity;
+import com.example.sms.infrastructure.datasource.system.download.CustomerDownloadCSV;
 import com.example.sms.infrastructure.datasource.system.download.PartnerDownloadCSV;
 import org.springframework.stereotype.Component;
 
@@ -305,6 +306,39 @@ public class PartnerEntityMapper {
                 partner.getPartnerGroupCode().getValue(),
                 partner.getCredit().getCreditLimit().getAmount(),
                 partner.getCredit().getTemporaryCreditIncrease().getAmount()
+        );
+    }
+
+    public CustomerDownloadCSV mapToCsvModel(Customer customer) {
+        return new CustomerDownloadCSV(
+                customer.getCustomerCode().getCode().getValue(),
+                customer.getCollectionCode().getBranchNumber(),
+                customer.getCustomerType().getValue(),
+                customer.getBillingCode().getCode().getValue(),
+                customer.getBillingCode().getBranchNumber(),
+                customer.getCollectionCode().getCode().getValue(),
+                customer.getCustomerCode().getBranchNumber(),
+                customer.getCustomerName().getValue().getName(),
+                customer.getCustomerName().getValue().getNameKana(),
+                customer.getCompanyRepresentativeCode(),
+                customer.getCustomerRepresentativeName(),
+                customer.getCustomerDepartmentName(),
+                customer.getCustomerAddress().getPostalCode().getValue(),
+                customer.getCustomerAddress().getPrefecture().toString(),
+                customer.getCustomerAddress().getAddress1(),
+                customer.getCustomerAddress().getAddress2(),
+                customer.getCustomerPhoneNumber().getValue(),
+                customer.getCustomerFaxNumber().getValue(),
+                customer.getCustomerEmailAddress().getValue(),
+                customer.getInvoice().getCustomerBillingCategory().getValue(),
+                customer.getInvoice().getClosingInvoice1().getClosingDay().getValue(),
+                customer.getInvoice().getClosingInvoice1().getPaymentMonth().getValue(),
+                customer.getInvoice().getClosingInvoice1().getPaymentDay().getValue(),
+                customer.getInvoice().getClosingInvoice1().getPaymentMethod().getValue(),
+                customer.getInvoice().getClosingInvoice2().getClosingDay().getValue(),
+                customer.getInvoice().getClosingInvoice2().getPaymentMonth().getValue(),
+                customer.getInvoice().getClosingInvoice2().getPaymentDay().getValue(),
+                customer.getInvoice().getClosingInvoice2().getPaymentMethod().getValue()
         );
     }
 }
