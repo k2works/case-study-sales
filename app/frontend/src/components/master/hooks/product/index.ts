@@ -1,1 +1,2 @@
-export * from './product';
+export * from './productItem.ts';
+export * from './productCategory.ts';
