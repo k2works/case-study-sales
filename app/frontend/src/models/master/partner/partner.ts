@@ -1,4 +1,4 @@
-import {PartnerGroupCodeType} from "./partner_group.ts";
+import {PartnerGroupCodeType} from "./partnerGroup.ts";
 import {PageNationType} from "../../../views/application/PageNation.tsx";
 import {CustomerType} from "./customer.ts";
 import {VendorType} from "./vendor.ts";
