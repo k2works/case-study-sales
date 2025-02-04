@@ -24,8 +24,8 @@ import {
 } from "../../../models/master/partner"; // モデルからインポート
 import {useFetchEntities} from "../../application/hooks.ts"; // 共通フックのインポート
 import {PageNationType} from "../../../views/application/PageNation.tsx"; // ページネーションモデル
-import {PartnerCategoryService, PartnerCategoryServiceType} from "../../../services/master/partner_category.ts";
-import {PartnerGroupService, PartnerGroupServiceType} from "../../../services/master/partner_group.ts";
+import {PartnerCategoryService, PartnerCategoryServiceType} from "../../../services/master/partnerCategory.ts";
+import {PartnerGroupService, PartnerGroupServiceType} from "../../../services/master/partnerGroup.ts";
 import {PartnerService, PartnerServiceType} from "../../../services/master/partner.ts";
 import {CustomerService, CustomerServiceType} from "../../../services/master/customer.ts";
 import {VendorService} from "../../../services/master/vendor.ts"; // サービス
