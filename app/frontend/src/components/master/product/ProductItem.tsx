@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import Modal from "react-modal";
-import {showErrorMessage} from "../application/utils.ts";
-import {useMessage} from "../application/Message.tsx";
-import {useModal, useTab} from "../application/hooks.ts";
-import {usePageNation} from "../../views/application/PageNation.tsx";
-import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
+import {showErrorMessage} from "../../application/utils.ts";
+import {useMessage} from "../../application/Message.tsx";
+import {useModal, useTab} from "../../application/hooks.ts";
+import {usePageNation} from "../../../views/application/PageNation.tsx";
+import LoadingIndicator from "../../../views/application/LoadingIndicatior.tsx";
 import {
     useFetchBoms,
     useFetchProductCategories,
@@ -12,21 +12,21 @@ import {
     useFetchSubstitutes,
     useProduct,
     useProductCategory
-} from "./hooks";
+} from "../hooks/product";
 import {
     ProductCategoryCollectionSelectView,
     ProductCategorySelectView
-} from "../../views/master/product/ProductCategorySelect.tsx";
-import {ProductCategoryCriteriaType, ProductCriteriaType, ProductType} from "../../models";
-import {SubstituteProductCollectionAddListView} from "../../views/master/product/item/SubstituteProductCollection.tsx";
-import {BomCollectionAddListView} from "../../views/master/product/item/BomCollection.tsx";
+} from "../../../views/master/product/ProductCategorySelect.tsx";
+import {ProductCategoryCriteriaType, ProductCriteriaType, ProductType} from "../../../models/master/product";
+import {SubstituteProductCollectionAddListView} from "../../../views/master/product/item/SubstituteProductCollection.tsx";
+import {BomCollectionAddListView} from "../../../views/master/product/item/BomCollection.tsx";
 import {
     CustomerSpecificSellingPriceCollectionAddListView
-} from "../../views/master/product/item/CustomerSpecificSellingPriceCollection.tsx";
-import {ProductCollectionSelectView} from "../../views/master/product/item/ProductSelect.tsx";
-import {ProductSearchSingleView} from "../../views/master/product/ProductSearch.tsx";
-import {ProductCollectionView} from "../../views/master/product/item/ProductCollection.tsx";
-import {ProductSingleView} from "../../views/master/product/item/ProductSingle.tsx";
+} from "../../../views/master/product/item/CustomerSpecificSellingPriceCollection.tsx";
+import {ProductCollectionSelectView} from "../../../views/master/product/item/ProductSelect.tsx";
+import {ProductSearchSingleView} from "../../../views/master/product/ProductSearch.tsx";
+import {ProductCollectionView} from "../../../views/master/product/item/ProductCollection.tsx";
+import {ProductSingleView} from "../../../views/master/product/item/ProductSingle.tsx";
 
 export const ProductItem: React.FC = () => {
     const Content: React.FC = () => {

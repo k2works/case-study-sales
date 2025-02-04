@@ -4,7 +4,7 @@ import {
     MiscellaneousEnumType,
     ProductCriteriaType,
     ProductEnumType, StockAllocationEnumType, StockManagementTargetEnumType, TaxEnumType
-} from "../../../models";
+} from "../../../models/master/product";
 
 interface FormProps {
     criteria: ProductCriteriaType,

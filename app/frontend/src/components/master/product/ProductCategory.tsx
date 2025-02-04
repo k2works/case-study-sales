@@ -1,18 +1,18 @@
 import React, {useEffect, useState} from 'react';
-import {showErrorMessage} from "../application/utils.ts";
-import {useMessage} from "../application/Message.tsx";
-import {useModal} from "../application/hooks.ts";
-import {usePageNation} from "../../views/application/PageNation.tsx";
-import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
-import {ProductCategoryCriteriaType, ProductCategoryType, ProductType} from "../../models";
+import {showErrorMessage} from "../../application/utils.ts";
+import {useMessage} from "../../application/Message.tsx";
+import {useModal} from "../../application/hooks.ts";
+import {usePageNation} from "../../../views/application/PageNation.tsx";
+import LoadingIndicator from "../../../views/application/LoadingIndicatior.tsx";
+import {ProductCategoryCriteriaType, ProductCategoryType, ProductType} from "../../../models/master/product";
 
-import {useFetchProductCategories, useFetchProducts, useProduct, useProductCategory} from "./hooks";
+import {useFetchProductCategories, useFetchProducts, useProduct, useProductCategory} from "../hooks/product";
 import Modal from "react-modal";
-import {ProductCollectionAddListView} from "../../views/master/product/item/ProductCollection.tsx";
-import {ProductCollectionSelectView} from "../../views/master/product/item/ProductSelect.tsx";
-import {ProductCategorySearchSingleView} from "../../views/master/product/ProductCategorySearch.tsx";
-import {ProductCategoryCollectionView} from "../../views/master/product/category/ProductCategoryCollection.tsx";
-import {ProductCategorySingleView} from "../../views/master/product/category/ProductCategorySingle.tsx";
+import {ProductCollectionAddListView} from "../../../views/master/product/item/ProductCollection.tsx";
+import {ProductCollectionSelectView} from "../../../views/master/product/item/ProductSelect.tsx";
+import {ProductCategorySearchSingleView} from "../../../views/master/product/ProductCategorySearch.tsx";
+import {ProductCategoryCollectionView} from "../../../views/master/product/category/ProductCategoryCollection.tsx";
+import {ProductCategorySingleView} from "../../../views/master/product/category/ProductCategorySingle.tsx";
 
 export const ProductCategory: React.FC = () => {
     const Content: React.FC = () => {
