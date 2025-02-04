@@ -55,6 +55,7 @@ describe('取引先グループ管理', () => {
             openPartnerGroupPage();
             cy.get('#search').click();
             cy.get('#search-partner-group-code').type('9999');
+            cy.wait(1000);
             cy.get('#search-all').click();
             cy.get('#delete').click();
             cy.get('#message').contains('取引先グループを削除しました。');

@@ -66,6 +66,7 @@ describe('仕入先管理', () => {
             openVendorPage();
             cy.get('#search').click();
             cy.get('#search-vendor-code').type('002');
+            cy.wait(1000);
             cy.get('#search-all').click();
             cy.get('#delete').click();
             cy.get('#message').contains('仕入先を削除しました。');

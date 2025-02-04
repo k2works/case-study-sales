@@ -59,6 +59,7 @@ describe('取引先分類管理', () => {
             openPartnerCategoryPage();
             cy.get('#search').click();
             cy.get('#search-partner-category-type-code').type('99')
+            cy.wait(1000);
             cy.get('#search-all').click();
             cy.get('#delete').click();
             cy.get('#message').contains('取引先分類を削除しました。');

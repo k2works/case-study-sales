@@ -80,6 +80,7 @@ describe('顧客管理', () => {
             openCustomerPage();
             cy.get('#search').click();
             cy.get('#search-customer-code').type('001');
+            cy.wait(1000);
             cy.get('#search-all').click();
             cy.get('#delete').click();
             cy.get('#message').contains('顧客を削除しました。');

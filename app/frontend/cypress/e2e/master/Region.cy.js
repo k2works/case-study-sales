@@ -58,7 +58,6 @@ describe('地域管理', () => {
             cy.get('#search-region-code').type('R999');
             cy.wait(1000);
             cy.get('#search-all').click();
-            cy.wait(1000);
             cy.get('#delete').click();
             cy.get('#message').contains('地域を削除しました。');
         });

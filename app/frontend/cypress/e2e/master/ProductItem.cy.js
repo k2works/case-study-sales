@@ -86,6 +86,7 @@ describe('商品管理', () => {
             openProductPage();
             cy.get('#search').click();
             cy.get('#productCode').type('99999001');
+            cy.wait(1000);
             cy.get('#search-all').click();
             cy.get('#delete').click();
             cy.get('#message').contains('商品を削除しました。');

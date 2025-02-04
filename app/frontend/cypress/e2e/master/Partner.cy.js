@@ -80,6 +80,7 @@ describe('取引先管理', () => {
             openPartnerPage();
             cy.get('#search').click();
             cy.get('#search-partner-code').type('999');
+            cy.wait(1000);
             cy.get('#search-all').click();
             cy.get('#delete').click();
             cy.get('#message').contains('取引先を削除しました。');

@@ -56,6 +56,7 @@ describe('商品分類管理', () => {
             openProductCategoryPage();
             cy.get('#search').click();
             cy.get('#productCategoryCode').type('99999');
+            cy.wait(1000);
             cy.get('#search-all').click();
             cy.get('#delete').click();
             cy.get('#message').contains('商品分類を削除しました。');
