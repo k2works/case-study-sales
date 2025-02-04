@@ -8,7 +8,6 @@ import {
     CustomerCodeType,
     CustomerCriteriaType,
     CustomerType,
-    PrefectureEnumType,
     ShippingType
 } from "../../../models/master/partner";
 import {useCustomer, useFetchCustomers } from "../hooks";
@@ -24,6 +23,7 @@ import {Tab, TabList, TabPanel, Tabs} from "react-tabs";
 import {CustomerInvoiceSingleView} from "../../../views/master/partner/customer/CustomerInvoiceSingle.tsx";
 import {RegionCriteriaType, RegionType} from "../../../models/master/code";
 import {RegionCodeCollectionSelectView} from "../../../views/master/code/region/RegionSelect.tsx";
+import {PrefectureEnumType} from "../../../models";
 
 export const Customer: React.FC = () => {
     const Content: React.FC = () => {

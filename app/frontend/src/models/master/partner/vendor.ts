@@ -1,13 +1,13 @@
+import {PartnerCodeType, PartnerNameType} from "./partner.ts";
+import {PageNationType} from "../../../views/application/PageNation.tsx";
 import {
+    AddressType,
     ClosingDateEnumType,
     ClosingInvoiceType,
-    EmailType,
-    PaymentDayEnumType, PaymentMethodEnumType,
+    EmailType, PaymentDayEnumType, PaymentMethodEnumType,
     PaymentMonthEnumType,
     PhoneNumberType
-} from "./customer.ts";
-import {AddressType, PartnerCodeType, PartnerNameType} from "./partner.ts";
-import {PageNationType} from "../../../views/application/PageNation.tsx"; // 必要な型をインポート
+} from "../shared.ts"; // 必要な型をインポート
 
 // 仕入先コード型
 export type VendorCodeType = {

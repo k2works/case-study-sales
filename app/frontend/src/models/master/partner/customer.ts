@@ -1,5 +1,14 @@
-import {AddressType, PartnerCodeType, PartnerNameType} from "./partner.ts";
+import {PartnerCodeType, PartnerNameType} from "./partner.ts";
 import {PageNationType} from "../../../views/application/PageNation.tsx";
+import {
+    AddressType,
+    ClosingDateEnumType,
+    ClosingInvoiceType,
+    EmailType,
+    PaymentDayEnumType, PaymentMethodEnumType,
+    PaymentMonthEnumType,
+    PhoneNumberType
+} from "../shared.ts";
 
 export type CustomerType = {
     customerCode: CustomerCodeType; // 顧客コード
@@ -48,19 +57,6 @@ export type CustomerNameType = {
     value: PartnerNameType; // 顧客名 (取引先名)
 };
 
-// 電話番号型
-export type PhoneNumberType = {
-    value: string; // 電話番号全体の値
-    areaCode: string; // 市外局番
-    localExchange: string; // 市内局番
-    subscriberNumber: string; // 加入者番号
-};
-
-// メールアドレス型
-export type EmailType = {
-    value: string; // メールアドレス
-};
-
 // 請求型
 export type InvoiceType = {
     customerBillingCategory: CustomerBillingCategoryEnumType; // 顧客請求区分
@@ -71,41 +67,6 @@ export type InvoiceType = {
 export enum CustomerBillingCategoryEnumType {
     都度請求 = "都度請求",
     締請求 = "締請求",
-}
-
-// 締請求型 (既存の定義を流用)
-export type ClosingInvoiceType = {
-    closingDay: ClosingDateEnumType; // 締日
-    paymentMonth: PaymentMonthEnumType; // 支払月
-    paymentDay: PaymentDayEnumType; // 支払日
-    paymentMethod: PaymentMethodEnumType; // 支払方法
-};
-
-// 締日型 (既存の定義を流用、または参考に作成)
-export enum ClosingDateEnumType {
-    十日 = "十日",
-    二十日 = "二十日",
-    末日 = "末日",
-}
-
-// 支払月型
-export enum PaymentMonthEnumType {
-    当月 = "当月",
-    翌月 = "翌月",
-    翌々月 = "翌々月",
-}
-
-// 支払日型
-export enum PaymentDayEnumType {
-    十日 = "十日",
-    二十日 = "二十日",
-    末日 = "末日",
-}
-
-// 支払方法型
-export enum PaymentMethodEnumType {
-    振込 = "振込",
-    手形 = "手形",
 }
 
 export type ShippingType = {

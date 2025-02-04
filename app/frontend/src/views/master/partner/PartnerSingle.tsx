@@ -1,7 +1,8 @@
 import React from "react";
 import {FormInput, FormSelect, SingleViewHeaderActions, SingleViewHeaderItem} from "../../Common.tsx";
-import {MiscellaneousEnumType, PartnerType, PrefectureEnumType, TradeProhibitedFlagEnumType, VendorEnumType} from "../../../models/master/partner";
+import {MiscellaneousEnumType, PartnerType, TradeProhibitedFlagEnumType, VendorEnumType} from "../../../models/master/partner";
 import {Message} from "../../../components/application/Message.tsx";
+import { PrefectureEnumType } from "../../../models";
 
 interface HeaderProps {
     title: string;

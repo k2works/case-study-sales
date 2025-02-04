@@ -1,11 +1,5 @@
 import React from "react";
-import { FormInput, FormSelect, SingleViewHeaderActions, SingleViewHeaderItem } from "../../../Common.tsx";
-import {
-    ClosingDateEnumType,
-    PaymentMonthEnumType,
-    PaymentMethodEnumType,
-    PaymentDayEnumType,
-} from "../../../../models/master/partner";
+import { FormInput, SingleViewHeaderActions, SingleViewHeaderItem } from "../../../Common.tsx";
 import { VendorType } from "../../../../models/master/partner";
 import { Message } from "../../../../components/application/Message.tsx";
 

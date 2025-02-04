@@ -1,12 +1,8 @@
 import React from "react";
 import {FormSelect, SingleViewHeaderActions, SingleViewHeaderItem} from "../../../Common.tsx";
-import {
-    ClosingDateEnumType,
-    CustomerType,
-    PaymentMonthEnumType,
-    PaymentMethodEnumType, PaymentDayEnumType
-} from "../../../../models/master/partner";
 import {Message} from "../../../../components/application/Message.tsx";
+import {CustomerType} from "../../../../models/master/partner";
+import { ClosingDateEnumType, PaymentDayEnumType, PaymentMethodEnumType, PaymentMonthEnumType } from "../../../../models/index.ts";
 
 interface HeaderProps {
     title: string;

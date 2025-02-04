@@ -3,9 +3,10 @@ import {FormInput, FormSelect, SingleViewHeaderActions, SingleViewHeaderItem} fr
 import {
     CustomerEnumType,
     CustomerType,
-    CustomerBillingCategoryEnumType, PrefectureEnumType
+    CustomerBillingCategoryEnumType
 } from "../../../../models/master/partner";
 import {Message} from "../../../../components/application/Message.tsx";
+import { PrefectureEnumType } from "../../../../models";
 
 interface HeaderProps {
     title: string;

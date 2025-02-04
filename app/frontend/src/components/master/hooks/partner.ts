@@ -1,6 +1,5 @@
 import {useState} from "react";
 import {
-    ClosingDateEnumType,
     CustomerBillingCategoryEnumType,
     CustomerCriteriaType,
     CustomerEnumType,
@@ -13,10 +12,7 @@ import {
     PartnerGroupCriteriaType,
     PartnerGroupType,
     PartnerType,
-    PaymentDayEnumType,
-    PaymentMethodEnumType,
-    PaymentMonthEnumType,
-    PrefectureEnumType, ShippingType,
+    ShippingType,
     TradeProhibitedFlagEnumType,
     VendorCriteriaType,
     VendorEnumType,
@@ -28,7 +24,14 @@ import {PartnerCategoryService, PartnerCategoryServiceType} from "../../../servi
 import {PartnerGroupService, PartnerGroupServiceType} from "../../../services/master/partnerGroup.ts";
 import {PartnerService, PartnerServiceType} from "../../../services/master/partner.ts";
 import {CustomerService, CustomerServiceType} from "../../../services/master/customer.ts";
-import {VendorService} from "../../../services/master/vendor.ts"; // サービス
+import {VendorService} from "../../../services/master/vendor.ts";
+import {
+    ClosingDateEnumType,
+    PaymentDayEnumType,
+    PaymentMethodEnumType,
+    PaymentMonthEnumType,
+    PrefectureEnumType
+} from "../../../models"; // サービス
 
 export const usePartnerCategory = () => {
     const initialPartnerCategory: PartnerCategoryType = {

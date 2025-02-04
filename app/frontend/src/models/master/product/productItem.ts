@@ -1,4 +1,5 @@
 import {PageNationType} from "../../../views/application/PageNation.tsx";
+import {PriceType, QuantityType} from "../shared.ts";
 
 type ProductCodeType = {
     value: string;
@@ -13,16 +14,6 @@ type ProductNameType = {
     productAbbreviation: string;
     productNameKana: string;
 };
-
-type PriceType = {
-    amount: number;
-    currency: string;
-};
-
-type QuantityType = {
-    amount: number;
-    unit: string;
-}
 
 type VendorCodeType = {
     value: string;
