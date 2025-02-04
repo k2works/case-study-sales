@@ -1,16 +1,16 @@
 // PartnerGroup.tsx
 import React, { useEffect, useState } from 'react';
-import { showErrorMessage } from "../application/utils.ts";
-import { useMessage } from "../application/Message.tsx";
-import { useModal } from "../application/hooks.ts";
-import { usePageNation } from "../../views/application/PageNation.tsx";
-import { PartnerGroupCriteriaType, PartnerGroupType } from "../../models/master/partner";
-import { useFetchPartnerGroups, usePartnerGroup } from "./hooks";
+import { showErrorMessage } from "../../application/utils.ts";
+import { useMessage } from "../../application/Message.tsx";
+import { useModal } from "../../application/hooks.ts";
+import { usePageNation } from "../../../views/application/PageNation.tsx";
+import { PartnerGroupCriteriaType, PartnerGroupType } from "../../../models/master/partner";
+import { useFetchPartnerGroups, usePartnerGroup } from "../hooks";
 import Modal from "react-modal";
-import { PartnerGroupSearchView } from "../../views/master/partner/group/PartnerGroupSearch.tsx";
-import { PartnerGroupCollectionView } from "../../views/master/partner/group/PartnerGroupCollection.tsx";
-import { PartnerGroupSingleView } from "../../views/master/partner/group/PartnerGroupSingle.tsx";
-import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
+import { PartnerGroupSearchView } from "../../../views/master/partner/group/PartnerGroupSearch.tsx";
+import { PartnerGroupCollectionView } from "../../../views/master/partner/group/PartnerGroupCollection.tsx";
+import { PartnerGroupSingleView } from "../../../views/master/partner/group/PartnerGroupSingle.tsx";
+import LoadingIndicator from "../../../views/application/LoadingIndicatior.tsx";
 
 export const PartnerGroup: React.FC = () => {
     const Content: React.FC = () => {

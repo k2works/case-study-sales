@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {showErrorMessage} from "../application/utils.ts";
-import {useMessage} from "../application/Message.tsx";
-import {useModal} from "../application/hooks.ts";
-import {usePageNation} from "../../views/application/PageNation.tsx";
+import {showErrorMessage} from "../../application/utils.ts";
+import {useMessage} from "../../application/Message.tsx";
+import {useModal} from "../../application/hooks.ts";
+import {usePageNation} from "../../../views/application/PageNation.tsx";
 import Modal from "react-modal";
 import {
     CustomerCodeType,
@@ -10,20 +10,20 @@ import {
     CustomerType,
     PrefectureEnumType,
     ShippingType
-} from "../../models/master/partner";
-import {useCustomer, useFetchCustomers } from "./hooks";
-import {useFetchRegions, useRegion} from "./hooks/code";
-import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
-import {CustomerSearchView} from "../../views/master/partner/customer/CustomerSearch.tsx";
+} from "../../../models/master/partner";
+import {useCustomer, useFetchCustomers } from "../hooks";
+import {useFetchRegions, useRegion} from "../hooks/code";
+import LoadingIndicator from "../../../views/application/LoadingIndicatior.tsx";
+import {CustomerSearchView} from "../../../views/master/partner/customer/CustomerSearch.tsx";
 import {
     CustomerCollectionView,
     CustomerShippingCollectionAddListView
-} from "../../views/master/partner/customer/CustomerCollection.tsx";
-import {CustomerSingleView} from "../../views/master/partner/customer/CustomerSingle.tsx";
+} from "../../../views/master/partner/customer/CustomerCollection.tsx";
+import {CustomerSingleView} from "../../../views/master/partner/customer/CustomerSingle.tsx";
 import {Tab, TabList, TabPanel, Tabs} from "react-tabs";
-import {CustomerInvoiceSingleView} from "../../views/master/partner/customer/CustomerInvoiceSingle.tsx";
-import {RegionCriteriaType, RegionType} from "../../models/master/code";
-import {RegionCodeCollectionSelectView} from "../../views/master/code/region/RegionSelect.tsx";
+import {CustomerInvoiceSingleView} from "../../../views/master/partner/customer/CustomerInvoiceSingle.tsx";
+import {RegionCriteriaType, RegionType} from "../../../models/master/code";
+import {RegionCodeCollectionSelectView} from "../../../views/master/code/region/RegionSelect.tsx";
 
 export const Customer: React.FC = () => {
     const Content: React.FC = () => {

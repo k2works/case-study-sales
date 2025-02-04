@@ -14,14 +14,14 @@ import {ProductCategory} from "../master/product/ProductCategory.tsx";
 import {ProductItem} from "../master/product/ProductItem.tsx";
 import {Audit} from "../system/Audit.tsx";
 import {Download} from "../system/Download.tsx";
-import {Partner} from "../master/Partner.tsx";
+import {Partner} from "../master/partner/Partner.tsx";
 import {Code} from "../master/code/Code.tsx";
 import {Region} from "../master/code/Region.tsx";
-import {PartnerCategory} from "../master/PartnerCategory.tsx";
-import {PartnerGroup} from "../master/PartnerGroup.tsx";
-import {PartnerList} from "../master/PartnerList.tsx";
-import {Customer} from "../master/Customer.tsx";
-import {Vendor} from "../master/Vendor.tsx";
+import {PartnerCategory} from "../master/partner/PartnerCategory.tsx";
+import {PartnerGroup} from "../master/partner/PartnerGroup.tsx";
+import {PartnerList} from "../master/partner/PartnerList.tsx";
+import {Customer} from "../master/partner/Customer.tsx";
+import {Vendor} from "../master/partner/Vendor.tsx";
 
 export const RouteConfig: React.FC = () => {
     const ProductCategoryPage = () => {

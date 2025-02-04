@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { showErrorMessage } from "../application/utils.ts";
-import { useMessage } from "../application/Message.tsx";
-import { useModal } from "../application/hooks.ts";
-import { usePageNation } from "../../views/application/PageNation.tsx";
+import { showErrorMessage } from "../../application/utils.ts";
+import { useMessage } from "../../application/Message.tsx";
+import { useModal } from "../../application/hooks.ts";
+import { usePageNation } from "../../../views/application/PageNation.tsx";
 import Modal from "react-modal";
-import {VendorCodeType, VendorCriteriaType, VendorType} from "../../models/master/partner";
-import { useFetchVendors, useVendor } from "./hooks"; // 新規実装するカスタムフック
-import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
-import { VendorSearchView } from "../../views/master/partner/vendor/VendorSearch.tsx"; // 作成が必要
-import { VendorCollectionView } from "../../views/master/partner/vendor/VendorCollection.tsx"; // 作成が必要
-import { VendorSingleView } from "../../views/master/partner/vendor/VendorSingle.tsx";
+import {VendorCodeType, VendorCriteriaType, VendorType} from "../../../models/master/partner";
+import { useFetchVendors, useVendor } from "../hooks";
+import LoadingIndicator from "../../../views/application/LoadingIndicatior.tsx";
+import { VendorSearchView } from "../../../views/master/partner/vendor/VendorSearch.tsx";
+import { VendorCollectionView } from "../../../views/master/partner/vendor/VendorCollection.tsx";
+import { VendorSingleView } from "../../../views/master/partner/vendor/VendorSingle.tsx";
 import {Tab, TabList, TabPanel, Tabs} from "react-tabs";
-import {VendorInvoiceSingleView} from "../../views/master/partner/vendor/VendorInvoiceSingle.tsx"; // 作成が必要
+import {VendorInvoiceSingleView} from "../../../views/master/partner/vendor/VendorInvoiceSingle.tsx";
 
 export const Vendor: React.FC = () => {
     const Content: React.FC = () => {

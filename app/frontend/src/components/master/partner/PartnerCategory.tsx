@@ -1,27 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { showErrorMessage } from "../application/utils.ts";
-import { useMessage } from "../application/Message.tsx";
-import { useModal } from "../application/hooks.ts";
-import { usePageNation } from "../../views/application/PageNation.tsx";
-import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
+import { showErrorMessage } from "../../application/utils.ts";
+import { useMessage } from "../../application/Message.tsx";
+import { useModal } from "../../application/hooks.ts";
+import { usePageNation } from "../../../views/application/PageNation.tsx";
+import LoadingIndicator from "../../../views/application/LoadingIndicatior.tsx";
 import {
     PartnerCategoryCriteriaType,
     PartnerCategoryItemType,
     PartnerCategoryType, PartnerCriteriaType,
     PartnerType
-} from "../../models/master/partner";
-import {useFetchPartnerCategories, useFetchPartners, usePartner, usePartnerCategory} from "./hooks";
+} from "../../../models/master/partner";
+import {useFetchPartnerCategories, useFetchPartners, usePartner, usePartnerCategory} from "../hooks";
 import Modal from "react-modal";
-import {PartnerCategorySearchView} from "../../views/master/partner/category/PartnerCategorySearch.tsx";
-import {PartnerCategoryCollectionView} from "../../views/master/partner/category/PartnerCategoryCollection.tsx";
-import {PartnerCategorySingleView} from "../../views/master/partner/category/PartnerCategorySingle.tsx";
+import {PartnerCategorySearchView} from "../../../views/master/partner/category/PartnerCategorySearch.tsx";
+import {PartnerCategoryCollectionView} from "../../../views/master/partner/category/PartnerCategoryCollection.tsx";
+import {PartnerCategorySingleView} from "../../../views/master/partner/category/PartnerCategorySingle.tsx";
 import {
     PartnerCategoryItemCollectionAddListView
-} from "../../views/master/partner/category/ParnterCategoryItemCollection.tsx";
+} from "../../../views/master/partner/category/ParnterCategoryItemCollection.tsx";
 import {
     PartnerCategoryAffiliationCollectionAddListView
-} from "../../views/master/partner/category/PartnerCategoryAffiliationCollection.tsx";
-import {PartnerCollectionSelectView} from "../../views/master/partner/PartnerSelect.tsx";
+} from "../../../views/master/partner/category/PartnerCategoryAffiliationCollection.tsx";
+import {PartnerCollectionSelectView} from "../../../views/master/partner/PartnerSelect.tsx";
 
 export const PartnerCategory: React.FC = () => {
     const Content: React.FC = () => {
