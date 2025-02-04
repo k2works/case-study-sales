@@ -1,8 +1,8 @@
 import React from "react";
-import {useTab} from "../application/hooks.ts";
+import {useTab} from "../../application/hooks.ts";
 import {ProductCategory} from "./ProductCategory.tsx";
 import {ProductItem} from "./ProductItem.tsx";
-import {SiteLayout} from "../../views/SiteLayout.tsx";
+import {SiteLayout} from "../../../views/SiteLayout.tsx";
 
 export const Product: React.FC = () => {
     const {

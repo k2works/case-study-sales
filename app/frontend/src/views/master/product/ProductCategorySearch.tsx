@@ -1,6 +1,6 @@
 import React, { MouseEventHandler } from "react";
 import { FormInput, SingleViewHeaderItem } from "../../Common.tsx";
-import {ProductCategoryCriteriaType} from "../../../models";
+import {ProductCategoryCriteriaType} from "../../../models/master/product";
 
 interface FormProps {
     criteria: ProductCategoryCriteriaType,

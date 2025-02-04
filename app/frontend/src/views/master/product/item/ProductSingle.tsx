@@ -6,7 +6,7 @@ import {
     StockAllocationEnumType,
     StockManagementTargetEnumType,
     TaxEnumType
-} from "../../../../models";
+} from "../../../../models/master/product";
 import React from "react";
 import {Message} from "../../../../components/application/Message.tsx";
 

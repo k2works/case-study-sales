@@ -1,5 +1,5 @@
 import React from "react";
-import {ProductCategoryType} from "../../../models";
+import {ProductCategoryType} from "../../../models/master/product";
 import {FaTimes} from "react-icons/fa";
 import {PageNation} from "../../application/PageNation.tsx";
 

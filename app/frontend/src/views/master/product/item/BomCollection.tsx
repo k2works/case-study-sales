@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {BomType} from "../../../../models";
+import {BomType} from "../../../../models/master/product";
 
 interface BomCollectionProps {
     boms: BomType[];
