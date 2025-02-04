@@ -1,7 +1,7 @@
 import React from "react";
 import {PageNation, PageNationType} from "../../../application/PageNation.tsx";
 import {FaTimes} from "react-icons/fa";
-import {RegionType} from "../../../../models";
+import {RegionType} from "../../../../models/master/code";
 
 interface RegionCodeCollectionSelectProps {
     regions: RegionType[];

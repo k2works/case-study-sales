@@ -1,5 +1,5 @@
 import React from "react";
-import {RegionCriteriaType, RegionType} from "../../../../models";
+import {RegionCriteriaType, RegionType} from "../../../../models/master/code";
 import {Message} from "../../../../components/application/Message.tsx";
 import {PageNation, PageNationType} from "../../../application/PageNation.tsx";
 import {Search} from "../../../Common.tsx";

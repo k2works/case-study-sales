@@ -1,8 +1,8 @@
 import {useState} from "react";
-import {RegionService, RegionServiceType} from "../../../services/master/region.ts";
-import {RegionType, RegionCriteriaType} from "../../../models";
-import {useFetchEntities} from "../../application/hooks.ts";
-import {PageNationType} from "../../../views/application/PageNation.tsx";
+import {RegionService, RegionServiceType} from "../../../../services/master/region.ts";
+import {RegionType, RegionCriteriaType} from "../../../../models/master/code";
+import {useFetchEntities} from "../../../application/hooks.ts";
+import {PageNationType} from "../../../../views/application/PageNation.tsx";
 
 export const useRegion = () => {
     const initialRegion: RegionType = {

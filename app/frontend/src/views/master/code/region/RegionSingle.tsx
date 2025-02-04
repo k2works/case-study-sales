@@ -1,6 +1,6 @@
 import React from 'react';
 import {Message} from "../../../../components/application/Message.tsx";
-import {RegionType} from "../../../../models";
+import {RegionType} from "../../../../models/master/code";
 import {FormInput, SingleViewHeaderActions, SingleViewHeaderItem} from "../../../Common.tsx";
 
 interface HeaderProps {

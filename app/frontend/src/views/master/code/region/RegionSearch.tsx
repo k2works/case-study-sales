@@ -1,4 +1,4 @@
-import {RegionCriteriaType} from "../../../../models";
+import {RegionCriteriaType} from "../../../../models/master/code";
 import {FormInput, SingleViewHeaderItem} from "../../../Common.tsx";
 import {MouseEventHandler} from "react";
 

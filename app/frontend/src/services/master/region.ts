@@ -6,7 +6,7 @@ import {
     RegionCriteriaType,
     mapToRegionResource,
     mapToRegionCriteria,
-} from "../../models";
+} from "../../models/master/code";
 
 export interface RegionServiceType {
     select: (page?: number, pageSize?: number) => Promise<RegionFetchType>;

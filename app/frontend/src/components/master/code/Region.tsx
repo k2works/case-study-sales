@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useMessage } from "../application/Message.tsx";
-import { useModal } from "../application/hooks.ts";
-import { useFetchRegions, useRegion } from "./hooks";
-import { showErrorMessage } from "../application/utils.ts";
-import { RegionCriteriaType, RegionCodeType, RegionType } from "../../models";
+import { useMessage } from "../../application/Message.tsx";
+import { useModal } from "../../application/hooks.ts";
+import { useFetchRegions, useRegion } from "../hooks/code";
+import { showErrorMessage } from "../../application/utils.ts";
+import { RegionCriteriaType, RegionCodeType, RegionType } from "../../../models/master/code";
 import Modal from "react-modal";
-import { usePageNation } from "../../views/application/PageNation.tsx";
-import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
-import { RegionCollectionView } from "../../views/master/code/region/RegionCollection.tsx";
-import { RegionSingleView } from "../../views/master/code/region/RegionSingle.tsx";
-import {RegionSearchSingleView} from "../../views/master/code/region/RegionSearch.tsx";
+import { usePageNation } from "../../../views/application/PageNation.tsx";
+import LoadingIndicator from "../../../views/application/LoadingIndicatior.tsx";
+import { RegionCollectionView } from "../../../views/master/code/region/RegionCollection.tsx";
+import { RegionSingleView } from "../../../views/master/code/region/RegionSingle.tsx";
+import {RegionSearchSingleView} from "../../../views/master/code/region/RegionSearch.tsx";
 
 export const Region: React.FC = () => {
     const Content: React.FC = () => {

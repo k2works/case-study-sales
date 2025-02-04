@@ -11,7 +11,8 @@ import {
     PrefectureEnumType,
     ShippingType
 } from "../../models/master/partner";
-import {useCustomer, useFetchCustomers, useFetchRegions, useRegion} from "./hooks";
+import {useCustomer, useFetchCustomers } from "./hooks";
+import {useFetchRegions, useRegion} from "./hooks/code";
 import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
 import {CustomerSearchView} from "../../views/master/partner/customer/CustomerSearch.tsx";
 import {
@@ -21,7 +22,7 @@ import {
 import {CustomerSingleView} from "../../views/master/partner/customer/CustomerSingle.tsx";
 import {Tab, TabList, TabPanel, Tabs} from "react-tabs";
 import {CustomerInvoiceSingleView} from "../../views/master/partner/customer/CustomerInvoiceSingle.tsx";
-import {RegionCriteriaType, RegionType} from "../../models";
+import {RegionCriteriaType, RegionType} from "../../models/master/code";
 import {RegionCodeCollectionSelectView} from "../../views/master/code/region/RegionSelect.tsx";
 
 export const Customer: React.FC = () => {
