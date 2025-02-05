@@ -116,66 +116,7 @@ export const Customer: React.FC = () => {
                         overlayClassName="modal-overlay"
                         bodyOpenClassName="modal-open"
                     >
-                        <Tabs>
-                            <TabList>
-                                <Tab>基本情報</Tab>
-                                <Tab>請求情報</Tab>
-                                <Tab>出荷先情報</Tab>
-                            </TabList>
-                            <TabPanel>
-                                {singleView().basicInfo()}
-                            </TabPanel>
-                            <TabPanel>
-                                {singleView().invoiceInfo()}
-                            </TabPanel>
-                            <TabPanel>
-                                <CustomerShippingCollectionAddListView
-                                    setNewShipping={setNewShipping}
-                                    shippings={newCustomer.shippings}
-                                    handleAddShipping={() => {
-                                        setMessage("");
-                                        setError("");
-                                        const maxDestinationNumber = Math.max(...newCustomer.shippings.map((shipping) => shipping.shippingCode.destinationNumber));
-                                        const initialDestinationNumber = maxDestinationNumber === -Infinity ? 1 : maxDestinationNumber + 1;
-                                        const shipping : ShippingType = {
-                                            shippingCode: {
-                                                customerCode: newCustomer.customerCode,
-                                                destinationNumber: initialDestinationNumber,
-                                            },
-                                            destinationName: "出荷先名",
-                                            regionCode: {
-                                                value: "R001",
-                                            },
-                                            shippingAddress: {
-                                                postalCode: {
-                                                    value: "1234567",
-                                                    regionCode: "",
-                                                },
-                                                prefecture: PrefectureEnumType.東京都,
-                                                address1: "住所1",
-                                                address2: "住所2",
-                                            },
-                                        }
-
-                                        setNewCustomer({
-                                            ...newCustomer,
-                                            shippings: [...newCustomer.shippings, shipping]
-                                        });
-                                    }}
-                                    handleDeleteShipping={(shippingAddress) => {
-                                        setNewCustomer({
-                                            ...newCustomer,
-                                            shippings: newCustomer.shippings.filter(
-                                                (shippingAddressItem) => shippingAddressItem.shippingCode.destinationNumber !== shippingAddress.shippingCode.destinationNumber
-                                            )
-                                        });
-                                    }}
-                                    handleAddRegion={() => {
-                                        regionModal().handleOpenRegionModal()
-                                    }}
-                                />
-                            </TabPanel>
-                        </Tabs>
+                        {singleView()}
                     </Modal>
                 );
 
@@ -298,7 +239,7 @@ export const Customer: React.FC = () => {
                 </>
             );
 
-            return { editModal, searchModal, init };
+            return { editModal, searchModal, regionModal, init };
         };
 
         const collectionView = () => {
@@ -428,10 +369,68 @@ export const Customer: React.FC = () => {
                 );
             }
 
-            return {
-                basicInfo,
-                invoiceInfo
-            };
+            return (
+                    <Tabs>
+                        <TabList>
+                            <Tab>基本情報</Tab>
+                            <Tab>請求情報</Tab>
+                            <Tab>出荷先情報</Tab>
+                        </TabList>
+                        <TabPanel>
+                            {basicInfo()}
+                        </TabPanel>
+                        <TabPanel>
+                            {invoiceInfo()}
+                        </TabPanel>
+                        <TabPanel>
+                            <CustomerShippingCollectionAddListView
+                                setNewShipping={setNewShipping}
+                                shippings={newCustomer.shippings}
+                                handleAddShipping={() => {
+                                    setMessage("");
+                                    setError("");
+                                    const maxDestinationNumber = Math.max(...newCustomer.shippings.map((shipping) => shipping.shippingCode.destinationNumber));
+                                    const initialDestinationNumber = maxDestinationNumber === -Infinity ? 1 : maxDestinationNumber + 1;
+                                    const shipping : ShippingType = {
+                                        shippingCode: {
+                                            customerCode: newCustomer.customerCode,
+                                            destinationNumber: initialDestinationNumber,
+                                        },
+                                        destinationName: "出荷先名",
+                                        regionCode: {
+                                            value: "R001",
+                                        },
+                                        shippingAddress: {
+                                            postalCode: {
+                                                value: "1234567",
+                                                regionCode: "",
+                                            },
+                                            prefecture: PrefectureEnumType.東京都,
+                                            address1: "住所1",
+                                            address2: "住所2",
+                                        },
+                                    }
+
+                                    setNewCustomer({
+                                        ...newCustomer,
+                                        shippings: [...newCustomer.shippings, shipping]
+                                    });
+                                }}
+                                handleDeleteShipping={(shippingAddress) => {
+                                    setNewCustomer({
+                                        ...newCustomer,
+                                        shippings: newCustomer.shippings.filter(
+                                            (shippingAddressItem) => shippingAddressItem.shippingCode.destinationNumber !== shippingAddress.shippingCode.destinationNumber
+                                        )
+                                    });
+                                }}
+                                handleAddRegion={() => {
+                                    modalView().regionModal().handleOpenRegionModal()
+                                }}
+                            />
+                        </TabPanel>
+                    </Tabs>
+            )
         };
 
         return (

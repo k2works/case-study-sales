@@ -127,16 +127,6 @@ export const Employee: React.FC = () => {
                                 bodyOpenClassName="modal-open"
                             >
                                 {singleView()}
-
-                                {departmentModal().departmentModalView()}
-                                <DepartmentSelectView
-                                    handleSelect={() => setDepartmentModalIsOpen(true)}
-                                />
-
-                                {employeeModal().employeeModalView()}
-                                <UserSelectView
-                                    handleSelect={() => setUserModalIsOpen(true)}
-                                />
                             </Modal>
                     )
                 }
@@ -317,6 +307,8 @@ export const Employee: React.FC = () => {
                 <>
                     {editModal().editModalView()}
                     {searchModal().searchModalView()}
+                    {departmentModal().departmentModalView()}
+                    {employeeModal().employeeModalView()}
                 </>
             )
 
@@ -433,6 +425,7 @@ export const Employee: React.FC = () => {
             };
 
             return (
+                <>
                     <EmployeeSingleView
                         error={error}
                         message={message}
@@ -442,6 +435,15 @@ export const Employee: React.FC = () => {
                         handleCreateOrUpdateEmployee={handleCreateOrUpdateEmployee}
                         handleCloseModal={handleCloseModal}
                     />
+
+                    <DepartmentSelectView
+                        handleSelect={() => setDepartmentModalIsOpen(true)}
+                    />
+
+                    <UserSelectView
+                        handleSelect={() => setUserModalIsOpen(true)}
+                    />
+                </>
             )
         };
 

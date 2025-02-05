@@ -70,18 +70,7 @@ export const Vendor: React.FC = () => {
                         overlayClassName="modal-overlay"
                         bodyOpenClassName="modal-open"
                     >
-                        <Tabs>
-                           <TabList>
-                               <Tab>基本情報</Tab>
-                               <Tab>請求情報</Tab>
-                           </TabList>
-                           <TabPanel>
-                               {singleView().basicInfo()}
-                           </TabPanel>
-                            <TabPanel>
-                                {singleView().invoiceInfo()}
-                            </TabPanel>
-                        </Tabs>
+                        {singleView()}
                     </Modal>
                 );
                 return { editModalView, handleOpenModal, handleCloseModal };
@@ -261,10 +250,20 @@ export const Vendor: React.FC = () => {
                 );
             };
 
-            return{
-                basicInfo,
-                invoiceInfo
-            }
+            return(
+                    <Tabs>
+                        <TabList>
+                            <Tab>基本情報</Tab>
+                            <Tab>請求情報</Tab>
+                        </TabList>
+                        <TabPanel>
+                            {basicInfo()}
+                        </TabPanel>
+                        <TabPanel>
+                            {invoiceInfo()}
+                        </TabPanel>
+                    </Tabs>
+            )
         };
         return (
             <>

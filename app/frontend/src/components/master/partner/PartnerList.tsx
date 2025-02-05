@@ -108,11 +108,6 @@ export const PartnerList: React.FC = () => {
                         bodyOpenClassName="modal-open"
                     >
                         {singleView()}
-
-                        {partnerGroupModal().partnerGroupModalView()}
-                        <PartnerGroupSelectView
-                            handleSelect={() => setPartnerGroupModalIsOpen(true)}
-                        />
                     </Modal>
                 );
 
@@ -246,6 +241,7 @@ export const PartnerList: React.FC = () => {
                 <>
                     {editModal().editModalView()}
                     {searchModal().searchModalView()}
+                    {partnerGroupModal().partnerGroupModalView()}
                 </>
             );
 
@@ -356,13 +352,19 @@ export const PartnerList: React.FC = () => {
             };
 
             return (
-                <PartnerSingleView
-                    error={error}
-                    message={message}
-                    isEditing={isEditing}
-                    headerItems={{ handleCreateOrUpdatePartner, handleCloseModal }}
-                    formItems={{ newPartner, setNewPartner }}
-                />
+                <>
+                    <PartnerSingleView
+                        error={error}
+                        message={message}
+                        isEditing={isEditing}
+                        headerItems={{ handleCreateOrUpdatePartner, handleCloseModal }}
+                        formItems={{ newPartner, setNewPartner }}
+                    />
+
+                    <PartnerGroupSelectView
+                        handleSelect={() => setPartnerGroupModalIsOpen(true)}
+                    />
+                </>
             );
         };
 

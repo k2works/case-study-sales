@@ -111,33 +111,6 @@ export const ProductCategory: React.FC = () => {
                             bodyOpenClassName="modal-open"
                         >
                             {singleView()}
-
-                            {isEditing && (
-                                <ProductCollectionAddListView
-                                    products={newProductCategory.products.filter((e) => !e.deleteFlag)}
-                                    handleAdd={() => {
-                                        setMessage("");
-                                        setError("");
-                                        setProductIsEditing(true);
-                                        setProductModalIsOpen(true);
-                                    }}
-                                    handleDelete={(product: ProductType) => {
-                                        const newProducts = newProductCategory.products.filter((e) => e.productCode.value !== product.productCode.value);
-                                        if (product.productCode.value) {
-                                            newProducts.push({
-                                                ...product,
-                                                addFlag: false,
-                                                deleteFlag: true
-                                            });
-                                        }
-                                        setNewProductCategory({
-                                            ...newProductCategory,
-                                            products: newProducts
-                                        });
-                                    }}
-                                />
-                            )
-                            }
                         </Modal>
                     )
                 }
@@ -372,6 +345,7 @@ export const ProductCategory: React.FC = () => {
             };
 
             return (
+                <>
                     <ProductCategorySingleView
                         error={error}
                         message={message}
@@ -381,6 +355,34 @@ export const ProductCategory: React.FC = () => {
                         handleCreateOrUpdateProductCategory={handleCreateOrUpdateProductCategory}
                         handleCloseModal={handleCloseModal}
                     />
+
+                    {isEditing && (
+                        <ProductCollectionAddListView
+                            products={newProductCategory.products.filter((e) => !e.deleteFlag)}
+                            handleAdd={() => {
+                                setMessage("");
+                                setError("");
+                                setProductIsEditing(true);
+                                setProductModalIsOpen(true);
+                            }}
+                            handleDelete={(product: ProductType) => {
+                                const newProducts = newProductCategory.products.filter((e) => e.productCode.value !== product.productCode.value);
+                                if (product.productCode.value) {
+                                    newProducts.push({
+                                        ...product,
+                                        addFlag: false,
+                                        deleteFlag: true
+                                    });
+                                }
+                                setNewProductCategory({
+                                    ...newProductCategory,
+                                    products: newProducts
+                                });
+                            }}
+                        />
+                    )
+                    }
+                </>
             );
         };
 

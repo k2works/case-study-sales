@@ -120,40 +120,6 @@ export const PartnerCategory: React.FC = () => {
                             bodyOpenClassName="modal-open"
                         >
                             {singleView()}
-
-                            {isEditing && (
-                                <PartnerCategoryItemCollectionAddListView
-                                    partnerCategory = {newPartnerCategory}
-                                    partnerCategoryItems={newPartnerCategory.partnerCategoryItems}
-                                    handleNew={(partnerCategoryItem: PartnerCategoryItemType) => {
-                                        const newPartnerCategoryItems = newPartnerCategory.partnerCategoryItems.filter((e) => e.partnerCategoryItemCode !== partnerCategoryItem.partnerCategoryItemCode);
-                                        newPartnerCategoryItems.push({
-                                            ...partnerCategoryItem
-                                        });
-                                        setNewPartnerCategory({
-                                            ...newPartnerCategory,
-                                            partnerCategoryItems: newPartnerCategoryItems
-                                        });
-                                    }}
-                                    handleAdd={(code) => {
-                                        setMessage("");
-                                        setError("");
-                                        setCategoryItemIsEditing(true);
-                                        setCategoryItemModalIsOpen(true);
-                                        const newPartnerCategoryItem = newPartnerCategory.partnerCategoryItems.find((e) => e.partnerCategoryItemCode == code);
-                                        if (newPartnerCategoryItem) {
-                                           setNewPartnerCategoryItem({...newPartnerCategoryItem});
-                                        }
-                                    }}
-                                    handleDelete={(partnerCategoryItem: PartnerCategoryItemType) => {
-                                        setNewPartnerCategory({
-                                            ...newPartnerCategory,
-                                            partnerCategoryItems: newPartnerCategory.partnerCategoryItems.filter((e) => e.partnerCategoryItemCode !== partnerCategoryItem.partnerCategoryItemCode)
-                                        });
-                                    }}
-                                />
-                            )
-                            }
                         </Modal>
                     );
                 };
@@ -479,13 +445,49 @@ export const PartnerCategory: React.FC = () => {
             };
 
             return (
-                <PartnerCategorySingleView
-                    error={error}
-                    message={message}
-                    isEditing={isEditing}
-                    headerItems={{ handleCreateOrUpdatePartnerCategory, handleCloseModal }}
-                    formItems={{ newPartnerCategory, setNewPartnerCategory }}
-                />
+                <>
+                    <PartnerCategorySingleView
+                        error={error}
+                        message={message}
+                        isEditing={isEditing}
+                        headerItems={{ handleCreateOrUpdatePartnerCategory, handleCloseModal }}
+                        formItems={{ newPartnerCategory, setNewPartnerCategory }}
+                    />
+
+                    {isEditing && (
+                        <PartnerCategoryItemCollectionAddListView
+                            partnerCategory = {newPartnerCategory}
+                            partnerCategoryItems={newPartnerCategory.partnerCategoryItems}
+                            handleNew={(partnerCategoryItem: PartnerCategoryItemType) => {
+                                const newPartnerCategoryItems = newPartnerCategory.partnerCategoryItems.filter((e) => e.partnerCategoryItemCode !== partnerCategoryItem.partnerCategoryItemCode);
+                                newPartnerCategoryItems.push({
+                                    ...partnerCategoryItem
+                                });
+                                setNewPartnerCategory({
+                                    ...newPartnerCategory,
+                                    partnerCategoryItems: newPartnerCategoryItems
+                                });
+                            }}
+                            handleAdd={(code) => {
+                                setMessage("");
+                                setError("");
+                                setCategoryItemIsEditing(true);
+                                setCategoryItemModalIsOpen(true);
+                                const newPartnerCategoryItem = newPartnerCategory.partnerCategoryItems.find((e) => e.partnerCategoryItemCode == code);
+                                if (newPartnerCategoryItem) {
+                                    setNewPartnerCategoryItem({...newPartnerCategoryItem});
+                                }
+                            }}
+                            handleDelete={(partnerCategoryItem: PartnerCategoryItemType) => {
+                                setNewPartnerCategory({
+                                    ...newPartnerCategory,
+                                    partnerCategoryItems: newPartnerCategory.partnerCategoryItems.filter((e) => e.partnerCategoryItemCode !== partnerCategoryItem.partnerCategoryItemCode)
+                                });
+                            }}
+                        />
+                    )
+                    }
+                </>
             );
         };
 

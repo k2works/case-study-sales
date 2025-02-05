@@ -1,4 +1,3 @@
-// PartnerGroup.tsx
 import React, { useEffect, useState } from 'react';
 import { showErrorMessage } from "../../application/utils.ts";
 import { useMessage } from "../../application/Message.tsx";

@@ -111,15 +111,6 @@ export const Department: React.FC = () => {
                             bodyOpenClassName="modal-open"
                         >
                             {singleView()}
-
-                            {isEditing && (
-                                <EmployeeCollectionAddListView
-                                    employees={newDepartment.employees.filter((e) => !e.deleteFlag)}
-                                    handleAdd={employeeModal().handleOpenEmployeeModal}
-                                    handleDelete={employeeModal().handleDeleteEmployee}
-                                />
-                            )
-                            }
                         </Modal>
                     )
                 }
@@ -384,6 +375,7 @@ export const Department: React.FC = () => {
             };
 
             return (
+                <>
                     <DepartmentSingleView
                         error={error}
                         message={message}
@@ -391,6 +383,16 @@ export const Department: React.FC = () => {
                         headerItems={{handleCreateOrUpdateDepartment, handleCloseModal}}
                         formItems={{newDepartment, setNewDepartment}}
                     />
+
+                    {isEditing && (
+                        <EmployeeCollectionAddListView
+                            employees={newDepartment.employees.filter((e) => !e.deleteFlag)}
+                            handleAdd={modalView().employeeModal().handleOpenEmployeeModal}
+                            handleDelete={modalView().employeeModal().handleDeleteEmployee}
+                        />
+                    )
+                    }
+                </>
             );
         };
 
