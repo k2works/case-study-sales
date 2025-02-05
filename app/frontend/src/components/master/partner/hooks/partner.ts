@@ -17,21 +17,21 @@ import {
     VendorCriteriaType,
     VendorEnumType,
     VendorType
-} from "../../../models/master/partner"; // モデルからインポート
-import {useFetchEntities} from "../../application/hooks.ts"; // 共通フックのインポート
-import {PageNationType} from "../../../views/application/PageNation.tsx"; // ページネーションモデル
-import {PartnerCategoryService, PartnerCategoryServiceType} from "../../../services/master/partnerCategory.ts";
-import {PartnerGroupService, PartnerGroupServiceType} from "../../../services/master/partnerGroup.ts";
-import {PartnerService, PartnerServiceType} from "../../../services/master/partner.ts";
-import {CustomerService, CustomerServiceType} from "../../../services/master/customer.ts";
-import {VendorService} from "../../../services/master/vendor.ts";
+} from "../../../../models/master/partner";
+import {useFetchEntities} from "../../../application/hooks.ts";
+import {PageNationType} from "../../../../views/application/PageNation.tsx";
+import {PartnerCategoryService, PartnerCategoryServiceType} from "../../../../services/master/partnerCategory.ts";
+import {PartnerGroupService, PartnerGroupServiceType} from "../../../../services/master/partnerGroup.ts";
+import {PartnerService, PartnerServiceType} from "../../../../services/master/partner.ts";
+import {CustomerService, CustomerServiceType} from "../../../../services/master/customer.ts";
+import {VendorService} from "../../../../services/master/vendor.ts";
 import {
     ClosingDateEnumType,
     PaymentDayEnumType,
     PaymentMethodEnumType,
     PaymentMonthEnumType,
     PrefectureEnumType
-} from "../../../models"; // サービス
+} from "../../../../models";
 
 export const usePartnerCategory = () => {
     const initialPartnerCategory: PartnerCategoryType = {

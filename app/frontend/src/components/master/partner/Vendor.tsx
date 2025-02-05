@@ -5,7 +5,7 @@ import { useModal } from "../../application/hooks.ts";
 import { usePageNation } from "../../../views/application/PageNation.tsx";
 import Modal from "react-modal";
 import {VendorCodeType, VendorCriteriaType, VendorType} from "../../../models/master/partner";
-import { useFetchVendors, useVendor } from "../hooks";
+import { useFetchVendors, useVendor } from "./hooks";
 import LoadingIndicator from "../../../views/application/LoadingIndicatior.tsx";
 import { VendorSearchView } from "../../../views/master/partner/vendor/VendorSearch.tsx";
 import { VendorCollectionView } from "../../../views/master/partner/vendor/VendorCollection.tsx";

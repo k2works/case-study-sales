@@ -10,8 +10,8 @@ import {
     CustomerType,
     ShippingType
 } from "../../../models/master/partner";
-import {useCustomer, useFetchCustomers } from "../hooks";
-import {useFetchRegions, useRegion} from "../hooks/code";
+import {useCustomer, useFetchCustomers } from "./hooks";
+import {useFetchRegions, useRegion} from "../code/hooks";
 import LoadingIndicator from "../../../views/application/LoadingIndicatior.tsx";
 import {CustomerSearchView} from "../../../views/master/partner/customer/CustomerSearch.tsx";
 import {

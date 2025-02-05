@@ -5,7 +5,7 @@ import { useModal } from "../../application/hooks.ts";
 import { usePageNation } from "../../../views/application/PageNation.tsx";
 import Modal from "react-modal";
 import {PartnerCriteriaType, PartnerGroupCriteriaType, PartnerType} from "../../../models/master/partner";
-import {useFetchPartnerGroups, useFetchPartners, usePartner, usePartnerGroup} from "../hooks";
+import {useFetchPartnerGroups, useFetchPartners, usePartner, usePartnerGroup} from "./hooks";
 import LoadingIndicator from "../../../views/application/LoadingIndicatior.tsx";
 import {PartnerSearchView} from "../../../views/master/partner/PartnerSearch.tsx";
 import {PartnerCollectionView} from "../../../views/master/partner/PartnerCollection.tsx";

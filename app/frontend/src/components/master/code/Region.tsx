@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useMessage } from "../../application/Message.tsx";
 import { useModal } from "../../application/hooks.ts";
-import { useFetchRegions, useRegion } from "../hooks/code";
+import { useFetchRegions, useRegion } from "../code/hooks";
 import { showErrorMessage } from "../../application/utils.ts";
 import { RegionCriteriaType, RegionCodeType, RegionType } from "../../../models/master/code";
 import Modal from "react-modal";

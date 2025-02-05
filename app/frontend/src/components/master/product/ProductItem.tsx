@@ -12,7 +12,7 @@ import {
     useFetchSubstitutes,
     useProduct,
     useProductCategory
-} from "../hooks/product";
+} from "./hooks";
 import {
     ProductCategoryCollectionSelectView,
     ProductCategorySelectView

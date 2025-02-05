@@ -10,7 +10,7 @@ import {
     PartnerCategoryType, PartnerCriteriaType,
     PartnerType
 } from "../../../models/master/partner";
-import {useFetchPartnerCategories, useFetchPartners, usePartner, usePartnerCategory} from "../hooks";
+import {useFetchPartnerCategories, useFetchPartners, usePartner, usePartnerCategory} from "./hooks";
 import Modal from "react-modal";
 import {PartnerCategorySearchView} from "../../../views/master/partner/category/PartnerCategorySearch.tsx";
 import {PartnerCategoryCollectionView} from "../../../views/master/partner/category/PartnerCategoryCollection.tsx";

@@ -6,7 +6,7 @@ import {usePageNation} from "../../../views/application/PageNation.tsx";
 import LoadingIndicator from "../../../views/application/LoadingIndicatior.tsx";
 import {ProductCategoryCriteriaType, ProductCategoryType, ProductType} from "../../../models/master/product";
 
-import {useFetchProductCategories, useFetchProducts, useProduct, useProductCategory} from "../hooks/product";
+import {useFetchProductCategories, useFetchProducts, useProduct, useProductCategory} from "./hooks";
 import Modal from "react-modal";
 import {ProductCollectionAddListView} from "../../../views/master/product/item/ProductCollection.tsx";
 import {ProductCollectionSelectView} from "../../../views/master/product/item/ProductSelect.tsx";

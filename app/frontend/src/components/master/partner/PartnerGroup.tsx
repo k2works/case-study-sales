@@ -5,7 +5,7 @@ import { useMessage } from "../../application/Message.tsx";
 import { useModal } from "../../application/hooks.ts";
 import { usePageNation } from "../../../views/application/PageNation.tsx";
 import { PartnerGroupCriteriaType, PartnerGroupType } from "../../../models/master/partner";
-import { useFetchPartnerGroups, usePartnerGroup } from "../hooks";
+import { useFetchPartnerGroups, usePartnerGroup } from "./hooks";
 import Modal from "react-modal";
 import { PartnerGroupSearchView } from "../../../views/master/partner/group/PartnerGroupSearch.tsx";
 import { PartnerGroupCollectionView } from "../../../views/master/partner/group/PartnerGroupCollection.tsx";
