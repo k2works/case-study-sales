@@ -27,6 +27,9 @@ import {ProductCollectionSelectView} from "../../../views/master/product/item/Pr
 import {ProductSearchSingleView} from "../../../views/master/product/ProductSearch.tsx";
 import {ProductCollectionView} from "../../../views/master/product/item/ProductCollection.tsx";
 import {ProductSingleView} from "../../../views/master/product/item/ProductSingle.tsx";
+import {useCustomer, useFetchCustomers} from '../partner/hooks';
+import {CustomerCriteriaType, CustomerType} from "../../../models/master/partner";
+import {CustomerCollectionSelectView} from "../../../views/master/partner/customer/CustomerSelect.tsx";
 
 export const ProductItem: React.FC = () => {
     const Content: React.FC = () => {
@@ -36,6 +39,7 @@ export const ProductItem: React.FC = () => {
         const {pageNation: substitutePageNation, setPageNation: setSubstitutePageNation} = usePageNation();
         const {pageNation: bomPageNation, setPageNation: setBomPageNation} = usePageNation();
         const {pageNation: productCategoryPageNation, setPageNation: setProductCategoryPageNation} = usePageNation<ProductCategoryCriteriaType>();
+        const {pageNation: customerPageNation, setPageNation: setCustomerPageNation} = usePageNation<CustomerCriteriaType>();
 
         const {modalIsOpen: searchModalIsOpen, setModalIsOpen: setSearchModalIsOpen,} = useModal();
 
@@ -65,6 +69,12 @@ export const ProductItem: React.FC = () => {
         const {
             modalIsOpen: productCategoryModalIsOpen,
             setModalIsOpen: setProductCategoryModalIsOpen
+        } = useModal();
+
+        const {
+            modalIsOpen: customerModalIsOpen,
+            setModalIsOpen: setCustomerModalIsOpen,
+            setEditId: setCustomerEditId
         } = useModal();
 
         const {
@@ -132,6 +142,21 @@ export const ProductItem: React.FC = () => {
             productCategoryService
         );
 
+        const {
+            customers,
+            setCustomers,
+            customerService,
+        } = useCustomer();
+
+        const fetchCustomers = useFetchCustomers(
+            setLoading,
+            setCustomers,
+            setCustomerPageNation,
+            setError,
+            showErrorMessage,
+            customerService
+        );
+
         useEffect(() => {
             (async () => {
                 try {
@@ -139,7 +164,8 @@ export const ProductItem: React.FC = () => {
                         fetchProducts.load(),
                         fetchSubstitutes.load(),
                         fetchBoms.load(),
-                        fetchProductCategories.load()
+                        fetchProductCategories.load(),
+                        fetchCustomers.load()
                     ]);
                 } catch (error: any) {
                     showErrorMessage(`商品情報の取得に失敗しました: ${error?.message}`, setError);
@@ -187,9 +213,6 @@ export const ProductItem: React.FC = () => {
                             bodyOpenClassName="modal-open"
                         >
                             {singleView()}
-
-                            {substituteModal().substituteEditModalView()}
-                            {bomModal().bomEditModalView()}
 
                             {isEditing && (
                                     <Tabs>
@@ -240,17 +263,9 @@ export const ProductItem: React.FC = () => {
                                             <CustomerSpecificSellingPriceCollectionAddListView
                                                 prices={newProduct.customerSpecificSellingPrices}
                                                 handleAdd={() => {
-                                                    setNewProduct({
-                                                        ...newProduct,
-                                                        customerSpecificSellingPrices: newProduct.customerSpecificSellingPrices.concat({
-                                                            productCode: newProduct.productCode,
-                                                            customerCode: "XXXX",
-                                                            sellingPrice: {
-                                                                amount: 0,
-                                                                currency: "JPY"
-                                                            }
-                                                        })
-                                                    });
+                                                    setMessage("");
+                                                    setError("");
+                                                    setCustomerModalIsOpen(true);
                                                 }}
                                                 handleDelete={(price) => {
                                                     setNewProduct({
@@ -417,6 +432,55 @@ export const ProductItem: React.FC = () => {
                 }
             }
 
+            const customerModal = () => {
+                const handleCloseCustomerModal = () => {
+                    setError(""); // エラーをリセット
+                    setCustomerModalIsOpen(false); // モーダルを閉じる
+                    setCustomerEditId(null); // 編集IDをリセット
+                };
+
+                const customerEditModalView = () => {
+                    return (
+                        <Modal
+                            isOpen={customerModalIsOpen}
+                            onRequestClose={handleCloseCustomerModal}
+                            contentLabel="顧客情報を入力"
+                            className="modal"
+                            overlayClassName="modal-overlay"
+                            bodyOpenClassName="modal-open"
+                        >
+                            {
+                                <CustomerCollectionSelectView
+                                    customers={customers} // 顧客リストを渡す
+                                    handleSelect={(customer: CustomerType) => {
+                                        const newProducts = newProduct.customerSpecificSellingPrices.filter((e) => e.customerCode !== customer.customerCode.code.value);
+                                        newProducts.push({
+                                            productCode: newProduct.productCode,
+                                            customerCode: customer.customerCode.code.value,
+                                            sellingPrice: {
+                                                amount: 0,
+                                                currency: "JPY"
+                                            }
+                                        });
+                                        setNewProduct({
+                                            ...newProduct,
+                                            customerSpecificSellingPrices: newProducts
+                                        });
+                                    }}
+                                    handleClose={handleCloseCustomerModal}
+                                    pageNation={customerPageNation}
+                                    fetchCustomers={fetchCustomers.load}
+                                />
+                            }
+                        </Modal>
+                    );
+                };
+
+                return {
+                    customerEditModalView
+                };
+            };
+
             const searchModal = () => {
                 const handleOpenSearchModal = () => {
                     setSearchModalIsOpen(true);
@@ -466,7 +530,6 @@ export const ProductItem: React.FC = () => {
                                         handleClose={handleCloseSearchModal}
                                     />
 
-                                    {productCategoryModal().productCategorySearchModalView()}
                                     <ProductCategorySelectView
                                         handleSelect={() => setProductCategoryModalIsOpen(true)}
                                     />
@@ -488,6 +551,10 @@ export const ProductItem: React.FC = () => {
                     <>
                         {editModal().editModalView()}
                         {searchModal().searchModalView()}
+                        {substituteModal().substituteEditModalView()}
+                        {bomModal().bomEditModalView()}
+                        {customerModal().customerEditModalView()}
+                        {productCategoryModal().productCategorySearchModalView()}
                     </>
                 )
             }
@@ -499,7 +566,6 @@ export const ProductItem: React.FC = () => {
             }
         }
 
-        // TODO:顧客マスタの作成後に実装
         const collectionView = () => {
             const {handleOpenModal} = modalView().editModal();
             const {handleOpenSearchModal} = modalView().searchModal();
