@@ -117,7 +117,7 @@ export type ProductCriteriaType = {
     productAbbreviation?: string;
     productNameKana?: string;
     productCategoryCode?: string;
-    supplierCode?: string;
+    vendorCode?: string;
     productType?: string;
     taxType?: string;
     miscellaneousType?: string;
@@ -158,7 +158,7 @@ export const mapToProductCriteriaResource = (criteria: ProductCriteriaType): Pro
         ...(isEmpty(criteria.productAbbreviation) ? {} : {productAbbreviation: criteria.productAbbreviation}),
         ...(isEmpty(criteria.productNameKana) ? {} : {productNameKana: criteria.productNameKana}),
         ...(isEmpty(criteria.productCategoryCode) ? {} : {productCategoryCode: criteria.productCategoryCode}),
-        ...(isEmpty(criteria.supplierCode) ? {} : {supplierCode: criteria.supplierCode}),
+        ...(isEmpty(criteria.vendorCode) ? {} : {supplierCode: criteria.vendorCode}),
         ...(isEmpty(criteria.productType) ? {} : {productType: criteria.productType}),
         ...(isEmpty(criteria.taxType) ? {} : {taxType: criteria.taxType}),
         ...(isEmpty(criteria.miscellaneousType) ? {} : {miscellaneousType: criteria.miscellaneousType}),

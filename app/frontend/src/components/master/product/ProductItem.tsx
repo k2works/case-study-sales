@@ -27,9 +27,10 @@ import {ProductCollectionSelectView} from "../../../views/master/product/item/Pr
 import {ProductSearchSingleView} from "../../../views/master/product/ProductSearch.tsx";
 import {ProductCollectionView} from "../../../views/master/product/item/ProductCollection.tsx";
 import {ProductSingleView} from "../../../views/master/product/item/ProductSingle.tsx";
-import {useCustomer, useFetchCustomers} from '../partner/hooks';
-import {CustomerCriteriaType, CustomerType} from "../../../models/master/partner";
+import {useCustomer, useFetchCustomers, useFetchVendors, useVendor} from '../partner/hooks';
+import {CustomerCriteriaType, CustomerType, VendorCriteriaType, VendorType} from "../../../models/master/partner";
 import {CustomerCollectionSelectView} from "../../../views/master/partner/customer/CustomerSelect.tsx";
+import {VendorCollectionSelectView, VendorSelectView} from "../../../views/master/partner/vendor/VendorSelect.tsx";
 
 export const ProductItem: React.FC = () => {
     const Content: React.FC = () => {
@@ -40,6 +41,7 @@ export const ProductItem: React.FC = () => {
         const {pageNation: bomPageNation, setPageNation: setBomPageNation} = usePageNation();
         const {pageNation: productCategoryPageNation, setPageNation: setProductCategoryPageNation} = usePageNation<ProductCategoryCriteriaType>();
         const {pageNation: customerPageNation, setPageNation: setCustomerPageNation} = usePageNation<CustomerCriteriaType>();
+        const {pageNation: vendorPageNation, setPageNation: setVendorPageNation} = usePageNation<VendorCriteriaType>();
 
         const {modalIsOpen: searchModalIsOpen, setModalIsOpen: setSearchModalIsOpen,} = useModal();
 
@@ -75,6 +77,17 @@ export const ProductItem: React.FC = () => {
             modalIsOpen: customerModalIsOpen,
             setModalIsOpen: setCustomerModalIsOpen,
             setEditId: setCustomerEditId
+        } = useModal();
+
+        const {
+            modalIsOpen: vendorModalIsOpen,
+            setModalIsOpen: setVendorModalIsOpen,
+            setEditId: setVendorEditId
+        } = useModal();
+
+        const {
+            modalIsOpen: vendorSearchModalIsOpen,
+            setModalIsOpen: setVendorSearchModalIsOpen,
         } = useModal();
 
         const {
@@ -157,6 +170,21 @@ export const ProductItem: React.FC = () => {
             customerService
         );
 
+        const {
+            vendors,
+            setVendors,
+            vendorService,
+        } = useVendor();
+
+        const fetchVendors = useFetchVendors(
+            setLoading,
+            setVendors,
+            setVendorPageNation,
+            setError,
+            showErrorMessage,
+            vendorService
+        );
+
         useEffect(() => {
             (async () => {
                 try {
@@ -165,7 +193,8 @@ export const ProductItem: React.FC = () => {
                         fetchSubstitutes.load(),
                         fetchBoms.load(),
                         fetchProductCategories.load(),
-                        fetchCustomers.load()
+                        fetchCustomers.load(),
+                        fetchVendors.load()
                     ]);
                 } catch (error: any) {
                     showErrorMessage(`商品情報の取得に失敗しました: ${error?.message}`, setError);
@@ -213,6 +242,10 @@ export const ProductItem: React.FC = () => {
                             bodyOpenClassName="modal-open"
                         >
                             {singleView()}
+
+                            <VendorSelectView
+                                handleSelect={() => setVendorModalIsOpen(true)}
+                            />
 
                             {isEditing && (
                                     <Tabs>
@@ -432,6 +465,85 @@ export const ProductItem: React.FC = () => {
                 }
             }
 
+            const vendorModal = () => {
+                const handleCloseVendorModal = () => {
+                    setError(""); // エラーメッセージをリセット
+                    setVendorModalIsOpen(false); // モーダルを閉じる
+                    setVendorEditId(null); // 編集中の仕入先IDをリセット
+                };
+
+                const handleCloseVendorSearchModal = () => {
+                    setError(""); // エラーメッセージをリセット
+                    setVendorSearchModalIsOpen(false); // モーダルを閉じる
+                }
+
+                const vendorEditModalView = () => {
+                    return (
+                        <Modal
+                            isOpen={vendorModalIsOpen}
+                            onRequestClose={handleCloseVendorModal} // モーダルを閉じる処理
+                            contentLabel="仕入先情報を入力"
+                            className="modal"
+                            overlayClassName="modal-overlay"
+                            bodyOpenClassName="modal-open"
+                        >
+                            {
+                                <VendorCollectionSelectView
+                                    vendors={vendors} // 仕入先リストを渡す
+                                    handleSelect={(vendor: VendorType) => {
+                                        setNewProduct({
+                                            ...newProduct,
+                                            vendorCode: {
+                                                code: vendor.vendorCode.code,
+                                                branchNumber: vendor.vendorCode.branchNumber
+                                            }
+                                        });
+                                        setVendorModalIsOpen(false); // モーダルを閉じる
+                                    }}
+                                    handleClose={handleCloseVendorModal} // モーダルを閉じる処理
+                                    pageNation={vendorPageNation} // ページネーション情報
+                                    fetchVendors={fetchVendors.load} // 仕入先リストを取得する関数
+                                />
+                            }
+                        </Modal>
+                    );
+                };
+
+                const vendorSearchModalView = () => {
+                    return (
+                        <Modal
+                            isOpen={vendorSearchModalIsOpen}
+                            onRequestClose={handleCloseVendorSearchModal}
+                            contentLabel="仕入先情報を入力"
+                            className="modal"
+                            overlayClassName="modal-overlay"
+                            bodyOpenClassName="modal-open"
+                        >
+                            {
+                                <VendorCollectionSelectView
+                                    vendors={vendors} // 仕入先情報リストを引数として渡す
+                                    handleSelect={(vendor) => {
+                                        setSearchProductCriteria({
+                                            ...searchProductCriteria,
+                                            vendorCode: vendor.vendorCode.code.value
+                                        })
+                                        setVendorSearchModalIsOpen(false); // モーダルを閉じる
+                                    }}
+                                    handleClose={() => setVendorSearchModalIsOpen(false)} // モーダルを閉じる処理
+                                    pageNation={vendorPageNation} // ページネーション情報
+                                    fetchVendors={fetchVendors.load} // データを取得する関数
+                                />
+                            }
+                        </Modal>
+                    );
+                };
+
+                return {
+                    vendorEditModalView,
+                    vendorSearchModalView
+                }
+            };
+
             const customerModal = () => {
                 const handleCloseCustomerModal = () => {
                     setError(""); // エラーをリセット
@@ -530,6 +642,10 @@ export const ProductItem: React.FC = () => {
                                         handleClose={handleCloseSearchModal}
                                     />
 
+                                    <VendorSelectView
+                                        handleSelect={() => setVendorSearchModalIsOpen(true)}
+                                    />
+
                                     <ProductCategorySelectView
                                         handleSelect={() => setProductCategoryModalIsOpen(true)}
                                     />
@@ -554,6 +670,8 @@ export const ProductItem: React.FC = () => {
                         {substituteModal().substituteEditModalView()}
                         {bomModal().bomEditModalView()}
                         {customerModal().customerEditModalView()}
+                        {vendorModal().vendorEditModalView()}
+                        {vendorModal().vendorSearchModalView()}
                         {productCategoryModal().productCategorySearchModalView()}
                     </>
                 )

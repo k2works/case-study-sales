@@ -77,9 +77,9 @@ const Form = ({criteria, setCondition, handleClick, handleClose}: FormProps) => 
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="仕入先コード"
-                value={criteria.supplierCode}
+                value={criteria.vendorCode}
                 onChange={(e) => setCondition(
-                    {...criteria, supplierCode: e.target.value}
+                    {...criteria, vendorCode: e.target.value}
                 )}
             />
             <FormSelect
