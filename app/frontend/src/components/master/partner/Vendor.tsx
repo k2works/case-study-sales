@@ -29,7 +29,8 @@ export const Vendor: React.FC = () => {
             searchVendorCriteria,
             setSearchVendorCriteria,
             vendorService
-        } = useVendor(); // 作成が必要
+        } = useVendor();
+
         const fetchVendors = useFetchVendors(
             setLoading,
             setVendors,
@@ -38,9 +39,11 @@ export const Vendor: React.FC = () => {
             showErrorMessage,
             vendorService
         );
+
         useEffect(() => {
             fetchVendors.load();
         }, []);
+
         const modalView = () => {
             const editModal = () => {
                 const handleOpenModal = (vendor?: VendorType) => {

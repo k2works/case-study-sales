@@ -82,9 +82,16 @@ export const PartnerCategory: React.FC = () => {
         } = useModal();
 
         useEffect(() => {
-            fetchPartnerCategories.load().then(() => {
-                fetchPartners.load().then();
-            });
+            (async () => {
+                try {
+                    await Promise.all([
+                        fetchPartnerCategories.load(),
+                        fetchPartners.load()
+                    ]);
+                } catch (error: any) {
+                    showErrorMessage(`取引先分類情報の取得に失敗しました: ${error?.message}`, setError);
+                }
+            })();
         }, []);
 
         const modalView = () => {

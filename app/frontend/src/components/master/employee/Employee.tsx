@@ -85,12 +85,17 @@ export const Employee: React.FC = () => {
         );
 
         useEffect(() => {
-            fetchEmployees.load().then(() => {
-                fetchDepartments.load().then(() => {
-                    fetchUsers.load().then(() => {
-                    });
-                });
-            });
+            (async () => {
+                try {
+                    await Promise.all([
+                        fetchEmployees.load(),
+                        fetchDepartments.load(),
+                        fetchUsers.load()
+                    ]);
+                } catch (error: any) {
+                    showErrorMessage(`社員情報の取得に失敗しました: ${error?.message}`, setError);
+                }
+            })();
         }, []);
 
         const modalView = () => {

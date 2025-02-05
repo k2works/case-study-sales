@@ -69,10 +69,16 @@ export const PartnerList: React.FC = () => {
         );
 
         useEffect(() => {
-            fetchPartners.load().then(() => {
-                fetchPartnerGroups.load().then(() => {
-                });
-            });
+            (async () => {
+                try {
+                    await Promise.all([
+                        fetchPartners.load(),
+                        fetchPartnerGroups.load()
+                    ]);
+                } catch (error: any) {
+                    showErrorMessage(`取引先情報の取得に失敗しました: ${error?.message}`, setError);
+                }
+            })();
         }, []);
 
 

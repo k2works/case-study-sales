@@ -79,10 +79,16 @@ export const Customer: React.FC = () => {
         );
 
         useEffect(() => {
-            fetchCustomers.load().then(() => {
-                fetchRegions.load().then(() => {
-                });
-            });
+            (async () => {
+                try {
+                    await Promise.all([
+                        fetchCustomers.load(),
+                        fetchRegions.load()
+                    ]);
+                } catch (error: any) {
+                    showErrorMessage(`顧客情報の取得に失敗しました: ${error?.message}`, setError);
+                }
+            })();
         }, []);
 
         const modalView = () => {

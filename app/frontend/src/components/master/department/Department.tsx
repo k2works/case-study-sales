@@ -72,12 +72,18 @@ export const Department: React.FC = () => {
         );
 
         useEffect(() => {
-            fetchDepartments.load().then(() => {
-                fetchEmployees.load().then(() => {
-                });
-            });
+            (async () => {
+                try {
+                    await Promise.all([
+                        fetchDepartments.load(),
+                        fetchEmployees.load()
+                    ]);
+                } catch (error: any) {
+                    showErrorMessage(`部門情報の取得に失敗しました: ${error?.message}`, setError);
+                }
+            })();
         }, []);
-
+        
         const modalView = () => {
             const editModal = () => {
                 const handleOpenModal = (department?: DepartmentType) => {

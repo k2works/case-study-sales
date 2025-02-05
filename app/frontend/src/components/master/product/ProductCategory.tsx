@@ -72,10 +72,16 @@ export const ProductCategory: React.FC = () => {
         );
 
         useEffect(() => {
-            fetchProductCategories.load().then(() => {
-                    fetchProducts.load().then();
+            (async () => {
+                try {
+                    await Promise.all([
+                        fetchProductCategories.load(),
+                        fetchProducts.load()
+                    ]);
+                } catch (error: any) {
+                    showErrorMessage(`商品分類情報の取得に失敗しました: ${error?.message}`, setError);
                 }
-            );
+            })();
         }, []);
 
         const modalView = () => {
