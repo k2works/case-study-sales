@@ -242,77 +242,6 @@ export const ProductItem: React.FC = () => {
                             bodyOpenClassName="modal-open"
                         >
                             {singleView()}
-
-                            <VendorSelectView
-                                handleSelect={() => setVendorModalIsOpen(true)}
-                            />
-
-                            {isEditing && (
-                                    <Tabs>
-                                        <TabList>
-                                            <Tab>代替品</Tab>
-                                            <Tab>部品表</Tab>
-                                            <Tab>顧客別販売単価</Tab>
-                                        </TabList>
-                                        <TabPanel>
-                                            <SubstituteProductCollectionAddListView
-                                                substituteProducts={newProduct.substituteProduct}
-                                                handleAdd={() => {
-                                                    setMessage("");
-                                                    setError("");
-                                                    setProductIsEditing(true);
-                                                    setProductModalIsOpen(true);
-                                                }}
-                                                handleDelete={(product) => {
-                                                    setNewProduct({
-                                                        ...newProduct,
-                                                        substituteProduct: newProduct.substituteProduct.filter(
-                                                            (substituteProduct) => substituteProduct.substituteProductCode !== product.substituteProductCode
-                                                        )
-                                                    });
-                                                }}
-                                            />
-                                        </TabPanel>
-                                        <TabPanel>
-                                            <BomCollectionAddListView
-                                                boms={newProduct.boms}
-                                                handleAdd={() => {
-                                                    setMessage("");
-                                                    setError("");
-                                                    setBomIsEditing(true);
-                                                    setBomModalIsOpen(true);
-                                                }}
-                                                handleDelete={(product) => {
-                                                    setNewProduct({
-                                                        ...newProduct,
-                                                        boms: newProduct.boms.filter(
-                                                            (bomProduct) => bomProduct.componentCode !== product.componentCode
-                                                        )
-                                                    });
-                                                }}
-                                            />
-                                        </TabPanel>
-                                        <TabPanel>
-                                            <CustomerSpecificSellingPriceCollectionAddListView
-                                                prices={newProduct.customerSpecificSellingPrices}
-                                                handleAdd={() => {
-                                                    setMessage("");
-                                                    setError("");
-                                                    setCustomerModalIsOpen(true);
-                                                }}
-                                                handleDelete={(price) => {
-                                                    setNewProduct({
-                                                        ...newProduct,
-                                                        customerSpecificSellingPrices: newProduct.customerSpecificSellingPrices.filter(
-                                                            (sellingPrice) => sellingPrice.customerCode !== price.customerCode
-                                                        )
-                                                    });
-                                                }}
-                                            />
-                                        </TabPanel>
-                                    </Tabs>
-                            )
-                            }
                         </Modal>
                     )
                 }
@@ -799,15 +728,109 @@ export const ProductItem: React.FC = () => {
             };
 
             return (
-                    <ProductSingleView
-                        error={error}
-                        message={message}
-                        newProduct={newProduct}
-                        setNewProduct={setNewProduct}
-                        isEditing={isEditing}
-                        handleCreateOrUpdateProduct={handleCreateOrUpdateProduct}
-                        handleCloseModal={handleCloseModal}
-                    />
+                <>
+                    {isEditing ? (
+                        <Tabs>
+                            <TabList>
+                                <Tab>商品アイテム</Tab>
+                                <Tab>代替品</Tab>
+                                <Tab>部品表</Tab>
+                                <Tab>顧客別販売単価</Tab>
+                            </TabList>
+                            <TabPanel>
+                                <ProductSingleView
+                                    error={error}
+                                    message={message}
+                                    newProduct={newProduct}
+                                    setNewProduct={setNewProduct}
+                                    isEditing={isEditing}
+                                    handleCreateOrUpdateProduct={handleCreateOrUpdateProduct}
+                                    handleCloseModal={handleCloseModal}
+                                />
+
+                                <VendorSelectView
+                                    handleSelect={() => setVendorModalIsOpen(true)}
+                                />
+                            </TabPanel>
+                            <TabPanel>
+                                <SubstituteProductCollectionAddListView
+                                    substituteProducts={newProduct.substituteProduct}
+                                    handleAdd={() => {
+                                        setMessage("");
+                                        setError("");
+                                        setProductIsEditing(true);
+                                        setProductModalIsOpen(true);
+                                    }}
+                                    handleDelete={(product) => {
+                                        setNewProduct({
+                                            ...newProduct,
+                                            substituteProduct: newProduct.substituteProduct.filter(
+                                                (substituteProduct) =>
+                                                    substituteProduct.substituteProductCode !==
+                                                    product.substituteProductCode
+                                            )
+                                        });
+                                    }}
+                                />
+                            </TabPanel>
+                            <TabPanel>
+                                <BomCollectionAddListView
+                                    boms={newProduct.boms}
+                                    handleAdd={() => {
+                                        setMessage("");
+                                        setError("");
+                                        setBomIsEditing(true);
+                                        setBomModalIsOpen(true);
+                                    }}
+                                    handleDelete={(product) => {
+                                        setNewProduct({
+                                            ...newProduct,
+                                            boms: newProduct.boms.filter(
+                                                (bomProduct) =>
+                                                    bomProduct.componentCode !==
+                                                    product.componentCode
+                                            )
+                                        });
+                                    }}
+                                />
+                            </TabPanel>
+                            <TabPanel>
+                                <CustomerSpecificSellingPriceCollectionAddListView
+                                    prices={newProduct.customerSpecificSellingPrices}
+                                    handleAdd={() => {
+                                        setMessage("");
+                                        setError("");
+                                        setCustomerModalIsOpen(true);
+                                    }}
+                                    handleDelete={(price) => {
+                                        setNewProduct({
+                                            ...newProduct,
+                                            customerSpecificSellingPrices: newProduct.customerSpecificSellingPrices.filter(
+                                                (sellingPrice) =>
+                                                    sellingPrice.customerCode !== price.customerCode
+                                            )
+                                        });
+                                    }}
+                                />
+                            </TabPanel>
+                        </Tabs>
+                    ) : (
+                        <>
+                            <ProductSingleView
+                                error={error}
+                                message={message}
+                                newProduct={newProduct}
+                                setNewProduct={setNewProduct}
+                                isEditing={isEditing}
+                                handleCreateOrUpdateProduct={handleCreateOrUpdateProduct}
+                                handleCloseModal={handleCloseModal}
+                            />
+                            <VendorSelectView
+                                handleSelect={() => setVendorModalIsOpen(true)}
+                            />
+                        </>
+                    )}
+                </>
             );
         };
 
