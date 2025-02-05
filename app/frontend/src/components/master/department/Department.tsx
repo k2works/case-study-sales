@@ -1,24 +1,25 @@
 import React, {useEffect, useState} from "react";
-import {useMessage} from "../application/Message.tsx";
-import {useModal} from "../application/hooks.ts";
-import {useDepartment, useEmployee, useFetchDepartments, useFetchEmployees} from "./hooks";
-import {showErrorMessage} from "../application/utils.ts";
+import {useMessage} from "../../application/Message.tsx";
+import {useModal} from "../../application/hooks.ts";
+import {useDepartment, useFetchDepartments} from "./hooks";
+import {showErrorMessage} from "../../application/utils.ts";
 import {
     DepartmentCriteriaType,
     DepartmentIdType,
     DepartmentType,
     EmployeeCriteriaType,
     EmployeeType
-} from "../../models";
+} from "../../../models";
 import Modal from "react-modal";
-import {usePageNation} from "../../views/application/PageNation.tsx";
-import {SiteLayout} from "../../views/SiteLayout.tsx";
-import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
-import {EmployeeCollectionSelectView} from "../../views/master/employee/EmployeeSelect.tsx";
-import {DepartmentCollectionView} from "../../views/master/department/DepartmentCollection.tsx";
-import {DepartmentSingleView} from "../../views/master/department/DepartmentSingle.tsx";
-import {EmployeeCollectionAddListView} from "../../views/master/employee/EmployeeCollection.tsx";
-import {DepartmentSearchSingleView} from "../../views/master/department/DepartmentSearch.tsx";
+import {usePageNation} from "../../../views/application/PageNation.tsx";
+import {SiteLayout} from "../../../views/SiteLayout.tsx";
+import LoadingIndicator from "../../../views/application/LoadingIndicatior.tsx";
+import {EmployeeCollectionSelectView} from "../../../views/master/employee/EmployeeSelect.tsx";
+import {DepartmentCollectionView} from "../../../views/master/department/DepartmentCollection.tsx";
+import {DepartmentSingleView} from "../../../views/master/department/DepartmentSingle.tsx";
+import {EmployeeCollectionAddListView} from "../../../views/master/employee/EmployeeCollection.tsx";
+import {DepartmentSearchSingleView} from "../../../views/master/department/DepartmentSearch.tsx";
+import {useEmployee, useFetchEmployees} from "../employee/hooks";
 
 export const Department: React.FC = () => {
     const Content: React.FC = () => {

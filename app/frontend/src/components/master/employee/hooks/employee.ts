@@ -4,10 +4,10 @@ import {
     EmployeeType,
     LowerType,
     SlitYnType
-} from "../../../models";
-import {EmployeeService, EmployeeServiceType} from "../../../services/master/employee.ts";
-import {PageNationType} from "../../../views/application/PageNation.tsx";
-import {useFetchEntities} from "../../application/hooks.ts";
+} from "../../../../models";
+import {EmployeeService, EmployeeServiceType} from "../../../../services/master/employee.ts";
+import {PageNationType} from "../../../../views/application/PageNation.tsx";
+import {useFetchEntities} from "../../../application/hooks.ts";
 
 export const useEmployee = () => {
     const initialEmployee: EmployeeType = {

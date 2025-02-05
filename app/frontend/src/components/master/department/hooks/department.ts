@@ -4,10 +4,10 @@ import {
     DepartmentType,
     LowerType,
     SlitYnType
-} from "../../../models";
-import {DepartmentService, DepartmentServiceType} from "../../../services/master/department.ts";
-import {PageNationType} from "../../../views/application/PageNation.tsx";
-import {useFetchEntities} from "../../application/hooks.ts";
+} from "../../../../models";
+import {DepartmentService, DepartmentServiceType} from "../../../../services/master/department.ts";
+import {PageNationType} from "../../../../views/application/PageNation.tsx";
+import {useFetchEntities} from "../../../application/hooks.ts";
 
 export const useDepartment = () => {
     const initialDepartment = {
