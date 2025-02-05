@@ -1,5 +1,6 @@
 import {PageNationType} from "../../../views/application/PageNation.tsx";
 import {PriceType, QuantityType} from "../shared.ts";
+import {PartnerCodeType} from "../partner";
 
 type ProductCodeType = {
     value: string;
@@ -16,7 +17,7 @@ type ProductNameType = {
 };
 
 type VendorCodeType = {
-    value: string;
+    code: PartnerCodeType;
     branchNumber: number;
 };
 
@@ -139,7 +140,7 @@ export const mapToProductResource = (product: ProductType): ProductResourceType 
         miscellaneousType: product.miscellaneousType,
         stockManagementTargetType: product.stockManagementTargetType,
         stockAllocationType: product.stockAllocationType,
-        vendorCode: product.vendorCode.value,
+        vendorCode: product.vendorCode.code.value,
         vendorBranchNumber: product.vendorCode.branchNumber,
         substituteProduct: product.substituteProduct,
         boms: product.boms,

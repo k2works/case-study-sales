@@ -205,10 +205,10 @@ const Form = ({isEditing, newProduct, setNewProduct}: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="仕入先コード"
-                value={newProduct.vendorCode.value}
+                value={newProduct.vendorCode.code.value}
                 onChange={(e) => setNewProduct({
                     ...newProduct,
-                    vendorCode: { ...newProduct.vendorCode, value: e.target.value }
+                    vendorCode: { ...newProduct.vendorCode, code: { value: e.target.value } }
                 })}
             />
         </div>

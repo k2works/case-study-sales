@@ -28,7 +28,7 @@ export const useProduct = () => {
         stockManagementTargetType: "",
         stockAllocationType: "",
         vendorCode: {
-            value: "",
+            code: {value: ""},
             branchNumber: 0,
         },
         substituteProduct: [],
