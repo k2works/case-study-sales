@@ -19,9 +19,11 @@ export const PartnerList: React.FC = () => {
     const Content: React.FC = () => {
         const [loading, setLoading] = useState<boolean>(false);
         const { message, setMessage, error, setError } = useMessage();
+
         const { pageNation, setPageNation, criteria, setCriteria } = usePageNation<PartnerCriteriaType>();
-        const { modalIsOpen, setModalIsOpen, isEditing, setIsEditing, editId, setEditId } = useModal();
         const { modalIsOpen: searchModalIsOpen, setModalIsOpen: setSearchModalIsOpen } = useModal();
+
+        const { modalIsOpen, setModalIsOpen, isEditing, setIsEditing, editId, setEditId } = useModal();
         const {
             initialPartner,
             partners,
@@ -32,7 +34,6 @@ export const PartnerList: React.FC = () => {
             setSearchPartnerCriteria,
             partnerService
         } = usePartner();
-
         const fetchPartners = useFetchPartners(
             setLoading,
             setPartners,
@@ -46,19 +47,15 @@ export const PartnerList: React.FC = () => {
             pageNation: partnerGroupPageNation,
             setPageNation: setPartnerGroupPageNation,
         } = usePageNation<PartnerGroupCriteriaType>();
-
         const {
             modalIsOpen: partnerGroupModalIsOpen,
             setModalIsOpen: setPartnerGroupModalIsOpen,
         } = useModal();
-
-
         const {
             partnerGroups,
             setPartnerGroups,
             partnerGroupService
         } = usePartnerGroup();
-
         const fetchPartnerGroups = useFetchPartnerGroups(
             setLoading,
             setPartnerGroups,

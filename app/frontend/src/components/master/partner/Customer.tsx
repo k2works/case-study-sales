@@ -29,17 +29,11 @@ export const Customer: React.FC = () => {
     const Content: React.FC = () => {
         const [loading, setLoading] = useState<boolean>(false);
         const { message, setMessage, error, setError } = useMessage();
-        const { pageNation, setPageNation, criteria, setCriteria } = usePageNation<CustomerCriteriaType>();
-        const {pageNation: regionPageNation, setPageNation: setRegionPageNation} = usePageNation<RegionCriteriaType>();
-        const { modalIsOpen, setModalIsOpen, isEditing, setIsEditing, editId, setEditId } = useModal();
-        const { modalIsOpen: searchModalIsOpen, setModalIsOpen: setSearchModalIsOpen } = useModal();
-        const {
-            modalIsOpen: regionModalIsOpen,
-            setModalIsOpen: setRegionModalIsOpen,
-            setIsEditing: setRegionIsEditing,
-            setEditId: setRegionEditId
-        } = useModal();
 
+        const { pageNation, setPageNation, criteria, setCriteria } = usePageNation<CustomerCriteriaType>();
+        const { modalIsOpen: searchModalIsOpen, setModalIsOpen: setSearchModalIsOpen } = useModal();
+
+        const { modalIsOpen, setModalIsOpen, isEditing, setIsEditing, editId, setEditId } = useModal();
         const {
             initialCustomer,
             customers,
@@ -52,7 +46,6 @@ export const Customer: React.FC = () => {
             newShipping,
             setNewShipping
         } = useCustomer();
-
         const fetchCustomers = useFetchCustomers(
             setLoading,
             setCustomers,
@@ -62,13 +55,18 @@ export const Customer: React.FC = () => {
             customerService
         );
 
+        const {pageNation: regionPageNation, setPageNation: setRegionPageNation} = usePageNation<RegionCriteriaType>();
+        const {
+            modalIsOpen: regionModalIsOpen,
+            setModalIsOpen: setRegionModalIsOpen,
+            setIsEditing: setRegionIsEditing,
+        } = useModal();
         const {
             regions,
             setRegions,
             setNewRegion,
             regionService
         } = useRegion();
-
         const fetchRegions = useFetchRegions(
             setLoading,
             setRegions,

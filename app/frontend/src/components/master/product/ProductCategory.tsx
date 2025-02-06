@@ -18,6 +18,7 @@ export const ProductCategory: React.FC = () => {
     const Content: React.FC = () => {
         const [loading, setLoading] = useState<boolean>(false);
         const {message, setMessage, error, setError} = useMessage();
+
         const {pageNation, setPageNation, criteria, setCriteria} = usePageNation<ProductCategoryCriteriaType>();
         const {modalIsOpen: searchModalIsOpen, setModalIsOpen: setSearchModalIsOpen,} = useModal();
 
@@ -29,14 +30,6 @@ export const ProductCategory: React.FC = () => {
             editId,
             setEditId
         } = useModal();
-
-        const {
-            modalIsOpen: productModalIsOpen,
-            setModalIsOpen: setProductModalIsOpen,
-            setIsEditing: setProductIsEditing,
-            setEditId: setProductEditId
-        } = useModal();
-
         const {
             initialProductCategory,
             productCategories,
@@ -47,7 +40,6 @@ export const ProductCategory: React.FC = () => {
             setSearchProductCategoryCriteria,
             productCategoryService
         } = useProductCategory();
-
         const fetchProductCategories = useFetchProductCategories(
             setLoading,
             setProductCategories,
@@ -56,12 +48,18 @@ export const ProductCategory: React.FC = () => {
             showErrorMessage,
             productCategoryService
         );
+
+        const {
+            modalIsOpen: productModalIsOpen,
+            setModalIsOpen: setProductModalIsOpen,
+            setIsEditing: setProductIsEditing,
+            setEditId: setProductEditId
+        } = useModal();
         const {
             products,
             setProducts,
             productService
         } = useProduct();
-
         const fetchProducts = useFetchProducts(
             setLoading,
             setProducts,

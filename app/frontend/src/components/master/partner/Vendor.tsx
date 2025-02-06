@@ -17,9 +17,11 @@ export const Vendor: React.FC = () => {
     const Content: React.FC = () => {
         const [loading, setLoading] = useState<boolean>(false);
         const { message, setMessage, error, setError } = useMessage();
+
         const { pageNation, setPageNation, criteria, setCriteria } = usePageNation<VendorCriteriaType>();
-        const { modalIsOpen, setModalIsOpen, isEditing, setIsEditing, editId, setEditId } = useModal();
         const { modalIsOpen: searchModalIsOpen, setModalIsOpen: setSearchModalIsOpen } = useModal();
+
+        const { modalIsOpen, setModalIsOpen, isEditing, setIsEditing, editId, setEditId } = useModal();
         const {
             initialVendor,
             vendors,
@@ -30,7 +32,6 @@ export const Vendor: React.FC = () => {
             setSearchVendorCriteria,
             vendorService
         } = useVendor();
-
         const fetchVendors = useFetchVendors(
             setLoading,
             setVendors,

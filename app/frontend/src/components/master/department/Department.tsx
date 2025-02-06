@@ -25,17 +25,11 @@ export const Department: React.FC = () => {
     const Content: React.FC = () => {
         const [loading, setLoading] = useState<boolean>(false);
         const {message, setMessage, error, setError} = useMessage();
-        const {pageNation, setPageNation, criteria, setCriteria} = usePageNation<DepartmentCriteriaType>();
-        const {pageNation: employeePageNation, setPageNation: setEmployeePageNation} = usePageNation<EmployeeCriteriaType>();
-        const {modalIsOpen, setModalIsOpen, isEditing, setIsEditing, editId, setEditId} = useModal();
-        const {modalIsOpen: searchModalIsOpen, setModalIsOpen: setSearchModalIsOpen,} = useModal();
-        const {
-            modalIsOpen: employeeModalIsOpen,
-            setModalIsOpen: setEmployeeModalIsOpen,
-            setIsEditing: setEmployeeIsEditing,
-            setEditId: setEmployeeEditId
-        } = useModal();
 
+        const {pageNation, setPageNation, criteria, setCriteria} = usePageNation<DepartmentCriteriaType>();
+        const {modalIsOpen, setModalIsOpen, isEditing, setIsEditing, editId, setEditId} = useModal();
+
+        const {modalIsOpen: searchModalIsOpen, setModalIsOpen: setSearchModalIsOpen,} = useModal();
         const {
             initialDepartment,
             departments,
@@ -46,7 +40,6 @@ export const Department: React.FC = () => {
             setSearchDepartmentCriteria,
             departmentService
         } = useDepartment();
-
         const fetchDepartments = useFetchDepartments(
             setLoading,
             setDepartments,
@@ -57,11 +50,17 @@ export const Department: React.FC = () => {
         );
 
         const {
+            modalIsOpen: employeeModalIsOpen,
+            setModalIsOpen: setEmployeeModalIsOpen,
+            setIsEditing: setEmployeeIsEditing,
+            setEditId: setEmployeeEditId
+        } = useModal();
+        const {pageNation: employeePageNation, setPageNation: setEmployeePageNation} = usePageNation<EmployeeCriteriaType>();
+        const {
             employees,
             setEmployees,
             employeeService
         } = useEmployee();
-
         const fetchEmployees = useFetchEmployees(
             setLoading,
             setEmployees,

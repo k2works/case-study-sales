@@ -36,13 +36,8 @@ export const ProductItem: React.FC = () => {
     const Content: React.FC = () => {
         const [loading, setLoading] = useState<boolean>(false);
         const {message, setMessage, error, setError} = useMessage();
-        const {pageNation, setPageNation, criteria, setCriteria} = usePageNation<ProductCriteriaType>();
-        const {pageNation: substitutePageNation, setPageNation: setSubstitutePageNation} = usePageNation();
-        const {pageNation: bomPageNation, setPageNation: setBomPageNation} = usePageNation();
-        const {pageNation: productCategoryPageNation, setPageNation: setProductCategoryPageNation} = usePageNation<ProductCategoryCriteriaType>();
-        const {pageNation: customerPageNation, setPageNation: setCustomerPageNation} = usePageNation<CustomerCriteriaType>();
-        const {pageNation: vendorPageNation, setPageNation: setVendorPageNation} = usePageNation<VendorCriteriaType>();
 
+        const {pageNation, setPageNation, criteria, setCriteria} = usePageNation<ProductCriteriaType>();
         const {modalIsOpen: searchModalIsOpen, setModalIsOpen: setSearchModalIsOpen,} = useModal();
 
         const {
@@ -53,43 +48,6 @@ export const ProductItem: React.FC = () => {
             editId,
             setEditId
         } = useModal();
-
-        const {
-            modalIsOpen: productModalIsOpen,
-            setModalIsOpen: setProductModalIsOpen,
-            setIsEditing: setProductIsEditing,
-            setEditId: setProductEditId
-        } = useModal();
-
-        const {
-            modalIsOpen: bomModalIsOpen,
-            setModalIsOpen: setBomModalIsOpen,
-            setIsEditing: setBomIsEditing,
-            setEditId: setBomEditId
-        } = useModal();
-
-        const {
-            modalIsOpen: productCategoryModalIsOpen,
-            setModalIsOpen: setProductCategoryModalIsOpen
-        } = useModal();
-
-        const {
-            modalIsOpen: customerModalIsOpen,
-            setModalIsOpen: setCustomerModalIsOpen,
-            setEditId: setCustomerEditId
-        } = useModal();
-
-        const {
-            modalIsOpen: vendorModalIsOpen,
-            setModalIsOpen: setVendorModalIsOpen,
-            setEditId: setVendorEditId
-        } = useModal();
-
-        const {
-            modalIsOpen: vendorSearchModalIsOpen,
-            setModalIsOpen: setVendorSearchModalIsOpen,
-        } = useModal();
-
         const {
             initialProduct,
             products,
@@ -100,7 +58,6 @@ export const ProductItem: React.FC = () => {
             setSearchProductCriteria,
             productService
         } = useProduct();
-
         const fetchProducts = useFetchProducts(
             setLoading,
             setProducts,
@@ -110,12 +67,19 @@ export const ProductItem: React.FC = () => {
             productService
         );
 
+        const {pageNation: substitutePageNation, setPageNation: setSubstitutePageNation} = usePageNation();
+        const {
+            modalIsOpen: productModalIsOpen,
+            setModalIsOpen: setProductModalIsOpen,
+            setIsEditing: setProductIsEditing,
+            setEditId: setProductEditId
+        } = useModal();
+
         const {
             products: substitutes,
             setProducts: setSubstitutes,
             productService: substituteService
         } = useProduct();
-
         const fetchSubstitutes = useFetchSubstitutes(
             setLoading,
             setSubstitutes,
@@ -125,12 +89,18 @@ export const ProductItem: React.FC = () => {
             substituteService
         );
 
+        const {pageNation: bomPageNation, setPageNation: setBomPageNation} = usePageNation();
+        const {
+            modalIsOpen: bomModalIsOpen,
+            setModalIsOpen: setBomModalIsOpen,
+            setIsEditing: setBomIsEditing,
+            setEditId: setBomEditId
+        } = useModal();
         const {
             products: boms,
             setProducts: setBoms,
             productService: bomService
         } = useProduct();
-
         const fetchBoms = useFetchBoms(
             setLoading,
             setBoms,
@@ -140,12 +110,16 @@ export const ProductItem: React.FC = () => {
             bomService
         );
 
+        const {pageNation: productCategoryPageNation, setPageNation: setProductCategoryPageNation} = usePageNation<ProductCategoryCriteriaType>();
+        const {
+            modalIsOpen: productCategoryModalIsOpen,
+            setModalIsOpen: setProductCategoryModalIsOpen
+        } = useModal();
         const {
             productCategories,
             setProductCategories,
             productCategoryService
         } = useProductCategory();
-
         const fetchProductCategories = useFetchProductCategories(
             setLoading,
             setProductCategories,
@@ -155,12 +129,17 @@ export const ProductItem: React.FC = () => {
             productCategoryService
         );
 
+        const {pageNation: customerPageNation, setPageNation: setCustomerPageNation} = usePageNation<CustomerCriteriaType>();
+        const {
+            modalIsOpen: customerModalIsOpen,
+            setModalIsOpen: setCustomerModalIsOpen,
+            setEditId: setCustomerEditId
+        } = useModal();
         const {
             customers,
             setCustomers,
             customerService,
         } = useCustomer();
-
         const fetchCustomers = useFetchCustomers(
             setLoading,
             setCustomers,
@@ -170,12 +149,21 @@ export const ProductItem: React.FC = () => {
             customerService
         );
 
+        const {pageNation: vendorPageNation, setPageNation: setVendorPageNation} = usePageNation<VendorCriteriaType>();
+        const {
+            modalIsOpen: vendorModalIsOpen,
+            setModalIsOpen: setVendorModalIsOpen,
+            setEditId: setVendorEditId
+        } = useModal();
+        const {
+            modalIsOpen: vendorSearchModalIsOpen,
+            setModalIsOpen: setVendorSearchModalIsOpen,
+        } = useModal();
         const {
             vendors,
             setVendors,
             vendorService,
         } = useVendor();
-
         const fetchVendors = useFetchVendors(
             setLoading,
             setVendors,

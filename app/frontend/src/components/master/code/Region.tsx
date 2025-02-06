@@ -15,8 +15,8 @@ export const Region: React.FC = () => {
     const Content: React.FC = () => {
         const [loading, setLoading] = useState<boolean>(false);
         const { message, setMessage, error, setError } = useMessage();
-        const { pageNation, setPageNation, criteria, setCriteria } =
-            usePageNation<RegionCriteriaType>();
+
+        const { pageNation, setPageNation, criteria, setCriteria } = usePageNation<RegionCriteriaType>();
         const {
             modalIsOpen,
             setModalIsOpen,

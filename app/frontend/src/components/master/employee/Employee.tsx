@@ -20,20 +20,11 @@ export const Employee: React.FC = () => {
     const Content: React.FC = () => {
         const [loading, setLoading] = useState<boolean>(false);
         const {message, setMessage, error, setError} = useMessage();
+
         const {pageNation, setPageNation, criteria, setCriteria} = usePageNation<EmployeeCriteriaType>();
-        const {pageNation: departmentPageNation, setPageNation: setDepartmentPageNation} = usePageNation<DepartmentCriteriaType>();
-        const {pageNation: userPageNation, setPageNation: setUserPageNation} = usePageNation();
-        const {modalIsOpen, setModalIsOpen, isEditing, setIsEditing, editId, setEditId} = useModal();
-        const {
-            modalIsOpen: departmentModalIsOpen,
-            setModalIsOpen: setDepartmentModalIsOpen
-        } = useModal();
-        const {
-            modalIsOpen: userModalIsOpen,
-            setModalIsOpen: setUserModalIsOpen
-        } = useModal();
         const {modalIsOpen: searchModalIsOpen, setModalIsOpen: setSearchModalIsOpen,} = useModal();
 
+        const {modalIsOpen, setModalIsOpen, isEditing, setIsEditing, editId, setEditId} = useModal();
         const {
             initialEmployee,
             employees,
@@ -44,7 +35,6 @@ export const Employee: React.FC = () => {
             setSearchEmployeeCriteria,
             employeeService
         } = useEmployee();
-
         const fetchEmployees = useFetchEmployees(
             setLoading,
             setEmployees,
@@ -54,12 +44,16 @@ export const Employee: React.FC = () => {
             employeeService
         );
 
+        const {pageNation: departmentPageNation, setPageNation: setDepartmentPageNation} = usePageNation<DepartmentCriteriaType>();
+        const {
+            modalIsOpen: departmentModalIsOpen,
+            setModalIsOpen: setDepartmentModalIsOpen
+        } = useModal();
         const {
             departments,
             setDepartments,
             departmentService
         } = useDepartment();
-
         const fetchDepartments = useFetchDepartments(
             setLoading,
             setDepartments,
@@ -69,12 +63,16 @@ export const Employee: React.FC = () => {
             departmentService
         );
 
+        const {pageNation: userPageNation, setPageNation: setUserPageNation} = usePageNation();
+        const {
+            modalIsOpen: userModalIsOpen,
+            setModalIsOpen: setUserModalIsOpen
+        } = useModal();
         const {
             users,
             setUsers,
             userService
         } = useUser();
-
         const fetchUsers = useFetchUsers(
             setLoading,
             setUsers,

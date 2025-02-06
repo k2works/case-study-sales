@@ -27,10 +27,11 @@ export const PartnerCategory: React.FC = () => {
     const Content: React.FC = () => {
         const [loading, setLoading] = useState<boolean>(false);
         const { message, setMessage, error, setError } = useMessage();
+
         const { pageNation, setPageNation, criteria, setCriteria } = usePageNation<PartnerCategoryCriteriaType>();
-        const { pageNation: partnerPageNation, setPageNation: setPartnerPageNation } = usePageNation<PartnerCriteriaType>();
-        const { modalIsOpen, setModalIsOpen, isEditing, setIsEditing, editId, setEditId } = useModal();
         const {modalIsOpen: searchModalIsOpen, setModalIsOpen: setSearchModalIsOpen,} = useModal();
+
+        const { modalIsOpen, setModalIsOpen, isEditing, setIsEditing, editId, setEditId } = useModal();
         const {
             modalIsOpen: categoryItemModalIsOpen,
             setModalIsOpen: setCategoryItemModalIsOpen,
@@ -49,7 +50,6 @@ export const PartnerCategory: React.FC = () => {
             setSearchPartnerCategoryCriteria,
             partnerCategoryService
         } = usePartnerCategory();
-
         const fetchPartnerCategories = useFetchPartnerCategories(
             setLoading,
             setPartnerCategories,
@@ -59,12 +59,18 @@ export const PartnerCategory: React.FC = () => {
             partnerCategoryService
         );
 
+        const { pageNation: partnerPageNation, setPageNation: setPartnerPageNation } = usePageNation<PartnerCriteriaType>();
+        const {
+            modalIsOpen: partnerModalIsOpen,
+            setModalIsOpen: setPartnerModalIsOpen,
+            setIsEditing: setPartnerIsEditing,
+            setEditId: setPartnerEditId,
+        } = useModal();
         const {
             partners,
             setPartners,
             partnerService,
         } = usePartner();
-
         const fetchPartners = useFetchPartners(
             setLoading,
             setPartners,
@@ -73,13 +79,6 @@ export const PartnerCategory: React.FC = () => {
             showErrorMessage,
             partnerService
         );
-
-        const {
-            modalIsOpen: partnerModalIsOpen,
-            setModalIsOpen: setPartnerModalIsOpen,
-            setIsEditing: setPartnerIsEditing,
-            setEditId: setPartnerEditId,
-        } = useModal();
 
         useEffect(() => {
             (async () => {
