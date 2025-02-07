@@ -5,6 +5,7 @@ import {EmployeeCollectionAddListView} from "../../../views/master/employee/Empl
 import {EmployeeType} from "../../../models";
 import {useDepartmentContext} from "../../../providers/Department.tsx";
 import {useEmployeeContext} from "../../../providers/Employee.tsx";
+import {EmployeeSelectModal} from "./EmployeeSelectModal.tsx";
 
 export const DepartmentSingle: React.FC = () => {
     const {
@@ -97,6 +98,8 @@ export const DepartmentSingle: React.FC = () => {
                 headerItems={{handleCreateOrUpdateDepartment, handleCloseModal}}
                 formItems={{newDepartment, setNewDepartment}}
             />
+
+            <EmployeeSelectModal/>
 
             {isEditing && (
                 <EmployeeCollectionAddListView

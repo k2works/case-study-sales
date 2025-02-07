@@ -5,9 +5,6 @@ import LoadingIndicator from "../../../views/application/LoadingIndicatior.tsx";
 import {DepartmentProvider, useDepartmentContext} from "../../../providers/Department.tsx";
 import {EmployeeProvider, useEmployeeContext} from "../../../providers/Employee.tsx";
 import {DepartmentCollection} from "./DepartmentCollection.tsx";
-import {DepartmentEditModal} from "./DepartmentEditModal.tsx";
-import {DepartmentSearchModal} from "./DepartmentSearchModal.tsx";
-import {EmployeeSelectModal} from "./EmployeeSelectModal.tsx";
 
 export const DepartmentContainer: React.FC = () => {
     const Content: React.FC = () => {
@@ -39,12 +36,7 @@ export const DepartmentContainer: React.FC = () => {
                 {loading ? (
                     <LoadingIndicator/>
                 ) : (
-                    <>
-                        <DepartmentSearchModal/>
-                        <DepartmentEditModal/>
-                        <EmployeeSelectModal/>
-                        <DepartmentCollection/>
-                    </>
+                    <DepartmentCollection/>
                 )}
             </>
         );

@@ -3,6 +3,8 @@ import {useDepartmentContext} from "../../../providers/Department.tsx";
 import {DepartmentCollectionView} from "../../../views/master/department/DepartmentCollection.tsx";
 import {DepartmentIdType, DepartmentType} from "../../../models";
 import {showErrorMessage} from "../../application/utils.ts";
+import {DepartmentSearchModal} from "./DepartmentSearchModal.tsx";
+import {DepartmentEditModal} from "./DepartmentEditModal.tsx";
 
 export const DepartmentCollection: React.FC = () => {
     const {
@@ -96,13 +98,17 @@ export const DepartmentCollection: React.FC = () => {
     }
 
     return (
-        <DepartmentCollectionView
-            error={error}
-            message={message}
-            searchItems={{searchDepartmentCriteria, setSearchDepartmentCriteria, handleOpenSearchModal,}}
-            headerItems={{handleOpenModal, handleCheckToggleCollection:handleCheckAllDepartment, handleDeleteCheckedCollection}}
-            collectionItems={{departments, handleOpenModal, handleDeleteDepartment, handleCheckDepartment}}
-            pageNationItems={{pageNation, fetchDepartments: fetchDepartments.load, criteria}}
-        />
+        <>
+            <DepartmentSearchModal/>
+            <DepartmentEditModal/>
+            <DepartmentCollectionView
+                error={error}
+                message={message}
+                searchItems={{searchDepartmentCriteria, setSearchDepartmentCriteria, handleOpenSearchModal,}}
+                headerItems={{handleOpenModal, handleCheckToggleCollection:handleCheckAllDepartment, handleDeleteCheckedCollection}}
+                collectionItems={{departments, handleOpenModal, handleDeleteDepartment, handleCheckDepartment}}
+                pageNationItems={{pageNation, fetchDepartments: fetchDepartments.load, criteria}}
+            />
+        </>
     );
 }

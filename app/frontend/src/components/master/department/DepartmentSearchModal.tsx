@@ -19,12 +19,31 @@ export const DepartmentSearchModal: React.FC = () => {
         departmentService
     } = useDepartmentContext();
 
-    const handleOpenSearchModal = () => {
-        setSearchModalIsOpen(true);
-    }
-
     const handleCloseSearchModal = () => {
         setSearchModalIsOpen(false);
+    }
+
+    const handleSelectSearchModal = async () => {
+        if (!searchDepartmentCriteria) {
+            return;
+        }
+        setLoading(true);
+        try {
+            const result = await departmentService.search(searchDepartmentCriteria);
+            setDepartments(result ? result.list : []);
+            if (result.list.length === 0) {
+                showErrorMessage(`検索結果は0件です`, setError);
+            } else {
+                setCriteria(searchDepartmentCriteria);
+                setPageNation(result);
+                setMessage("");
+                setError("");
+            }
+        } catch (error: any) {
+            showErrorMessage(`実行履歴情報の検索に失敗しました: ${error?.message}`, setError);
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
@@ -40,28 +59,7 @@ export const DepartmentSearchModal: React.FC = () => {
                 <DepartmentSearchSingleView
                     criteria={searchDepartmentCriteria}
                     setCondition={setSearchDepartmentCriteria}
-                    handleSelect={async () => {
-                        if (!searchDepartmentCriteria) {
-                            return;
-                        }
-                        setLoading(true);
-                        try {
-                            const result = await departmentService.search(searchDepartmentCriteria);
-                            setDepartments(result ? result.list : []);
-                            if (result.list.length === 0) {
-                                showErrorMessage(`検索結果は0件です`, setError);
-                            } else {
-                                setCriteria(searchDepartmentCriteria);
-                                setPageNation(result);
-                                setMessage("");
-                                setError("");
-                            }
-                        } catch (error: any) {
-                            showErrorMessage(`実行履歴情報の検索に失敗しました: ${error?.message}`, setError);
-                        } finally {
-                            setLoading(false);
-                        }
-                    }}
+                    handleSelect={handleSelectSearchModal}
                     handleClose={handleCloseSearchModal}
                 />
             }

@@ -7,7 +7,6 @@ import {useEmployeeContext} from "../../../providers/Employee.tsx";
 
 export const EmployeeSelectModal: React.FC = () => {
     const {
-        setMessage,
         setError,
         newDepartment,
         setNewDepartment
@@ -16,19 +15,11 @@ export const EmployeeSelectModal: React.FC = () => {
     const {
         modalIsOpen: employeeModalIsOpen,
         setModalIsOpen: setEmployeeModalIsOpen,
-        setIsEditing: setEmployeeIsEditing,
         setEditId: setEmployeeEditId,
         employees,
         fetchEmployees,
         pageNation: employeePageNation,
     } = useEmployeeContext();
-
-    const handleOpenEmployeeModal = () => {
-        setMessage("");
-        setError("");
-        setEmployeeIsEditing(true);
-        setEmployeeModalIsOpen(true);
-    };
 
     const handleCloseEmployeeModal = () => {
         setError("");
@@ -43,21 +34,6 @@ export const EmployeeSelectModal: React.FC = () => {
                 ...employee,
                 addFlag: true,
                 deleteFlag: false
-            });
-        }
-        setNewDepartment({
-            ...newDepartment,
-            employees: newEmployees
-        });
-    }
-
-    const handleDeleteEmployee = (employee: EmployeeType) => {
-        const newEmployees = newDepartment.employees.filter((e: EmployeeType) => e.empCode.value !== employee.empCode.value);
-        if (employee.empCode.value) {
-            newEmployees.push({
-                ...employee,
-                addFlag: false,
-                deleteFlag: true
             });
         }
         setNewDepartment({
