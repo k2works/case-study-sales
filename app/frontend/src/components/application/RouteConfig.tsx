@@ -6,8 +6,6 @@ import {User} from "../system/User.tsx";
 import {NotFound} from "../../views/application/NotFound.tsx";
 import {RoleType} from "../../models";
 import {Login, Logout} from "../system/Auth.tsx";
-import {Department} from "../master/department/Department.tsx";
-import {Employee} from "../master/employee/Employee.tsx";
 import {Product} from "../master/product/Product.tsx";
 import {SiteLayout} from "../../views/SiteLayout.tsx";
 import {ProductCategory} from "../master/product/ProductCategory.tsx";
@@ -23,6 +21,7 @@ import {PartnerList} from "../master/partner/PartnerList.tsx";
 import {Customer} from "../master/partner/Customer.tsx";
 import {Vendor} from "../master/partner/Vendor.tsx";
 import {DepartmentContainer} from "../master/department/DepartmentContainer.tsx";
+import {EmployeeContainer} from "../master/employee/EmployeeContainer.tsx";
 
 export const RouteConfig: React.FC = () => {
     const ProductCategoryPage = () => {
@@ -100,7 +99,7 @@ export const RouteConfig: React.FC = () => {
                                                               allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/department" element={<RouteAuthGuard component={<DepartmentContainer/>} redirectPath="/"
                                                                    allowedRoles={[RoleType.ADMIN]}/>}/>
-                <Route path="/employee" element={<RouteAuthGuard component={<Employee/>} redirectPath="/"
+                <Route path="/employee" element={<RouteAuthGuard component={<EmployeeContainer/>} redirectPath="/"
                                                                  allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/product" element={<RouteAuthGuard component={<Product/>} redirectPath="/"
                                                                 allowedRoles={[RoleType.ADMIN]}/>}/>
