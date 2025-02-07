@@ -10,8 +10,6 @@ import {SiteLayout} from "../../views/SiteLayout.tsx";
 import {Audit} from "../system/Audit.tsx";
 import {Download} from "../system/Download.tsx";
 import {Partner} from "../master/partner/Partner.tsx";
-import {Code} from "../master/code/Code.tsx";
-import {Region} from "../master/code/Region.tsx";
 import {PartnerCategory} from "../master/partner/PartnerCategory.tsx";
 import {PartnerGroup} from "../master/partner/PartnerGroup.tsx";
 import {PartnerList} from "../master/partner/PartnerList.tsx";
@@ -22,6 +20,8 @@ import {EmployeeContainer} from "../master/employee/EmployeeContainer.tsx";
 import {ProductContainer} from "../master/product/ProductContainer.tsx";
 import {ProductItemContainer} from "../master/product/item/ProductItemContainer.tsx";
 import {ProductCategoryContainer} from "../master/product/category/ProductCategoryContainer.tsx";
+import {CodeContainer} from "../master/code/CodeContainer.tsx";
+import {RegionContainer} from "../master/code/region/RegionContainer.tsx";
 
 export const RouteConfig: React.FC = () => {
     const ProductCategoryPage = () => {
@@ -43,7 +43,7 @@ export const RouteConfig: React.FC = () => {
     const RegionPage = () => {
         return (
             <SiteLayout>
-                <Region/>
+                <RegionContainer/>
             </SiteLayout>
         );
     }
@@ -119,7 +119,7 @@ export const RouteConfig: React.FC = () => {
                                                                      allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/vendor" element={<RouteAuthGuard component={<VendorPage/>} redirectPath="/"
                                                                      allowedRoles={[RoleType.ADMIN]}/>}/>
-                <Route path="/code" element={<RouteAuthGuard component={<Code/>} redirectPath="/"
+                <Route path="/code" element={<RouteAuthGuard component={<CodeContainer/>} redirectPath="/"
                                                                 allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/region" element={<RouteAuthGuard component={<RegionPage/>} redirectPath="/"
                                                              allowedRoles={[RoleType.ADMIN]}/>}/>
