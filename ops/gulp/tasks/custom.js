@@ -303,7 +303,17 @@ const astro = {
     copyAstro: () => {
         return src(path.join(journalPath, 'dist/**'), {encoding: false})
             .pipe(dest('./public/journal'));
-    }
+    },
+    runAstro: () => {
+        const command = 'npm run dev';
+        return src(journalNpmPath, { read: false })
+            .pipe(exec(command, { cwd: journalPath }));
+    },
+    openAstro: () => {
+        const command = isWindows ? 'start' : 'open';
+        return src(journalNpmPath, {read: false})
+            .pipe(exec(`${command} http://localhost:4321`));
+    },
 }
 
 exports.assets = assets;
@@ -352,6 +362,7 @@ const astroBuildTasks = () => {
 }
 exports.astroBuildTasks = astroBuildTasks;
 exports.astro = astro.copyAstro;
+exports.astro = astro;
 
 exports.app = app;
 exports.api = api;
