@@ -1,13 +1,13 @@
 import React from "react";
 import {useTab} from "../../application/hooks.ts";
 import {SiteLayout} from "../../../views/SiteLayout.tsx";
-import {PartnerCategoryContainer} from "./category/PartnerCategoryContainer.tsx";
-import {PartnerGroupContainer} from "./group/PartnerGroupContainer.tsx";
-import {PartnerListContainer} from "./list/PartnerListContainer.tsx";
-import {CustomerContainer} from "./customer/CustomerContainer.tsx";
-import {VendorContainer} from "./vendor/VendorContainer.tsx";
+import {PartnerCategory} from "./PartnerCategory.tsx";
+import {PartnerGroup} from "./PartnerGroup.tsx";
+import {PartnerList} from "./PartnerList.tsx";
+import {Customer} from "./Customer.tsx";
+import {Vendor} from "./Vendor.tsx";
 
-export const Partner: React.FC = () => {
+export const PartnerContainer: React.FC = () => {
     const {
         Tab,
         TabList,
@@ -26,19 +26,19 @@ export const Partner: React.FC = () => {
                     <Tab>仕入先</Tab>
                 </TabList>
                 <TabPanel>
-                    <PartnerCategoryContainer/>
+                    <PartnerCategory/>
                 </TabPanel>
                 <TabPanel>
-                    <PartnerGroupContainer/>
+                    <PartnerGroup/>
                 </TabPanel>
                 <TabPanel>
-                    <PartnerListContainer/>
+                    <PartnerList/>
                 </TabPanel>
                 <TabPanel>
-                    <CustomerContainer/>
+                    <Customer/>
                 </TabPanel>
                 <TabPanel>
-                    <VendorContainer/>
+                    <Vendor/>
                 </TabPanel>
             </Tabs>
         );

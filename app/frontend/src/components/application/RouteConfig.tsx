@@ -9,12 +9,6 @@ import {Login, Logout} from "../system/Auth.tsx";
 import {SiteLayout} from "../../views/SiteLayout.tsx";
 import {Audit} from "../system/Audit.tsx";
 import {Download} from "../system/Download.tsx";
-import {Partner} from "../master/partner/Partner.tsx";
-import {PartnerCategory} from "../master/partner/PartnerCategory.tsx";
-import {PartnerGroup} from "../master/partner/PartnerGroup.tsx";
-import {PartnerList} from "../master/partner/PartnerList.tsx";
-import {Customer} from "../master/partner/Customer.tsx";
-import {Vendor} from "../master/partner/Vendor.tsx";
 import {DepartmentContainer} from "../master/department/DepartmentContainer.tsx";
 import {EmployeeContainer} from "../master/employee/EmployeeContainer.tsx";
 import {ProductContainer} from "../master/product/ProductContainer.tsx";
@@ -22,6 +16,12 @@ import {ProductItemContainer} from "../master/product/item/ProductItemContainer.
 import {ProductCategoryContainer} from "../master/product/category/ProductCategoryContainer.tsx";
 import {CodeContainer} from "../master/code/CodeContainer.tsx";
 import {RegionContainer} from "../master/code/region/RegionContainer.tsx";
+import {PartnerContainer} from "../master/partner/PartnerContainer.tsx";
+import {PartnerCategoryContainer} from "../master/partner/category/PartnerCategoryContainer.tsx";
+import {PartnerGroupContainer} from "../master/partner/group/PartnerGroupContainer.tsx";
+import {PartnerListContainer} from "../master/partner/list/PartnerListContainer.tsx";
+import {CustomerContainer} from "../master/partner/customer/CustomerContainer.tsx";
+import {VendorContainer} from "../master/partner/vendor/VendorContainer.tsx";
 
 export const RouteConfig: React.FC = () => {
     const ProductCategoryPage = () => {
@@ -51,7 +51,7 @@ export const RouteConfig: React.FC = () => {
     const PartnerCategoryPage = () => {
         return (
             <SiteLayout>
-                <PartnerCategory/>
+                <PartnerCategoryContainer/>
             </SiteLayout>
         );
     }
@@ -59,7 +59,7 @@ export const RouteConfig: React.FC = () => {
     const PartnerGroupPage = () => {
         return (
             <SiteLayout>
-                <PartnerGroup/>
+                <PartnerGroupContainer/>
             </SiteLayout>
         );
     }
@@ -67,7 +67,7 @@ export const RouteConfig: React.FC = () => {
     const PartnerListPage = () => {
         return (
             <SiteLayout>
-                <PartnerList/>
+                <PartnerListContainer/>
             </SiteLayout>
         );
     }
@@ -75,7 +75,7 @@ export const RouteConfig: React.FC = () => {
     const CustomerPage = () => {
         return (
             <SiteLayout>
-                <Customer/>
+                <CustomerContainer/>
             </SiteLayout>
         );
     }
@@ -83,7 +83,7 @@ export const RouteConfig: React.FC = () => {
     const VendorPage = () => {
         return (
             <SiteLayout>
-                <Vendor/>
+                <VendorContainer/>
             </SiteLayout>
         );
     }
@@ -107,7 +107,7 @@ export const RouteConfig: React.FC = () => {
                                                                 allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/product-item" element={<RouteAuthGuard component={<ProductDetailPage/>} redirectPath="/"
                                                                 allowedRoles={[RoleType.ADMIN]}/>}/>
-                <Route path="/partner" element={<RouteAuthGuard component={<Partner/>} redirectPath="/"
+                <Route path="/partner" element={<RouteAuthGuard component={<PartnerContainer/>} redirectPath="/"
                                                                      allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/partner-category" element={<RouteAuthGuard component={<PartnerCategoryPage/>} redirectPath="/"
                                                                 allowedRoles={[RoleType.ADMIN]}/>}/>

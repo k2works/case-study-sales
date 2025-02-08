@@ -4,8 +4,7 @@ import { useModal } from "../components/application/hooks.ts";
 import { showErrorMessage } from "../components/application/utils.ts";
 import { useMessage } from "../components/application/Message.tsx";
 import { ProductCategoryServiceType } from "../services/master/productCategory.ts";
-import { ProductServiceType } from "../services/master/product.ts";
-import {ProductCategoryCriteriaType, ProductCategoryType, ProductType} from "../models/master/product";
+import {ProductCategoryCriteriaType, ProductCategoryType} from "../models/master/product";
 import {
     useFetchProductCategories,
     useProductCategory
