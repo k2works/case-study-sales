@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {FaBars, FaTimes} from "react-icons/fa";
 import {RoleType} from "../../models";
-import {getRoleFromUser} from "../../components/application/RouteAuthGuard.tsx";
+import {useAuthUser} from "../../components/application/RouteAuthGuard.tsx";
 import Env from "../../env.ts";
 
 interface NavItemProps {
@@ -29,7 +29,7 @@ const SubNavItem: React.FC<SubNavItemProps> = ({id, to, children}) => (
 );
 
 const NaveItems: React.FC = () => {
-    const role = getRoleFromUser();
+    const role = useAuthUser();
     return (
         <ul>
             <NavItem id="side-nav-home-nav" to="/"
