@@ -15,9 +15,8 @@ export const PartnerContainer: React.FC = () => {
         Tabs,
     } = useTab();
 
-    //TODO: React components should not be nested
-    const Content: React.FC = () => {
-        return (
+    return (
+        <SiteLayout>
             <Tabs>
                 <TabList>
                     <Tab>分類</Tab>
@@ -42,12 +41,6 @@ export const PartnerContainer: React.FC = () => {
                     <VendorContainer/>
                 </TabPanel>
             </Tabs>
-        );
-    }
-
-    return (
-        <SiteLayout>
-            <Content/>
         </SiteLayout>
     );
 }

@@ -11,8 +11,8 @@ export const CodeContainer: React.FC = () => {
         Tabs,
     } = useTab();
 
-    const Content: React.FC = () => {
-        return (
+    return (
+        <SiteLayout>
             <Tabs>
                 <TabList>
                     <Tab>地域</Tab>
@@ -21,12 +21,6 @@ export const CodeContainer: React.FC = () => {
                     <RegionContainer/>
                 </TabPanel>
             </Tabs>
-        );
-    }
-
-    return (
-        <SiteLayout>
-            <Content/>
         </SiteLayout>
     );
 }

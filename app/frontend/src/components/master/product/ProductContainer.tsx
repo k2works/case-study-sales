@@ -12,8 +12,8 @@ export const ProductContainer: React.FC = () => {
         Tabs,
     } = useTab();
 
-    const Content: React.FC = () => {
-        return (
+    return (
+        <SiteLayout>
             <Tabs>
                 <TabList>
                     <Tab>分類</Tab>
@@ -26,12 +26,6 @@ export const ProductContainer: React.FC = () => {
                     <ProductItemContainer/>
                 </TabPanel>
             </Tabs>
-        );
-    }
-
-    return (
-        <SiteLayout>
-            <Content/>
         </SiteLayout>
     );
 }
