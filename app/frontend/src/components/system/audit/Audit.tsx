@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from "react";
-import {useMessage} from "../application/Message.tsx";
-import {usePageNation} from "../../views/application/PageNation.tsx";
-import {useModal} from "../application/hooks.ts";
-import {AuditType, AuditCriteriaType} from "../../models/system/audit.ts";
-import {SiteLayout} from "../../views/SiteLayout.tsx";
-import LoadingIndicator from "../../views/application/LoadingIndicatior.tsx";
-import {AuditCollectionView} from "../../views/system/audit/AuditCollection.tsx";
-import {AuditSingleView} from "../../views/system/audit/AuditSingle.tsx";
-import {AuditSearchSingleView} from "../../views/system/audit/AuditSearch.tsx";
+import {useMessage} from "../../application/Message.tsx";
+import {usePageNation} from "../../../views/application/PageNation.tsx";
+import {useModal} from "../../application/hooks.ts";
+import {AuditType, AuditCriteriaType} from "../../../models/system/audit.ts";
+import {SiteLayout} from "../../../views/SiteLayout.tsx";
+import LoadingIndicator from "../../../views/application/LoadingIndicatior.tsx";
+import {AuditCollectionView} from "../../../views/system/audit/AuditCollection.tsx";
+import {AuditSingleView} from "../../../views/system/audit/AuditSingle.tsx";
+import {AuditSearchSingleView} from "../../../views/system/audit/AuditSearch.tsx";
 import {useAudit, useFetchAudits} from "./hooks";
 
 export const Audit: React.FC = () => {

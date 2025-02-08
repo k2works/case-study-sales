@@ -2,10 +2,10 @@ import {
     ApplicationExecutionHistoryType,
     ApplicationExecutionProcessFlag,
     ApplicationExecutionProcessType, AuditCriteriaType, AuditType
-} from "../../../models/system/audit.ts";
+} from "../../../../models/system/audit.ts";
 import {useState} from "react";
-import {AuditService, AuditServiceType} from "../../../services/system/audit.ts";
-import {PageNationType} from "../../../views/application/PageNation.tsx";
+import {AuditService, AuditServiceType} from "../../../../services/system/audit.ts";
+import {PageNationType} from "../../../../views/application/PageNation.tsx";
 
 export const useAudit = () => {
     const initialAudit = {

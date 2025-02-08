@@ -5,7 +5,7 @@ import { useModal } from "../components/application/hooks.ts";
 import { showErrorMessage } from "../components/application/utils.ts";
 import { useMessage } from "../components/application/Message.tsx";
 import {UserServiceType} from "../services/system/user.ts";
-import {useFetchUsers, useUser} from "../components/system/hooks";
+import {useFetchUsers, useUser} from "../components/system/user/hooks";
 
 type UserContextType = {
     loading: boolean;
