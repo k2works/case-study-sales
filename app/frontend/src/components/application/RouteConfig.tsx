@@ -7,7 +7,6 @@ import {NotFound} from "../../views/application/NotFound.tsx";
 import {RoleType} from "../../models";
 import {Login, Logout} from "../system/Auth.tsx";
 import {SiteLayout} from "../../views/SiteLayout.tsx";
-import {Audit} from "../system/audit/Audit.tsx";
 import {Download} from "../system/download/Download.tsx";
 import {DepartmentContainer} from "../master/department/DepartmentContainer.tsx";
 import {EmployeeContainer} from "../master/employee/EmployeeContainer.tsx";
@@ -22,6 +21,7 @@ import {PartnerGroupContainer} from "../master/partner/group/PartnerGroupContain
 import {PartnerListContainer} from "../master/partner/list/PartnerListContainer.tsx";
 import {CustomerContainer} from "../master/partner/customer/CustomerContainer.tsx";
 import {VendorContainer} from "../master/partner/vendor/VendorContainer.tsx";
+import {AuditContainer} from "../system/audit/AuditContainer.tsx";
 
 export const RouteConfig: React.FC = () => {
     const ProductCategoryPage = () => {
@@ -93,7 +93,7 @@ export const RouteConfig: React.FC = () => {
                 <Route path="/" element={<RouteAuthGuard component={<Home/>} redirectPath="/login"/>}/>
                 <Route path="/user" element={<RouteAuthGuard component={<User/>} redirectPath="/"
                                                              allowedRoles={[RoleType.ADMIN]}/>}/>
-                <Route path="/audit" element={<RouteAuthGuard component={<Audit/>} redirectPath="/"
+                <Route path="/audit" element={<RouteAuthGuard component={<AuditContainer/>} redirectPath="/"
                                                                             allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/download" element={<RouteAuthGuard component={<Download/>} redirectPath="/"
                                                               allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
