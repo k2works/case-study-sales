@@ -1,11 +1,11 @@
 import React, { createContext, useContext, ReactNode, useState, useMemo, Dispatch, SetStateAction } from "react";
-import { PageNationType, usePageNation } from "../views/application/PageNation.tsx";
-import { EmployeeCriteriaType, EmployeeType } from "../models";
-import { useModal } from "../components/application/hooks.ts";
-import { useEmployee, useFetchEmployees } from "../components/master/employee/hooks"; // 必要に応じてパスを修正
-import { showErrorMessage } from "../components/application/utils.ts";
-import { useMessage } from "../components/application/Message.tsx";
-import { EmployeeServiceType } from "../services/master/employee.ts";
+import { PageNationType, usePageNation } from "../../views/application/PageNation.tsx";
+import { EmployeeCriteriaType, EmployeeType } from "../../models";
+import { useModal } from "../../components/application/hooks.ts";
+import { useEmployee, useFetchEmployees } from "../../components/master/employee/hooks";
+import { showErrorMessage } from "../../components/application/utils.ts";
+import { useMessage } from "../../components/application/Message.tsx";
+import { EmployeeServiceType } from "../../services/master/employee.ts";
 
 type EmployeeContextType = {
     loading: boolean;

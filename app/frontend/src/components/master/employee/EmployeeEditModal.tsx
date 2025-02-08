@@ -1,6 +1,6 @@
 import React from "react";
 import {EmployeeSingle} from "./EmployeeSingle.tsx";
-import {useEmployeeContext} from "../../../providers/Employee.tsx";
+import {useEmployeeContext} from "../../../providers/master/Employee.tsx";
 import Modal from "react-modal";
 import {DepartmentSelectModal} from "./DepartmentSelectModal.tsx";
 import {UserSelectModal} from "./UserSelectModal.tsx";

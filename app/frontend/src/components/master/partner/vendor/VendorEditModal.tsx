@@ -1,6 +1,5 @@
 import React from "react";
-import {useVendorContext} from "../../../../providers/Vendor.tsx";
-import {VendorType} from "../../../../models/master/partner";
+import {useVendorContext} from "../../../../providers/master/partner/Vendor.tsx";
 import Modal from "react-modal";
 import {VendorSingle} from "./VendorSingle.tsx";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import {useVendorContext} from "../../../../providers/Vendor.tsx";
+import {useVendorContext} from "../../../../providers/master/partner/Vendor.tsx";
 import {showErrorMessage} from "../../../application/utils.ts";
 import {VendorSingleView} from "../../../../views/master/partner/vendor/VendorSingle.tsx";
 import {VendorInvoiceSingleView} from "../../../../views/master/partner/vendor/VendorInvoiceSingle.tsx";

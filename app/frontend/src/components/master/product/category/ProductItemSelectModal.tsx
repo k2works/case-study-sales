@@ -1,6 +1,6 @@
 import React from "react";
-import {useProductCategoryContext} from "../../../../providers/ProductCategory.tsx";
-import {useProductItemContext} from "../../../../providers/ProductItem.tsx";
+import {useProductCategoryContext} from "../../../../providers/master/product/ProductCategory.tsx";
+import {useProductItemContext} from "../../../../providers/master/product/ProductItem.tsx";
 import Modal from "react-modal";
 import {ProductCollectionSelectView} from "../../../../views/master/product/item/ProductSelect.tsx";
 

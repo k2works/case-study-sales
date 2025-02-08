@@ -1,11 +1,11 @@
 import React, { createContext, useContext, ReactNode, useState, useMemo, Dispatch, SetStateAction } from "react";
-import { PageNationType, usePageNation } from "../views/application/PageNation.tsx";
-import { useModal } from "../components/application/hooks.ts";
-import { showErrorMessage } from "../components/application/utils.ts";
-import { useMessage } from "../components/application/Message.tsx";
-import { PartnerServiceType } from "../services/master/partner.ts";
-import { PartnerCriteriaType, PartnerType } from "../models/master/partner";
-import { useFetchPartners, usePartner } from "../components/master/partner/hooks";
+import { PageNationType, usePageNation } from "../../../views/application/PageNation.tsx";
+import { useModal } from "../../../components/application/hooks.ts";
+import { showErrorMessage } from "../../../components/application/utils.ts";
+import { useMessage } from "../../../components/application/Message.tsx";
+import { PartnerServiceType } from "../../../services/master/partner.ts";
+import { PartnerCriteriaType, PartnerType } from "../../../models/master/partner";
+import { useFetchPartners, usePartner } from "../../../components/master/partner/hooks";
 
 type PartnerListContextType = {
     loading: boolean;

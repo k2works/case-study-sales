@@ -1,5 +1,5 @@
 import React from "react";
-import {useDepartmentContext} from "../../../providers/Department.tsx";
+import {useDepartmentContext} from "../../../providers/master/Department.tsx";
 import {DepartmentCollectionView} from "../../../views/master/department/DepartmentCollection.tsx";
 import {DepartmentIdType, DepartmentType} from "../../../models";
 import {showErrorMessage} from "../../application/utils.ts";

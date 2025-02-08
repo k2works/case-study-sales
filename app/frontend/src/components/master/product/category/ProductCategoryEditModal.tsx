@@ -1,5 +1,5 @@
 import React from "react";
-import {useProductCategoryContext} from "../../../../providers/ProductCategory.tsx";
+import {useProductCategoryContext} from "../../../../providers/master/product/ProductCategory.tsx";
 import Modal from "react-modal";
 import {ProductCategorySingle} from "./ProductCategorySingle.tsx";
 

@@ -6,8 +6,8 @@ import {
     DepartmentCollectionSelectView,
     DepartmentSelectView
 } from "../../../views/master/department/DepartmentSelect.tsx";
-import {useEmployeeContext} from "../../../providers/Employee.tsx";
-import {useDepartmentContext} from "../../../providers/Department.tsx";
+import {useEmployeeContext} from "../../../providers/master/Employee.tsx";
+import {useDepartmentContext} from "../../../providers/master/Department.tsx";
 
 export const EmployeeSearchModal: React.FC = () => {
     const {

@@ -1,6 +1,6 @@
 import React from "react";
-import {usePartnerListContext} from "../../../../providers/PartnerList.tsx";
-import {usePartnerGroupContext} from "../../../../providers/PartnerGroup.tsx";
+import {usePartnerListContext} from "../../../../providers/master/partner/PartnerList.tsx";
+import {usePartnerGroupContext} from "../../../../providers/master/partner/PartnerGroup.tsx";
 import Modal from "react-modal";
 import {PartnerGroupCollectionSelectView} from "../../../../views/master/partner/group/PartnerGroupSelect.tsx";
 

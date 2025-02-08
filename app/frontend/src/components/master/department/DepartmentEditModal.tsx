@@ -1,7 +1,7 @@
 import React from "react";
 import Modal from "react-modal";
 import {DepartmentSingle} from "./DepartmentSingle.tsx";
-import {useDepartmentContext} from "../../../providers/Department.tsx";
+import {useDepartmentContext} from "../../../providers/master/Department.tsx";
 
 export const DepartmentEditModal: React.FC = () => {
     const {

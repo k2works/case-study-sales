@@ -1,5 +1,5 @@
 import React from "react";
-import {useDownloadContext} from "../../../providers/Download.tsx";
+import {useDownloadContext} from "../../../providers/system/Download.tsx";
 import {getKeyBySymbol, getSymbolByValue} from "../../../models/utils.ts";
 import {DownloadTarget} from "../../../models/system/download.ts";
 import {showErrorMessage} from "../../application/utils.ts";

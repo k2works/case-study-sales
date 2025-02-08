@@ -1,11 +1,11 @@
 import React, { createContext, useContext, ReactNode, useState, useMemo, Dispatch, SetStateAction } from "react";
-import { PageNationType, usePageNation } from "../views/application/PageNation.tsx";
-import { useModal } from "../components/application/hooks.ts";
-import { showErrorMessage } from "../components/application/utils.ts";
-import { useMessage } from "../components/application/Message.tsx";
-import { ProductServiceType } from "../services/master/product.ts";
-import {ProductCriteriaType, ProductType} from "../models/master/product";
-import {useFetchProducts, useProduct} from "../components/master/product/hooks";
+import { PageNationType, usePageNation } from "../../../views/application/PageNation.tsx";
+import { useModal } from "../../../components/application/hooks.ts";
+import { showErrorMessage } from "../../../components/application/utils.ts";
+import { useMessage } from "../../../components/application/Message.tsx";
+import { ProductServiceType } from "../../../services/master/product.ts";
+import {ProductCriteriaType, ProductType} from "../../../models/master/product";
+import {useFetchProducts, useProduct} from "../../../components/master/product/hooks";
 
 type ProductItemContextType = {
     loading: boolean;

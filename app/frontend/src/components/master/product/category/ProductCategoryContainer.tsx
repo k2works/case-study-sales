@@ -1,8 +1,8 @@
 import React, {useEffect, } from 'react';
 import {showErrorMessage} from "../../../application/utils.ts";
 import LoadingIndicator from "../../../../views/application/LoadingIndicatior.tsx";
-import {useProductCategoryContext, ProductCategoryProvider} from "../../../../providers/ProductCategory.tsx";
-import {ProductItemProvider, useProductItemContext} from "../../../../providers/ProductItem.tsx";
+import {useProductCategoryContext, ProductCategoryProvider} from "../../../../providers/master/product/ProductCategory.tsx";
+import {ProductItemProvider, useProductItemContext} from "../../../../providers/master/product/ProductItem.tsx";
 import {ProductCategoryCollection} from "./ProductCategoryCollection.tsx";
 
 export const ProductCategoryContainer: React.FC = () => {

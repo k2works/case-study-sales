@@ -7,13 +7,13 @@ import React, {
     Dispatch,
     SetStateAction,
 } from "react";
-import { PageNationType, usePageNation } from "../views/application/PageNation.tsx";
-import { useModal } from "../components/application/hooks.ts";
-import { showErrorMessage } from "../components/application/utils.ts";
-import { useMessage } from "../components/application/Message.tsx";
-import { RegionServiceType } from "../services/master/region.ts";
-import {RegionCriteriaType, RegionType} from "../models/master/code";
-import {useFetchRegions, useRegion} from "../components/master/code/hooks";
+import { PageNationType, usePageNation } from "../../../views/application/PageNation.tsx";
+import { useModal } from "../../../components/application/hooks.ts";
+import { showErrorMessage } from "../../../components/application/utils.ts";
+import { useMessage } from "../../../components/application/Message.tsx";
+import { RegionServiceType } from "../../../services/master/region.ts";
+import {RegionCriteriaType, RegionType} from "../../../models/master/code";
+import {useFetchRegions, useRegion} from "../../../components/master/code/hooks";
 
 // RegionContext の型を定義
 type RegionContextType = {

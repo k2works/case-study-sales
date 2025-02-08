@@ -2,8 +2,8 @@ import React from "react";
 import Modal from "react-modal";
 import {EmployeeType} from "../../../models";
 import {EmployeeCollectionSelectView} from "../../../views/master/employee/EmployeeSelect.tsx";
-import {useDepartmentContext} from "../../../providers/Department.tsx";
-import {useEmployeeContext} from "../../../providers/Employee.tsx";
+import {useDepartmentContext} from "../../../providers/master/Department.tsx";
+import {useEmployeeContext} from "../../../providers/master/Employee.tsx";
 
 export const EmployeeSelectModal: React.FC = () => {
     const {

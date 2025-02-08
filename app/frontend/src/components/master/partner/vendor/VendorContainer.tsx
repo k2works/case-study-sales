@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import LoadingIndicator from "../../../../views/application/LoadingIndicatior.tsx";
-import {useVendorContext, VendorProvider} from "../../../../providers/Vendor.tsx";
+import {useVendorContext, VendorProvider} from "../../../../providers/master/partner/Vendor.tsx";
 import {VendorCollection} from "./VendorCollection.tsx";
 
 export const VendorContainer: React.FC = () => {

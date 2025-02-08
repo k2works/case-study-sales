@@ -1,11 +1,11 @@
 import React, {createContext, useContext, ReactNode, Dispatch, SetStateAction, useState, useMemo} from "react";
-import {PageNationType, usePageNation} from "../views/application/PageNation.tsx";
-import {DepartmentCriteriaType, DepartmentType} from "../models";
-import { useModal } from "../components/application/hooks.ts";
-import { useDepartment, useFetchDepartments } from "../components/master/department/hooks";
-import { showErrorMessage } from "../components/application/utils.ts";
-import { useMessage } from "../components/application/Message.tsx";
-import {DepartmentServiceType} from "../services/master/department.ts";
+import {PageNationType, usePageNation} from "../../views/application/PageNation.tsx";
+import {DepartmentCriteriaType, DepartmentType} from "../../models";
+import { useModal } from "../../components/application/hooks.ts";
+import { useDepartment, useFetchDepartments } from "../../components/master/department/hooks";
+import { showErrorMessage } from "../../components/application/utils.ts";
+import { useMessage } from "../../components/application/Message.tsx";
+import {DepartmentServiceType} from "../../services/master/department.ts";
 
 type DepartmentContextType = {
     loading: boolean;

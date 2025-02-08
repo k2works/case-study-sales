@@ -1,5 +1,5 @@
 import React from "react";
-import {UserType} from "../models";
+import {UserType} from "../../models";
 
 export type AuthUserContextType = {
     user: UserType | null;

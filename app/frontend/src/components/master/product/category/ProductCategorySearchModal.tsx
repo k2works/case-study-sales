@@ -1,5 +1,5 @@
 import React from "react";
-import {useProductCategoryContext} from "../../../../providers/ProductCategory.tsx";
+import {useProductCategoryContext} from "../../../../providers/master/product/ProductCategory.tsx";
 import Modal from "react-modal";
 import {ProductCategorySearchSingleView} from "../../../../views/master/product/ProductCategorySearch.tsx";
 import {showErrorMessage} from "../../../application/utils.ts";

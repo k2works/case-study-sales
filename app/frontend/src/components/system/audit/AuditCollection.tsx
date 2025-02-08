@@ -1,5 +1,5 @@
 import React from "react";
-import {useAuditContext} from "../../../providers/Audit.tsx";
+import {useAuditContext} from "../../../providers/system/Audit.tsx";
 import {AuditType} from "../../../models/system/audit.ts";
 import {showErrorMessage} from "../../application/utils.ts";
 import {AuditCollectionView} from "../../../views/system/audit/AuditCollection.tsx";

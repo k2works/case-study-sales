@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import LoadingIndicator from "../../../../views/application/LoadingIndicatior.tsx";
-import {PartnerGroupProvider, usePartnerGroupContext} from "../../../../providers/PartnerGroup.tsx";
+import {PartnerGroupProvider, usePartnerGroupContext} from "../../../../providers/master/partner/PartnerGroup.tsx";
 import {PartnerGroupCollection} from "./PartnerGroupCollection.tsx";
 
 export const PartnerGroupContainer: React.FC = () => {

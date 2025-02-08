@@ -1,7 +1,7 @@
 import React from "react";
-import {usePartnerCategoryContext} from "../../../../providers/PartnerCategory.tsx";
+import {usePartnerCategoryContext} from "../../../../providers/master/partner/PartnerCategory.tsx";
 import Modal from "react-modal";
-import {usePartnerListContext} from "../../../../providers/PartnerList.tsx";
+import {usePartnerListContext} from "../../../../providers/master/partner/PartnerList.tsx";
 import {
     PartnerCategoryAffiliationCollectionAddListView
 } from "../../../../views/master/partner/category/PartnerCategoryAffiliationCollection.tsx";

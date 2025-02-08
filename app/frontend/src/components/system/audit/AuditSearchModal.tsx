@@ -1,5 +1,5 @@
 import React from "react";
-import {useAuditContext} from "../../../providers/Audit.tsx";
+import {useAuditContext} from "../../../providers/system/Audit.tsx";
 import Modal from "react-modal";
 import {AuditSearchSingleView} from "../../../views/system/audit/AuditSearch.tsx";
 import {showErrorMessage} from "../../application/utils.ts";

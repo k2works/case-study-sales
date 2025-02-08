@@ -1,5 +1,5 @@
 import React from "react";
-import {useRegionContext} from "../../../../providers/Region.tsx";
+import {useRegionContext} from "../../../../providers/master/code/Region.tsx";
 import {RegionCodeType, RegionType} from "../../../../models/master/code";
 import {showErrorMessage} from "../../../application/utils.ts";
 import {RegionCollectionView} from "../../../../views/master/code/region/RegionCollection.tsx";

@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { showErrorMessage } from "../../../application/utils.ts";
 import LoadingIndicator from "../../../../views/application/LoadingIndicatior.tsx";
-import {PartnerListProvider, usePartnerListContext} from "../../../../providers/PartnerList.tsx";
-import {PartnerGroupProvider, usePartnerGroupContext} from "../../../../providers/PartnerGroup.tsx";
+import {PartnerListProvider, usePartnerListContext} from "../../../../providers/master/partner/PartnerList.tsx";
+import {PartnerGroupProvider, usePartnerGroupContext} from "../../../../providers/master/partner/PartnerGroup.tsx";
 import {PartnerListCollection} from "./PartnerListCollection.tsx";
 
 export const PartnerListContainer: React.FC = () => {

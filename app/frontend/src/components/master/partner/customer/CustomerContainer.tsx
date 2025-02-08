@@ -1,8 +1,8 @@
 import React, {useEffect } from 'react';
 import {showErrorMessage} from "../../../application/utils.ts";
 import LoadingIndicator from "../../../../views/application/LoadingIndicatior.tsx";
-import {CustomerProvider, useCustomerContext} from "../../../../providers/Customer.tsx";
-import {RegionProvider, useRegionContext} from "../../../../providers/Region.tsx";
+import {CustomerProvider, useCustomerContext} from "../../../../providers/master/partner/Customer.tsx";
+import {RegionProvider, useRegionContext} from "../../../../providers/master/code/Region.tsx";
 import {CustomerCollection} from "./CustomerCollection.tsx";
 
 export const CustomerContainer: React.FC = () => {

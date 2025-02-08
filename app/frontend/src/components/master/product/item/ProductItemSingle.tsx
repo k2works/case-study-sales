@@ -1,9 +1,9 @@
 import React from "react";
-import {useProductItemContext} from "../../../../providers/ProductItem.tsx";
-import {useProductSubstituteContext} from "../../../../providers/ProductSubstitute.tsx";
-import {useProductBomContext} from "../../../../providers/ProductBom.tsx";
-import {useCustomerContext} from "../../../../providers/Customer.tsx";
-import {useVendorContext} from "../../../../providers/Vendor.tsx";
+import {useProductItemContext} from "../../../../providers/master/product/ProductItem.tsx";
+import {useProductSubstituteContext} from "../../../../providers/master/product/ProductSubstitute.tsx";
+import {useProductBomContext} from "../../../../providers/master/product/ProductBom.tsx";
+import {useCustomerContext} from "../../../../providers/master/partner/Customer.tsx";
+import {useVendorContext} from "../../../../providers/master/partner/Vendor.tsx";
 import {showErrorMessage} from "../../../application/utils.ts";
 import {Tab, TabList, TabPanel, Tabs} from "react-tabs";
 import {ProductSingleView} from "../../../../views/master/product/item/ProductSingle.tsx";
@@ -20,7 +20,7 @@ import {ProductItemSubstituteModal} from "./ProductItemSubstituteModal.tsx";
 import {ProductItemBomModal} from "./ProductItemBomModal.tsx";
 import {ProductCategorySelectModal} from "./ProductCategorySelectModal.tsx";
 import {ProductCategorySelectView} from "../../../../views/master/product/ProductCategorySelect.tsx";
-import {useProductCategoryContext} from "../../../../providers/ProductCategory.tsx";
+import {useProductCategoryContext} from "../../../../providers/master/product/ProductCategory.tsx";
 import {CustomerSelectModal} from "./CustomerSelectModal.tsx";
 
 export const ProductItemSingle: React.FC = () => {

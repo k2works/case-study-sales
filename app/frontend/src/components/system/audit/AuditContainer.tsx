@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import {SiteLayout} from "../../../views/SiteLayout.tsx";
 import LoadingIndicator from "../../../views/application/LoadingIndicatior.tsx";
-import {AuditProvider, useAuditContext} from "../../../providers/Audit.tsx";
+import {AuditProvider, useAuditContext} from "../../../providers/system/Audit.tsx";
 import {AuditCollection} from "./AuditCollection.tsx";
 
 export const AuditContainer: React.FC = () => {

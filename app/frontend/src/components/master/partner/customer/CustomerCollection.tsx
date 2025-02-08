@@ -1,5 +1,5 @@
 import React from "react";
-import {useCustomerContext} from "../../../../providers/Customer.tsx";
+import {useCustomerContext} from "../../../../providers/master/partner/Customer.tsx";
 import {CustomerCodeType, CustomerType} from "../../../../models/master/partner";
 import {showErrorMessage} from "../../../application/utils.ts";
 import {CustomerCollectionView} from "../../../../views/master/partner/customer/CustomerCollection.tsx";

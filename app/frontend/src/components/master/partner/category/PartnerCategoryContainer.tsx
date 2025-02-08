@@ -1,8 +1,8 @@
 import React, { useEffect} from 'react';
 import { showErrorMessage } from "../../../application/utils.ts";
 import LoadingIndicator from "../../../../views/application/LoadingIndicatior.tsx";
-import {PartnerCategoryProvider, usePartnerCategoryContext} from "../../../../providers/PartnerCategory.tsx";
-import {PartnerListProvider, usePartnerListContext} from "../../../../providers/PartnerList.tsx";
+import {PartnerCategoryProvider, usePartnerCategoryContext} from "../../../../providers/master/partner/PartnerCategory.tsx";
+import {PartnerListProvider, usePartnerListContext} from "../../../../providers/master/partner/PartnerList.tsx";
 import {PartnerCategoryCollection} from "./PartnerCategoryCollection.tsx";
 
 export const PartnerCategoryContainer: React.FC = () => {

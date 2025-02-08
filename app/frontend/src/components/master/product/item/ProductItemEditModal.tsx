@@ -1,5 +1,5 @@
 import React from "react";
-import {useProductItemContext} from "../../../../providers/ProductItem.tsx";
+import {useProductItemContext} from "../../../../providers/master/product/ProductItem.tsx";
 import Modal from "react-modal";
 import {ProductItemSingle} from "./ProductItemSingle.tsx";
 

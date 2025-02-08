@@ -1,5 +1,5 @@
 import React from "react";
-import {usePartnerCategoryContext} from "../../../../providers/PartnerCategory.tsx";
+import {usePartnerCategoryContext} from "../../../../providers/master/partner/PartnerCategory.tsx";
 import {PartnerCategoryType} from "../../../../models/master/partner";
 import {showErrorMessage} from "../../../application/utils.ts";
 import {PartnerCategoryCollectionView} from "../../../../views/master/partner/category/PartnerCategoryCollection.tsx";

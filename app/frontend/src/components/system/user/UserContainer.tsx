@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import LoadingIndicator from "../../../views/application/LoadingIndicatior.tsx";
 import {SiteLayout} from "../../../views/SiteLayout.tsx";
-import {UserProvider, useUserContext} from "../../../providers/User.tsx";
+import {UserProvider, useUserContext} from "../../../providers/system/User.tsx";
 import {UserCollection} from "./UserCollection.tsx";
 
 export const UserContainer: React.FC = () => {

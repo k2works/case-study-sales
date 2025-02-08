@@ -3,8 +3,8 @@ import {showErrorMessage} from "../../application/utils.ts";
 import {DepartmentSingleView} from "../../../views/master/department/DepartmentSingle.tsx";
 import {EmployeeCollectionAddListView} from "../../../views/master/employee/EmployeeCollection.tsx";
 import {EmployeeType} from "../../../models";
-import {useDepartmentContext} from "../../../providers/Department.tsx";
-import {useEmployeeContext} from "../../../providers/Employee.tsx";
+import {useDepartmentContext} from "../../../providers/master/Department.tsx";
+import {useEmployeeContext} from "../../../providers/master/Employee.tsx";
 import {EmployeeSelectModal} from "./EmployeeSelectModal.tsx";
 
 export const DepartmentSingle: React.FC = () => {

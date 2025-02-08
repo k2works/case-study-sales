@@ -1,5 +1,5 @@
 import React from "react";
-import {usePartnerGroupContext} from "../../../../providers/PartnerGroup.tsx";
+import {usePartnerGroupContext} from "../../../../providers/master/partner/PartnerGroup.tsx";
 import Modal from "react-modal";
 import {PartnerGroupSearchView} from "../../../../views/master/partner/group/PartnerGroupSearch.tsx";
 import {showErrorMessage} from "../../../application/utils.ts";

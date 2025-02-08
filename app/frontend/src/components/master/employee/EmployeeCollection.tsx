@@ -1,5 +1,5 @@
 import React from "react";
-import {useEmployeeContext} from "../../../providers/Employee.tsx";
+import {useEmployeeContext} from "../../../providers/master/Employee.tsx";
 import {showErrorMessage} from "../../application/utils.ts";
 import {EmployeeType} from "../../../models";
 import {EmployeeCollectionView} from "../../../views/master/employee/EmployeeCollection.tsx";

@@ -1,11 +1,11 @@
 import React from "react";
-import {useEmployeeContext} from "../../../providers/Employee.tsx";
+import {useEmployeeContext} from "../../../providers/master/Employee.tsx";
 import {showErrorMessage} from "../../application/utils.ts";
 import {EmployeeSingleView} from "../../../views/master/employee/EmployeeSingle.tsx";
 import {DepartmentSelectView} from "../../../views/master/department/DepartmentSelect.tsx";
 import {UserSelectView} from "../../../views/system/user/UserSelect.tsx";
-import {useUserContext} from "../../../providers/User.tsx";
-import {useDepartmentContext} from "../../../providers/Department.tsx";
+import {useUserContext} from "../../../providers/system/User.tsx";
+import {useDepartmentContext} from "../../../providers/master/Department.tsx";
 
 export const EmployeeSingle: React.FC = () => {
     const {

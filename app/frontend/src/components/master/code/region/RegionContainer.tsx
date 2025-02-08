@@ -1,6 +1,6 @@
 import React, { useEffect} from "react";
 import LoadingIndicator from "../../../../views/application/LoadingIndicatior.tsx";
-import {RegionProvider, useRegionContext} from "../../../../providers/Region.tsx";
+import {RegionProvider, useRegionContext} from "../../../../providers/master/code/Region.tsx";
 import {RegionCollection} from "./RegionCollection.tsx";
 
 export const RegionContainer: React.FC = () => {

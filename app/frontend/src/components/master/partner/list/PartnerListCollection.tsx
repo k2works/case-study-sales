@@ -1,5 +1,5 @@
 import React from "react";
-import {usePartnerListContext} from "../../../../providers/PartnerList.tsx";
+import {usePartnerListContext} from "../../../../providers/master/partner/PartnerList.tsx";
 import {PartnerType} from "../../../../models/master/partner";
 import {showErrorMessage} from "../../../application/utils.ts";
 import {PartnerCollectionView} from "../../../../views/master/partner/PartnerCollection.tsx";

@@ -1,5 +1,5 @@
 import React from "react";
-import {useAuditContext} from "../../../providers/Audit.tsx";
+import {useAuditContext} from "../../../providers/system/Audit.tsx";
 import {AuditSingleView} from "../../../views/system/audit/AuditSingle.tsx";
 
 export const AuditSingle: React.FC = () => {

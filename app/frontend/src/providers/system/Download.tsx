@@ -1,7 +1,7 @@
 import React, { createContext, useContext, ReactNode, useState, useMemo, Dispatch, SetStateAction } from "react";
-import { useMessage } from "../components/application/Message.tsx";
-import {DownloadTarget} from "../models/system/download.ts";
-import {DownloadService} from "../services/system/download.ts";
+import { useMessage } from "../../components/application/Message.tsx";
+import {DownloadTarget} from "../../models/system/download.ts";
+import {DownloadService} from "../../services/system/download.ts";
 
 type DownloadContextType = {
     loading: boolean;

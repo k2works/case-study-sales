@@ -1,5 +1,5 @@
 import React from "react";
-import {useRegionContext} from "../../../../providers/Region.tsx";
+import {useRegionContext} from "../../../../providers/master/code/Region.tsx";
 import Modal from "react-modal";
 import {RegionSearchSingleView} from "../../../../views/master/code/region/RegionSearch.tsx";
 import {showErrorMessage} from "../../../application/utils.ts";

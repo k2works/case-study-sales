@@ -1,5 +1,5 @@
 import React from "react";
-import {useCustomerContext} from "../../../../providers/Customer.tsx";
+import {useCustomerContext} from "../../../../providers/master/partner/Customer.tsx";
 import Modal from "react-modal";
 import {CustomerSearchView} from "../../../../views/master/partner/customer/CustomerSearch.tsx";
 import {showErrorMessage} from "../../../application/utils.ts";

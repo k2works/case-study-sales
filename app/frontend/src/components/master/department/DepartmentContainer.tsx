@@ -2,8 +2,8 @@ import React, {useEffect} from "react";
 import {showErrorMessage} from "../../application/utils.ts";
 import {SiteLayout} from "../../../views/SiteLayout.tsx";
 import LoadingIndicator from "../../../views/application/LoadingIndicatior.tsx";
-import {DepartmentProvider, useDepartmentContext} from "../../../providers/Department.tsx";
-import {EmployeeProvider, useEmployeeContext} from "../../../providers/Employee.tsx";
+import {DepartmentProvider, useDepartmentContext} from "../../../providers/master/Department.tsx";
+import {EmployeeProvider, useEmployeeContext} from "../../../providers/master/Employee.tsx";
 import {DepartmentCollection} from "./DepartmentCollection.tsx";
 
 export const DepartmentContainer: React.FC = () => {

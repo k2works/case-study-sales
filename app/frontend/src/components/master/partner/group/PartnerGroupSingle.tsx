@@ -1,5 +1,5 @@
 import React from "react";
-import {usePartnerGroupContext} from "../../../../providers/PartnerGroup.tsx";
+import {usePartnerGroupContext} from "../../../../providers/master/partner/PartnerGroup.tsx";
 import {showErrorMessage} from "../../../application/utils.ts";
 import {PartnerGroupSingleView} from "../../../../views/master/partner/group/PartnerGroupSingle.tsx";
 

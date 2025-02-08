@@ -1,5 +1,5 @@
 import React from "react";
-import {usePartnerListContext} from "../../../../providers/PartnerList.tsx";
+import {usePartnerListContext} from "../../../../providers/master/partner/PartnerList.tsx";
 import Modal from "react-modal";
 import {PartnerListSingle} from "./PartnerListSingle.tsx";
 

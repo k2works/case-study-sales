@@ -7,20 +7,20 @@ import React, {
     Dispatch,
     SetStateAction,
 } from "react";
-import { PageNationType, usePageNation } from "../views/application/PageNation.tsx";
-import { useModal } from "../components/application/hooks.ts";
-import { showErrorMessage } from "../components/application/utils.ts";
-import { useMessage } from "../components/application/Message.tsx";
+import { PageNationType, usePageNation } from "../../../views/application/PageNation.tsx";
+import { useModal } from "../../../components/application/hooks.ts";
+import { showErrorMessage } from "../../../components/application/utils.ts";
+import { useMessage } from "../../../components/application/Message.tsx";
 import {
     PartnerCategoryCriteriaType,
     PartnerCategoryType,
     PartnerCategoryItemType,
-} from "../models/master/partner";
+} from "../../../models/master/partner";
 import {
     useFetchPartnerCategories,
     usePartnerCategory,
-} from "../components/master/partner/hooks";
-import {PartnerCategoryServiceType} from "../services/master/partnerCategory.ts";
+} from "../../../components/master/partner/hooks";
+import {PartnerCategoryServiceType} from "../../../services/master/partnerCategory.ts";
 
 type PartnerCategoryContextType = {
     loading: boolean;

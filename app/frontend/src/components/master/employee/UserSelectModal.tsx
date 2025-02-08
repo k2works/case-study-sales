@@ -1,8 +1,8 @@
 import React from "react";
 import Modal from "react-modal";
 import {UserCollectionSelectView} from "../../../views/system/user/UserSelect.tsx";
-import {useUserContext} from "../../../providers/User.tsx";
-import {useEmployeeContext} from "../../../providers/Employee.tsx";
+import {useUserContext} from "../../../providers/system/User.tsx";
+import {useEmployeeContext} from "../../../providers/master/Employee.tsx";
 
 export const UserSelectModal: React.FC = () => {
     const {

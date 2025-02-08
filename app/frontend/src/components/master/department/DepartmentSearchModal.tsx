@@ -2,7 +2,7 @@ import React from "react";
 import Modal from "react-modal";
 import {DepartmentSearchSingleView} from "../../../views/master/department/DepartmentSearch.tsx";
 import {showErrorMessage} from "../../application/utils.ts";
-import {useDepartmentContext} from "../../../providers/Department.tsx";
+import {useDepartmentContext} from "../../../providers/master/Department.tsx";
 
 export const DepartmentSearchModal: React.FC = () => {
     const {

@@ -1,7 +1,7 @@
 import React from "react";
 import {SiteLayout} from "../../../views/SiteLayout.tsx";
 import LoadingIndicator from "../../../views/application/LoadingIndicatior.tsx";
-import {DownloadProvider, useDownloadContext} from "../../../providers/Download.tsx";
+import {DownloadProvider, useDownloadContext} from "../../../providers/system/Download.tsx";
 import {DownloadSingle} from "./DownloadSingle.tsx";
 
 export const DownloadContainer: React.FC = () => {

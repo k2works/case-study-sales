@@ -1,5 +1,5 @@
 import React from "react";
-import {useUserContext} from "../../../providers/User.tsx";
+import {useUserContext} from "../../../providers/system/User.tsx";
 import {UserAccountType} from "../../../models";
 import {UserCollectionView} from "../../../views/system/user/UserCollection.tsx";
 import {UserEditModal} from "./UserEditModal.tsx";

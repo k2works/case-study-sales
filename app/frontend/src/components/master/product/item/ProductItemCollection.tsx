@@ -1,5 +1,5 @@
 import React from "react";
-import {useProductItemContext} from "../../../../providers/ProductItem.tsx";
+import {useProductItemContext} from "../../../../providers/master/product/ProductItem.tsx";
 import {showErrorMessage} from "../../../application/utils.ts";
 import {ProductType} from "../../../../models/master/product";
 import {ProductCollectionView} from "../../../../views/master/product/item/ProductCollection.tsx";

@@ -1,5 +1,5 @@
 import React from "react";
-import {usePartnerCategoryContext} from "../../../../providers/PartnerCategory.tsx";
+import {usePartnerCategoryContext} from "../../../../providers/master/partner/PartnerCategory.tsx";
 import Modal from "react-modal";
 import {PartnerCategorySingle} from "./PartnerCategorySingle.tsx";
 

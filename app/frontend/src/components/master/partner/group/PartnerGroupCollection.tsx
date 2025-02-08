@@ -1,5 +1,5 @@
 import React from "react";
-import {usePartnerGroupContext} from "../../../../providers/PartnerGroup.tsx";
+import {usePartnerGroupContext} from "../../../../providers/master/partner/PartnerGroup.tsx";
 import {PartnerGroupType} from "../../../../models/master/partner";
 import {showErrorMessage} from "../../../application/utils.ts";
 import {PartnerGroupCollectionView} from "../../../../views/master/partner/group/PartnerGroupCollection.tsx";

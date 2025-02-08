@@ -1,6 +1,6 @@
 import React from "react";
-import {useVendorContext} from "../../../../providers/Vendor.tsx";
 import Modal from "react-modal";
+import {useVendorContext} from "../../../../providers/master/partner/Vendor.tsx";
 import {VendorSearchView} from "../../../../views/master/partner/vendor/VendorSearch.tsx";
 import {showErrorMessage} from "../../../application/utils.ts";
 

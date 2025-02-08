@@ -1,5 +1,5 @@
 import React from "react";
-import {useVendorContext} from "../../../../providers/Vendor.tsx";
+import {useVendorContext} from "../../../../providers/master/partner/Vendor.tsx";
 import {VendorCodeType, VendorType} from "../../../../models/master/partner";
 import {showErrorMessage} from "../../../application/utils.ts";
 import {VendorCollectionView} from "../../../../views/master/partner/vendor/VendorCollection.tsx";

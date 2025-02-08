@@ -1,6 +1,6 @@
 import React from "react";
-import {useUserContext} from "../../../providers/User.tsx";
 import {UserSingleView} from "../../../views/system/user/UserSingle.tsx";
+import {useUserContext} from "../../../providers/system/User.tsx";
 
 export const UserSingle: React.FC = () => {
     const {
