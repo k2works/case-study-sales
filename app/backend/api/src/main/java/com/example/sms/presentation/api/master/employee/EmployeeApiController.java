@@ -11,6 +11,7 @@ import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
+import com.example.sms.domain.BusinessException;
 import com.example.sms.service.master.department.DepartmentService;
 import com.example.sms.service.master.employee.EmployeeCriteria;
 import com.example.sms.service.master.employee.EmployeeService;
@@ -58,7 +59,7 @@ public class EmployeeApiController {
             PageNation.startPage(page, pageSize);
             PageInfo<Employee> result = employeeManagementService.selectAllWithPageInfo();
             return ResponseEntity.ok(result);
-        } catch (Exception e) {
+        } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -70,7 +71,7 @@ public class EmployeeApiController {
             EmployeeCode code = EmployeeCode.of(employeeCode);
             Employee employee = employeeManagementService.find(code);
             return ResponseEntity.ok(employee);
-        } catch (Exception e) {
+        } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -86,7 +87,7 @@ public class EmployeeApiController {
             }
             employeeManagementService.register(employee);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.employee.registered")));
-        } catch (Exception e) {
+        } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -100,7 +101,7 @@ public class EmployeeApiController {
             Employee employee = convertEntity(resource);
             employeeManagementService.save(employee);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.employee.updated")));
-        } catch (Exception e) {
+        } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -117,7 +118,7 @@ public class EmployeeApiController {
             }
             employeeManagementService.delete(code);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.employee.deleted")));
-        } catch (Exception e) {
+        } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -133,7 +134,7 @@ public class EmployeeApiController {
             EmployeeCriteria criteria = convertCriteria(resource);
             PageInfo<Employee> result = employeeManagementService.searchWithPageInfo(criteria);
             return ResponseEntity.ok(result);
-        } catch (Exception e) {
+        } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }

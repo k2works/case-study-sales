@@ -4,6 +4,7 @@ import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
+import com.example.sms.domain.BusinessException;
 import com.example.sms.service.system.audit.AuditCriteria;
 import com.example.sms.service.system.audit.AuditService;
 import com.github.pagehelper.PageInfo;
@@ -38,7 +39,7 @@ public class AuditApiController {
             PageNation.startPage(page, pageSize);
             PageInfo<ApplicationExecutionHistory> result = auditService.selectAllWithPageInfo();
             return ResponseEntity.ok(result);
-        } catch (Exception e) {
+        } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -50,7 +51,7 @@ public class AuditApiController {
         try {
             ApplicationExecutionHistory applicationExecutionHistory = auditService.find(id);
             return ResponseEntity.ok(applicationExecutionHistory);
-        } catch (Exception e) {
+        } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -62,7 +63,7 @@ public class AuditApiController {
         try {
             auditService.delete(Integer.valueOf(id));
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.audit.history.deleted")));
-        } catch (Exception e) {
+        } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -78,7 +79,7 @@ public class AuditApiController {
             AuditCriteria criteria = convertToCriteria(resource);
             PageInfo<ApplicationExecutionHistory> result = auditService.searchWithPageInfo(criteria);
             return ResponseEntity.ok(result);
-        } catch (Exception e) {
+        } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }

@@ -1,5 +1,6 @@
 package com.example.sms.domain.type.address;
 
+import com.example.sms.domain.BusinessException;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
@@ -19,16 +20,16 @@ public class Address {
         this.prefecture = prefecture;
 
         if (address1 == null) {
-            throw new IllegalArgumentException("住所１は必須です");
+            throw new BusinessException("住所１は必須です");
         }
         if (address1.length() > 40) {
-            throw new IllegalArgumentException("住所１は40文字以内である必要があります:" + address1);
+            throw new BusinessException("住所１は40文字以内である必要があります:" + address1);
         }
         if (address2 == null) {
-            throw new IllegalArgumentException("住所２は必須です");
+            throw new BusinessException("住所２は必須です");
         }
         if (address2.length() > 40) {
-            throw new IllegalArgumentException("住所２は40文字以内である必要があります:" + address2);
+            throw new BusinessException("住所２は40文字以内である必要があります:" + address2);
         }
 
         this.address1 = address1;

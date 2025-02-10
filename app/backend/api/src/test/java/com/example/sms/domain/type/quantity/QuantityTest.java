@@ -1,5 +1,6 @@
 package com.example.sms.domain.type.quantity;
 
+import com.example.sms.domain.BusinessException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,7 +39,7 @@ class QuantityTest {
     @DisplayName("負の数で乗算すると例外をスローする")
     void testTimes_WhenMultipliedByNegativeNumber_ShouldThrowException() {
         Quantity quantity = new Quantity(3, UnitType.個);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        Assertions.assertThrows(BusinessException.class, () -> {
             quantity.times(-1);
         });
     }

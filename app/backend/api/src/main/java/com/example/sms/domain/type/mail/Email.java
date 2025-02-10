@@ -1,5 +1,6 @@
 package com.example.sms.domain.type.mail;
 
+import com.example.sms.domain.BusinessException;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
@@ -18,7 +19,7 @@ public class Email {
 
     public Email(String value) {
         if (value == null || !EMAIL_PATTERN.matcher(value).matches()) {
-            throw new IllegalArgumentException("メールアドレスの形式が正しくありません: " + value);
+            throw new BusinessException("メールアドレスの形式が正しくありません: " + value);
         }
         this.value = value;
     }

@@ -6,6 +6,7 @@ import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
+import com.example.sms.domain.BusinessException;
 import com.example.sms.service.master.partner.PartnerGroupCriteria;
 import com.example.sms.service.master.partner.PartnerGroupService;
 import com.example.sms.service.system.audit.AuditAnnotation;
@@ -41,7 +42,7 @@ public class PartnerGroupApiController {
             PageNation.startPage(page, pageSize);
             PageInfo<PartnerGroup> result = partnerGroupService.selectAllWithPageInfo();
             return ResponseEntity.ok(result);
-        } catch (Exception e) {
+        } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -52,7 +53,7 @@ public class PartnerGroupApiController {
         try {
             PartnerGroup result = partnerGroupService.find(partnerGroupCode);
             return ResponseEntity.ok(result);
-        } catch (Exception e) {
+        } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -68,7 +69,7 @@ public class PartnerGroupApiController {
             }
             partnerGroupService.register(partnerGroup);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.partner-group.registered")));
-        } catch (Exception e) {
+        } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -84,7 +85,7 @@ public class PartnerGroupApiController {
             }
             partnerGroupService.save(partnerGroup);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.partner-group.updated")));
-        } catch (Exception e) {
+        } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -100,7 +101,7 @@ public class PartnerGroupApiController {
             }
             partnerGroupService.delete(partnerGroup);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.partner-group.deleted")));
-        } catch (Exception e) {
+        } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -118,7 +119,7 @@ public class PartnerGroupApiController {
             PageInfo<PartnerGroup> result = partnerGroupService.searchWithPageInfo(criteria);
 
             return ResponseEntity.ok(result);
-        } catch (Exception e) {
+        } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }

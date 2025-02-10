@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.master.partner;
 
+import com.example.sms.domain.BusinessException;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
@@ -13,11 +14,11 @@ public class PartnerCode {
 
     public PartnerCode(String partnerCode) {
         if (partnerCode == null) {
-            throw new IllegalArgumentException("取引先コードは必須です");
+            throw new BusinessException("取引先コードは必須です");
         }
 
         if (partnerCode.length() > 3) {
-            throw new IllegalArgumentException("取引先コードは3桁以内である必要があります:" + partnerCode);
+            throw new BusinessException("取引先コードは3桁以内である必要があります:" + partnerCode);
         }
 
         if (partnerCode.matches("^[A-Z].*")) {
@@ -26,7 +27,7 @@ public class PartnerCode {
         }
 
         if (!partnerCode.matches("^\\d{3}$")) {
-            throw new IllegalArgumentException("取引先コードは3桁の数字である必要があります:" + partnerCode);
+            throw new BusinessException("取引先コードは3桁の数字である必要があります:" + partnerCode);
         }
 
         this.value = partnerCode;

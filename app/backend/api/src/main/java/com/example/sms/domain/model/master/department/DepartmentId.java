@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.master.department;
 
+import com.example.sms.domain.BusinessException;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
@@ -15,8 +16,8 @@ public class DepartmentId {
     DepartmentStartDate departmentStartDate;// 開始日
 
     public DepartmentId(DepartmentCode deptCode, DepartmentStartDate departmentStartDate) {
-        if (deptCode.getValue() == null) throw new IllegalArgumentException("部門コードは必須です");
-        if (departmentStartDate.getValue() == null) throw new IllegalArgumentException("開始日は必須です");
+        if (deptCode.getValue() == null) throw new BusinessException("部門コードは必須です");
+        if (departmentStartDate.getValue() == null) throw new BusinessException("開始日は必須です");
 
         this.deptCode = deptCode;
         this.departmentStartDate = departmentStartDate;

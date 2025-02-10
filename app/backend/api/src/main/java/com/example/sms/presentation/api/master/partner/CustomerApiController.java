@@ -9,6 +9,7 @@ import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
+import com.example.sms.domain.BusinessException;
 import com.example.sms.service.master.partner.CustomerCriteria;
 import com.example.sms.service.master.partner.CustomerService;
 import com.example.sms.service.system.audit.AuditAnnotation;
@@ -47,7 +48,7 @@ public class CustomerApiController {
             PageNation.startPage(page, pageSize);
             PageInfo<Customer> result = customerService.selectAllWithPageInfo();
             return ResponseEntity.ok(result);
-        } catch (Exception e) {
+        } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -61,7 +62,7 @@ public class CustomerApiController {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.customer.not.exist")));
             }
             return ResponseEntity.ok(result);
-        } catch (Exception e) {
+        } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -77,7 +78,7 @@ public class CustomerApiController {
             }
             customerService.register(customer);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.customer.registered")));
-        } catch (Exception e) {
+        } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -95,7 +96,7 @@ public class CustomerApiController {
             }
             customerService.save(customer);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.customer.updated")));
-        } catch (Exception e) {
+        } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -111,7 +112,7 @@ public class CustomerApiController {
             }
             customerService.delete(customer);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.customer.deleted")));
-        } catch (Exception e) {
+        } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -127,7 +128,7 @@ public class CustomerApiController {
             CustomerCriteria criteria = convertToCriteria(criteriaResource);
             PageInfo<Customer> result = customerService.searchWithPageInfo(criteria);
             return ResponseEntity.ok(result);
-        } catch (Exception e) {
+        } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }

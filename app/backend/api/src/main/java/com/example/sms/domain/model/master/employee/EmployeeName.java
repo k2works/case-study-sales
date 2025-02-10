@@ -1,6 +1,7 @@
 package com.example.sms.domain.model.master.employee;
 
 
+import com.example.sms.domain.BusinessException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,11 +29,11 @@ public class EmployeeName {
         }
         name = name.replace("　", " ");
         if (!name.contains(" ")) {
-            throw new IllegalArgumentException("名前は姓と名をスペースで区切ってください。");
+            throw new BusinessException("名前は姓と名をスペースで区切ってください。");
         }
         nameKana = nameKana.replace("　", " ");
         if (!nameKana.contains(" ")) {
-            throw new IllegalArgumentException("名前カナは姓と名をスペースで区切ってください。");
+            throw new BusinessException("名前カナは姓と名をスペースで区切ってください。");
         }
 
         String firstName = "";

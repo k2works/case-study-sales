@@ -1,5 +1,6 @@
 package com.example.sms.domain.type.phone;
 
+import com.example.sms.domain.BusinessException;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
@@ -23,7 +24,7 @@ public class PhoneNumber {
         this.localExchange = localExchange;
         this.subscriberNumber = subscriberNumber;
         if (value == null) {
-            throw new IllegalArgumentException("電話番号は必須です");
+            throw new BusinessException("電話番号は必須です");
         } else {
             this.value = value;
         }
@@ -31,15 +32,15 @@ public class PhoneNumber {
 
     public static PhoneNumber of(String value) {
         if (value == null) {
-            throw new IllegalArgumentException("電話番号は必須です");
+            throw new BusinessException("電話番号は必須です");
         }
         String regex = "^(0\\d{1,4}[-\\s]?\\d{1,4}[-\\s]?\\d{4})$";
         if (!value.matches(regex)) {
-            throw new IllegalArgumentException("電話番号は適切な形式で入力してください (例: 03-9999-0000, 090 9999 0000)");
+            throw new BusinessException("電話番号は適切な形式で入力してください (例: 03-9999-0000, 090 9999 0000)");
         }
         String normalized = value.replaceAll("[\\s-]", "");
         if (normalized.length() != 10 && normalized.length() != 11) {
-            throw new IllegalArgumentException("電話番号は0から始まる10桁または11桁の数字で入力してください");
+            throw new BusinessException("電話番号は0から始まる10桁または11桁の数字で入力してください");
         }
 
         String areaCode;

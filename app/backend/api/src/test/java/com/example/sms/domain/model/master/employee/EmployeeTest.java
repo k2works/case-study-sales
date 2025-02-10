@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.master.employee;
 
+import com.example.sms.domain.BusinessException;
 import com.example.sms.domain.type.phone.FaxNumber;
 import com.example.sms.domain.type.phone.PhoneNumber;
 import org.junit.jupiter.api.DisplayName;
@@ -33,9 +34,9 @@ class EmployeeTest {
         @DisplayName("社員コードはEMPから始まる5桁の数字で作成できる")
         void shouldCreateEmployeeCode() {
             assertDoesNotThrow(() -> EmployeeCode.of("EMP123"));
-            assertThrows(IllegalArgumentException.class, () -> EmployeeCode.of("EMP"));
-            assertThrows(IllegalArgumentException.class, () -> EmployeeCode.of("EMP1234"));
-            assertThrows(IllegalArgumentException.class, () -> EmployeeCode.of("EMP123a"));
+            assertThrows(BusinessException.class, () -> EmployeeCode.of("EMP"));
+            assertThrows(BusinessException.class, () -> EmployeeCode.of("EMP1234"));
+            assertThrows(BusinessException.class, () -> EmployeeCode.of("EMP123a"));
         }
     }
 
@@ -48,9 +49,9 @@ class EmployeeTest {
             assertDoesNotThrow(() -> EmployeeName.of("", ""));
             assertDoesNotThrow(() -> EmployeeName.of("山田 太郎", "ヤマダ タロウ"));
             assertDoesNotThrow(() -> EmployeeName.of("山田　太郎", "ヤマダ　タロウ"));
-            assertThrows(IllegalArgumentException.class, () -> EmployeeName.of("山田", "ヤマダ タロウ"));
-            assertThrows(IllegalArgumentException.class, () -> EmployeeName.of("山田 太郎", "ヤマダ"));
-            assertThrows(IllegalArgumentException.class, () -> EmployeeName.of("山田", "ヤマダ"));
+            assertThrows(BusinessException.class, () -> EmployeeName.of("山田", "ヤマダ タロウ"));
+            assertThrows(BusinessException.class, () -> EmployeeName.of("山田 太郎", "ヤマダ"));
+            assertThrows(BusinessException.class, () -> EmployeeName.of("山田", "ヤマダ"));
         }
     }
 
@@ -64,8 +65,8 @@ class EmployeeTest {
             assertDoesNotThrow(() -> PhoneNumber.of("03-9999-0000"));
             assertDoesNotThrow(() -> PhoneNumber.of("01234567890"));
             assertDoesNotThrow(() -> PhoneNumber.of("090 9999 0000"));
-            assertThrows(IllegalArgumentException.class, () -> PhoneNumber.of("123456789"));
-            assertThrows(IllegalArgumentException.class, () -> PhoneNumber.of("01234567890a"));
+            assertThrows(BusinessException.class, () -> PhoneNumber.of("123456789"));
+            assertThrows(BusinessException.class, () -> PhoneNumber.of("01234567890a"));
         }
     }
 
@@ -79,8 +80,8 @@ class EmployeeTest {
             assertDoesNotThrow(() -> FaxNumber.of("03-9999-0000"));
             assertDoesNotThrow(() -> FaxNumber.of("01234567890"));
             assertDoesNotThrow(() -> FaxNumber.of("090 9999 0000"));
-            assertThrows(IllegalArgumentException.class, () -> FaxNumber.of("123456789"));
-            assertThrows(IllegalArgumentException.class, () -> FaxNumber.of("01234567890a"));
+            assertThrows(BusinessException.class, () -> FaxNumber.of("123456789"));
+            assertThrows(BusinessException.class, () -> FaxNumber.of("01234567890a"));
         }
     }
 

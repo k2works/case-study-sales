@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.master.product;
 
+import com.example.sms.domain.BusinessException;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
@@ -17,7 +18,7 @@ public class ProductCode {
 
     public ProductCode(String productCode) {
         if (productCode == null) {
-            throw new IllegalArgumentException("商品コードは必須です");
+            throw new BusinessException("商品コードは必須です");
         }
 
         if (productCode.matches("^[A-Z].*")) {
@@ -30,7 +31,7 @@ public class ProductCode {
         }
 
         if (!productCode.matches("^[0-9]{3}$|^[0-9]{8}$")) {
-            throw new IllegalArgumentException("商品コードは3桁または8桁の数字である必要があります:" + productCode);
+            throw new BusinessException("商品コードは3桁または8桁の数字である必要があります:" + productCode);
         }
 
         if (productCode.length() == 3) {

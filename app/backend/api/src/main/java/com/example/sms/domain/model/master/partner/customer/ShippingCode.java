@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.master.partner.customer;
 
+import com.example.sms.domain.BusinessException;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
@@ -14,10 +15,10 @@ public class ShippingCode {
 
     public ShippingCode(String customerCode, Integer destinationNumber, Integer customerBranchNumber) {
         if (destinationNumber < 0) {
-            throw new IllegalArgumentException("出荷先番号は0以上である必要があります");
+            throw new BusinessException("出荷先番号は0以上である必要があります");
         }
         if (destinationNumber > 999) {
-            throw new IllegalArgumentException("出荷先番号は999以下である必要があります");
+            throw new BusinessException("出荷先番号は999以下である必要があります");
         }
         this.customerCode = CustomerCode.of(customerCode, customerBranchNumber);
         this.destinationNumber = destinationNumber;

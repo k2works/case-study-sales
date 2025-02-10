@@ -1,5 +1,6 @@
 package com.example.sms.domain.type.address;
 
+import com.example.sms.domain.BusinessException;
 import lombok.Getter;
 
 /**
@@ -81,7 +82,7 @@ public enum Prefecture {
                 return pref;
             }
         }
-        throw new IllegalArgumentException("無効なコード: " + code);
+        throw new BusinessException("無効なコード: " + code);
     }
 
     /**
@@ -93,6 +94,6 @@ public enum Prefecture {
                 return pref;
             }
         }
-        throw new IllegalArgumentException("無効な都道府県名: " + name);
+        throw new BusinessException("無効な都道府県名: " + name);
     }
 }

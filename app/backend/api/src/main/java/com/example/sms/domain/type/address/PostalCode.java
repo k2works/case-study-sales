@@ -1,5 +1,6 @@
 package com.example.sms.domain.type.address;
 
+import com.example.sms.domain.BusinessException;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
@@ -17,7 +18,7 @@ public class PostalCode {
 
     public PostalCode(String value) {
         if (value == null) {
-            throw new IllegalArgumentException("郵便番号は必須です");
+            throw new BusinessException("郵便番号は必須です");
         }
 
         if (value.matches("\\d{3}-\\d{4}$")) {
@@ -25,11 +26,11 @@ public class PostalCode {
         }
 
         if (value.length() > 7) {
-            throw new IllegalArgumentException("郵便番号は7桁以内である必要があります:" + value);
+            throw new BusinessException("郵便番号は7桁以内である必要があります:" + value);
         }
 
         if (!value.matches("\\d+")) {
-            throw new IllegalArgumentException("郵便番号は数字のみです:" + value);
+            throw new BusinessException("郵便番号は数字のみです:" + value);
         }
 
         this.regionCode = value.substring(0, 2);

@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.master.partner;
 
+import com.example.sms.domain.BusinessException;
 import com.example.sms.domain.model.master.partner.vendor.VendorType;
 import com.example.sms.domain.type.mail.Email;
 import com.example.sms.domain.type.address.Address;
@@ -62,20 +63,20 @@ class PartnerTest {
     @DisplayName("取引先コードは以下の条件を満たす")
     void shouldCreatePartnerCode() {
         assertDoesNotThrow(() -> PartnerCode.of("001"));
-        assertThrows(IllegalArgumentException.class, () -> PartnerCode.of(null));
-        assertThrows(IllegalArgumentException.class, () -> PartnerCode.of("0011"));
-        assertThrows(IllegalArgumentException.class, () -> PartnerCode.of("001a"));
+        assertThrows(BusinessException.class, () -> PartnerCode.of(null));
+        assertThrows(BusinessException.class, () -> PartnerCode.of("0011"));
+        assertThrows(BusinessException.class, () -> PartnerCode.of("001a"));
     }
 
     @Test
     @DisplayName("取引先名は以下の条件を満たす")
     void shouldCreatePartnerName() {
         assertDoesNotThrow(() -> PartnerName.of("取引先名", "取引先名カナ"));
-        assertThrows(IllegalArgumentException.class, () -> PartnerName.of(null, "取引先名カナ"));
-        assertThrows(IllegalArgumentException.class, () -> PartnerName.of("取引先名", null));
-        assertThrows(IllegalArgumentException.class, () -> PartnerName.of("取引先名", "取引先カナ名".repeat(50)));
-        assertThrows(IllegalArgumentException.class, () -> PartnerName.of("取引先名".repeat(50), "取引先カナ名"));
-        assertThrows(IllegalArgumentException.class, () -> PartnerName.of("取引先名".repeat(50), "取引先カナ名".repeat(50)));
+        assertThrows(BusinessException.class, () -> PartnerName.of(null, "取引先名カナ"));
+        assertThrows(BusinessException.class, () -> PartnerName.of("取引先名", null));
+        assertThrows(BusinessException.class, () -> PartnerName.of("取引先名", "取引先カナ名".repeat(50)));
+        assertThrows(BusinessException.class, () -> PartnerName.of("取引先名".repeat(50), "取引先カナ名"));
+        assertThrows(BusinessException.class, () -> PartnerName.of("取引先名".repeat(50), "取引先カナ名".repeat(50)));
     }
 
     @Test
@@ -83,12 +84,12 @@ class PartnerTest {
     void shouldCreatePostalCode() {
         assertDoesNotThrow(() -> PostalCode.of("1234567"));
         assertDoesNotThrow(() -> PostalCode.of("123-4567"));
-        assertThrows(IllegalArgumentException.class, () -> PostalCode.of(null));
-        assertThrows(IllegalArgumentException.class, () -> PostalCode.of("12345678"));
-        assertThrows(IllegalArgumentException.class, () -> PostalCode.of("XX34567"));
-        assertThrows(IllegalArgumentException.class, () -> PostalCode.of("123456-"));
-        assertThrows(IllegalArgumentException.class, () -> PostalCode.of("-123456"));
-        assertThrows(IllegalArgumentException.class, () -> PostalCode.of("1-23456"));
+        assertThrows(BusinessException.class, () -> PostalCode.of(null));
+        assertThrows(BusinessException.class, () -> PostalCode.of("12345678"));
+        assertThrows(BusinessException.class, () -> PostalCode.of("XX34567"));
+        assertThrows(BusinessException.class, () -> PostalCode.of("123456-"));
+        assertThrows(BusinessException.class, () -> PostalCode.of("-123456"));
+        assertThrows(BusinessException.class, () -> PostalCode.of("1-23456"));
     }
 
     @Test
@@ -96,23 +97,23 @@ class PartnerTest {
     void shouldCreateAddress() {
         assertDoesNotThrow(() -> Address.of("1234567", "東京都", "住所１", "住所２"));
         assertDoesNotThrow(() -> Address.of("1234567", "東京都", "住".repeat(40), "住".repeat(40)));
-        assertThrows(IllegalArgumentException.class, () -> Address.of(null, "東京都", "住所１", "住所２"));
-        assertThrows(IllegalArgumentException.class, () -> Address.of("1234567", "東京都", "住".repeat(41), "住所２"));
-        assertThrows(IllegalArgumentException.class, () -> Address.of("1234567", "東京都", "住所１", "住".repeat(41)));
-        assertThrows(IllegalArgumentException.class, () -> Address.of("1234567", "東京都", "住".repeat(100), "住".repeat(100)));
-        assertThrows(IllegalArgumentException.class, () -> Address.of("1234567", null, "住所１", "住所２"));
-        assertThrows(IllegalArgumentException.class, () -> Address.of("1234567", "東京都", null, "住所２"));
-        assertThrows(IllegalArgumentException.class, () -> Address.of("1234567", "東京都", "住所１", null));
-        assertThrows(IllegalArgumentException.class, () -> Address.of("1234567", "異世界", "住所１", "住所２"));
+        assertThrows(BusinessException.class, () -> Address.of(null, "東京都", "住所１", "住所２"));
+        assertThrows(BusinessException.class, () -> Address.of("1234567", "東京都", "住".repeat(41), "住所２"));
+        assertThrows(BusinessException.class, () -> Address.of("1234567", "東京都", "住所１", "住".repeat(41)));
+        assertThrows(BusinessException.class, () -> Address.of("1234567", "東京都", "住".repeat(100), "住".repeat(100)));
+        assertThrows(BusinessException.class, () -> Address.of("1234567", null, "住所１", "住所２"));
+        assertThrows(BusinessException.class, () -> Address.of("1234567", "東京都", null, "住所２"));
+        assertThrows(BusinessException.class, () -> Address.of("1234567", "東京都", "住所１", null));
+        assertThrows(BusinessException.class, () -> Address.of("1234567", "異世界", "住所１", "住所２"));
         }
 
     @Test
     @DisplayName("与信は以下の条件を満たす")
     void shouldCreateCredit() {
         assertDoesNotThrow(() -> Credit.of(100000, 100000));
-        assertThrows(IllegalArgumentException.class, () -> Credit.of(100000001, 100000));
-        assertThrows(IllegalArgumentException.class, () -> Credit.of(100000, 10000001));
-        assertThrows(IllegalArgumentException.class, () -> Credit.of(100000001, 10000001));
+        assertThrows(BusinessException.class, () -> Credit.of(100000001, 100000));
+        assertThrows(BusinessException.class, () -> Credit.of(100000, 10000001));
+        assertThrows(BusinessException.class, () -> Credit.of(100000001, 10000001));
     }
 
     @Nested
@@ -192,40 +193,40 @@ class PartnerTest {
         @DisplayName("顧客コードは以下の条件を満たす")
         void shouldCreateCustomerCode() {
             assertDoesNotThrow(() -> CustomerCode.of("001", 0));
-            assertThrows(IllegalArgumentException.class, () -> CustomerCode.of(null, 1));
-            assertThrows(IllegalArgumentException.class, () -> CustomerCode.of("001", -1));
-            assertThrows(IllegalArgumentException.class, () -> CustomerCode.of("001", 1000));
+            assertThrows(BusinessException.class, () -> CustomerCode.of(null, 1));
+            assertThrows(BusinessException.class, () -> CustomerCode.of("001", -1));
+            assertThrows(BusinessException.class, () -> CustomerCode.of("001", 1000));
         }
 
         @Test
         @DisplayName("請求先コードは以下の条件を満たす")
         void shouldCreateBillingCode() {
             assertDoesNotThrow(() -> BillingCode.of("001", 0));
-            assertThrows(IllegalArgumentException.class, () -> BillingCode.of(null, 1));
-            assertThrows(IllegalArgumentException.class, () -> BillingCode.of("001", -1));
-            assertThrows(IllegalArgumentException.class, () -> BillingCode.of("001", 1000));
+            assertThrows(BusinessException.class, () -> BillingCode.of(null, 1));
+            assertThrows(BusinessException.class, () -> BillingCode.of("001", -1));
+            assertThrows(BusinessException.class, () -> BillingCode.of("001", 1000));
         }
 
         @Test
         @DisplayName("回収先コードは以下の条件を満たす")
         void shouldCreateCollectionCode() {
             assertDoesNotThrow(() -> CollectionCode.of("001", 0));
-            assertThrows(IllegalArgumentException.class, () -> CollectionCode.of(null, 1));
-            assertThrows(IllegalArgumentException.class, () -> CollectionCode.of("001", -1));
-            assertThrows(IllegalArgumentException.class, () -> CollectionCode.of("001", 1000));
+            assertThrows(BusinessException.class, () -> CollectionCode.of(null, 1));
+            assertThrows(BusinessException.class, () -> CollectionCode.of("001", -1));
+            assertThrows(BusinessException.class, () -> CollectionCode.of("001", 1000));
         }
 
         @Test
         @DisplayName("メールアドレスは以下の条件を満たす")
         void shouldCreateEmailAddress() {
             assertDoesNotThrow(() -> Email.of("test@example.com"));
-            assertThrows(IllegalArgumentException.class, () -> Email.of(null));
-            assertThrows(IllegalArgumentException.class, () -> Email.of("test"));
-            assertThrows(IllegalArgumentException.class, () -> Email.of("test@"));
-            assertThrows(IllegalArgumentException.class, () -> Email.of("test@example"));
-            assertThrows(IllegalArgumentException.class, () -> Email.of("test@example."));
-            assertThrows(IllegalArgumentException.class, () -> Email.of("test@example.c"));
-            assertThrows(IllegalArgumentException.class, () -> Email.of("test@example.com."));
+            assertThrows(BusinessException.class, () -> Email.of(null));
+            assertThrows(BusinessException.class, () -> Email.of("test"));
+            assertThrows(BusinessException.class, () -> Email.of("test@"));
+            assertThrows(BusinessException.class, () -> Email.of("test@example"));
+            assertThrows(BusinessException.class, () -> Email.of("test@example."));
+            assertThrows(BusinessException.class, () -> Email.of("test@example.c"));
+            assertThrows(BusinessException.class, () -> Email.of("test@example.com."));
         }
 
         @Nested
@@ -320,7 +321,7 @@ class PartnerTest {
                 Customer customer = getCustomer();
                 ClosingInvoice closingInvoice2 = ClosingInvoice.of(10, 0, 10, 2);
 
-                assertThrows(IllegalArgumentException.class, () -> customer.of(
+                assertThrows(BusinessException.class, () -> customer.of(
                         getCustomer(),
                         null,
                         closingInvoice2
@@ -384,9 +385,9 @@ class PartnerTest {
         @DisplayName("仕入先コードは以下の条件を満たす")
         void shouldCreateVendorCode() {
             assertDoesNotThrow(() -> VendorCode.of("001", 0));
-            assertThrows(IllegalArgumentException.class, () -> VendorCode.of(null, 1));
-            assertThrows(IllegalArgumentException.class, () -> VendorCode.of("001", -1));
-            assertThrows(IllegalArgumentException.class, () -> VendorCode.of("001", 1000));
+            assertThrows(BusinessException.class, () -> VendorCode.of(null, 1));
+            assertThrows(BusinessException.class, () -> VendorCode.of("001", -1));
+            assertThrows(BusinessException.class, () -> VendorCode.of("001", 1000));
         }
     }
 }

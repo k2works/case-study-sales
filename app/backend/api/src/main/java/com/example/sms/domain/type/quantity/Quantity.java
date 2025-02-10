@@ -1,5 +1,6 @@
 package com.example.sms.domain.type.quantity;
 
+import com.example.sms.domain.BusinessException;
 import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
 import lombok.Value;
@@ -17,7 +18,7 @@ public class Quantity {
 
     public Quantity(@NotNull int amount, @NotNull UnitType unit) {
         if (amount < 0) {
-            throw new IllegalArgumentException("数量は0以上である必要があります:" + amount);
+            throw new BusinessException("数量は0以上である必要があります:" + amount);
         }
         this.amount = amount;
         this.unit = unit;

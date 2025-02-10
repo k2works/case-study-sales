@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.master.partner.invoice;
 
+import com.example.sms.domain.BusinessException;
 import lombok.Getter;
 
 /**
@@ -23,6 +24,6 @@ public enum PaymentMonth {
                 return paymentMonth;
             }
         }
-        throw new IllegalArgumentException("Illegal PaymentMonth value: " + value);
+        throw new BusinessException("Illegal PaymentMonth value: " + value);
     }
 }

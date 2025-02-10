@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.master.region;
 
+import com.example.sms.domain.BusinessException;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
@@ -13,13 +14,13 @@ public class RegionCode {
 
     public RegionCode(String value) {
         if (value == null) {
-            throw new IllegalArgumentException("地域コードは必須です");
+            throw new BusinessException("地域コードは必須です");
         }
         if (value.length() != 4) {
-            throw new IllegalArgumentException("地域コードは4文字である必要があります");
+            throw new BusinessException("地域コードは4文字である必要があります");
         }
         if (!value.matches("R\\d{3}")) {
-            throw new IllegalArgumentException("地域コードはR + 3桁の数字である必要があります");
+            throw new BusinessException("地域コードはR + 3桁の数字である必要があります");
         }
 
         this.value = value;

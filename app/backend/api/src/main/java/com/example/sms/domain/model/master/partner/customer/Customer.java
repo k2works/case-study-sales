@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.master.partner.customer;
 
+import com.example.sms.domain.BusinessException;
 import com.example.sms.domain.type.mail.Email;
 import com.example.sms.domain.type.phone.FaxNumber;
 import com.example.sms.domain.type.phone.PhoneNumber;
@@ -122,11 +123,11 @@ public class Customer {
 
     public static Customer of(Customer customer, ClosingInvoice closingInvoice1, ClosingInvoice  closingInvoice2) {
         if (closingInvoice1 == null && closingInvoice2 == null) {
-            throw new IllegalArgumentException("締請求が設定されていません");
+            throw new BusinessException("締請求が設定されていません");
         }
 
         if (closingInvoice1 == null) {
-            throw new IllegalArgumentException("締請求1が設定されていません");
+            throw new BusinessException("締請求1が設定されていません");
         }
 
         return new Customer(

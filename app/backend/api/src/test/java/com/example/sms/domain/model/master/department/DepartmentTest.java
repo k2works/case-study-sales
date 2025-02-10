@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.master.department;
 
+import com.example.sms.domain.BusinessException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -40,23 +41,23 @@ class DepartmentTest {
         @Test
         @DisplayName("部門IDは必須")
         void shouldThrowExceptionWhenDepartmentIdIsNull() {
-            assertThrows(IllegalArgumentException.class, () -> Department.of(null, LocalDateTime.now(), "Test Department", 5, "10000~", 1, 0));
+            assertThrows(BusinessException.class, () -> Department.of(null, LocalDateTime.now(), "Test Department", 5, "10000~", 1, 0));
         }
 
         @Test
         @DisplayName("部門IDは部門コードと開始日が必須")
         void shouldThrowExceptionWhenDepartmentIdDoesNotHaveStartDate() {
-            assertThrows(IllegalArgumentException.class, () -> DepartmentId.of("10000", null));
-            assertThrows(IllegalArgumentException.class, () -> DepartmentId.of(null, LocalDateTime.now()));
-            assertThrows(IllegalArgumentException.class, () -> DepartmentId.of(null, null));
+            assertThrows(BusinessException.class, () -> DepartmentId.of("10000", null));
+            assertThrows(BusinessException.class, () -> DepartmentId.of(null, LocalDateTime.now()));
+            assertThrows(BusinessException.class, () -> DepartmentId.of(null, null));
         }
 
         @Test
         @DisplayName("部門コードは5桁の数字である必要がある")
         void shouldThrowExceptionWhenDepartmentCodeIsNotFiveDigits() {
-            assertThrows(IllegalArgumentException.class, () -> DepartmentId.of("1000", LocalDateTime.now()));
-            assertThrows(IllegalArgumentException.class, () -> DepartmentId.of("100000", LocalDateTime.now()));
-            assertThrows(IllegalArgumentException.class, () -> DepartmentId.of("1000a", LocalDateTime.now()));
+            assertThrows(BusinessException.class, () -> DepartmentId.of("1000", LocalDateTime.now()));
+            assertThrows(BusinessException.class, () -> DepartmentId.of("100000", LocalDateTime.now()));
+            assertThrows(BusinessException.class, () -> DepartmentId.of("1000a", LocalDateTime.now()));
         }
     }
 
@@ -64,7 +65,7 @@ class DepartmentTest {
     @DisplayName("終了日は必須")
     void shouldThrowExceptionWhenEndDateIsNull() {
         DepartmentId departmentId = DepartmentId.of("10000", LocalDateTime.now());
-        assertThrows(IllegalArgumentException.class, () -> Department.of(departmentId, null, "Test Department", 5, "10000~", 1, 0));
+        assertThrows(BusinessException.class, () -> Department.of(departmentId, null, "Test Department", 5, "10000~", 1, 0));
     }
 
     @Test
@@ -72,7 +73,7 @@ class DepartmentTest {
     void shouldThrowExceptionWhenEndDateIsBeforeStartDate() {
         DepartmentId departmentId = DepartmentId.of("10000", LocalDateTime.now());
         LocalDateTime endDate = LocalDateTime.now().minusDays(1);
-        assertThrows(IllegalArgumentException.class, () -> Department.of(departmentId, endDate, "Test Department", 5, "10000~", 1, 0));
+        assertThrows(BusinessException.class, () -> Department.of(departmentId, endDate, "Test Department", 5, "10000~", 1, 0));
     }
 
     @Nested
@@ -82,7 +83,7 @@ class DepartmentTest {
         @DisplayName("部門パスは必須")
         void shouldThrowExceptionWhenPathIsNull() {
             DepartmentId departmentId = DepartmentId.of("10000", LocalDateTime.now());
-            assertThrows(IllegalArgumentException.class, () -> Department.of(departmentId, LocalDateTime.now(), "Test Department", 5, null, 1, 0));
+            assertThrows(BusinessException.class, () -> Department.of(departmentId, LocalDateTime.now(), "Test Department", 5, null, 1, 0));
         }
 
         @Test
@@ -100,10 +101,10 @@ class DepartmentTest {
         @DisplayName("部門パスは5桁の数字と~で構成されている必要がある")
         void shouldThrowExceptionWhenPathIsInvalid2() {
             DepartmentId departmentId = DepartmentId.of("10000", LocalDateTime.now());
-            assertThrows(IllegalArgumentException.class, () -> Department.of(departmentId, LocalDateTime.now(), "Test Department", 5, "10000", 1, 0));
-            assertThrows(IllegalArgumentException.class, () -> Department.of(departmentId, LocalDateTime.now(), "Test Department", 5, "1000~", 1, 0));
-            assertThrows(IllegalArgumentException.class, () -> Department.of(departmentId, LocalDateTime.now(), "Test Department", 5, "100000~10000", 1, 0));
-            assertThrows(IllegalArgumentException.class, () -> Department.of(departmentId, LocalDateTime.now(), "Test Department", 5, "1000a~", 1, 0));
+            assertThrows(BusinessException.class, () -> Department.of(departmentId, LocalDateTime.now(), "Test Department", 5, "10000", 1, 0));
+            assertThrows(BusinessException.class, () -> Department.of(departmentId, LocalDateTime.now(), "Test Department", 5, "1000~", 1, 0));
+            assertThrows(BusinessException.class, () -> Department.of(departmentId, LocalDateTime.now(), "Test Department", 5, "100000~10000", 1, 0));
+            assertThrows(BusinessException.class, () -> Department.of(departmentId, LocalDateTime.now(), "Test Department", 5, "1000a~", 1, 0));
         }
     }
 }

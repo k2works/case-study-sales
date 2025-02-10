@@ -8,6 +8,7 @@ import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
+import com.example.sms.domain.BusinessException;
 import com.example.sms.service.master.partner.PartnerCategoryCriteria;
 import com.example.sms.service.master.partner.PartnerCategoryService;
 import com.example.sms.service.system.audit.AuditAnnotation;
@@ -46,7 +47,7 @@ public class PartnerCategoryApiController {
             PageNation.startPage(page, pageSize);
             PageInfo<PartnerCategoryType> result = partnerCategoryService.selectAllWithPageInfo();
             return ResponseEntity.ok(result);
-        } catch (Exception e) {
+        } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -57,7 +58,7 @@ public class PartnerCategoryApiController {
         try {
             PartnerCategoryType result = partnerCategoryService.find(partnerCategoryTypeCode);
             return ResponseEntity.ok(result);
-        } catch (Exception e) {
+        } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -75,7 +76,7 @@ public class PartnerCategoryApiController {
 
             partnerCategoryService.register(partnerCategoryType);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.partner-category.registered")));
-        } catch (Exception e) {
+        } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -95,7 +96,7 @@ public class PartnerCategoryApiController {
 
             partnerCategoryService.save(partnerCategoryType);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.partner-category.updated")));
-        } catch (Exception e) {
+        } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -112,7 +113,7 @@ public class PartnerCategoryApiController {
 
             partnerCategoryService.delete(partnerCategoryType);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.partner-category.deleted")));
-        } catch (Exception e) {
+        } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -128,7 +129,7 @@ public class PartnerCategoryApiController {
             PartnerCategoryCriteria criteria = convertToCriteria(resource);
             PageInfo<PartnerCategoryType> result = partnerCategoryService.searchWithPageInfo(criteria);
             return ResponseEntity.ok(result);
-        } catch (Exception e) {
+        } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }

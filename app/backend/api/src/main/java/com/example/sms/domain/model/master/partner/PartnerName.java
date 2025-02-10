@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.master.partner;
 
+import com.example.sms.domain.BusinessException;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
@@ -14,19 +15,19 @@ public class PartnerName {
 
     public PartnerName(String name, String nameKana) {
         if (name == null) {
-            throw new IllegalArgumentException("名称は必須です");
+            throw new BusinessException("名称は必須です");
         }
 
         if (name.length() > 40) {
-            throw new IllegalArgumentException("名称は40桁以内である必要があります:" + name);
+            throw new BusinessException("名称は40桁以内である必要があります:" + name);
         }
 
         if (nameKana == null) {
-            throw new IllegalArgumentException("カナ名称は必須です");
+            throw new BusinessException("カナ名称は必須です");
         }
 
         if (nameKana.length() > 40) {
-            throw new IllegalArgumentException("カナ名称は40桁以内である必要があります:" + nameKana);
+            throw new BusinessException("カナ名称は40桁以内である必要があります:" + nameKana);
         }
 
         this.name = name;

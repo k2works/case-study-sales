@@ -1,6 +1,7 @@
 package com.example.sms.domain.model.master.partner.customer;
 
 import com.example.sms.domain.model.master.partner.PartnerCode;
+import com.example.sms.domain.BusinessException;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
@@ -15,10 +16,10 @@ public class BillingCode {
 
     public BillingCode(String code, Integer branchNumber) {
         if (branchNumber < 0) {
-            throw new IllegalArgumentException("枝番は0以上である必要があります");
+            throw new BusinessException("枝番は0以上である必要があります");
         }
         if (branchNumber > 999) {
-            throw new IllegalArgumentException("枝番は999以下である必要があります");
+            throw new BusinessException("枝番は999以下である必要があります");
         }
         this.code = PartnerCode.of(code);
         this.branchNumber = branchNumber;

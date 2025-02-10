@@ -4,6 +4,7 @@ import com.example.sms.domain.model.system.download.DownloadCriteria;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
+import com.example.sms.domain.BusinessException;
 import com.example.sms.service.system.audit.AuditAnnotation;
 import com.example.sms.service.system.download.DownloadService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,7 +40,7 @@ public class DownloadApiController {
         try {
             DownloadCriteria condition = DownloadCriteriaResource.of(resource.getTarget());
             return ResponseEntity.ok(downloadService.count(condition));
-        } catch (Exception e) {
+        } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
