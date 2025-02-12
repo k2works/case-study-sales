@@ -1,18 +1,27 @@
 package com.example.sms.domain.type.money;
 
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;
+
+import static org.apache.commons.lang3.Validate.isTrue;
+import static org.apache.commons.lang3.Validate.notNull;
 
 /**
  * 通貨
  */
 @Value
-@AllArgsConstructor
 @NoArgsConstructor(force = true)
 public class Money implements Expression {
     protected int amount;
     protected CurrencyType currency;
+
+    public Money(int amount, CurrencyType currency) {
+        isTrue(amount >= 0, "金額は0以上である必要があります。");
+        notNull(currency, "通貨は必須です。");
+
+        this.amount = amount;
+        this.currency = currency;
+    }
 
     public Expression times(int multiplier) {
         return new Money(amount * multiplier, currency);
