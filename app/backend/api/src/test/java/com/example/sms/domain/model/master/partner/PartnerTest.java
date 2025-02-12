@@ -2,13 +2,13 @@ package com.example.sms.domain.model.master.partner;
 
 import com.example.sms.domain.BusinessException;
 import com.example.sms.domain.model.master.partner.vendor.VendorType;
-import com.example.sms.domain.type.mail.Email;
 import com.example.sms.domain.type.address.Address;
 import com.example.sms.domain.type.address.PostalCode;
 import com.example.sms.domain.model.master.partner.customer.*;
 import com.example.sms.domain.model.master.partner.invoice.*;
 import com.example.sms.domain.model.master.partner.vendor.Vendor;
 import com.example.sms.domain.model.master.partner.vendor.VendorCode;
+import com.example.sms.domain.type.mail.EmailAddress;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -219,14 +219,14 @@ class PartnerTest {
         @Test
         @DisplayName("メールアドレスは以下の条件を満たす")
         void shouldCreateEmailAddress() {
-            assertDoesNotThrow(() -> Email.of("test@example.com"));
-            assertThrows(BusinessException.class, () -> Email.of(null));
-            assertThrows(BusinessException.class, () -> Email.of("test"));
-            assertThrows(BusinessException.class, () -> Email.of("test@"));
-            assertThrows(BusinessException.class, () -> Email.of("test@example"));
-            assertThrows(BusinessException.class, () -> Email.of("test@example."));
-            assertThrows(BusinessException.class, () -> Email.of("test@example.c"));
-            assertThrows(BusinessException.class, () -> Email.of("test@example.com."));
+            assertDoesNotThrow(() -> EmailAddress.of("test@example.com"));
+            assertThrows(BusinessException.class, () -> EmailAddress.of(null));
+            assertThrows(BusinessException.class, () -> EmailAddress.of("test"));
+            assertThrows(BusinessException.class, () -> EmailAddress.of("test@"));
+            assertThrows(BusinessException.class, () -> EmailAddress.of("test@example"));
+            assertThrows(BusinessException.class, () -> EmailAddress.of("test@example."));
+            assertThrows(BusinessException.class, () -> EmailAddress.of("test@example.c"));
+            assertThrows(BusinessException.class, () -> EmailAddress.of("test@example.com."));
         }
 
         @Nested

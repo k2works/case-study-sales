@@ -1,7 +1,7 @@
 package com.example.sms.domain.model.master.partner.customer;
 
 import com.example.sms.domain.BusinessException;
-import com.example.sms.domain.type.mail.Email;
+import com.example.sms.domain.type.mail.EmailAddress;
 import com.example.sms.domain.type.phone.FaxNumber;
 import com.example.sms.domain.type.phone.PhoneNumber;
 import com.example.sms.domain.type.address.Address;
@@ -31,7 +31,7 @@ public class Customer {
     Address customerAddress; // 顧客住所
     PhoneNumber customerPhoneNumber; // 顧客電話番号
     FaxNumber customerFaxNumber; // 顧客ｆａｘ番号
-    Email customerEmailAddress; // 顧客メールアドレス
+    EmailAddress customerEmailAddress; // 顧客メールアドレス
     Invoice invoice; // 請求
     List<Shipping> shippings; // 出荷先
 
@@ -82,7 +82,7 @@ public class Customer {
                 ),
                 PhoneNumber.of(customerPhoneNumber),
                 FaxNumber.of(customerFaxNumber),
-                Email.of(customerEmailAddress),
+                EmailAddress.of(customerEmailAddress),
                 Invoice.of(
                         CustomerBillingCategory.fromCode(customerBillingCategory),
                         ClosingInvoice.of(
@@ -164,7 +164,7 @@ public class Customer {
             Address customerAddress,
             PhoneNumber customerPhoneNumber,
             FaxNumber customerFaxNumber,
-            Email customerEmailAddress,
+            EmailAddress customerEmailAddress,
             Invoice invoice,
             List<Shipping> shippings
     ) {

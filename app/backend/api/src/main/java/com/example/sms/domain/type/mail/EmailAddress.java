@@ -11,20 +11,20 @@ import java.util.regex.Pattern;
  */
 @Value
 @NoArgsConstructor(force = true)
-public class Email {
+public class EmailAddress {
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
     private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
 
     String value;
 
-    public Email(String value) {
+    public EmailAddress(String value) {
         if (value == null || !EMAIL_PATTERN.matcher(value).matches()) {
             throw new BusinessException("メールアドレスの形式が正しくありません: " + value);
         }
         this.value = value;
     }
 
-    public static Email of(String value) {
-        return new Email(value);
+    public static EmailAddress of(String value) {
+        return new EmailAddress(value);
     }
 }

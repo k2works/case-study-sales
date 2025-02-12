@@ -3,7 +3,7 @@ package com.example.sms.service.master.partner;
 import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactory;
 import com.example.sms.TestDataFactoryImpl;
-import com.example.sms.domain.type.mail.Email;
+import com.example.sms.domain.type.mail.EmailAddress;
 import com.example.sms.domain.type.phone.FaxNumber;
 import com.example.sms.domain.type.phone.PhoneNumber;
 import com.example.sms.domain.type.address.Address;
@@ -408,7 +408,7 @@ class VendorServiceTest {
                         originalVendor.getVendorAddress(),
                         originalVendor.getVendorPhoneNumber(),
                         originalVendor.getVendorFaxNumber(),
-                        Email.of("test@example.com"),
+                        EmailAddress.of("test@example.com"),
                         originalVendor.getVendorClosingInvoice()
                 );
                 vendorService.register(updatedVendor);

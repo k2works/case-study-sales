@@ -3,7 +3,7 @@ package com.example.sms.service.master.partner;
 import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactory;
 import com.example.sms.TestDataFactoryImpl;
-import com.example.sms.domain.type.mail.Email;
+import com.example.sms.domain.type.mail.EmailAddress;
 import com.example.sms.domain.type.phone.FaxNumber;
 import com.example.sms.domain.type.phone.PhoneNumber;
 import com.example.sms.domain.type.address.Address;
@@ -769,7 +769,7 @@ class CustomerServiceTest {
                         customer.getCustomerAddress(),
                         customer.getCustomerPhoneNumber(),
                         customer.getCustomerFaxNumber(),
-                        Email.of("customer@example.com"), // メールアドレス
+                        EmailAddress.of("customer@example.com"), // メールアドレス
                         customer.getInvoice(),
                         customer.getShippings()
                 );
@@ -815,7 +815,7 @@ class CustomerServiceTest {
                         Address.of("1234567", "東京都", "新宿区西新宿", "1-1-1"),
                         PhoneNumber.of("0312345678"), // 電話番号
                         FaxNumber.of("0398765432"), // FAX番号
-                        Email.of("customer@example.com"), // メールアドレス
+                        EmailAddress.of("customer@example.com"), // メールアドレス
                         customer.getInvoice(),
                         customer.getShippings()
                 );
