@@ -1,11 +1,13 @@
 package com.example.sms.domain.type.address;
 
-import com.example.sms.domain.BusinessException;
 import lombok.NoArgsConstructor;
 import lombok.Value;
+import org.apache.commons.lang3.Validate;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.apache.commons.lang3.Validate.notNull;
 
 /**
  * 郵便番号
@@ -17,21 +19,14 @@ public class PostalCode {
     String regionCode;
 
     public PostalCode(String value) {
-        if (value == null) {
-            throw new BusinessException("郵便番号は必須です");
-        }
+        notNull(value, "郵便番号は必須です");
 
         if (value.matches("\\d{3}-\\d{4}$")) {
             value = value.replace("-", "");
         }
 
-        if (value.length() > 7) {
-            throw new BusinessException("郵便番号は7桁以内である必要があります:" + value);
-        }
-
-        if (!value.matches("\\d+")) {
-            throw new BusinessException("郵便番号は数字のみです:" + value);
-        }
+        Validate.inclusiveBetween(7,7, value.length(), "郵便番号は7桁です:" + value);
+        Validate.matchesPattern(value, "\\d+", "郵便番号は数字のみです:" + value);
 
         this.regionCode = value.substring(0, 2);
         this.value = value;
