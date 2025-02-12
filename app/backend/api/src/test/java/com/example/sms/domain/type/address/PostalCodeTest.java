@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@DisplayName("郵便番号テスト")
 class PostalCodeTest {
 
     @Nested
