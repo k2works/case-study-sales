@@ -1,8 +1,10 @@
 package com.example.sms.domain.type.phone;
 
-import com.example.sms.domain.BusinessException;
 import lombok.NoArgsConstructor;
 import lombok.Value;
+import org.apache.commons.lang3.Validate;
+
+import static org.apache.commons.lang3.Validate.notNull;
 
 /**
  * 電話番号
@@ -23,25 +25,18 @@ public class PhoneNumber {
         this.areaCode = areaCode;
         this.localExchange = localExchange;
         this.subscriberNumber = subscriberNumber;
-        if (value == null) {
-            throw new BusinessException("電話番号は必須です");
-        } else {
-            this.value = value;
-        }
+        notNull(value, "電話番号は必須です");
+
+        this.value = value;
     }
 
     public static PhoneNumber of(String value) {
-        if (value == null) {
-            throw new BusinessException("電話番号は必須です");
-        }
+        notNull(value, "電話番号は必須です");
         String regex = "^(0\\d{1,4}[-\\s]?\\d{1,4}[-\\s]?\\d{4})$";
-        if (!value.matches(regex)) {
-            throw new BusinessException("電話番号は適切な形式で入力してください (例: 03-9999-0000, 090 9999 0000)");
-        }
+        Validate.matchesPattern(value, regex, "電話番号は適切な形式で入力してください (例: 03-9999-0000, 090 9999 0000)");
+
         String normalized = value.replaceAll("[\\s-]", "");
-        if (normalized.length() != 10 && normalized.length() != 11) {
-            throw new BusinessException("電話番号は0から始まる10桁または11桁の数字で入力してください");
-        }
+        Validate.matchesPattern(normalized, "^(0\\d{9,10})$", "電話番号は0から始まる10桁または11桁の数字で入力してください");
 
         String areaCode;
         String localExchange;
@@ -56,6 +51,15 @@ public class PhoneNumber {
             subscriberNumber = normalized.substring(6);
         }
 
+        if (!isValidAreaCode(areaCode)) {
+            throw new IllegalArgumentException("電話番号の都道府県コードが不正です");
+        }
+
         return new PhoneNumber(normalized, areaCode, localExchange, subscriberNumber);
+    }
+
+    private static boolean isValidAreaCode(String areaCode) {
+        // 市外局番の2文字目が'1'から'9'の範囲外の場合はエラー
+        return areaCode.charAt(1) >= '1' && areaCode.charAt(1) <= '9';
     }
 }

@@ -65,8 +65,8 @@ class EmployeeTest {
             assertDoesNotThrow(() -> PhoneNumber.of("03-9999-0000"));
             assertDoesNotThrow(() -> PhoneNumber.of("01234567890"));
             assertDoesNotThrow(() -> PhoneNumber.of("090 9999 0000"));
-            assertThrows(BusinessException.class, () -> PhoneNumber.of("123456789"));
-            assertThrows(BusinessException.class, () -> PhoneNumber.of("01234567890a"));
+            assertThrows(IllegalArgumentException.class, () -> PhoneNumber.of("123456789"));
+            assertThrows(IllegalArgumentException.class, () -> PhoneNumber.of("01234567890a"));
         }
     }
 
@@ -80,8 +80,8 @@ class EmployeeTest {
             assertDoesNotThrow(() -> FaxNumber.of("03-9999-0000"));
             assertDoesNotThrow(() -> FaxNumber.of("01234567890"));
             assertDoesNotThrow(() -> FaxNumber.of("090 9999 0000"));
-            assertThrows(BusinessException.class, () -> FaxNumber.of("123456789"));
-            assertThrows(BusinessException.class, () -> FaxNumber.of("01234567890a"));
+            assertThrows(IllegalArgumentException.class, () -> FaxNumber.of("123456789"));
+            assertThrows(IllegalArgumentException.class, () -> FaxNumber.of("01234567890a"));
         }
     }
 
