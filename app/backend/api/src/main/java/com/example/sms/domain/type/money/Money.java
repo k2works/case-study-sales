@@ -49,6 +49,10 @@ public class Money implements Expression {
     }
 
     public boolean isGreaterThan(Money other) {
-        return amount > other.amount;
+        return amount >= other.amount;
+    }
+
+    public boolean isLessThan(Money other) {
+        return amount <= other.amount;
     }
 }

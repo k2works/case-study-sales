@@ -1,8 +1,8 @@
 package com.example.sms.domain.model.master.partner;
 
-import com.example.sms.domain.BusinessException;
 import lombok.NoArgsConstructor;
 import lombok.Value;
+import org.apache.commons.lang3.Validate;
 
 /**
  * 取引先グループコード
@@ -13,22 +13,25 @@ public class PartnerGroupCode {
     String value;
 
     public PartnerGroupCode(String partnerGroupCode) {
-        if (partnerGroupCode == null) {
-            throw new BusinessException("取引先グループコードは必須です");
-        }
+        Validate.notNull(partnerGroupCode, "取引先グループコードは必須です");
 
-        if (partnerGroupCode.length() > 4) {
-            throw new BusinessException("取引先グループコードは4桁以内である必要があります:" + partnerGroupCode);
-        }
+        Validate.isTrue(
+                partnerGroupCode.length() <= 4,
+                "取引先グループコードは4桁以内である必要があります: %s",
+                partnerGroupCode
+        );
 
         if (partnerGroupCode.matches("^[A-Z].*")) {
             this.value = partnerGroupCode;
             return;
         }
 
-        if (!partnerGroupCode.matches("^\\d{4}$")) {
-            throw new BusinessException("取引先グループコードは4桁の数字である必要があります:" + partnerGroupCode);
-        }
+        Validate.matchesPattern(
+                partnerGroupCode,
+                "^\\d{4}$",
+                "取引先グループコードは4桁の数字である必要があります: %s",
+                partnerGroupCode
+        );
 
         this.value = partnerGroupCode;
     }

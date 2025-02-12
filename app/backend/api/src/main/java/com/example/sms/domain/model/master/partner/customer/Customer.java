@@ -13,6 +13,9 @@ import lombok.Value;
 
 import java.util.List;
 
+import static org.apache.commons.lang3.Validate.isTrue;
+import static org.apache.commons.lang3.Validate.notNull;
+
 /**
  * 顧客
  */
@@ -122,13 +125,12 @@ public class Customer {
     }
 
     public static Customer of(Customer customer, ClosingInvoice closingInvoice1, ClosingInvoice  closingInvoice2) {
-        if (closingInvoice1 == null && closingInvoice2 == null) {
-            throw new BusinessException("締請求が設定されていません");
-        }
+        isTrue(
+                !(closingInvoice1 == null && closingInvoice2 == null),
+                "締請求が設定されていません"
+        );
 
-        if (closingInvoice1 == null) {
-            throw new BusinessException("締請求1が設定されていません");
-        }
+        notNull(closingInvoice1, "締請求1が設定されていません");
 
         return new Customer(
                 customer.customerCode,

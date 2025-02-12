@@ -1,6 +1,5 @@
 package com.example.sms.domain.model.master.region;
 
-import com.example.sms.domain.BusinessException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -27,10 +26,10 @@ class RegionTest {
     @DisplayName("地域コードは以下の条件を満たす")
     void shouldCreateRegionCode() {
         assertDoesNotThrow(() -> RegionCode.of("R001"));
-        assertThrows(BusinessException.class, () -> RegionCode.of(null));
-        assertThrows(BusinessException.class, () -> RegionCode.of("R0011"));
-        assertThrows(BusinessException.class, () -> RegionCode.of("R001a"));
-        assertThrows(BusinessException.class, () -> RegionCode.of("0001"));
-        assertThrows(BusinessException.class, () -> RegionCode.of("001"));
+        assertThrows(NullPointerException.class, () -> RegionCode.of(null));
+        assertThrows(IllegalArgumentException.class, () -> RegionCode.of("R0011"));
+        assertThrows(IllegalArgumentException.class, () -> RegionCode.of("R001a"));
+        assertThrows(IllegalArgumentException.class, () -> RegionCode.of("0001"));
+        assertThrows(IllegalArgumentException.class, () -> RegionCode.of("001"));
     }
 }

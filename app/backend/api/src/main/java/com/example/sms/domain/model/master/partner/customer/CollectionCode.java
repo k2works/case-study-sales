@@ -1,9 +1,10 @@
 package com.example.sms.domain.model.master.partner.customer;
 
 import com.example.sms.domain.model.master.partner.PartnerCode;
-import com.example.sms.domain.BusinessException;
 import lombok.NoArgsConstructor;
 import lombok.Value;
+
+import static org.apache.commons.lang3.Validate.inclusiveBetween;
 
 /**
  * 回収先コード
@@ -15,12 +16,7 @@ public class CollectionCode {
     Integer branchNumber;
 
     public CollectionCode(String code, Integer branchNumber) {
-        if (branchNumber < 0) {
-            throw new BusinessException("枝番は0以上である必要があります");
-        }
-        if (branchNumber > 999) {
-            throw new BusinessException("枝番は999以下である必要があります");
-        }
+        inclusiveBetween(0, 999, branchNumber, "枝番は%d以上%d以下である必要があります");
         this.code = PartnerCode.of(code);
         this.branchNumber = branchNumber;
     }

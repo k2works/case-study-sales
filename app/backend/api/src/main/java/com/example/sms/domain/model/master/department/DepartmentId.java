@@ -1,10 +1,11 @@
 package com.example.sms.domain.model.master.department;
 
-import com.example.sms.domain.BusinessException;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
 import java.time.LocalDateTime;
+
+import static org.apache.commons.lang3.Validate.notNull;
 
 /**
  * 部門ID
@@ -16,8 +17,8 @@ public class DepartmentId {
     DepartmentStartDate departmentStartDate;// 開始日
 
     public DepartmentId(DepartmentCode deptCode, DepartmentStartDate departmentStartDate) {
-        if (deptCode.getValue() == null) throw new BusinessException("部門コードは必須です");
-        if (departmentStartDate.getValue() == null) throw new BusinessException("開始日は必須です");
+        notNull(deptCode, "部門コードは必須です");
+        notNull(departmentStartDate.getValue(), "開始日は必須です");
 
         this.deptCode = deptCode;
         this.departmentStartDate = departmentStartDate;

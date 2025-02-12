@@ -1,6 +1,5 @@
 package com.example.sms.domain.model.master.partner;
 
-import com.example.sms.domain.BusinessException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -27,8 +26,8 @@ class PartnerGroupTest {
     @DisplayName("取引先グループコードは以下の条件を満たす")
     void shouldCreatePartnerGroupCode() {
         assertDoesNotThrow(() -> PartnerGroupCode.of("0001"));
-        assertThrows(BusinessException.class, () -> PartnerGroupCode.of(null));
-        assertThrows(BusinessException.class, () -> PartnerGroupCode.of("00011"));
-        assertThrows(BusinessException.class, () -> PartnerGroupCode.of("0001a"));
+        assertThrows(RuntimeException.class, () -> PartnerGroupCode.of(null));
+        assertThrows(RuntimeException.class, () -> PartnerGroupCode.of("00011"));
+        assertThrows(RuntimeException.class, () -> PartnerGroupCode.of("0001a"));
     }
 }

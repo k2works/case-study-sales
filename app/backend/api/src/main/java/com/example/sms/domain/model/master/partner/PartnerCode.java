@@ -1,8 +1,11 @@
 package com.example.sms.domain.model.master.partner;
 
-import com.example.sms.domain.BusinessException;
 import lombok.NoArgsConstructor;
 import lombok.Value;
+
+import static org.apache.commons.lang3.Validate.isTrue;
+import static org.apache.commons.lang3.Validate.matchesPattern;
+import static org.thymeleaf.util.Validate.notNull;
 
 /**
  * 取引先コード
@@ -13,22 +16,25 @@ public class PartnerCode {
     String value;
 
     public PartnerCode(String partnerCode) {
-        if (partnerCode == null) {
-            throw new BusinessException("取引先コードは必須です");
-        }
+        notNull(partnerCode, "取引先コードは必須です");
 
-        if (partnerCode.length() > 3) {
-            throw new BusinessException("取引先コードは3桁以内である必要があります:" + partnerCode);
-        }
+        isTrue(
+                partnerCode.length() <= 3,
+                "取引先コードは3桁以内である必要があります: %s",
+                partnerCode
+        );
 
         if (partnerCode.matches("^[A-Z].*")) {
             this.value = partnerCode;
             return;
         }
 
-        if (!partnerCode.matches("^\\d{3}$")) {
-            throw new BusinessException("取引先コードは3桁の数字である必要があります:" + partnerCode);
-        }
+        matchesPattern(
+                partnerCode,
+                "^\\d{3}$",
+                "取引先コードは3桁の数字である必要があります: %s",
+                partnerCode
+        );
 
         this.value = partnerCode;
     }

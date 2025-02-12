@@ -1,6 +1,5 @@
 package com.example.sms.domain.model.master.product;
 
-import com.example.sms.domain.BusinessException;
 import com.example.sms.domain.type.money.Money;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -45,13 +44,13 @@ class ProductTest {
         @Test
         @DisplayName("商品コードは必須")
         void shouldThrowExceptionWhenProductCodeIsNull() {
-            assertThrows(BusinessException.class, () -> Product.of(null, "Test Product", "TP", "テストプロダクト", ProductType.商品, 100, 50, 60, TaxType.外税, "100", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "100", 1));
+            assertThrows(NullPointerException.class, () -> Product.of(null, "Test Product", "TP", "テストプロダクト", ProductType.商品, 100, 50, 60, TaxType.外税, "100", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "100", 1));
         }
 
         @Test
         @DisplayName("商品コードは8桁または3桁の数字")
         void shouldThrowExceptionWhenProductCodeIsNot8DigitNumber() {
-            assertThrows(BusinessException.class, () -> Product.of("1000", "Test Product", "TP", "テストプロダクト", ProductType.商品, 100, 50, 60, TaxType.外税, "100", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "100", 1));
+            assertThrows(IllegalArgumentException.class, () -> Product.of("1000", "Test Product", "TP", "テストプロダクト", ProductType.商品, 100, 50, 60, TaxType.外税, "100", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "100", 1));
         }
 
         @Nested

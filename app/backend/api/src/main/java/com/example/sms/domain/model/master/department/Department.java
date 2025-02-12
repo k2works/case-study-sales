@@ -1,12 +1,14 @@
 package com.example.sms.domain.model.master.department;
 
 import com.example.sms.domain.model.master.employee.Employee;
-import com.example.sms.domain.BusinessException;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static org.apache.commons.lang3.Validate.isTrue;
+import static org.apache.commons.lang3.Validate.notNull;
 
 /**
  * 部門
@@ -26,12 +28,10 @@ public class Department {
     List<Employee> employees; // 社員
 
     public Department(DepartmentId departmentId, DepartmentEndDate departmentEndDate, String departmentName, int layer, DepartmentPath departmentPath, DepartmentLowerType lowerType, SlitYnType slitYnType, List<Employee> employees) {
-        if (departmentId == null) throw new BusinessException("部門コードは必須です");
-
-        if (departmentEndDate.getValue() == null) throw new BusinessException("終了日は必須です");
-        if (departmentId.getDepartmentStartDate().getValue().isAfter(departmentEndDate.getValue()))
-            throw new BusinessException("終了日は開始日より後である必要があります");
-        if (departmentPath.getValue() == null) throw new BusinessException("部門パスは必須です");
+        notNull(departmentId, "部門コードは必須です");
+        notNull(departmentEndDate.getValue(), "終了日は必須です");
+        isTrue(departmentId.getDepartmentStartDate().getValue().isBefore(departmentEndDate.getValue()), "終了日は開始日より後である必要があります");
+        notNull(departmentPath.getValue(), "部門パスは必須です");
 
         this.departmentId = departmentId;
         this.endDate = departmentEndDate;
@@ -44,7 +44,7 @@ public class Department {
     }
 
     public static Department of(DepartmentId departmentId, LocalDateTime endDate, String departmentName, int layer, String path, int layerType, int slitYn) {
-        if (departmentId == null) throw new BusinessException("部門コードは必須です");
+        notNull(departmentId, "部門コードは必須です");
 
         DepartmentEndDate departmentEndDate = DepartmentEndDate.of(endDate);
         DepartmentPath departmentPath = DepartmentPath.of(path);
