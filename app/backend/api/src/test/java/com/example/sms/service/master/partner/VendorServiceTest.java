@@ -408,13 +408,13 @@ class VendorServiceTest {
                         originalVendor.getVendorAddress(),
                         originalVendor.getVendorPhoneNumber(),
                         originalVendor.getVendorFaxNumber(),
-                        EmailAddress.of("test@example.com"),
+                        EmailAddress.of("user@example.com"),
                         originalVendor.getVendorClosingInvoice()
                 );
                 vendorService.register(updatedVendor);
 
                 VendorCriteria criteria = VendorCriteria.builder()
-                        .vendorEmailAddress("test@example.com")
+                        .vendorEmailAddress("user@example.com")
                         .build();
                 PageInfo<Vendor> result = vendorService.searchWithPageInfo(criteria);
                 assertEquals(1, result.getList().size());

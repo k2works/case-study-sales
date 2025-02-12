@@ -379,7 +379,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 "マンション101号室",
                 "03-1234-5678",
                 "03-1234-5679",
-                "test@example.comw",
+                "test@example.com",
                 10,
                 1,
                 20,

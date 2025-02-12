@@ -1,10 +1,9 @@
 package com.example.sms.domain.type.mail;
 
-import com.example.sms.domain.BusinessException;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
-import java.util.regex.Pattern;
+import static org.apache.commons.lang3.Validate.*;
 
 /**
  * メール
@@ -12,15 +11,21 @@ import java.util.regex.Pattern;
 @Value
 @NoArgsConstructor(force = true)
 public class EmailAddress {
-    private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
-    private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
-
     String value;
 
     public EmailAddress(String value) {
-        if (value == null || !EMAIL_PATTERN.matcher(value).matches()) {
-            throw new BusinessException("メールアドレスの形式が正しくありません: " + value);
-        }
+        notNull(value, "メールアドレスは必須です");
+
+        inclusiveBetween(15, 77, value.length(),
+                "メールアドレスの長さは15文字以上77文字以下である必要があります");
+
+        isTrue(value.indexOf("@") < 65,
+                "ローカル部は64文字以下である必要があります");
+
+        matchesPattern(value.toLowerCase(),
+                "^[a-z0-9]+\\.?[a-z0-9]+@\\bexample.com$",
+                "不正なメールアドレスです");
+
         this.value = value;
     }
 

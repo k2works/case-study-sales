@@ -220,13 +220,13 @@ class PartnerTest {
         @DisplayName("メールアドレスは以下の条件を満たす")
         void shouldCreateEmailAddress() {
             assertDoesNotThrow(() -> EmailAddress.of("test@example.com"));
-            assertThrows(BusinessException.class, () -> EmailAddress.of(null));
-            assertThrows(BusinessException.class, () -> EmailAddress.of("test"));
-            assertThrows(BusinessException.class, () -> EmailAddress.of("test@"));
-            assertThrows(BusinessException.class, () -> EmailAddress.of("test@example"));
-            assertThrows(BusinessException.class, () -> EmailAddress.of("test@example."));
-            assertThrows(BusinessException.class, () -> EmailAddress.of("test@example.c"));
-            assertThrows(BusinessException.class, () -> EmailAddress.of("test@example.com."));
+            assertThrows(NullPointerException.class, () -> EmailAddress.of(null));
+            assertThrows(IllegalArgumentException.class, () -> EmailAddress.of("test"));
+            assertThrows(IllegalArgumentException.class, () -> EmailAddress.of("test@"));
+            assertThrows(IllegalArgumentException.class, () -> EmailAddress.of("test@example"));
+            assertThrows(IllegalArgumentException.class, () -> EmailAddress.of("test@example."));
+            assertThrows(IllegalArgumentException.class, () -> EmailAddress.of("test@example.c"));
+            assertThrows(IllegalArgumentException.class, () -> EmailAddress.of("test@example.com."));
         }
 
         @Nested
@@ -347,7 +347,7 @@ class PartnerTest {
                     "マンション101号室",
                     "03-1234-5678",
                     "03-1234-5679",
-                    "test@example.comw",
+                    "test@example.com",
                     10,
                     1,
                     20,
@@ -373,7 +373,7 @@ class PartnerTest {
                     () -> assertEquals("マンション101号室", vendor.getVendorAddress().getAddress2()),
                     () -> assertEquals("03-1234-5678", vendor.getVendorPhoneNumber().getValue()),
                     () -> assertEquals("03-1234-5679", vendor.getVendorFaxNumber().getValue()),
-                    () -> assertEquals("test@example.comw", vendor.getVendorEmailAddress().getValue()),
+                    () -> assertEquals("test@example.com", vendor.getVendorEmailAddress().getValue()),
                     () -> assertEquals(ClosingDate.十日, vendor.getVendorClosingInvoice().getClosingDay()),
                     () -> assertEquals(PaymentMonth.翌月, vendor.getVendorClosingInvoice().getPaymentMonth()),
                     () -> assertEquals(PaymentDay.二十日, vendor.getVendorClosingInvoice().getPaymentDay()),
