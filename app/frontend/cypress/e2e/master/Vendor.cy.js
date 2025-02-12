@@ -25,7 +25,8 @@ describe('仕入先管理', () => {
             cy.get('#vendorContactName').type('山田花子'); // 担当者名
             cy.get('#vendorDepartmentName').type('購買部'); // 部門名
             cy.get('#postalCode').type('9876543'); // 郵便番号
-            cy.get('#address').type('大阪府大阪市中央区'); // 住所
+            cy.get('#address1').type('大阪府大阪市中央区'); // 住所
+            cy.get('#address2').type('1-2-3');
             cy.get('#phoneNumber').type('06-1234-5678'); // 電話番号
             cy.get('#faxNumber').type('06-1234-5679'); // FAX番号
             cy.get('#emailAddress').type('vendor@example.com'); // メールアドレス

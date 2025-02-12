@@ -154,8 +154,8 @@ const Form = ({ isEditing, newVendor, setNewVendor }: FormProps) => {
 
             {/* 住所 */}
             <FormInput
-                label="住所"
-                id="address"
+                label="住所1"
+                id="address1"
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="住所"
@@ -166,6 +166,25 @@ const Form = ({ isEditing, newVendor, setNewVendor }: FormProps) => {
                         vendorAddress: {
                             ...newVendor.vendorAddress,
                             address1: e.target.value,
+                        },
+                    })
+                }
+            />
+
+            {/* 住所2 */}
+            <FormInput
+                label="住所2"
+                id="address2"
+                type="text"
+                className="single-view-content-item-form-item-input"
+                placeholder="住所2"
+                value={newVendor.vendorAddress?.address2 ?? ""}
+                onChange={(e) =>
+                    setNewVendor({
+                        ...newVendor,
+                        vendorAddress: {
+                            ...newVendor.vendorAddress,
+                            address2: e.target.value,
                         },
                     })
                 }
