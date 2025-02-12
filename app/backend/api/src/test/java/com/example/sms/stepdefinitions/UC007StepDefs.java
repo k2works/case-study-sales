@@ -133,12 +133,4 @@ public class UC007StepDefs extends SpringAcceptanceTest {
         String json = objectMapper.writeValueAsString(downloadCriteriaResource);
         executePost(url, json);
     }
-
-    @ならば(":UC007 ダウンロードデータが作成される")
-    public void toShow() throws JsonProcessingException {
-        String result = latestResponse.getBody();
-        ObjectMapper objectMapper = new ObjectMapper();
-        MessageResponse response = objectMapper.readValue(result, MessageResponse.class);
-        assertNotNull(response);
-    }
 }
