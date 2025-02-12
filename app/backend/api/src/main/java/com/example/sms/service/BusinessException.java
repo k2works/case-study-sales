@@ -1,4 +1,4 @@
-package com.example.sms.domain;
+package com.example.sms.service;
 
 public class BusinessException extends RuntimeException {
     public BusinessException(String message) {

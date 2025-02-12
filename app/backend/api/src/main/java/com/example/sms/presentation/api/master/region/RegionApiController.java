@@ -6,7 +6,7 @@ import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
-import com.example.sms.domain.BusinessException;
+import com.example.sms.service.BusinessException;
 import com.example.sms.service.master.region.RegionCriteria;
 import com.example.sms.service.master.region.RegionService;
 import com.example.sms.service.system.audit.AuditAnnotation;
@@ -42,7 +42,7 @@ public class RegionApiController {
             PageNation.startPage(page, pageSize);
             PageInfo<Region> result = regionService.selectAllWithPageInfo();
             return ResponseEntity.ok(result);
-        } catch (BusinessException e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -56,7 +56,7 @@ public class RegionApiController {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.region.not.exist")));
             }
             return ResponseEntity.ok(result);
-        } catch (BusinessException e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -72,7 +72,7 @@ public class RegionApiController {
             }
             regionService.register(region);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.region.registered")));
-        } catch (BusinessException e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -91,7 +91,7 @@ public class RegionApiController {
             }
             regionService.save(region);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.region.updated")));
-        } catch (BusinessException e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -107,7 +107,7 @@ public class RegionApiController {
             }
             regionService.delete(region);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.region.deleted")));
-        } catch (BusinessException e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -123,7 +123,7 @@ public class RegionApiController {
             RegionCriteria criteria = convertToCriteria(resource);
             PageInfo<Region> result = regionService.searchWithPageInfo(criteria);
             return ResponseEntity.ok(result);
-        } catch (BusinessException e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }

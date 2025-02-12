@@ -1,6 +1,5 @@
 package com.example.sms.domain.model.master.partner.customer;
 
-import com.example.sms.domain.BusinessException;
 import com.example.sms.domain.type.mail.EmailAddress;
 import com.example.sms.domain.type.phone.FaxNumber;
 import com.example.sms.domain.type.phone.PhoneNumber;

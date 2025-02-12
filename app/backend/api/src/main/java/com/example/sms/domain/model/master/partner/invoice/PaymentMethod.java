@@ -1,6 +1,5 @@
 package com.example.sms.domain.model.master.partner.invoice;
 
-import com.example.sms.domain.BusinessException;
 import lombok.Getter;
 
 /**
@@ -23,6 +22,6 @@ public enum PaymentMethod {
                 return paymentMethod;
             }
         }
-        throw new BusinessException("Illegal PaymentMethod value: " + value);
+        throw new IllegalArgumentException("Illegal PaymentMethod value: " + value);
     }
 }

@@ -8,7 +8,7 @@ import com.example.sms.presentation.api.system.auth.payload.request.LoginRequest
 import com.example.sms.presentation.api.system.auth.payload.request.SignupRequest;
 import com.example.sms.presentation.api.system.auth.payload.response.JwtResponse;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
-import com.example.sms.domain.BusinessException;
+import com.example.sms.service.BusinessException;
 import com.example.sms.service.system.auth.AuthApiService;
 import com.example.sms.service.system.user.UserManagementService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -64,7 +64,7 @@ public class AuthApiController {
 
             JwtResponse jwtResponse = new JwtResponse(jwt, userDetails.getUsername(), roles);
             return ResponseEntity.ok(jwtResponse);
-        } catch (BusinessException e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -90,7 +90,7 @@ public class AuthApiController {
             userManagementService.register(user);
 
             return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
-        } catch (BusinessException e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }

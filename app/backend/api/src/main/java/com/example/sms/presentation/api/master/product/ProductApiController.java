@@ -6,7 +6,7 @@ import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
-import com.example.sms.domain.BusinessException;
+import com.example.sms.service.BusinessException;
 import com.example.sms.service.master.product.ProductCriteria;
 import com.example.sms.service.master.product.ProductService;
 import com.example.sms.service.system.audit.AuditAnnotation;
@@ -45,7 +45,7 @@ public class ProductApiController {
             PageNation.startPage(page, pageSize);
             PageInfo<Product> result = productService.selectAllWithPageInfo();
             return ResponseEntity.ok(result);
-        } catch (BusinessException e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -59,7 +59,7 @@ public class ProductApiController {
             PageNation.startPage(page, pageSize);
             PageInfo<Product> result = productService.selectAllBomsWithPageInfo();
             return ResponseEntity.ok(result);
-        } catch (BusinessException e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -70,7 +70,7 @@ public class ProductApiController {
         try {
             Product result = productService.find(productCode);
             return ResponseEntity.ok(result);
-        } catch (BusinessException e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -86,7 +86,7 @@ public class ProductApiController {
             }
             productService.register(product);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.product.registered")));
-        } catch (BusinessException e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -103,7 +103,7 @@ public class ProductApiController {
             }
             productService.save(product);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.product.updated")));
-        } catch (BusinessException e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -119,7 +119,7 @@ public class ProductApiController {
             }
             productService.delete(product);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.product.deleted")));
-        } catch (BusinessException e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -137,7 +137,7 @@ public class ProductApiController {
             PageInfo<Product> result = productService.searchProductWithPageInfo(criteria);
 
             return ResponseEntity.ok(result);
-        } catch (BusinessException e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }

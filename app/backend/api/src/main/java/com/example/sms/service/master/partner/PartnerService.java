@@ -3,7 +3,7 @@ package com.example.sms.service.master.partner;
 import com.example.sms.domain.model.master.partner.Partner;
 import com.example.sms.domain.model.master.partner.PartnerCategoryList;
 import com.example.sms.domain.model.master.partner.PartnerList;
-import com.example.sms.domain.BusinessException;
+import com.example.sms.service.BusinessException;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

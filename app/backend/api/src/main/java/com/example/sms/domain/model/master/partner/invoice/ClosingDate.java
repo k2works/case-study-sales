@@ -1,6 +1,5 @@
 package com.example.sms.domain.model.master.partner.invoice;
 
-import com.example.sms.domain.BusinessException;
 import lombok.Getter;
 
 /**
@@ -24,6 +23,6 @@ public enum ClosingDate {
                 return closingDate;
             }
         }
-        throw new BusinessException("Illegal ClosingDate value: " + value);
+        throw new IllegalArgumentException("Illegal ClosingDate value: " + value);
     }
 }

@@ -10,7 +10,7 @@ import com.example.sms.domain.type.address.PostalCode;
 import com.example.sms.domain.type.address.Prefecture;
 import com.example.sms.domain.model.master.partner.*;
 import com.example.sms.domain.model.master.partner.vendor.VendorType;
-import com.example.sms.domain.BusinessException;
+import com.example.sms.service.BusinessException;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

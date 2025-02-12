@@ -10,7 +10,7 @@ import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.master.employee.EmployeeResource;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
-import com.example.sms.domain.BusinessException;
+import com.example.sms.service.BusinessException;
 import com.example.sms.service.master.department.DepartmentCriteria;
 import com.example.sms.service.master.department.DepartmentService;
 import com.example.sms.service.system.audit.AuditAnnotation;
@@ -53,7 +53,7 @@ public class DepartmentApiController {
             PageNation.startPage(page, pageSize);
             PageInfo<Department> result = departmentManagementService.selectAllWithPageInfo();
             return ResponseEntity.ok(result);
-        } catch (BusinessException e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -66,7 +66,7 @@ public class DepartmentApiController {
             DepartmentId departmentId = DepartmentId.of(departmentCode, LocalDateTime.parse(departmentStartDate, formatter));
             DepartmentList department = departmentManagementService.findByCode(departmentId);
             return ResponseEntity.ok(department.asList());
-        } catch (BusinessException e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -83,7 +83,7 @@ public class DepartmentApiController {
             }
             departmentManagementService.register(department);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.department.registered")));
-        } catch (BusinessException e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -101,7 +101,7 @@ public class DepartmentApiController {
 
             departmentManagementService.save(department, addEmployees, deleteEmployees);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.department.updated")));
-        } catch (BusinessException e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -119,7 +119,7 @@ public class DepartmentApiController {
             }
             departmentManagementService.delete(departmentId);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.department.deleted")));
-        } catch (BusinessException e) {
+        } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -135,7 +135,7 @@ public class DepartmentApiController {
             DepartmentCriteria criteria = convertToCriteria(resource);
             PageInfo<Department> result = departmentManagementService.searchWithPageInfo(criteria);
             return ResponseEntity.ok(result);
-        } catch (BusinessException e) {
+        } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }

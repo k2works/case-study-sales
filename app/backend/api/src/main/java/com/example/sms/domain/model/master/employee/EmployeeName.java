@@ -1,12 +1,10 @@
 package com.example.sms.domain.model.master.employee;
 
 
-import com.example.sms.domain.BusinessException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Value;
-import org.apache.commons.lang3.Validate;
 
 import static org.apache.commons.lang3.Validate.isTrue;
 

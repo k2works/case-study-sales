@@ -11,7 +11,7 @@ import com.example.sms.domain.model.master.partner.customer.CustomerType;
 import com.example.sms.domain.model.master.partner.Partner;
 import com.example.sms.domain.model.master.partner.customer.*;
 import com.example.sms.domain.model.master.region.RegionCode;
-import com.example.sms.domain.BusinessException;
+import com.example.sms.service.BusinessException;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

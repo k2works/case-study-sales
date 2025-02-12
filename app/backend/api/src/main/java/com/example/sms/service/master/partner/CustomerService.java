@@ -4,7 +4,7 @@ import com.example.sms.domain.model.master.partner.Partner;
 import com.example.sms.domain.model.master.partner.customer.Customer;
 import com.example.sms.domain.model.master.partner.customer.CustomerCode;
 import com.example.sms.domain.model.master.partner.customer.CustomerList;
-import com.example.sms.domain.BusinessException;
+import com.example.sms.service.BusinessException;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

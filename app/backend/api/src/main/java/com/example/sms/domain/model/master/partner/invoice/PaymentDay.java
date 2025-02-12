@@ -1,6 +1,5 @@
 package com.example.sms.domain.model.master.partner.invoice;
 
-import com.example.sms.domain.BusinessException;
 import lombok.Getter;
 
 /**
@@ -24,6 +23,6 @@ public enum PaymentDay {
                 return paymentDay;
             }
         }
-        throw new BusinessException("Illegal PaymentDay value: " + value);
+        throw new IllegalArgumentException("Illegal PaymentDay value: " + value);
     }
 }
