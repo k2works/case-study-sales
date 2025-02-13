@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.sms.infrastructure.datasource.master.partner_category.PartnerCategoryTypeCustomMapper">
+  <resultMap
+          id="BaseResultMap"
+          type="com.example.sms.infrastructure.datasource.master.partner_category.PartnerCategoryTypeCustomEntity"
+          extends="com.example.sms.infrastructure.datasource.autogen.mapper.取引先分類種別マスタMapper.BaseResultMap"
+  >
+
+    <collection property="取引先分類マスタ"
+                javaType="ArrayList"
+                column="取引先分類種別コード"
+                select="com.example.sms.infrastructure.datasource.master.partner_category.item.PartnerCategoryItemCustomMapper.selectByCategoryTypeCode"
+                fetchType="eager"
+    />
+  </resultMap>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.取引先分類種別マスタMapper.Base_Column_List" />
+    from public.取引先分類種別マスタ
+    where 取引先分類種別コード = #{取引先分類種別コード,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.取引先分類種別マスタMapper.Base_Column_List" />
+    from public.取引先分類種別マスタ
+  </select>
+
+  <insert id="insertForOptimisticLock" parameterType="com.example.sms.infrastructure.datasource.autogen.model.取引先分類種別マスタ">
+    insert into public.取引先分類種別マスタ (取引先分類種別コード, 取引先分類種別名, 作成日時,
+                                             作成者名, 更新日時, 更新者名)
+    values (#{取引先分類種別コード,jdbcType=VARCHAR}, #{取引先分類種別名,jdbcType=VARCHAR}, #{作成日時,jdbcType=TIMESTAMP},
+            #{作成者名,jdbcType=VARCHAR}, #{更新日時,jdbcType=TIMESTAMP}, #{更新者名,jdbcType=VARCHAR})
+  </insert>
+
+  <update id="updateByPrimaryKeyForOptimisticLock" parameterType="com.example.sms.infrastructure.datasource.autogen.model.取引先分類種別マスタ">
+    update public.取引先分類種別マスタ
+    set 取引先分類種別名 = #{取引先分類種別名,jdbcType=VARCHAR},
+    作成日時 = #{作成日時,jdbcType=TIMESTAMP},
+    作成者名 = #{作成者名,jdbcType=VARCHAR},
+    更新日時 = #{更新日時,jdbcType=TIMESTAMP},
+    更新者名 = #{更新者名,jdbcType=VARCHAR},
+    version = #{version,jdbcType=INTEGER} + 1
+    where 取引先分類種別コード = #{取引先分類種別コード,jdbcType=VARCHAR}
+    and version = #{version,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByCriteria" resultMap="BaseResultMap">
+    select
+    種別.取引先分類種別コード, 種別.取引先分類種別名 , 分類.取引先分類コード, 分類.取引先分類名, 所属.取引先コード
+    from public.取引先分類種別マスタ 種別
+    left outer join public.取引先分類マスタ 分類 on 種別.取引先分類種別コード = 分類.取引先分類種別コード
+    left outer join public.取引先分類所属マスタ 所属 on 分類.取引先分類種別コード = 所属.取引先分類種別コード and 分類.取引先分類コード = 所属.取引先分類コード
+    <where>
+      <if test="partnerCategoryTypeCode != null">
+        種別.取引先分類種別コード = #{partnerCategoryTypeCode,jdbcType=VARCHAR}
+      </if>
+      <if test="partnerCategoryTypeName != null">
+        and 種別.取引先分類種別名 like concat(#{partnerCategoryTypeName,jdbcType=VARCHAR}, '%')
+      </if>
+      <if test="partnerCategoryItemCode != null">
+        and 分類.取引先分類コード = #{partnerCategoryItemCode,jdbcType=VARCHAR}
+      </if>
+      <if test="partnerCategoryItemName != null">
+        and 分類.取引先分類名 like concat(#{partnerCategoryItemName,jdbcType=VARCHAR}, '%')
+      </if>
+      <if test="partnerCode != null">
+        and 所属.取引先コード = #{partnerCode,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+</mapper>

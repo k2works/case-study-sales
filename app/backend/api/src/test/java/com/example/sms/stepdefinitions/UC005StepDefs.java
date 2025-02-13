@@ -3,7 +3,7 @@ package com.example.sms.stepdefinitions;
 import com.example.sms.TestDataFactory;
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.ProductCategory;
-import com.example.sms.domain.type.product.*;
+import com.example.sms.domain.model.master.product.*;
 import com.example.sms.presentation.api.master.product.ProductCategoryCriteriaResource;
 import com.example.sms.presentation.api.master.product.ProductCategoryResource;
 import com.example.sms.presentation.api.master.product.ProductCriteriaResource;
@@ -103,8 +103,8 @@ public class UC005StepDefs extends SpringAcceptanceTest {
         productResource.setMiscellaneousType(MiscellaneousType.適用);
         productResource.setStockManagementTargetType(StockManagementTargetType.対象);
         productResource.setStockAllocationType(StockAllocationType.引当済);
-        productResource.setSupplierCode("");
-        productResource.setSupplierBranchNumber(0);
+        productResource.setVendorCode("000");
+        productResource.setVendorBranchNumber(0);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(productResource);
@@ -152,8 +152,8 @@ public class UC005StepDefs extends SpringAcceptanceTest {
         productResource.setMiscellaneousType(MiscellaneousType.適用);
         productResource.setStockManagementTargetType(StockManagementTargetType.対象);
         productResource.setStockAllocationType(StockAllocationType.引当済);
-        productResource.setSupplierCode("");
-        productResource.setSupplierBranchNumber(0);
+        productResource.setVendorCode("000");
+        productResource.setVendorBranchNumber(0);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(productResource);

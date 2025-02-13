@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.sms.infrastructure.datasource.master.region.RegionCustomMapper">
+  <resultMap
+          id="BaseResultMap"
+          type="com.example.sms.infrastructure.datasource.master.region.RegionCustomEntity"
+          extends="com.example.sms.infrastructure.datasource.autogen.mapper.地域マスタMapper.BaseResultMap">
+  </resultMap>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.地域マスタMapper.Base_Column_List" />
+    from public.地域マスタ
+    where 地域コード = #{地域コード,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectAll" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.地域マスタMapper.Base_Column_List" />
+    from public.地域マスタ
+  </select>
+
+  <select id="selectByCriteria" resultMap="BaseResultMap">
+    select
+    <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.地域マスタMapper.Base_Column_List" />
+    from public.地域マスタ
+    <where>
+        <if test="regionCode != null">
+            地域コード = #{regionCode,jdbcType=VARCHAR}
+        </if>
+        <if test="regionName != null">
+            and 地域名 like CONCAT(#{regionName,jdbcType=VARCHAR}, '%')
+        </if>
+    </where>
+  </select>
+</mapper>

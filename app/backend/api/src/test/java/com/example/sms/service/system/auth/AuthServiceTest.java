@@ -2,6 +2,7 @@ package com.example.sms.service.system.auth;
 
 import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactory;
+import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.service.system.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +22,7 @@ import static org.mockito.Mockito.when;
 
 @IntegrationTest
 @DisplayName("認証サービス")
-public class AuthServiceTest {
+class AuthServiceTest {
     @Autowired
     AuthService service;
 
@@ -39,7 +40,7 @@ public class AuthServiceTest {
     @Test
     @DisplayName("ユーザが存在する場合、ユーザ情報を返す")
     void loadUserByUsername_WhenUserExists_ReturnsUserDetails() {
-        User user = testDataFactory.User();
+        User user = TestDataFactoryImpl.getUser();
 
         when(repository.findById(anyString())).thenReturn(Optional.of(user));
 

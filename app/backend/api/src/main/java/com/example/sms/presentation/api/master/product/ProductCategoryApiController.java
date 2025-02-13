@@ -2,11 +2,12 @@ package com.example.sms.presentation.api.master.product;
 
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.ProductCategory;
-import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
-import com.example.sms.domain.type.audit.ApplicationExecutionProcessType;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
+import com.example.sms.service.BusinessException;
 import com.example.sms.service.master.product.ProductCategoryCriteria;
 import com.example.sms.service.master.product.ProductService;
 import com.example.sms.service.system.audit.AuditAnnotation;
@@ -46,7 +47,7 @@ public class ProductCategoryApiController {
             PageNation.startPage(page, pageSize);
             PageInfo<ProductCategory> result = productService.selectAllCategoryWithPageInfo();
             return ResponseEntity.ok(result);
-        } catch (Exception e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -57,7 +58,7 @@ public class ProductCategoryApiController {
         try {
             ProductCategory result = productService.findCategory(productCategoryCode);
             return ResponseEntity.ok(result);
-        } catch (Exception e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -73,7 +74,7 @@ public class ProductCategoryApiController {
             }
             productService.registerCategory(productCategory);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.product_category.registered")));
-        } catch (Exception e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -91,7 +92,7 @@ public class ProductCategoryApiController {
             List<Product> deleteProducts = getDeleteFilteredProducts(productCategoryResource);
             productService.saveCategory(productCategory, addProducts, deleteProducts);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.product_category.updated")));
-        } catch (Exception e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -107,7 +108,7 @@ public class ProductCategoryApiController {
             }
             productService.deleteCategory(productCategory);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.product_category.deleted")));
-        } catch (Exception e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -126,7 +127,7 @@ public class ProductCategoryApiController {
                     .build();
             PageInfo<ProductCategory> result = productService.searchProductCategoryWithPageInfo(criteria);
             return ResponseEntity.ok(result);
-        } catch (Exception e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -149,8 +150,8 @@ public class ProductCategoryApiController {
                                 resource.getMiscellaneousType(),
                                 resource.getStockManagementTargetType(),
                                 resource.getStockAllocationType(),
-                                resource.getSupplierCode(),
-                                resource.getSupplierBranchNumber()
+                                resource.getVendorCode(),
+                                resource.getVendorBranchNumber()
                         ))
                         .toList();
     }
@@ -173,8 +174,8 @@ public class ProductCategoryApiController {
                                 resource.getMiscellaneousType(),
                                 resource.getStockManagementTargetType(),
                                 resource.getStockAllocationType(),
-                                resource.getSupplierCode(),
-                                resource.getSupplierBranchNumber()
+                                resource.getVendorCode(),
+                                resource.getVendorBranchNumber()
                         ))
                         .toList();
     }

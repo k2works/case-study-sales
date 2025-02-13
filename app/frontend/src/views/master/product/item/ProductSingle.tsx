@@ -6,7 +6,7 @@ import {
     StockAllocationEnumType,
     StockManagementTargetEnumType,
     TaxEnumType
-} from "../../../../models";
+} from "../../../../models/master/product";
 import React from "react";
 import {Message} from "../../../../components/application/Message.tsx";
 
@@ -205,10 +205,10 @@ const Form = ({isEditing, newProduct, setNewProduct}: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="仕入先コード"
-                value={newProduct.supplierCode.value}
+                value={newProduct.vendorCode.code.value}
                 onChange={(e) => setNewProduct({
                     ...newProduct,
-                    supplierCode: { ...newProduct.supplierCode, value: e.target.value }
+                    vendorCode: { ...newProduct.vendorCode, code: { value: e.target.value } }
                 })}
             />
         </div>

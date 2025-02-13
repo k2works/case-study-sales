@@ -3,11 +3,12 @@ package com.example.sms.presentation.api.system.auth;
 import com.example.sms.domain.model.system.auth.AuthUserDetails;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.user.UserId;
-import com.example.sms.domain.type.user.RoleName;
+import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.presentation.api.system.auth.payload.request.LoginRequest;
 import com.example.sms.presentation.api.system.auth.payload.request.SignupRequest;
 import com.example.sms.presentation.api.system.auth.payload.response.JwtResponse;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
+import com.example.sms.service.BusinessException;
 import com.example.sms.service.system.auth.AuthApiService;
 import com.example.sms.service.system.user.UserManagementService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,7 +21,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -64,7 +64,7 @@ public class AuthApiController {
 
             JwtResponse jwtResponse = new JwtResponse(jwt, userDetails.getUsername(), roles);
             return ResponseEntity.ok(jwtResponse);
-        } catch (Exception e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -90,7 +90,7 @@ public class AuthApiController {
             userManagementService.register(user);
 
             return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
-        } catch (Exception e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }

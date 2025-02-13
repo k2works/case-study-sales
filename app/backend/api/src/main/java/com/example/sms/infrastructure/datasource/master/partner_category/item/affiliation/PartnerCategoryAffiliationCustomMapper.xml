@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.sms.infrastructure.datasource.master.partner_category.item.affiliation.PartnerCategoryAffiliationCustomMapper">
+  <resultMap
+          id="BaseResultMap"
+          type="com.example.sms.infrastructure.datasource.master.partner_category.item.affiliation.PartnerCategoryAffiliationCustomEntity"
+          extends="com.example.sms.infrastructure.datasource.autogen.mapper.取引先分類所属マスタMapper.BaseResultMap"
+  >
+  </resultMap>
+
+  <select id="selectByPrimaryKey" parameterType="com.example.sms.infrastructure.datasource.autogen.model.取引先分類所属マスタKey" resultMap="BaseResultMap">
+    select
+    <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.取引先分類所属マスタMapper.Base_Column_List" />
+    from public.取引先分類所属マスタ
+    where 取引先分類種別コード = #{取引先分類種別コード,jdbcType=VARCHAR}
+      and 取引先コード = #{取引先コード,jdbcType=VARCHAR}
+      and 取引先分類コード = #{取引先分類コード,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.取引先分類所属マスタMapper.Base_Column_List" />
+    from public.取引先分類所属マスタ
+  </select>
+
+  <select id="selectByCategoryTypeCode" resultMap="BaseResultMap">
+    select
+    <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.取引先分類所属マスタMapper.Base_Column_List" />
+    from public.取引先分類所属マスタ
+    where 取引先分類種別コード = #{取引先分類種別コード,jdbcType=VARCHAR}
+      and 取引先分類コード = #{取引先分類コード,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByCategoryTypeCode" parameterType="java.lang.String">
+    delete from public.取引先分類所属マスタ
+    where 取引先分類種別コード = #{取引先分類種別コード,jdbcType=VARCHAR}
+  </delete>
+
+  <delete id="deleteByCategoryTypeCodeAndItemCode" parameterType="com.example.sms.infrastructure.datasource.autogen.model.取引先分類マスタKey">
+    delete from public.取引先分類所属マスタ
+    where 取引先分類種別コード = #{取引先分類種別コード,jdbcType=VARCHAR}
+      and 取引先分類コード = #{取引先分類コード,jdbcType=VARCHAR}
+  </delete>
+</mapper>

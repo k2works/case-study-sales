@@ -32,7 +32,7 @@ describe('商品管理', () => {
             cy.get('#miscellaneousType').select('適用');
             cy.get('#stockManagementTargetType').select('対象');
             cy.get('#stockAllocationType').select('未引当');
-            cy.get('#supplierCode').type('S99999');
+            cy.get('#supplierCode').type('999');
 
             // 登録ボタンをクリック
             cy.get('#save').click();
@@ -71,7 +71,7 @@ describe('商品管理', () => {
             cy.get('#miscellaneousType').select('適用外');
             cy.get('#stockManagementTargetType').select('対象外');
             cy.get('#stockAllocationType').select('引当済');
-            cy.get('#supplierCode').clear().type('S99998');
+            cy.get('#supplierCode').clear().type('998');
 
             // 保存ボタンをクリック
             cy.get('#save').click();
@@ -86,6 +86,7 @@ describe('商品管理', () => {
             openProductPage();
             cy.get('#search').click();
             cy.get('#productCode').type('99999001');
+            cy.wait(1000);
             cy.get('#search-all').click();
             cy.get('#delete').click();
             cy.get('#message').contains('商品を削除しました。');

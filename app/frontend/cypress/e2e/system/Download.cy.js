@@ -39,4 +39,32 @@ describe('アプリケーションデータダウンロード', () => {
         cy.get('#download').click();
         cy.get('#message').contains('商品 データをダウンロードしました。');
     });
+
+    it('取引先グループダウンロード', () => {
+        userPage();
+        cy.get('#downloadTarget').select('取引先グループ');
+        cy.get('#download').click();
+        cy.get('#message').contains('取引先グループ データをダウンロードしました。');
+    });
+
+    it('取引先データダウンロード',  () => {
+        userPage();
+        cy.get('#downloadTarget').select('取引先');
+        cy.get('#download').click();
+        cy.get('#message').contains('取引先 データをダウンロードしました。');
+    });
+
+    it('顧客データダウンロード', () => {
+        userPage();
+        cy.get('#downloadTarget').select('顧客');
+        cy.get('#download').click();
+        cy.get('#message').contains('顧客 データをダウンロードしました。');
+    });
+
+    it('仕入先データダウンロード', () => {
+        userPage();
+        cy.get('#downloadTarget').select('仕入先');
+        cy.get('#download').click();
+        cy.get('#message').contains('仕入先 データをダウンロードしました。');
+    });
 });

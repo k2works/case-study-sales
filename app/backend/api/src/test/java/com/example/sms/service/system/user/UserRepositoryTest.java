@@ -3,7 +3,7 @@ package com.example.sms.service.system.user;
 import com.example.sms.domain.model.system.user.Name;
 import com.example.sms.domain.model.system.user.Password;
 import com.example.sms.domain.model.system.user.User;
-import com.example.sms.domain.type.user.RoleName;
+import com.example.sms.domain.model.system.user.RoleName;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @DisplayName("ユーザーレポジトリ")
-public class UserRepositoryTest {
+class UserRepositoryTest {
 
     @Autowired
     private UserRepository repository;

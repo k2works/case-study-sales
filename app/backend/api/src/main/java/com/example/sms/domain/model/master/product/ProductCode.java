@@ -1,10 +1,10 @@
 package com.example.sms.domain.model.master.product;
 
-import com.example.sms.domain.type.product.BusinessType;
-import com.example.sms.domain.type.product.ItemType;
-import com.example.sms.domain.type.product.LiveStockType;
 import lombok.NoArgsConstructor;
 import lombok.Value;
+
+import static org.apache.commons.lang3.Validate.matchesPattern;
+import static org.apache.commons.lang3.Validate.notNull;
 
 /**
  * 商品コード
@@ -19,9 +19,7 @@ public class ProductCode {
     Integer serialNumber; // 連番
 
     public ProductCode(String productCode) {
-        if (productCode == null) {
-            throw new IllegalArgumentException("商品コードは必須です");
-        }
+        notNull(productCode, "商品コードは必須です");
 
         if (productCode.matches("^[A-Z].*")) {
             this.value = productCode;
@@ -32,9 +30,12 @@ public class ProductCode {
             return;
         }
 
-        if (!productCode.matches("^[0-9]{3}$|^[0-9]{8}$")) {
-            throw new IllegalArgumentException("商品コードは3桁または8桁の数字である必要があります:" + productCode);
-        }
+        matchesPattern(
+                productCode,
+                "^[0-9]{3}$|^[0-9]{8}$",
+                "商品コードは3桁または8桁の数字である必要があります: %s",
+                productCode
+        );
 
         if (productCode.length() == 3) {
             this.value = productCode;

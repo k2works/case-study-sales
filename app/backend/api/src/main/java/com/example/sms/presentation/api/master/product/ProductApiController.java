@@ -1,19 +1,18 @@
 package com.example.sms.presentation.api.master.product;
 
-import com.example.sms.domain.model.master.product.Product;
-import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
-import com.example.sms.domain.type.audit.ApplicationExecutionProcessType;
-import com.example.sms.domain.type.product.*;
+import com.example.sms.domain.model.master.product.*;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
+import com.example.sms.service.BusinessException;
 import com.example.sms.service.master.product.ProductCriteria;
 import com.example.sms.service.master.product.ProductService;
 import com.example.sms.service.system.audit.AuditAnnotation;
 import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -46,7 +45,7 @@ public class ProductApiController {
             PageNation.startPage(page, pageSize);
             PageInfo<Product> result = productService.selectAllWithPageInfo();
             return ResponseEntity.ok(result);
-        } catch (Exception e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -60,7 +59,7 @@ public class ProductApiController {
             PageNation.startPage(page, pageSize);
             PageInfo<Product> result = productService.selectAllBomsWithPageInfo();
             return ResponseEntity.ok(result);
-        } catch (Exception e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -71,7 +70,7 @@ public class ProductApiController {
         try {
             Product result = productService.find(productCode);
             return ResponseEntity.ok(result);
-        } catch (Exception e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -79,15 +78,15 @@ public class ProductApiController {
     @Operation(summary = "商品を登録する")
     @PostMapping
     @AuditAnnotation(process = ApplicationExecutionProcessType.商品登録, type = ApplicationExecutionHistoryType.同期)
-    public ResponseEntity<?> create(@RequestBody ProductResource productResource) {
+    public ResponseEntity<?> create(@RequestBody ProductResource resource) {
         try {
-            Product product = createProduct(productResource.getProductCode(), productResource);
+            Product product = convertToEntity(resource);
             if (productService.find(product.getProductCode().getValue()) != null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.product.already.exist")));
             }
             productService.register(product);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.product.registered")));
-        } catch (Exception e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -95,15 +94,16 @@ public class ProductApiController {
     @Operation(summary = "商品を更新する")
     @PutMapping("/{productCode}")
     @AuditAnnotation(process = ApplicationExecutionProcessType.商品更新, type = ApplicationExecutionHistoryType.同期)
-    public ResponseEntity<?> update(@PathVariable String productCode, @RequestBody ProductResource productResource) {
+    public ResponseEntity<?> update(@PathVariable String productCode, @RequestBody ProductResource resource) {
         try {
-            Product product = createProduct(productCode, productResource);
+            resource.setProductCode(productCode);
+            Product product = convertToEntity(resource);
             if (productService.find(product.getProductCode().getValue()) == null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.product.not.exist")));
             }
             productService.save(product);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.product.updated")));
-        } catch (Exception e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -119,7 +119,7 @@ public class ProductApiController {
             }
             productService.delete(product);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.product.deleted")));
-        } catch (Exception e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -137,9 +137,36 @@ public class ProductApiController {
             PageInfo<Product> result = productService.searchProductWithPageInfo(criteria);
 
             return ResponseEntity.ok(result);
-        } catch (Exception e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
+    }
+
+    private Product convertToEntity(ProductResource resource) {
+        Product product = Product.of(
+                resource.getProductCode(),
+                resource.getProductFormalName(),
+                resource.getProductAbbreviation(),
+                resource.getProductNameKana(),
+                resource.getProductType(),
+                resource.getSellingPrice(),
+                resource.getPurchasePrice(),
+                resource.getCostOfSales(),
+                resource.getTaxType(),
+                resource.getProductClassificationCode(),
+                resource.getMiscellaneousType(),
+                resource.getStockManagementTargetType(),
+                resource.getStockAllocationType(),
+                resource.getVendorCode(),
+                resource.getVendorBranchNumber()
+        );
+        product = Product.of(
+                product,
+                resource.getSubstituteProduct(),
+                resource.getBoms(),
+                resource.getCustomerSpecificSellingPrices()
+        );
+        return product;
     }
 
     private ProductCriteria convertToCriteria(ProductCriteriaResource resource) {
@@ -149,7 +176,7 @@ public class ProductApiController {
                 .productNameAbbreviation(resource.getProductNameAbbreviation())
                 .productNameKana(resource.getProductNameKana())
                 .productCategoryCode(resource.getProductCategoryCode())
-                .supplierCode(resource.getSupplierCode())
+                .vendorCode(resource.getVendorCode())
                 .productType(mapStringToCode(resource.getProductType(), ProductType::getCodeByName))
                 .taxType(mapStringToCode(resource.getTaxType(), TaxType::getCodeByName))
                 .miscellaneousType(mapStringToCode(resource.getMiscellaneousType(), MiscellaneousType::getCodeByName))
@@ -161,32 +188,4 @@ public class ProductApiController {
     private <T> T mapStringToCode(String value, Function<String, T> mapper) {
         return value != null ? mapper.apply(value) : null;
     }
-
-    private static Product createProduct(String productResource, ProductResource productResource1) {
-        Product product = Product.of(
-                productResource,
-                productResource1.getProductFormalName(),
-                productResource1.getProductAbbreviation(),
-                productResource1.getProductNameKana(),
-                productResource1.getProductType(),
-                productResource1.getSellingPrice(),
-                productResource1.getPurchasePrice(),
-                productResource1.getCostOfSales(),
-                productResource1.getTaxType(),
-                productResource1.getProductClassificationCode(),
-                productResource1.getMiscellaneousType(),
-                productResource1.getStockManagementTargetType(),
-                productResource1.getStockAllocationType(),
-                productResource1.getSupplierCode(),
-                productResource1.getSupplierBranchNumber()
-        );
-        product = Product.of(
-                product,
-                productResource1.getSubstituteProduct(),
-                productResource1.getBoms(),
-                productResource1.getCustomerSpecificSellingPrices()
-        );
-        return product;
-    }
-
 }

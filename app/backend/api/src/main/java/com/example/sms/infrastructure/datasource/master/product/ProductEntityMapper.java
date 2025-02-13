@@ -4,7 +4,7 @@ import com.example.sms.domain.model.master.product.Bom;
 import com.example.sms.domain.model.master.product.CustomerSpecificSellingPrice;
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.SubstituteProduct;
-import com.example.sms.domain.type.product.*;
+import com.example.sms.domain.model.master.product.*;
 import com.example.sms.infrastructure.datasource.system.download.ProductDownloadCSV;
 import com.example.sms.infrastructure.datasource.autogen.model.代替商品;
 import com.example.sms.infrastructure.datasource.autogen.model.商品マスタ;
@@ -33,8 +33,8 @@ public class ProductEntityMapper {
         productEntity.set雑区分(product.getMiscellaneousType().getCode());
         productEntity.set在庫管理対象区分(product.getStockManagementTargetType().getCode());
         productEntity.set在庫引当区分(product.getStockAllocationType().getCode());
-        productEntity.set仕入先コード(product.getSupplierCode().getValue());
-        productEntity.set仕入先枝番(product.getSupplierCode().getBranchNumber());
+        productEntity.set仕入先コード(product.getVendorCode().getCode().getValue());
+        productEntity.set仕入先枝番(product.getVendorCode().getBranchNumber());
 
         return productEntity;
     }
@@ -139,8 +139,8 @@ public class ProductEntityMapper {
                 product.getMiscellaneousType().getCode(),
                 product.getStockManagementTargetType().getCode(),
                 product.getStockAllocationType().getCode(),
-                product.getSupplierCode().getValue(),
-                product.getSupplierCode().getBranchNumber()
+                product.getVendorCode().getCode().getValue(),
+                product.getVendorCode().getBranchNumber()
         );
     }
 }

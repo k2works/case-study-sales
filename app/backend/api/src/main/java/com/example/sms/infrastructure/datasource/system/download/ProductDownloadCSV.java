@@ -66,7 +66,7 @@ public class ProductDownloadCSV {
 
     @CsvBindByPosition(position = 14)
     @CsvBindByName(column = "仕入先コード", required = false)
-    private String supplierCode;
+    private String vendorCode;
 
     @CsvBindByPosition(position = 15)
     @CsvBindByName(column = "仕入先枝番", required = false)
@@ -81,7 +81,7 @@ public class ProductDownloadCSV {
                               String productCategory, String productModelNumber, Integer salesPrice, Integer purchasePrice,
                               Integer costOfGoodsSold, Integer taxCategory, String productCategoryCode,
                               Integer miscellaneousCategory, Integer inventoryManagementCategory, Integer inventoryAllocationCategory,
-                              String supplierCode, Integer supplierBranchNumber) {
+                              String vendorCode, Integer supplierBranchNumber) {
         this.productCode = productCode;
         this.productFormalName = productFormalName;
         this.productAbbreviation = productAbbreviation;
@@ -96,7 +96,7 @@ public class ProductDownloadCSV {
         this.miscellaneousCategory = miscellaneousCategory;
         this.inventoryManagementCategory = inventoryManagementCategory;
         this.inventoryAllocationCategory = inventoryAllocationCategory;
-        this.supplierCode = supplierCode;
+        this.vendorCode = vendorCode;
         this.supplierBranchNumber = supplierBranchNumber;
     }
 }

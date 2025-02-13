@@ -1,8 +1,6 @@
 package com.example.sms.domain.model.system.audit;
 
 import com.example.sms.domain.model.system.user.User;
-import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
-import com.example.sms.domain.type.audit.ApplicationExecutionProcessFlag;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;

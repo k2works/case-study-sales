@@ -1,6 +1,6 @@
 import React from "react";
 import {Navigate, useLocation} from "react-router-dom";
-import {useAuthUserContext} from "../../providers/AuthUser.tsx";
+import {useAuthUserContext} from "../../providers/system/AuthUser.tsx";
 import {RoleType} from "../../models";
 
 type Props = {
@@ -13,7 +13,7 @@ const isUserAllowed = (roles: RoleType[], allowedRoles?: RoleType[]): boolean =>
     return allowedRoles ? roles.some(role => allowedRoles.includes(role)) : true;
 }
 
-export const getRoleFromUser = (): RoleType => {
+export const useAuthUser = (): RoleType => {
     const {user: authUser} = useAuthUserContext();
     if (!authUser) return RoleType.USER;
     return authUser.roles[0];

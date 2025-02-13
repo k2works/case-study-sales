@@ -1,12 +1,12 @@
 package com.example.sms.presentation.api.system.user;
 
-import com.example.sms.domain.model.system.user.User;
-import com.example.sms.domain.model.system.user.UserId;
-import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
-import com.example.sms.domain.type.audit.ApplicationExecutionProcessType;
+import com.example.sms.domain.model.system.user.*;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
+import com.example.sms.service.BusinessException;
 import com.example.sms.service.system.audit.AuditAnnotation;
 import com.example.sms.service.system.audit.AuditService;
 import com.example.sms.service.system.user.UserManagementService;
@@ -53,7 +53,7 @@ public class UserApiController {
             PageNation.startPage(page, pageSize);
             PageInfo<User> result = userManagementService.selectAllWithPageInfo();
             return ResponseEntity.ok(result);
-        } catch (Exception e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -64,7 +64,7 @@ public class UserApiController {
         try {
             User user = userManagementService.find(new UserId(userId));
             return ResponseEntity.ok(user);
-        } catch (Exception e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -83,7 +83,7 @@ public class UserApiController {
             User user = User.of(userId.Value(), password, resource.getFirstName(), resource.getLastName(), resource.getRoleName());
             userManagementService.register(user);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.user.registered")));
-        } catch (Exception e) {
+        } catch (BusinessException | IllegalArgumentException | UserException | UserIdException | PasswordException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -104,7 +104,7 @@ public class UserApiController {
             User user = User.of(userId, password, resource.getFirstName(), resource.getLastName(), resource.getRoleName());
             userManagementService.save(user);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.user.updated")));
-        } catch (Exception e) {
+        } catch (BusinessException | IllegalArgumentException | UserException | UserIdException | PasswordException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -120,7 +120,7 @@ public class UserApiController {
             }
             userManagementService.delete(new UserId(userId));
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.user.deleted")));
-        } catch (Exception e) {
+        } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }

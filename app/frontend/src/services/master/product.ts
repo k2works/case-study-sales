@@ -6,7 +6,7 @@ import {
     ProductCriteriaType,
     ProductFetchType,
     ProductType
-} from "../../models";
+} from "../../models/master/product";
 
 export interface ProductServiceType {
     select: (page?: number, pageSize?: number) => Promise<ProductFetchType>;

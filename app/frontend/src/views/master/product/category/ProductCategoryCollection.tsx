@@ -1,5 +1,5 @@
 import React from "react";
-import {ProductCategoryCriteriaType, ProductCategoryType} from "../../../../models";
+import {ProductCategoryCriteriaType, ProductCategoryType} from "../../../../models/master/product";
 import {PageNation, PageNationType} from "../../../application/PageNation.tsx";
 import {Message} from "../../../../components/application/Message.tsx";
 import {Search} from "../../../Common.tsx";

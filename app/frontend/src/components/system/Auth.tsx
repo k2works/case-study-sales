@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
-import {AuthUserContextType, useAuthUserContext} from "../../providers/AuthUser.tsx";
+import {AuthUserContextType, useAuthUserContext} from "../../providers/system/AuthUser.tsx";
 import AuthService from "../../services/system/auth.ts";
 import {LoginSingleView} from "../../views/system/auth/Login.tsx";
 import {CustomLocation, DataType, UserType} from "../../models";

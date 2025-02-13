@@ -46,7 +46,12 @@ const app = {
     },
     cleanApp: async () => {
         await fs.remove(appCwd + '/dist');
-    }
+    },
+    openApp: () => {
+        const command = isWindows ? 'start' : 'open';
+        return src(appNpmPath, {read: false})
+            .pipe(exec(`${command} http://localhost:5173`));
+    },
 }
 
 const jig = {
@@ -212,6 +217,12 @@ const assets = {
                     <img src="./v0_3_0/jig-erd/library-er-summary.svg" alt="Summary">
                 </div>
                 
+                <h2>v0.4.0</h2>
+                <div>
+                    <p><a href="./v0_4_0/jig/index.html">JIG</a></p>
+                    <img src="./v0_4_0/jig-erd/library-er-summary.svg" alt="Summary">
+                </div>
+                
                 <p>Powered by <a href="https://github.com/dddjava/jig">Jig</a> </p>
            </body>
         </html>
@@ -298,7 +309,17 @@ const astro = {
     copyAstro: () => {
         return src(path.join(journalPath, 'dist/**'), {encoding: false})
             .pipe(dest('./public/journal'));
-    }
+    },
+    runAstro: () => {
+        const command = 'npm run dev';
+        return src(journalNpmPath, { read: false })
+            .pipe(exec(command, { cwd: journalPath }));
+    },
+    openAstro: () => {
+        const command = isWindows ? 'start' : 'open';
+        return src(journalNpmPath, {read: false})
+            .pipe(exec(`${command} http://localhost:4321`));
+    },
 }
 
 exports.assets = assets;
@@ -347,6 +368,7 @@ const astroBuildTasks = () => {
 }
 exports.astroBuildTasks = astroBuildTasks;
 exports.astro = astro.copyAstro;
+exports.astro = astro;
 
 exports.app = app;
 exports.api = api;

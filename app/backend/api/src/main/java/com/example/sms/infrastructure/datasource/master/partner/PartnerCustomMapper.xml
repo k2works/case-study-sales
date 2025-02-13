@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.sms.infrastructure.datasource.master.partner.PartnerCustomMapper">
+  <resultMap
+          id="BaseResultMap"
+          type="com.example.sms.infrastructure.datasource.master.partner.PartnerCustomEntity"
+          extends="com.example.sms.infrastructure.datasource.autogen.mapper.取引先マスタMapper.BaseResultMap"
+  >
+    <collection property="顧客マスタ"
+                javaType="ArrayList"
+                column="取引先コード"
+                select="com.example.sms.infrastructure.datasource.master.partner.customer.CustomerCustomMapper.selectByCustomerCode"
+                fetchType="eager"
+    />
+
+    <collection property="仕入先マスタ"
+                javaType="ArrayList"
+                column="取引先コード"
+                select="com.example.sms.infrastructure.datasource.master.partner.vendor.VendorCustomMapper.selectByVendorCode"
+                fetchType="eager"
+    />
+
+  </resultMap>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.取引先マスタMapper.Base_Column_List" />
+    from public.取引先マスタ
+    where 取引先コード = #{取引先コード,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectAll" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.取引先マスタMapper.Base_Column_List" />
+    from public.取引先マスタ
+  </select>
+
+  <insert id="insertForOptimisticLock" parameterType="com.example.sms.infrastructure.datasource.autogen.model.取引先マスタ">
+    insert into public.取引先マスタ (取引先コード, 取引先名, 取引先名カナ,
+    仕入先区分, 郵便番号, 都道府県, 住所１,
+    住所２, 取引禁止フラグ, 雑区分,
+    取引先グループコード, 与信限度額, 与信一時増加枠,
+    作成日時, 作成者名, 更新日時,
+    更新者名)
+    values (#{取引先コード,jdbcType=VARCHAR}, #{取引先名,jdbcType=VARCHAR}, #{取引先名カナ,jdbcType=VARCHAR},
+    #{仕入先区分,jdbcType=INTEGER}, #{郵便番号,jdbcType=CHAR}, #{都道府県,jdbcType=VARCHAR}, #{住所１,jdbcType=VARCHAR},
+    #{住所２,jdbcType=VARCHAR}, #{取引禁止フラグ,jdbcType=INTEGER}, #{雑区分,jdbcType=INTEGER},
+    #{取引先グループコード,jdbcType=VARCHAR}, #{与信限度額,jdbcType=INTEGER}, #{与信一時増加枠,jdbcType=INTEGER},
+    #{作成日時,jdbcType=TIMESTAMP}, #{作成者名,jdbcType=VARCHAR}, #{更新日時,jdbcType=TIMESTAMP},
+    #{更新者名,jdbcType=VARCHAR})
+  </insert>
+
+  <update id="updateByPrimaryKeyForOptimisticLock" parameterType="com.example.sms.infrastructure.datasource.autogen.model.取引先マスタ">
+    update public.取引先マスタ
+    set 取引先名 = #{取引先名,jdbcType=VARCHAR},
+    取引先名カナ = #{取引先名カナ,jdbcType=VARCHAR},
+    仕入先区分 = #{仕入先区分,jdbcType=INTEGER},
+    郵便番号 = #{郵便番号,jdbcType=CHAR},
+    都道府県 = #{都道府県,jdbcType=VARCHAR},
+    住所１ = #{住所１,jdbcType=VARCHAR},
+    住所２ = #{住所２,jdbcType=VARCHAR},
+    取引禁止フラグ = #{取引禁止フラグ,jdbcType=INTEGER},
+    雑区分 = #{雑区分,jdbcType=INTEGER},
+    取引先グループコード = #{取引先グループコード,jdbcType=VARCHAR},
+    与信限度額 = #{与信限度額,jdbcType=INTEGER},
+    与信一時増加枠 = #{与信一時増加枠,jdbcType=INTEGER},
+    作成日時 = #{作成日時,jdbcType=TIMESTAMP},
+    作成者名 = #{作成者名,jdbcType=VARCHAR},
+    更新日時 = #{更新日時,jdbcType=TIMESTAMP},
+    更新者名 = #{更新者名,jdbcType=VARCHAR},
+    version = #{version,jdbcType=INTEGER} + 1
+    where 取引先コード = #{取引先コード,jdbcType=VARCHAR}
+    and version = #{version,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByCriteria" resultMap="BaseResultMap">
+    select
+    <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.取引先マスタMapper.Base_Column_List" />
+    from public.取引先マスタ
+    <where>
+        <if test="partnerCode != null">
+            取引先コード = #{partnerCode,jdbcType=VARCHAR}
+        </if>
+        <if test="partnerName != null">
+            and 取引先名 like concat(#{partnerName,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="partnerNameKana != null">
+            and 取引先名カナ like concat(#{partnerNameKana,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="vendorType != null">
+            and 仕入先区分 = #{vendorType,jdbcType=INTEGER}
+        </if>
+        <if test="postalCode != null">
+            and 郵便番号 = #{postalCode,jdbcType=CHAR}
+        </if>
+        <if test="prefecture != null">
+            and 都道府県 = #{prefecture,jdbcType=VARCHAR}
+        </if>
+        <if test="address1 != null">
+            and 住所１ like concat(#{address1,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="address2 != null">
+            and 住所２ like concat(#{address2,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="tradeProhibitedFlag != null">
+          and 取引禁止フラグ = #{tradeProhibitedFlag,jdbcType=INTEGER}
+        </if>
+        <if test="miscellaneousType != null">
+          and 雑区分 = #{miscellaneousType,jdbcType=INTEGER}
+        </if>
+        <if test="partnerGroupCode != null">
+            and 取引先グループコード = #{partnerGroupCode,jdbcType=VARCHAR}
+        </if>
+        <if test="creditLimit != null">
+            and 与信限度額 = #{creditLimit,jdbcType=INTEGER}
+        </if>
+        <if test="temporaryCreditIncrease != null">
+            and 与信一時増加枠 = #{temporaryCreditIncrease,jdbcType=INTEGER}
+        </if>
+    </where>
+  </select>
+</mapper>

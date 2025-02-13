@@ -1,17 +1,27 @@
 package com.example.sms;
 
+import com.example.sms.domain.model.master.partner.customer.Customer;
+import com.example.sms.domain.model.master.partner.customer.Shipping;
+import com.example.sms.domain.model.master.partner.vendor.Vendor;
+import com.example.sms.domain.model.master.product.MiscellaneousType;
+import com.example.sms.domain.model.master.region.Region;
 import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.employee.Employee;
+import com.example.sms.domain.model.master.partner.*;
+import com.example.sms.domain.model.master.partner.Partner;
 import com.example.sms.domain.model.master.product.*;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
 import com.example.sms.domain.model.system.user.User;
-import com.example.sms.domain.type.audit.ApplicationExecutionHistoryType;
-import com.example.sms.domain.type.audit.ApplicationExecutionProcessFlag;
-import com.example.sms.domain.type.product.*;
-import com.example.sms.domain.type.user.RoleName;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag;
+import com.example.sms.domain.model.system.user.RoleName;
+import com.example.sms.service.master.region.RegionRepository;
 import com.example.sms.service.master.department.DepartmentRepository;
 import com.example.sms.service.master.employee.EmployeeRepository;
+import com.example.sms.service.master.partner.PartnerCategoryRepository;
+import com.example.sms.service.master.partner.PartnerGroupRepository;
+import com.example.sms.service.master.partner.PartnerRepository;
 import com.example.sms.service.master.product.ProductCategoryRepository;
 import com.example.sms.service.master.product.ProductRepository;
 import com.example.sms.service.system.audit.AuditRepository;
@@ -21,6 +31,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.IntStream;
 
 @Component
 public class TestDataFactoryImpl implements TestDataFactory {
@@ -36,35 +47,18 @@ public class TestDataFactoryImpl implements TestDataFactory {
     ProductCategoryRepository productCategoryRepository;
     @Autowired
     AuditRepository auditRepository;
+    @Autowired
+    RegionRepository regionRepository;
+    @Autowired
+    PartnerGroupRepository partnerGroupRepository;
+    @Autowired
+    PartnerCategoryRepository partnerCategoryRepository;
+    @Autowired
+    PartnerRepository partnerRepository;
 
     @Override
     public void setUpForAuthApiService() {
         setUpUser();
-    }
-
-    @Override
-    public User User() {
-        return user();
-    }
-
-    @Override
-    public Department Department() {
-        return department("30000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門3");
-    }
-
-    @Override
-    public Employee Employee() {
-        return employee("EMP999", "10000", LocalDateTime.of(2021, 1, 1, 0, 0));
-    }
-
-    @Override
-    public Product Product() {
-        return product("99999999", "商品9", "商品9", "しょうひん9", ProductType.その他, 900, 810, 90, TaxType.その他, "カテゴリ9", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "サプライヤ9", 9);
-    }
-
-    @Override
-    public ProductCategory ProductCategory() {
-        return getProductCategory("カテゴリ9", "カテゴリ9", 1, "2", 3);
     }
 
     @Override
@@ -75,22 +69,22 @@ public class TestDataFactoryImpl implements TestDataFactory {
     @Override
     public void setUpForDepartmentService() {
         departmentRepository.deleteAll();
-        departmentRepository.save(department("10000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門1"));
-        departmentRepository.save(department("20000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門2"));
+        departmentRepository.save(getDepartment("10000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門1"));
+        departmentRepository.save(getDepartment("20000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門2"));
         employeeRepository.deleteAll();
-        employeeRepository.save(employee("EMP001", "10000", LocalDateTime.of(2021, 1, 1, 0, 0)));
-        employeeRepository.save(employee("EMP002", "10000", LocalDateTime.of(2021, 1, 1, 0, 0)));
+        employeeRepository.save(getEmployee("EMP001", "10000", LocalDateTime.of(2021, 1, 1, 0, 0)));
+        employeeRepository.save(getEmployee("EMP002", "10000", LocalDateTime.of(2021, 1, 1, 0, 0)));
     }
 
     @Override
     public void setUpForEmployeeService() {
-        userRepository.save(user());
+        userRepository.save(getUser());
         LocalDateTime startDate = LocalDateTime.of(2021, 1, 1, 0, 0);
         departmentRepository.deleteAll();
-        departmentRepository.save(department("10000", startDate, "部門1"));
+        departmentRepository.save(getDepartment("10000", startDate, "部門1"));
         employeeRepository.deleteAll();
-        employeeRepository.save(employee("EMP001", "10000", startDate));
-        employeeRepository.save(employee("EMP002", "10000", startDate));
+        employeeRepository.save(getEmployee("EMP001", "10000", startDate));
+        employeeRepository.save(getEmployee("EMP002", "10000", startDate));
     }
 
     @Override
@@ -98,29 +92,23 @@ public class TestDataFactoryImpl implements TestDataFactory {
         productRepository.deleteAll();
 
         String productCode = "99999001";
-        SubstituteProduct substituteProduct = substituteProduct(productCode, "99999002", 1);
-        Bom bom = bom(productCode, "X99", 1);
-        CustomerSpecificSellingPrice customerSpecificSellingPrice = customerSpecificSellingPrice(productCode, "1", 1);
-        Product product = product(productCode, "商品1", "商品1", "しょうひん1", ProductType.その他, 100, 90, 10, TaxType.外税, "カテゴリ1", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "サプライヤ1", 1);
+        SubstituteProduct substituteProduct = getSubstituteProduct(productCode, "99999002", 1);
+        Bom bom = getBom(productCode, "X99", 1);
+        CustomerSpecificSellingPrice customerSpecificSellingPrice = getCustomerSpecificSellingPrice(productCode, "1", 1);
+        Product product = Product.of(productCode, "商品1", "商品1", "しょうひん1", ProductType.その他, 100, 90, 10, TaxType.外税, "カテゴリ1", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "001", 1);
 
         productRepository.save(Product.of(product, List.of(substituteProduct), List.of(bom), List.of(customerSpecificSellingPrice)));
-        productRepository.save(product("99999002", "商品2", "商品2", "しょうひん2", ProductType.その他, 200, 180, 20, TaxType.内税, "カテゴリ1", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "サプライヤ2", 2));
-        productRepository.save(product("99999003", "商品3", "商品3", "しょうひん3", ProductType.その他, 300, 270, 30, TaxType.非課税, "カテゴリ2", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "サプライヤ3", 3));
+        productRepository.save(Product.of("99999002", "商品2", "商品2", "しょうひん2", ProductType.その他, 200, 180, 20, TaxType.内税, "カテゴリ1", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "002", 2));
+        productRepository.save(Product.of("99999003", "商品3", "商品3", "しょうひん3", ProductType.その他, 300, 270, 30, TaxType.非課税, "カテゴリ2", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "003", 3));
 
         productCategoryRepository.deleteAll();
-        productCategoryRepository.save(getProductCategory("カテゴリ1", "カテゴリ1", 1, "カテゴリ1", 1));
-        productCategoryRepository.save(getProductCategory("カテゴリ2", "カテゴリ2", 2, "カテゴリ1~カテゴリ2", 2));
-    }
-
-    private void setUpUser() {
-        userRepository.deleteAll();
-        userRepository.save(user());
-        userRepository.save(admin());
+        productCategoryRepository.save(ProductCategory.of("カテゴリ1", "カテゴリ1", 1, "カテゴリ1", 1));
+        productCategoryRepository.save(ProductCategory.of("カテゴリ2", "カテゴリ2", 2, "カテゴリ1~カテゴリ2", 2));
     }
 
     @Override
     public void setUpForAuditService() {
-        User execUser = User.of("U777777", user().getPassword().Value(), user().getName().FirstName(), user().getName().LastName(), user().getRoleName());
+        User execUser = User.of("U777777", getUser().getPassword().Value(), getUser().getName().FirstName(), getUser().getName().LastName(), getUser().getRoleName());
         userRepository.save(execUser);
 
         auditRepository.deleteAll();
@@ -132,62 +120,270 @@ public class TestDataFactoryImpl implements TestDataFactory {
     @Override
     public void setUpForDownloadService() {
         departmentRepository.deleteAll();
-        departmentRepository.save(department("30000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門3"));
-        departmentRepository.save(department("40000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門4"));
-        departmentRepository.save(department("50000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門5"));
+        departmentRepository.save(getDepartment("30000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門3"));
+        departmentRepository.save(getDepartment("40000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門4"));
+        departmentRepository.save(getDepartment("50000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門5"));
         employeeRepository.deleteAll();
-        userRepository.save(user());
-        employeeRepository.save(employee("EMP003", "30000", LocalDateTime.of(2021, 1, 1, 0, 0)));
-        employeeRepository.save(employee("EMP004", "30000", LocalDateTime.of(2021, 1, 1, 0, 0)));
-        employeeRepository.save(employee("EMP005", "40000", LocalDateTime.of(2021, 1, 1, 0, 0)));
+        userRepository.save(getUser());
+        employeeRepository.save(getEmployee("EMP003", "30000", LocalDateTime.of(2021, 1, 1, 0, 0)));
+        employeeRepository.save(getEmployee("EMP004", "30000", LocalDateTime.of(2021, 1, 1, 0, 0)));
+        employeeRepository.save(getEmployee("EMP005", "40000", LocalDateTime.of(2021, 1, 1, 0, 0)));
         productCategoryRepository.deleteAll();
-        productCategoryRepository.save(getProductCategory("00000001", "カテゴリ3", 1, "2", 3));
-        productCategoryRepository.save(getProductCategory("00000002", "カテゴリ4", 1, "2", 3));
-        productCategoryRepository.save(getProductCategory("00000003", "カテゴリ5", 1, "2", 3));
+        productCategoryRepository.save(ProductCategory.of("00000001", "カテゴリ3", 1, "2", 3));
+        productCategoryRepository.save(ProductCategory.of("00000002", "カテゴリ4", 1, "2", 3));
+        productCategoryRepository.save(ProductCategory.of("00000003", "カテゴリ5", 1, "2", 3));
         productRepository.deleteAll();
-        productRepository.save(product("99999999", "商品1", "商品1", "ショウヒンイチ", ProductType.その他, 900, 810, 90, TaxType.その他, "カテゴリ9", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "サプライヤ9", 9));
-        productRepository.save(product("99999998", "商品2", "商品2", "ショウヒン二", ProductType.その他, 800, 720, 80, TaxType.その他, "カテゴリ8", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "サプライヤ8", 8));
-        productRepository.save(product("99999997", "商品3", "商品3", "ショウヒンサン", ProductType.その他, 700, 630, 70, TaxType.その他, "カテゴリ7", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "サプライヤ7", 7));
+        productRepository.save(Product.of("99999999", "商品1", "商品1", "ショウヒンイチ", ProductType.その他, 900, 810, 90, TaxType.その他, "カテゴリ9", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "009", 9));
+        productRepository.save(Product.of("99999998", "商品2", "商品2", "ショウヒン二", ProductType.その他, 800, 720, 80, TaxType.その他, "カテゴリ8", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "008", 8));
+        productRepository.save(Product.of("99999997", "商品3", "商品3", "ショウヒンサン", ProductType.その他, 700, 630, 70, TaxType.その他, "カテゴリ7", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "007", 7));
+
+        partnerGroupRepository.deleteAll();
+        partnerGroupRepository.save(PartnerGroup.of("0001", "取引先グループ1"));
+        partnerGroupRepository.save(PartnerGroup.of("0002", "取引先グループ2"));
+
+        partnerCategoryRepository.deleteAll();
+        partnerRepository.deleteAll();
+        partnerRepository.save(getPartner("001"));
+        partnerRepository.save(getPartner("002"));
+        partnerRepository.save(getPartner("003"));
+        partnerRepository.save(Partner.ofWithCustomers(getPartner("001"), List.of(getCustomer("001", 1), getCustomer("001", 2), getCustomer("001", 3))));
+        partnerRepository.save(Partner.ofWithVendors(getPartner("002"), List.of(getVendor("002", 1), getVendor("002", 2), getVendor("002", 3))));
     }
 
-    private static User user() {
+    private void setUpUser() {
+        userRepository.deleteAll();
+        userRepository.save(getUser());
+        userRepository.save(getAdmin());
+        productRepository.save(Product.of("99999999", "商品1", "商品1", "ショウヒンイチ", ProductType.その他, 900, 810, 90, TaxType.その他, "カテゴリ9", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "009", 9));
+        productRepository.save(Product.of("99999998", "商品2", "商品2", "ショウヒン二", ProductType.その他, 800, 720, 80, TaxType.その他, "カテゴリ8", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "008", 8));
+        productRepository.save(Product.of("99999997", "商品3", "商品3", "ショウヒンサン", ProductType.その他, 700, 630, 70, TaxType.その他, "カテゴリ7", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "007", 7));
+    }
+
+    @Override
+    public void setUpForRegionService() {
+        regionRepository.deleteAll();
+
+        IntStream.rangeClosed(1, 3).forEach(i -> {
+            Region region = getRegion("R00" + i);
+            region = Region.of(region.getRegionCode().getValue(), "地域名" + i);
+            regionRepository.save(region);
+        });
+    }
+
+    @Override
+    public void setUpForPartnerGroupService() {
+        partnerGroupRepository.deleteAll();
+        IntStream.rangeClosed(0, 9).forEach(i -> {
+            PartnerGroup partnerGroup = partnerGroup("000" + i);
+            partnerGroupRepository.save(PartnerGroup.of(partnerGroup.getPartnerGroupCode().getValue(), "取引先グループ" + i));
+        });
+    }
+
+    @Override
+    public void setUpForPartnerCategoryService() {
+        partnerCategoryRepository.deleteAll();
+        partnerRepository.deleteAll();
+
+        IntStream.rangeClosed(1, 4).forEach(i -> {
+            Partner partner = getPartner("00" + i);
+            partnerRepository.save(partner);
+        });
+
+        PartnerCategoryAffiliation partnerCategoryAffiliation = getPartnerCategoryAffiliation("1", "001", "01");
+        PartnerCategoryAffiliation partnerCategoryAffiliation2 = getPartnerCategoryAffiliation("1", "002", "01");
+        List<PartnerCategoryAffiliation> partnerCategoryAffiliations = List.of(partnerCategoryAffiliation, partnerCategoryAffiliation2);
+        PartnerCategoryAffiliation partnerCategoryAffiliation3 = getPartnerCategoryAffiliation("1", "003", "02");
+        PartnerCategoryAffiliation partnerCategoryAffiliation4 = getPartnerCategoryAffiliation("1", "004", "02");
+        List<PartnerCategoryAffiliation> partnerCategoryAffiliations2 = List.of(partnerCategoryAffiliation3, partnerCategoryAffiliation4);
+        PartnerCategoryItem partnerCategoryItem = PartnerCategoryItem.of(getPartnerCategoryItem("1", "01"), partnerCategoryAffiliations);
+        PartnerCategoryItem partnerCategoryItem2 = PartnerCategoryItem.of(getPartnerCategoryItem("1", "02"), partnerCategoryAffiliations2);
+        List<PartnerCategoryItem> partnerCategoryItems = List.of(partnerCategoryItem, partnerCategoryItem2);
+        PartnerCategoryType partnerCategoryType = PartnerCategoryType.of(getPartnerCategoryType("1"), partnerCategoryItems);
+        partnerCategoryRepository.save(partnerCategoryType);
+    }
+
+    @Override
+    public void setUpForPartnerService() {
+        partnerCategoryRepository.deleteAll();
+        partnerRepository.deleteAll();
+
+        IntStream.rangeClosed(1, 4).forEach(i -> {
+            Partner partner = getPartner("00" + i);
+            partnerRepository.save(partner);
+        });
+    }
+
+    @Override
+    public void setUpForCustomerService() {
+        partnerCategoryRepository.deleteAll();
+        partnerRepository.deleteAll();
+
+        IntStream.rangeClosed(1, 1).forEach(i -> {
+            Partner partner = getPartner("00" + i);
+            List<Customer> customers = IntStream.rangeClosed(1, 3)
+                    .mapToObj(j -> getCustomer("00" + i, j))
+                    .toList();
+            partnerRepository.save(Partner.ofWithCustomers(partner,customers));
+        });
+    }
+
+    @Override
+    public void setUpForVendorService() {
+        partnerCategoryRepository.deleteAll();
+        partnerRepository.deleteAll();
+
+        IntStream.rangeClosed(1, 1).forEach(i -> {
+            Partner partner = getPartner("00" + i);
+            List<Vendor> vendors = IntStream.rangeClosed(1, 3)
+                    .mapToObj(j -> getVendor("00" + i, j))
+                    .toList();
+            partnerRepository.save(Partner.ofWithVendors(partner,vendors));
+        });
+    }
+
+    public static User getUser() {
         return User.of("U999999", "$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK", "first", "last", RoleName.USER);
     }
 
-    private static User admin() {
+    public static User getAdmin() {
         return User.of("U888888", "$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK", "first", "last", RoleName.USER);
     }
 
-    public static Department department(String departmentId, LocalDateTime startDate, String departmentName) {
+    public static Department getDepartment(String departmentId, LocalDateTime startDate, String departmentName) {
         return Department.of(DepartmentId.of(departmentId, startDate), LocalDateTime.of(9999, 12, 31, 0, 0), departmentName, 0, departmentId + "~", 0, 1);
     }
 
-    public static Employee employee(String empCode, String departmentCode, LocalDateTime startDate) {
+    public static Employee getEmployee(String empCode, String departmentCode, LocalDateTime startDate) {
         return Employee.of(
                 Employee.of(empCode, "firstName lastName", "firstNameKana lastNameKana", "090-1234-5678", "03-1234-5678", ""),
-                department(departmentCode, startDate, "部門1"),
-                user()
+                getDepartment(departmentCode, startDate, "部門1"),
+                getUser()
         );
     }
 
-    public static Product product(String productCode, String productFormalName, String productAbbreviation, String productNameKana, ProductType productType, Integer sellingPrice, Integer purchasePrice, Integer costOfSales, TaxType taxType, String productClassificationCode, MiscellaneousType miscellaneousType, StockManagementTargetType stockManagementTargetType, StockAllocationType stockAllocationType, String supplierCode, Integer supplierBranchNumber) {
-        return Product.of(productCode, productFormalName, productAbbreviation, productNameKana, productType, sellingPrice, purchasePrice, costOfSales, taxType, productClassificationCode, miscellaneousType, stockManagementTargetType, stockAllocationType, supplierCode, supplierBranchNumber);
+    public static Product getProduct(String productCode) {
+        return Product.of(productCode, "商品正式名", "商品略称", "商品名カナ", ProductType.その他, 1000, 2000, 3000, TaxType.外税, "99999999", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "000", 5);
     }
 
-    public static SubstituteProduct substituteProduct(String productCode, String substituteProductCode, Integer priority) {
+    public static SubstituteProduct getSubstituteProduct(String productCode, String substituteProductCode, Integer priority) {
         return SubstituteProduct.of(productCode, substituteProductCode, priority);
     }
 
-    public static Bom bom(String productCode, String componentCode, int i) {
+    public static Bom getBom(String productCode, String componentCode, int i) {
         return Bom.of(productCode, componentCode, i);
     }
 
-    public static CustomerSpecificSellingPrice customerSpecificSellingPrice(String productCode, String format, int i) {
+    public static CustomerSpecificSellingPrice getCustomerSpecificSellingPrice(String productCode, String format, int i) {
         return CustomerSpecificSellingPrice.of(productCode, format, i);
     }
 
-    public static ProductCategory getProductCategory(String productCategoryCode, String productCategoryName, int productCategoryHierarchy, String productCategoryPath, int lowestLevelDivision) {
-        return ProductCategory.of(productCategoryCode, productCategoryName, productCategoryHierarchy, productCategoryPath, lowestLevelDivision);
+    public static ProductCategory getProductCategory(String productCategoryCode) {
+        return ProductCategory.of(productCategoryCode, "カテゴリ9", 1, "2", 3);
     }
 
+    public static Region getRegion(String regionCode) {
+        return Region.of(regionCode, "地域名");
+    }
+
+    public static PartnerGroup partnerGroup(String groupCode) {
+        return PartnerGroup.of(groupCode, "取引先グループ");
+    }
+
+    public static PartnerCategoryType getPartnerCategoryType(String categoryCode) {
+        return PartnerCategoryType.of(categoryCode, "取引先分類種別名");
+    }
+
+    public static PartnerCategoryItem getPartnerCategoryItem(String categoryCode, String itemCode) {
+        return PartnerCategoryItem.of(categoryCode, itemCode, "取引先分類名");
+    }
+
+    public static PartnerCategoryAffiliation getPartnerCategoryAffiliation(String categoryCode, String partnerCode, String itemCode) {
+        return PartnerCategoryAffiliation.of(categoryCode, partnerCode, itemCode);
+    }
+
+    public static Partner getPartner(String partnerCode) {
+        return  Partner.of(
+                partnerCode,
+                "取引先名A",
+                "トリヒキサキメイエー",
+                1,
+                "1234567",
+                "東京都",
+                "中央区銀座1-1-1",
+                "ビル名201",
+                0,
+                0,
+                "PG01",
+                1000000,
+                50000
+        );
+    }
+
+    public static Customer getCustomer(String customerCode, Integer customerBranchNumber) {
+        return Customer.of(
+                customerCode,  // customerCode（顧客コード）
+                customerBranchNumber,  // customerBranchNumber（顧客枝番）
+                1,  // customerCategory（顧客区分）
+                "001",  // billingCode（請求先コード）
+                1,  // billingBranchNumber（請求先枝番）
+                "001",  // collectionCode（回収先コード）
+                1,  // collectionBranchNumber（回収先枝番）
+                "山田太郎",  // customerName（顧客名）
+                "ヤマダタロウ",  // customerNameKana（顧客名カナ）
+                "RE001",  // companyRepresentativeCode（自社担当者コード）
+                "花子",  // customerRepresentativeName（顧客担当者名）
+                "営業部",  // customerDepartmentName（顧客部門名）
+                "123-4567",  // customerPostalCode（顧客郵便番号）
+                "東京都",  // customerPrefecture（顧客都道府県）
+                "新宿区1-1-1",  // customerAddress1（顧客住所１）
+                "マンション101号室",  // customerAddress2（顧客住所２）
+                "03-1234-5678",  // customerPhoneNumber（顧客電話番号）
+                "03-1234-5679",  // customerFaxNumber（顧客FAX番号）
+                "example@example.com",  // customerEmailAddress（顧客メールアドレス）
+                2,  // customerBillingCategory（顧客請求区分）
+                10,  // customerClosingDay1（顧客締日１）
+                0,  // customerPaymentMonth1（顧客支払月１）
+                10,  // customerPaymentDay1（顧客支払日１）
+                1,  // customerPaymentMethod1（顧客支払方法１）
+                20,  // customerClosingDay2（顧客締日２）
+                1,  // customerPaymentMonth2（顧客支払月２）
+                99,  // customerPaymentDay2（顧客支払日２）
+                2   // customerPaymentMethod2（顧客支払方法２）
+        );
+    }
+
+    public static Shipping getShipping(String customerCode, Integer destinationNumber, Integer customerBranchNumber) {
+        return Shipping.of(
+                customerCode,
+                destinationNumber,
+                customerBranchNumber,
+                "出荷先名A",
+                "R001",
+                "123-4567",
+                "東京都",
+                "新宿区1-1-1"
+        );
+    }
+
+    public static Vendor getVendor(String vendorCode, Integer vendorBranchCode) {
+        return Vendor.of(
+                vendorCode,
+                vendorBranchCode,
+                "仕入先名A",
+                "シリヒキサキメイエー",
+                "担当者名A",
+                "部門名A",
+                "123-4567",
+                "東京都",
+                "新宿区1-1-1",
+                "マンション101号室",
+                "03-1234-5678",
+                "03-1234-5679",
+                "test@example.com",
+                10,
+                1,
+                20,
+                2
+        );
+    }
 }

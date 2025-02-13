@@ -1,9 +1,6 @@
 package com.example.sms.presentation.api.master.product;
 
-import com.example.sms.domain.model.master.product.Bom;
-import com.example.sms.domain.model.master.product.CustomerSpecificSellingPrice;
-import com.example.sms.domain.model.master.product.SubstituteProduct;
-import com.example.sms.domain.type.product.*;
+import com.example.sms.domain.model.master.product.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -41,8 +38,8 @@ public class ProductResource implements Serializable {
     StockManagementTargetType stockManagementTargetType; // 在庫管理対象区分
     StockAllocationType stockAllocationType; // 在庫引当区分
     @NotNull
-    String supplierCode; // 仕入先コード
-    Integer supplierBranchNumber; // 仕入先枝番
+    String vendorCode; // 仕入先コード
+    Integer vendorBranchNumber; // 仕入先枝番
     List<SubstituteProduct> substituteProduct; // 代替商品
     List<Bom> boms; // 部品表
     List<CustomerSpecificSellingPrice> customerSpecificSellingPrices; // 顧客別販売単価

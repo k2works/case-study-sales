@@ -1,9 +1,9 @@
 package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
-import com.example.sms.domain.type.download.DownloadTarget;
+import com.example.sms.domain.model.system.download.DownloadTarget;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
-import com.example.sms.presentation.api.system.download.DownloadConditionResource;
+import com.example.sms.presentation.api.system.download.DownloadCriteriaResource;
 import com.example.sms.stepdefinitions.utils.SpringAcceptanceTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,43 +46,91 @@ public class UC007StepDefs extends SpringAcceptanceTest {
     @もし(":UC007 {string} ダウンロード件数を取得する")
     public void toGet(String target) throws IOException {
         String url = DOWNLOAD_API_URL + "/count";
-        DownloadConditionResource downloadConditionResource = new DownloadConditionResource();
+        DownloadCriteriaResource downloadCriteriaResource = new DownloadCriteriaResource();
         if (target.equals("部門")) {
-            downloadConditionResource = new DownloadConditionResource();
-            downloadConditionResource.setTarget(DownloadTarget.部門);
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.部門);
+        }
+        if (target.equals("社員")) {
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.社員);
+        }
+        if (target.equals("商品分類")) {
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.商品分類);
+        }
+        if (target.equals("商品")) {
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.商品);
+        }
+        if (target.equals("取引先グループ")) {
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.取引先グループ);
+        }
+        if (target.equals("取引先")) {
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.取引先);
+        }
+        if (target.equals("顧客")) {
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.顧客);
+        }
+        if (target.equals("仕入先")) {
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.仕入先);
         }
         ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(downloadConditionResource);
+        String json = objectMapper.writeValueAsString(downloadCriteriaResource);
         executePost(url, json);
     }
 
-    @ならば(":UC007 ダウンロード件数を取得できる")
-    public void canGet() {
+    @ならば(":UC007 {int}件のダウンロード件数を取得できる")
+    public void canGet(int count) {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
 
         String result = latestResponse.getBody();
-        assertEquals("3", result);
+        assertEquals(String.valueOf(count), result);
     }
 
     @もし(":UC007 {string} ダウンロードを実行する")
     public void exec(String target) throws IOException {
         String url = DOWNLOAD_API_URL + "/download";
-        DownloadConditionResource downloadConditionResource = new DownloadConditionResource();
+        DownloadCriteriaResource downloadCriteriaResource = new DownloadCriteriaResource();
         if (target.equals("部門")) {
-            downloadConditionResource = new DownloadConditionResource();
-            downloadConditionResource.setTarget(DownloadTarget.部門);
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.部門);
+        }
+        if (target.equals("社員")) {
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.社員);
+        }
+        if (target.equals("商品分類")) {
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.商品分類);
+        }
+        if (target.equals("商品")) {
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.商品);
+        }
+        if (target.equals("取引先グループ")) {
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.取引先グループ);
+        }
+        if (target.equals("取引先")) {
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.取引先);
+        }
+        if (target.equals("顧客")) {
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.顧客);
+        }
+        if (target.equals("仕入先")) {
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.仕入先);
         }
         ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(downloadConditionResource);
+        String json = objectMapper.writeValueAsString(downloadCriteriaResource);
         executePost(url, json);
-    }
-
-    @ならば(":UC007 ダウンロードデータが作成される")
-    public void toShow() throws JsonProcessingException {
-        String result = latestResponse.getBody();
-        ObjectMapper objectMapper = new ObjectMapper();
-        MessageResponse response = objectMapper.readValue(result, MessageResponse.class);
-        assertNotNull(response);
     }
 }

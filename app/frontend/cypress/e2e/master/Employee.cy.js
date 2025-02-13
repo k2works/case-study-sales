@@ -61,9 +61,9 @@ describe('社員管理', () => {
             cy.get('#lastNameKana').clear();
             cy.get('#lastNameKana').type('ジロウ');
             cy.get('#tel').clear();
-            cy.get('#tel').type('09-9999-9999');
+            cy.get('#tel').type('090-9999-9999');
             cy.get('#fax').clear();
-            cy.get('#fax').type('00-0000-0000');
+            cy.get('#fax').type('010-0000-0000');
             cy.get('#select-department').click();
             cy.get('.collection-object-container-modal > .collection-object-list > :nth-child(2) > .collection-object-item-actions > .action-button').click();
             cy.get('#save').click();

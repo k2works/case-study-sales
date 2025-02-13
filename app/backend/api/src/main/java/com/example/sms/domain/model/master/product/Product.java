@@ -1,7 +1,7 @@
 package com.example.sms.domain.model.master.product;
 
-import com.example.sms.domain.model.common.money.Money;
-import com.example.sms.domain.type.product.*;
+import com.example.sms.domain.type.money.Money;
+import com.example.sms.domain.model.master.partner.vendor.VendorCode;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;
@@ -26,12 +26,12 @@ public class Product {
     MiscellaneousType miscellaneousType; // 雑区分
     StockManagementTargetType stockManagementTargetType; // 在庫管理対象区分
     StockAllocationType stockAllocationType; // 在庫引当区分
-    SupplierCode supplierCode; // 仕入先コード
+    VendorCode vendorCode; // 仕入先コード
     List<SubstituteProduct> substituteProduct; // 代替商品
     List<Bom> boms; // 部品表
     List<CustomerSpecificSellingPrice> customerSpecificSellingPrices; // 顧客別販売単価
 
-    public static Product of(String productCode, String productFormalName, String productAbbreviation, String productNameKana, ProductType productType, Integer sellingPrice, Integer purchasePrice, Integer costOfSales, TaxType taxType, String productClassificationCode, MiscellaneousType miscellaneousType, StockManagementTargetType stockManagementTargetType, StockAllocationType stockAllocationType, String supplierCode, Integer supplierBranchNumber) {
+    public static Product of(String productCode, String productFormalName, String productAbbreviation, String productNameKana, ProductType productType, Integer sellingPrice, Integer purchasePrice, Integer costOfSales, TaxType taxType, String productClassificationCode, MiscellaneousType miscellaneousType, StockManagementTargetType stockManagementTargetType, StockAllocationType stockAllocationType, String vendorCode, Integer vendorBranchNumber) {
         return new Product(
                 ProductCode.of(productCode),
                 ProductName.of(productFormalName, productAbbreviation, productNameKana),
@@ -44,7 +44,7 @@ public class Product {
                 miscellaneousType,
                 stockManagementTargetType,
                 stockAllocationType,
-                SupplierCode.of(supplierCode, supplierBranchNumber),
+                VendorCode.of(vendorCode, vendorBranchNumber),
                 List.of(),
                 List.of(),
                 List.of()
@@ -64,7 +64,7 @@ public class Product {
                 product.miscellaneousType,
                 product.stockManagementTargetType,
                 product.stockAllocationType,
-                product.supplierCode,
+                product.vendorCode,
                 substituteProduct,
                 boms,
                 customerSpecificSellingPrices
@@ -84,10 +84,46 @@ public class Product {
                 value.miscellaneousType,
                 value.stockManagementTargetType,
                 value.stockAllocationType,
-                value.supplierCode,
+                value.vendorCode,
                 value.substituteProduct,
                 value.boms,
                 value.customerSpecificSellingPrices
+        );
+    }
+
+    public static Product of(
+            ProductCode productCode,
+            ProductName productName,
+            ProductType productType,
+            Money sellingPrice,
+            Money purchasePrice,
+            Money costOfSales,
+            TaxType taxType,
+            ProductCategoryCode productCategoryCode,
+            MiscellaneousType miscellaneousType,
+            StockManagementTargetType stockManagementTargetType,
+            StockAllocationType stockAllocationType,
+            VendorCode vendorCode,
+            List<SubstituteProduct> substituteProduct,
+            List<Bom> boms,
+            List<CustomerSpecificSellingPrice> customerSpecificSellingPrices
+    ) {
+        return new Product(
+                productCode,
+                productName,
+                productType,
+                sellingPrice,
+                purchasePrice,
+                costOfSales,
+                taxType,
+                productCategoryCode,
+                miscellaneousType,
+                stockManagementTargetType,
+                stockAllocationType,
+                vendorCode,
+                substituteProduct,
+                boms,
+                customerSpecificSellingPrices
         );
     }
 }

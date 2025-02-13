@@ -1,6 +1,6 @@
 import React from 'react';
 import {Message} from "../../../../components/application/Message.tsx";
-import {ProductCategoryType} from "../../../../models";
+import {ProductCategoryType} from "../../../../models/master/product";
 import {FormInput, SingleViewHeaderActions, SingleViewHeaderItem} from "../../../Common.tsx";
 
 interface HeaderProps {

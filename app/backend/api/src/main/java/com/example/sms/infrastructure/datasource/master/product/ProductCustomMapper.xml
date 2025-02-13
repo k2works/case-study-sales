@@ -80,8 +80,8 @@
             <if test="productCategoryCode != null">
                 and 商品分類コード = #{productCategoryCode,jdbcType=VARCHAR}
             </if>
-            <if test="supplierCode != null">
-                and 仕入先コード = #{supplierCode,jdbcType=VARCHAR}
+            <if test="vendorCode != null">
+                and 仕入先コード = #{vendorCode,jdbcType=VARCHAR}
             </if>
             <if test="productType != null">
                 and 商品区分 = #{productType,jdbcType=VARCHAR}
@@ -100,4 +100,47 @@
             </if>
         </where>
     </select>
+
+    <insert id="insertForOptimisticLock" parameterType="com.example.sms.infrastructure.datasource.autogen.model.商品マスタ">
+        insert into public.商品マスタ (商品コード, 商品正式名, 商品略称,
+        商品名カナ, 商品区分, 製品型番,
+        販売単価, 仕入単価, 売上原価, 税区分,
+        商品分類コード, 雑区分, 在庫管理対象区分,
+        在庫引当区分, 仕入先コード, 仕入先枝番,
+        作成日時, 作成者名, 更新日時,
+        更新者名)
+        values (#{商品コード,jdbcType=VARCHAR}, #{商品正式名,jdbcType=VARCHAR}, #{商品略称,jdbcType=VARCHAR},
+        #{商品名カナ,jdbcType=VARCHAR}, #{商品区分,jdbcType=VARCHAR}, #{製品型番,jdbcType=VARCHAR},
+        #{販売単価,jdbcType=INTEGER}, #{仕入単価,jdbcType=INTEGER}, #{売上原価,jdbcType=INTEGER}, #{税区分,jdbcType=INTEGER},
+        #{商品分類コード,jdbcType=VARCHAR}, #{雑区分,jdbcType=INTEGER}, #{在庫管理対象区分,jdbcType=INTEGER},
+        #{在庫引当区分,jdbcType=INTEGER}, #{仕入先コード,jdbcType=VARCHAR}, #{仕入先枝番,jdbcType=INTEGER},
+        #{作成日時,jdbcType=TIMESTAMP}, #{作成者名,jdbcType=VARCHAR}, #{更新日時,jdbcType=TIMESTAMP},
+        #{更新者名,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKeyForOptimisticLock" parameterType="com.example.sms.infrastructure.datasource.autogen.model.商品マスタ">
+        update public.商品マスタ
+        set 商品正式名 = #{商品正式名,jdbcType=VARCHAR},
+        商品略称 = #{商品略称,jdbcType=VARCHAR},
+        商品名カナ = #{商品名カナ,jdbcType=VARCHAR},
+        商品区分 = #{商品区分,jdbcType=VARCHAR},
+        製品型番 = #{製品型番,jdbcType=VARCHAR},
+        販売単価 = #{販売単価,jdbcType=INTEGER},
+        仕入単価 = #{仕入単価,jdbcType=INTEGER},
+        売上原価 = #{売上原価,jdbcType=INTEGER},
+        税区分 = #{税区分,jdbcType=INTEGER},
+        商品分類コード = #{商品分類コード,jdbcType=VARCHAR},
+        雑区分 = #{雑区分,jdbcType=INTEGER},
+        在庫管理対象区分 = #{在庫管理対象区分,jdbcType=INTEGER},
+        在庫引当区分 = #{在庫引当区分,jdbcType=INTEGER},
+        仕入先コード = #{仕入先コード,jdbcType=VARCHAR},
+        仕入先枝番 = #{仕入先枝番,jdbcType=INTEGER},
+        作成日時 = #{作成日時,jdbcType=TIMESTAMP},
+        作成者名 = #{作成者名,jdbcType=VARCHAR},
+        更新日時 = #{更新日時,jdbcType=TIMESTAMP},
+        更新者名 = #{更新者名,jdbcType=VARCHAR},
+        version = #{version,jdbcType=INTEGER} + 1
+        where 商品コード = #{商品コード,jdbcType=VARCHAR}
+        and version = #{version,jdbcType=INTEGER}
+    </update>
 </mapper>

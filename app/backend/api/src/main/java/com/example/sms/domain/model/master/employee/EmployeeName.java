@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
+import static org.apache.commons.lang3.Validate.isTrue;
+
 /**
  * 社員名
  */
@@ -27,13 +29,9 @@ public class EmployeeName {
             nameKana = " ";
         }
         name = name.replace("　", " ");
-        if (!name.contains(" ")) {
-            throw new IllegalArgumentException("名前は姓と名をスペースで区切ってください。");
-        }
+        isTrue(name.contains(" "), "名前は姓と名をスペースで区切ってください。");
         nameKana = nameKana.replace("　", " ");
-        if (!nameKana.contains(" ")) {
-            throw new IllegalArgumentException("名前カナは姓と名をスペースで区切ってください。");
-        }
+        isTrue(nameKana.contains(" "), "名前カナは姓と名をスペースで区切ってください。");
 
         String firstName = "";
         String lastName = "";

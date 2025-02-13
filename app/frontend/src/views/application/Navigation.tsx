@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {FaBars, FaTimes} from "react-icons/fa";
 import {RoleType} from "../../models";
-import {getRoleFromUser} from "../../components/application/RouteAuthGuard.tsx";
+import {useAuthUser} from "../../components/application/RouteAuthGuard.tsx";
 import Env from "../../env.ts";
 
 interface NavItemProps {
@@ -29,7 +29,7 @@ const SubNavItem: React.FC<SubNavItemProps> = ({id, to, children}) => (
 );
 
 const NaveItems: React.FC = () => {
-    const role = getRoleFromUser();
+    const role = useAuthUser();
     return (
         <ul>
             <NavItem id="side-nav-home-nav" to="/"
@@ -50,10 +50,26 @@ const NaveItems: React.FC = () => {
                             <SubNavItem id="side-nav-department-nav" to="/department">部門</SubNavItem>
                             <SubNavItem id="side-nav-employee-nav" to="/employee">社員</SubNavItem>
                             <SubNavItem id="side-nav-product-nav" to="/product">商品</SubNavItem>
-                            { !Env.isProduction() && (
+                            {!Env.isProduction() && (
                                 <ul className="nav-sub-list">
                                     <SubNavItem id="side-nav-product-nav" to="/product-category">分類</SubNavItem>
                                     <SubNavItem id="side-nav-product-nav" to="/product-item">アイテム</SubNavItem>
+                                </ul>
+                            )}
+                            <SubNavItem id="side-nav-partner-nav" to="/partner">取引先</SubNavItem>
+                            {!Env.isProduction() && (
+                                <ul className="nav-sub-list">
+                                    <SubNavItem id="side-nav-partner-nav" to="/partner-category">分類</SubNavItem>
+                                    <SubNavItem id="side-nav-partner-nav" to="/partner-group">グループ</SubNavItem>
+                                    <SubNavItem id="side-nav-partner-nav" to="/partner-list">一覧</SubNavItem>
+                                    <SubNavItem id="side-nav-partner-nav" to="/customer">顧客</SubNavItem>
+                                    <SubNavItem id="side-nav-partner-nav" to="/vendor">仕入先</SubNavItem>
+                                </ul>
+                            )}
+                            <SubNavItem id="side-nav-code-nav" to="/code">コード</SubNavItem>
+                            {!Env.isProduction() && (
+                                <ul className="nav-sub-list">
+                                    <SubNavItem id="side-nav-code-nav" to="/region">地域</SubNavItem>
                                 </ul>
                             )}
                         </ul>
