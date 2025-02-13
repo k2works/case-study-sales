@@ -13,6 +13,16 @@ const HomeSingleView: React.FC = () => {
                 <dl className="info">
                     <dt>
                         <span>新機能</span>
+                        <time>2025.2.15</time>
+                    </dt>
+                    <dd>
+                        <a href="#" id="auth-func">取引先マスタ機能リリース</a>
+                    </dd>
+                    <dd>
+                        <a href="#" id="auth-func">コードマスタ機能リリース</a>
+                    </dd>
+                    <dt>
+                        <span>新機能</span>
                         <time>2025.1.1</time>
                     </dt>
                     <dd>
