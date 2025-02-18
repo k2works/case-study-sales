@@ -11,6 +11,8 @@ import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.master.partner.*;
 import com.example.sms.domain.model.master.partner.Partner;
 import com.example.sms.domain.model.master.product.*;
+import com.example.sms.domain.model.sales_order.SalesOrder;
+import com.example.sms.domain.model.sales_order.SalesOrderLine;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
@@ -386,4 +388,42 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 2
         );
     }
+
+    public static SalesOrder getSalesOrder(String orderNumber) {
+        return SalesOrder.of(
+                orderNumber,  // orderNumber（受注番号）
+                LocalDateTime.of(2021, 1, 1, 0, 0),  // orderDate（受注日）
+                "10000",  // departmentCode（部門コード）
+                LocalDateTime.of(2021, 1, 1, 0, 0),  // departmentStartDate（部門開始日）
+                "001",  // customerCode（顧客コード）
+                1,  // customerBranchNumber（顧客枝番）
+                "EMP001",  // employeeCode（社員コード）
+                LocalDateTime.of(2021, 1, 1, 0, 0),  // desiredDeliveryDate（希望納期）
+                "001",  // customerOrderNumber（客先注文番号）
+                "001",  // warehouseCode（倉庫コード）
+                1000,  // totalOrderAmount（受注金額合計）
+                100,  // totalConsumptionTax（消費税合計）
+                "備考",  // remarks（備考）
+                List.of()
+        );
+    }
+
+    public static SalesOrderLine getSalesOrderLine(String orderNumber, int lineNumber) {
+        return SalesOrderLine.of(
+                orderNumber,  // orderNumber（受注番号）
+                lineNumber,  // orderLineNumber（受注行番号）
+                "99999999",  // productCode（商品コード）
+                "商品1",  // productName（商品名）
+                1000,  // salesUnitPrice（販売単価）
+                10,  // orderQuantity（受注数量）
+                10,  // taxRate（消費税率）
+                10,  // allocationQuantity（引当数量）
+                10,  // shipmentInstructionQuantity（出荷指示数量）
+                10,  // shippedQuantity（出荷済数量）
+                1,  // completionFlag（完了フラグ）
+                10,  // discountAmount（値引金額）
+                LocalDateTime.of(2021, 1, 1, 0, 0)  // deliveryDate（納期）
+        );
+    }
+
 }

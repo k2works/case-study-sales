@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.sms.infrastructure.datasource.sales_order.sales_order_line.SalesOrderLineCustomMapper">
+    <select id="selectAll" resultMap="com.example.sms.infrastructure.datasource.autogen.mapper.受注データ明細Mapper.BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.受注データ明細Mapper.Base_Column_List"/>
+        from public.受注データ明細
+    </select>
+
+    <select id="selectBySalesOrderNumber" resultMap="com.example.sms.infrastructure.datasource.autogen.mapper.受注データ明細Mapper.BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.受注データ明細Mapper.Base_Column_List"/>
+        from public.受注データ明細
+        where 受注番号 = #{salesOrderNumber}
+    </select>
+
+    <delete id="deleteBySalesOrderNumber" parameterType="java.lang.String">
+        delete from public.受注データ明細
+        where 受注番号 = #{salesOrderNumber}
+    </delete>
+</mapper>
