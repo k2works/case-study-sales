@@ -26,4 +26,6 @@ public interface TestDataFactory {
     void setUpForCustomerService();
 
     void setUpForVendorService();
+
+    void setUpForSalesOrderService();
 }

@@ -63,4 +63,45 @@
         where 受注番号 = #{受注番号,jdbcType=VARCHAR}
         and version = #{version,jdbcType=INTEGER}
     </update>
+
+    <select id="selectByCriteria" resultMap="BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.受注データMapper.Base_Column_List"/>
+        from public.受注データ
+        <where>
+            <if test="orderNumber != null">
+                受注番号 = #{orderNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="orderDate != null">
+                and 受注日 = #{orderDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="departmentCode != null">
+                and 部門コード = #{departmentCode,jdbcType=VARCHAR}
+            </if>
+            <if test="departmentStartDate != null">
+                and 部門開始日 = #{departmentStartDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="customerCode != null">
+                and 顧客コード = #{customerCode,jdbcType=VARCHAR}
+            </if>
+            <if test="customerBranchNumber != null">
+                and 顧客枝番 = #{customerBranchNumber,jdbcType=INTEGER}
+            </if>
+            <if test="employeeCode != null">
+                and 社員コード = #{employeeCode,jdbcType=VARCHAR}
+            </if>
+            <if test="desiredDeliveryDate != null">
+                and 希望納期 = #{desiredDeliveryDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="customerOrderNumber != null">
+                and 客先注文番号 = #{customerOrderNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseCode != null">
+                and 倉庫コード = #{warehouseCode,jdbcType=VARCHAR}
+            </if>
+            <if test="remarks != null">
+                and 備考 = #{remarks,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
 </mapper>

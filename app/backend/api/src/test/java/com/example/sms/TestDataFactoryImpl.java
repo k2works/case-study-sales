@@ -26,6 +26,7 @@ import com.example.sms.service.master.partner.PartnerGroupRepository;
 import com.example.sms.service.master.partner.PartnerRepository;
 import com.example.sms.service.master.product.ProductCategoryRepository;
 import com.example.sms.service.master.product.ProductRepository;
+import com.example.sms.service.sales_order.SalesOrderRepository;
 import com.example.sms.service.system.audit.AuditRepository;
 import com.example.sms.service.system.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +58,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
     PartnerCategoryRepository partnerCategoryRepository;
     @Autowired
     PartnerRepository partnerRepository;
+    @Autowired
+    SalesOrderRepository salesOrderRepository;
 
     @Override
     public void setUpForAuthApiService() {
@@ -240,6 +243,35 @@ public class TestDataFactoryImpl implements TestDataFactory {
                     .mapToObj(j -> getVendor("00" + i, j))
                     .toList();
             partnerRepository.save(Partner.ofWithVendors(partner,vendors));
+        });
+    }
+
+    @Override
+    public void setUpForSalesOrderService() {
+        salesOrderRepository.deleteAll();
+
+        IntStream.rangeClosed(1, 3).forEach(i -> {
+            String orderNumber = String.format("S%05d", i);
+            SalesOrder order = getSalesOrder(orderNumber);
+            List<SalesOrderLine> lines = IntStream.range(1, 4)
+                    .mapToObj(lineNumber -> getSalesOrderLine(order.getOrderNumber(), lineNumber))
+                    .toList();
+            SalesOrder newOrder = SalesOrder.of(
+                    order.getOrderNumber(),
+                    order.getOrderDate(),
+                    order.getDepartmentCode(),
+                    order.getDepartmentStartDate(),
+                    order.getCustomerCode(),
+                    order.getCustomerBranchNumber(),
+                    order.getEmployeeCode(),
+                    order.getDesiredDeliveryDate(),
+                    order.getCustomerOrderNumber(),
+                    order.getWarehouseCode(),
+                    order.getTotalOrderAmount(),
+                    order.getTotalConsumptionTax(),
+                    order.getRemarks(),
+                    lines);
+            salesOrderRepository.save(newOrder);
         });
     }
 
