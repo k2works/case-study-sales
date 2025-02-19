@@ -74,12 +74,12 @@ public class SalesOrderDataSource implements SalesOrderRepository {
         if (salesOrder.getSalesOrderLines() != null) {
             salesOrderLineCustomMapper.deleteBySalesOrderNumber(salesOrder.getOrderNumber());
 
+            AtomicInteger index = new AtomicInteger(1);
             salesOrder.getSalesOrderLines().forEach(salesOrderLine -> {
-                AtomicInteger index = new AtomicInteger(1);
-
                 受注データ明細Key key = new 受注データ明細Key();
                 key.set受注番号(salesOrder.getOrderNumber());
                 key.set受注行番号(index.getAndIncrement());
+
                 受注データ明細 salesOrderLineData = salesOrderEntityMapper.mapToEntity(key, salesOrderLine);
                 salesOrderLineData.set作成日時(LocalDateTime.now());
                 salesOrderLineData.set作成者名(username);

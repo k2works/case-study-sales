@@ -105,13 +105,17 @@ public class SalesOrderService {
         Map<String, SalesOrder> orderMap = new HashMap<>();
 
         for (SalesOrderUploadCSV csv : dataList) {
+            String orderNumber = csv.getOrderNumber();
+            if (orderNumber != null) {
+                orderNumber = orderNumber.replaceAll("\\s", ""); // すべての空白文字を削除
+            }
             // 既にそのOrderNumberのSalesOrderが存在するかを確認
-            SalesOrder existingOrder = orderMap.get(csv.getOrderNumber());
+            SalesOrder existingOrder = orderMap.get(orderNumber);
 
             if (existingOrder == null) {
                 // 新しくSalesOrderを作成
                 SalesOrder newOrder = SalesOrder.of(
-                        csv.getOrderNumber(),
+                        orderNumber,
                         csv.getOrderDate(),
                         csv.getDepartmentCode(),
                         csv.getDepartmentStartDate(),
@@ -128,14 +132,14 @@ public class SalesOrderService {
                 );
 
                 // Mapと結果リストに登録
-                orderMap.put(csv.getOrderNumber(), newOrder);
+                orderMap.put(orderNumber, newOrder);
                 salesOrders.add(newOrder);
                 existingOrder = newOrder;
             }
 
             // SalesOrderLineを作成して追加
             SalesOrderLine orderLine = SalesOrderLine.of(
-                    csv.getOrderNumber(),
+                    orderNumber,
                     csv.getOrderLineNumber(),
                     csv.getProductCode(),
                     csv.getProductName(),

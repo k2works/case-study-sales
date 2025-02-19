@@ -196,6 +196,49 @@ class SalesOrderServiceTest {
             }
 
             @Test
+            @DisplayName("単一の受注レコードを２重アップロードしても正常に処理される")
+            void uploadSingleOrderRecordTwice() throws Exception {
+                // Arrange
+                InputStream is = getClass().getResourceAsStream("/csv/sales_order/sales_order_single.csv");
+                MockMultipartFile multipartFile = new MockMultipartFile(
+                        "sales_order_single.csv",
+                        "sales_order_single.csv",
+                        "text/csv",
+                        is
+                );
+
+                // Act
+                salesOrderService.uploadCsvFile(multipartFile);
+                salesOrderService.uploadCsvFile(multipartFile);
+                SalesOrder result = salesOrderService.find("ORD001");
+
+                // Assert
+                assertNotNull(result);
+                assertEquals("ORD001", result.getOrderNumber());
+                assertEquals(LocalDateTime.parse("2025-02-19T00:00"), result.getOrderDate());
+                assertEquals("D001", result.getDepartmentCode());
+                assertEquals(15000, result.getTotalOrderAmount());
+                assertEquals(1500, result.getTotalConsumptionTax());
+                assertEquals("初回注文", result.getRemarks());
+
+                assertEquals(2, result.getSalesOrderLines().size());
+
+                SalesOrderLine line1 = result.getSalesOrderLines().get(0);
+                assertEquals(1, line1.getOrderLineNumber());
+                assertEquals("ITEM001", line1.getProductCode());
+                assertEquals("商品A", line1.getProductName());
+                assertEquals(3000, line1.getSalesUnitPrice());
+                assertEquals(5, line1.getOrderQuantity());
+
+                SalesOrderLine line2 = result.getSalesOrderLines().get(1);
+                assertEquals(2, line2.getOrderLineNumber());
+                assertEquals("ITEM002", line2.getProductCode());
+                assertEquals("商品B", line2.getProductName());
+                assertEquals(2000, line2.getSalesUnitPrice());
+                assertEquals(3, line2.getOrderQuantity());
+            }
+
+            @Test
             @DisplayName("複数の受注レコードをアップロードできる")
             void uploadMultipleOrderRecords() throws Exception {
                 // Arrange
@@ -225,7 +268,40 @@ class SalesOrderServiceTest {
                 assertEquals(30000, order2.getTotalOrderAmount());
                 assertEquals(2, order2.getSalesOrderLines().size());
             }
+
+            @Test
+            @DisplayName("複数の受注レコードを２重アップロードしても正常に処理される")
+            void uploadMultipleOrderRecordsTwice() throws Exception {
+                // Arrange
+                InputStream is = getClass().getResourceAsStream("/csv/sales_order/sales_order_multiple.csv");
+                MockMultipartFile multipartFile = new MockMultipartFile(
+                        "sales_order_multiple.csv",
+                        "sales_order_multiple.csv",
+                        "text/csv",
+                        is
+                );
+
+                // Act
+                salesOrderService.uploadCsvFile(multipartFile);
+                salesOrderService.uploadCsvFile(multipartFile);
+                SalesOrderList result = salesOrderService.selectAll();
+
+                // Assert
+                assertNotNull(result);
+                assertEquals(2, result.size());
+
+                SalesOrder order1 = result.asList().get(0);
+                assertEquals("ORD001", order1.getOrderNumber());
+                assertEquals(15000, order1.getTotalOrderAmount());
+                assertEquals(2, order1.getSalesOrderLines().size());
+
+                SalesOrder order2 = result.asList().get(1);
+                assertEquals("ORD002", order2.getOrderNumber());
+                assertEquals(30000, order2.getTotalOrderAmount());
+                assertEquals(2, order2.getSalesOrderLines().size());
+            }
         }
+
 
         @Nested
         @DisplayName("異常系")
