@@ -8,8 +8,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.*;
 import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -41,7 +44,7 @@ public class SpringAcceptanceTest {
         authHeader = Objects.requireNonNull(jwtResponse).getTokenType() + " " + jwtResponse.getAccessToken();
     }
 
-    protected void executeGet(String url) throws IOException {
+    protected void executeGet(String url) {
         final Map<String, String> headers = new HashMap<>();
         headers.put("Accept", "application/json");
         headers.put("Authorization", authHeader);
@@ -58,7 +61,7 @@ public class SpringAcceptanceTest {
         });
     }
 
-    protected void executePost(String url, String resource) throws IOException {
+    protected void executePost(String url, String resource) {
         final Map<String, String> headers = new HashMap<>();
         headers.put("Accept", "application/json");
         headers.put("Content-Type", "application/json");
@@ -82,7 +85,50 @@ public class SpringAcceptanceTest {
                 });
     }
 
-    protected void executePut(String url, String resource) throws IOException {
+    protected void executePost(String url, MultipartFile multipartFile) {
+        // RestTemplateの初期化（初回のみ）
+        if (restTemplate == null) {
+            restTemplate = new RestTemplate();
+        }
+
+        // エラーハンドラー設定
+        final ResponseResultErrorHandler errorHandler = new ResponseResultErrorHandler();
+        restTemplate.setErrorHandler(errorHandler);
+
+        // ヘッダー設定
+        final HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers.set("Authorization", authHeader);
+        headers.set("Accept", "application/json");
+
+        // executeの使用
+        // レスポンス処理
+        // ResponseResults型へ変換
+        latestResponse = restTemplate.execute(
+                url,
+                HttpMethod.POST,
+                request -> { // リクエストのカスタマイズ
+                    // ヘッダーを設定
+                    request.getHeaders().addAll(headers);
+
+                    // ファイル部分を設定
+                    MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+                    body.add("file", new org.springframework.core.io.ByteArrayResource(multipartFile.getBytes()) {
+                        @Override
+                        public String getFilename() {
+                            return multipartFile.getOriginalFilename(); // ファイル名を設定
+                        }
+                    });
+
+                    // Multipartのコンテンツを出力
+                    new org.springframework.http.converter.FormHttpMessageConverter()
+                            .write(body, MediaType.MULTIPART_FORM_DATA, request);
+                },
+                ResponseResults::new
+        );
+    }
+
+    protected void executePut(String url, String resource) {
         final Map<String, String> headers = new HashMap<>();
         headers.put("Accept", "application/json");
         headers.put("Content-Type", "application/json");
@@ -106,7 +152,7 @@ public class SpringAcceptanceTest {
                 });
     }
 
-    protected void executeDelete(String url) throws IOException {
+    protected void executeDelete(String url) {
         final Map<String, String> headers = new HashMap<>();
         headers.put("Accept", "application/json");
         headers.put("Content-Type", "application/json");

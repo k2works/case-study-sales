@@ -30,8 +30,12 @@ import com.example.sms.service.sales_order.SalesOrderRepository;
 import com.example.sms.service.system.audit.AuditRepository;
 import com.example.sms.service.system.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -295,6 +299,21 @@ public class TestDataFactoryImpl implements TestDataFactory {
     @Override
     public void setUpForSalesOrderUploadService() {
         salesOrderRepository.deleteAll();
+    }
+
+    @Override
+    public MultipartFile createSalesOrderFile() {
+        InputStream is = getClass().getResourceAsStream("/csv/sales_order/sales_order_multiple.csv");
+        try {
+            return new MockMultipartFile(
+                    "sales_order_multiple.csv",
+                    "sales_order_multiple.csv",
+                    "text/csv",
+                    is
+            );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static User getUser() {

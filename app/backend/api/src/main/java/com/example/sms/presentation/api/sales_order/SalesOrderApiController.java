@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -74,6 +75,18 @@ public class SalesOrderApiController {
             }
             salesOrderService.register(salesOrder);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.sales-order.registered")));
+        } catch (BusinessException | IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
+    }
+
+    @Operation(summary = "受注を一括登録する", description = "ファイルアップロードで受注を登録する")
+    @PostMapping("/upload")
+    @AuditAnnotation(process = ApplicationExecutionProcessType.受注登録, type = ApplicationExecutionHistoryType.同期)
+    public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file) {
+        try {
+            salesOrderService.uploadCsvFile(file);
+            return ResponseEntity.ok(new MessageResponse(message.getMessage("success.sales-order.upload")));
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }

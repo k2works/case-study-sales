@@ -1,5 +1,7 @@
 package com.example.sms;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public interface TestDataFactory {
     void setUpForAuthApiService();
 
@@ -30,4 +32,6 @@ public interface TestDataFactory {
     void setUpForSalesOrderService();
 
     void setUpForSalesOrderUploadService();
+
+    MultipartFile createSalesOrderFile();
 }
