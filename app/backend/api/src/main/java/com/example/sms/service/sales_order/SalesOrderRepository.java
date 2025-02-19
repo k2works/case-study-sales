@@ -20,4 +20,6 @@ public interface SalesOrderRepository {
     PageInfo<SalesOrder> selectAllWithPageInfo();
 
     PageInfo<SalesOrder> searchWithPageInfo(SalesOrderCriteria criteria);
+
+    void save(SalesOrderList salesOrderList);
 }

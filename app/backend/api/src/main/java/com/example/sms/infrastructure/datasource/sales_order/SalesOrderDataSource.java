@@ -165,4 +165,9 @@ public class SalesOrderDataSource implements SalesOrderRepository {
 
         return PageInfoHelper.of(pageInfo, salesOrderEntityMapper::mapToDomainModel);
     }
+
+    @Override
+    public void save(SalesOrderList salesOrderList) {
+        salesOrderList.asList().forEach(this::save);
+    }
 }

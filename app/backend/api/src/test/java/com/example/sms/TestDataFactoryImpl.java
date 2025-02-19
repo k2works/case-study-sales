@@ -292,6 +292,11 @@ public class TestDataFactoryImpl implements TestDataFactory {
         });
     }
 
+    @Override
+    public void setUpForSalesOrderUploadService() {
+        salesOrderRepository.deleteAll();
+    }
+
     public static User getUser() {
         return User.of("U999999", "$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK", "first", "last", RoleName.USER);
     }

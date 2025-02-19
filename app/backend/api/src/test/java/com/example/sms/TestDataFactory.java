@@ -28,4 +28,6 @@ public interface TestDataFactory {
     void setUpForVendorService();
 
     void setUpForSalesOrderService();
+
+    void setUpForSalesOrderUploadService();
 }
