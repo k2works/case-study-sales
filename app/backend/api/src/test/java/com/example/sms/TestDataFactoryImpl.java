@@ -153,6 +153,23 @@ public class TestDataFactoryImpl implements TestDataFactory {
         partnerRepository.save(getPartner("003"));
         partnerRepository.save(Partner.ofWithCustomers(getPartner("001"), List.of(getCustomer("001", 1), getCustomer("001", 2), getCustomer("001", 3))));
         partnerRepository.save(Partner.ofWithVendors(getPartner("002"), List.of(getVendor("002", 1), getVendor("002", 2), getVendor("002", 3))));
+
+        salesOrderRepository.deleteAll();
+        SalesOrder order1 = getSalesOrder("S00001");
+        IntStream.rangeClosed(1, 3).forEach(i -> {
+            SalesOrderLine line = getSalesOrderLine(order1.getOrderNumber(), i);
+            salesOrderRepository.save(SalesOrder.of(order1, List.of(line)));
+        });
+        SalesOrder order2 = getSalesOrder("S00002");
+        IntStream.rangeClosed(1, 3).forEach(i -> {
+            SalesOrderLine line = getSalesOrderLine(order2.getOrderNumber(), i);
+            salesOrderRepository.save(SalesOrder.of(order2, List.of(line)));
+        });
+        SalesOrder order3 = getSalesOrder("S00003");
+        IntStream.rangeClosed(1, 3).forEach(i -> {
+            SalesOrderLine line = getSalesOrderLine(order3.getOrderNumber(), i);
+            salesOrderRepository.save(SalesOrder.of(order3, List.of(line)));
+        });
     }
 
     private void setUpUser() {

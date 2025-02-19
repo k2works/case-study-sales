@@ -8,6 +8,7 @@ import com.example.sms.domain.model.master.partner.customer.CustomerList;
 import com.example.sms.domain.model.master.partner.vendor.VendorList;
 import com.example.sms.domain.model.master.product.ProductCategoryList;
 import com.example.sms.domain.model.master.product.ProductList;
+import com.example.sms.domain.model.sales_order.SalesOrderList;
 import com.example.sms.domain.model.system.download.DownloadCriteria;
 import com.example.sms.infrastructure.datasource.system.download.*;
 import org.springframework.stereotype.Service;
@@ -31,8 +32,9 @@ public class DownloadService {
     private final PartnerCSVRepository partnerCSVRepository;
     private final CustomerCSVRepository customerCSVRepository;
     private final VendorCSVRepository vendorCSVRepository;
+    private final SalesOrderCSVRepository salesOrderCSVRepository;
 
-    public DownloadService(DepartmentCSVRepository departmentCSVRepository, EmployeeCSVRepository employeeCSVRepository, ProductCategoryCSVRepository productCategoryCSVRepository, ProductCSVRepository productCSVRepository, PartnerGroupCSVRepository partnerGroupCSVRepository, PartnerCSVRepository partnerCSVRepository, CustomerCSVRepository customerCSVRepository, VendorCSVRepository vendorCSVRepository) {
+    public DownloadService(DepartmentCSVRepository departmentCSVRepository, EmployeeCSVRepository employeeCSVRepository, ProductCategoryCSVRepository productCategoryCSVRepository, ProductCSVRepository productCSVRepository, PartnerGroupCSVRepository partnerGroupCSVRepository, PartnerCSVRepository partnerCSVRepository, CustomerCSVRepository customerCSVRepository, VendorCSVRepository vendorCSVRepository, SalesOrderCSVRepository salesOrderCSVRepository) {
         this.departmentCSVRepository = departmentCSVRepository;
         this.employeeCSVRepository = employeeCSVRepository;
         this.productCategoryCSVRepository = productCategoryCSVRepository;
@@ -41,6 +43,7 @@ public class DownloadService {
         this.partnerCSVRepository = partnerCSVRepository;
         this.customerCSVRepository = customerCSVRepository;
         this.vendorCSVRepository = vendorCSVRepository;
+        this.salesOrderCSVRepository = salesOrderCSVRepository;
     }
 
     /**
@@ -80,6 +83,10 @@ public class DownloadService {
                 checkPermission("ROLE_ADMIN");
                 yield countVendor(condition);
             }
+            case 受注 -> {
+                checkPermission("ROLE_ADMIN");
+                yield countSalesOrder(condition);
+            }
         };
     }
 
@@ -96,6 +103,7 @@ public class DownloadService {
             case 取引先 -> writeCsv(PartnerDownloadCSV.class).accept(streamWriter, convert(condition));
             case 顧客 -> writeCsv(CustomerDownloadCSV.class).accept(streamWriter, convert(condition));
             case 仕入先 -> writeCsv(VendorDownloadCSV.class).accept(streamWriter, convert(condition));
+            case 受注 -> writeCsv(SalesOrderDownloadCSV.class).accept(streamWriter, convert(condition));
         }
     }
 
@@ -112,8 +120,10 @@ public class DownloadService {
             case 取引先 -> (List<T>) convertPartner(condition);
             case 顧客 -> (List<T>) convertCustomer(condition);
             case 仕入先 -> (List<T>) convertVendor(condition);
+            case 受注 -> (List<T>) convertSalesOrder(condition);
         };
     }
+
 
     /**
      * 部門ダウンロード件数取得
@@ -169,6 +179,12 @@ public class DownloadService {
      */
     private int countVendor(DownloadCriteria condition) {
         return vendorCSVRepository.countBy(condition);
+    }
+    /**
+     * 受注ダウンロード件数取得
+     */
+    private int countSalesOrder(DownloadCriteria condition) {
+        return salesOrderCSVRepository.countBy(condition);
     }
 
     /**
@@ -233,5 +249,13 @@ public class DownloadService {
     private List<VendorDownloadCSV> convertVendor(DownloadCriteria condition) {
         VendorList vendorList = vendorCSVRepository.selectBy(condition);
         return vendorCSVRepository.convert(vendorList);
+    }
+
+    /**
+     * 受注CSV変換
+     */
+    private List<SalesOrderDownloadCSV> convertSalesOrder(DownloadCriteria condition) {
+        SalesOrderList salesOrderList = salesOrderCSVRepository.selectBy(condition);
+        return salesOrderCSVRepository.convert(salesOrderList);
     }
 }

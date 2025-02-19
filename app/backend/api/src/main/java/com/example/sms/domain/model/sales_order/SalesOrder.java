@@ -32,4 +32,8 @@ public class SalesOrder {
     public static SalesOrder of(String orderNumber, LocalDateTime orderDate, String departmentCode, LocalDateTime departmentStartDate, String customerCode, Integer customerBranchNumber, String employeeCode, LocalDateTime desiredDeliveryDate, String customerOrderNumber, String warehouseCode, Integer totalOrderAmount, Integer totalConsumptionTax, String remarks, List<SalesOrderLine> salesOrderLines) {
         return new SalesOrder(orderNumber, orderDate, departmentCode, departmentStartDate, customerCode, customerBranchNumber, employeeCode, desiredDeliveryDate, customerOrderNumber, warehouseCode, totalOrderAmount, totalConsumptionTax, remarks, salesOrderLines);
     }
+
+    public static SalesOrder of(SalesOrder order, List<SalesOrderLine> line) {
+        return new SalesOrder(order.getOrderNumber(), order.getOrderDate(), order.getDepartmentCode(), order.getDepartmentStartDate(), order.getCustomerCode(), order.getCustomerBranchNumber(), order.getEmployeeCode(), order.getDesiredDeliveryDate(), order.getCustomerOrderNumber(), order.getWarehouseCode(), order.getTotalOrderAmount(), order.getTotalConsumptionTax(), order.getRemarks(), line);
+    }
 }

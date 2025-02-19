@@ -5,10 +5,10 @@ import com.example.sms.domain.model.sales_order.SalesOrderLine;
 import com.example.sms.infrastructure.datasource.autogen.model.受注データ;
 import com.example.sms.infrastructure.datasource.autogen.model.受注データ明細;
 import com.example.sms.infrastructure.datasource.autogen.model.受注データ明細Key;
+import com.example.sms.infrastructure.datasource.system.download.SalesOrderDownloadCSV;
 import org.springframework.stereotype.Component;
 
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Component
 public class SalesOrderEntityMapper {
@@ -51,7 +51,7 @@ public class SalesOrderEntityMapper {
     }
 
     public SalesOrder mapToDomainModel(SalesOrderCustomEntity salesOrderCustomEntity) {
-        Function<受注データ明細 , SalesOrderLine> salesOrderLineMapper = e -> SalesOrderLine.of(
+        Function<受注データ明細, SalesOrderLine> salesOrderLineMapper = e -> SalesOrderLine.of(
                 e.get受注番号(),
                 e.get受注行番号(),
                 e.get商品コード(),
@@ -82,6 +82,36 @@ public class SalesOrderEntityMapper {
                 salesOrderCustomEntity.get消費税合計(),
                 salesOrderCustomEntity.get備考(),
                 salesOrderCustomEntity.get受注データ明細().stream().map(salesOrderLineMapper).toList()
+        );
+    }
+
+    public SalesOrderDownloadCSV mapToCsvModel(SalesOrder salesOrder, SalesOrderLine salesOrderLine) {
+        return new SalesOrderDownloadCSV(
+                salesOrder.getOrderNumber(),
+                salesOrder.getOrderDate(),
+                salesOrder.getDepartmentCode(),
+                salesOrder.getDepartmentStartDate(),
+                salesOrder.getCustomerCode(),
+                salesOrder.getCustomerBranchNumber(),
+                salesOrder.getEmployeeCode(),
+                salesOrder.getDesiredDeliveryDate(),
+                salesOrder.getCustomerOrderNumber(),
+                salesOrder.getWarehouseCode(),
+                salesOrder.getTotalOrderAmount(),
+                salesOrder.getTotalConsumptionTax(),
+                salesOrder.getRemarks(),
+                salesOrderLine.getOrderLineNumber(),
+                salesOrderLine.getProductCode(),
+                salesOrderLine.getProductName(),
+                salesOrderLine.getSalesUnitPrice(),
+                salesOrderLine.getOrderQuantity(),
+                salesOrderLine.getTaxRate(),
+                salesOrderLine.getAllocationQuantity(),
+                salesOrderLine.getShipmentInstructionQuantity(),
+                salesOrderLine.getShippedQuantity(),
+                salesOrderLine.getCompletionFlag(),
+                salesOrderLine.getDiscountAmount(),
+                salesOrderLine.getDeliveryDate()
         );
     }
 }

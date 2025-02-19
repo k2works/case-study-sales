@@ -31,6 +31,7 @@ public class DownloadCriteriaResource implements Serializable {
             case 取引先 -> Partner.of();
             case 顧客 -> Customer.of();
             case 仕入先 -> Vendor.of();
+            case 受注 -> SalesOrder.of();
         };
     }
 }

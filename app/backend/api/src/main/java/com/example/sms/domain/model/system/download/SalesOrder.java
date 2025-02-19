@@ -5,16 +5,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
 /**
- * 顧客ダウンロード条件
+ * 受注ダウンロード条件
  */
 @Value
 @RequiredArgsConstructor
 @NoArgsConstructor(force = true)
-public class Customer implements DownloadCriteria {
+public class SalesOrder  implements DownloadCriteria {
     DownloadTarget target;
     String fileName;
 
-    public static Customer of() {
-        return new Customer(DownloadTarget.顧客,"");
+    public static SalesOrder of() {
+        return new SalesOrder(DownloadTarget.受注,"");
     }
 }
