@@ -299,6 +299,10 @@ public class TestDataFactoryImpl implements TestDataFactory {
     @Override
     public void setUpForSalesOrderUploadService() {
         salesOrderRepository.deleteAll();
+        setUpForDepartmentService();
+        setUpForProductService();
+        setUpForPartnerService();
+        setUpForEmployeeService();
     }
 
     @Override

@@ -12,12 +12,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -173,7 +174,7 @@ class SalesOrderServiceTest {
                 assertNotNull(result);
                 assertEquals("ORD001", result.getOrderNumber());
                 assertEquals(LocalDateTime.parse("2025-02-19T00:00"), result.getOrderDate());
-                assertEquals("D001", result.getDepartmentCode());
+                assertEquals("10000", result.getDepartmentCode());
                 assertEquals(15000, result.getTotalOrderAmount());
                 assertEquals(1500, result.getTotalConsumptionTax());
                 assertEquals("初回注文", result.getRemarks());
@@ -182,15 +183,15 @@ class SalesOrderServiceTest {
 
                 SalesOrderLine line1 = result.getSalesOrderLines().get(0);
                 assertEquals(1, line1.getOrderLineNumber());
-                assertEquals("ITEM001", line1.getProductCode());
-                assertEquals("商品A", line1.getProductName());
+                assertEquals("99999001", line1.getProductCode());
+                assertEquals("商品1", line1.getProductName());
                 assertEquals(3000, line1.getSalesUnitPrice());
                 assertEquals(5, line1.getOrderQuantity());
 
                 SalesOrderLine line2 = result.getSalesOrderLines().get(1);
                 assertEquals(2, line2.getOrderLineNumber());
-                assertEquals("ITEM002", line2.getProductCode());
-                assertEquals("商品B", line2.getProductName());
+                assertEquals("99999002", line2.getProductCode());
+                assertEquals("商品2", line2.getProductName());
                 assertEquals(2000, line2.getSalesUnitPrice());
                 assertEquals(3, line2.getOrderQuantity());
             }
@@ -216,24 +217,25 @@ class SalesOrderServiceTest {
                 assertNotNull(result);
                 assertEquals("ORD001", result.getOrderNumber());
                 assertEquals(LocalDateTime.parse("2025-02-19T00:00"), result.getOrderDate());
-                assertEquals("D001", result.getDepartmentCode());
+                assertEquals("10000", result.getDepartmentCode());
                 assertEquals(15000, result.getTotalOrderAmount());
                 assertEquals(1500, result.getTotalConsumptionTax());
                 assertEquals("初回注文", result.getRemarks());
 
                 assertEquals(2, result.getSalesOrderLines().size());
+                assertEquals(2, result.getSalesOrderLines().size());
 
                 SalesOrderLine line1 = result.getSalesOrderLines().get(0);
                 assertEquals(1, line1.getOrderLineNumber());
-                assertEquals("ITEM001", line1.getProductCode());
-                assertEquals("商品A", line1.getProductName());
+                assertEquals("99999001", line1.getProductCode());
+                assertEquals("商品1", line1.getProductName());
                 assertEquals(3000, line1.getSalesUnitPrice());
                 assertEquals(5, line1.getOrderQuantity());
 
                 SalesOrderLine line2 = result.getSalesOrderLines().get(1);
                 assertEquals(2, line2.getOrderLineNumber());
-                assertEquals("ITEM002", line2.getProductCode());
-                assertEquals("商品B", line2.getProductName());
+                assertEquals("99999002", line2.getProductCode());
+                assertEquals("商品2", line2.getProductName());
                 assertEquals(2000, line2.getSalesUnitPrice());
                 assertEquals(3, line2.getOrderQuantity());
             }
@@ -315,7 +317,7 @@ class SalesOrderServiceTest {
                         "sample".getBytes(StandardCharsets.UTF_8));
 
                 // Act & Assert
-                assertThrows(DataIntegrityViolationException.class, () -> {
+                assertThrows(NullPointerException.class, () -> {
                     salesOrderService.uploadCsvFile(file);
                 });
             }
@@ -368,6 +370,27 @@ class SalesOrderServiceTest {
                 IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                         () -> salesOrderService.uploadCsvFile(file));
                 assertEquals("アップロードファイルが大きすぎます。", exception.getMessage());
+            }
+
+            @Test
+            @DisplayName("マスタ未登録のコードが含まれる場合")
+            void uploadCsvFile_withUnregisteredMasterCode_throwsIllegalArgumentException() throws Exception {
+                // Arrange
+                InputStream is = getClass().getResourceAsStream("/csv/sales_order/sales_order_unregistered_code.csv");
+                MockMultipartFile multipartFile = new MockMultipartFile(
+                        "sales_order_unregistered_code.csv",
+                        "sales_order_unregistered_code.csv",
+                        "text/csv",
+                        is
+                );
+
+                // Act & Assert
+                List<Map<String, String>> errorList = salesOrderService.uploadCsvFile(multipartFile);
+                assertEquals(4, errorList.size());
+                assertTrue(errorList.get(0).containsValue("部門マスタに存在しません:99999"));
+                assertTrue(errorList.get(1).containsValue("取引先マスタに存在しません:CUST999"));
+                assertTrue(errorList.get(2).containsValue("商品マスタに存在しません:ITEM999"));
+                assertTrue(errorList.get(3).containsValue("社員マスタに存在しません:EMP999"));
             }
         }
     }

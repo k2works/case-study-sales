@@ -1,10 +1,20 @@
 package com.example.sms.service.sales_order;
 
+import com.example.sms.domain.model.master.department.Department;
+import com.example.sms.domain.model.master.department.DepartmentId;
+import com.example.sms.domain.model.master.employee.Employee;
+import com.example.sms.domain.model.master.employee.EmployeeCode;
+import com.example.sms.domain.model.master.partner.Partner;
+import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.sales_order.SalesOrder;
 import com.example.sms.domain.model.sales_order.SalesOrderLine;
 import com.example.sms.domain.model.sales_order.SalesOrderList;
 import com.example.sms.infrastructure.Pattern2ReadCSVUtil;
 import com.example.sms.infrastructure.datasource.sales_order.SalesOrderUploadCSV;
+import com.example.sms.service.master.department.DepartmentRepository;
+import com.example.sms.service.master.employee.EmployeeRepository;
+import com.example.sms.service.master.partner.PartnerRepository;
+import com.example.sms.service.master.product.ProductRepository;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,9 +35,17 @@ import static org.apache.commons.lang3.Validate.*;
 @Transactional
 public class SalesOrderService {
     final SalesOrderRepository salesOrderRepository;
+    final ProductRepository productRepository;
+    final DepartmentRepository departmentRepository;
+    final PartnerRepository partnerRepository;
+    final EmployeeRepository employeeRepository;
 
-    public SalesOrderService(SalesOrderRepository salesOrderRepository) {
+    public SalesOrderService(SalesOrderRepository salesOrderRepository, ProductRepository productRepository, DepartmentRepository departmentRepository, PartnerRepository partnerRepository, EmployeeRepository employeeRepository) {
         this.salesOrderRepository = salesOrderRepository;
+        this.productRepository = productRepository;
+        this.departmentRepository = departmentRepository;
+        this.partnerRepository = partnerRepository;
+        this.employeeRepository = employeeRepository;
     }
 
     /**
@@ -82,7 +100,7 @@ public class SalesOrderService {
     /**
      * CSVファイルアップロード
      */
-    public void uploadCsvFile(MultipartFile file) {
+    public List<Map<String, String>>  uploadCsvFile(MultipartFile file) {
         notNull(file, "アップロードファイルは必須です。");
         isTrue(!file.isEmpty(), "アップロードファイルが空です。");
         notNull(file.getOriginalFilename(), "アップロードファイル名は必須です。");
@@ -93,8 +111,44 @@ public class SalesOrderService {
         List<SalesOrderUploadCSV> dataList = csvUtil.readCSV(SalesOrderUploadCSV.class, file, "UTF-8");
         isTrue(!dataList.isEmpty(), "CSVファイルの読み込みに失敗しました");
 
+        List<Map<String, String>> errorList = checkError(dataList);
+        if (!errorList.isEmpty()) return errorList;
+
         SalesOrderList salesOrderList = convert(dataList);
         salesOrderRepository.save(salesOrderList);
+        return errorList;
+    }
+
+    private List<Map<String, String>> checkError(List<SalesOrderUploadCSV> dataList) {
+        List<Map<String, String>> errorList = new ArrayList<>();
+        dataList.forEach(data -> {
+                    Department department = departmentRepository.findById(DepartmentId.of(data.getDepartmentCode(), data.getDepartmentStartDate())).orElse(null);
+                    if (department == null) {
+                        Map<String, String> errorMap = new HashMap<>();
+                        errorMap.put(data.getOrderNumber(), "部門マスタに存在しません:" + data.getDepartmentCode());
+                        errorList.add(errorMap);
+                    }
+                    Partner partner = partnerRepository.findById(data.getCustomerCode()).orElse(null);
+                    if (partner == null) {
+                        Map<String, String> errorMap = new HashMap<>();
+                        errorMap.put(data.getOrderNumber(), "取引先マスタに存在しません:" + data.getCustomerCode());
+                        errorList.add(errorMap);
+                    }
+                    Product product = productRepository.findById(data.getProductCode()).orElse(null);
+                    if (product == null) {
+                        Map<String, String> errorMap = new HashMap<>();
+                        errorMap.put(data.getOrderNumber(), "商品マスタに存在しません:" + data.getProductCode());
+                        errorList.add(errorMap);
+                    }
+                    Employee employee = employeeRepository.findById(EmployeeCode.of(data.getEmployeeCode())).orElse(null);
+                    if (employee == null) {
+                        Map<String, String> errorMap = new HashMap<>();
+                        errorMap.put(data.getOrderNumber(), "社員マスタに存在しません:" + data.getEmployeeCode());
+                        errorList.add(errorMap);
+                    }
+                }
+        );
+        return errorList;
     }
 
     private static SalesOrderList convert(List<SalesOrderUploadCSV> dataList) {

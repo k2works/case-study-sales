@@ -6,6 +6,7 @@ import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
+import com.example.sms.presentation.api.system.auth.payload.response.MessageResponseWithDetail;
 import com.example.sms.service.BusinessException;
 import com.example.sms.service.sales_order.SalesOrderCriteria;
 import com.example.sms.service.sales_order.SalesOrderService;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 受注API
@@ -85,8 +87,11 @@ public class SalesOrderApiController {
     @AuditAnnotation(process = ApplicationExecutionProcessType.受注登録, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file) {
         try {
-            salesOrderService.uploadCsvFile(file);
-            return ResponseEntity.ok(new MessageResponse(message.getMessage("success.sales-order.upload")));
+            List<Map<String, String>> result = salesOrderService.uploadCsvFile(file);
+            if (result.isEmpty()) {
+                return ResponseEntity.ok(new MessageResponseWithDetail(message.getMessage("success.sales-order.upload"), result));
+            }
+            return ResponseEntity.ok(new MessageResponseWithDetail(message.getMessage("error.sales-order.upload"), result));
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }

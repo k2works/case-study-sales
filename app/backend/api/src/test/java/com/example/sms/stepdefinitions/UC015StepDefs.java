@@ -1,7 +1,7 @@
 package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
-import com.example.sms.stepdefinitions.utils.MessageResponse;
+import com.example.sms.stepdefinitions.utils.MessageResponseWithDetail;
 import com.example.sms.stepdefinitions.utils.SpringAcceptanceTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,6 +37,15 @@ public class UC015StepDefs extends SpringAcceptanceTest {
     @前提(":UC015 {string} が登録されている")
     public void init(String data) {
         switch (data) {
+            case "部門データ":
+                testDataFactory.setUpForDepartmentService();
+                break;
+            case "社員データ":
+                testDataFactory.setUpForEmployeeService();
+                break;
+            case "取引先データ":
+                testDataFactory.setUpForPartnerService();
+                break;
             case "商品データ":
                 testDataFactory.setUpForProductService();
                 break;
@@ -75,7 +84,7 @@ public class UC015StepDefs extends SpringAcceptanceTest {
     public void verifyMessage(String message) throws JsonProcessingException {
         String result = latestResponse.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
-        MessageResponse response = objectMapper.readValue(result, MessageResponse.class);
+        MessageResponseWithDetail response = objectMapper.readValue(result, MessageResponseWithDetail.class);
         assertEquals(message, response.getMessage());
     }
 
