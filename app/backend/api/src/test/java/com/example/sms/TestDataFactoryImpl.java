@@ -335,6 +335,21 @@ public class TestDataFactoryImpl implements TestDataFactory {
         }
     }
 
+    @Override
+    public MultipartFile createSalesOrderCheckRuleFile() {
+        InputStream is = getClass().getResourceAsStream("/csv/sales_order/sales_order_check_rule.csv");
+        try {
+            return new MockMultipartFile(
+                    "sales_order_multiple.csv",
+                    "sales_order_multiple.csv",
+                    "text/csv",
+                    is
+            );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static User getUser() {
         return User.of("U999999", "$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK", "first", "last", RoleName.USER);
     }

@@ -146,6 +146,21 @@ public class SalesOrderApiController {
         }
     }
 
+    @Operation(summary = "受注ルールを確認する", description = "受注ルール確認を実行する")
+    @PostMapping("/check")
+    @AuditAnnotation(process = ApplicationExecutionProcessType.受注登録, type = ApplicationExecutionHistoryType.同期)
+    public ResponseEntity<?> check() {
+        try {
+            List<Map<String, String>> result = salesOrderService.checkRule();
+            if (result.isEmpty()) {
+                return ResponseEntity.ok(new MessageResponseWithDetail(message.getMessage("success.sales-order.check"), result));
+            }
+            return ResponseEntity.ok(new MessageResponseWithDetail(message.getMessage("error.sales-order.check"), result));
+        } catch (BusinessException | IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
+    }
+
     private SalesOrder convertToEntity(SalesOrderResource resource) {
         DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
         List<SalesOrderLine> salesOrderLines = resource.getSalesOrderLines() != null
