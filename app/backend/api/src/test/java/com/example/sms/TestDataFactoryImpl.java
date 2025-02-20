@@ -512,7 +512,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 10,  // allocationQuantity（引当数量）
                 10,  // shipmentInstructionQuantity（出荷指示数量）
                 10,  // shippedQuantity（出荷済数量）
-                1,  // completionFlag（完了フラグ）
+                0,  // completionFlag（完了フラグ）
                 10,  // discountAmount（値引金額）
                 LocalDateTime.of(2021, 1, 1, 0, 0)  // deliveryDate（納期）
         );

@@ -23,4 +23,6 @@ public interface SalesOrderCustomMapper {
     int updateByPrimaryKeyForOptimisticLock(受注データ entity);
 
     List<SalesOrderCustomEntity> selectByCriteria(SalesOrderCriteria criteria);
+
+    List<SalesOrderCustomEntity> selectAllNotComplete();
 }

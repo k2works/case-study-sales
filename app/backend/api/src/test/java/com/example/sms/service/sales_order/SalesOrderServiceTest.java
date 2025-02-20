@@ -394,4 +394,98 @@ class SalesOrderServiceTest {
             }
         }
     }
+
+    @Nested
+    @DisplayName("受注ルール")
+    class SalesOrderRuleTest {
+        @BeforeEach
+        void setUp() {
+            testDataFactory.setUpForSalesOrderService();
+        }
+
+        @Test
+        @DisplayName("受注金額が100万円以上の場合")
+        void shouldThrowExceptionWhenTotalOrderAmountIsOver1000000() {
+            SalesOrder salesOrder = TestDataFactoryImpl.getSalesOrder("SO999999");
+            SalesOrderLine salesOrderLine = TestDataFactoryImpl.getSalesOrderLine("SO999999", 1);
+            SalesOrderLine newSalesOrderLine = SalesOrderLine.of(
+                    salesOrderLine.getOrderNumber(),
+                    salesOrderLine.getOrderLineNumber(),
+                    salesOrderLine.getProductCode(),
+                    salesOrderLine.getProductName(),
+                    10000, // 販売単価が10000円
+                    100, // 受注数量が100個
+                    salesOrderLine.getTaxRate(),
+                    salesOrderLine.getAllocationQuantity(),
+                    salesOrderLine.getShipmentInstructionQuantity(),
+                    salesOrderLine.getShippedQuantity(),
+                    0,
+                    salesOrderLine.getDiscountAmount(),
+                    salesOrderLine.getDeliveryDate()
+            );
+            SalesOrder newSalesOrder = SalesOrder.of(
+                    salesOrder.getOrderNumber(),
+                    salesOrder.getOrderDate(),
+                    salesOrder.getDepartmentCode(),
+                    salesOrder.getDepartmentStartDate(),
+                    salesOrder.getCustomerCode(),
+                    salesOrder.getCustomerBranchNumber(),
+                    salesOrder.getEmployeeCode(),
+                    salesOrder.getDesiredDeliveryDate(),
+                    salesOrder.getCustomerOrderNumber(),
+                    salesOrder.getWarehouseCode(),
+                    1000000, // 受注金額が100万円
+                    salesOrder.getTotalConsumptionTax(),
+                    salesOrder.getRemarks(),
+                    List.of(newSalesOrderLine)
+            );
+            salesOrderService.save(newSalesOrder);
+
+            List<Map<String, String>> checkList = salesOrderService.checkRule();
+            assertEquals(1, checkList.size());
+            assertTrue(checkList.getFirst().containsValue("受注金額が100万円を超えています。"));
+        }
+
+        @Test
+        @DisplayName("完了済みの受注の場合")
+        void shouldNotThrowExceptionWhenSalesOrderIsCompleted() {
+            SalesOrder salesOrder = TestDataFactoryImpl.getSalesOrder("SO999999");
+            SalesOrderLine salesOrderLine = TestDataFactoryImpl.getSalesOrderLine("SO999999", 1);
+            SalesOrderLine newSalesOrderLine = SalesOrderLine.of(
+                    salesOrderLine.getOrderNumber(),
+                    salesOrderLine.getOrderLineNumber(),
+                    salesOrderLine.getProductCode(),
+                    salesOrderLine.getProductName(),
+                    salesOrderLine.getSalesUnitPrice(),
+                    salesOrderLine.getOrderQuantity(),
+                    salesOrderLine.getTaxRate(),
+                    salesOrderLine.getAllocationQuantity(),
+                    salesOrderLine.getShipmentInstructionQuantity(),
+                    salesOrderLine.getShippedQuantity(),
+                    1, // 完了済み
+                    salesOrderLine.getDiscountAmount(),
+                    salesOrderLine.getDeliveryDate()
+            );
+            SalesOrder newSalesOrder = SalesOrder.of(
+                    salesOrder.getOrderNumber(),
+                    salesOrder.getOrderDate(),
+                    salesOrder.getDepartmentCode(),
+                    salesOrder.getDepartmentStartDate(),
+                    salesOrder.getCustomerCode(),
+                    salesOrder.getCustomerBranchNumber(),
+                    salesOrder.getEmployeeCode(),
+                    salesOrder.getDesiredDeliveryDate(),
+                    salesOrder.getCustomerOrderNumber(),
+                    salesOrder.getWarehouseCode(),
+                    salesOrder.getTotalOrderAmount(),
+                    salesOrder.getTotalConsumptionTax(),
+                    salesOrder.getRemarks(),
+                    List.of(newSalesOrderLine)
+            );
+            salesOrderService.save(newSalesOrder);
+
+            List<Map<String, String>> checkList = salesOrderService.checkRule();
+            assertEquals(0, checkList.size());
+        }
+    }
 }

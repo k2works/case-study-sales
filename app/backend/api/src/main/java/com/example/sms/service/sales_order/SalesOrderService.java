@@ -119,6 +119,25 @@ public class SalesOrderService {
         return errorList;
     }
 
+    /**
+     * 受注ルールチェック
+     */
+    public List<Map<String, String>> checkRule() {
+        List<Map<String, String>> checkList = new ArrayList<>();
+
+        // 受注金額が100万円以上の場合
+        SalesOrderList salesOrders = salesOrderRepository.selectAllNotComplete();
+        salesOrders.asList().forEach(salesOrder -> {
+            if (salesOrder.getTotalOrderAmount() >= 1000000) {
+                Map<String, String> errorMap = new HashMap<>();
+                errorMap.put(salesOrder.getOrderNumber(), "受注金額が100万円を超えています。");
+                checkList.add(errorMap);
+            }
+        });
+
+        return checkList;
+    }
+
     private List<Map<String, String>> checkError(List<SalesOrderUploadCSV> dataList) {
         List<Map<String, String>> errorList = new ArrayList<>();
         dataList.forEach(data -> {

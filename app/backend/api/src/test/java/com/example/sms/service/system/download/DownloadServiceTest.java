@@ -355,7 +355,7 @@ class DownloadServiceTest {
             assertEquals(10, firstResult.getAllocationQuantity(), "引当数量が一致しません");
             assertEquals(10, firstResult.getShipmentInstructionQuantity(), "出荷指示数量が一致しません");
             assertEquals(10, firstResult.getShippedQuantity(), "出荷済数量が一致しません");
-            assertEquals(1, firstResult.getCompletionFlag(), "完了フラグが一致しません");
+            assertEquals(0, firstResult.getCompletionFlag(), "完了フラグが一致しません");
             assertEquals(10, firstResult.getDiscountAmount(), "値引金額が一致しません");
             assertEquals(LocalDateTime.of(2021, 1, 1, 0, 0), firstResult.getDeliveryDate(), "納期が一致しません");
         }

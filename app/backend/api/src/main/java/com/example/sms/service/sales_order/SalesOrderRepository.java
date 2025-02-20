@@ -22,4 +22,6 @@ public interface SalesOrderRepository {
     PageInfo<SalesOrder> searchWithPageInfo(SalesOrderCriteria criteria);
 
     void save(SalesOrderList salesOrderList);
+
+    SalesOrderList selectAllNotComplete();
 }

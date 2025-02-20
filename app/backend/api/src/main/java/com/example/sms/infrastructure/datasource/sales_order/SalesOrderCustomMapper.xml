@@ -104,4 +104,11 @@
             </if>
         </where>
     </select>
+
+    <select id="selectAllNotComplete" resultMap="BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.受注データMapper.Base_Column_List"/>
+        from public.受注データ
+        where 受注番号 in (select 受注番号 from public.受注データ明細 where public.受注データ明細.完了フラグ = 0)
+    </select>
 </mapper>

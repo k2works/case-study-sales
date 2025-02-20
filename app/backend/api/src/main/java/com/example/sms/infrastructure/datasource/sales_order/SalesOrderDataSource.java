@@ -170,4 +170,14 @@ public class SalesOrderDataSource implements SalesOrderRepository {
     public void save(SalesOrderList salesOrderList) {
         salesOrderList.asList().forEach(this::save);
     }
+
+    @Override
+    public SalesOrderList selectAllNotComplete() {
+        List<SalesOrderCustomEntity> salesOrderCustomEntities = salesOrderCustomMapper.selectAllNotComplete();
+
+        return new SalesOrderList(salesOrderCustomEntities.stream()
+                .map(salesOrderEntityMapper::mapToDomainModel)
+                .toList()
+        );
+    }
 }
