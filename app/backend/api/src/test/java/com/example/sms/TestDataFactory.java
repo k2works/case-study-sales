@@ -34,4 +34,6 @@ public interface TestDataFactory {
     void setUpForSalesOrderUploadService();
 
     MultipartFile createSalesOrderFile();
+
+    MultipartFile createSalesOrderInvalidFile();
 }

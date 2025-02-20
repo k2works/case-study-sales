@@ -72,6 +72,18 @@ public class UC015StepDefs extends SpringAcceptanceTest {
         }
     }
 
+    @もし(":UC015 エラーのある {string} をアップロードする")
+    public void uploadInvalid(String data) {
+        if (data.equals("受注データ")) {
+            try {
+                MultipartFile file = testDataFactory.createSalesOrderInvalidFile();
+                uploadFile(SALES_ORDER_API_URL + "/upload", file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private void uploadFile(String url, MultipartFile file) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
