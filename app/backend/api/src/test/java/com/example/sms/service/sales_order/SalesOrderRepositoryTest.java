@@ -85,7 +85,7 @@ class SalesOrderRepositoryTest {
             order = repository.findById(order.getOrderNumber().getValue()).get();
             SalesOrder updatedOrder = SalesOrder.of(
                     order.getOrderNumber().getValue(),
-                    order.getOrderDate().plusDays(1),
+                    order.getOrderDate().getValue().plusDays(1),
                     "20000",
                     order.getDepartmentStartDate().plusDays(1),
                     "002",
@@ -125,7 +125,7 @@ class SalesOrderRepositoryTest {
                     .toList();
             SalesOrder newOrder = SalesOrder.of(
                     order.getOrderNumber().getValue(),
-                    order.getOrderDate(),
+                    order.getOrderDate().getValue(),
                     order.getDepartmentCode(),
                     order.getDepartmentStartDate(),
                     order.getCustomerCode(),
@@ -150,7 +150,7 @@ class SalesOrderRepositoryTest {
             SalesOrderLine line = getSalesOrderLine(order.getOrderNumber().getValue(), 1);
             SalesOrder newOrder = SalesOrder.of(
                     order.getOrderNumber().getValue(),
-                    order.getOrderDate(),
+                    order.getOrderDate().getValue(),
                     order.getDepartmentCode(),
                     order.getDepartmentStartDate(),
                     order.getCustomerCode(),
@@ -176,7 +176,7 @@ class SalesOrderRepositoryTest {
             SalesOrderLine line = getSalesOrderLine(order.getOrderNumber().getValue(), 1);
             SalesOrder newOrder = SalesOrder.of(
                     order.getOrderNumber().getValue(),
-                    order.getOrderDate(),
+                    order.getOrderDate().getValue(),
                     order.getDepartmentCode(),
                     order.getDepartmentStartDate(),
                     order.getCustomerCode(),
@@ -196,7 +196,7 @@ class SalesOrderRepositoryTest {
                     3000, 5, 8, 3, 1, 0, 1, 200, LocalDateTime.of(2021, 1, 3, 0, 0) );
             SalesOrder updatedOrder = SalesOrder.of(
                     newOrder.getOrderNumber().getValue(),
-                    newOrder.getOrderDate(),
+                    newOrder.getOrderDate().getValue(),
                     newOrder.getDepartmentCode(),
                     newOrder.getDepartmentStartDate(),
                     newOrder.getCustomerCode(),
@@ -223,7 +223,7 @@ class SalesOrderRepositoryTest {
             SalesOrderLine line = getSalesOrderLine(order.getOrderNumber().getValue(), 1);
             SalesOrder newOrder = SalesOrder.of(
                     order.getOrderNumber().getValue(),
-                    order.getOrderDate(),
+                    order.getOrderDate().getValue(),
                     order.getDepartmentCode(),
                     order.getDepartmentStartDate(),
                     order.getCustomerCode(),

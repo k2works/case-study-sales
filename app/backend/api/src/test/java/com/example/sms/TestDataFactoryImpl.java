@@ -279,7 +279,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
                     .toList();
             SalesOrder newOrder = SalesOrder.of(
                     order.getOrderNumber().getValue(),
-                    order.getOrderDate(),
+                    order.getOrderDate().getValue(),
                     order.getDepartmentCode(),
                     order.getDepartmentStartDate(),
                     order.getCustomerCode(),

@@ -15,7 +15,7 @@ public class SalesOrderEntityMapper {
     public 受注データ mapToEntity(SalesOrder salesOrder) {
         受注データ salesOrderEntity = new 受注データ();
         salesOrderEntity.set受注番号(salesOrder.getOrderNumber().getValue());
-        salesOrderEntity.set受注日(salesOrder.getOrderDate());
+        salesOrderEntity.set受注日(salesOrder.getOrderDate().getValue());
         salesOrderEntity.set部門コード(salesOrder.getDepartmentCode());
         salesOrderEntity.set部門開始日(salesOrder.getDepartmentStartDate());
         salesOrderEntity.set顧客コード(salesOrder.getCustomerCode());
@@ -88,7 +88,7 @@ public class SalesOrderEntityMapper {
     public SalesOrderDownloadCSV mapToCsvModel(SalesOrder salesOrder, SalesOrderLine salesOrderLine) {
         return new SalesOrderDownloadCSV(
                 salesOrder.getOrderNumber().getValue(),
-                salesOrder.getOrderDate(),
+                salesOrder.getOrderDate().getValue(),
                 salesOrder.getDepartmentCode(),
                 salesOrder.getDepartmentStartDate(),
                 salesOrder.getCustomerCode(),

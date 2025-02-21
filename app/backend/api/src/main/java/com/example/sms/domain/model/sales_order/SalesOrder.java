@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor(force = true)
 public class SalesOrder {
     OrderNumber orderNumber; // 受注番号
-    LocalDateTime orderDate; // 受注日
+    OrderDate orderDate; // 受注日
     String departmentCode; // 部門コード
     LocalDateTime departmentStartDate; // 部門開始日
     String customerCode; // 顧客コード
@@ -30,7 +30,7 @@ public class SalesOrder {
     List<SalesOrderLine> salesOrderLines; // 受注明細
 
     public static SalesOrder of(String orderNumber, LocalDateTime orderDate, String departmentCode, LocalDateTime departmentStartDate, String customerCode, Integer customerBranchNumber, String employeeCode, LocalDateTime desiredDeliveryDate, String customerOrderNumber, String warehouseCode, Integer totalOrderAmount, Integer totalConsumptionTax, String remarks, List<SalesOrderLine> salesOrderLines) {
-        return new SalesOrder(OrderNumber.of(orderNumber), orderDate, departmentCode, departmentStartDate, customerCode, customerBranchNumber, employeeCode, desiredDeliveryDate, customerOrderNumber, warehouseCode, totalOrderAmount, totalConsumptionTax, remarks, salesOrderLines);
+        return new SalesOrder(OrderNumber.of(orderNumber), OrderDate.of(orderDate), departmentCode, departmentStartDate, customerCode, customerBranchNumber, employeeCode, desiredDeliveryDate, customerOrderNumber, warehouseCode, totalOrderAmount, totalConsumptionTax, remarks, salesOrderLines);
     }
 
     public static SalesOrder of(SalesOrder order, List<SalesOrderLine> line) {

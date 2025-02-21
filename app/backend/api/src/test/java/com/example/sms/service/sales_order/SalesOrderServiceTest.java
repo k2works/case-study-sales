@@ -67,7 +67,7 @@ class SalesOrderServiceTest {
 
             SalesOrder updatedSalesOrder = SalesOrder.of(
                     salesOrder.getOrderNumber().getValue(),
-                    salesOrder.getOrderDate(),
+                    salesOrder.getOrderDate().getValue(),
                     salesOrder.getDepartmentCode(),
                     salesOrder.getDepartmentStartDate(),
                     "999", // 更新された顧客コード
@@ -111,7 +111,7 @@ class SalesOrderServiceTest {
             SalesOrder salesOrder = TestDataFactoryImpl.getSalesOrder("1000000009");
             SalesOrder searchOrder = SalesOrder.of(
                     salesOrder.getOrderNumber().getValue(),
-                    salesOrder.getOrderDate(),
+                    salesOrder.getOrderDate().getValue(),
                     salesOrder.getDepartmentCode(),
                     salesOrder.getDepartmentStartDate(),
                     customerCode, // 顧客コード
@@ -173,7 +173,7 @@ class SalesOrderServiceTest {
                 // Assert
                 assertNotNull(result);
                 assertEquals("1000000001", result.getOrderNumber().getValue());
-                assertEquals(LocalDateTime.parse("2025-02-19T00:00"), result.getOrderDate());
+                assertEquals(LocalDateTime.parse("2025-02-19T00:00"), result.getOrderDate().getValue());
                 assertEquals("10000", result.getDepartmentCode());
                 assertEquals(15000, result.getTotalOrderAmount());
                 assertEquals(1500, result.getTotalConsumptionTax());
@@ -216,7 +216,7 @@ class SalesOrderServiceTest {
                 // Assert
                 assertNotNull(result);
                 assertEquals("1000000001", result.getOrderNumber().getValue());
-                assertEquals(LocalDateTime.parse("2025-02-19T00:00"), result.getOrderDate());
+                assertEquals(LocalDateTime.parse("2025-02-19T00:00"), result.getOrderDate().getValue());
                 assertEquals("10000", result.getDepartmentCode());
                 assertEquals(15000, result.getTotalOrderAmount());
                 assertEquals(1500, result.getTotalConsumptionTax());
@@ -425,7 +425,7 @@ class SalesOrderServiceTest {
             );
             SalesOrder newSalesOrder = SalesOrder.of(
                     salesOrder.getOrderNumber().getValue(),
-                    salesOrder.getOrderDate(),
+                    salesOrder.getOrderDate().getValue(),
                     salesOrder.getDepartmentCode(),
                     salesOrder.getDepartmentStartDate(),
                     salesOrder.getCustomerCode(),
@@ -468,7 +468,7 @@ class SalesOrderServiceTest {
             );
             SalesOrder newSalesOrder = SalesOrder.of(
                     salesOrder.getOrderNumber().getValue(),
-                    salesOrder.getOrderDate(),
+                    salesOrder.getOrderDate().getValue(),
                     salesOrder.getDepartmentCode(),
                     salesOrder.getDepartmentStartDate(),
                     salesOrder.getCustomerCode(),
