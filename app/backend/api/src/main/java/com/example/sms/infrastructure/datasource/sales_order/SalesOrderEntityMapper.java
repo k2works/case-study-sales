@@ -43,7 +43,7 @@ public class SalesOrderEntityMapper {
         salesOrderLineEntity.set引当数量(salesOrderLine.getAllocationQuantity());
         salesOrderLineEntity.set出荷指示数量(salesOrderLine.getShipmentInstructionQuantity());
         salesOrderLineEntity.set出荷済数量(salesOrderLine.getShippedQuantity());
-        salesOrderLineEntity.set完了フラグ(salesOrderLine.getCompletionFlag());
+        salesOrderLineEntity.set完了フラグ(salesOrderLine.getCompletionFlag().getValue());
         salesOrderLineEntity.set値引金額(salesOrderLine.getDiscountAmount());
         salesOrderLineEntity.set納期(salesOrderLine.getDeliveryDate().getValue());
 
@@ -109,7 +109,7 @@ public class SalesOrderEntityMapper {
                 salesOrderLine.getAllocationQuantity(),
                 salesOrderLine.getShipmentInstructionQuantity(),
                 salesOrderLine.getShippedQuantity(),
-                salesOrderLine.getCompletionFlag(),
+                salesOrderLine.getCompletionFlag().getValue(),
                 salesOrderLine.getDiscountAmount(),
                 salesOrderLine.getDeliveryDate().getValue()
         );

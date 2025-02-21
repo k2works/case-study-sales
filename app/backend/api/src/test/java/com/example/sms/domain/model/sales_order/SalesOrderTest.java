@@ -135,7 +135,7 @@ class SalesOrderTest {
                     () -> assertEquals(1, line.getAllocationQuantity()),
                     () -> assertEquals(0, line.getShipmentInstructionQuantity()),
                     () -> assertEquals(0, line.getShippedQuantity()),
-                    () -> assertEquals(0, line.getCompletionFlag()),
+                    () -> assertEquals(0, line.getCompletionFlag().getValue()),
                     () -> assertEquals(100, line.getDiscountAmount())
             );
         }
