@@ -62,7 +62,7 @@ class SalesOrderRepositoryTest {
         @DisplayName("受注一覧を取得できる")
         void shouldRetrieveAllSalesOrders() {
             IntStream.range(0, 10).forEach(i -> {
-                SalesOrder order = getSalesOrder(String.format("SO%05d", i));
+                SalesOrder order = getSalesOrder(String.format("1%09d", i));
                 repository.save(order);
             });
             assertEquals(10, repository.selectAll().size());
@@ -71,20 +71,20 @@ class SalesOrderRepositoryTest {
         @Test
         @DisplayName("受注を登録できる")
         void shouldRegisterSalesOrder() {
-            SalesOrder order = getSalesOrder("SO00001");
+            SalesOrder order = getSalesOrder("1000000001");
             repository.save(order);
-            SalesOrder actual = repository.findById(order.getOrderNumber()).get();
+            SalesOrder actual = repository.findById(order.getOrderNumber().getValue()).get();
             assertEquals(order, actual);
         }
 
         @Test
         @DisplayName("受注を更新できる")
         void shouldUpdateSalesOrder() {
-            SalesOrder order = getSalesOrder("SO00001");
+            SalesOrder order = getSalesOrder("1000000001");
             repository.save(order);
-            order = repository.findById(order.getOrderNumber()).get();
+            order = repository.findById(order.getOrderNumber().getValue()).get();
             SalesOrder updatedOrder = SalesOrder.of(
-                    order.getOrderNumber(),
+                    order.getOrderNumber().getValue(),
                     order.getOrderDate().plusDays(1),
                     "20000",
                     order.getDepartmentStartDate().plusDays(1),
@@ -99,14 +99,14 @@ class SalesOrderRepositoryTest {
                     order.getSalesOrderLines());
             repository.save(updatedOrder);
 
-            SalesOrder actual = repository.findById(order.getOrderNumber()).get();
+            SalesOrder actual = repository.findById(order.getOrderNumber().getValue()).get();
             assertEquals(updatedOrder, actual);
         }
 
         @Test
         @DisplayName("受注を削除できる")
         void shouldDeleteSalesOrder() {
-            SalesOrder order = getSalesOrder("SO00001");
+            SalesOrder order = getSalesOrder("1000000001");
             repository.save(order);
             repository.delete(order);
             assertEquals(0, repository.selectAll().size());
@@ -119,12 +119,12 @@ class SalesOrderRepositoryTest {
         @Test
         @DisplayName("受注明細一覧を取得できる")
         void shouldRetrieveAllSalesOrderLines() {
-            SalesOrder order = getSalesOrder("SO00001");
+            SalesOrder order = getSalesOrder("1000000001");
             List<SalesOrderLine> lines = IntStream.range(1, 11)
-                    .mapToObj(i -> getSalesOrderLine(order.getOrderNumber(), i))
+                    .mapToObj(i -> getSalesOrderLine(order.getOrderNumber().getValue(), i))
                     .toList();
             SalesOrder newOrder = SalesOrder.of(
-                    order.getOrderNumber(),
+                    order.getOrderNumber().getValue(),
                     order.getOrderDate(),
                     order.getDepartmentCode(),
                     order.getDepartmentStartDate(),
@@ -146,10 +146,10 @@ class SalesOrderRepositoryTest {
         @Test
         @DisplayName("受注明細を登録できる")
         void shouldRegisterSalesOrderLine() {
-            SalesOrder order = getSalesOrder("SO00001");
-            SalesOrderLine line = getSalesOrderLine(order.getOrderNumber(), 1);
+            SalesOrder order = getSalesOrder("1000000001");
+            SalesOrderLine line = getSalesOrderLine(order.getOrderNumber().getValue(), 1);
             SalesOrder newOrder = SalesOrder.of(
-                    order.getOrderNumber(),
+                    order.getOrderNumber().getValue(),
                     order.getOrderDate(),
                     order.getDepartmentCode(),
                     order.getDepartmentStartDate(),
@@ -164,7 +164,7 @@ class SalesOrderRepositoryTest {
                     order.getRemarks(),
                     List.of(line));
             repository.save(newOrder);
-            SalesOrder actual = repository.findById(order.getOrderNumber()).get();
+            SalesOrder actual = repository.findById(order.getOrderNumber().getValue()).get();
             assertEquals(1, actual.getSalesOrderLines().size());
             assertEquals(line, actual.getSalesOrderLines().get(0));
         }
@@ -172,10 +172,10 @@ class SalesOrderRepositoryTest {
         @Test
         @DisplayName("受注明細を更新できる")
         void shouldUpdateSalesOrderLine() {
-            SalesOrder order = getSalesOrder("SO00001");
-            SalesOrderLine line = getSalesOrderLine(order.getOrderNumber(), 1);
+            SalesOrder order = getSalesOrder("1000000001");
+            SalesOrderLine line = getSalesOrderLine(order.getOrderNumber().getValue(), 1);
             SalesOrder newOrder = SalesOrder.of(
-                    order.getOrderNumber(),
+                    order.getOrderNumber().getValue(),
                     order.getOrderDate(),
                     order.getDepartmentCode(),
                     order.getDepartmentStartDate(),
@@ -185,18 +185,17 @@ class SalesOrderRepositoryTest {
                     order.getDesiredDeliveryDate(),
                     order.getCustomerOrderNumber(),
                     order.getWarehouseCode(),
-                    order.getTotalOrderAmount(),
-                    order.getTotalConsumptionTax(),
+                    order.getTotalOrderAmount(), order.getTotalConsumptionTax(),
                     order.getRemarks(),
                     List.of(line));
             repository.save(newOrder);
 
-            newOrder = repository.findById(order.getOrderNumber()).get();
+            newOrder = repository.findById(order.getOrderNumber().getValue()).get();
             SalesOrderLine updatedLine = SalesOrderLine.of(
-                    order.getOrderNumber(), 1, "更新後商品コード", "更新後商品名",
+                    order.getOrderNumber().getValue(), 1, "更新後商品コード", "更新後商品名",
                     3000, 5, 8, 3, 1, 0, 1, 200, LocalDateTime.of(2021, 1, 3, 0, 0) );
             SalesOrder updatedOrder = SalesOrder.of(
-                    newOrder.getOrderNumber(),
+                    newOrder.getOrderNumber().getValue(),
                     newOrder.getOrderDate(),
                     newOrder.getDepartmentCode(),
                     newOrder.getDepartmentStartDate(),
@@ -212,7 +211,7 @@ class SalesOrderRepositoryTest {
                     List.of(updatedLine));
             repository.save(updatedOrder);
 
-            SalesOrder actual = repository.findById(order.getOrderNumber()).get();
+            SalesOrder actual = repository.findById(order.getOrderNumber().getValue()).get();
             assertEquals(1, actual.getSalesOrderLines().size());
             assertEquals(updatedLine, actual.getSalesOrderLines().get(0));
         }
@@ -220,10 +219,10 @@ class SalesOrderRepositoryTest {
         @Test
         @DisplayName("受注明細を削除できる")
         void shouldDeleteSalesOrderLine() {
-            SalesOrder order = getSalesOrder("SO00001");
-            SalesOrderLine line = getSalesOrderLine(order.getOrderNumber(), 1);
+            SalesOrder order = getSalesOrder("1000000001");
+            SalesOrderLine line = getSalesOrderLine(order.getOrderNumber().getValue(), 1);
             SalesOrder newOrder = SalesOrder.of(
-                    order.getOrderNumber(),
+                    order.getOrderNumber().getValue(),
                     order.getOrderDate(),
                     order.getDepartmentCode(),
                     order.getDepartmentStartDate(),
@@ -239,7 +238,7 @@ class SalesOrderRepositoryTest {
                     List.of(line));
             repository.save(newOrder);
 
-            Optional<SalesOrder> actual = repository.findById(order.getOrderNumber());
+            Optional<SalesOrder> actual = repository.findById(order.getOrderNumber().getValue());
             assertEquals(1, actual.get().getSalesOrderLines().size());
         }
     }

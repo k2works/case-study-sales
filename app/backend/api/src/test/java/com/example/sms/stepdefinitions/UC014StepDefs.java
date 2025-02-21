@@ -114,8 +114,8 @@ public class UC014StepDefs extends SpringAcceptanceTest {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         
-        SalesOrderResource salesOrder = objectMapper.readValue(result, SalesOrderResource.class);
-        assertEquals(orderNumber, salesOrder.getOrderNumber());
+        SalesOrder salesOrder = objectMapper.readValue(result, SalesOrder.class);
+        assertEquals(orderNumber, salesOrder.getOrderNumber().getValue());
     }
 
     @かつ(":UC014 受注番号 {string} の情報を更新する \\(希望納期 {string})")

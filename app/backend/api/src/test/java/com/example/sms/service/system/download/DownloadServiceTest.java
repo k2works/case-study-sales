@@ -331,7 +331,7 @@ class DownloadServiceTest {
             assertNotNull(firstResult, "最初のデータがnullです");
 
             // フィールドごとのアサーション
-            assertEquals("S00001", firstResult.getOrderNumber(), "受注番号が一致しません");
+            assertEquals("1000000001", firstResult.getOrderNumber(), "受注番号が一致しません");
             assertEquals(LocalDateTime.of(2021, 1, 1, 0, 0), firstResult.getOrderDate(), "受注日が一致しません");
             assertEquals("10000", firstResult.getDepartmentCode(), "部門コードが一致しません");
             assertEquals(LocalDateTime.of(2021, 1, 1, 0, 0), firstResult.getDepartmentStartDate(), "部門開始日が一致しません");

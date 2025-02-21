@@ -49,7 +49,7 @@ public class SalesOrderDataSource implements SalesOrderRepository {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication != null && authentication.getName() != null ? authentication.getName() : "system";
 
-        Optional<SalesOrderCustomEntity> salesOrderEntity = Optional.ofNullable(salesOrderCustomMapper.selectByPrimaryKey(salesOrder.getOrderNumber()));
+        Optional<SalesOrderCustomEntity> salesOrderEntity = Optional.ofNullable(salesOrderCustomMapper.selectByPrimaryKey(salesOrder.getOrderNumber().getValue()));
         if (salesOrderEntity.isEmpty()) {
             createSalesOrder(salesOrder, username);
         } else {
@@ -72,12 +72,12 @@ public class SalesOrderDataSource implements SalesOrderRepository {
         }
 
         if (salesOrder.getSalesOrderLines() != null) {
-            salesOrderLineCustomMapper.deleteBySalesOrderNumber(salesOrder.getOrderNumber());
+            salesOrderLineCustomMapper.deleteBySalesOrderNumber(salesOrder.getOrderNumber().getValue());
 
             AtomicInteger index = new AtomicInteger(1);
             salesOrder.getSalesOrderLines().forEach(salesOrderLine -> {
                 受注データ明細Key key = new 受注データ明細Key();
-                key.set受注番号(salesOrder.getOrderNumber());
+                key.set受注番号(salesOrder.getOrderNumber().getValue());
                 key.set受注行番号(index.getAndIncrement());
 
                 受注データ明細 salesOrderLineData = salesOrderEntityMapper.mapToEntity(key, salesOrderLine);
@@ -100,12 +100,12 @@ public class SalesOrderDataSource implements SalesOrderRepository {
         salesOrderCustomMapper.insertForOptimisticLock(salesOrderData);
 
         if (salesOrder.getSalesOrderLines() != null) {
-            salesOrderLineCustomMapper.deleteBySalesOrderNumber(salesOrder.getOrderNumber());
+            salesOrderLineCustomMapper.deleteBySalesOrderNumber(salesOrder.getOrderNumber().getValue());
 
             AtomicInteger index = new AtomicInteger(1);
             受注データ明細Key key = new 受注データ明細Key();
             salesOrder.getSalesOrderLines().forEach(salesOrderLine -> {
-                key.set受注番号(salesOrder.getOrderNumber());
+                key.set受注番号(salesOrder.getOrderNumber().getValue());
                 key.set受注行番号(index.getAndIncrement());
                 受注データ明細 salesOrderLineData = salesOrderEntityMapper.mapToEntity(key, salesOrderLine);
                 salesOrderLineData.set作成日時(LocalDateTime.now());
@@ -141,13 +141,13 @@ public class SalesOrderDataSource implements SalesOrderRepository {
         if (!salesOrder.getSalesOrderLines().isEmpty()) {
             salesOrder.getSalesOrderLines().forEach(salesOrderLine -> {
                 受注データ明細Key key = new 受注データ明細Key();
-                key.set受注番号(salesOrder.getOrderNumber());
+                key.set受注番号(salesOrder.getOrderNumber().getValue());
                 key.set受注行番号(salesOrderLine.getOrderLineNumber());
                 salesOrderLineMapper.deleteByPrimaryKey(key);
             });
         }
 
-        salesOrderMapper.deleteByPrimaryKey(salesOrder.getOrderNumber());
+        salesOrderMapper.deleteByPrimaryKey(salesOrder.getOrderNumber().getValue());
     }
 
     @Override

@@ -72,7 +72,7 @@ public class SalesOrderApiController {
     public ResponseEntity<?> create(@RequestBody SalesOrderResource resource) {
         try {
             SalesOrder salesOrder = convertToEntity(resource);
-            if (salesOrderService.find(salesOrder.getOrderNumber()) != null) {
+            if (salesOrderService.find(salesOrder.getOrderNumber().getValue()) != null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.sales-order.already.exist")));
             }
             salesOrderService.register(salesOrder);

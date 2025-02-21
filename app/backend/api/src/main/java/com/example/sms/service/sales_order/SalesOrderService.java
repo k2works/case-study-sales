@@ -130,7 +130,7 @@ public class SalesOrderService {
         salesOrders.asList().forEach(salesOrder -> {
             if (salesOrder.getTotalOrderAmount() >= 1000000) {
                 Map<String, String> errorMap = new HashMap<>();
-                errorMap.put(salesOrder.getOrderNumber(), "受注金額が100万円を超えています。");
+                errorMap.put(salesOrder.getOrderNumber().getValue(), "受注金額が100万円を超えています。");
                 checkList.add(errorMap);
             }
         });
