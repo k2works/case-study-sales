@@ -129,14 +129,14 @@ class SalesOrderTest {
                     () -> assertEquals(1, line.getOrderLineNumber()),
                     () -> assertEquals("P12345", line.getProductCode().getValue()),
                     () -> assertEquals("テスト商品", line.getProductName()),
-                    () -> assertEquals(1500, line.getSalesUnitPrice()),
+                    () -> assertEquals(1500, line.getSalesUnitPrice().getAmount()),
                     () -> assertEquals(3, line.getOrderQuantity()),
-                    () -> assertEquals(8, line.getTaxRate()),
+                    () -> assertEquals(8, line.getTaxRate().getAmount()),
                     () -> assertEquals(1, line.getAllocationQuantity()),
                     () -> assertEquals(0, line.getShipmentInstructionQuantity()),
                     () -> assertEquals(0, line.getShippedQuantity()),
                     () -> assertEquals(0, line.getCompletionFlag().getValue()),
-                    () -> assertEquals(100, line.getDiscountAmount())
+                    () -> assertEquals(100, line.getDiscountAmount().getAmount())
             );
         }
     }
