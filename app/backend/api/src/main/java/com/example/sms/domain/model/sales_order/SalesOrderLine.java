@@ -25,9 +25,9 @@ public class SalesOrderLine {
     Integer shippedQuantity; // 出荷済数量
     Integer completionFlag; // 完了フラグ
     Integer discountAmount; // 値引金額
-    LocalDateTime deliveryDate; // 納期
+    DeliveryDate deliveryDate; // 納期
 
     public static SalesOrderLine of(String orderNumber, Integer orderLineNumber, String productCode, String productName, Integer salesUnitPrice, Integer salesQuantity, Integer taxRate, Integer allocationQuantity, Integer shipmentInstructionQuantity, Integer shippedQuantity, Integer completionFlag, Integer discountAmount, LocalDateTime deliveryDate) {
-        return new SalesOrderLine(OrderNumber.of(orderNumber), orderLineNumber, productCode, productName, salesUnitPrice, salesQuantity, taxRate, allocationQuantity, shipmentInstructionQuantity, shippedQuantity, completionFlag, discountAmount, deliveryDate);
+        return new SalesOrderLine(OrderNumber.of(orderNumber), orderLineNumber, productCode, productName, salesUnitPrice, salesQuantity, taxRate, allocationQuantity, shipmentInstructionQuantity, shippedQuantity, completionFlag, discountAmount, DeliveryDate.of(deliveryDate));
     }
 }

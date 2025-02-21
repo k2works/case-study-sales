@@ -45,7 +45,7 @@ public class SalesOrderEntityMapper {
         salesOrderLineEntity.set出荷済数量(salesOrderLine.getShippedQuantity());
         salesOrderLineEntity.set完了フラグ(salesOrderLine.getCompletionFlag());
         salesOrderLineEntity.set値引金額(salesOrderLine.getDiscountAmount());
-        salesOrderLineEntity.set納期(salesOrderLine.getDeliveryDate());
+        salesOrderLineEntity.set納期(salesOrderLine.getDeliveryDate().getValue());
 
         return salesOrderLineEntity;
     }
@@ -111,7 +111,7 @@ public class SalesOrderEntityMapper {
                 salesOrderLine.getShippedQuantity(),
                 salesOrderLine.getCompletionFlag(),
                 salesOrderLine.getDiscountAmount(),
-                salesOrderLine.getDeliveryDate()
+                salesOrderLine.getDeliveryDate().getValue()
         );
     }
 }

@@ -421,7 +421,7 @@ class SalesOrderServiceTest {
                     salesOrderLine.getShippedQuantity(),
                     0,
                     salesOrderLine.getDiscountAmount(),
-                    salesOrderLine.getDeliveryDate()
+                    salesOrderLine.getDeliveryDate().getValue()
             );
             SalesOrder newSalesOrder = SalesOrder.of(
                     salesOrder.getOrderNumber().getValue(),
@@ -464,7 +464,7 @@ class SalesOrderServiceTest {
                     salesOrderLine.getShippedQuantity(),
                     1, // 完了済み
                     salesOrderLine.getDiscountAmount(),
-                    salesOrderLine.getDeliveryDate()
+                    salesOrderLine.getDeliveryDate().getValue()
             );
             SalesOrder newSalesOrder = SalesOrder.of(
                     salesOrder.getOrderNumber().getValue(),
