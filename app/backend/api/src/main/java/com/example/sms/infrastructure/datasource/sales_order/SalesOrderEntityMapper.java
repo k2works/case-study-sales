@@ -35,7 +35,7 @@ public class SalesOrderEntityMapper {
         受注データ明細 salesOrderLineEntity = new 受注データ明細();
         salesOrderLineEntity.set受注番号(key.get受注番号());
         salesOrderLineEntity.set受注行番号(key.get受注行番号());
-        salesOrderLineEntity.set商品コード(salesOrderLine.getProductCode());
+        salesOrderLineEntity.set商品コード(salesOrderLine.getProductCode().getValue());
         salesOrderLineEntity.set商品名(salesOrderLine.getProductName());
         salesOrderLineEntity.set販売単価(salesOrderLine.getSalesUnitPrice());
         salesOrderLineEntity.set受注数量(salesOrderLine.getOrderQuantity());
@@ -101,7 +101,7 @@ public class SalesOrderEntityMapper {
                 salesOrder.getTotalConsumptionTax().getAmount(),
                 salesOrder.getRemarks(),
                 salesOrderLine.getOrderLineNumber(),
-                salesOrderLine.getProductCode(),
+                salesOrderLine.getProductCode().getValue(),
                 salesOrderLine.getProductName(),
                 salesOrderLine.getSalesUnitPrice(),
                 salesOrderLine.getOrderQuantity(),

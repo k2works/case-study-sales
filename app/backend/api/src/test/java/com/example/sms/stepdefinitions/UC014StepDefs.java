@@ -238,7 +238,7 @@ public class UC014StepDefs extends SpringAcceptanceTest {
 
         String result = latestResponse.getBody();
         SalesOrder salesOrder = objectMapper.readValue(result, SalesOrder.class);
-        Assertions.assertEquals(code, salesOrder.getSalesOrderLines().getFirst().getProductCode());
+        Assertions.assertEquals(code, salesOrder.getSalesOrderLines().getFirst().getProductCode().getValue());
     }
 
     @ならば(":UC014 明細データに数量 {string} の商品コード {string} が含まれる")
@@ -248,7 +248,7 @@ public class UC014StepDefs extends SpringAcceptanceTest {
 
         String result = latestResponse.getBody();
         SalesOrder salesOrder = objectMapper.readValue(result, SalesOrder.class);
-        Assertions.assertEquals(code, salesOrder.getSalesOrderLines().getFirst().getProductCode());
+        Assertions.assertEquals(code, salesOrder.getSalesOrderLines().getFirst().getProductCode().getValue());
         Assertions.assertEquals(amount, salesOrder.getSalesOrderLines().getFirst().getOrderQuantity().toString());
     }
 

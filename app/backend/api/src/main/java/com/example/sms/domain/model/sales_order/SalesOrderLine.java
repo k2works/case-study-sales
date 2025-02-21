@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.sales_order;
 
+import com.example.sms.domain.model.master.product.ProductCode;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 public class SalesOrderLine {
     OrderNumber orderNumber; // 受注番号
     Integer orderLineNumber; // 受注行番号
-    String productCode; // 商品コード
+    ProductCode productCode; // 商品コード
     String productName; // 商品名
     Integer salesUnitPrice; // 販売単価
     Integer orderQuantity; // 受注数量
@@ -28,6 +29,6 @@ public class SalesOrderLine {
     DeliveryDate deliveryDate; // 納期
 
     public static SalesOrderLine of(String orderNumber, Integer orderLineNumber, String productCode, String productName, Integer salesUnitPrice, Integer salesQuantity, Integer taxRate, Integer allocationQuantity, Integer shipmentInstructionQuantity, Integer shippedQuantity, Integer completionFlag, Integer discountAmount, LocalDateTime deliveryDate) {
-        return new SalesOrderLine(OrderNumber.of(orderNumber), orderLineNumber, productCode, productName, salesUnitPrice, salesQuantity, taxRate, allocationQuantity, shipmentInstructionQuantity, shippedQuantity, completionFlag, discountAmount, DeliveryDate.of(deliveryDate));
+        return new SalesOrderLine(OrderNumber.of(orderNumber), orderLineNumber, ProductCode.of(productCode), productName, salesUnitPrice, salesQuantity, taxRate, allocationQuantity, shipmentInstructionQuantity, shippedQuantity, completionFlag, discountAmount, DeliveryDate.of(deliveryDate));
     }
 }

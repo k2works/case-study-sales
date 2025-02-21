@@ -166,7 +166,7 @@ class SalesOrderRepositoryTest {
             repository.save(newOrder);
             SalesOrder actual = repository.findById(order.getOrderNumber().getValue()).get();
             assertEquals(1, actual.getSalesOrderLines().size());
-            assertEquals(line, actual.getSalesOrderLines().get(0));
+            assertEquals(line, actual.getSalesOrderLines().getFirst());
         }
 
         @Test
@@ -193,7 +193,7 @@ class SalesOrderRepositoryTest {
 
             newOrder = repository.findById(order.getOrderNumber().getValue()).get();
             SalesOrderLine updatedLine = SalesOrderLine.of(
-                    order.getOrderNumber().getValue(), 1, "更新後商品コード", "更新後商品名",
+                    order.getOrderNumber().getValue(), 1, "99999999", "更新後商品名",
                     3000, 5, 8, 3, 1, 0, 1, 200, LocalDateTime.of(2021, 1, 3, 0, 0) );
             SalesOrder updatedOrder = SalesOrder.of(
                     newOrder.getOrderNumber().getValue(),
@@ -214,7 +214,7 @@ class SalesOrderRepositoryTest {
 
             SalesOrder actual = repository.findById(order.getOrderNumber().getValue()).get();
             assertEquals(1, actual.getSalesOrderLines().size());
-            assertEquals(updatedLine, actual.getSalesOrderLines().get(0));
+            assertEquals(updatedLine, actual.getSalesOrderLines().getFirst());
         }
 
         @Test

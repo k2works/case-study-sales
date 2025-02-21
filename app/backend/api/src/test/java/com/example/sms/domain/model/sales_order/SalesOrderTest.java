@@ -127,7 +127,7 @@ class SalesOrderTest {
             assertAll(
                     () -> assertEquals("1234567890", line.getOrderNumber().getValue()),
                     () -> assertEquals(1, line.getOrderLineNumber()),
-                    () -> assertEquals("P12345", line.getProductCode()),
+                    () -> assertEquals("P12345", line.getProductCode().getValue()),
                     () -> assertEquals("テスト商品", line.getProductName()),
                     () -> assertEquals(1500, line.getSalesUnitPrice()),
                     () -> assertEquals(3, line.getOrderQuantity()),
