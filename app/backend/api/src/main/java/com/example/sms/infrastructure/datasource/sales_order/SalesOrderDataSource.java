@@ -1,5 +1,6 @@
 package com.example.sms.infrastructure.datasource.sales_order;
 
+import com.example.sms.domain.model.sales_order.CompletionFlag;
 import com.example.sms.domain.model.sales_order.SalesOrder;
 import com.example.sms.domain.model.sales_order.SalesOrderList;
 import com.example.sms.infrastructure.PageInfoHelper;
@@ -173,7 +174,7 @@ public class SalesOrderDataSource implements SalesOrderRepository {
 
     @Override
     public SalesOrderList selectAllNotComplete() {
-        List<SalesOrderCustomEntity> salesOrderCustomEntities = salesOrderCustomMapper.selectAllNotComplete();
+        List<SalesOrderCustomEntity> salesOrderCustomEntities = salesOrderCustomMapper.selectAllNotComplete(CompletionFlag.未完了.getValue());
 
         return new SalesOrderList(salesOrderCustomEntities.stream()
                 .map(salesOrderEntityMapper::mapToDomainModel)
