@@ -109,7 +109,7 @@ class SalesOrderTest {
         @DisplayName("受注明細を作成できる")
         void shouldCreateSalesOrderLine() {
             SalesOrderLine line = SalesOrderLine.of(
-                    "ORD12345",
+                    "1234567890",
                     1,
                     "P12345",
                     "テスト商品",
@@ -125,7 +125,7 @@ class SalesOrderTest {
             );
 
             assertAll(
-                    () -> assertEquals("ORD12345", line.getOrderNumber()),
+                    () -> assertEquals("1234567890", line.getOrderNumber().getValue()),
                     () -> assertEquals(1, line.getOrderLineNumber()),
                     () -> assertEquals("P12345", line.getProductCode()),
                     () -> assertEquals("テスト商品", line.getProductName()),

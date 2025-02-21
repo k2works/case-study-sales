@@ -409,7 +409,7 @@ class SalesOrderServiceTest {
             SalesOrder salesOrder = TestDataFactoryImpl.getSalesOrder("1000000009");
             SalesOrderLine salesOrderLine = TestDataFactoryImpl.getSalesOrderLine("1000000009", 1);
             SalesOrderLine newSalesOrderLine = SalesOrderLine.of(
-                    salesOrderLine.getOrderNumber(),
+                    salesOrderLine.getOrderNumber().getValue(),
                     salesOrderLine.getOrderLineNumber(),
                     salesOrderLine.getProductCode(),
                     salesOrderLine.getProductName(),
@@ -452,7 +452,7 @@ class SalesOrderServiceTest {
             SalesOrder salesOrder = TestDataFactoryImpl.getSalesOrder("1000000009");
             SalesOrderLine salesOrderLine = TestDataFactoryImpl.getSalesOrderLine("1000000009", 1);
             SalesOrderLine newSalesOrderLine = SalesOrderLine.of(
-                    salesOrderLine.getOrderNumber(),
+                    salesOrderLine.getOrderNumber().getValue(),
                     salesOrderLine.getOrderLineNumber(),
                     salesOrderLine.getProductCode(),
                     salesOrderLine.getProductName(),

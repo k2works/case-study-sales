@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 public class SalesOrderLine {
-    String orderNumber; // 受注番号
+    OrderNumber orderNumber; // 受注番号
     Integer orderLineNumber; // 受注行番号
     String productCode; // 商品コード
     String productName; // 商品名
@@ -28,6 +28,6 @@ public class SalesOrderLine {
     LocalDateTime deliveryDate; // 納期
 
     public static SalesOrderLine of(String orderNumber, Integer orderLineNumber, String productCode, String productName, Integer salesUnitPrice, Integer salesQuantity, Integer taxRate, Integer allocationQuantity, Integer shipmentInstructionQuantity, Integer shippedQuantity, Integer completionFlag, Integer discountAmount, LocalDateTime deliveryDate) {
-        return new SalesOrderLine(orderNumber, orderLineNumber, productCode, productName, salesUnitPrice, salesQuantity, taxRate, allocationQuantity, shipmentInstructionQuantity, shippedQuantity, completionFlag, discountAmount, deliveryDate);
+        return new SalesOrderLine(OrderNumber.of(orderNumber), orderLineNumber, productCode, productName, salesUnitPrice, salesQuantity, taxRate, allocationQuantity, shipmentInstructionQuantity, shippedQuantity, completionFlag, discountAmount, deliveryDate);
     }
 }
