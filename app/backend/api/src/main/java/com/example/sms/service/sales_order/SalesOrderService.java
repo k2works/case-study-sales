@@ -9,6 +9,7 @@ import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.sales_order.SalesOrder;
 import com.example.sms.domain.model.sales_order.SalesOrderLine;
 import com.example.sms.domain.model.sales_order.SalesOrderList;
+import com.example.sms.domain.type.money.Money;
 import com.example.sms.infrastructure.Pattern2ReadCSVUtil;
 import com.example.sms.infrastructure.datasource.sales_order.SalesOrderUploadCSV;
 import com.example.sms.service.master.department.DepartmentRepository;
@@ -128,7 +129,7 @@ public class SalesOrderService {
         // 受注金額が100万円以上の場合
         SalesOrderList salesOrders = salesOrderRepository.selectAllNotComplete();
         salesOrders.asList().forEach(salesOrder -> {
-            if (salesOrder.getTotalOrderAmount() >= 1000000) {
+            if (salesOrder.getTotalOrderAmount().isGreaterThan(Money.of(1000000))) {
                 Map<String, String> errorMap = new HashMap<>();
                 errorMap.put(salesOrder.getOrderNumber().getValue(), "受注金額が100万円を超えています。");
                 checkList.add(errorMap);

@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.sales_order;
 
+import com.example.sms.domain.type.money.Money;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;
@@ -24,13 +25,13 @@ public class SalesOrder {
     DesiredDeliveryDate desiredDeliveryDate; // 希望納期
     String customerOrderNumber; // 客先注文番号
     String warehouseCode; // 倉庫コード
-    Integer totalOrderAmount; // 受注金額合計
-    Integer totalConsumptionTax; // 消費税合計
+    Money totalOrderAmount; // 受注金額合計
+    Money totalConsumptionTax; // 消費税合計
     String remarks; // 備考
     List<SalesOrderLine> salesOrderLines; // 受注明細
 
     public static SalesOrder of(String orderNumber, LocalDateTime orderDate, String departmentCode, LocalDateTime departmentStartDate, String customerCode, Integer customerBranchNumber, String employeeCode, LocalDateTime desiredDeliveryDate, String customerOrderNumber, String warehouseCode, Integer totalOrderAmount, Integer totalConsumptionTax, String remarks, List<SalesOrderLine> salesOrderLines) {
-        return new SalesOrder(OrderNumber.of(orderNumber), OrderDate.of(orderDate), departmentCode, departmentStartDate, customerCode, customerBranchNumber, employeeCode, DesiredDeliveryDate.of(desiredDeliveryDate), customerOrderNumber, warehouseCode, totalOrderAmount, totalConsumptionTax, remarks, salesOrderLines);
+        return new SalesOrder(OrderNumber.of(orderNumber), OrderDate.of(orderDate), departmentCode, departmentStartDate, customerCode, customerBranchNumber, employeeCode, DesiredDeliveryDate.of(desiredDeliveryDate), customerOrderNumber, warehouseCode, Money.of(totalOrderAmount), Money.of(totalConsumptionTax), remarks, salesOrderLines);
     }
 
     public static SalesOrder of(SalesOrder order, List<SalesOrderLine> line) {

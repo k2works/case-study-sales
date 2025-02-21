@@ -54,8 +54,8 @@ class SalesOrderTest {
                 () -> assertEquals("EMP001", salesOrder.getEmployeeCode()),
                 () -> assertEquals("CUSTORDER123", salesOrder.getCustomerOrderNumber()),
                 () -> assertEquals("WH001", salesOrder.getWarehouseCode()),
-                () -> assertEquals(2000, salesOrder.getTotalOrderAmount()),
-                () -> assertEquals(200, salesOrder.getTotalConsumptionTax()),
+                () -> assertEquals(2000, salesOrder.getTotalOrderAmount().getAmount()),
+                () -> assertEquals(200, salesOrder.getTotalConsumptionTax().getAmount()),
                 () -> assertEquals("これは備考です", salesOrder.getRemarks()),
                 () -> assertEquals(1, salesOrder.getSalesOrderLines().size())
         );

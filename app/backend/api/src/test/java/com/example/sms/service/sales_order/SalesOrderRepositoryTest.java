@@ -134,8 +134,8 @@ class SalesOrderRepositoryTest {
                     order.getDesiredDeliveryDate().getValue(),
                     order.getCustomerOrderNumber(),
                     order.getWarehouseCode(),
-                    order.getTotalOrderAmount(),
-                    order.getTotalConsumptionTax(),
+                    order.getTotalOrderAmount().getAmount(),
+                    order.getTotalConsumptionTax().getAmount(),
                     order.getRemarks(),
                     lines);
             repository.save(newOrder);
@@ -159,8 +159,8 @@ class SalesOrderRepositoryTest {
                     order.getDesiredDeliveryDate().getValue(),
                     order.getCustomerOrderNumber(),
                     order.getWarehouseCode(),
-                    order.getTotalOrderAmount(),
-                    order.getTotalConsumptionTax(),
+                    order.getTotalOrderAmount().getAmount(),
+                    order.getTotalConsumptionTax().getAmount(),
                     order.getRemarks(),
                     List.of(line));
             repository.save(newOrder);
@@ -185,7 +185,8 @@ class SalesOrderRepositoryTest {
                     order.getDesiredDeliveryDate().getValue(),
                     order.getCustomerOrderNumber(),
                     order.getWarehouseCode(),
-                    order.getTotalOrderAmount(), order.getTotalConsumptionTax(),
+                    order.getTotalOrderAmount().getAmount(),
+                    order.getTotalConsumptionTax().getAmount(),
                     order.getRemarks(),
                     List.of(line));
             repository.save(newOrder);
@@ -205,8 +206,8 @@ class SalesOrderRepositoryTest {
                     newOrder.getDesiredDeliveryDate().getValue(),
                     newOrder.getCustomerOrderNumber(),
                     newOrder.getWarehouseCode(),
-                    newOrder.getTotalOrderAmount(),
-                    newOrder.getTotalConsumptionTax(),
+                    newOrder.getTotalOrderAmount().getAmount(),
+                    newOrder.getTotalConsumptionTax().getAmount(),
                     newOrder.getRemarks(),
                     List.of(updatedLine));
             repository.save(updatedOrder);
@@ -232,8 +233,8 @@ class SalesOrderRepositoryTest {
                     order.getDesiredDeliveryDate().getValue(),
                     order.getCustomerOrderNumber(),
                     order.getWarehouseCode(),
-                    order.getTotalOrderAmount(),
-                    order.getTotalConsumptionTax(),
+                    order.getTotalOrderAmount().getAmount(),
+                    order.getTotalConsumptionTax().getAmount(),
                     order.getRemarks(),
                     List.of(line));
             repository.save(newOrder);

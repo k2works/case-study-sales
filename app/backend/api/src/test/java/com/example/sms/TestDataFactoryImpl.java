@@ -288,8 +288,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
                     order.getDesiredDeliveryDate().getValue(),
                     order.getCustomerOrderNumber(),
                     order.getWarehouseCode(),
-                    order.getTotalOrderAmount(),
-                    order.getTotalConsumptionTax(),
+                    order.getTotalOrderAmount().getAmount(),
+                    order.getTotalConsumptionTax().getAmount(),
                     order.getRemarks(),
                     lines);
             salesOrderRepository.save(newOrder);

@@ -24,8 +24,8 @@ public class SalesOrderEntityMapper {
         salesOrderEntity.set希望納期(salesOrder.getDesiredDeliveryDate().getValue());
         salesOrderEntity.set客先注文番号(salesOrder.getCustomerOrderNumber());
         salesOrderEntity.set倉庫コード(salesOrder.getWarehouseCode());
-        salesOrderEntity.set受注金額合計(salesOrder.getTotalOrderAmount());
-        salesOrderEntity.set消費税合計(salesOrder.getTotalConsumptionTax());
+        salesOrderEntity.set受注金額合計(salesOrder.getTotalOrderAmount().getAmount());
+        salesOrderEntity.set消費税合計(salesOrder.getTotalConsumptionTax().getAmount());
         salesOrderEntity.set備考(salesOrder.getRemarks());
 
         return salesOrderEntity;
@@ -97,8 +97,8 @@ public class SalesOrderEntityMapper {
                 salesOrder.getDesiredDeliveryDate().getValue(),
                 salesOrder.getCustomerOrderNumber(),
                 salesOrder.getWarehouseCode(),
-                salesOrder.getTotalOrderAmount(),
-                salesOrder.getTotalConsumptionTax(),
+                salesOrder.getTotalOrderAmount().getAmount(),
+                salesOrder.getTotalConsumptionTax().getAmount(),
                 salesOrder.getRemarks(),
                 salesOrderLine.getOrderLineNumber(),
                 salesOrderLine.getProductCode(),
