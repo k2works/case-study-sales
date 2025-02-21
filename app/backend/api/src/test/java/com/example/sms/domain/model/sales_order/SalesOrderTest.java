@@ -1,5 +1,9 @@
 package com.example.sms.domain.model.sales_order;
 
+import com.example.sms.domain.model.master.department.DepartmentCode;
+import com.example.sms.domain.model.master.employee.EmployeeCode;
+import com.example.sms.domain.model.master.partner.customer.CustomerCode;
+import com.example.sms.domain.type.money.Money;
 import org.junit.jupiter.api.*;
 
 import java.time.LocalDateTime;
@@ -59,8 +63,26 @@ class SalesOrderTest {
                 () -> assertEquals("これは備考です", salesOrder.getRemarks()),
                 () -> assertEquals(1, salesOrder.getSalesOrderLines().size())
         );
+    }
 
-
+    @Test
+    @DisplayName("受注日より前に納品希望日を設定できない")
+    void shouldNotCreateSalesOrder() {
+        assertThrows(IllegalArgumentException.class, () -> new SalesOrder(
+                OrderNumber.of("1234567890"),
+                OrderDate.of(LocalDateTime.now()),
+                DepartmentCode.of("12345"),
+                LocalDateTime.now(),
+                CustomerCode.of("001", 1),
+                EmployeeCode.of("EMP001"),
+                DesiredDeliveryDate.of(LocalDateTime.now().minusDays(1)),
+                "CUSTORDER123",
+                "WH001",
+                Money.of(2000),
+                Money.of(200),
+                "これは備考です",
+                Collections.emptyList()
+        ));
     }
 
     @Nested
@@ -87,6 +109,7 @@ class SalesOrderTest {
         void shouldCreateOrderDate() {
             OrderDate orderDate = OrderDate.of(LocalDateTime.now());
             assertNotNull(orderDate);
+            assertThrows(NullPointerException.class, () -> OrderDate.of(null));
         }
     }
 
@@ -98,6 +121,7 @@ class SalesOrderTest {
         void shouldCreateDesiredDeliveryDate() {
             DesiredDeliveryDate desiredDeliveryDate = DesiredDeliveryDate.of(LocalDateTime.now());
             assertNotNull(desiredDeliveryDate);
+            assertDoesNotThrow(() -> DesiredDeliveryDate.of(null));
         }
     }
 
@@ -138,6 +162,43 @@ class SalesOrderTest {
                     () -> assertEquals(0, line.getCompletionFlag().getValue()),
                     () -> assertEquals(100, line.getDiscountAmount().getAmount())
             );
+        }
+    }
+
+    @Test
+    @DisplayName("受注明細を完了にできる")
+    void shouldCompleteSalesOrderLine() {
+        SalesOrderLine line = SalesOrderLine.of(
+                "1234567890",
+                1,
+                "P12345",
+                "テスト商品",
+                1500,
+                3,
+                8,
+                1,
+                0,
+                0,
+                0,
+                100,
+                LocalDateTime.now()
+        );
+
+        SalesOrderLine completedLine = SalesOrderLine.complete(line);
+
+        assertEquals(CompletionFlag.完了, completedLine.getCompletionFlag());
+    }
+
+    @Nested
+    @DisplayName("納期")
+    class DeliveryDateTest {
+        @Test
+        @DisplayName("納期を作成できる")
+        void shouldCreateDeliveryDate() {
+            DeliveryDate deliveryDate = DeliveryDate.of(LocalDateTime.now());
+            assertNotNull(deliveryDate);
+            assertThrows(NullPointerException.class, () -> DeliveryDate.of(null));
+            assertThrows(IllegalArgumentException.class, () -> new DeliveryDate(LocalDateTime.now().plusYears(1).plusDays(1)));
         }
     }
 }

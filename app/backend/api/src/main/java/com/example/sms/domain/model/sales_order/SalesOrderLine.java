@@ -33,4 +33,8 @@ public class SalesOrderLine {
     public static SalesOrderLine of(String orderNumber, Integer orderLineNumber, String productCode, String productName, Integer salesUnitPrice, Integer salesQuantity, Integer taxRate, Integer allocationQuantity, Integer shipmentInstructionQuantity, Integer shippedQuantity, Integer completionFlag, Integer discountAmount, LocalDateTime deliveryDate) {
         return new SalesOrderLine(OrderNumber.of(orderNumber), orderLineNumber, ProductCode.of(productCode), productName, Money.of(salesUnitPrice), Quantity.of(salesQuantity), Money.of(taxRate), Quantity.of(allocationQuantity), Quantity.of(shipmentInstructionQuantity), Quantity.of(shippedQuantity), CompletionFlag.of(completionFlag), Money.of(discountAmount), DeliveryDate.of(deliveryDate));
     }
+
+    public static SalesOrderLine complete(SalesOrderLine salesOrderLine) {
+        return new SalesOrderLine(salesOrderLine.getOrderNumber(), salesOrderLine.getOrderLineNumber(), salesOrderLine.getProductCode(), salesOrderLine.getProductName(), salesOrderLine.getSalesUnitPrice(), salesOrderLine.getOrderQuantity(), salesOrderLine.getTaxRate(), salesOrderLine.getAllocationQuantity(), salesOrderLine.getShipmentInstructionQuantity(), salesOrderLine.getShippedQuantity(), CompletionFlag.完了, salesOrderLine.getDiscountAmount(), salesOrderLine.getDeliveryDate());
+    }
 }
