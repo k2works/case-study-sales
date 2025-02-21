@@ -39,7 +39,7 @@ public class SalesOrderEntityMapper {
         salesOrderLineEntity.set商品名(salesOrderLine.getProductName());
         salesOrderLineEntity.set販売単価(salesOrderLine.getSalesUnitPrice().getAmount());
         salesOrderLineEntity.set受注数量(salesOrderLine.getOrderQuantity().getAmount());
-        salesOrderLineEntity.set消費税率(salesOrderLine.getTaxRate().getAmount());
+        salesOrderLineEntity.set消費税率(salesOrderLine.getTaxRate().getRate());
         salesOrderLineEntity.set引当数量(salesOrderLine.getAllocationQuantity().getAmount());
         salesOrderLineEntity.set出荷指示数量(salesOrderLine.getShipmentInstructionQuantity().getAmount());
         salesOrderLineEntity.set出荷済数量(salesOrderLine.getShippedQuantity().getAmount());
@@ -105,7 +105,7 @@ public class SalesOrderEntityMapper {
                 salesOrderLine.getProductName(),
                 salesOrderLine.getSalesUnitPrice().getAmount(),
                 salesOrderLine.getOrderQuantity().getAmount(),
-                salesOrderLine.getTaxRate().getAmount(),
+                salesOrderLine.getTaxRate().getRate(),
                 salesOrderLine.getAllocationQuantity().getAmount(),
                 salesOrderLine.getShipmentInstructionQuantity().getAmount(),
                 salesOrderLine.getShippedQuantity().getAmount(),

@@ -2,6 +2,7 @@ package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
 import com.example.sms.domain.model.sales_order.SalesOrder;
+import com.example.sms.domain.model.sales_order.TaxRateType;
 import com.example.sms.presentation.api.sales_order.SalesOrderCriteriaResource;
 import com.example.sms.presentation.api.sales_order.SalesOrderLineResource;
 import com.example.sms.presentation.api.sales_order.SalesOrderResource;
@@ -158,7 +159,7 @@ public class UC014StepDefs extends SpringAcceptanceTest {
                 .productName("鶏ささみ")
                 .salesUnitPrice(100)
                 .orderQuantity(Integer.parseInt(orderQuantity))
-                .taxRate(0)
+                .taxRate(TaxRateType.標準税率.getRate())
                 .allocationQuantity(0)
                 .shipmentInstructionQuantity(0)
                 .shippedQuantity(0)
@@ -280,7 +281,7 @@ public class UC014StepDefs extends SpringAcceptanceTest {
                 .productName(row.get("商品名"))
                 .salesUnitPrice(Integer.parseInt(row.get("単価")))
                 .orderQuantity(Integer.parseInt(row.get("数量")))
-                .taxRate(0)
+                .taxRate(TaxRateType.標準税率.getRate())
                 .allocationQuantity(0)
                 .shipmentInstructionQuantity(0)
                 .shippedQuantity(0)

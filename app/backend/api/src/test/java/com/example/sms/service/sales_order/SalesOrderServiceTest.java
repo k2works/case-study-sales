@@ -415,7 +415,7 @@ class SalesOrderServiceTest {
                     salesOrderLine.getProductName(),
                     10000, // 販売単価が10000円
                     100, // 受注数量が100個
-                    salesOrderLine.getTaxRate().getAmount(),
+                    salesOrderLine.getTaxRate().getRate(),
                     salesOrderLine.getAllocationQuantity().getAmount(),
                     salesOrderLine.getShipmentInstructionQuantity().getAmount(),
                     salesOrderLine.getShippedQuantity().getAmount(),
@@ -458,7 +458,7 @@ class SalesOrderServiceTest {
                     salesOrderLine.getProductName(),
                     salesOrderLine.getSalesUnitPrice().getAmount(),
                     salesOrderLine.getOrderQuantity().getAmount(),
-                    salesOrderLine.getTaxRate().getAmount(),
+                    salesOrderLine.getTaxRate().getRate(),
                     salesOrderLine.getAllocationQuantity().getAmount(),
                     salesOrderLine.getShipmentInstructionQuantity().getAmount(),
                     salesOrderLine.getShippedQuantity().getAmount(),

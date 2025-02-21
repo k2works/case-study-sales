@@ -155,7 +155,7 @@ class SalesOrderTest {
                     () -> assertEquals("テスト商品", line.getProductName()),
                     () -> assertEquals(1500, line.getSalesUnitPrice().getAmount()),
                     () -> assertEquals(3, line.getOrderQuantity().getAmount()),
-                    () -> assertEquals(8, line.getTaxRate().getAmount()),
+                    () -> assertEquals(8, line.getTaxRate().getRate()),
                     () -> assertEquals(1, line.getAllocationQuantity().getAmount()),
                     () -> assertEquals(0, line.getShipmentInstructionQuantity().getAmount()),
                     () -> assertEquals(0, line.getShippedQuantity().getAmount()),
@@ -199,6 +199,19 @@ class SalesOrderTest {
             assertNotNull(deliveryDate);
             assertThrows(NullPointerException.class, () -> DeliveryDate.of(null));
             assertThrows(IllegalArgumentException.class, () -> new DeliveryDate(LocalDateTime.now().plusYears(1).plusDays(1)));
+        }
+    }
+
+    @Nested
+    @DisplayName("消費税率")
+    class TaxRateTypeTest {
+        @Test
+        @DisplayName("消費税率を作成できる")
+        void shouldCreateTaxRateType() {
+            assertNotNull(TaxRateType.of(8));
+            assertNotNull(TaxRateType.of(10));
+            assertThrows(IllegalArgumentException.class, () -> TaxRateType.of(0));
+            assertThrows(IllegalArgumentException.class, () -> TaxRateType.of(100));
         }
     }
 }
