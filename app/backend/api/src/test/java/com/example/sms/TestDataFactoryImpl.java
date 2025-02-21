@@ -284,7 +284,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
                     order.getDepartmentStartDate(),
                     order.getCustomerCode().getCode().getValue(),
                     order.getCustomerCode().getBranchNumber(),
-                    order.getEmployeeCode(),
+                    order.getEmployeeCode().getValue(),
                     order.getDesiredDeliveryDate().getValue(),
                     order.getCustomerOrderNumber(),
                     order.getWarehouseCode(),

@@ -20,7 +20,7 @@ public class SalesOrderEntityMapper {
         salesOrderEntity.set部門開始日(salesOrder.getDepartmentStartDate());
         salesOrderEntity.set顧客コード(salesOrder.getCustomerCode().getCode().getValue());
         salesOrderEntity.set顧客枝番(salesOrder.getCustomerCode().getBranchNumber());
-        salesOrderEntity.set社員コード(salesOrder.getEmployeeCode());
+        salesOrderEntity.set社員コード(salesOrder.getEmployeeCode().getValue());
         salesOrderEntity.set希望納期(salesOrder.getDesiredDeliveryDate().getValue());
         salesOrderEntity.set客先注文番号(salesOrder.getCustomerOrderNumber());
         salesOrderEntity.set倉庫コード(salesOrder.getWarehouseCode());
@@ -93,7 +93,7 @@ public class SalesOrderEntityMapper {
                 salesOrder.getDepartmentStartDate(),
                 salesOrder.getCustomerCode().getCode().getValue(),
                 salesOrder.getCustomerCode().getBranchNumber(),
-                salesOrder.getEmployeeCode(),
+                salesOrder.getEmployeeCode().getValue(),
                 salesOrder.getDesiredDeliveryDate().getValue(),
                 salesOrder.getCustomerOrderNumber(),
                 salesOrder.getWarehouseCode(),

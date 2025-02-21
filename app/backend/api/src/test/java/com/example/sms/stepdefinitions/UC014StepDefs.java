@@ -122,7 +122,7 @@ public class UC014StepDefs extends SpringAcceptanceTest {
     public void updateSalesOrder(String orderNumber, String desiredDeliveryDate) throws IOException {
         String url = SALES_ORDER_API_URL + "/" + orderNumber;
 
-        SalesOrderResource salesOrder = getSalesOrderResource(orderNumber, "2024-11-01T00:00:00+09:00", "10000", "009", "E001", desiredDeliveryDate);
+        SalesOrderResource salesOrder = getSalesOrderResource(orderNumber, "2024-11-01T00:00:00+09:00", "10000", "009", "EMP001", desiredDeliveryDate);
         salesOrder.setDesiredDeliveryDate(desiredDeliveryDate);
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -139,7 +139,7 @@ public class UC014StepDefs extends SpringAcceptanceTest {
 
     @もし(":UC014 受注番号 {string} をもとに以下の受注明細を登録する")
     public void addSalesOrderLine(String orderNumber, List<SalesOrderLineResource> lines) throws IOException {
-        SalesOrderResource salesOrder = getSalesOrderResource(orderNumber, "2024-11-01T00:00:00+09:00", "10000", "009", "E001", "2024-11-10T00:00:00+09:00");
+        SalesOrderResource salesOrder = getSalesOrderResource(orderNumber, "2024-11-01T00:00:00+09:00", "10000", "009", "EMP001", "2024-11-10T00:00:00+09:00");
         salesOrder.setSalesOrderLines(lines);
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -150,7 +150,7 @@ public class UC014StepDefs extends SpringAcceptanceTest {
 
     @かつ(":UC014 受注番号 {string} の受注明細を更新する \\(数量 {string})")
     public void updateSalesOrderLine(String orderNumber, String orderQuantity) throws IOException {
-        SalesOrderResource salesOrder = getSalesOrderResource(orderNumber, "2024-11-01T00:00:00+09:00", "10000", "009", "E001", "2024-11-10T00:00:00+09:00");
+        SalesOrderResource salesOrder = getSalesOrderResource(orderNumber, "2024-11-01T00:00:00+09:00", "10000", "009", "EMP001", "2024-11-10T00:00:00+09:00");
         SalesOrderLineResource line = SalesOrderLineResource.builder()
                 .orderNumber(orderNumber)
                 .orderLineNumber(1)
@@ -178,7 +178,7 @@ public class UC014StepDefs extends SpringAcceptanceTest {
 
     @かつ(":UC014 受注番号 {string} 商品コード {string} の受注明細を削除する")
     public void deleteSalesOrderLine(String orderNumber, String productCode) throws IOException {
-        SalesOrderResource salesOrder = getSalesOrderResource(orderNumber, "2024-11-01T00:00:00+09:00", "10000", "009", "E001", "2024-11-10T00:00:00+09:00");
+        SalesOrderResource salesOrder = getSalesOrderResource(orderNumber, "2024-11-01T00:00:00+09:00", "10000", "009", "EMP001", "2024-11-10T00:00:00+09:00");
         salesOrder.setSalesOrderLines(List.of());
 
         ObjectMapper objectMapper = new ObjectMapper();

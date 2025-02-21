@@ -1,6 +1,7 @@
 package com.example.sms.domain.model.sales_order;
 
 import com.example.sms.domain.model.master.department.DepartmentCode;
+import com.example.sms.domain.model.master.employee.EmployeeCode;
 import com.example.sms.domain.model.master.partner.customer.CustomerCode;
 import com.example.sms.domain.type.money.Money;
 import lombok.AllArgsConstructor;
@@ -22,7 +23,7 @@ public class SalesOrder {
     DepartmentCode departmentCode; // 部門コード
     LocalDateTime departmentStartDate; // 部門開始日
     CustomerCode customerCode; // 顧客コード
-    String employeeCode; // 社員コード
+    EmployeeCode employeeCode; // 社員コード
     DesiredDeliveryDate desiredDeliveryDate; // 希望納期
     String customerOrderNumber; // 客先注文番号
     String warehouseCode; // 倉庫コード
@@ -32,7 +33,7 @@ public class SalesOrder {
     List<SalesOrderLine> salesOrderLines; // 受注明細
 
     public static SalesOrder of(String orderNumber, LocalDateTime orderDate, String departmentCode, LocalDateTime departmentStartDate, String customerCode, Integer customerBranchNumber, String employeeCode, LocalDateTime desiredDeliveryDate, String customerOrderNumber, String warehouseCode, Integer totalOrderAmount, Integer totalConsumptionTax, String remarks, List<SalesOrderLine> salesOrderLines) {
-        return new SalesOrder(OrderNumber.of(orderNumber), OrderDate.of(orderDate), DepartmentCode.of(departmentCode), departmentStartDate, CustomerCode.of(customerCode, customerBranchNumber), employeeCode, DesiredDeliveryDate.of(desiredDeliveryDate), customerOrderNumber, warehouseCode, Money.of(totalOrderAmount), Money.of(totalConsumptionTax), remarks, salesOrderLines);
+        return new SalesOrder(OrderNumber.of(orderNumber), OrderDate.of(orderDate), DepartmentCode.of(departmentCode), departmentStartDate, CustomerCode.of(customerCode, customerBranchNumber), EmployeeCode.of(employeeCode), DesiredDeliveryDate.of(desiredDeliveryDate), customerOrderNumber, warehouseCode, Money.of(totalOrderAmount), Money.of(totalConsumptionTax), remarks, salesOrderLines);
     }
 
     public static SalesOrder of(SalesOrder order, List<SalesOrderLine> line) {

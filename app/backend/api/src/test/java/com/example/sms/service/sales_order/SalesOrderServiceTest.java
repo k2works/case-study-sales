@@ -72,7 +72,7 @@ class SalesOrderServiceTest {
                     salesOrder.getDepartmentStartDate(),
                     "999", // 更新された顧客コード
                     salesOrder.getCustomerCode().getBranchNumber(),
-                    salesOrder.getEmployeeCode(),
+                    salesOrder.getEmployeeCode().getValue(),
                     salesOrder.getDesiredDeliveryDate().getValue(),
                     salesOrder.getCustomerOrderNumber(),
                     salesOrder.getWarehouseCode(),
@@ -116,7 +116,7 @@ class SalesOrderServiceTest {
                     salesOrder.getDepartmentStartDate(),
                     customerCode, // 顧客コード
                     salesOrder.getCustomerCode().getBranchNumber(),
-                    salesOrder.getEmployeeCode(),
+                    salesOrder.getEmployeeCode().getValue(),
                     salesOrder.getDesiredDeliveryDate().getValue(),
                     salesOrder.getCustomerOrderNumber(),
                     warehouseCode, // 倉庫コード
@@ -430,7 +430,7 @@ class SalesOrderServiceTest {
                     salesOrder.getDepartmentStartDate(),
                     salesOrder.getCustomerCode().getCode().getValue(),
                     salesOrder.getCustomerCode().getBranchNumber(),
-                    salesOrder.getEmployeeCode(),
+                    salesOrder.getEmployeeCode().getValue(),
                     salesOrder.getDesiredDeliveryDate().getValue(),
                     salesOrder.getCustomerOrderNumber(),
                     salesOrder.getWarehouseCode(),
@@ -473,7 +473,7 @@ class SalesOrderServiceTest {
                     salesOrder.getDepartmentStartDate(),
                     salesOrder.getCustomerCode().getCode().getValue(),
                     salesOrder.getCustomerCode().getBranchNumber(),
-                    salesOrder.getEmployeeCode(),
+                    salesOrder.getEmployeeCode().getValue(),
                     salesOrder.getDesiredDeliveryDate().getValue(),
                     salesOrder.getCustomerOrderNumber(),
                     salesOrder.getWarehouseCode(),
