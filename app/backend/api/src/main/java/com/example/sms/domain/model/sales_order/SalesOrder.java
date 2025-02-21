@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.sales_order;
 
+import com.example.sms.domain.model.master.department.DepartmentCode;
 import com.example.sms.domain.type.money.Money;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,7 @@ import java.util.List;
 public class SalesOrder {
     OrderNumber orderNumber; // 受注番号
     OrderDate orderDate; // 受注日
-    String departmentCode; // 部門コード
+    DepartmentCode departmentCode; // 部門コード
     LocalDateTime departmentStartDate; // 部門開始日
     String customerCode; // 顧客コード
     Integer customerBranchNumber; // 顧客枝番
@@ -31,7 +32,7 @@ public class SalesOrder {
     List<SalesOrderLine> salesOrderLines; // 受注明細
 
     public static SalesOrder of(String orderNumber, LocalDateTime orderDate, String departmentCode, LocalDateTime departmentStartDate, String customerCode, Integer customerBranchNumber, String employeeCode, LocalDateTime desiredDeliveryDate, String customerOrderNumber, String warehouseCode, Integer totalOrderAmount, Integer totalConsumptionTax, String remarks, List<SalesOrderLine> salesOrderLines) {
-        return new SalesOrder(OrderNumber.of(orderNumber), OrderDate.of(orderDate), departmentCode, departmentStartDate, customerCode, customerBranchNumber, employeeCode, DesiredDeliveryDate.of(desiredDeliveryDate), customerOrderNumber, warehouseCode, Money.of(totalOrderAmount), Money.of(totalConsumptionTax), remarks, salesOrderLines);
+        return new SalesOrder(OrderNumber.of(orderNumber), OrderDate.of(orderDate), DepartmentCode.of(departmentCode), departmentStartDate, customerCode, customerBranchNumber, employeeCode, DesiredDeliveryDate.of(desiredDeliveryDate), customerOrderNumber, warehouseCode, Money.of(totalOrderAmount), Money.of(totalConsumptionTax), remarks, salesOrderLines);
     }
 
     public static SalesOrder of(SalesOrder order, List<SalesOrderLine> line) {

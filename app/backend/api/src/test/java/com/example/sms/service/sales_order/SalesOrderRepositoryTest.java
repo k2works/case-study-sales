@@ -126,7 +126,7 @@ class SalesOrderRepositoryTest {
             SalesOrder newOrder = SalesOrder.of(
                     order.getOrderNumber().getValue(),
                     order.getOrderDate().getValue(),
-                    order.getDepartmentCode(),
+                    order.getDepartmentCode().getValue(),
                     order.getDepartmentStartDate(),
                     order.getCustomerCode(),
                     order.getCustomerBranchNumber(),
@@ -151,7 +151,7 @@ class SalesOrderRepositoryTest {
             SalesOrder newOrder = SalesOrder.of(
                     order.getOrderNumber().getValue(),
                     order.getOrderDate().getValue(),
-                    order.getDepartmentCode(),
+                    order.getDepartmentCode().getValue(),
                     order.getDepartmentStartDate(),
                     order.getCustomerCode(),
                     order.getCustomerBranchNumber(),
@@ -177,7 +177,7 @@ class SalesOrderRepositoryTest {
             SalesOrder newOrder = SalesOrder.of(
                     order.getOrderNumber().getValue(),
                     order.getOrderDate().getValue(),
-                    order.getDepartmentCode(),
+                    order.getDepartmentCode().getValue(),
                     order.getDepartmentStartDate(),
                     order.getCustomerCode(),
                     order.getCustomerBranchNumber(),
@@ -198,7 +198,7 @@ class SalesOrderRepositoryTest {
             SalesOrder updatedOrder = SalesOrder.of(
                     newOrder.getOrderNumber().getValue(),
                     newOrder.getOrderDate().getValue(),
-                    newOrder.getDepartmentCode(),
+                    newOrder.getDepartmentCode().getValue(),
                     newOrder.getDepartmentStartDate(),
                     newOrder.getCustomerCode(),
                     newOrder.getCustomerBranchNumber(),
@@ -225,7 +225,7 @@ class SalesOrderRepositoryTest {
             SalesOrder newOrder = SalesOrder.of(
                     order.getOrderNumber().getValue(),
                     order.getOrderDate().getValue(),
-                    order.getDepartmentCode(),
+                    order.getDepartmentCode().getValue(),
                     order.getDepartmentStartDate(),
                     order.getCustomerCode(),
                     order.getCustomerBranchNumber(),

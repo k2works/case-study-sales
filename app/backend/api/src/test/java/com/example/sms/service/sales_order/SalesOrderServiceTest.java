@@ -68,7 +68,7 @@ class SalesOrderServiceTest {
             SalesOrder updatedSalesOrder = SalesOrder.of(
                     salesOrder.getOrderNumber().getValue(),
                     salesOrder.getOrderDate().getValue(),
-                    salesOrder.getDepartmentCode(),
+                    salesOrder.getDepartmentCode().getValue(),
                     salesOrder.getDepartmentStartDate(),
                     "999", // 更新された顧客コード
                     salesOrder.getCustomerBranchNumber(),
@@ -112,7 +112,7 @@ class SalesOrderServiceTest {
             SalesOrder searchOrder = SalesOrder.of(
                     salesOrder.getOrderNumber().getValue(),
                     salesOrder.getOrderDate().getValue(),
-                    salesOrder.getDepartmentCode(),
+                    salesOrder.getDepartmentCode().getValue(),
                     salesOrder.getDepartmentStartDate(),
                     customerCode, // 顧客コード
                     salesOrder.getCustomerBranchNumber(),
@@ -174,7 +174,7 @@ class SalesOrderServiceTest {
                 assertNotNull(result);
                 assertEquals("1000000001", result.getOrderNumber().getValue());
                 assertEquals(LocalDateTime.parse("2025-02-19T00:00"), result.getOrderDate().getValue());
-                assertEquals("10000", result.getDepartmentCode());
+                assertEquals("10000", result.getDepartmentCode().getValue());
                 assertEquals(15000, result.getTotalOrderAmount().getAmount());
                 assertEquals(1500, result.getTotalConsumptionTax().getAmount());
                 assertEquals("初回注文", result.getRemarks());
@@ -217,7 +217,7 @@ class SalesOrderServiceTest {
                 assertNotNull(result);
                 assertEquals("1000000001", result.getOrderNumber().getValue());
                 assertEquals(LocalDateTime.parse("2025-02-19T00:00"), result.getOrderDate().getValue());
-                assertEquals("10000", result.getDepartmentCode());
+                assertEquals("10000", result.getDepartmentCode().getValue());
                 assertEquals(15000, result.getTotalOrderAmount().getAmount());
                 assertEquals(1500, result.getTotalConsumptionTax().getAmount());
                 assertEquals("初回注文", result.getRemarks());
@@ -426,7 +426,7 @@ class SalesOrderServiceTest {
             SalesOrder newSalesOrder = SalesOrder.of(
                     salesOrder.getOrderNumber().getValue(),
                     salesOrder.getOrderDate().getValue(),
-                    salesOrder.getDepartmentCode(),
+                    salesOrder.getDepartmentCode().getValue(),
                     salesOrder.getDepartmentStartDate(),
                     salesOrder.getCustomerCode(),
                     salesOrder.getCustomerBranchNumber(),
@@ -469,7 +469,7 @@ class SalesOrderServiceTest {
             SalesOrder newSalesOrder = SalesOrder.of(
                     salesOrder.getOrderNumber().getValue(),
                     salesOrder.getOrderDate().getValue(),
-                    salesOrder.getDepartmentCode(),
+                    salesOrder.getDepartmentCode().getValue(),
                     salesOrder.getDepartmentStartDate(),
                     salesOrder.getCustomerCode(),
                     salesOrder.getCustomerBranchNumber(),

@@ -16,7 +16,7 @@ public class SalesOrderEntityMapper {
         受注データ salesOrderEntity = new 受注データ();
         salesOrderEntity.set受注番号(salesOrder.getOrderNumber().getValue());
         salesOrderEntity.set受注日(salesOrder.getOrderDate().getValue());
-        salesOrderEntity.set部門コード(salesOrder.getDepartmentCode());
+        salesOrderEntity.set部門コード(salesOrder.getDepartmentCode().getValue());
         salesOrderEntity.set部門開始日(salesOrder.getDepartmentStartDate());
         salesOrderEntity.set顧客コード(salesOrder.getCustomerCode());
         salesOrderEntity.set顧客枝番(salesOrder.getCustomerBranchNumber());
@@ -89,7 +89,7 @@ public class SalesOrderEntityMapper {
         return new SalesOrderDownloadCSV(
                 salesOrder.getOrderNumber().getValue(),
                 salesOrder.getOrderDate().getValue(),
-                salesOrder.getDepartmentCode(),
+                salesOrder.getDepartmentCode().getValue(),
                 salesOrder.getDepartmentStartDate(),
                 salesOrder.getCustomerCode(),
                 salesOrder.getCustomerBranchNumber(),

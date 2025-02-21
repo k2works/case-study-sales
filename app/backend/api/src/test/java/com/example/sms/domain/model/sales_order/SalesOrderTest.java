@@ -32,7 +32,7 @@ class SalesOrderTest {
         SalesOrder salesOrder = SalesOrder.of(
                 "1234567890",
                 LocalDateTime.now(),
-                "DEP001",
+                "12345",
                 LocalDateTime.now(),
                 "CUST001",
                 1,
@@ -48,7 +48,7 @@ class SalesOrderTest {
 
         assertAll(
                 () -> assertEquals("1234567890", salesOrder.getOrderNumber().getValue()),
-                () -> assertEquals("DEP001", salesOrder.getDepartmentCode()),
+                () -> assertEquals("12345", salesOrder.getDepartmentCode().getValue()),
                 () -> assertEquals("CUST001", salesOrder.getCustomerCode()),
                 () -> assertEquals(1, salesOrder.getCustomerBranchNumber()),
                 () -> assertEquals("EMP001", salesOrder.getEmployeeCode()),
