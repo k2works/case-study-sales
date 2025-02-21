@@ -71,7 +71,7 @@ class SalesOrderServiceTest {
                     salesOrder.getDepartmentCode().getValue(),
                     salesOrder.getDepartmentStartDate(),
                     "999", // 更新された顧客コード
-                    salesOrder.getCustomerBranchNumber(),
+                    salesOrder.getCustomerCode().getBranchNumber(),
                     salesOrder.getEmployeeCode(),
                     salesOrder.getDesiredDeliveryDate().getValue(),
                     salesOrder.getCustomerOrderNumber(),
@@ -85,7 +85,7 @@ class SalesOrderServiceTest {
             salesOrderService.save(updatedSalesOrder);
 
             SalesOrder result = salesOrderService.find(salesOrder.getOrderNumber().getValue());
-            assertEquals("999", result.getCustomerCode());
+            assertEquals("999", result.getCustomerCode().getCode().getValue());
             assertEquals(100000, result.getTotalOrderAmount().getAmount());
             assertEquals("Updated remarks", result.getRemarks());
             assertEquals(updatedSalesOrder, result);
@@ -115,7 +115,7 @@ class SalesOrderServiceTest {
                     salesOrder.getDepartmentCode().getValue(),
                     salesOrder.getDepartmentStartDate(),
                     customerCode, // 顧客コード
-                    salesOrder.getCustomerBranchNumber(),
+                    salesOrder.getCustomerCode().getBranchNumber(),
                     salesOrder.getEmployeeCode(),
                     salesOrder.getDesiredDeliveryDate().getValue(),
                     salesOrder.getCustomerOrderNumber(),
@@ -138,7 +138,7 @@ class SalesOrderServiceTest {
             // 検索結果のアサーション
             assertNotNull(result); // 結果がnullでないことを確認
             assertEquals(1, result.getList().size(), "検索結果のサイズが期待値と一致");
-            assertEquals(customerCode, result.getList().getFirst().getCustomerCode(), "顧客コードが一致");
+            assertEquals(customerCode, result.getList().getFirst().getCustomerCode().getCode().getValue(), "顧客コードが一致");
             assertEquals(warehouseCode, result.getList().getFirst().getWarehouseCode(), "倉庫コードが一致");
         }
     }
@@ -428,8 +428,8 @@ class SalesOrderServiceTest {
                     salesOrder.getOrderDate().getValue(),
                     salesOrder.getDepartmentCode().getValue(),
                     salesOrder.getDepartmentStartDate(),
-                    salesOrder.getCustomerCode(),
-                    salesOrder.getCustomerBranchNumber(),
+                    salesOrder.getCustomerCode().getCode().getValue(),
+                    salesOrder.getCustomerCode().getBranchNumber(),
                     salesOrder.getEmployeeCode(),
                     salesOrder.getDesiredDeliveryDate().getValue(),
                     salesOrder.getCustomerOrderNumber(),
@@ -471,8 +471,8 @@ class SalesOrderServiceTest {
                     salesOrder.getOrderDate().getValue(),
                     salesOrder.getDepartmentCode().getValue(),
                     salesOrder.getDepartmentStartDate(),
-                    salesOrder.getCustomerCode(),
-                    salesOrder.getCustomerBranchNumber(),
+                    salesOrder.getCustomerCode().getCode().getValue(),
+                    salesOrder.getCustomerCode().getBranchNumber(),
                     salesOrder.getEmployeeCode(),
                     salesOrder.getDesiredDeliveryDate().getValue(),
                     salesOrder.getCustomerOrderNumber(),

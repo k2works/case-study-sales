@@ -18,8 +18,8 @@ public class SalesOrderEntityMapper {
         salesOrderEntity.set受注日(salesOrder.getOrderDate().getValue());
         salesOrderEntity.set部門コード(salesOrder.getDepartmentCode().getValue());
         salesOrderEntity.set部門開始日(salesOrder.getDepartmentStartDate());
-        salesOrderEntity.set顧客コード(salesOrder.getCustomerCode());
-        salesOrderEntity.set顧客枝番(salesOrder.getCustomerBranchNumber());
+        salesOrderEntity.set顧客コード(salesOrder.getCustomerCode().getCode().getValue());
+        salesOrderEntity.set顧客枝番(salesOrder.getCustomerCode().getBranchNumber());
         salesOrderEntity.set社員コード(salesOrder.getEmployeeCode());
         salesOrderEntity.set希望納期(salesOrder.getDesiredDeliveryDate().getValue());
         salesOrderEntity.set客先注文番号(salesOrder.getCustomerOrderNumber());
@@ -91,8 +91,8 @@ public class SalesOrderEntityMapper {
                 salesOrder.getOrderDate().getValue(),
                 salesOrder.getDepartmentCode().getValue(),
                 salesOrder.getDepartmentStartDate(),
-                salesOrder.getCustomerCode(),
-                salesOrder.getCustomerBranchNumber(),
+                salesOrder.getCustomerCode().getCode().getValue(),
+                salesOrder.getCustomerCode().getBranchNumber(),
                 salesOrder.getEmployeeCode(),
                 salesOrder.getDesiredDeliveryDate().getValue(),
                 salesOrder.getCustomerOrderNumber(),
