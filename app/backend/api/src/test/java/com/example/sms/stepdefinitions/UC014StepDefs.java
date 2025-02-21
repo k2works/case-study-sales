@@ -249,7 +249,7 @@ public class UC014StepDefs extends SpringAcceptanceTest {
         String result = latestResponse.getBody();
         SalesOrder salesOrder = objectMapper.readValue(result, SalesOrder.class);
         Assertions.assertEquals(code, salesOrder.getSalesOrderLines().getFirst().getProductCode().getValue());
-        Assertions.assertEquals(amount, salesOrder.getSalesOrderLines().getFirst().getOrderQuantity().toString());
+        Assertions.assertEquals(Integer.parseInt(amount), salesOrder.getSalesOrderLines().getFirst().getOrderQuantity().getAmount());
     }
 
     private static @NotNull SalesOrderResource getSalesOrderResource(String orderNumber, String orderDate, String departmentCode, String customerCode, String employeeCode, String desiredDeliveryDate) {

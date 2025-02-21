@@ -38,11 +38,11 @@ public class SalesOrderEntityMapper {
         salesOrderLineEntity.set商品コード(salesOrderLine.getProductCode().getValue());
         salesOrderLineEntity.set商品名(salesOrderLine.getProductName());
         salesOrderLineEntity.set販売単価(salesOrderLine.getSalesUnitPrice().getAmount());
-        salesOrderLineEntity.set受注数量(salesOrderLine.getOrderQuantity());
+        salesOrderLineEntity.set受注数量(salesOrderLine.getOrderQuantity().getAmount());
         salesOrderLineEntity.set消費税率(salesOrderLine.getTaxRate().getAmount());
-        salesOrderLineEntity.set引当数量(salesOrderLine.getAllocationQuantity());
-        salesOrderLineEntity.set出荷指示数量(salesOrderLine.getShipmentInstructionQuantity());
-        salesOrderLineEntity.set出荷済数量(salesOrderLine.getShippedQuantity());
+        salesOrderLineEntity.set引当数量(salesOrderLine.getAllocationQuantity().getAmount());
+        salesOrderLineEntity.set出荷指示数量(salesOrderLine.getShipmentInstructionQuantity().getAmount());
+        salesOrderLineEntity.set出荷済数量(salesOrderLine.getShippedQuantity().getAmount());
         salesOrderLineEntity.set完了フラグ(salesOrderLine.getCompletionFlag().getValue());
         salesOrderLineEntity.set値引金額(salesOrderLine.getDiscountAmount().getAmount());
         salesOrderLineEntity.set納期(salesOrderLine.getDeliveryDate().getValue());
@@ -104,11 +104,11 @@ public class SalesOrderEntityMapper {
                 salesOrderLine.getProductCode().getValue(),
                 salesOrderLine.getProductName(),
                 salesOrderLine.getSalesUnitPrice().getAmount(),
-                salesOrderLine.getOrderQuantity(),
+                salesOrderLine.getOrderQuantity().getAmount(),
                 salesOrderLine.getTaxRate().getAmount(),
-                salesOrderLine.getAllocationQuantity(),
-                salesOrderLine.getShipmentInstructionQuantity(),
-                salesOrderLine.getShippedQuantity(),
+                salesOrderLine.getAllocationQuantity().getAmount(),
+                salesOrderLine.getShipmentInstructionQuantity().getAmount(),
+                salesOrderLine.getShippedQuantity().getAmount(),
                 salesOrderLine.getCompletionFlag().getValue(),
                 salesOrderLine.getDiscountAmount().getAmount(),
                 salesOrderLine.getDeliveryDate().getValue()

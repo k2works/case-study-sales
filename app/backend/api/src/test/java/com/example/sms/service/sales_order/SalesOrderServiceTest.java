@@ -186,14 +186,14 @@ class SalesOrderServiceTest {
                 assertEquals("99999001", line1.getProductCode().getValue());
                 assertEquals("商品1", line1.getProductName());
                 assertEquals(3000, line1.getSalesUnitPrice().getAmount());
-                assertEquals(5, line1.getOrderQuantity());
+                assertEquals(5, line1.getOrderQuantity().getAmount());
 
                 SalesOrderLine line2 = result.getSalesOrderLines().get(1);
                 assertEquals(2, line2.getOrderLineNumber());
                 assertEquals("99999002", line2.getProductCode().getValue());
                 assertEquals("商品2", line2.getProductName());
                 assertEquals(2000, line2.getSalesUnitPrice().getAmount());
-                assertEquals(3, line2.getOrderQuantity());
+                assertEquals(3, line2.getOrderQuantity().getAmount());
             }
 
             @Test
@@ -230,14 +230,14 @@ class SalesOrderServiceTest {
                 assertEquals("99999001", line1.getProductCode().getValue());
                 assertEquals("商品1", line1.getProductName());
                 assertEquals(3000, line1.getSalesUnitPrice().getAmount());
-                assertEquals(5, line1.getOrderQuantity());
+                assertEquals(5, line1.getOrderQuantity().getAmount());
 
                 SalesOrderLine line2 = result.getSalesOrderLines().get(1);
                 assertEquals(2, line2.getOrderLineNumber());
                 assertEquals("99999002", line2.getProductCode().getValue());
                 assertEquals("商品2", line2.getProductName());
                 assertEquals(2000, line2.getSalesUnitPrice().getAmount());
-                assertEquals(3, line2.getOrderQuantity());
+                assertEquals(3, line2.getOrderQuantity().getAmount());
             }
 
             @Test
@@ -416,9 +416,9 @@ class SalesOrderServiceTest {
                     10000, // 販売単価が10000円
                     100, // 受注数量が100個
                     salesOrderLine.getTaxRate().getAmount(),
-                    salesOrderLine.getAllocationQuantity(),
-                    salesOrderLine.getShipmentInstructionQuantity(),
-                    salesOrderLine.getShippedQuantity(),
+                    salesOrderLine.getAllocationQuantity().getAmount(),
+                    salesOrderLine.getShipmentInstructionQuantity().getAmount(),
+                    salesOrderLine.getShippedQuantity().getAmount(),
                     0,
                     salesOrderLine.getDiscountAmount().getAmount(),
                     salesOrderLine.getDeliveryDate().getValue()
@@ -457,11 +457,11 @@ class SalesOrderServiceTest {
                     salesOrderLine.getProductCode().getValue(),
                     salesOrderLine.getProductName(),
                     salesOrderLine.getSalesUnitPrice().getAmount(),
-                    salesOrderLine.getOrderQuantity(),
+                    salesOrderLine.getOrderQuantity().getAmount(),
                     salesOrderLine.getTaxRate().getAmount(),
-                    salesOrderLine.getAllocationQuantity(),
-                    salesOrderLine.getShipmentInstructionQuantity(),
-                    salesOrderLine.getShippedQuantity(),
+                    salesOrderLine.getAllocationQuantity().getAmount(),
+                    salesOrderLine.getShipmentInstructionQuantity().getAmount(),
+                    salesOrderLine.getShippedQuantity().getAmount(),
                     1, // 完了済み
                     salesOrderLine.getDiscountAmount().getAmount(),
                     salesOrderLine.getDeliveryDate().getValue()
