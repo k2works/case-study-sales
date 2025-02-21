@@ -73,7 +73,7 @@ class SalesOrderServiceTest {
                     "999", // 更新された顧客コード
                     salesOrder.getCustomerBranchNumber(),
                     salesOrder.getEmployeeCode(),
-                    salesOrder.getDesiredDeliveryDate(),
+                    salesOrder.getDesiredDeliveryDate().getValue(),
                     salesOrder.getCustomerOrderNumber(),
                     salesOrder.getWarehouseCode(),
                     100000, // 更新された受注金額合計
@@ -117,7 +117,7 @@ class SalesOrderServiceTest {
                     customerCode, // 顧客コード
                     salesOrder.getCustomerBranchNumber(),
                     salesOrder.getEmployeeCode(),
-                    salesOrder.getDesiredDeliveryDate(),
+                    salesOrder.getDesiredDeliveryDate().getValue(),
                     salesOrder.getCustomerOrderNumber(),
                     warehouseCode, // 倉庫コード
                     salesOrder.getTotalOrderAmount(),
@@ -431,7 +431,7 @@ class SalesOrderServiceTest {
                     salesOrder.getCustomerCode(),
                     salesOrder.getCustomerBranchNumber(),
                     salesOrder.getEmployeeCode(),
-                    salesOrder.getDesiredDeliveryDate(),
+                    salesOrder.getDesiredDeliveryDate().getValue(),
                     salesOrder.getCustomerOrderNumber(),
                     salesOrder.getWarehouseCode(),
                     1000000, // 受注金額が100万円
@@ -474,7 +474,7 @@ class SalesOrderServiceTest {
                     salesOrder.getCustomerCode(),
                     salesOrder.getCustomerBranchNumber(),
                     salesOrder.getEmployeeCode(),
-                    salesOrder.getDesiredDeliveryDate(),
+                    salesOrder.getDesiredDeliveryDate().getValue(),
                     salesOrder.getCustomerOrderNumber(),
                     salesOrder.getWarehouseCode(),
                     salesOrder.getTotalOrderAmount(),

@@ -21,7 +21,7 @@ public class SalesOrderEntityMapper {
         salesOrderEntity.set顧客コード(salesOrder.getCustomerCode());
         salesOrderEntity.set顧客枝番(salesOrder.getCustomerBranchNumber());
         salesOrderEntity.set社員コード(salesOrder.getEmployeeCode());
-        salesOrderEntity.set希望納期(salesOrder.getDesiredDeliveryDate());
+        salesOrderEntity.set希望納期(salesOrder.getDesiredDeliveryDate().getValue());
         salesOrderEntity.set客先注文番号(salesOrder.getCustomerOrderNumber());
         salesOrderEntity.set倉庫コード(salesOrder.getWarehouseCode());
         salesOrderEntity.set受注金額合計(salesOrder.getTotalOrderAmount());
@@ -94,7 +94,7 @@ public class SalesOrderEntityMapper {
                 salesOrder.getCustomerCode(),
                 salesOrder.getCustomerBranchNumber(),
                 salesOrder.getEmployeeCode(),
-                salesOrder.getDesiredDeliveryDate(),
+                salesOrder.getDesiredDeliveryDate().getValue(),
                 salesOrder.getCustomerOrderNumber(),
                 salesOrder.getWarehouseCode(),
                 salesOrder.getTotalOrderAmount(),

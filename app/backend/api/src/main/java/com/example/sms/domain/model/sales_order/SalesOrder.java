@@ -21,7 +21,7 @@ public class SalesOrder {
     String customerCode; // 顧客コード
     Integer customerBranchNumber; // 顧客枝番
     String employeeCode; // 社員コード
-    LocalDateTime desiredDeliveryDate; // 希望納期
+    DesiredDeliveryDate desiredDeliveryDate; // 希望納期
     String customerOrderNumber; // 客先注文番号
     String warehouseCode; // 倉庫コード
     Integer totalOrderAmount; // 受注金額合計
@@ -30,7 +30,7 @@ public class SalesOrder {
     List<SalesOrderLine> salesOrderLines; // 受注明細
 
     public static SalesOrder of(String orderNumber, LocalDateTime orderDate, String departmentCode, LocalDateTime departmentStartDate, String customerCode, Integer customerBranchNumber, String employeeCode, LocalDateTime desiredDeliveryDate, String customerOrderNumber, String warehouseCode, Integer totalOrderAmount, Integer totalConsumptionTax, String remarks, List<SalesOrderLine> salesOrderLines) {
-        return new SalesOrder(OrderNumber.of(orderNumber), OrderDate.of(orderDate), departmentCode, departmentStartDate, customerCode, customerBranchNumber, employeeCode, desiredDeliveryDate, customerOrderNumber, warehouseCode, totalOrderAmount, totalConsumptionTax, remarks, salesOrderLines);
+        return new SalesOrder(OrderNumber.of(orderNumber), OrderDate.of(orderDate), departmentCode, departmentStartDate, customerCode, customerBranchNumber, employeeCode, DesiredDeliveryDate.of(desiredDeliveryDate), customerOrderNumber, warehouseCode, totalOrderAmount, totalConsumptionTax, remarks, salesOrderLines);
     }
 
     public static SalesOrder of(SalesOrder order, List<SalesOrderLine> line) {

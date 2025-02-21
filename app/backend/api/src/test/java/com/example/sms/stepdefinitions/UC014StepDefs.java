@@ -228,7 +228,7 @@ public class UC014StepDefs extends SpringAcceptanceTest {
 
         String result = latestResponse.getBody();
         SalesOrder salesOrder = objectMapper.readValue(result, SalesOrder.class);
-        Assertions.assertEquals(day, salesOrder.getDesiredDeliveryDate().toString());
+        Assertions.assertEquals(day, salesOrder.getDesiredDeliveryDate().getValue().toString());
     }
 
     @ならば(":UC014 明細データに商品コード {string} が含まれる")

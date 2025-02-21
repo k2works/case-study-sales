@@ -91,6 +91,17 @@ class SalesOrderTest {
     }
 
     @Nested
+    @DisplayName("希望納期")
+    class DesiredDeliveryDateTest {
+        @Test
+        @DisplayName("希望納期を作成できる")
+        void shouldCreateDesiredDeliveryDate() {
+            DesiredDeliveryDate desiredDeliveryDate = DesiredDeliveryDate.of(LocalDateTime.now());
+            assertNotNull(desiredDeliveryDate);
+        }
+    }
+
+    @Nested
     @DisplayName("受注明細")
     class SalesOrderLineTest {
 
