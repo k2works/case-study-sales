@@ -9,7 +9,7 @@ import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.sales_order.SalesOrder;
 import com.example.sms.domain.model.sales_order.SalesOrderLine;
 import com.example.sms.domain.model.sales_order.SalesOrderList;
-import com.example.sms.domain.type.money.Money;
+import com.example.sms.domain.service.sales_order.SalesOrderDomainService;
 import com.example.sms.infrastructure.Pattern2ReadCSVUtil;
 import com.example.sms.infrastructure.datasource.sales_order.SalesOrderUploadCSV;
 import com.example.sms.service.master.department.DepartmentRepository;
@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,13 +40,15 @@ public class SalesOrderService {
     final DepartmentRepository departmentRepository;
     final PartnerRepository partnerRepository;
     final EmployeeRepository employeeRepository;
+    final SalesOrderDomainService salesOrderDomainService;
 
-    public SalesOrderService(SalesOrderRepository salesOrderRepository, ProductRepository productRepository, DepartmentRepository departmentRepository, PartnerRepository partnerRepository, EmployeeRepository employeeRepository) {
+    public SalesOrderService(SalesOrderRepository salesOrderRepository, ProductRepository productRepository, DepartmentRepository departmentRepository, PartnerRepository partnerRepository, EmployeeRepository employeeRepository, SalesOrderDomainService salesOrderDomainService) {
         this.salesOrderRepository = salesOrderRepository;
         this.productRepository = productRepository;
         this.departmentRepository = departmentRepository;
         this.partnerRepository = partnerRepository;
         this.employeeRepository = employeeRepository;
+        this.salesOrderDomainService = salesOrderDomainService;
     }
 
     /**
@@ -100,6 +101,14 @@ public class SalesOrderService {
     }
 
     /**
+     * 受注ルールチェック
+     */
+    public List<Map<String, String>> checkRule() {
+        SalesOrderList salesOrders = salesOrderRepository.selectAllNotComplete();
+        return salesOrderDomainService.checkRule(salesOrders);
+    }
+
+    /**
      * CSVファイルアップロード
      */
     public List<Map<String, String>>  uploadCsvFile(MultipartFile file) {
@@ -119,43 +128,6 @@ public class SalesOrderService {
         SalesOrderList salesOrderList = convert(dataList);
         salesOrderRepository.save(salesOrderList);
         return errorList;
-    }
-
-    /**
-     * 受注ルールチェック
-     */
-    public List<Map<String, String>> checkRule() {
-        List<Map<String, String>> checkList = new ArrayList<>();
-        SalesOrderList salesOrders = salesOrderRepository.selectAllNotComplete();
-
-        // 受注金額が100万円以上の場合
-        salesOrders.asList().forEach(salesOrder -> {
-            if (salesOrder.getTotalOrderAmount().isGreaterThan(Money.of(1000000))) {
-                Map<String, String> errorMap = new HashMap<>();
-                errorMap.put(salesOrder.getOrderNumber().getValue(), "受注金額が100万円を超えています。");
-                checkList.add(errorMap);
-            }
-        });
-
-        // 納期が受注日より前の場合
-        salesOrders.asList().forEach(salesOrder -> salesOrder.getSalesOrderLines().forEach(salesOrderLine -> {
-            if (salesOrderLine.getDeliveryDate().getValue().isBefore(salesOrder.getOrderDate().getValue())) {
-                Map<String, String> errorMap = new HashMap<>();
-                errorMap.put(salesOrder.getOrderNumber().getValue(), "納期が受注日より前です。");
-                checkList.add(errorMap);
-            }
-        }));
-
-        // 納期が超過している場合
-        salesOrders.asList().forEach(salesOrder -> salesOrder.getSalesOrderLines().forEach(salesOrderLine -> {
-            if (salesOrderLine.getDeliveryDate().getValue().isBefore(LocalDateTime.now())) {
-                Map<String, String> errorMap = new HashMap<>();
-                errorMap.put(salesOrder.getOrderNumber().getValue(), "納期を超過しています。");
-                checkList.add(errorMap);
-            }
-        }));
-
-        return checkList;
     }
 
     private List<Map<String, String>> checkError(List<SalesOrderUploadCSV> dataList) {
