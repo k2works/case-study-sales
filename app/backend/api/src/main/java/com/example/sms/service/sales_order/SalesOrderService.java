@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -125,9 +126,9 @@ public class SalesOrderService {
      */
     public List<Map<String, String>> checkRule() {
         List<Map<String, String>> checkList = new ArrayList<>();
+        SalesOrderList salesOrders = salesOrderRepository.selectAllNotComplete();
 
         // 受注金額が100万円以上の場合
-        SalesOrderList salesOrders = salesOrderRepository.selectAllNotComplete();
         salesOrders.asList().forEach(salesOrder -> {
             if (salesOrder.getTotalOrderAmount().isGreaterThan(Money.of(1000000))) {
                 Map<String, String> errorMap = new HashMap<>();
@@ -135,6 +136,24 @@ public class SalesOrderService {
                 checkList.add(errorMap);
             }
         });
+
+        // 納期が受注日より前の場合
+        salesOrders.asList().forEach(salesOrder -> salesOrder.getSalesOrderLines().forEach(salesOrderLine -> {
+            if (salesOrderLine.getDeliveryDate().getValue().isBefore(salesOrder.getOrderDate().getValue())) {
+                Map<String, String> errorMap = new HashMap<>();
+                errorMap.put(salesOrder.getOrderNumber().getValue(), "納期が受注日より前です。");
+                checkList.add(errorMap);
+            }
+        }));
+
+        // 納期が超過している場合
+        salesOrders.asList().forEach(salesOrder -> salesOrder.getSalesOrderLines().forEach(salesOrderLine -> {
+            if (salesOrderLine.getDeliveryDate().getValue().isBefore(LocalDateTime.now())) {
+                Map<String, String> errorMap = new HashMap<>();
+                errorMap.put(salesOrder.getOrderNumber().getValue(), "納期を超過しています。");
+                checkList.add(errorMap);
+            }
+        }));
 
         return checkList;
     }

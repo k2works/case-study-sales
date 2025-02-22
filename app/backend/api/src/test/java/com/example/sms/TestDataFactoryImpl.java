@@ -306,6 +306,15 @@ public class TestDataFactoryImpl implements TestDataFactory {
     }
 
     @Override
+    public void setUpForSalesOrderRuleCheckService() {
+        salesOrderRepository.deleteAll();
+        setUpForDepartmentService();
+        setUpForProductService();
+        setUpForPartnerService();
+        setUpForEmployeeService();
+    }
+
+    @Override
     public MultipartFile createSalesOrderFile() {
         InputStream is = getClass().getResourceAsStream("/csv/sales_order/sales_order_multiple.csv");
         try {

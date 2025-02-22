@@ -1,6 +1,10 @@
 package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
+import com.example.sms.domain.model.sales_order.SalesOrder;
+import com.example.sms.domain.model.sales_order.SalesOrderLine;
+import com.example.sms.domain.model.sales_order.SalesOrderList;
+import com.example.sms.service.sales_order.SalesOrderRepository;
 import com.example.sms.stepdefinitions.utils.MessageResponseWithDetail;
 import com.example.sms.stepdefinitions.utils.SpringAcceptanceTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -13,6 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -23,6 +30,8 @@ public class UC016StepDefs extends SpringAcceptanceTest {
     private static final String SALES_ORDER_API_URL = HOST + "/api/sales-orders";
     @Autowired
     TestDataFactory testDataFactory;
+    @Autowired
+    SalesOrderRepository salesOrderRepository;
 
     @前提(":UC016 {string} である")
     public void login(String user) {
@@ -36,6 +45,8 @@ public class UC016StepDefs extends SpringAcceptanceTest {
 
     @前提(":UC016 {string} が登録されている")
     public void init(String data) {
+        salesOrderRepository.deleteAll();
+
         switch (data) {
             case "部門データ":
                 testDataFactory.setUpForDepartmentService();
@@ -93,6 +104,34 @@ public class UC016StepDefs extends SpringAcceptanceTest {
 
     @もし(":UC016 {string} を確認する")
     public void check(String rule) throws JsonProcessingException {
+        SalesOrderList salesOrderList = salesOrderRepository.selectAllNotComplete();
+        salesOrderList.asList().forEach(salesOrder -> {
+            List<SalesOrderLine> salesOrderLines = new ArrayList<>();
+            salesOrder.getSalesOrderLines().forEach(salesOrderLine -> {
+                SalesOrderLine line = SalesOrderLine.of(
+                        salesOrderLine.getOrderNumber().getValue(),
+                        salesOrderLine.getOrderLineNumber(),
+                        salesOrderLine.getProductCode().getValue(),
+                        salesOrderLine.getProductName(),
+                        salesOrderLine.getSalesUnitPrice().getAmount(),
+                        salesOrderLine.getOrderQuantity().getAmount(),
+                        salesOrderLine.getTaxRate().getRate(),
+                        salesOrderLine.getAllocationQuantity().getAmount(),
+                        salesOrderLine.getShipmentInstructionQuantity().getAmount(),
+                        salesOrderLine.getShippedQuantity().getAmount(),
+                        salesOrderLine.getCompletionFlag().getValue(),
+                        salesOrderLine.getDiscountAmount().getAmount(),
+                        LocalDateTime.now().plusDays(1)
+                );
+                salesOrderLines.add(line);
+            });
+            SalesOrder.of(
+                    salesOrder,
+                    salesOrderLines
+            );
+            salesOrderRepository.save(salesOrder);
+        });
+
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
 

@@ -3,6 +3,7 @@ package com.example.sms.service.sales_order;
 import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactory;
 import com.example.sms.TestDataFactoryImpl;
+import com.example.sms.domain.model.sales_order.DeliveryDate;
 import com.example.sms.domain.model.sales_order.SalesOrder;
 import com.example.sms.domain.model.sales_order.SalesOrderLine;
 import com.example.sms.domain.model.sales_order.SalesOrderList;
@@ -400,7 +401,7 @@ class SalesOrderServiceTest {
     class SalesOrderRuleTest {
         @BeforeEach
         void setUp() {
-            testDataFactory.setUpForSalesOrderService();
+            testDataFactory.setUpForSalesOrderRuleCheckService();
         }
 
         @Test
@@ -442,8 +443,94 @@ class SalesOrderServiceTest {
             salesOrderService.save(newSalesOrder);
 
             List<Map<String, String>> checkList = salesOrderService.checkRule();
-            assertEquals(1, checkList.size());
+            assertEquals(2, checkList.size());
             assertTrue(checkList.getFirst().containsValue("受注金額が100万円を超えています。"));
+        }
+
+        @Test
+        @DisplayName("納期が受注日より前の場合")
+        void shouldThrowExceptionWhenDeliveryDateIsBeforeOrderDate() {
+            SalesOrder salesOrder = TestDataFactoryImpl.getSalesOrder("1000000009");
+            SalesOrderLine salesOrderLine = TestDataFactoryImpl.getSalesOrderLine("1000000009", 1);
+            SalesOrderLine newSalesOrderLine = SalesOrderLine.of(
+                    salesOrderLine.getOrderNumber().getValue(),
+                    salesOrderLine.getOrderLineNumber(),
+                    salesOrderLine.getProductCode().getValue(),
+                    salesOrderLine.getProductName(),
+                    salesOrderLine.getSalesUnitPrice().getAmount(),
+                    salesOrderLine.getOrderQuantity().getAmount(),
+                    salesOrderLine.getTaxRate().getRate(),
+                    salesOrderLine.getAllocationQuantity().getAmount(),
+                    salesOrderLine.getShipmentInstructionQuantity().getAmount(),
+                    salesOrderLine.getShippedQuantity().getAmount(),
+                    salesOrderLine.getCompletionFlag().getValue(),
+                    salesOrderLine.getDiscountAmount().getAmount(),
+                    salesOrderLine.getDeliveryDate().getValue().minusDays(1) // 納期が受注日より前
+            );
+            SalesOrder newSalesOrder = SalesOrder.of(
+                    salesOrder.getOrderNumber().getValue(),
+                    salesOrder.getOrderDate().getValue(),
+                    salesOrder.getDepartmentCode().getValue(),
+                    salesOrder.getDepartmentStartDate(),
+                    salesOrder.getCustomerCode().getCode().getValue(),
+                    salesOrder.getCustomerCode().getBranchNumber(),
+                    salesOrder.getEmployeeCode().getValue(),
+                    salesOrder.getDesiredDeliveryDate().getValue(),
+                    salesOrder.getCustomerOrderNumber(),
+                    salesOrder.getWarehouseCode(),
+                    salesOrder.getTotalOrderAmount().getAmount(),
+                    salesOrder.getTotalConsumptionTax().getAmount(),
+                    salesOrder.getRemarks(),
+                    List.of(newSalesOrderLine)
+            );
+            salesOrderService.save(newSalesOrder);
+
+            List<Map<String, String>> checkList = salesOrderService.checkRule();
+            assertEquals(2, checkList.size());
+            assertTrue(checkList.getFirst().containsValue("納期が受注日より前です。"));
+        }
+
+        @Test
+        @DisplayName("納期を超過している場合")
+        void shouldThrowExceptionWhenDeliveryDateIsExceeded() {
+            SalesOrder salesOrder = TestDataFactoryImpl.getSalesOrder("1000000009");
+            SalesOrderLine salesOrderLine = TestDataFactoryImpl.getSalesOrderLine("1000000009", 1);
+            SalesOrderLine newSalesOrderLine = SalesOrderLine.of(
+                    salesOrderLine.getOrderNumber().getValue(),
+                    salesOrderLine.getOrderLineNumber(),
+                    salesOrderLine.getProductCode().getValue(),
+                    salesOrderLine.getProductName(),
+                    salesOrderLine.getSalesUnitPrice().getAmount(),
+                    salesOrderLine.getOrderQuantity().getAmount(),
+                    salesOrderLine.getTaxRate().getRate(),
+                    salesOrderLine.getAllocationQuantity().getAmount(),
+                    salesOrderLine.getShipmentInstructionQuantity().getAmount(),
+                    salesOrderLine.getShippedQuantity().getAmount(),
+                    salesOrderLine.getCompletionFlag().getValue(),
+                    salesOrderLine.getDiscountAmount().getAmount(),
+                    DeliveryDate.of(LocalDateTime.now().minusDays(1)).getValue() // 納期を超過
+            );
+            SalesOrder newSalesOrder = SalesOrder.of(
+                    salesOrder.getOrderNumber().getValue(),
+                    salesOrder.getOrderDate().getValue(),
+                    salesOrder.getDepartmentCode().getValue(),
+                    salesOrder.getDepartmentStartDate(),
+                    salesOrder.getCustomerCode().getCode().getValue(),
+                    salesOrder.getCustomerCode().getBranchNumber(),
+                    salesOrder.getEmployeeCode().getValue(),
+                    salesOrder.getDesiredDeliveryDate().getValue(),
+                    salesOrder.getCustomerOrderNumber(),
+                    salesOrder.getWarehouseCode(),
+                    salesOrder.getTotalOrderAmount().getAmount(),
+                    salesOrder.getTotalConsumptionTax().getAmount(),
+                    salesOrder.getRemarks(),
+                    List.of(newSalesOrderLine)
+            );
+            salesOrderService.save(newSalesOrder);
+
+            List<Map<String, String>> checkList = salesOrderService.checkRule();
+            assertEquals(1, checkList.size());
+            assertTrue(checkList.getFirst().containsValue("納期を超過しています。"));
         }
 
         @Test
