@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.sms.infrastructure.datasource.sales_order.sales_order_line.SalesOrderLineCustomMapper">
-    <select id="selectAll" resultMap="com.example.sms.infrastructure.datasource.autogen.mapper.受注データ明細Mapper.BaseResultMap">
+    <resultMap
+            id="BaseResultMap"
+            type="com.example.sms.infrastructure.datasource.sales_order.sales_order_line.SalesOrderLineCustomEntity"
+            extends="com.example.sms.infrastructure.datasource.autogen.mapper.受注データ明細Mapper.BaseResultMap">
+        <association property="商品マスタ"
+                     javaType="com.example.sms.infrastructure.datasource.master.product.ProductCustomMapper"
+                     column="商品コード"
+                     select="com.example.sms.infrastructure.datasource.master.product.ProductCustomMapper.selectByPrimaryKey"
+                     fetchType="eager"
+        />
+    </resultMap>
+
+    <select id="selectAll" resultMap="BaseResultMap">
         select
         <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.受注データ明細Mapper.Base_Column_List"/>
         from public.受注データ明細
     </select>
 
-    <select id="selectBySalesOrderNumber" resultMap="com.example.sms.infrastructure.datasource.autogen.mapper.受注データ明細Mapper.BaseResultMap">
+    <select id="selectBySalesOrderNumber" resultMap="BaseResultMap">
         select
         <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.受注データ明細Mapper.Base_Column_List"/>
         from public.受注データ明細

@@ -279,6 +279,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 .mapToObj(i -> getShipping(partner.getPartnerCode().getValue(), i, customer.getCustomerCode().getBranchNumber()))
                 .toList();
         partnerRepository.save(Partner.ofWithCustomers(partner, List.of(Customer.of(customer, shippingList))));
+        productRepository.save(Product.of("99999999", "商品1", "商品1", "ショウヒンイチ", ProductType.その他, 900, 810, 90, TaxType.その他, "カテゴリ9", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "009", 9));
 
         salesOrderRepository.deleteAll();
 

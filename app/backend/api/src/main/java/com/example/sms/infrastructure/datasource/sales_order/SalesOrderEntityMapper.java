@@ -6,6 +6,7 @@ import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.master.partner.customer.*;
 import com.example.sms.domain.model.master.partner.invoice.ClosingInvoice;
 import com.example.sms.domain.model.master.partner.invoice.Invoice;
+import com.example.sms.domain.model.master.product.*;
 import com.example.sms.domain.model.sales_order.SalesOrder;
 import com.example.sms.domain.model.sales_order.SalesOrderLine;
 import com.example.sms.domain.type.address.Address;
@@ -16,9 +17,12 @@ import com.example.sms.infrastructure.datasource.autogen.model.*;
 import com.example.sms.infrastructure.datasource.master.department.DepartmentCustomEntity;
 import com.example.sms.infrastructure.datasource.master.employee.EmployeeCustomEntity;
 import com.example.sms.infrastructure.datasource.master.partner.customer.CustomerCustomEntity;
+import com.example.sms.infrastructure.datasource.master.product.ProductCustomEntity;
+import com.example.sms.infrastructure.datasource.sales_order.sales_order_line.SalesOrderLineCustomEntity;
 import com.example.sms.infrastructure.datasource.system.download.SalesOrderDownloadCSV;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -63,21 +67,76 @@ public class SalesOrderEntityMapper {
     }
 
     public SalesOrder mapToDomainModel(SalesOrderCustomEntity salesOrderCustomEntity) {
-        Function<受注データ明細, SalesOrderLine> salesOrderLineMapper = e -> SalesOrderLine.of(
-                e.get受注番号(),
-                e.get受注行番号(),
-                e.get商品コード(),
-                e.get商品名(),
-                e.get販売単価(),
-                e.get受注数量(),
-                e.get消費税率(),
-                e.get引当数量(),
-                e.get出荷指示数量(),
-                e.get出荷済数量(),
-                e.get完了フラグ(),
-                e.get値引金額(),
-                e.get納期()
+        Function<代替商品, SubstituteProduct> mapToSubstituteProduct = s -> (
+                SubstituteProduct.of(
+                        s.get商品コード(),
+                        s.get代替商品コード(),
+                        s.get優先順位()
+                )
         );
+
+        Function<部品表, Bom> mapToBom = b -> (
+                Bom.of(
+                        b.get商品コード(),
+                        b.get部品コード(),
+                        b.get部品数量()
+                )
+        );
+
+        Function<顧客別販売単価, CustomerSpecificSellingPrice> mapToCustomerSpecificSellingPrice = c -> (
+                CustomerSpecificSellingPrice.of(
+                        c.get商品コード(),
+                        c.get取引先コード(),
+                        c.get販売単価()
+                )
+        );
+        Function<ProductCustomEntity, Product> mapToProduct = e -> Product.of(
+                Product.of(
+                        e.get商品コード(),
+                        e.get商品正式名(),
+                        e.get商品略称(),
+                        e.get商品名カナ(),
+                        ProductType.fromCode(e.get商品区分()),
+                        e.get販売単価(),
+                        e.get仕入単価(),
+                        e.get売上原価(),
+                        TaxType.fromCode(e.get税区分()),
+                        e.get商品分類コード(),
+                        MiscellaneousType.fromCode(e.get雑区分()),
+                        StockManagementTargetType.fromCode(e.get在庫管理対象区分()),
+                        StockAllocationType.fromCode(e.get在庫引当区分()),
+                        e.get仕入先コード(),
+                        e.get仕入先枝番()
+                ),
+                e.get代替商品().stream().map(mapToSubstituteProduct).toList(),
+                e.get部品表().stream().map(mapToBom).toList(),
+                e.get顧客別販売単価().stream().map(mapToCustomerSpecificSellingPrice).toList()
+        );
+
+        Function<SalesOrderLineCustomEntity, SalesOrderLine> salesOrderLineMapper = e -> {
+            if (Objects.isNull(e)) {
+                return SalesOrderLine.of(null, null);
+            }
+
+            return SalesOrderLine.of(
+                    SalesOrderLine.of(
+                            e.get受注番号(),
+                            e.get受注行番号(),
+                            e.get商品コード(),
+                            e.get商品名(),
+                            e.get販売単価(),
+                            e.get受注数量(),
+                            e.get消費税率(),
+                            e.get引当数量(),
+                            e.get出荷指示数量(),
+                            e.get出荷済数量(),
+                            e.get完了フラグ(),
+                            Objects.isNull(e.get値引金額()) ? 0 : e.get値引金額(), // 値引金額のnullチェック
+                            e.get納期()
+                    ),
+                    Objects.nonNull(e.get商品マスタ()) ? mapToProduct.apply(e.get商品マスタ()) : null // 商品マスタのnullチェック
+            );
+        };
 
         Function<DepartmentCustomEntity, Department> mapToDepartment = e -> Department.of(
                 DepartmentId.of(e.get部門コード(), e.get開始日()),

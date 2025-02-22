@@ -49,6 +49,8 @@ class SalesOrderServiceTest {
             assertNotNull(result.asList().getFirst().getCustomer());
             assertNotNull(result.asList().getFirst().getCustomer().getShippings());
             assertNotNull(result.asList().getFirst().getEmployee());
+            assertNotNull(result.asList().getFirst().getSalesOrderLines());
+            assertNotNull(result.asList().getFirst().getSalesOrderLines().getFirst().getProduct());
         }
 
         @Test
