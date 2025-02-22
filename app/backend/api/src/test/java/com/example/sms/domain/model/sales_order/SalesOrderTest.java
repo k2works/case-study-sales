@@ -1,9 +1,5 @@
 package com.example.sms.domain.model.sales_order;
 
-import com.example.sms.domain.model.master.department.DepartmentCode;
-import com.example.sms.domain.model.master.employee.EmployeeCode;
-import com.example.sms.domain.model.master.partner.customer.CustomerCode;
-import com.example.sms.domain.type.money.Money;
 import org.junit.jupiter.api.*;
 
 import java.time.LocalDateTime;
@@ -68,18 +64,19 @@ class SalesOrderTest {
     @Test
     @DisplayName("受注日より前に納品希望日を設定できない")
     void shouldNotCreateSalesOrder() {
-        assertThrows(IllegalArgumentException.class, () -> new SalesOrder(
-                OrderNumber.of("1234567890"),
-                OrderDate.of(LocalDateTime.now()),
-                DepartmentCode.of("12345"),
+        assertThrows(IllegalArgumentException.class, () -> SalesOrder.of(
+                "1234567890",
                 LocalDateTime.now(),
-                CustomerCode.of("001", 1),
-                EmployeeCode.of("EMP001"),
-                DesiredDeliveryDate.of(LocalDateTime.now().minusDays(1)),
+                "12345",
+                LocalDateTime.now(),
+                "001",
+                1,
+                "EMP001",
+                LocalDateTime.now().minusDays(1),
                 "CUSTORDER123",
                 "WH001",
-                Money.of(2000),
-                Money.of(200),
+                2000,
+                200,
                 "これは備考です",
                 Collections.emptyList()
         ));

@@ -5,6 +5,24 @@
           id="BaseResultMap"
           type="com.example.sms.infrastructure.datasource.sales_order.SalesOrderCustomEntity"
           extends="com.example.sms.infrastructure.datasource.autogen.mapper.受注データMapper.BaseResultMap">
+      <association property="部門マスタ"
+                   javaType="com.example.sms.infrastructure.datasource.master.department.DepartmentCustomEntity"
+                   column="{部門コード=部門コード, 開始日=部門開始日}"
+                   select="com.example.sms.infrastructure.datasource.master.department.DepartmentCustomMapper.selectByPrimaryKey"
+                   fetchType="eager"
+      />
+      <association property="顧客マスタ"
+                  javaType="com.example.sms.infrastructure.datasource.master.partner.customer.CustomerCustomEntity"
+                  column="{顧客コード=顧客コード, 顧客枝番=顧客枝番}"
+                  select="com.example.sms.infrastructure.datasource.master.partner.customer.CustomerCustomMapper.selectByPrimaryKey"
+                  fetchType="eager"
+      />
+      <association property="社員マスタ"
+                  javaType="com.example.sms.infrastructure.datasource.master.employee.EmployeeCustomMapper"
+                  column="社員コード"
+                  select="com.example.sms.infrastructure.datasource.master.employee.EmployeeCustomMapper.selectByPrimaryKey"
+                  fetchType="eager"
+      />
       <collection property="受注データ明細"
                   javaType="ArrayList"
                   column="受注番号"

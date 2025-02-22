@@ -45,6 +45,10 @@ class SalesOrderServiceTest {
         void shouldRetrieveAllSalesOrders() {
             SalesOrderList result = salesOrderService.selectAll();
             assertEquals(3, result.asList().size());
+            assertNotNull(result.asList().getFirst().getDepartment());
+            assertNotNull(result.asList().getFirst().getCustomer());
+            assertNotNull(result.asList().getFirst().getCustomer().getShippings());
+            assertNotNull(result.asList().getFirst().getEmployee());
         }
 
         @Test

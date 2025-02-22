@@ -269,6 +269,17 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
     @Override
     public void setUpForSalesOrderService() {
+        Department department = getDepartment("10000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門1");
+        departmentRepository.save(department);
+        Employee employee = getEmployee("EMP001", "10000", LocalDateTime.of(2021, 1, 1, 0, 0));
+        employeeRepository.save(employee);
+        Partner partner = getPartner("001");
+        Customer customer = getCustomer(partner.getPartnerCode().getValue(), 1);
+        List<Shipping> shippingList = IntStream.rangeClosed(1, 3)
+                .mapToObj(i -> getShipping(partner.getPartnerCode().getValue(), i, customer.getCustomerCode().getBranchNumber()))
+                .toList();
+        partnerRepository.save(Partner.ofWithCustomers(partner, List.of(Customer.of(customer, shippingList))));
+
         salesOrderRepository.deleteAll();
 
         IntStream.rangeClosed(1, 3).forEach(i -> {
@@ -280,11 +291,11 @@ public class TestDataFactoryImpl implements TestDataFactory {
             SalesOrder newOrder = SalesOrder.of(
                     order.getOrderNumber().getValue(),
                     order.getOrderDate().getValue(),
-                    order.getDepartmentCode().getValue(),
-                    order.getDepartmentStartDate(),
-                    order.getCustomerCode().getCode().getValue(),
-                    order.getCustomerCode().getBranchNumber(),
-                    order.getEmployeeCode().getValue(),
+                    department.getDepartmentId().getDeptCode().getValue(),
+                    department.getDepartmentId().getDepartmentStartDate().getValue(),
+                    customer.getCustomerCode().getCode().getValue(),
+                    customer.getCustomerCode().getBranchNumber(),
+                    employee.getEmpCode().getValue(),
                     order.getDesiredDeliveryDate().getValue(),
                     order.getCustomerOrderNumber(),
                     order.getWarehouseCode(),
@@ -509,11 +520,11 @@ public class TestDataFactoryImpl implements TestDataFactory {
         return SalesOrder.of(
                 orderNumber,  // orderNumber（受注番号）
                 LocalDateTime.of(2021, 1, 1, 0, 0),  // orderDate（受注日）
-                "10000",  // departmentCode（部門コード）
+                "10009",  // departmentCode（部門コード）
                 LocalDateTime.of(2021, 1, 1, 0, 0),  // departmentStartDate（部門開始日）
-                "001",  // customerCode（顧客コード）
+                "009",  // customerCode（顧客コード）
                 1,  // customerBranchNumber（顧客枝番）
-                "EMP001",  // employeeCode（社員コード）
+                "EMP009",  // employeeCode（社員コード）
                 LocalDateTime.of(2021, 1, 1, 0, 0),  // desiredDeliveryDate（希望納期）
                 "001",  // customerOrderNumber（客先注文番号）
                 "001",  // warehouseCode（倉庫コード）

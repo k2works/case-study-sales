@@ -333,11 +333,11 @@ class DownloadServiceTest {
             // フィールドごとのアサーション
             assertEquals("1000000001", firstResult.getOrderNumber(), "受注番号が一致しません");
             assertEquals(LocalDateTime.of(2021, 1, 1, 0, 0), firstResult.getOrderDate(), "受注日が一致しません");
-            assertEquals("10000", firstResult.getDepartmentCode(), "部門コードが一致しません");
+            assertEquals("10009", firstResult.getDepartmentCode(), "部門コードが一致しません");
             assertEquals(LocalDateTime.of(2021, 1, 1, 0, 0), firstResult.getDepartmentStartDate(), "部門開始日が一致しません");
-            assertEquals("001", firstResult.getCustomerCode(), "顧客コードが一致しません");
+            assertEquals("009", firstResult.getCustomerCode(), "顧客コードが一致しません");
             assertEquals(1, firstResult.getCustomerBranchNumber(), "顧客枝番が一致しません");
-            assertEquals("EMP001", firstResult.getEmployeeCode(), "社員コードが一致しません");
+            assertEquals("EMP009", firstResult.getEmployeeCode(), "社員コードが一致しません");
             assertEquals(LocalDateTime.of(2021, 1, 1, 0, 0), firstResult.getDesiredDeliveryDate(), "希望納期が一致しません");
             assertEquals("001", firstResult.getCustomerOrderNumber(), "客先注文番号が一致しません");
             assertEquals("001", firstResult.getWarehouseCode(), "倉庫コードが一致しません");

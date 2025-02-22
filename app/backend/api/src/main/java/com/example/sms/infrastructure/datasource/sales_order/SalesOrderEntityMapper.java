@@ -1,13 +1,25 @@
 package com.example.sms.infrastructure.datasource.sales_order;
 
+import com.example.sms.domain.model.master.department.Department;
+import com.example.sms.domain.model.master.department.DepartmentId;
+import com.example.sms.domain.model.master.employee.Employee;
+import com.example.sms.domain.model.master.partner.customer.*;
+import com.example.sms.domain.model.master.partner.invoice.ClosingInvoice;
+import com.example.sms.domain.model.master.partner.invoice.Invoice;
 import com.example.sms.domain.model.sales_order.SalesOrder;
 import com.example.sms.domain.model.sales_order.SalesOrderLine;
-import com.example.sms.infrastructure.datasource.autogen.model.受注データ;
-import com.example.sms.infrastructure.datasource.autogen.model.受注データ明細;
-import com.example.sms.infrastructure.datasource.autogen.model.受注データ明細Key;
+import com.example.sms.domain.type.address.Address;
+import com.example.sms.domain.type.mail.EmailAddress;
+import com.example.sms.domain.type.phone.FaxNumber;
+import com.example.sms.domain.type.phone.PhoneNumber;
+import com.example.sms.infrastructure.datasource.autogen.model.*;
+import com.example.sms.infrastructure.datasource.master.department.DepartmentCustomEntity;
+import com.example.sms.infrastructure.datasource.master.employee.EmployeeCustomEntity;
+import com.example.sms.infrastructure.datasource.master.partner.customer.CustomerCustomEntity;
 import com.example.sms.infrastructure.datasource.system.download.SalesOrderDownloadCSV;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
 import java.util.function.Function;
 
 @Component
@@ -67,7 +79,74 @@ public class SalesOrderEntityMapper {
                 e.get納期()
         );
 
-        return SalesOrder.of(
+        Function<DepartmentCustomEntity, Department> mapToDepartment = e -> Department.of(
+                DepartmentId.of(e.get部門コード(), e.get開始日()),
+                e.get終了日(),
+                e.get部門名(),
+                e.get組織階層(),
+                e.get部門パス(),
+                e.get最下層区分(),
+                e.get伝票入力可否()
+        );
+
+        Function<出荷先マスタ, Shipping> mapToShipping = e -> Shipping.of(
+                e.get顧客コード(),
+                e.get出荷先番号(),
+                e.get顧客枝番(),
+                e.get出荷先名(),
+                e.get地域コード(),
+                e.get出荷先郵便番号(),
+                e.get出荷先住所１(),
+                e.get出荷先住所２()
+        );
+
+        Function<CustomerCustomEntity, Customer> mapToCustomer = e -> Customer.of(
+                CustomerCode.of(e.get顧客コード(), e.get顧客枝番()),
+                CustomerType.fromCode(e.get顧客区分()),
+                BillingCode.of(e.get請求先コード(), e.get請求先枝番()),
+                CollectionCode.of(e.get回収先コード(), e.get回収先枝番()),
+                CustomerName.of(e.get顧客名(), e.get顧客名カナ()),
+                e.get自社担当者コード(),
+                e.get顧客担当者名(),
+                e.get顧客部門名(),
+                Address.of(
+                        e.get顧客郵便番号(),
+                        e.get顧客都道府県(),
+                        e.get顧客住所１(),
+                        e.get顧客住所２()
+                ),
+                PhoneNumber.of(e.get顧客電話番号()),
+                FaxNumber.of(e.get顧客ｆａｘ番号()),
+                EmailAddress.of(e.get顧客メールアドレス()),
+                Invoice.of(
+                        CustomerBillingCategory.fromCode(e.get顧客請求区分()),
+                        ClosingInvoice.of(
+                                e.get顧客締日１(),
+                                e.get顧客支払月１(),
+                                e.get顧客支払日１(),
+                                e.get顧客支払方法１()
+                        ),
+                        ClosingInvoice.of(
+                                e.get顧客締日２(),
+                                e.get顧客支払月２(),
+                                e.get顧客支払日２(),
+                                e.get顧客支払方法２()
+                        )
+                ),
+                e.get出荷先マスタ().stream().map(mapToShipping).toList()
+        );
+
+
+        Function<EmployeeCustomEntity, Employee> mapToEmployee = e -> Employee.of(
+                e.get社員コード(),
+                e.get社員名(),
+                e.get社員名カナ(),
+                e.get電話番号(),
+                e.getFax番号(),
+                e.get職種コード()
+        );
+
+        SalesOrder salesOrder = SalesOrder.of(
                 salesOrderCustomEntity.get受注番号(),
                 salesOrderCustomEntity.get受注日(),
                 salesOrderCustomEntity.get部門コード(),
@@ -82,6 +161,19 @@ public class SalesOrderEntityMapper {
                 salesOrderCustomEntity.get消費税合計(),
                 salesOrderCustomEntity.get備考(),
                 salesOrderCustomEntity.get受注データ明細().stream().map(salesOrderLineMapper).toList()
+        );
+
+        return SalesOrder.of(
+                salesOrder,
+                Optional.ofNullable(salesOrderCustomEntity.get部門マスタ())
+                        .map(mapToDepartment)
+                        .orElse(null),
+                Optional.ofNullable(salesOrderCustomEntity.get顧客マスタ())
+                        .map(mapToCustomer)
+                        .orElse(null),
+                Optional.ofNullable(salesOrderCustomEntity.get社員マスタ())
+                        .map(mapToEmployee)
+                        .orElse(null)
         );
     }
 
