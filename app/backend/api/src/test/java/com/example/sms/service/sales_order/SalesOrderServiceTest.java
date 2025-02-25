@@ -392,12 +392,12 @@ class SalesOrderServiceTest {
                 );
 
                 // Act & Assert
-                List<Map<String, String>> errorList = salesOrderService.uploadCsvFile(multipartFile);
+                SalesOrderUploadErrorList errorList = salesOrderService.uploadCsvFile(multipartFile);
                 assertEquals(4, errorList.size());
-                assertTrue(errorList.get(0).containsValue("部門マスタに存在しません:99999"));
-                assertTrue(errorList.get(1).containsValue("取引先マスタに存在しません:CUST999"));
-                assertTrue(errorList.get(2).containsValue("商品マスタに存在しません:ITEM999"));
-                assertTrue(errorList.get(3).containsValue("社員マスタに存在しません:EMP999"));
+                assertTrue(errorList.asList().getFirst().containsValue("部門マスタに存在しません:99999"));
+                assertTrue(errorList.asList().get(1).containsValue("取引先マスタに存在しません:CUST999"));
+                assertTrue(errorList.asList().get(2).containsValue("商品マスタに存在しません:ITEM999"));
+                assertTrue(errorList.asList().get(3).containsValue("社員マスタに存在しません:EMP999"));
             }
         }
     }

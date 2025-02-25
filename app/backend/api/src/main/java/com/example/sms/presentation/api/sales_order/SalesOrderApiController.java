@@ -10,6 +10,7 @@ import com.example.sms.presentation.api.system.auth.payload.response.MessageResp
 import com.example.sms.service.BusinessException;
 import com.example.sms.service.sales_order.SalesOrderCriteria;
 import com.example.sms.service.sales_order.SalesOrderService;
+import com.example.sms.service.sales_order.SalesOrderUploadErrorList;
 import com.example.sms.service.system.audit.AuditAnnotation;
 import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
@@ -87,11 +88,11 @@ public class SalesOrderApiController {
     @AuditAnnotation(process = ApplicationExecutionProcessType.受注登録, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file) {
         try {
-            List<Map<String, String>> result = salesOrderService.uploadCsvFile(file);
+            SalesOrderUploadErrorList result = salesOrderService.uploadCsvFile(file);
             if (result.isEmpty()) {
-                return ResponseEntity.ok(new MessageResponseWithDetail(message.getMessage("success.sales-order.upload"), result));
+                return ResponseEntity.ok(new MessageResponseWithDetail(message.getMessage("success.sales-order.upload"), result.asList()));
             }
-            return ResponseEntity.ok(new MessageResponseWithDetail(message.getMessage("error.sales-order.upload"), result));
+            return ResponseEntity.ok(new MessageResponseWithDetail(message.getMessage("error.sales-order.upload"), result.asList()));
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }

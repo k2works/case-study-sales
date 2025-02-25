@@ -111,7 +111,7 @@ public class SalesOrderService {
     /**
      * CSVファイルアップロード
      */
-    public List<Map<String, String>>  uploadCsvFile(MultipartFile file) {
+    public SalesOrderUploadErrorList uploadCsvFile(MultipartFile file) {
         notNull(file, "アップロードファイルは必須です。");
         isTrue(!file.isEmpty(), "アップロードファイルが空です。");
         notNull(file.getOriginalFilename(), "アップロードファイル名は必須です。");
@@ -122,7 +122,7 @@ public class SalesOrderService {
         List<SalesOrderUploadCSV> dataList = csvUtil.readCSV(SalesOrderUploadCSV.class, file, "UTF-8");
         isTrue(!dataList.isEmpty(), "CSVファイルの読み込みに失敗しました");
 
-        List<Map<String, String>> errorList = checkError(dataList);
+        SalesOrderUploadErrorList errorList = checkError(dataList);
         if (!errorList.isEmpty()) return errorList;
 
         SalesOrderList salesOrderList = convert(dataList);
@@ -130,8 +130,9 @@ public class SalesOrderService {
         return errorList;
     }
 
-    private List<Map<String, String>> checkError(List<SalesOrderUploadCSV> dataList) {
+    private SalesOrderUploadErrorList checkError(List<SalesOrderUploadCSV> dataList) {
         List<Map<String, String>> errorList = new ArrayList<>();
+
         dataList.forEach(data -> {
                     Department department = departmentRepository.findById(DepartmentId.of(data.getDepartmentCode(), data.getDepartmentStartDate())).orElse(null);
                     if (department == null) {
@@ -159,7 +160,7 @@ public class SalesOrderService {
                     }
                 }
         );
-        return errorList;
+        return new SalesOrderUploadErrorList(errorList);
     }
 
     private static SalesOrderList convert(List<SalesOrderUploadCSV> dataList) {
