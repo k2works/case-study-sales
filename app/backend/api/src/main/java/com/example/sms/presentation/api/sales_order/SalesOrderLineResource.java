@@ -1,6 +1,8 @@
 package com.example.sms.presentation.api.sales_order;
 
+import com.example.sms.domain.model.sales_order.CompletionFlag;
 import com.example.sms.domain.model.sales_order.SalesOrderLine;
+import com.example.sms.domain.model.sales_order.TaxRateType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -40,7 +42,7 @@ public class SalesOrderLineResource implements Serializable {
     Integer orderQuantity;
 
     @Schema(description = "消費税率")
-    Integer taxRate;
+    TaxRateType taxRate;
 
     @Schema(description = "引当数量")
     Integer allocationQuantity;
@@ -52,7 +54,7 @@ public class SalesOrderLineResource implements Serializable {
     Integer shippedQuantity;
 
     @Schema(description = "完了フラグ")
-    Integer completionFlag;
+    CompletionFlag completionFlag;
 
     @Schema(description = "値引金額")
     Integer discountAmount;
@@ -69,11 +71,11 @@ public class SalesOrderLineResource implements Serializable {
                         .productName(salesOrderLine.getProductName())
                         .salesUnitPrice(salesOrderLine.getSalesUnitPrice().getAmount())
                         .orderQuantity(salesOrderLine.getOrderQuantity().getAmount())
-                        .taxRate(salesOrderLine.getTaxRate().getRate())
+                        .taxRate(salesOrderLine.getTaxRate())
                         .allocationQuantity(salesOrderLine.getAllocationQuantity().getAmount())
                         .shipmentInstructionQuantity(salesOrderLine.getShipmentInstructionQuantity().getAmount())
                         .shippedQuantity(salesOrderLine.getShippedQuantity().getAmount())
-                        .completionFlag(salesOrderLine.getCompletionFlag().getValue())
+                        .completionFlag(salesOrderLine.getCompletionFlag())
                         .discountAmount(salesOrderLine.getDiscountAmount().getAmount())
                         .deliveryDate(String.valueOf(salesOrderLine.getDeliveryDate().getValue()))
                         .build())

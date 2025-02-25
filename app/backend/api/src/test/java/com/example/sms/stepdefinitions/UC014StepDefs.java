@@ -1,6 +1,7 @@
 package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
+import com.example.sms.domain.model.sales_order.CompletionFlag;
 import com.example.sms.domain.model.sales_order.TaxRateType;
 import com.example.sms.presentation.api.sales_order.SalesOrderCriteriaResource;
 import com.example.sms.presentation.api.sales_order.SalesOrderLineResource;
@@ -158,11 +159,11 @@ public class UC014StepDefs extends SpringAcceptanceTest {
                 .productName("鶏ささみ")
                 .salesUnitPrice(100)
                 .orderQuantity(Integer.parseInt(orderQuantity))
-                .taxRate(TaxRateType.標準税率.getRate())
+                .taxRate(TaxRateType.標準税率)
                 .allocationQuantity(0)
                 .shipmentInstructionQuantity(0)
                 .shippedQuantity(0)
-                .completionFlag(0)
+                .completionFlag(CompletionFlag.未完了)
                 .discountAmount(0)
                 .deliveryDate("2024-11-10T00:00:00+09:00")
                 .build();
@@ -280,11 +281,11 @@ public class UC014StepDefs extends SpringAcceptanceTest {
                 .productName(row.get("商品名"))
                 .salesUnitPrice(Integer.parseInt(row.get("単価")))
                 .orderQuantity(Integer.parseInt(row.get("数量")))
-                .taxRate(TaxRateType.標準税率.getRate())
+                .taxRate(TaxRateType.標準税率)
                 .allocationQuantity(0)
                 .shipmentInstructionQuantity(0)
                 .shippedQuantity(0)
-                .completionFlag(0)
+                .completionFlag(CompletionFlag.未完了)
                 .discountAmount(0)
                 .deliveryDate("2024-11-10T00:00:00+09:00")
                 .build();

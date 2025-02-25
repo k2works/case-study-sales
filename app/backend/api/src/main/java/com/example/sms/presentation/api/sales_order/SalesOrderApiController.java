@@ -175,11 +175,11 @@ public class SalesOrderApiController {
                         line.getProductName(),
                         line.getSalesUnitPrice(),
                         line.getOrderQuantity(),
-                        line.getTaxRate(),
+                        line.getTaxRate().getRate(),
                         line.getAllocationQuantity(),
                         line.getShipmentInstructionQuantity(),
                         line.getShippedQuantity(),
-                        line.getCompletionFlag(),
+                        line.getCompletionFlag().getValue(),
                         line.getDiscountAmount(),
                         LocalDateTime.parse(line.getDeliveryDate(), formatter)
                 )).toList()
