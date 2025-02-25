@@ -1,11 +1,7 @@
 package com.example.sms.service.sales_order;
 
-import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentId;
-import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.master.employee.EmployeeCode;
-import com.example.sms.domain.model.master.partner.Partner;
-import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.sales_order.SalesOrder;
 import com.example.sms.domain.model.sales_order.SalesOrderLine;
 import com.example.sms.domain.model.sales_order.SalesOrderList;
@@ -21,10 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.apache.commons.lang3.Validate.*;
 
@@ -122,7 +115,7 @@ public class SalesOrderService {
         List<SalesOrderUploadCSV> dataList = csvUtil.readCSV(SalesOrderUploadCSV.class, file, "UTF-8");
         isTrue(!dataList.isEmpty(), "CSVファイルの読み込みに失敗しました");
 
-        SalesOrderUploadErrorList errorList = checkError(dataList);
+        SalesOrderUploadErrorList errorList = validateErrors(dataList);
         if (!errorList.isEmpty()) return errorList;
 
         SalesOrderList salesOrderList = convert(dataList);
@@ -130,37 +123,48 @@ public class SalesOrderService {
         return errorList;
     }
 
-    private SalesOrderUploadErrorList checkError(List<SalesOrderUploadCSV> dataList) {
-        List<Map<String, String>> errorList = new ArrayList<>();
+    private SalesOrderUploadErrorList validateErrors(List<SalesOrderUploadCSV> dataList) {
+        List<Map<String, String>> checkResult = new ArrayList<>();
 
         dataList.forEach(data -> {
-                    Department department = departmentRepository.findById(DepartmentId.of(data.getDepartmentCode(), data.getDepartmentStartDate())).orElse(null);
-                    if (department == null) {
-                        Map<String, String> errorMap = new HashMap<>();
-                        errorMap.put(data.getOrderNumber(), "部門マスタに存在しません:" + data.getDepartmentCode());
-                        errorList.add(errorMap);
-                    }
-                    Partner partner = partnerRepository.findById(data.getCustomerCode()).orElse(null);
-                    if (partner == null) {
-                        Map<String, String> errorMap = new HashMap<>();
-                        errorMap.put(data.getOrderNumber(), "取引先マスタに存在しません:" + data.getCustomerCode());
-                        errorList.add(errorMap);
-                    }
-                    Product product = productRepository.findById(data.getProductCode()).orElse(null);
-                    if (product == null) {
-                        Map<String, String> errorMap = new HashMap<>();
-                        errorMap.put(data.getOrderNumber(), "商品マスタに存在しません:" + data.getProductCode());
-                        errorList.add(errorMap);
-                    }
-                    Employee employee = employeeRepository.findById(EmployeeCode.of(data.getEmployeeCode())).orElse(null);
-                    if (employee == null) {
-                        Map<String, String> errorMap = new HashMap<>();
-                        errorMap.put(data.getOrderNumber(), "社員マスタに存在しません:" + data.getEmployeeCode());
-                        errorList.add(errorMap);
-                    }
-                }
-        );
-        return new SalesOrderUploadErrorList(errorList);
+            checkEntityExistence(
+                    departmentRepository.findById(DepartmentId.of(data.getDepartmentCode(), data.getDepartmentStartDate())),
+                    checkResult,
+                    data.getOrderNumber(),
+                    "部門マスタに存在しません:" + data.getDepartmentCode()
+            );
+
+            checkEntityExistence(
+                    partnerRepository.findById(data.getCustomerCode()),
+                    checkResult,
+                    data.getOrderNumber(),
+                    "取引先マスタに存在しません:" + data.getCustomerCode()
+            );
+
+            checkEntityExistence(
+                    productRepository.findById(data.getProductCode()),
+                    checkResult,
+                    data.getOrderNumber(),
+                    "商品マスタに存在しません:" + data.getProductCode()
+            );
+
+            checkEntityExistence(
+                    employeeRepository.findById(EmployeeCode.of(data.getEmployeeCode())),
+                    checkResult,
+                    data.getOrderNumber(),
+                    "社員マスタに存在しません:" + data.getEmployeeCode()
+            );
+        });
+
+        return new SalesOrderUploadErrorList(checkResult);
+    }
+
+    private void checkEntityExistence(Optional<?> entity, List<Map<String, String>> checkResult, String orderNumber, String errorMessage) {
+        if (entity.isEmpty()) {
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put(orderNumber, errorMessage);
+            checkResult.add(errorMap);
+        }
     }
 
     private static SalesOrderList convert(List<SalesOrderUploadCSV> dataList) {
