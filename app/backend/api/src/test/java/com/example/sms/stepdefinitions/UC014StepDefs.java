@@ -1,7 +1,6 @@
 package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
-import com.example.sms.domain.model.sales_order.SalesOrder;
 import com.example.sms.domain.model.sales_order.TaxRateType;
 import com.example.sms.presentation.api.sales_order.SalesOrderCriteriaResource;
 import com.example.sms.presentation.api.sales_order.SalesOrderLineResource;
@@ -76,9 +75,9 @@ public class UC014StepDefs extends SpringAcceptanceTest {
         objectMapper.registerModule(new JavaTimeModule());
         if (list.equals("受注一覧")) {
             String result = latestResponse.getBody();
-            ListResponse<SalesOrder> response = objectMapper.readValue(result, new TypeReference<>() {
+            ListResponse<SalesOrderResource> response = objectMapper.readValue(result, new TypeReference<>() {
             });
-            List<SalesOrder> actual = response.getList();
+            List<SalesOrderResource> actual = response.getList();
             assertEquals(3, actual.size());
         }
     }
@@ -115,8 +114,8 @@ public class UC014StepDefs extends SpringAcceptanceTest {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         
-        SalesOrder salesOrder = objectMapper.readValue(result, SalesOrder.class);
-        assertEquals(orderNumber, salesOrder.getOrderNumber().getValue());
+        SalesOrderResource salesOrder = objectMapper.readValue(result, SalesOrderResource.class);
+        assertEquals(orderNumber, salesOrder.getOrderNumber());
     }
 
     @かつ(":UC014 受注番号 {string} の情報を更新する \\(希望納期 {string})")
@@ -216,9 +215,9 @@ public class UC014StepDefs extends SpringAcceptanceTest {
         objectMapper.registerModule(new JavaTimeModule());
 
         String result = latestResponse.getBody();
-        ListResponse<SalesOrder> response = objectMapper.readValue(result, new TypeReference<>() {
+        ListResponse<SalesOrderResource> response = objectMapper.readValue(result, new TypeReference<>() {
         });
-        List<SalesOrder> actual = response.getList();
+        List<SalesOrderResource> actual = response.getList();
         assertEquals(3, actual.size());
     }
 
@@ -228,8 +227,8 @@ public class UC014StepDefs extends SpringAcceptanceTest {
         objectMapper.registerModule(new JavaTimeModule());
 
         String result = latestResponse.getBody();
-        SalesOrder salesOrder = objectMapper.readValue(result, SalesOrder.class);
-        Assertions.assertEquals(day, salesOrder.getDesiredDeliveryDate().getValue().toString());
+        SalesOrderResource salesOrder = objectMapper.readValue(result, SalesOrderResource.class);
+        Assertions.assertEquals(day, salesOrder.getDesiredDeliveryDate());
     }
 
     @ならば(":UC014 明細データに商品コード {string} が含まれる")
@@ -238,8 +237,8 @@ public class UC014StepDefs extends SpringAcceptanceTest {
         objectMapper.registerModule(new JavaTimeModule());
 
         String result = latestResponse.getBody();
-        SalesOrder salesOrder = objectMapper.readValue(result, SalesOrder.class);
-        Assertions.assertEquals(code, salesOrder.getSalesOrderLines().getFirst().getProductCode().getValue());
+        SalesOrderResource salesOrder = objectMapper.readValue(result, SalesOrderResource.class);
+        Assertions.assertEquals(code, salesOrder.getSalesOrderLines().getFirst().getProductCode());
     }
 
     @ならば(":UC014 明細データに数量 {string} の商品コード {string} が含まれる")
@@ -248,9 +247,9 @@ public class UC014StepDefs extends SpringAcceptanceTest {
         objectMapper.registerModule(new JavaTimeModule());
 
         String result = latestResponse.getBody();
-        SalesOrder salesOrder = objectMapper.readValue(result, SalesOrder.class);
-        Assertions.assertEquals(code, salesOrder.getSalesOrderLines().getFirst().getProductCode().getValue());
-        Assertions.assertEquals(Integer.parseInt(amount), salesOrder.getSalesOrderLines().getFirst().getOrderQuantity().getAmount());
+        SalesOrderResource salesOrder = objectMapper.readValue(result, SalesOrderResource.class);
+        Assertions.assertEquals(code, salesOrder.getSalesOrderLines().getFirst().getProductCode());
+        Assertions.assertEquals(Integer.parseInt(amount), salesOrder.getSalesOrderLines().getFirst().getOrderQuantity());
     }
 
     private static @NotNull SalesOrderResource getSalesOrderResource(String orderNumber, String orderDate, String departmentCode, String customerCode, String employeeCode, String desiredDeliveryDate) {

@@ -5,6 +5,7 @@ import com.example.sms.domain.model.sales_order.SalesOrderList;
 import com.github.pagehelper.PageInfo;
 
 import java.util.Optional;
+import java.util.function.Function;
 
 public interface SalesOrderRepository {
     void deleteAll();
@@ -24,4 +25,6 @@ public interface SalesOrderRepository {
     void save(SalesOrderList salesOrderList);
 
     SalesOrderList selectAllNotComplete();
+
+    <T, R> PageInfo<R> getPageInfo(PageInfo<T> sourcePageInfo, Function<T, R> mapper);
 }

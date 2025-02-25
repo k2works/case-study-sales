@@ -1,9 +1,11 @@
 package com.example.sms.presentation.api.sales_order;
 
+import com.example.sms.domain.model.sales_order.SalesOrder;
 import lombok.Getter;
 import lombok.Setter;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
@@ -56,4 +58,23 @@ public class SalesOrderResource implements Serializable {
 
     @Schema(description = "受注明細")
     List<SalesOrderLineResource> salesOrderLines;
+
+    public static SalesOrderResource from(SalesOrder salesOrder) {
+        SalesOrderResource resource = new SalesOrderResource();
+        resource.setOrderNumber(salesOrder.getOrderNumber().getValue());
+        resource.setOrderDate(String.valueOf(salesOrder.getOrderDate().getValue()));
+        resource.setDepartmentCode(salesOrder.getDepartmentCode().getValue());
+        resource.setDepartmentStartDate(String.valueOf(salesOrder.getDepartmentStartDate()));
+        resource.setCustomerCode(salesOrder.getCustomerCode().getCode().getValue());
+        resource.setCustomerBranchNumber(salesOrder.getCustomerCode().getBranchNumber());
+        resource.setEmployeeCode(salesOrder.getEmployeeCode().getValue());
+        resource.setDesiredDeliveryDate(String.valueOf(salesOrder.getDesiredDeliveryDate().getValue()));
+        resource.setCustomerOrderNumber(salesOrder.getCustomerOrderNumber());
+        resource.setWarehouseCode(salesOrder.getWarehouseCode());
+        resource.setTotalOrderAmount(salesOrder.getTotalOrderAmount().getAmount());
+        resource.setTotalConsumptionTax(salesOrder.getTotalConsumptionTax().getAmount());
+        resource.setRemarks(salesOrder.getRemarks());
+        resource.setSalesOrderLines(SalesOrderLineResource.from(salesOrder.getSalesOrderLines()));
+        return resource;
+    }
 }

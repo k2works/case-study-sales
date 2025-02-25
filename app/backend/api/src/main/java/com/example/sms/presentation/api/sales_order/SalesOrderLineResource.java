@@ -1,14 +1,21 @@
 package com.example.sms.presentation.api.sales_order;
 
+import com.example.sms.domain.model.sales_order.SalesOrderLine;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.NoArgsConstructor;
+
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Schema(description = "受注明細情報")
 public class SalesOrderLineResource implements Serializable {
     @Serial
@@ -52,4 +59,24 @@ public class SalesOrderLineResource implements Serializable {
 
     @Schema(description = "納期")
     String deliveryDate;
+
+    public static List<SalesOrderLineResource> from(List<SalesOrderLine> salesOrderLines) {
+        return salesOrderLines.stream()
+                .map(salesOrderLine -> SalesOrderLineResource.builder()
+                        .orderNumber(salesOrderLine.getOrderNumber().getValue())
+                        .orderLineNumber(salesOrderLine.getOrderLineNumber())
+                        .productCode(salesOrderLine.getProductCode().getValue())
+                        .productName(salesOrderLine.getProductName())
+                        .salesUnitPrice(salesOrderLine.getSalesUnitPrice().getAmount())
+                        .orderQuantity(salesOrderLine.getOrderQuantity().getAmount())
+                        .taxRate(salesOrderLine.getTaxRate().getRate())
+                        .allocationQuantity(salesOrderLine.getAllocationQuantity().getAmount())
+                        .shipmentInstructionQuantity(salesOrderLine.getShipmentInstructionQuantity().getAmount())
+                        .shippedQuantity(salesOrderLine.getShippedQuantity().getAmount())
+                        .completionFlag(salesOrderLine.getCompletionFlag().getValue())
+                        .discountAmount(salesOrderLine.getDiscountAmount().getAmount())
+                        .deliveryDate(String.valueOf(salesOrderLine.getDeliveryDate().getValue()))
+                        .build())
+                .toList();
+    }
 }

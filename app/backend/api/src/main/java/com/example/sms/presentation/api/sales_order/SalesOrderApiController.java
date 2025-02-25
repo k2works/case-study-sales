@@ -46,7 +46,8 @@ public class SalesOrderApiController {
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
             PageNation.startPage(page, pageSize);
-            PageInfo<SalesOrder> result = salesOrderService.selectAllWithPageInfo();
+            PageInfo<SalesOrder> pageInfo = salesOrderService.selectAllWithPageInfo();
+            PageInfo<SalesOrderResource> result = salesOrderService.getPageInfo(pageInfo, SalesOrderResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
@@ -57,10 +58,11 @@ public class SalesOrderApiController {
     @GetMapping("/{orderNumber}")
     public ResponseEntity<?> select(@PathVariable String orderNumber) {
         try {
-            SalesOrder result = salesOrderService.find(orderNumber);
-            if (result == null) {
+            SalesOrder entity = salesOrderService.find(orderNumber);
+            if (entity == null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.sales-order.not.exist")));
             }
+            SalesOrderResource result = SalesOrderResource.from(entity);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
@@ -140,7 +142,8 @@ public class SalesOrderApiController {
         try {
             PageNation.startPage(page, pageSize);
             SalesOrderCriteria criteria = convertToCriteria(resource);
-            PageInfo<SalesOrder> result = salesOrderService.searchSalesOrderWithPageInfo(criteria);
+            PageInfo<SalesOrder> entity = salesOrderService.searchSalesOrderWithPageInfo(criteria);
+            PageInfo<SalesOrderResource> result = salesOrderService.getPageInfo(entity, SalesOrderResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
