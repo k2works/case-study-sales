@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -203,10 +202,9 @@ public class SalesOrderApiController {
     }
 
     private SalesOrderCriteria convertToCriteria(SalesOrderCriteriaResource resource) {
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
-        LocalDateTime orderDate = resource.getOrderDate() != null ? LocalDateTime.parse(resource.getOrderDate(), formatter) : null;
-        LocalDateTime departmentStartDate = resource.getDepartmentStartDate() != null ? LocalDateTime.parse(resource.getDepartmentStartDate(), formatter) : null;
-        LocalDateTime desiredDeliveryDate = resource.getDesiredDeliveryDate() != null ? LocalDateTime.parse(resource.getDesiredDeliveryDate(), formatter) : null;
+        LocalDateTime orderDate = resource.getOrderDate() != null ? resource.getOrderDate() : null;
+        LocalDateTime departmentStartDate = resource.getDepartmentStartDate() != null ? resource.getDepartmentStartDate() : null;
+        LocalDateTime desiredDeliveryDate = resource.getDesiredDeliveryDate() != null ? resource.getDesiredDeliveryDate() : null;
 
         return SalesOrderCriteria.builder()
                 .orderNumber(resource.getOrderNumber())

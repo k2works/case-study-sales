@@ -6,6 +6,7 @@ import lombok.Setter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Setter
 @Getter
@@ -18,13 +19,13 @@ public class SalesOrderCriteriaResource implements Serializable {
     String orderNumber;
 
     @Schema(description = "受注日")
-    String orderDate;
+    LocalDateTime orderDate;
 
     @Schema(description = "部門コード")
     String departmentCode;
 
     @Schema(description = "部門開始日")
-    String departmentStartDate;
+    LocalDateTime departmentStartDate;
 
     @Schema(description = "顧客コード")
     String customerCode;
@@ -36,7 +37,7 @@ public class SalesOrderCriteriaResource implements Serializable {
     String employeeCode;
 
     @Schema(description = "希望納期")
-    String desiredDeliveryDate;
+    LocalDateTime desiredDeliveryDate;
 
     @Schema(description = "客先注文番号")
     String customerOrderNumber;
