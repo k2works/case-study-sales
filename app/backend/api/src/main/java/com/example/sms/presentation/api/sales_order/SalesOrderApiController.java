@@ -9,6 +9,7 @@ import com.example.sms.presentation.api.system.auth.payload.response.MessageResp
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponseWithDetail;
 import com.example.sms.service.BusinessException;
 import com.example.sms.service.sales_order.SalesOrderCriteria;
+import com.example.sms.domain.model.sales_order.rule.SalesOrderRuleCheckList;
 import com.example.sms.service.sales_order.SalesOrderService;
 import com.example.sms.service.sales_order.SalesOrderUploadErrorList;
 import com.example.sms.service.system.audit.AuditAnnotation;
@@ -22,7 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 受注API
@@ -152,11 +152,11 @@ public class SalesOrderApiController {
     @AuditAnnotation(process = ApplicationExecutionProcessType.受注登録, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> check() {
         try {
-            List<Map<String, String>> result = salesOrderService.checkRule();
+            SalesOrderRuleCheckList result = salesOrderService.checkRule();
             if (result.isEmpty()) {
-                return ResponseEntity.ok(new MessageResponseWithDetail(message.getMessage("success.sales-order.check"), result));
+                return ResponseEntity.ok(new MessageResponseWithDetail(message.getMessage("success.sales-order.check"), result.asList()));
             }
-            return ResponseEntity.ok(new MessageResponseWithDetail(message.getMessage("error.sales-order.check"), result));
+            return ResponseEntity.ok(new MessageResponseWithDetail(message.getMessage("error.sales-order.check"), result.asList()));
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }

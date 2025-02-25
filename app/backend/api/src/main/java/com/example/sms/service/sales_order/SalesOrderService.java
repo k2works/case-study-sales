@@ -6,6 +6,7 @@ import com.example.sms.domain.model.sales_order.SalesOrder;
 import com.example.sms.domain.model.sales_order.SalesOrderLine;
 import com.example.sms.domain.model.sales_order.SalesOrderList;
 import com.example.sms.domain.service.sales_order.SalesOrderDomainService;
+import com.example.sms.domain.model.sales_order.rule.SalesOrderRuleCheckList;
 import com.example.sms.infrastructure.Pattern2ReadCSVUtil;
 import com.example.sms.infrastructure.datasource.sales_order.SalesOrderUploadCSV;
 import com.example.sms.service.master.department.DepartmentRepository;
@@ -96,7 +97,7 @@ public class SalesOrderService {
     /**
      * 受注ルールチェック
      */
-    public List<Map<String, String>> checkRule() {
+    public SalesOrderRuleCheckList checkRule() {
         SalesOrderList salesOrders = salesOrderRepository.selectAllNotComplete();
         return salesOrderDomainService.checkRule(salesOrders);
     }

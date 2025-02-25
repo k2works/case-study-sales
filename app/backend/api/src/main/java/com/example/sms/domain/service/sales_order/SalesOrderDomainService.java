@@ -2,10 +2,7 @@ package com.example.sms.domain.service.sales_order;
 
 import com.example.sms.domain.model.sales_order.SalesOrder;
 import com.example.sms.domain.model.sales_order.SalesOrderList;
-import com.example.sms.domain.model.sales_order.rule.OrderAmountRule;
-import com.example.sms.domain.model.sales_order.rule.OrderDeliveryOverDueRule;
-import com.example.sms.domain.model.sales_order.rule.OrderDeliveryRule;
-import com.example.sms.domain.model.sales_order.rule.SalesOrderRule;
+import com.example.sms.domain.model.sales_order.rule.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,7 +20,7 @@ public class SalesOrderDomainService {
     /**
      * 受注ルールチェック
      */
-    public List<Map<String, String>> checkRule(SalesOrderList salesOrders) {
+    public SalesOrderRuleCheckList checkRule(SalesOrderList salesOrders) {
         List<Map<String, String>> checkList = new ArrayList<>();
 
         List<SalesOrder> salesOrderList = salesOrders.asList();
@@ -51,6 +48,6 @@ public class SalesOrderDomainService {
             });
         });
 
-        return checkList;
+        return new SalesOrderRuleCheckList(checkList);
     }
 }

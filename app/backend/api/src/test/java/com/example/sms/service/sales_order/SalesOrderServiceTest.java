@@ -7,6 +7,7 @@ import com.example.sms.domain.model.sales_order.DeliveryDate;
 import com.example.sms.domain.model.sales_order.SalesOrder;
 import com.example.sms.domain.model.sales_order.SalesOrderLine;
 import com.example.sms.domain.model.sales_order.SalesOrderList;
+import com.example.sms.domain.model.sales_order.rule.SalesOrderRuleCheckList;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,7 +20,6 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -448,9 +448,9 @@ class SalesOrderServiceTest {
             );
             salesOrderService.save(newSalesOrder);
 
-            List<Map<String, String>> checkList = salesOrderService.checkRule();
+            SalesOrderRuleCheckList checkList = salesOrderService.checkRule();
             assertEquals(2, checkList.size());
-            assertTrue(checkList.getFirst().containsValue("受注金額が100万円を超えています。"));
+            assertTrue(checkList.asList().getFirst().containsValue("受注金額が100万円を超えています。"));
         }
 
         @Test
@@ -491,9 +491,9 @@ class SalesOrderServiceTest {
             );
             salesOrderService.save(newSalesOrder);
 
-            List<Map<String, String>> checkList = salesOrderService.checkRule();
+            SalesOrderRuleCheckList checkList = salesOrderService.checkRule();
             assertEquals(2, checkList.size());
-            assertTrue(checkList.getFirst().containsValue("納期が受注日より前です。"));
+            assertTrue(checkList.asList().getFirst().containsValue("納期が受注日より前です。"));
         }
 
         @Test
@@ -534,9 +534,9 @@ class SalesOrderServiceTest {
             );
             salesOrderService.save(newSalesOrder);
 
-            List<Map<String, String>> checkList = salesOrderService.checkRule();
+            SalesOrderRuleCheckList checkList = salesOrderService.checkRule();
             assertEquals(1, checkList.size());
-            assertTrue(checkList.getFirst().containsValue("納期を超過しています。"));
+            assertTrue(checkList.asList().getFirst().containsValue("納期を超過しています。"));
         }
 
         @Test
@@ -577,7 +577,7 @@ class SalesOrderServiceTest {
             );
             salesOrderService.save(newSalesOrder);
 
-            List<Map<String, String>> checkList = salesOrderService.checkRule();
+            SalesOrderRuleCheckList checkList = salesOrderService.checkRule();
             assertEquals(0, checkList.size());
         }
     }
