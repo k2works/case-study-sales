@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -60,7 +61,7 @@ public class SalesOrderLineResource implements Serializable {
     Integer discountAmount;
 
     @Schema(description = "納期")
-    String deliveryDate;
+    LocalDateTime deliveryDate;
 
     public static List<SalesOrderLineResource> from(List<SalesOrderLine> salesOrderLines) {
         return salesOrderLines.stream()
@@ -77,7 +78,7 @@ public class SalesOrderLineResource implements Serializable {
                         .shippedQuantity(salesOrderLine.getShippedQuantity().getAmount())
                         .completionFlag(salesOrderLine.getCompletionFlag())
                         .discountAmount(salesOrderLine.getDiscountAmount().getAmount())
-                        .deliveryDate(String.valueOf(salesOrderLine.getDeliveryDate().getValue()))
+                        .deliveryDate(salesOrderLine.getDeliveryDate().getValue())
                         .build())
                 .toList();
     }

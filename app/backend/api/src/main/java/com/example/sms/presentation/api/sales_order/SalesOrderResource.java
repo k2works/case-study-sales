@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Setter
@@ -21,13 +22,13 @@ public class SalesOrderResource implements Serializable {
     String orderNumber;
 
     @Schema(description = "受注日")
-    String orderDate;
+    LocalDateTime orderDate;
 
     @Schema(description = "部門コード")
     String departmentCode;
 
     @Schema(description = "部門開始日")
-    String departmentStartDate;
+    LocalDateTime departmentStartDate;
 
     @Schema(description = "顧客コード")
     String customerCode;
@@ -39,7 +40,7 @@ public class SalesOrderResource implements Serializable {
     String employeeCode;
 
     @Schema(description = "希望納期")
-    String desiredDeliveryDate;
+    LocalDateTime desiredDeliveryDate;
 
     @Schema(description = "客先注文番号")
     String customerOrderNumber;
@@ -62,13 +63,13 @@ public class SalesOrderResource implements Serializable {
     public static SalesOrderResource from(SalesOrder salesOrder) {
         SalesOrderResource resource = new SalesOrderResource();
         resource.setOrderNumber(salesOrder.getOrderNumber().getValue());
-        resource.setOrderDate(String.valueOf(salesOrder.getOrderDate().getValue()));
+        resource.setOrderDate(salesOrder.getOrderDate().getValue());
         resource.setDepartmentCode(salesOrder.getDepartmentCode().getValue());
-        resource.setDepartmentStartDate(String.valueOf(salesOrder.getDepartmentStartDate()));
+        resource.setDepartmentStartDate(salesOrder.getDepartmentStartDate());
         resource.setCustomerCode(salesOrder.getCustomerCode().getCode().getValue());
         resource.setCustomerBranchNumber(salesOrder.getCustomerCode().getBranchNumber());
         resource.setEmployeeCode(salesOrder.getEmployeeCode().getValue());
-        resource.setDesiredDeliveryDate(String.valueOf(salesOrder.getDesiredDeliveryDate().getValue()));
+        resource.setDesiredDeliveryDate(salesOrder.getDesiredDeliveryDate().getValue());
         resource.setCustomerOrderNumber(salesOrder.getCustomerOrderNumber());
         resource.setWarehouseCode(salesOrder.getWarehouseCode());
         resource.setTotalOrderAmount(salesOrder.getTotalOrderAmount().getAmount());

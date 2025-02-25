@@ -23,6 +23,7 @@ import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -124,7 +125,7 @@ public class UC014StepDefs extends SpringAcceptanceTest {
         String url = SALES_ORDER_API_URL + "/" + orderNumber;
 
         SalesOrderResource salesOrder = getSalesOrderResource(orderNumber, "2024-11-01T00:00:00+09:00", "10000", "009", "EMP001", desiredDeliveryDate);
-        salesOrder.setDesiredDeliveryDate(desiredDeliveryDate);
+        salesOrder.setDesiredDeliveryDate(OffsetDateTime.parse(desiredDeliveryDate).toLocalDateTime());
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
@@ -165,7 +166,7 @@ public class UC014StepDefs extends SpringAcceptanceTest {
                 .shippedQuantity(0)
                 .completionFlag(CompletionFlag.未完了)
                 .discountAmount(0)
-                .deliveryDate("2024-11-10T00:00:00+09:00")
+                .deliveryDate(OffsetDateTime.parse("2024-11-10T00:00:00+09:00").toLocalDateTime())
                 .build();
         salesOrder.setSalesOrderLines(List.of(line));
 
@@ -229,7 +230,7 @@ public class UC014StepDefs extends SpringAcceptanceTest {
 
         String result = latestResponse.getBody();
         SalesOrderResource salesOrder = objectMapper.readValue(result, SalesOrderResource.class);
-        Assertions.assertEquals(day, salesOrder.getDesiredDeliveryDate());
+        Assertions.assertEquals(day, salesOrder.getDesiredDeliveryDate().toString());
     }
 
     @ならば(":UC014 明細データに商品コード {string} が含まれる")
@@ -256,13 +257,13 @@ public class UC014StepDefs extends SpringAcceptanceTest {
     private static @NotNull SalesOrderResource getSalesOrderResource(String orderNumber, String orderDate, String departmentCode, String customerCode, String employeeCode, String desiredDeliveryDate) {
         SalesOrderResource salesOrder = new SalesOrderResource();
         salesOrder.setOrderNumber(orderNumber);
-        salesOrder.setOrderDate(orderDate);
+        salesOrder.setOrderDate(OffsetDateTime.parse(orderDate).toLocalDateTime());
         salesOrder.setDepartmentCode(departmentCode);
-        salesOrder.setDepartmentStartDate("2024-11-01T00:00:00+09:00");
+        salesOrder.setDepartmentStartDate(OffsetDateTime.parse("2024-11-01T00:00:00+09:00").toLocalDateTime());
         salesOrder.setCustomerCode(customerCode);
         salesOrder.setCustomerBranchNumber(1);
         salesOrder.setEmployeeCode(employeeCode);
-        salesOrder.setDesiredDeliveryDate(desiredDeliveryDate);
+        salesOrder.setDesiredDeliveryDate(OffsetDateTime.parse(desiredDeliveryDate).toLocalDateTime());
         salesOrder.setCustomerOrderNumber("001");
         salesOrder.setWarehouseCode("001");
         salesOrder.setTotalOrderAmount(1000);
@@ -287,7 +288,7 @@ public class UC014StepDefs extends SpringAcceptanceTest {
                 .shippedQuantity(0)
                 .completionFlag(CompletionFlag.未完了)
                 .discountAmount(0)
-                .deliveryDate("2024-11-10T00:00:00+09:00")
+                .deliveryDate(OffsetDateTime.parse("2024-11-10T00:00:00+09:00").toLocalDateTime())
                 .build();
     }
 }

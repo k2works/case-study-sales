@@ -166,7 +166,6 @@ public class SalesOrderApiController {
     }
 
     private SalesOrder convertToEntity(SalesOrderResource resource) {
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
         List<SalesOrderLine> salesOrderLines = resource.getSalesOrderLines() != null
                 ? resource.getSalesOrderLines().stream().map(line -> SalesOrderLine.of(
                         line.getOrderNumber(),
@@ -181,19 +180,19 @@ public class SalesOrderApiController {
                         line.getShippedQuantity(),
                         line.getCompletionFlag().getValue(),
                         line.getDiscountAmount(),
-                        LocalDateTime.parse(line.getDeliveryDate(), formatter)
+                        line.getDeliveryDate()
                 )).toList()
                 : null;
 
         return SalesOrder.of(
                 resource.getOrderNumber(),
-                LocalDateTime.parse(resource.getOrderDate(), formatter),
+                resource.getOrderDate(),
                 resource.getDepartmentCode(),
-                LocalDateTime.parse(resource.getDepartmentStartDate(), formatter),
+                resource.getDepartmentStartDate(),
                 resource.getCustomerCode(),
                 resource.getCustomerBranchNumber(),
                 resource.getEmployeeCode(),
-                LocalDateTime.parse(resource.getDesiredDeliveryDate(), formatter),
+                resource.getDesiredDeliveryDate(),
                 resource.getCustomerOrderNumber(),
                 resource.getWarehouseCode(),
                 resource.getTotalOrderAmount(),
