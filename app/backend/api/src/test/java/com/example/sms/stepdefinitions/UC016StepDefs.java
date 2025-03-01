@@ -102,8 +102,8 @@ public class UC016StepDefs extends SpringAcceptanceTest {
         executePost(url, file);
     }
 
-    @もし(":UC016 {string} を確認する")
-    public void check(String rule) throws JsonProcessingException {
+    @もし(":UC016 {string} を確認する\\(確認項目なし)")
+    public void checkNo(String rule) throws JsonProcessingException {
         SalesOrderList salesOrderList = salesOrderRepository.selectAllNotComplete();
         salesOrderList.asList().forEach(salesOrder -> {
             List<SalesOrderLine> salesOrderLines = new ArrayList<>();
@@ -125,13 +125,23 @@ public class UC016StepDefs extends SpringAcceptanceTest {
                 );
                 salesOrderLines.add(line);
             });
-            SalesOrder.of(
-                    salesOrder,
-                    salesOrderLines
+            salesOrderRepository.save(
+                    SalesOrder.of(
+                            salesOrder,
+                            salesOrderLines
+                    )
             );
-            salesOrderRepository.save(salesOrder);
         });
 
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
+        String json = objectMapper.writeValueAsString(null);
+        executePost(SALES_ORDER_API_URL + "/check", json);
+    }
+
+    @もし(":UC016 {string} を確認する\\(確認項目あり)")
+    public void checkYes(String rule) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
 
