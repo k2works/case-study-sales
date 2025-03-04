@@ -1,6 +1,6 @@
 import React from 'react';
 import { Message } from "../../../components/application/Message.tsx";
-import { SalesOrderType, SalesOrderLineType } from "../../../models/sales/sales_order";
+import { SalesOrderType, SalesOrderLineType, TaxRateType, CompletionFlagType } from "../../../models/sales/sales_order";
 import { convertToDateInputFormat } from "../../../components/application/utils.ts";
 import {FormInput, SingleViewHeaderActions, SingleViewHeaderItem} from "../../Common.tsx";
 import "./SalesOrder.css";
@@ -37,38 +37,73 @@ interface FormProps {
     setNewSalesOrder: React.Dispatch<React.SetStateAction<SalesOrderType>>;
 }
 
+const calculateLineAmount = (line: SalesOrderLineType): number => {
+    return line.orderQuantity * line.salesUnitPrice - line.discountAmount;
+};
+
+const calculateLineTax = (line: SalesOrderLineType): number => {
+    const amount = calculateLineAmount(line);
+    const taxRate = line.taxRate === '標準税率' ? 0.1 : line.taxRate === '軽減税率' ? 0.08 : 0;
+    return line.taxRate === 'その他' ? 0 : Math.floor(amount * taxRate);
+};
+
+const calculateTotalAmount = (lines: SalesOrderLineType[]): number => {
+    return lines.reduce((sum, line) => sum + calculateLineAmount(line) + calculateLineTax(line), 0);
+};
+
+const calculateTotalTax = (lines: SalesOrderLineType[]): number => {
+    return lines.reduce((sum, line) => sum + calculateLineTax(line), 0);
+};
+
 const Form = ({isEditing, newSalesOrder, setNewSalesOrder}: FormProps) => {
     const handleUpdateLine = (index: number, line: SalesOrderLineType) => {
         const newLines = [...newSalesOrder.salesOrderLines];
         newLines[index] = {
             ...line,
-            amount: line.quantity * line.unitPrice
+            orderNumber: newSalesOrder.orderNumber
         };
+
+        const totalAmount = calculateTotalAmount(newLines);
+        const totalTax = calculateTotalTax(newLines);
+
         setNewSalesOrder({
             ...newSalesOrder,
             salesOrderLines: newLines,
-            totalOrderAmount: newLines.reduce((sum, line) => sum + line.amount, 0)
+            totalOrderAmount: totalAmount,
+            totalConsumptionTax: totalTax
         });
     };
 
     const handleDeleteLine = (index: number) => {
-        const newLines = newSalesOrder.salesOrderLines.filter((_, i) => i !== index);
+        const newLines = newSalesOrder.salesOrderLines.filter((_, i) => i !== index)
+            .map((line, i) => ({ ...line, orderLineNumber: i + 1 }));
+
+        const totalAmount = calculateTotalAmount(newLines);
+        const totalTax = calculateTotalTax(newLines);
+
         setNewSalesOrder({
             ...newSalesOrder,
             salesOrderLines: newLines,
-            totalOrderAmount: newLines.reduce((sum, line) => sum + line.amount, 0)
+            totalOrderAmount: totalAmount,
+            totalConsumptionTax: totalTax
         });
     };
 
     const handleAddLine = () => {
         const newLine: SalesOrderLineType = {
-            lineNumber: newSalesOrder.salesOrderLines.length + 1,
+            orderNumber: newSalesOrder.orderNumber,
+            orderLineNumber: newSalesOrder.salesOrderLines.length + 1,
             productCode: '',
             productName: '',
-            quantity: 0,
-            unitPrice: 0,
-            amount: 0,
-            remarks: ''
+            salesUnitPrice: 0,
+            orderQuantity: 0,
+            taxRate: '標準税率',
+            allocationQuantity: 0,
+            shipmentInstructionQuantity: 0,
+            shippedQuantity: 0,
+            completionFlag: '未完了',
+            discountAmount: 0,
+            deliveryDate: new Date().toISOString().slice(0, 16)
         };
         setNewSalesOrder({
             ...newSalesOrder,
@@ -209,18 +244,28 @@ const Form = ({isEditing, newSalesOrder, setNewSalesOrder}: FormProps) => {
             />
 
             <div className="single-view-content-item-form-lines sales-order-detail">
-                <h3>受注明細</h3>
-                <button className="add-line-button" onClick={handleAddLine}>明細追加</button>
+                <h3>
+                    受注明細
+                    <button className="add-line-button" onClick={handleAddLine}>
+                        <span>＋</span> 明細追加
+                    </button>
+                </h3>
                 <div className="table-container">
                     <table className="order-lines-table">
                         <thead>
                             <tr>
+                                <th>行番号</th>
                                 <th>商品コード</th>
                                 <th>商品名</th>
-                                <th>数量</th>
-                                <th>単価</th>
-                                <th>金額</th>
-                                <th>備考</th>
+                                <th>販売単価</th>
+                                <th>受注数量</th>
+                                <th>消費税率</th>
+                                <th>引当数量</th>
+                                <th>出荷指示数量</th>
+                                <th>出荷済数量</th>
+                                <th>完了フラグ</th>
+                                <th>値引金額</th>
+                                <th>納期</th>
                                 <th>操作</th>
                             </tr>
                         </thead>
@@ -232,6 +277,14 @@ const Form = ({isEditing, newSalesOrder, setNewSalesOrder}: FormProps) => {
                                     style={{
                                         backgroundColor: index % 2 === 0 ? '#ffffff' : '#f9f9f9'
                                     }}>
+                                    <td className="table-cell">
+                                        <input
+                                            type="number"
+                                            value={line.orderLineNumber}
+                                            disabled={true}
+                                            className="table-input"
+                                        />
+                                    </td>
                                     <td className="table-cell">
                                         <input
                                             type="text"
@@ -251,32 +304,77 @@ const Form = ({isEditing, newSalesOrder, setNewSalesOrder}: FormProps) => {
                                     <td className="table-cell">
                                         <input
                                             type="number"
-                                            value={line.quantity}
-                                            onChange={(e) => handleUpdateLine(index, { ...line, quantity: Number(e.target.value) })}
+                                            value={line.salesUnitPrice}
+                                            onChange={(e) => handleUpdateLine(index, { ...line, salesUnitPrice: Number(e.target.value) })}
                                             className="table-input"
                                         />
                                     </td>
                                     <td className="table-cell">
                                         <input
                                             type="number"
-                                            value={line.unitPrice}
-                                            onChange={(e) => handleUpdateLine(index, { ...line, unitPrice: Number(e.target.value) })}
+                                            value={line.orderQuantity}
+                                            onChange={(e) => handleUpdateLine(index, { ...line, orderQuantity: Number(e.target.value) })}
+                                            className="table-input"
+                                        />
+                                    </td>
+                                    <td className="table-cell">
+                                        <select
+                                            value={line.taxRate}
+                                            onChange={(e) => handleUpdateLine(index, { ...line, taxRate: e.target.value as TaxRateType })}
+                                            className="table-input"
+                                        >
+                                            <option value="標準税率">標準</option>
+                                            <option value="軽減税率">軽減</option>
+                                            <option value="その他">非課税</option>
+                                        </select>
+                                    </td>
+                                    <td className="table-cell">
+                                        <input
+                                            type="number"
+                                            value={line.allocationQuantity}
+                                            onChange={(e) => handleUpdateLine(index, { ...line, allocationQuantity: Number(e.target.value) })}
                                             className="table-input"
                                         />
                                     </td>
                                     <td className="table-cell">
                                         <input
                                             type="number"
-                                            value={line.amount}
-                                            disabled={true}
+                                            value={line.shipmentInstructionQuantity}
+                                            onChange={(e) => handleUpdateLine(index, { ...line, shipmentInstructionQuantity: Number(e.target.value) })}
                                             className="table-input"
                                         />
                                     </td>
                                     <td className="table-cell">
                                         <input
-                                            type="text"
-                                            value={line.remarks}
-                                            onChange={(e) => handleUpdateLine(index, { ...line, remarks: e.target.value })}
+                                            type="number"
+                                            value={line.shippedQuantity}
+                                            onChange={(e) => handleUpdateLine(index, { ...line, shippedQuantity: Number(e.target.value) })}
+                                            className="table-input"
+                                        />
+                                    </td>
+                                    <td className="table-cell">
+                                        <select
+                                            value={line.completionFlag}
+                                            onChange={(e) => handleUpdateLine(index, { ...line, completionFlag: e.target.value as CompletionFlagType })}
+                                            className="table-input"
+                                        >
+                                            <option value="完了">完了</option>
+                                            <option value="未完了">未完了</option>
+                                        </select>
+                                    </td>
+                                    <td className="table-cell">
+                                        <input
+                                            type="number"
+                                            value={line.discountAmount}
+                                            onChange={(e) => handleUpdateLine(index, { ...line, discountAmount: Number(e.target.value) })}
+                                            className="table-input"
+                                        />
+                                    </td>
+                                    <td className="table-cell">
+                                        <input
+                                            type="datetime-local"
+                                            value={line.deliveryDate}
+                                            onChange={(e) => handleUpdateLine(index, { ...line, deliveryDate: e.target.value })}
                                             className="table-input"
                                         />
                                     </td>
@@ -285,7 +383,7 @@ const Form = ({isEditing, newSalesOrder, setNewSalesOrder}: FormProps) => {
                                             className="delete-line-button"
                                             onClick={() => handleDeleteLine(index)}
                                         >
-                                            削除
+                                            <span>✕</span> 削除
                                         </button>
                                     </td>
                                 </tr>
@@ -293,7 +391,17 @@ const Form = ({isEditing, newSalesOrder, setNewSalesOrder}: FormProps) => {
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colSpan={4} className="total-label">合計</td>
+                                <td colSpan={10} className="total-label">小計</td>
+                                <td className="total-amount">{(newSalesOrder.totalOrderAmount - newSalesOrder.totalConsumptionTax).toLocaleString()}</td>
+                                <td colSpan={2}></td>
+                            </tr>
+                            <tr>
+                                <td colSpan={10} className="total-label">消費税</td>
+                                <td className="total-amount">{newSalesOrder.totalConsumptionTax.toLocaleString()}</td>
+                                <td colSpan={2}></td>
+                            </tr>
+                            <tr>
+                                <td colSpan={10} className="total-label">合計金額</td>
                                 <td className="total-amount">{newSalesOrder.totalOrderAmount.toLocaleString()}</td>
                                 <td colSpan={2}></td>
                             </tr>

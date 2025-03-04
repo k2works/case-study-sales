@@ -1,14 +1,23 @@
 import { PageNationType } from "../../views/application/PageNation.tsx";
 import {toISOStringLocal } from "../../components/application/utils.ts";
 
+export type TaxRateType = '標準税率' | '軽減税率' | 'その他';
+export type CompletionFlagType = '未完了' | '完了';
+
 export type SalesOrderLineType = {
-    lineNumber: number;
+    orderNumber: string;
+    orderLineNumber: number;
     productCode: string;
     productName: string;
-    quantity: number;
-    unitPrice: number;
-    amount: number;
-    remarks: string;
+    salesUnitPrice: number;
+    orderQuantity: number;
+    taxRate: TaxRateType;
+    allocationQuantity: number;
+    shipmentInstructionQuantity: number;
+    shippedQuantity: number;
+    completionFlag: CompletionFlagType;
+    discountAmount: number;
+    deliveryDate: string;
 }
 
 export type SalesOrderType = {
