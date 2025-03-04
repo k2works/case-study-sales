@@ -1,8 +1,21 @@
 import { PageNationType } from "../../views/application/PageNation.tsx";
 import {toISOStringLocal } from "../../components/application/utils.ts";
 
-export type TaxRateType = '標準税率' | '軽減税率' | 'その他';
-export type CompletionFlagType = '未完了' | '完了';
+export enum TaxRateEnumType {
+    標準税率 = "標準税率",
+    軽減税率 = "軽減税率",
+    その他 = "その他"
+}
+
+export const TaxRateValues = {
+    [TaxRateEnumType.標準税率]: 0.10,
+    [TaxRateEnumType.軽減税率]: 0.08
+};
+
+export enum CompletionFlagEnumType {
+    未完了 = "未完了",
+    完了 = "完了"
+}
 
 export type SalesOrderLineType = {
     orderNumber: string;
@@ -11,11 +24,11 @@ export type SalesOrderLineType = {
     productName: string;
     salesUnitPrice: number;
     orderQuantity: number;
-    taxRate: TaxRateType;
+    taxRate: TaxRateEnumType;
     allocationQuantity: number;
     shipmentInstructionQuantity: number;
     shippedQuantity: number;
-    completionFlag: CompletionFlagType;
+    completionFlag: CompletionFlagEnumType;
     discountAmount: number;
     deliveryDate: string;
 }

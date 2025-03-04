@@ -1,7 +1,13 @@
 import React from 'react';
-import { Message } from "../../../components/application/Message.tsx";
-import { SalesOrderType, SalesOrderLineType, TaxRateType, CompletionFlagType } from "../../../models/sales/sales_order";
-import { convertToDateInputFormat } from "../../../components/application/utils.ts";
+import {Message} from "../../../components/application/Message.tsx";
+import {
+    CompletionFlagEnumType,
+    SalesOrderLineType,
+    SalesOrderType,
+    TaxRateEnumType,
+    TaxRateValues
+} from "../../../models/sales/sales_order";
+import {convertToDateInputFormat} from "../../../components/application/utils.ts";
 import {FormInput, SingleViewHeaderActions, SingleViewHeaderItem} from "../../Common.tsx";
 import "./SalesOrder.css";
 
@@ -43,8 +49,8 @@ const calculateLineAmount = (line: SalesOrderLineType): number => {
 
 const calculateLineTax = (line: SalesOrderLineType): number => {
     const amount = calculateLineAmount(line);
-    const taxRate = line.taxRate === '標準税率' ? 0.1 : line.taxRate === '軽減税率' ? 0.08 : 0;
-    return line.taxRate === 'その他' ? 0 : Math.floor(amount * taxRate);
+    const taxRate = line.taxRate === TaxRateEnumType.標準税率 ? TaxRateValues[TaxRateEnumType.標準税率] : line.taxRate === TaxRateEnumType.軽減税率 ? TaxRateValues[TaxRateEnumType.軽減税率] : 0;
+    return line.taxRate === TaxRateEnumType.その他 ? 0 : Math.floor(amount * taxRate);
 };
 
 const calculateTotalAmount = (lines: SalesOrderLineType[]): number => {
@@ -97,11 +103,11 @@ const Form = ({isEditing, newSalesOrder, setNewSalesOrder}: FormProps) => {
             productName: '',
             salesUnitPrice: 0,
             orderQuantity: 0,
-            taxRate: '標準税率',
+            taxRate: TaxRateEnumType.標準税率,
             allocationQuantity: 0,
             shipmentInstructionQuantity: 0,
             shippedQuantity: 0,
-            completionFlag: '未完了',
+            completionFlag: CompletionFlagEnumType.未完了,
             discountAmount: 0,
             deliveryDate: new Date().toISOString().slice(0, 16)
         };
@@ -320,12 +326,12 @@ const Form = ({isEditing, newSalesOrder, setNewSalesOrder}: FormProps) => {
                                     <td className="table-cell">
                                         <select
                                             value={line.taxRate}
-                                            onChange={(e) => handleUpdateLine(index, { ...line, taxRate: e.target.value as TaxRateType })}
+                                            onChange={(e) => handleUpdateLine(index, { ...line, taxRate: e.target.value as TaxRateEnumType })}
                                             className="table-input"
                                         >
-                                            <option value="標準税率">標準</option>
-                                            <option value="軽減税率">軽減</option>
-                                            <option value="その他">非課税</option>
+                                            <option value={TaxRateEnumType.標準税率}>標準</option>
+                                            <option value={TaxRateEnumType.軽減税率}>軽減</option>
+                                            <option value={TaxRateEnumType.その他}>非課税</option>
                                         </select>
                                     </td>
                                     <td className="table-cell">
@@ -355,11 +361,11 @@ const Form = ({isEditing, newSalesOrder, setNewSalesOrder}: FormProps) => {
                                     <td className="table-cell">
                                         <select
                                             value={line.completionFlag}
-                                            onChange={(e) => handleUpdateLine(index, { ...line, completionFlag: e.target.value as CompletionFlagType })}
+                                            onChange={(e) => handleUpdateLine(index, { ...line, completionFlag: e.target.value as CompletionFlagEnumType })}
                                             className="table-input"
                                         >
-                                            <option value="完了">完了</option>
-                                            <option value="未完了">未完了</option>
+                                            <option value={CompletionFlagEnumType.完了}>完了</option>
+                                            <option value={CompletionFlagEnumType.未完了}>未完了</option>
                                         </select>
                                     </td>
                                     <td className="table-cell">

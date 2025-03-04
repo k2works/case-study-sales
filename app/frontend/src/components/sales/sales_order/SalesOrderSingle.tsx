@@ -34,9 +34,8 @@ export const SalesOrderSingle: React.FC = () => {
             }
             await fetchSalesOrders.load();
             handleCloseModal();
-        } catch (error: Error | unknown) {
-            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-            showErrorMessage(`受注の${isEditing ? '更新' : '作成'}に失敗しました: ${errorMessage}`, setError);
+        } catch (error: any) {
+            showErrorMessage(`受注の更新に失敗しました: ${error?.message}`, setError);
         }
     };
 

@@ -39,9 +39,8 @@ export const SalesOrderSearchModal: React.FC = () => {
                 setMessage("");
                 setError("");
             }
-        } catch (error: Error | unknown) {
-            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-            showErrorMessage(`受注情報の検索に失敗しました: ${errorMessage}`, setError);
+        } catch (error: any) {
+            showErrorMessage(`受注の検索に失敗しました: ${error?.message}`, setError);
         } finally {
             setLoading(false);
         }

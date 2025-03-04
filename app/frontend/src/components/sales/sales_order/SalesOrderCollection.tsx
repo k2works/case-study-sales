@@ -52,9 +52,8 @@ export const SalesOrderCollection: React.FC = () => {
             await salesOrderService.destroy(orderNumber);
             await fetchSalesOrders.load();
             setMessage("受注を削除しました。");
-        } catch (error: Error | unknown) {
-            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-            showErrorMessage(`受注の削除に失敗しました: ${errorMessage}`, setError);
+        } catch (error: any) {
+            showErrorMessage(`受注の削除に失敗しました: ${error?.message}`, setError);
         }
     };
 
@@ -93,9 +92,8 @@ export const SalesOrderCollection: React.FC = () => {
             await Promise.all(checkedSalesOrders.map((s: SalesOrderType) => salesOrderService.destroy(s.orderNumber)));
             await fetchSalesOrders.load();
             setMessage("選択した受注を削除しました。");
-        } catch (error: Error | unknown) {
-            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-            showErrorMessage(`選択した受注の削除に失敗しました: ${errorMessage}`, setError);
+        } catch (error: any) {
+            showErrorMessage(`受注の削除に失敗しました: ${error?.message}`, setError);
         }
     }
 
