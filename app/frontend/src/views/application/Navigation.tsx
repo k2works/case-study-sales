@@ -45,6 +45,12 @@ const NaveItems: React.FC = () => {
                         </ul>
                     </li>
                     <li className="nav-item">
+                        販売
+                        <ul className="nav-sub-list">
+                            <SubNavItem id="side-nav-sales-order-nav" to="/sales-order">受注</SubNavItem>
+                        </ul>
+                    </li>
+                    <li className="nav-item">
                         マスタ
                         <ul className="nav-sub-list">
                             <SubNavItem id="side-nav-department-nav" to="/department">部門</SubNavItem>

@@ -22,6 +22,7 @@ import {CustomerContainer} from "../master/partner/customer/CustomerContainer.ts
 import {VendorContainer} from "../master/partner/vendor/VendorContainer.tsx";
 import {AuditContainer} from "../system/audit/AuditContainer.tsx";
 import {UserContainer} from "../system/user/UserContainer.tsx";
+import {SalesOrderContainer} from "../sales/sales_order/SalesOrderContainer.tsx";
 
 export const RouteConfig: React.FC = () => {
     const ProductCategoryPage = () => {
@@ -88,6 +89,14 @@ export const RouteConfig: React.FC = () => {
         );
     }
 
+    const SalesOrderPage = () => {
+        return (
+            <SiteLayout>
+                <SalesOrderContainer/>
+            </SiteLayout>
+        )
+    }
+
     return (
             <Routes>
                 <Route path="/" element={<RouteAuthGuard component={<Home/>} redirectPath="/login"/>}/>
@@ -123,6 +132,8 @@ export const RouteConfig: React.FC = () => {
                                                                 allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/region" element={<RouteAuthGuard component={<RegionPage/>} redirectPath="/"
                                                              allowedRoles={[RoleType.ADMIN]}/>}/>
+                <Route path="/sales-order" element={<RouteAuthGuard component={<SalesOrderPage/>} redirectPath="/"
+                                                             allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/logout" element={<Logout/>}/>
                 <Route path="*" element={<NotFound/>}/>
