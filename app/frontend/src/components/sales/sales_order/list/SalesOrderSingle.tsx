@@ -1,6 +1,6 @@
 import React from "react";
 import { useSalesOrderContext } from "../../../../providers/sales/SalesOrder.tsx";
-import { SalesOrderSingleView } from "../../../../views/sales/sales_order/SalesOrderSingle.tsx";
+import { SalesOrderSingleView } from "../../../../views/sales/sales_order/list/SalesOrderSingle.tsx";
 import { showErrorMessage } from "../../../application/utils.ts";
 import {useDepartmentContext} from "../../../../providers/master/Department.tsx";
 import {useEmployeeContext} from "../../../../providers/master/Employee.tsx";

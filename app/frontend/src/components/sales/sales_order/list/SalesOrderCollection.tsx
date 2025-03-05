@@ -1,6 +1,6 @@
 import React from "react";
 import { useSalesOrderContext } from "../../../../providers/sales/SalesOrder.tsx";
-import { SalesOrderCollectionView } from "../../../../views/sales/sales_order/SalesOrderCollection.tsx";
+import { SalesOrderCollectionView } from "../../../../views/sales/sales_order/list/SalesOrderCollection.tsx";
 import { SalesOrderType } from "../../../../models/sales/sales_order";
 import { showErrorMessage } from "../../../application/utils.ts";
 import { SalesOrderSearchModal } from "./SalesOrderSearchModal.tsx";

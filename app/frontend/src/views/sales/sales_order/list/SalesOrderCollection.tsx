@@ -1,8 +1,8 @@
 import React from "react";
-import { SalesOrderCriteriaType, SalesOrderType } from "../../../models/sales/sales_order";
-import { Message } from "../../../components/application/Message.tsx";
-import { PageNation, PageNationType } from "../../application/PageNation.tsx";
-import { Search } from "../../Common.tsx";
+import { SalesOrderCriteriaType, SalesOrderType } from "../../../../models/sales/sales_order";
+import { Message } from "../../../../components/application/Message.tsx";
+import { PageNation, PageNationType } from "../../../application/PageNation.tsx";
+import { Search } from "../../../Common.tsx";
 
 interface SalesOrderItemProps {
     salesOrder: SalesOrderType;

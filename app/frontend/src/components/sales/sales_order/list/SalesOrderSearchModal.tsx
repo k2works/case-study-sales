@@ -1,6 +1,6 @@
 import React from "react";
 import Modal from "react-modal";
-import { SalesOrderSearchSingleView } from "../../../../views/sales/sales_order/SalesOrderSearch.tsx";
+import { SalesOrderSearchSingleView } from "../../../../views/sales/sales_order/list/SalesOrderSearch.tsx";
 import { showErrorMessage } from "../../../application/utils.ts";
 import { useSalesOrderContext } from "../../../../providers/sales/SalesOrder.tsx";
 

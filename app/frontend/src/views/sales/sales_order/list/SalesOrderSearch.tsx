@@ -1,6 +1,6 @@
 import React, { MouseEventHandler } from "react";
-import { FormInput, SingleViewHeaderItem } from "../../Common.tsx";
-import { SalesOrderCriteriaType } from "../../../models/sales/sales_order";
+import { FormInput, SingleViewHeaderItem } from "../../../Common.tsx";
+import { SalesOrderCriteriaType } from "../../../../models/sales/sales_order";
 
 interface FormProps {
     criteria: SalesOrderCriteriaType,

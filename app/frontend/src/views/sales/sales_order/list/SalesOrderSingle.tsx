@@ -1,14 +1,14 @@
 import React, {Dispatch, SetStateAction} from 'react';
-import {Message} from "../../../components/application/Message.tsx";
+import {Message} from "../../../../components/application/Message.tsx";
 import {
     CompletionFlagEnumType,
     SalesOrderLineType,
     SalesOrderType,
     TaxRateEnumType,
     TaxRateValues
-} from "../../../models/sales/sales_order";
-import {convertToDateInputFormat} from "../../../components/application/utils.ts";
-import {FormInput, SingleViewHeaderActions, SingleViewHeaderItem} from "../../Common.tsx";
+} from "../../../../models/sales/sales_order";
+import {convertToDateInputFormat} from "../../../../components/application/utils.ts";
+import {FormInput, SingleViewHeaderActions, SingleViewHeaderItem} from "../../../Common.tsx";
 import "./SalesOrder.css";
 
 interface HeaderProps {

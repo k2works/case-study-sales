@@ -1,8 +1,8 @@
 import React from 'react';
 import { FaTimes } from 'react-icons/fa';
-import { SalesOrderType } from "../../../models/sales/sales_order";
-import { convertToDateInputFormat } from "../../../components/application/utils.ts";
-import { PageNation, PageNationType } from "../../application/PageNation.tsx";
+import { SalesOrderType } from "../../../../models/sales/sales_order";
+import { convertToDateInputFormat } from "../../../../components/application/utils.ts";
+import { PageNation, PageNationType } from "../../../application/PageNation.tsx";
 
 interface SalesOrderSelectProps {
     handleSelect: () => void;
