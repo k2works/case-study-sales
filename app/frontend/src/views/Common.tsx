@@ -1,5 +1,4 @@
 import React from "react";
-import {DepartmentCriteriaType} from "../models";
 
 export const SingleViewHeaderItem: React.FC<{ title: string, subtitle: string }> = ({title, subtitle}) => (
     <div className="single-view-header-item">

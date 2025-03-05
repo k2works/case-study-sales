@@ -1,8 +1,8 @@
 import React from "react";
 import Modal from "react-modal";
-import {DepartmentCollectionSelectView} from "../../../views/master/department/DepartmentSelect.tsx";
-import {useDepartmentContext} from "../../../providers/master/Department.tsx";
-import {useSalesOrderContext} from "../../../providers/sales/SalesOrder.tsx";
+import {DepartmentCollectionSelectView} from "../../../../views/master/department/DepartmentSelect.tsx";
+import {useDepartmentContext} from "../../../../providers/master/Department.tsx";
+import {useSalesOrderContext} from "../../../../providers/sales/SalesOrder.tsx";
 
 export const DepartmentSelectModal: React.FC = () => {
     const {

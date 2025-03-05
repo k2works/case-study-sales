@@ -1,8 +1,8 @@
 import React from "react";
 import Modal from "react-modal";
-import {CustomerCollectionSelectView} from "../../../views/master/partner/customer/CustomerSelect.tsx";
-import {useCustomerContext} from "../../../providers/master/partner/Customer.tsx";
-import {useSalesOrderContext} from "../../../providers/sales/SalesOrder.tsx";
+import {CustomerCollectionSelectView} from "../../../../views/master/partner/customer/CustomerSelect.tsx";
+import {useCustomerContext} from "../../../../providers/master/partner/Customer.tsx";
+import {useSalesOrderContext} from "../../../../providers/sales/SalesOrder.tsx";
 
 export const CustomerSelectModal: React.FC = () => {
     const {

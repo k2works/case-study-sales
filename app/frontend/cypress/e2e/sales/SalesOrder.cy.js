@@ -4,7 +4,7 @@ describe('受注管理', () => {
     })
 
     const userPage = () => {
-        cy.get('#side-nav-menu > :nth-child(1) > :nth-child(3) > .nav-sub-list > .nav-sub-item > #side-nav-sales-order-nav').click();
+        cy.get('#side-nav-menu > :nth-child(1) > :nth-child(3) > :nth-child(1) > .nav-sub-list > .nav-sub-item > #side-nav-product-nav').click();
     }
 
     context('受注一覧', () => {

@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
-import { showErrorMessage } from "../../application/utils.ts";
-import LoadingIndicator from "../../../views/application/LoadingIndicatior.tsx";
-import { SalesOrderProvider, useSalesOrderContext } from "../../../providers/sales/SalesOrder.tsx";
+import { showErrorMessage } from "../../../application/utils.ts";
+import LoadingIndicator from "../../../../views/application/LoadingIndicatior.tsx";
+import { SalesOrderProvider, useSalesOrderContext } from "../../../../providers/sales/SalesOrder.tsx";
 import {SalesOrderCollection} from "./SalesOrderCollection.tsx";
-import {DepartmentProvider, useDepartmentContext} from "../../../providers/master/Department.tsx";
-import {EmployeeProvider, useEmployeeContext} from "../../../providers/master/Employee.tsx";
-import {CustomerProvider, useCustomerContext} from "../../../providers/master/partner/Customer.tsx";
-import {ProductItemProvider, useProductItemContext} from "../../../providers/master/product/ProductItem.tsx";
+import {DepartmentProvider, useDepartmentContext} from "../../../../providers/master/Department.tsx";
+import {EmployeeProvider, useEmployeeContext} from "../../../../providers/master/Employee.tsx";
+import {CustomerProvider, useCustomerContext} from "../../../../providers/master/partner/Customer.tsx";
+import {ProductItemProvider, useProductItemContext} from "../../../../providers/master/product/ProductItem.tsx";
 
 export const SalesOrderContainer: React.FC = () => {
     const Content: React.FC = () => {

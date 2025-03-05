@@ -22,7 +22,8 @@ import {CustomerContainer} from "../master/partner/customer/CustomerContainer.ts
 import {VendorContainer} from "../master/partner/vendor/VendorContainer.tsx";
 import {AuditContainer} from "../system/audit/AuditContainer.tsx";
 import {UserContainer} from "../system/user/UserContainer.tsx";
-import {SalesOrderContainer} from "../sales/sales_order/SalesOrderContainer.tsx";
+import {SalesOrderTabContainer} from "../sales/sales_order/SalesOrderTabContainer.tsx";
+import {SalesOrderContainer} from "../sales/sales_order/list/SalesOrderContainer.tsx";
 
 export const RouteConfig: React.FC = () => {
     const ProductCategoryPage = () => {
@@ -106,6 +107,10 @@ export const RouteConfig: React.FC = () => {
                                                                             allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/download" element={<RouteAuthGuard component={<DownloadContainer/>} redirectPath="/"
                                                                  allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/sales-order" element={<RouteAuthGuard component={<SalesOrderTabContainer/>} redirectPath="/"
+                                                                    allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/sales-order-list" element={<RouteAuthGuard component={<SalesOrderPage/>} redirectPath="/"
+                                                                         allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/department" element={<RouteAuthGuard component={<DepartmentContainer/>} redirectPath="/"
                                                                    allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/employee" element={<RouteAuthGuard component={<EmployeeContainer/>} redirectPath="/"
@@ -132,8 +137,6 @@ export const RouteConfig: React.FC = () => {
                                                                 allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/region" element={<RouteAuthGuard component={<RegionPage/>} redirectPath="/"
                                                              allowedRoles={[RoleType.ADMIN]}/>}/>
-                <Route path="/sales-order" element={<RouteAuthGuard component={<SalesOrderPage/>} redirectPath="/"
-                                                             allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/logout" element={<Logout/>}/>
                 <Route path="*" element={<NotFound/>}/>

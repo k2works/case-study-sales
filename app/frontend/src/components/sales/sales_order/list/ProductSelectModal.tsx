@@ -1,9 +1,9 @@
 import React from "react";
 import Modal from "react-modal";
-import { useProductItemContext } from "../../../providers/master/product/ProductItem.tsx";
-import { useSalesOrderContext } from "../../../providers/sales/SalesOrder.tsx";
-import { ProductCollectionSelectView } from "../../../views/master/product/item/ProductSelect.tsx";
-import {ProductType} from "../../../models/master/product";
+import { useProductItemContext } from "../../../../providers/master/product/ProductItem.tsx";
+import { useSalesOrderContext } from "../../../../providers/sales/SalesOrder.tsx";
+import { ProductCollectionSelectView } from "../../../../views/master/product/item/ProductSelect.tsx";
+import {ProductType} from "../../../../models/master/product";
 
 export const ProductSelectModal: React.FC = () => {
     const {
