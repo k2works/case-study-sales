@@ -23,7 +23,7 @@ const SalesOrderItem: React.FC<SalesOrderItemProps> = ({salesOrder, onEdit, onDe
         </div>
         <div className="collection-object-item-content" data-id={salesOrder.orderNumber}>
             <div className="collection-object-item-content-details">受注日</div>
-            <div className="collection-object-item-content-name">{salesOrder.orderDate}</div>
+            <div className="collection-object-item-content-name">{salesOrder.orderDate.split("T")[0]}</div>
         </div>
         <div className="collection-object-item-content" data-id={salesOrder.orderNumber}>
             <div className="collection-object-item-content-details">顧客コード</div>

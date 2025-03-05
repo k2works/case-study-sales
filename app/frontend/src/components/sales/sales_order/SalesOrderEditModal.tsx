@@ -2,6 +2,9 @@ import React from "react";
 import Modal from "react-modal";
 import { SalesOrderSingle } from "./SalesOrderSingle.tsx";
 import { useSalesOrderContext } from "../../../providers/sales/SalesOrder.tsx";
+import {DepartmentSelectModal} from "./DepartmentSelectModal.tsx";
+import {CustomerSelectModal} from "./CustomerSelectModal.tsx";
+import {EmployeeSelectModal} from "./EmployeeSelectModal.tsx";
 
 export const SalesOrderEditModal: React.FC = () => {
     const {
@@ -27,6 +30,9 @@ export const SalesOrderEditModal: React.FC = () => {
             bodyOpenClassName="modal-open"
         >
             <SalesOrderSingle/>
+            <DepartmentSelectModal/>
+            <CustomerSelectModal/>
+            <EmployeeSelectModal/>
         </Modal>
     )
 }

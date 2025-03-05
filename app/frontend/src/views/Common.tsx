@@ -84,6 +84,7 @@ interface FormInputProps {
     placeholder?: string;
     value: string | number | undefined;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onClick?: () => void;
     disabled?: boolean;
 }
 
@@ -95,6 +96,7 @@ export const FormInput: React.FC<FormInputProps> = ({
                                                  placeholder,
                                                  value,
                                                  onChange,
+                                                 onClick,
                                                  disabled,
                                              }) => {
     return (
@@ -106,6 +108,7 @@ export const FormInput: React.FC<FormInputProps> = ({
                 placeholder={placeholder}
                 value={value}
                 onChange={onChange}
+                onClick={onClick}
                 disabled={disabled}
             />
         </FormItem>

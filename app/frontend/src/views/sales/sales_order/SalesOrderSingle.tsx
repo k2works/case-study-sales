@@ -41,6 +41,9 @@ interface FormProps {
     isEditing: boolean;
     newSalesOrder: SalesOrderType;
     setNewSalesOrder: React.Dispatch<React.SetStateAction<SalesOrderType>>;
+    handleDepartmentSelect: () => void;
+    handleEmployeeSelect: () => void;
+    handleCustomerSelect: () => void;
 }
 
 const calculateLineAmount = (line: SalesOrderLineType): number => {
@@ -61,7 +64,7 @@ const calculateTotalTax = (lines: SalesOrderLineType[]): number => {
     return lines.reduce((sum, line) => sum + calculateLineTax(line), 0);
 };
 
-const Form = ({isEditing, newSalesOrder, setNewSalesOrder}: FormProps) => {
+const Form = ({isEditing, newSalesOrder, setNewSalesOrder, handleDepartmentSelect, handleEmployeeSelect, handleCustomerSelect}: FormProps) => {
     const handleUpdateLine = (index: number, line: SalesOrderLineType) => {
         const newLines = [...newSalesOrder.salesOrderLines];
         newLines[index] = {
@@ -152,17 +155,19 @@ const Form = ({isEditing, newSalesOrder, setNewSalesOrder}: FormProps) => {
                     ...newSalesOrder,
                     departmentCode: e.target.value
                 })}
+                onClick={handleDepartmentSelect}
             />
             <FormInput
                 label="部門開始日"
                 id="departmentStartDate"
                 type="date"
                 className="single-view-content-item-form-item-input"
-                value={newSalesOrder.departmentStartDate}
+                value={convertToDateInputFormat(newSalesOrder.departmentStartDate)}
                 onChange={(e) => setNewSalesOrder({
                     ...newSalesOrder,
                     departmentStartDate: e.target.value
                 })}
+                disabled={true}
             />
             <FormInput
                 label="顧客コード"
@@ -174,6 +179,7 @@ const Form = ({isEditing, newSalesOrder, setNewSalesOrder}: FormProps) => {
                     ...newSalesOrder,
                     customerCode: e.target.value
                 })}
+                onClick={handleCustomerSelect}
             />
             <FormInput
                 label="顧客枝番"
@@ -185,6 +191,7 @@ const Form = ({isEditing, newSalesOrder, setNewSalesOrder}: FormProps) => {
                     ...newSalesOrder,
                     customerBranchNumber: Number(e.target.value)
                 })}
+                disabled={true}
             />
             <FormInput
                 label="社員コード"
@@ -196,6 +203,7 @@ const Form = ({isEditing, newSalesOrder, setNewSalesOrder}: FormProps) => {
                     ...newSalesOrder,
                     employeeCode: e.target.value
                 })}
+                onClick={handleEmployeeSelect}
             />
             <FormInput
                 label="希望納期"
@@ -430,6 +438,9 @@ interface SalesOrderSingleViewProps {
     setNewSalesOrder: React.Dispatch<React.SetStateAction<SalesOrderType>>;
     handleCreateOrUpdateSalesOrder: () => void;
     handleCloseModal: () => void;
+    handleDepartmentSelect: () => void;
+    handleEmployeeSelect: () => void;
+    handleCustomerSelect: () => void;
 }
 
 export const SalesOrderSingleView: React.FC<SalesOrderSingleViewProps> = ({
@@ -439,7 +450,10 @@ export const SalesOrderSingleView: React.FC<SalesOrderSingleViewProps> = ({
     newSalesOrder,
     setNewSalesOrder,
     handleCreateOrUpdateSalesOrder,
-    handleCloseModal
+    handleCloseModal,
+    handleCustomerSelect,
+    handleDepartmentSelect,
+    handleEmployeeSelect,
 }) => {
     return (
         <div className="single-view-object-container">
@@ -460,6 +474,9 @@ export const SalesOrderSingleView: React.FC<SalesOrderSingleViewProps> = ({
                             isEditing={isEditing}
                             newSalesOrder={newSalesOrder}
                             setNewSalesOrder={setNewSalesOrder}
+                            handleDepartmentSelect={handleDepartmentSelect}
+                            handleEmployeeSelect={handleEmployeeSelect}
+                            handleCustomerSelect={handleCustomerSelect}
                         />
                     </div>
                 </div>
