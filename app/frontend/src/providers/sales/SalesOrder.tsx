@@ -32,6 +32,8 @@ type SalesOrderContextType = {
     setNewSalesOrder: Dispatch<SetStateAction<SalesOrderType>>;
     searchSalesOrderCriteria: SalesOrderCriteriaType;
     setSearchSalesOrderCriteria: Dispatch<SetStateAction<SalesOrderCriteriaType>>;
+    selectedLineIndex: number | null;
+    setSelectedLineIndex: Dispatch<SetStateAction<number | null>>;
     fetchSalesOrders: { load: (page?: number, criteria?: SalesOrderCriteriaType) => Promise<void> };
     salesOrderService: SalesOrderServiceType;
 };
@@ -73,6 +75,7 @@ const useSalesOrder = () => {
     const [salesOrders, setSalesOrders] = useState<SalesOrderType[]>([]);
     const [newSalesOrder, setNewSalesOrder] = useState<SalesOrderType>(initialSalesOrder);
     const [searchSalesOrderCriteria, setSearchSalesOrderCriteria] = useState<SalesOrderCriteriaType>({});
+    const [selectedLineIndex, setSelectedLineIndex] = useState<number | null>(null);
     const salesOrderService = SalesOrderService();
 
     return {
@@ -83,6 +86,8 @@ const useSalesOrder = () => {
         setNewSalesOrder,
         searchSalesOrderCriteria,
         setSearchSalesOrderCriteria,
+        selectedLineIndex,
+        setSelectedLineIndex,
         salesOrderService
     };
 };
@@ -107,9 +112,8 @@ const useFetchSalesOrders = (
             }
             setSalesOrders(response.list);
             setPageNation(response);
-        } catch (error: Error | unknown) {
-            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-            showErrorMessage(`受注情報の取得に失敗しました: ${errorMessage}`, setError);
+        } catch (error: any) {
+            showErrorMessage(`受注情報の取得に失敗しました: ${error?.message}`, setError);
         } finally {
             setLoading(false);
         }
@@ -133,6 +137,8 @@ export const SalesOrderProvider: React.FC<Props> = ({ children }) => {
         setNewSalesOrder,
         searchSalesOrderCriteria,
         setSearchSalesOrderCriteria,
+        selectedLineIndex,
+        setSelectedLineIndex,
         salesOrderService
     } = useSalesOrder();
 
@@ -173,9 +179,11 @@ export const SalesOrderProvider: React.FC<Props> = ({ children }) => {
         setNewSalesOrder,
         searchSalesOrderCriteria,
         setSearchSalesOrderCriteria,
+        selectedLineIndex,
+        setSelectedLineIndex,
         fetchSalesOrders,
         salesOrderService
-    }), [criteria, defaultCriteria, salesOrderService, salesOrders, editId, error, fetchSalesOrders, initialSalesOrder, isEditing, loading, message, modalIsOpen, newSalesOrder, pageNation, searchSalesOrderCriteria, searchModalIsOpen]);
+    }), [criteria, defaultCriteria, salesOrderService, salesOrders, editId, error, fetchSalesOrders, initialSalesOrder, isEditing, loading, message, modalIsOpen, newSalesOrder, pageNation, searchSalesOrderCriteria, searchModalIsOpen, selectedLineIndex]);
 
     return (
         <SalesOrderContext.Provider value={value}>

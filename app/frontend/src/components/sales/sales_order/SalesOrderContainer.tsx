@@ -6,6 +6,7 @@ import {SalesOrderCollection} from "./SalesOrderCollection.tsx";
 import {DepartmentProvider, useDepartmentContext} from "../../../providers/master/Department.tsx";
 import {EmployeeProvider, useEmployeeContext} from "../../../providers/master/Employee.tsx";
 import {CustomerProvider, useCustomerContext} from "../../../providers/master/partner/Customer.tsx";
+import {ProductItemProvider, useProductItemContext} from "../../../providers/master/product/ProductItem.tsx";
 
 export const SalesOrderContainer: React.FC = () => {
     const Content: React.FC = () => {
@@ -27,6 +28,10 @@ export const SalesOrderContainer: React.FC = () => {
             fetchCustomers,
         } = useCustomerContext();
 
+        const {
+            fetchProducts,
+        } = useProductItemContext();
+
         useEffect(() => {
             (async () => {
                 try {
@@ -35,6 +40,7 @@ export const SalesOrderContainer: React.FC = () => {
                         fetchDepartments.load(),
                         fetchEmployees.load(),
                         fetchCustomers.load(),
+                        fetchProducts.load(),
                     ]);
                 } catch (error: any) {
                     showErrorMessage(`受注情報の取得に失敗しました: ${error?.message}`, setError);
@@ -58,7 +64,9 @@ export const SalesOrderContainer: React.FC = () => {
             <DepartmentProvider>
                 <EmployeeProvider>
                     <CustomerProvider>
-                        <Content />
+                        <ProductItemProvider>
+                            <Content />
+                        </ProductItemProvider>
                     </CustomerProvider>
                 </EmployeeProvider>
             </DepartmentProvider>

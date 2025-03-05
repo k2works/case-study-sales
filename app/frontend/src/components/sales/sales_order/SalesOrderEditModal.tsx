@@ -5,6 +5,7 @@ import { useSalesOrderContext } from "../../../providers/sales/SalesOrder.tsx";
 import {DepartmentSelectModal} from "./DepartmentSelectModal.tsx";
 import {CustomerSelectModal} from "./CustomerSelectModal.tsx";
 import {EmployeeSelectModal} from "./EmployeeSelectModal.tsx";
+import {ProductSelectModal} from "./ProductSelectModal.tsx";
 
 export const SalesOrderEditModal: React.FC = () => {
     const {
@@ -33,6 +34,7 @@ export const SalesOrderEditModal: React.FC = () => {
             <DepartmentSelectModal/>
             <CustomerSelectModal/>
             <EmployeeSelectModal/>
+            <ProductSelectModal/>
         </Modal>
     )
 }

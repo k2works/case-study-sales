@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Dispatch, SetStateAction} from 'react';
 import {Message} from "../../../components/application/Message.tsx";
 import {
     CompletionFlagEnumType,
@@ -41,9 +41,11 @@ interface FormProps {
     isEditing: boolean;
     newSalesOrder: SalesOrderType;
     setNewSalesOrder: React.Dispatch<React.SetStateAction<SalesOrderType>>;
+    setSelectedLineIndex: Dispatch<SetStateAction<number | null>>;
     handleDepartmentSelect: () => void;
     handleEmployeeSelect: () => void;
     handleCustomerSelect: () => void;
+    handleProductSelect: () => void;
 }
 
 const calculateLineAmount = (line: SalesOrderLineType): number => {
@@ -64,7 +66,7 @@ const calculateTotalTax = (lines: SalesOrderLineType[]): number => {
     return lines.reduce((sum, line) => sum + calculateLineTax(line), 0);
 };
 
-const Form = ({isEditing, newSalesOrder, setNewSalesOrder, handleDepartmentSelect, handleEmployeeSelect, handleCustomerSelect}: FormProps) => {
+const Form = ({isEditing, newSalesOrder, setNewSalesOrder, setSelectedLineIndex, handleDepartmentSelect, handleEmployeeSelect, handleCustomerSelect, handleProductSelect}: FormProps) => {
     const handleUpdateLine = (index: number, line: SalesOrderLineType) => {
         const newLines = [...newSalesOrder.salesOrderLines];
         newLines[index] = {
@@ -119,6 +121,11 @@ const Form = ({isEditing, newSalesOrder, setNewSalesOrder, handleDepartmentSelec
             salesOrderLines: [...newSalesOrder.salesOrderLines, newLine]
         });
     };
+
+    const handleProductSelectEvent = (index: number|null) => {
+        setSelectedLineIndex(index);
+        handleProductSelect();
+    }
 
     return (
         <div className="single-view-content-item-form">
@@ -302,12 +309,22 @@ const Form = ({isEditing, newSalesOrder, setNewSalesOrder, handleDepartmentSelec
                                         backgroundColor: index % 2 === 0 ? '#ffffff' : '#f9f9f9'
                                     }}>
                                     <td className="table-cell">
-                                        <input
-                                            type="text"
-                                            value={line.productCode}
-                                            onChange={(e) => handleUpdateLine(index, { ...line, productCode: e.target.value })}
-                                            className="table-input"
-                                        />
+                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                            <input
+                                                type="text"
+                                                value={line.productCode}
+                                                className="table-input"
+                                                style={{ marginRight: '4px' }}
+                                                onChange={(e) => handleUpdateLine(index, { ...line, productCode: e.target.value })}
+                                            />
+                                            <button
+                                                onClick={() => handleProductSelectEvent(index)}
+                                                className="select-button"
+                                                type="button"
+                                            >
+                                                選択
+                                            </button>
+                                        </div>
                                     </td>
                                     <td className="table-cell">
                                         <input
@@ -436,11 +453,13 @@ interface SalesOrderSingleViewProps {
     isEditing: boolean;
     newSalesOrder: SalesOrderType;
     setNewSalesOrder: React.Dispatch<React.SetStateAction<SalesOrderType>>;
+    setSelectedLineIndex: Dispatch<SetStateAction<number | null>>;
     handleCreateOrUpdateSalesOrder: () => void;
     handleCloseModal: () => void;
     handleDepartmentSelect: () => void;
     handleEmployeeSelect: () => void;
     handleCustomerSelect: () => void;
+    handleProductSelect: () => void;
 }
 
 export const SalesOrderSingleView: React.FC<SalesOrderSingleViewProps> = ({
@@ -449,11 +468,13 @@ export const SalesOrderSingleView: React.FC<SalesOrderSingleViewProps> = ({
     isEditing,
     newSalesOrder,
     setNewSalesOrder,
+    setSelectedLineIndex,
     handleCreateOrUpdateSalesOrder,
     handleCloseModal,
     handleCustomerSelect,
     handleDepartmentSelect,
     handleEmployeeSelect,
+    handleProductSelect,
 }) => {
     return (
         <div className="single-view-object-container">
@@ -474,9 +495,11 @@ export const SalesOrderSingleView: React.FC<SalesOrderSingleViewProps> = ({
                             isEditing={isEditing}
                             newSalesOrder={newSalesOrder}
                             setNewSalesOrder={setNewSalesOrder}
+                            setSelectedLineIndex={setSelectedLineIndex}
                             handleDepartmentSelect={handleDepartmentSelect}
                             handleEmployeeSelect={handleEmployeeSelect}
                             handleCustomerSelect={handleCustomerSelect}
+                            handleProductSelect={handleProductSelect}
                         />
                     </div>
                 </div>

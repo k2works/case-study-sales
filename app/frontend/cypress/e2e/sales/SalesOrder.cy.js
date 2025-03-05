@@ -17,6 +17,7 @@ describe('受注管理', () => {
     context('受注新規登録', () => {
         it('新規登録', () => {
             userPage();
+
             // 受注新規画面を開く
             cy.get('#new').click();
 
@@ -70,7 +71,7 @@ describe('受注管理', () => {
             cy.get('#message').contains('受注を作成しました。');
         });
     });
-/**
+
     context('受注検索', () => {
         it('検索', () => {
             userPage();
@@ -117,5 +118,4 @@ describe('受注管理', () => {
             cy.get('#message').contains('受注を削除しました。');
         });
     });
-        **/
 });

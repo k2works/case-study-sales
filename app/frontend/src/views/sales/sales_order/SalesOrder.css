@@ -82,6 +82,34 @@
     box-shadow: none;
 }
 
+/* Select Button */
+/* ------------ */
+.select-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #2196F3;
+    color: white;
+    padding: 4px 8px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+    min-width: 50px;
+}
+
+.select-button:hover {
+    background-color: #1976D2;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.select-button:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
 /* Compact table buttons */
 .order-lines-table .delete-line-button {
     margin: 0;
