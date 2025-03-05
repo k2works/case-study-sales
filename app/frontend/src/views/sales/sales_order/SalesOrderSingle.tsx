@@ -154,6 +154,17 @@ const Form = ({isEditing, newSalesOrder, setNewSalesOrder}: FormProps) => {
                 })}
             />
             <FormInput
+                label="部門開始日"
+                id="departmentStartDate"
+                type="date"
+                className="single-view-content-item-form-item-input"
+                value={newSalesOrder.departmentStartDate}
+                onChange={(e) => setNewSalesOrder({
+                    ...newSalesOrder,
+                    departmentStartDate: e.target.value
+                })}
+            />
+            <FormInput
                 label="顧客コード"
                 id="customerCode"
                 type="text"
@@ -260,7 +271,6 @@ const Form = ({isEditing, newSalesOrder, setNewSalesOrder}: FormProps) => {
                     <table className="order-lines-table">
                         <thead>
                             <tr>
-                                <th>行番号</th>
                                 <th>商品コード</th>
                                 <th>商品名</th>
                                 <th>販売単価</th>
@@ -283,14 +293,6 @@ const Form = ({isEditing, newSalesOrder, setNewSalesOrder}: FormProps) => {
                                     style={{
                                         backgroundColor: index % 2 === 0 ? '#ffffff' : '#f9f9f9'
                                     }}>
-                                    <td className="table-cell">
-                                        <input
-                                            type="number"
-                                            value={line.orderLineNumber}
-                                            disabled={true}
-                                            className="table-input"
-                                        />
-                                    </td>
                                     <td className="table-cell">
                                         <input
                                             type="text"
