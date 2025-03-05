@@ -3,7 +3,7 @@ describe('商品分類管理', () => {
         cy.login('U000003', 'a234567Z');
     })
     const openProductCategoryPage = () => {
-        cy.get('#side-nav-menu > :nth-child(1) > :nth-child(3) > :nth-child(1) > .nav-sub-list > :nth-child(1) > #side-nav-product-nav').click();
+        cy.get('#side-nav-menu > :nth-child(1) > :nth-child(4) > :nth-child(1) > .nav-sub-list > :nth-child(1) > #side-nav-product-nav').click();
     }
     context('商品分類一覧', () => {
         it('商品分類一覧の表示', () => {

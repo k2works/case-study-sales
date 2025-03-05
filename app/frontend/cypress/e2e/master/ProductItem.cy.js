@@ -4,7 +4,7 @@ describe('商品管理', () => {
     });
 
     const openProductPage = () => {
-        cy.get('#side-nav-menu > :nth-child(1) > :nth-child(3) > :nth-child(1) > .nav-sub-list > :nth-child(2) > #side-nav-product-nav').click();
+        cy.get('#side-nav-menu > :nth-child(1) > :nth-child(4) > :nth-child(1) > .nav-sub-list > :nth-child(2) > #side-nav-product-nav').click();
     };
 
     context('商品一覧', () => {

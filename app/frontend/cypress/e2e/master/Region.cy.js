@@ -3,7 +3,7 @@ describe('地域管理', () => {
         cy.login('U000003', 'a234567Z'); // ログインの共通処理を追加
     });
     const navigateToRegionPage = () => {
-        cy.get('#side-nav-menu > :nth-child(1) > :nth-child(3) > :nth-child(1) > :nth-child(8) > .nav-sub-item > #side-nav-code-nav').click();
+        cy.get('#side-nav-menu > :nth-child(1) > :nth-child(4) > :nth-child(1) > :nth-child(8) > .nav-sub-item > #side-nav-code-nav').click();
     };
 
     context('地域一覧', () => {

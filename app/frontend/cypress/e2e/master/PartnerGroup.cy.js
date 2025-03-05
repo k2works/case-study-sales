@@ -5,7 +5,7 @@ describe('取引先グループ管理', () => {
 
     // 取引先グループ管理画面を開く関数
     const openPartnerGroupPage = () => {
-        cy.get('#side-nav-menu > :nth-child(1) > :nth-child(3) > :nth-child(1) > :nth-child(6) > :nth-child(2) > #side-nav-partner-nav').click();
+        cy.get('#side-nav-menu > :nth-child(1) > :nth-child(4) > :nth-child(1) > :nth-child(6) > :nth-child(2) > #side-nav-partner-nav').click();
     };
 
     context('取引先グループ一覧', () => {
