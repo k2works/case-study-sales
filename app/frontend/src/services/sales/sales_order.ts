@@ -1,5 +1,5 @@
-import Config from "../config.ts";
-import Utils from "../utils.ts";
+import Config from "../config";
+import Utils from "../utils";
 import {
     SalesOrderCriteriaType,
     SalesOrderFetchType,
@@ -13,6 +13,11 @@ export interface UploadResultType {
     details: Array<{ [key: string]: string }>;
 }
 
+export interface RuleCheckResultType {
+    message: string;
+    details: Array<{ [key: string]: string }>;
+}
+
 export interface SalesOrderServiceType {
     select: (page?: number, pageSize?: number) => Promise<SalesOrderFetchType>;
     find: (orderNumber: string) => Promise<SalesOrderType>;
@@ -21,6 +26,7 @@ export interface SalesOrderServiceType {
     destroy: (orderNumber: string) => Promise<void>;
     search: (criteria: SalesOrderCriteriaType, page?: number, pageSize?: number) => Promise<SalesOrderFetchType>;
     upload: (file: File) => Promise<UploadResultType[]>;
+    check: () => Promise<RuleCheckResultType[]>;
 }
 
 export const SalesOrderService = () => {
@@ -65,6 +71,12 @@ export const SalesOrderService = () => {
         return Array.isArray(response) ? response : [response];
     };
 
+    const check = async (): Promise<RuleCheckResultType[]> => {
+        const url = `${endPoint}/check`;
+        const response = await apiUtils.fetchPost<RuleCheckResultType>(url, {});
+        return Array.isArray(response) ? response : [response];
+    };
+
     return {
         select,
         find,
@@ -72,6 +84,7 @@ export const SalesOrderService = () => {
         update,
         destroy,
         search,
-        upload
+        upload,
+        check
     };
 }

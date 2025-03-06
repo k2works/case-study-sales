@@ -1,8 +1,8 @@
-import React from "react";
-import {useTab} from "../../application/hooks.ts";
-import {SiteLayout} from "../../../views/SiteLayout.tsx";
-import {SalesOrderContainer} from "./list/SalesOrderContainer.tsx";
-import {SalesOrderUploadContainer} from "./upload/SalesOrderUploadContainer.tsx";
+import {useTab} from "../../application/hooks";
+import {SiteLayout} from "../../../views/SiteLayout";
+import {SalesOrderContainer} from "./list/SalesOrderContainer";
+import {SalesOrderUploadContainer} from "./upload/SalesOrderUploadContainer";
+import {SalesOrderRuleContainer} from "./rule/SalesOrderRuleContainer";
 
 export const SalesOrderTabContainer: React.FC = () => {
     const {
@@ -27,6 +27,7 @@ export const SalesOrderTabContainer: React.FC = () => {
                     <SalesOrderUploadContainer/>
                 </TabPanel>
                 <TabPanel>
+                    <SalesOrderRuleContainer/>
                 </TabPanel>
             </Tabs>
         </SiteLayout>
