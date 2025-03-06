@@ -15,42 +15,33 @@ export const UserService = () => {
     const apiUtils = Utils.apiUtils;
     const endPoint = `${config.apiUrl}/users`;
 
-    const select = async (page?: number, pageSize?: number) => {
-        let url = endPoint;
-        if (pageSize && page) {
-            url = url + "?pageSize=" + pageSize + "&page=" + page;
-        } else if (pageSize) {
-            url = url + "?pageSize=" + pageSize;
-        } else if (page) {
-            url = url + "?page=" + page;
-        }
-
-        return await apiUtils.fetchGet(url);
+    const select = async (page?: number, pageSize?: number): Promise<UserFetchType> => {
+        const url = Utils.buildUrlWithPaging(endPoint, page, pageSize);
+        return await apiUtils.fetchGet<UserFetchType>(url);
     };
 
-    const find = async (userId: string) => {
+    const find = async (userId: string): Promise<UserAccountType> => {
         const url = `${endPoint}/${userId}`;
-        return await apiUtils.fetchGet(url);
+        return await apiUtils.fetchGet<UserAccountType>(url);
     };
 
-    const create = async (user: UserAccountType) => {
-        return await apiUtils.fetchPost(endPoint, mapToUserAccountResource(user));
+    const create = async (user: UserAccountType): Promise<string> => {
+        return await apiUtils.fetchPost<string>(endPoint, mapToUserAccountResource(user));
     };
 
-    const update = async (user: UserAccountType) => {
+    const update = async (user: UserAccountType): Promise<string> => {
         const url = `${endPoint}/${user.userId.value}`;
-        return await apiUtils.fetchPut(url, mapToUserAccountResource(user));
+        return await apiUtils.fetchPut<string>(url, mapToUserAccountResource(user));
     };
 
     const search = async (code: string, page = 1, pageSize = 10): Promise<UserFetchType> => {
-        const url = `${endPoint}/search?pageSize=${pageSize}&code=${code}&page=${page}`;
-
-        return await apiUtils.fetchGet(url);
+        const url = Utils.buildUrlWithPaging(`${endPoint}/search?code=${code}`, page, pageSize);
+        return await apiUtils.fetchGet<UserFetchType>(url);
     };
 
-    const destroy = async (userId: string) => {
+    const destroy = async (userId: string): Promise<string> => {
         const url = `${endPoint}/${userId}`;
-        return await apiUtils.fetchDelete(url);
+        return await apiUtils.fetchDelete<string>(url);
     };
 
     return {

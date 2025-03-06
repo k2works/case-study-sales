@@ -3,7 +3,7 @@ import { PageNationType, usePageNation } from "../../views/application/PageNatio
 import { SalesOrderCriteriaType, SalesOrderType } from "../../models/sales/sales_order";
 import { useModal } from "../../components/application/hooks.ts";
 import { useMessage } from "../../components/application/Message.tsx";
-import { SalesOrderService, SalesOrderServiceType } from "../../services/sales/sales_order";
+import { SalesOrderService, SalesOrderServiceType, UploadResultType } from "../../services/sales/sales_order";
 import { showErrorMessage } from "../../components/application/utils.ts";
 
 type SalesOrderContextType = {
@@ -21,10 +21,15 @@ type SalesOrderContextType = {
     setSearchModalIsOpen: Dispatch<SetStateAction<boolean>>;
     modalIsOpen: boolean;
     setModalIsOpen: Dispatch<SetStateAction<boolean>>;
+    uploadModalIsOpen: boolean;
+    setUploadModalIsOpen: Dispatch<SetStateAction<boolean>>;
     isEditing: boolean;
     setIsEditing: Dispatch<SetStateAction<boolean>>;
     editId: string | null;
     setEditId: Dispatch<SetStateAction<string | null>>;
+    uploadResults: UploadResultType[];
+    setUploadResults: Dispatch<SetStateAction<UploadResultType[]>>;
+    uploadSalesOrders: (file: File) => Promise<void>;
     initialSalesOrder: SalesOrderType;
     salesOrders: SalesOrderType[];
     setSalesOrders: Dispatch<SetStateAction<SalesOrderType[]>>;
@@ -112,8 +117,9 @@ const useFetchSalesOrders = (
             }
             setSalesOrders(response.list);
             setPageNation(response);
-        } catch (error: any) {
-            showErrorMessage(`受注情報の取得に失敗しました: ${error?.message}`, setError);
+        } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : '不明なエラーが発生しました';
+            showErrorMessage(`受注情報の取得に失敗しました: ${errorMessage}`, setError);
         } finally {
             setLoading(false);
         }
@@ -128,6 +134,27 @@ export const SalesOrderProvider: React.FC<Props> = ({ children }) => {
     const { pageNation, setPageNation, criteria, setCriteria } = usePageNation<SalesOrderCriteriaType | null>();
     const { modalIsOpen: searchModalIsOpen, setModalIsOpen: setSearchModalIsOpen } = useModal();
     const { modalIsOpen, setModalIsOpen, isEditing, setIsEditing, editId, setEditId } = useModal();
+    const { modalIsOpen: uploadModalIsOpen, setModalIsOpen: setUploadModalIsOpen } = useModal();
+    const [uploadResults, setUploadResults] = useState<UploadResultType[]>([]);
+
+    const uploadSalesOrders = async (file: File) => {
+        setLoading(true);
+        try {
+            const results = await salesOrderService.upload(file);
+            setUploadResults(results);
+            await fetchSalesOrders.load();
+            const successMessage = results.length > 1 
+                ? `${results.length}件のアップロードが完了しました` 
+                : "アップロードが完了しました";
+            setMessage(successMessage);
+        } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : '不明なエラーが発生しました';
+            showErrorMessage(`アップロードに失敗しました: ${errorMessage}`, setError);
+            throw error;
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const {
         initialSalesOrder,
@@ -182,8 +209,13 @@ export const SalesOrderProvider: React.FC<Props> = ({ children }) => {
         selectedLineIndex,
         setSelectedLineIndex,
         fetchSalesOrders,
-        salesOrderService
-    }), [criteria, defaultCriteria, salesOrderService, salesOrders, editId, error, fetchSalesOrders, initialSalesOrder, isEditing, loading, message, modalIsOpen, newSalesOrder, pageNation, searchSalesOrderCriteria, searchModalIsOpen, selectedLineIndex]);
+        salesOrderService,
+        uploadModalIsOpen,
+        setUploadModalIsOpen,
+        uploadResults,
+        setUploadResults,
+        uploadSalesOrders
+    }), [criteria, defaultCriteria, salesOrderService, salesOrders, editId, error, fetchSalesOrders, initialSalesOrder, isEditing, loading, message, modalIsOpen, newSalesOrder, pageNation, searchSalesOrderCriteria, searchModalIsOpen, selectedLineIndex, uploadModalIsOpen, uploadResults]);
 
     return (
         <SalesOrderContext.Provider value={value}>

@@ -106,6 +106,62 @@ describe('受注管理', () => {
         });
     });
 
+    context('受注一括登録', () => {
+        it('タブ切り替えとアップロード', () => {
+            userPage();
+
+            // 一括登録タブに切り替え
+            cy.contains('一括登録').click();
+            cy.get('.upload-container').should('be.visible');
+
+            // アップロードボタンの確認
+            cy.get('#upload').should('be.visible');
+
+            // アップロードモーダルを開く
+            cy.get('#upload').click();
+            cy.get('.modal').should('be.visible');
+
+            // ファイルアップロード
+            cy.uploadFile('input[type="file"]', 'sales_order_multiple.csv', 'text/csv');
+
+            // アップロード実行
+            cy.get('.modal button').contains('アップロード').click();
+            cy.get('#message').contains('アップロードが完了しました');
+
+            // アップロード結果の確認
+            cy.get('.upload-result-container').should('be.visible');
+            cy.get('.upload-result-item').should('have.length.at.least', 1);
+
+            // メッセージの確認
+            cy.get('.upload-result-message').should('be.visible');
+            cy.get('.upload-result-message .message').should('contain', 'アップロードが完了しました');
+
+            // 詳細情報の確認
+            cy.get('.upload-result-details').should('be.visible');
+            cy.get('.upload-result-detail').should('have.length.at.least', 1);
+            cy.get('.detail-key').should('be.visible');
+            cy.get('.detail-value').should('be.visible');
+
+            // 結果の削除
+            cy.get('.upload-result-item button').first().click();
+            cy.get('.upload-result-item').should('have.length', 0);
+        });
+
+        it('不正なファイルのアップロード', () => {
+            userPage();
+            cy.contains('一括登録').click();
+            cy.get('#upload').click();
+
+            // 不正なファイルをアップロード
+            cy.uploadFile('input[type="file"]', 'invalid.csv', 'text/csv');
+
+            cy.get('.modal button').contains('アップロード').click();
+            cy.get('.upload-result-message .error').should('be.visible');
+            cy.get('.upload-result-details').should('be.visible');
+            cy.get('.detail-key').contains('エラー');
+        });
+    });
+
     context('受注削除', () => {
         it('削除', () => {
             userPage();

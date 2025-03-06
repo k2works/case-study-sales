@@ -2,6 +2,7 @@ import React from "react";
 import {useTab} from "../../application/hooks.ts";
 import {SiteLayout} from "../../../views/SiteLayout.tsx";
 import {SalesOrderContainer} from "./list/SalesOrderContainer.tsx";
+import {SalesOrderUploadContainer} from "./upload/SalesOrderUploadContainer.tsx";
 
 export const SalesOrderTabContainer: React.FC = () => {
     const {
@@ -23,6 +24,7 @@ export const SalesOrderTabContainer: React.FC = () => {
                     <SalesOrderContainer/>
                 </TabPanel>
                 <TabPanel>
+                    <SalesOrderUploadContainer/>
                 </TabPanel>
                 <TabPanel>
                 </TabPanel>
