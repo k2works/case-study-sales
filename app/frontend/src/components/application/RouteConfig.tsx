@@ -24,6 +24,7 @@ import {AuditContainer} from "../system/audit/AuditContainer.tsx";
 import {UserContainer} from "../system/user/UserContainer.tsx";
 import {SalesOrderTabContainer} from "../sales/sales_order/SalesOrderTabContainer.tsx";
 import {SalesOrderContainer} from "../sales/sales_order/list/SalesOrderContainer.tsx";
+import {SalesOrderUploadContainer} from "../sales/sales_order/upload/SalesOrderUploadContainer.tsx";
 
 export const RouteConfig: React.FC = () => {
     const ProductCategoryPage = () => {
@@ -98,6 +99,15 @@ export const RouteConfig: React.FC = () => {
         )
     }
 
+    const SalesOrderUploadPage = () => {
+        return (
+            <SiteLayout>
+                <SalesOrderUploadContainer/>
+            </SiteLayout>
+        )
+    }
+
+
     return (
             <Routes>
                 <Route path="/" element={<RouteAuthGuard component={<Home/>} redirectPath="/login"/>}/>
@@ -110,6 +120,8 @@ export const RouteConfig: React.FC = () => {
                 <Route path="/sales-order" element={<RouteAuthGuard component={<SalesOrderTabContainer/>} redirectPath="/"
                                                                     allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/sales-order-list" element={<RouteAuthGuard component={<SalesOrderPage/>} redirectPath="/"
+                                                                         allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/sales-order-upload" element={<RouteAuthGuard component={<SalesOrderUploadPage/>} redirectPath="/"
                                                                          allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/department" element={<RouteAuthGuard component={<DepartmentContainer/>} redirectPath="/"
                                                                    allowedRoles={[RoleType.ADMIN]}/>}/>

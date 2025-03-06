@@ -1,8 +1,9 @@
 import React from "react";
-import "./SalesOrderUpload.css";
 import { SalesOrderUploadModal } from "./SalesOrderUploadModal";
-import { SalesOrderUploadResult } from "./SalesOrderUploadResult";
 import { useSalesOrderContext } from "../../../../providers/sales/SalesOrder";
+import {
+    SalesOrderUploadCollectionView
+} from "../../../../views/sales/sales_order/upload/SalesOrderUplaodCollection.tsx";
 
 export const SalesOrderUploadCollection: React.FC = () => {
     const { uploadResults, setUploadResults, setUploadModalIsOpen } = useSalesOrderContext();
@@ -16,19 +17,13 @@ export const SalesOrderUploadCollection: React.FC = () => {
     };
 
     return (
-        <div className="upload-container">
-            <button
-                className="action-button"
-                onClick={handleOpenUploadModal}
-                id="upload"
-            >
-                アップロード
-            </button>
-            <SalesOrderUploadResult
-                results={uploadResults}
-                onDelete={handleDeleteUploadResult}
+        <>
+            <SalesOrderUploadCollectionView
+                uploadHeaderItems={{ handleOpenUploadModal }}
+                uploadResults={uploadResults}
+                handleDeleteUploadResult={handleDeleteUploadResult}
             />
-            <SalesOrderUploadModal />
-        </div>
+            <SalesOrderUploadModal/>
+        </>
     );
 };

@@ -104,7 +104,7 @@ export const SalesOrderCollectionView: React.FC<SalesOrderCollectionViewProps> =
         <div className="collection-view-container">
             <div className="collection-view-header">
                 <div className="single-view-header-item">
-                    <h1 className="single-view-title">受注</h1>
+                    <h1 className="single-view-title">受注一覧</h1>
                 </div>
             </div>
             <div className="collection-view-content">

@@ -94,7 +94,7 @@ public class SalesOrderApiController {
                 return ResponseEntity.ok(new MessageResponseWithDetail(message.getMessage("success.sales-order.upload"), result.asList()));
             }
             return ResponseEntity.ok(new MessageResponseWithDetail(message.getMessage("error.sales-order.upload"), result.asList()));
-        } catch (BusinessException | IllegalArgumentException e) {
+        } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
@@ -159,7 +159,7 @@ public class SalesOrderApiController {
                 return ResponseEntity.ok(new MessageResponseWithDetail(message.getMessage("success.sales-order.check"), result.asList()));
             }
             return ResponseEntity.ok(new MessageResponseWithDetail(message.getMessage("error.sales-order.check"), result.asList()));
-        } catch (BusinessException | IllegalArgumentException e) {
+        } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
