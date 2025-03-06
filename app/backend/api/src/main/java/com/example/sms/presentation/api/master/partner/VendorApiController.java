@@ -36,6 +36,7 @@ public class VendorApiController {
 
     @Operation(summary = "仕入先一覧を取得する")
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> select(@RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
                                     @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {

@@ -35,6 +35,7 @@ public class RegionApiController {
 
     @Operation(summary = "地域一覧を取得")
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> selectAll(
             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(value = "page", defaultValue = "1") int... page) {
