@@ -31,9 +31,9 @@ export const SalesOrderEditModal: React.FC = () => {
             bodyOpenClassName="modal-open"
         >
             <SalesOrderSingle/>
-            <DepartmentSelectModal/>
-            <CustomerSelectModal/>
-            <EmployeeSelectModal/>
+            <DepartmentSelectModal type={"edit"}/>
+            <CustomerSelectModal type={"edit"}/>
+            <EmployeeSelectModal type={"edit"}/>
             <ProductSelectModal/>
         </Modal>
     )

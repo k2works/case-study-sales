@@ -3,6 +3,12 @@ import Modal from "react-modal";
 import { SalesOrderSearchSingleView } from "../../../../views/sales/sales_order/list/SalesOrderSearch.tsx";
 import { showErrorMessage } from "../../../application/utils.ts";
 import { useSalesOrderContext } from "../../../../providers/sales/SalesOrder.tsx";
+import {DepartmentSelectModal} from "./DepartmentSelectModal.tsx";
+import {useDepartmentContext} from "../../../../providers/master/Department.tsx";
+import {CustomerSelectModal} from "./CustomerSelectModal.tsx";
+import {EmployeeSelectModal} from "./EmployeeSelectModal.tsx";
+import {useCustomerContext} from "../../../../providers/master/partner/Customer.tsx";
+import {useEmployeeContext} from "../../../../providers/master/Employee.tsx";
 
 export const SalesOrderSearchModal: React.FC = () => {
     const {
@@ -18,6 +24,18 @@ export const SalesOrderSearchModal: React.FC = () => {
         setError,
         salesOrderService
     } = useSalesOrderContext();
+
+    const {
+        setSearchModalIsOpen: setDepartmentSearchModalIsOpen,
+    } = useDepartmentContext();
+
+    const {
+        setSearchModalIsOpen: setCustomerSearchModalIsOpen,
+    } = useCustomerContext();
+
+    const {
+        setSearchModalIsOpen: setEmployeeSearchModalIsOpen,
+    } = useEmployeeContext();
 
     const handleCloseSearchModal = () => {
         setSearchModalIsOpen(false);
@@ -61,8 +79,14 @@ export const SalesOrderSearchModal: React.FC = () => {
                     setCondition={setSearchSalesOrderCriteria}
                     handleSelect={handleSelectSearchModal}
                     handleClose={handleCloseSearchModal}
+                    handleDepartmentSelect={() => setDepartmentSearchModalIsOpen(true)}
+                    handleCustomerSelect={() => setCustomerSearchModalIsOpen(true)}
+                    handleEmployeeSelect={() => setEmployeeSearchModalIsOpen(true)}
                 />
             }
+            <DepartmentSelectModal type={"search"}/>
+            <CustomerSelectModal type={"search"}/>
+            <EmployeeSelectModal type={"search"}/>
         </Modal>
     )
 }

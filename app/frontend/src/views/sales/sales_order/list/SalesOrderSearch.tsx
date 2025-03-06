@@ -7,9 +7,12 @@ interface FormProps {
     setCondition: (criteria: SalesOrderCriteriaType) => void,
     handleClick: (e: React.MouseEvent<HTMLButtonElement>) => void,
     handleClose: (e: React.MouseEvent<HTMLButtonElement>) => void
+    handleDepartmentSelect: () => void;
+    handleCustomerSelect: () => void;
+    handleEmployeeSelect: () => void;
 }
 
-const Form = ({criteria, setCondition, handleClick, handleClose}: FormProps) => {
+const Form = ({criteria, setCondition, handleClick, handleClose, handleDepartmentSelect, handleEmployeeSelect, handleCustomerSelect}: FormProps) => {
     return (
         <div className="single-view-content-item-form">
             <FormInput
@@ -38,7 +41,9 @@ const Form = ({criteria, setCondition, handleClick, handleClose}: FormProps) => 
                 value={criteria.departmentCode}
                 onChange={(e) => setCondition(
                     {...criteria, departmentCode: e.target.value}
-                )}/>
+                )}
+                onClick={handleDepartmentSelect}
+            />
             <FormInput
                 id={"search-customer-code"}
                 type="text"
@@ -47,7 +52,9 @@ const Form = ({criteria, setCondition, handleClick, handleClose}: FormProps) => 
                 value={criteria.customerCode}
                 onChange={(e) => setCondition(
                     {...criteria, customerCode: e.target.value}
-                )}/>
+                )}
+                onClick={handleCustomerSelect}
+            />
             <FormInput
                 id={"search-employee-code"}
                 type="text"
@@ -56,7 +63,9 @@ const Form = ({criteria, setCondition, handleClick, handleClose}: FormProps) => 
                 value={criteria.employeeCode}
                 onChange={(e) => setCondition(
                     {...criteria, employeeCode: e.target.value}
-                )}/>
+                )}
+                onClick={handleEmployeeSelect}
+            />
             <FormInput
                 id={"search-customer-order-number"}
                 type="text"
@@ -84,6 +93,9 @@ interface SalesOrderSearchSingleViewProps {
     setCondition: (criteria: SalesOrderCriteriaType) => void,
     handleSelect: (criteria: SalesOrderCriteriaType) => Promise<void>,
     handleClose: () => void
+    handleDepartmentSelect: () => void;
+    handleCustomerSelect: () => void;
+    handleEmployeeSelect: () => void;
 }
 
 export const SalesOrderSearchSingleView: React.FC<SalesOrderSearchSingleViewProps> = ({
@@ -91,6 +103,9 @@ export const SalesOrderSearchSingleView: React.FC<SalesOrderSearchSingleViewProp
     setCondition,
     handleSelect,
     handleClose,
+    handleDepartmentSelect,
+    handleCustomerSelect,
+    handleEmployeeSelect,
 }) => {
     const handleClick: MouseEventHandler<HTMLButtonElement> = async(e) => {
         e.preventDefault();
@@ -113,7 +128,15 @@ export const SalesOrderSearchSingleView: React.FC<SalesOrderSearchSingleViewProp
             <div className="single-view-container">
                 <div className="single-view-content">
                     <div className="single-view-content-item">
-                        <Form criteria={criteria} setCondition={setCondition} handleClick={handleClick} handleClose={handleCancel}/>
+                        <Form
+                            criteria={criteria}
+                            setCondition={setCondition}
+                            handleClick={handleClick}
+                            handleClose={handleCancel}
+                            handleDepartmentSelect={handleDepartmentSelect}
+                            handleCustomerSelect={handleCustomerSelect}
+                            handleEmployeeSelect={handleEmployeeSelect}
+                        />
                     </div>
                 </div>
             </div>
