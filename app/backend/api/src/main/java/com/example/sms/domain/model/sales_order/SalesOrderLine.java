@@ -48,4 +48,26 @@ public class SalesOrderLine {
     public Money calcSalesAmount() {
         return Objects.requireNonNull(salesUnitPrice).multiply(Objects.requireNonNull(orderQuantity));
     }
+
+    public Money calcConsumptionTaxAmount() {
+        if (taxRate == null) {
+            return Money.of(0);
+        }
+        if (salesUnitPrice == null || orderQuantity == null) {
+            return Money.of(0);
+        }
+        if (taxRate == TaxRateType.軽減税率) {
+            Money salesAmount = calcSalesAmount();
+            double taxRateValue = salesAmount.getAmount() * ((double) TaxRateType.軽減税率.getRate() / 100);
+            int truncatedTaxRateValue = (int) Math.floor(taxRateValue);
+            return Money.of(truncatedTaxRateValue);
+        }
+        if (taxRate == TaxRateType.標準税率) {
+            Money salesAmount = calcSalesAmount();
+            double taxRateValue = salesAmount.getAmount() * ((double) TaxRateType.標準税率.getRate() / 100);
+            int truncatedTaxRateValue = (int) Math.floor(taxRateValue);
+            return Money.of(truncatedTaxRateValue);
+        }
+        return Money.of(0);
+    }
 }

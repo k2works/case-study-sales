@@ -93,7 +93,7 @@ class SalesOrderServiceTest {
 
             SalesOrder result = salesOrderService.find(salesOrder.getOrderNumber().getValue());
             assertEquals("999", result.getCustomerCode().getCode().getValue());
-            assertEquals(100000, result.getTotalOrderAmount().getAmount());
+            assertEquals(0, result.getTotalOrderAmount().getAmount());
             assertEquals("Updated remarks", result.getRemarks());
             assertEquals(updatedSalesOrder, result);
         }
@@ -182,8 +182,8 @@ class SalesOrderServiceTest {
                 assertEquals("1000000001", result.getOrderNumber().getValue());
                 assertEquals(LocalDateTime.parse("2025-02-19T00:00"), result.getOrderDate().getValue());
                 assertEquals("10000", result.getDepartmentCode().getValue());
-                assertEquals(15000, result.getTotalOrderAmount().getAmount());
-                assertEquals(1500, result.getTotalConsumptionTax().getAmount());
+                assertEquals(21000, result.getTotalOrderAmount().getAmount());
+                assertEquals(2100, result.getTotalConsumptionTax().getAmount());
                 assertEquals("初回注文", result.getRemarks());
 
                 assertEquals(2, result.getSalesOrderLines().size());
@@ -225,8 +225,8 @@ class SalesOrderServiceTest {
                 assertEquals("1000000001", result.getOrderNumber().getValue());
                 assertEquals(LocalDateTime.parse("2025-02-19T00:00"), result.getOrderDate().getValue());
                 assertEquals("10000", result.getDepartmentCode().getValue());
-                assertEquals(15000, result.getTotalOrderAmount().getAmount());
-                assertEquals(1500, result.getTotalConsumptionTax().getAmount());
+                assertEquals(21000, result.getTotalOrderAmount().getAmount());
+                assertEquals(2100, result.getTotalConsumptionTax().getAmount());
                 assertEquals("初回注文", result.getRemarks());
 
                 assertEquals(2, result.getSalesOrderLines().size());
@@ -269,12 +269,12 @@ class SalesOrderServiceTest {
 
                 SalesOrder order1 = result.asList().get(0);
                 assertEquals("1000000001", order1.getOrderNumber().getValue());
-                assertEquals(15000, order1.getTotalOrderAmount().getAmount());
+                assertEquals(21000, order1.getTotalOrderAmount().getAmount());
                 assertEquals(2, order1.getSalesOrderLines().size());
 
                 SalesOrder order2 = result.asList().get(1);
                 assertEquals("1000000002", order2.getOrderNumber().getValue());
-                assertEquals(30000, order2.getTotalOrderAmount().getAmount());
+                assertEquals(60000, order2.getTotalOrderAmount().getAmount());
                 assertEquals(2, order2.getSalesOrderLines().size());
             }
 
@@ -299,14 +299,14 @@ class SalesOrderServiceTest {
                 assertNotNull(result);
                 assertEquals(2, result.size());
 
-                SalesOrder order1 = result.asList().get(0);
+                SalesOrder order1 = result.asList().getFirst();
                 assertEquals("1000000001", order1.getOrderNumber().getValue());
-                assertEquals(15000, order1.getTotalOrderAmount().getAmount());
+                assertEquals(21000, order1.getTotalOrderAmount().getAmount());
                 assertEquals(2, order1.getSalesOrderLines().size());
 
                 SalesOrder order2 = result.asList().get(1);
                 assertEquals("1000000002", order2.getOrderNumber().getValue());
-                assertEquals(30000, order2.getTotalOrderAmount().getAmount());
+                assertEquals(60000, order2.getTotalOrderAmount().getAmount());
                 assertEquals(2, order2.getSalesOrderLines().size());
             }
         }

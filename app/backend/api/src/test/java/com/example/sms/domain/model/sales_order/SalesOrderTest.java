@@ -186,6 +186,55 @@ class SalesOrderTest {
 
             assertEquals(4500, salesAmount.getAmount());
         }
+
+        @Test
+        @DisplayName("消費税金額を計算できる")
+        void shouldCalculateConsumptionTaxAmount() {
+            SalesOrderLine line = SalesOrderLine.of(
+                    "1234567890",
+                    1,
+                    "P12345",
+                    "テスト商品",
+                    1000,
+                    1,
+                    TaxRateType.標準税率.getRate(),
+                    1,
+                    0,
+                    0,
+                    0,
+                    100,
+                    LocalDateTime.now()
+            );
+
+            Money consumptionTaxAmount = line.calcConsumptionTaxAmount();
+
+            assertEquals(100, consumptionTaxAmount.getAmount());
+        }
+
+        @Test
+        @DisplayName("消費税金額を計算できる")
+        void shouldCalculateConsumptionTaxAmount2() {
+            SalesOrderLine line = SalesOrderLine.of(
+                    "1234567890",
+                    1,
+                    "P12345",
+                    "テスト商品",
+                    1000,
+                    1,
+                    TaxRateType.軽減税率.getRate(),
+                    1,
+                    0,
+                    0,
+                    0,
+                    100,
+                    LocalDateTime.now()
+            );
+
+            Money consumptionTaxAmount = line.calcConsumptionTaxAmount();
+
+            assertEquals(80, consumptionTaxAmount.getAmount());
+        }
+
     }
 
     @Test
@@ -334,6 +383,103 @@ class SalesOrderTest {
             );
 
             assertEquals(8000, salesOrder.getTotalOrderAmount().getAmount());
+        }
+
+        @Test
+        @DisplayName("消費税合計を作成できる")
+        void shouldCreateTotalConsumptionTax() {
+            SalesOrderLine salesOrderLine = SalesOrderLine.of(
+                    "1234567890",
+                    1,
+                    "P12345",
+                    "テスト商品",
+                    1000,
+                    2,
+                    TaxRateType.標準税率.getRate(),
+                    2,
+                    2,
+                    2,
+                    0,
+                    200,
+                    LocalDateTime.now()
+            );
+
+            SalesOrder salesOrder = SalesOrder.of(
+                    "1234567890",
+                    LocalDateTime.now(),
+                    "12345",
+                    LocalDateTime.now(),
+                    "001",
+                    1,
+                    "EMP001",
+                    LocalDateTime.now(),
+                    "CUSTORDER123",
+                    "WH001",
+                    0,
+                    0,
+                    "これは備考です",
+                    Collections.singletonList(salesOrderLine)
+            );
+
+            assertEquals(200, salesOrder.getTotalConsumptionTax().getAmount());
+        }
+
+        @Test
+        @DisplayName("消費税合計を作成できる")
+        void shouldCreateTotalConsumptionTax2() {
+            SalesOrderLine salesOrderLine1 =
+                    SalesOrderLine.of(
+                            "1234567890",
+                            1,
+                            "P12345",
+                            "テスト商品",
+                            1000,
+                            2,
+                            TaxRateType.標準税率.getRate(),
+                            2,
+                            2,
+                            2,
+                            0,
+                            200,
+                            LocalDateTime.now()
+                    );
+
+            SalesOrderLine salesOrderLine2 =
+                    SalesOrderLine.of(
+                            "1234567890",
+                            1,
+                            "P12345",
+                            "テスト商品",
+                            100,
+                            10,
+                            TaxRateType.軽減税率.getRate(),
+                            2,
+                            2,
+                            2,
+                            0,
+                            200,
+                            LocalDateTime.now()
+                    );
+
+
+            SalesOrder salesOrder = SalesOrder.of(
+                    "1234567890",
+                    LocalDateTime.now(),
+                    "12345",
+                    LocalDateTime.now(),
+                    "001",
+                    1,
+                    "EMP001",
+                    LocalDateTime.now(),
+                    "CUSTORDER123",
+                    "WH001",
+                    0,
+                    0,
+                    "これは備考です",
+                    List.of(salesOrderLine1, salesOrderLine2)
+            );
+
+            assertEquals(280, salesOrder.getTotalConsumptionTax().getAmount());
         }
     }
 }

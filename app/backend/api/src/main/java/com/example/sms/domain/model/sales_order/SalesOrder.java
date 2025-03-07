@@ -48,7 +48,11 @@ public class SalesOrder {
                 .map(SalesOrderLine::calcSalesAmount)
                 .reduce(Money.of(0), Money::plusMoney);
 
-        return new SalesOrder(OrderNumber.of(orderNumber), OrderDate.of(orderDate), DepartmentCode.of(departmentCode), departmentStartDate, CustomerCode.of(customerCode, customerBranchNumber), EmployeeCode.of(employeeCode), DesiredDeliveryDate.of(desiredDeliveryDate), customerOrderNumber, warehouseCode, calcTotalOrderAmount, Money.of(totalConsumptionTax), remarks, salesOrderLines, null, null, null);
+        Money calcTotalConsumptionTax = salesOrderLines.stream()
+                .map(SalesOrderLine::calcConsumptionTaxAmount)
+                .reduce(Money.of(0), Money::plusMoney);
+
+        return new SalesOrder(OrderNumber.of(orderNumber), OrderDate.of(orderDate), DepartmentCode.of(departmentCode), departmentStartDate, CustomerCode.of(customerCode, customerBranchNumber), EmployeeCode.of(employeeCode), DesiredDeliveryDate.of(desiredDeliveryDate), customerOrderNumber, warehouseCode, calcTotalOrderAmount, calcTotalConsumptionTax, remarks, salesOrderLines, null, null, null);
     }
 
     public static SalesOrder of(SalesOrder order, List<SalesOrderLine> line) {

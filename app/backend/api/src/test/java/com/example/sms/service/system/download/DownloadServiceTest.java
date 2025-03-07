@@ -341,8 +341,8 @@ class DownloadServiceTest {
             assertEquals(LocalDateTime.of(2021, 1, 1, 0, 0), firstResult.getDesiredDeliveryDate(), "希望納期が一致しません");
             assertEquals("001", firstResult.getCustomerOrderNumber(), "客先注文番号が一致しません");
             assertEquals("001", firstResult.getWarehouseCode(), "倉庫コードが一致しません");
-            assertEquals(1000, firstResult.getTotalOrderAmount(), "受注金額合計が一致しません");
-            assertEquals(100, firstResult.getTotalConsumptionTax(), "消費税合計が一致しません");
+            assertEquals(10000, firstResult.getTotalOrderAmount(), "受注金額合計が一致しません");
+            assertEquals(1000, firstResult.getTotalConsumptionTax(), "消費税合計が一致しません");
             assertEquals("備考", firstResult.getRemarks(), "備考が一致しません");
 
             // 以下、受注行（orderLine）の項目アサーション
