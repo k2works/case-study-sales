@@ -118,7 +118,7 @@ public class SalesOrderService {
         isTrue(file.getSize() < 10000000, "アップロードファイルが大きすぎます。");
 
         Pattern2ReadCSVUtil<SalesOrderUploadCSV> csvUtil = new Pattern2ReadCSVUtil<>();
-        List<SalesOrderUploadCSV> dataList = csvUtil.readCSV(SalesOrderUploadCSV.class, file, "UTF-8");
+        List<SalesOrderUploadCSV> dataList = csvUtil.readCSV(SalesOrderUploadCSV.class, file, "Windows-31J");
         isTrue(!dataList.isEmpty(), "CSVファイルの読み込みに失敗しました");
 
         SalesOrderUploadErrorList errorList = validateErrors(dataList);
