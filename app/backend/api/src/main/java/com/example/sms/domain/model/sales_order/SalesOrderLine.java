@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Value;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * 受注明細
@@ -42,5 +43,9 @@ public class SalesOrderLine {
 
     public static SalesOrderLine of(SalesOrderLine salesOrderLine, Product product) {
         return new SalesOrderLine(salesOrderLine.getOrderNumber(), salesOrderLine.getOrderLineNumber(), salesOrderLine.getProductCode(), salesOrderLine.getProductName(), salesOrderLine.getSalesUnitPrice(), salesOrderLine.getOrderQuantity(), salesOrderLine.getTaxRate(), salesOrderLine.getAllocationQuantity(), salesOrderLine.getShipmentInstructionQuantity(), salesOrderLine.getShippedQuantity(), salesOrderLine.getCompletionFlag(), salesOrderLine.getDiscountAmount(), salesOrderLine.getDeliveryDate(), product);
+    }
+
+    public Money calcSalesAmount() {
+        return Objects.requireNonNull(salesUnitPrice).multiply(Objects.requireNonNull(orderQuantity));
     }
 }

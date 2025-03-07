@@ -1,9 +1,11 @@
 package com.example.sms.domain.model.sales_order;
 
+import com.example.sms.domain.type.money.Money;
 import org.junit.jupiter.api.*;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -160,6 +162,30 @@ class SalesOrderTest {
                     () -> assertEquals(100, line.getDiscountAmount().getAmount())
             );
         }
+
+        @Test
+        @DisplayName("受注金額を計算できる")
+        void shouldCalculateSalesAmount() {
+            SalesOrderLine line = SalesOrderLine.of(
+                    "1234567890",
+                    1,
+                    "P12345",
+                    "テスト商品",
+                    1500,
+                    3,
+                    8,
+                    1,
+                    0,
+                    0,
+                    0,
+                    100,
+                    LocalDateTime.now()
+            );
+
+            Money salesAmount = line.calcSalesAmount();
+
+            assertEquals(4500, salesAmount.getAmount());
+        }
     }
 
     @Test
@@ -209,6 +235,105 @@ class SalesOrderTest {
             assertNotNull(TaxRateType.of(10));
             assertThrows(IllegalArgumentException.class, () -> TaxRateType.of(0));
             assertThrows(IllegalArgumentException.class, () -> TaxRateType.of(100));
+        }
+    }
+
+    @Nested
+    @DisplayName("受注金額合計")
+    class TestTotalOrderAmount {
+        @Test
+        @DisplayName("受注金額合計を作成できる")
+        void shouldCreateTotalOrderAmount() {
+            SalesOrderLine salesOrderLine = SalesOrderLine.of(
+                    "1234567890",
+                    1,
+                    "P12345",
+                    "テスト商品",
+                    1000,
+                    2,
+                    10,
+                    2,
+                    2,
+                    2,
+                    0,
+                    200,
+                    LocalDateTime.now()
+            );
+
+            SalesOrder salesOrder = SalesOrder.of(
+                    "1234567890",
+                    LocalDateTime.now(),
+                    "12345",
+                    LocalDateTime.now(),
+                    "001",
+                    1,
+                    "EMP001",
+                    LocalDateTime.now(),
+                    "CUSTORDER123",
+                    "WH001",
+                    0,
+                    0,
+                    "これは備考です",
+                    Collections.singletonList(salesOrderLine)
+            );
+
+            assertEquals(2000, salesOrder.getTotalOrderAmount().getAmount());
+        }
+        @Test
+        @DisplayName("受注金額合計を作成できる")
+        void shouldCreateTotalOrderAmount2() {
+            SalesOrderLine salesOrderLine1 =
+                    SalesOrderLine.of(
+                    "1234567890",
+                    1,
+                    "P12345",
+                    "テスト商品",
+                    1000,
+                    2,
+                    10,
+                    2,
+                    2,
+                    2,
+                    0,
+                    200,
+                    LocalDateTime.now()
+            );
+
+            SalesOrderLine salesOrderLine2 =
+                    SalesOrderLine.of(
+                            "1234567890",
+                            1,
+                            "P12345",
+                            "テスト商品",
+                            2000,
+                            3,
+                            10,
+                            2,
+                            2,
+                            2,
+                            0,
+                            200,
+                            LocalDateTime.now()
+                    );
+
+            SalesOrder salesOrder = SalesOrder.of(
+                    "1234567890",
+                    LocalDateTime.now(),
+                    "12345",
+                    LocalDateTime.now(),
+                    "001",
+                    1,
+                    "EMP001",
+                    LocalDateTime.now(),
+                    "CUSTORDER123",
+                    "WH001",
+                    0,
+                    0,
+                    "これは備考です",
+                    List.of(salesOrderLine1, salesOrderLine2)
+            );
+
+            assertEquals(8000, salesOrder.getTotalOrderAmount().getAmount());
         }
     }
 }

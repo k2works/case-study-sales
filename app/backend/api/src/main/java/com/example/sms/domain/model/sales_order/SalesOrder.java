@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.apache.commons.lang3.Validate.isTrue;
+import static org.apache.commons.lang3.Validate.validIndex;
 
 /**
  * 受注
@@ -43,7 +44,11 @@ public class SalesOrder {
     public static SalesOrder of(String orderNumber, LocalDateTime orderDate, String departmentCode, LocalDateTime departmentStartDate, String customerCode, Integer customerBranchNumber, String employeeCode, LocalDateTime desiredDeliveryDate, String customerOrderNumber, String warehouseCode, Integer totalOrderAmount, Integer totalConsumptionTax, String remarks, List<SalesOrderLine> salesOrderLines) {
         isTrue(!orderDate.isAfter(desiredDeliveryDate), "受注日は納品希望日より前に設定してください");
 
-        return new SalesOrder(OrderNumber.of(orderNumber), OrderDate.of(orderDate), DepartmentCode.of(departmentCode), departmentStartDate, CustomerCode.of(customerCode, customerBranchNumber), EmployeeCode.of(employeeCode), DesiredDeliveryDate.of(desiredDeliveryDate), customerOrderNumber, warehouseCode, Money.of(totalOrderAmount), Money.of(totalConsumptionTax), remarks, salesOrderLines, null, null, null);
+        Money calcTotalOrderAmount = salesOrderLines.stream()
+                .map(SalesOrderLine::calcSalesAmount)
+                .reduce(Money.of(0), Money::plusMoney);
+
+        return new SalesOrder(OrderNumber.of(orderNumber), OrderDate.of(orderDate), DepartmentCode.of(departmentCode), departmentStartDate, CustomerCode.of(customerCode, customerBranchNumber), EmployeeCode.of(employeeCode), DesiredDeliveryDate.of(desiredDeliveryDate), customerOrderNumber, warehouseCode, calcTotalOrderAmount, Money.of(totalConsumptionTax), remarks, salesOrderLines, null, null, null);
     }
 
     public static SalesOrder of(SalesOrder order, List<SalesOrderLine> line) {

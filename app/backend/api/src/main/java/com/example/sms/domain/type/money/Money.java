@@ -1,5 +1,6 @@
 package com.example.sms.domain.type.money;
 
+import com.example.sms.domain.type.quantity.Quantity;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
@@ -34,6 +35,17 @@ public class Money implements Expression {
     public Money reduce(Exchange exchange, CurrencyType to) {
         int rate = exchange.rate(currency, to);
         return new Money(amount / rate, to);
+    }
+
+    public Money multiply(Quantity orderQuantity) {
+        return new Money(amount * orderQuantity.getAmount(), currency);
+    }
+
+    public Money plusMoney(Money other) {
+        notNull(other, "加算対象の金額は必須です。");
+        isTrue(this.currency.equals(other.currency), "異なる通貨の加算はできません。");
+
+        return new Money(this.amount + other.amount, this.currency);
     }
 
     static Money dollar(int amount) {
