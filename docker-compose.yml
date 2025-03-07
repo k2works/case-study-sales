@@ -104,24 +104,37 @@ services:
     ports:
       - "5252:5252"
 
+  wiki_db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: wiki
+      MYSQL_PASSWORD: wikijsrocks
+      MYSQL_USER: wikijs
+      TZ: 'Asia/Tokyo'
+    volumes:
+      - wiki-db-data:/var/lib/mysql
+      - ./ops/docker/wiki/dump:/dump
+    ports:
+      - "3306:3306"
+
   wiki:
     image: ghcr.io/requarks/wiki:2
     environment:
       DB_TYPE: mysql
-      DB_HOST: db_mysql
+      DB_HOST: wiki_db
       DB_PORT: 3306
-      DB_USER: user
-      DB_PASS: password
-      DB_NAME: mydb
+      DB_USER: wikijs
+      DB_PASS: wikijsrocks
+      DB_NAME: wiki
+    links:
+      - wiki_db
+      - plantuml
     ports:
       - "80:3000"
-    links:
-      - db_mysql
-      - plantuml
 
   plantuml:
     image: plantuml/plantuml-server:jetty
-    container_name: plantuml
     hostname: plantuml
     environment:
       BASE_URL: plantuml
@@ -131,3 +144,4 @@ services:
 volumes:
   mysql8-data:
   postgresql-data:
+  wiki-db-data:

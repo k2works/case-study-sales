@@ -15,6 +15,7 @@ const build = series(
     custom.erdBuildTasks(),
     custom.allureGradleBuildTasks(),
     custom.astroBuildTasks(),
+    custom.wiki.buildWiki,
 );
 exports.build = build;
 
@@ -23,7 +24,7 @@ const start = series(
         parallel(core.webpack.server, core.asciidoctor.server),
         parallel(core.webpack.watch, core.asciidoctor.watch, core.marp.watch, core.adr.watch),
     ),
-    parallel(custom.app.devApp, custom.api.devApi, custom.app.openApp, custom.astro.openAstro, custom.astro.runAstro)
+    parallel(custom.app.devApp, custom.api.devApi, custom.app.openApp, custom.wiki.openWiki, custom.wiki.startWiki,custom.astro.openAstro, custom.astro.runAstro),
 );
 exports.default = start;
 

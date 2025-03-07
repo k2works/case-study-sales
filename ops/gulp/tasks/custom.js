@@ -338,9 +338,33 @@ const erdBuildTasks = () => {
     );
 }
 
+const wikijs = {
+    buildWiki: () => {
+        const command = 'docker compose build wiki';
+        return src('./', { read: false })
+            .pipe(exec(command));
+    },
+    startWiki: () => {
+        const command = 'docker compose up -d wiki';
+        return src('./', { read: false })
+            .pipe(exec(command));
+    },
+    stopWiki: () => {
+        const command = 'docker compose down wiki';
+        return src('./', { read: false })
+            .pipe(exec(command));
+    },
+    openWiki: () => {
+        const command = isWindows ? 'start' : 'open';
+        return src(journalNpmPath, {read: false})
+            .pipe(exec(`${command} http://localhost`));
+    }
+}
+exports.wiki = wikijs;
 const jigBuildTasks = () => {
     return series(jig.runJig, jig.copyJig);
 }
+
 exports.jig = jig;
 exports.jigBuildTasks = jigBuildTasks
 

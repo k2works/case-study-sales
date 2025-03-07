@@ -137,6 +137,7 @@ ops/docker/schemaspy/output
 ops/docker/mssql/data
 ops/docker/mssql/log
 ops/docker/allure
+ops/docker/wiki/dump
 tmp
 
 app/frontend/cypress/screenshots
