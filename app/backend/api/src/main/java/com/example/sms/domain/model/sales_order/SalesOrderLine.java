@@ -22,7 +22,6 @@ public class SalesOrderLine {
     Integer orderLineNumber; // 受注行番号
     ProductCode productCode; // 商品コード
     String productName; // 商品名
-    SalesAmount salesAmount; // 販売価格
     Money salesUnitPrice; // 販売単価
     Quantity orderQuantity; // 受注数量
     TaxRateType taxRate; // 消費税率
@@ -33,6 +32,7 @@ public class SalesOrderLine {
     Money discountAmount; // 値引金額
     DeliveryDate deliveryDate; // 納期
     Product product; // 商品
+    SalesAmount salesAmount; // 販売価格
 
     public static SalesOrderLine of(String orderNumber, Integer orderLineNumber, String productCode, String productName, Integer salesUnitPrice, Integer salesQuantity, Integer taxRate, Integer allocationQuantity, Integer shipmentInstructionQuantity, Integer shippedQuantity, Integer completionFlag, Integer discountAmount, LocalDateTime deliveryDate) {
         return new SalesOrderLine(
@@ -40,7 +40,6 @@ public class SalesOrderLine {
                 orderLineNumber,
                 ProductCode.of(productCode),
                 productName,
-                SalesAmount.of(Money.of(salesUnitPrice), Quantity.of(salesQuantity)),
                 Money.of(salesUnitPrice),
                 Quantity.of(salesQuantity),
                 TaxRateType.of(taxRate),
@@ -50,7 +49,8 @@ public class SalesOrderLine {
                 CompletionFlag.of(completionFlag),
                 Money.of(discountAmount),
                 DeliveryDate.of(deliveryDate),
-                null
+                null,
+                SalesAmount.of(Money.of(salesUnitPrice), Quantity.of(salesQuantity))
         );
     }
 
@@ -60,7 +60,6 @@ public class SalesOrderLine {
                 salesOrderLine.getOrderLineNumber(),
                 salesOrderLine.getProductCode(),
                 salesOrderLine.getProductName(),
-                SalesAmount.of(salesOrderLine.getSalesUnitPrice(), salesOrderLine.getOrderQuantity()),
                 salesOrderLine.getSalesUnitPrice(),
                 salesOrderLine.getOrderQuantity(),
                 salesOrderLine.getTaxRate(),
@@ -70,7 +69,8 @@ public class SalesOrderLine {
                 CompletionFlag.完了,
                 salesOrderLine.getDiscountAmount(),
                 salesOrderLine.getDeliveryDate(),
-                salesOrderLine.getProduct()
+                salesOrderLine.getProduct(),
+                SalesAmount.of(salesOrderLine.getSalesUnitPrice(), salesOrderLine.getOrderQuantity())
         );
     }
 
@@ -80,7 +80,6 @@ public class SalesOrderLine {
                 salesOrderLine.getOrderLineNumber(),
                 salesOrderLine.getProductCode(),
                 salesOrderLine.getProductName(),
-                SalesAmount.of(salesOrderLine.getSalesUnitPrice(), salesOrderLine.getOrderQuantity()),
                 salesOrderLine.getSalesUnitPrice(),
                 salesOrderLine.getOrderQuantity(),
                 salesOrderLine.getTaxRate(),
@@ -90,12 +89,13 @@ public class SalesOrderLine {
                 salesOrderLine.getCompletionFlag(),
                 salesOrderLine.getDiscountAmount(),
                 salesOrderLine.getDeliveryDate(),
-                product
+                product,
+                SalesAmount.of(salesOrderLine.getSalesUnitPrice(), salesOrderLine.getOrderQuantity())
         );
     }
 
     public Money calcSalesAmount() {
-        return Objects.requireNonNull(salesUnitPrice).multiply(Objects.requireNonNull(orderQuantity));
+        return Objects.requireNonNull(salesAmount).getValue();
     }
 
     public Money calcConsumptionTaxAmount() {
@@ -106,14 +106,12 @@ public class SalesOrderLine {
             return Money.of(0);
         }
         if (taxRate == TaxRateType.軽減税率) {
-            Money salesAmount = calcSalesAmount();
-            double taxRateValue = salesAmount.getAmount() * ((double) TaxRateType.軽減税率.getRate() / 100);
+            double taxRateValue = getSalesAmount().getValue().getAmount() * ((double) TaxRateType.軽減税率.getRate() / 100);
             int truncatedTaxRateValue = (int) Math.floor(taxRateValue);
             return Money.of(truncatedTaxRateValue);
         }
         if (taxRate == TaxRateType.標準税率) {
-            Money salesAmount = calcSalesAmount();
-            double taxRateValue = salesAmount.getAmount() * ((double) TaxRateType.標準税率.getRate() / 100);
+            double taxRateValue = getSalesAmount().getValue().getAmount() * ((double) TaxRateType.標準税率.getRate() / 100);
             int truncatedTaxRateValue = (int) Math.floor(taxRateValue);
             return Money.of(truncatedTaxRateValue);
         }
