@@ -3,9 +3,7 @@ package com.example.sms.presentation.api.master.employee;
 import com.example.sms.domain.model.master.employee.Employee;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,6 +12,8 @@ import java.util.stream.Collectors;
 @Getter
 @Schema(description = "社員")
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class EmployeeResource {
     @NotNull
     private String empCode;       // 社員コード
@@ -47,7 +47,9 @@ public class EmployeeResource {
                                 && employee.getDepartment().getDepartmentId().getDepartmentStartDate() != null
                                 ? employee.getDepartment().getDepartmentId().getDepartmentStartDate().toString()
                                 : null)
-                        .userId(employee.getUser().getUserId().getValue())
+                        .userId(employee.getUser() != null && employee.getUser().getUserId() != null
+                                ? employee.getUser().getUserId().getValue()
+                                : null)
                         .addFlag(false)
                         .deleteFlag(false)
                         .build()

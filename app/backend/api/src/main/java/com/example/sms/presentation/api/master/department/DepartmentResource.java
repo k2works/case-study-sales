@@ -6,9 +6,7 @@ import com.example.sms.domain.model.master.department.SlitYnType;
 import com.example.sms.presentation.api.master.employee.EmployeeResource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -16,6 +14,8 @@ import java.util.List;
 @Getter
 @Schema(description = "部門")
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class DepartmentResource {
     @NotNull
     private String departmentCode;

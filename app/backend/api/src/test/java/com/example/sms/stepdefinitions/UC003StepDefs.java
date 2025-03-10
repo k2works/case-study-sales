@@ -64,9 +64,9 @@ public class UC003StepDefs extends SpringAcceptanceTest {
 
         if (list.equals("部門一覧")) {
             result = latestResponse.getBody();
-            ListResponse<Department> departmentResponse = objectMapper.readValue(result, new TypeReference<>() {
+            ListResponse<DepartmentResource> departmentResponse = objectMapper.readValue(result, new TypeReference<>() {
             });
-            List<Department> departmentList = departmentResponse.getList();
+            List<DepartmentResource> departmentList = departmentResponse.getList();
             assertEquals(2, departmentList.size());
         }
     }
@@ -157,9 +157,9 @@ public class UC003StepDefs extends SpringAcceptanceTest {
         String result = latestResponse.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
-        ListResponse<Department> response = objectMapper.readValue(result, new TypeReference<>() {
+        ListResponse<DepartmentResource> response = objectMapper.readValue(result, new TypeReference<>() {
         });
-        List<Department> departmentList = response.getList();
+        List<DepartmentResource> departmentList = response.getList();
         assertEquals(2, departmentList.size());
     }
 }
