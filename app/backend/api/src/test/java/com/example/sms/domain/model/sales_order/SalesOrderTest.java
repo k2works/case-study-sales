@@ -2,6 +2,7 @@ package com.example.sms.domain.model.sales_order;
 
 import com.example.sms.domain.type.money.Money;
 import org.junit.jupiter.api.*;
+import org.testcontainers.shaded.org.checkerframework.checker.units.qual.N;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -384,7 +385,11 @@ class SalesOrderTest {
 
             assertEquals(8000, salesOrder.getTotalOrderAmount().getAmount());
         }
+    }
 
+    @Nested
+    @DisplayName("消費税合計")
+    class TestTotalConsumptionTax {
         @Test
         @DisplayName("消費税合計を作成できる")
         void shouldCreateTotalConsumptionTax() {
