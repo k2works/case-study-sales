@@ -22,7 +22,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Function;
 
 @Repository
 public class SalesOrderDataSource implements SalesOrderRepository {
@@ -181,10 +180,5 @@ public class SalesOrderDataSource implements SalesOrderRepository {
                 .map(salesOrderEntityMapper::mapToDomainModel)
                 .toList()
         );
-    }
-
-    @Override
-    public <T, R> PageInfo<R> getPageInfo(PageInfo<T> sourcePageInfo, Function<T, R> mapper) {
-        return PageInfoHelper.of(sourcePageInfo, mapper);
     }
 }

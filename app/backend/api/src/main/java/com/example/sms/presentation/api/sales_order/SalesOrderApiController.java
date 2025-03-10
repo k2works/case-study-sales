@@ -8,6 +8,7 @@ import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponseWithDetail;
 import com.example.sms.service.BusinessException;
+import com.example.sms.service.PageNationService;
 import com.example.sms.service.sales_order.SalesOrderCriteria;
 import com.example.sms.domain.model.sales_order.rule.SalesOrderRuleCheckList;
 import com.example.sms.service.sales_order.SalesOrderService;
@@ -31,10 +32,12 @@ import java.util.List;
 @Tag(name = "SalesOrder", description = "受注")
 public class SalesOrderApiController {
     final SalesOrderService salesOrderService;
+    final PageNationService pageNationService;
     final Message message;
 
-    public SalesOrderApiController(SalesOrderService salesOrderService, Message message) {
+    public SalesOrderApiController(SalesOrderService salesOrderService, PageNationService pageNationService, Message message) {
         this.salesOrderService = salesOrderService;
+        this.pageNationService = pageNationService;
         this.message = message;
     }
 
@@ -46,7 +49,7 @@ public class SalesOrderApiController {
         try {
             PageNation.startPage(page, pageSize);
             PageInfo<SalesOrder> pageInfo = salesOrderService.selectAllWithPageInfo();
-            PageInfo<SalesOrderResource> result = salesOrderService.getPageInfo(pageInfo, SalesOrderResource::from);
+            PageInfo<SalesOrderResource> result = pageNationService.getPageInfo(pageInfo, SalesOrderResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
@@ -142,7 +145,7 @@ public class SalesOrderApiController {
             PageNation.startPage(page, pageSize);
             SalesOrderCriteria criteria = convertToCriteria(resource);
             PageInfo<SalesOrder> entity = salesOrderService.searchSalesOrderWithPageInfo(criteria);
-            PageInfo<SalesOrderResource> result = salesOrderService.getPageInfo(entity, SalesOrderResource::from);
+            PageInfo<SalesOrderResource> result = pageNationService.getPageInfo(entity, SalesOrderResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));

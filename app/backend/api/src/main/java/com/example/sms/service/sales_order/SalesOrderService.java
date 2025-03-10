@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
-import java.util.function.Function;
 
 import static org.apache.commons.lang3.Validate.*;
 
@@ -93,10 +92,6 @@ public class SalesOrderService {
      */
     public PageInfo<SalesOrder> searchSalesOrderWithPageInfo(SalesOrderCriteria criteria) {
         return salesOrderRepository.searchWithPageInfo(criteria);
-    }
-
-    public <T, R> PageInfo<R> getPageInfo(PageInfo<T> sourcePageInfo, Function<T, R> mapper) {
-        return salesOrderRepository.getPageInfo(sourcePageInfo, mapper);
     }
 
     /**
