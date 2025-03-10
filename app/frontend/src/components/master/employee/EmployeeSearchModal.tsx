@@ -62,8 +62,9 @@ export const EmployeeSearchModal: React.FC = () => {
                                     setMessage("");
                                     setError("");
                                 }
-                            } catch (error: any) {
-                                showErrorMessage(`実行履歴情報の検索に失敗しました: ${error?.message}`, setError);
+                            } catch (error: unknown) {
+                                const errorMessage = error instanceof Error ? error.message : String(error);
+                                showErrorMessage(`実行履歴情報の検索に失敗しました: ${errorMessage}`, setError);
                             } finally {
                                 setLoading(false);
                             }

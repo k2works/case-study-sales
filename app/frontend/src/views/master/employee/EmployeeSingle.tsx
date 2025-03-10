@@ -46,59 +46,35 @@ const Form: React.FC<EmployeeFormProps> = ({newEmployee, setNewEmployee, isEditi
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="社員コード"
-                value={newEmployee.empCode.value}
+                value={newEmployee.empCode}
                 onChange={(e) => setNewEmployee({
                     ...newEmployee,
-                    empCode: { value: e.target.value }
+                    empCode: e.target.value
                 })}
                 disabled={isEditing}
             />
             <FormInput
-                label="姓"
-                id="firstName"
+                label="社員名"
+                id="empName"
                 type="text"
                 className="single-view-content-item-form-item-input"
-                placeholder="姓"
-                value={newEmployee.empName.firstName}
+                placeholder="社員名"
+                value={newEmployee.empName}
                 onChange={(e) => setNewEmployee({
                     ...newEmployee,
-                    empName: { ...newEmployee.empName, firstName: e.target.value }
+                    empName: e.target.value
                 })}
             />
             <FormInput
-                label="名"
-                id="lastName"
+                label="社員名カナ"
+                id="empNameKana"
                 type="text"
                 className="single-view-content-item-form-item-input"
-                placeholder="名"
-                value={newEmployee.empName.lastName}
+                placeholder="社員名カナ"
+                value={newEmployee.empNameKana}
                 onChange={(e) => setNewEmployee({
                     ...newEmployee,
-                    empName: { ...newEmployee.empName, lastName: e.target.value }
-                })}
-            />
-            <FormInput
-                label="姓カナ"
-                id="firstNameKana"
-                type="text"
-                className="single-view-content-item-form-item-input"
-                placeholder="姓カナ"
-                value={newEmployee.empName.firstNameKana}
-                onChange={(e) => setNewEmployee({
-                    ...newEmployee,
-                    empName: { ...newEmployee.empName, firstNameKana: e.target.value }
-                })}
-            />
-            <FormInput
-                label="名カナ"
-                id="lastNameKana"
-                type="text"
-                className="single-view-content-item-form-item-input"
-                placeholder="名カナ"
-                value={newEmployee.empName.lastNameKana}
-                onChange={(e) => setNewEmployee({
-                    ...newEmployee,
-                    empName: { ...newEmployee.empName, lastNameKana: e.target.value }
+                    empNameKana: e.target.value
                 })}
             />
             <FormInput
@@ -107,10 +83,10 @@ const Form: React.FC<EmployeeFormProps> = ({newEmployee, setNewEmployee, isEditi
                 type="tel"
                 className="single-view-content-item-form-item-input"
                 placeholder="電話番号"
-                value={newEmployee.tel.value}
+                value={newEmployee.tel}
                 onChange={(e) => setNewEmployee({
                     ...newEmployee,
-                    tel: { ...newEmployee.tel, value: e.target.value }
+                    tel: e.target.value
                 })}
             />
             <FormInput
@@ -119,10 +95,10 @@ const Form: React.FC<EmployeeFormProps> = ({newEmployee, setNewEmployee, isEditi
                 type="tel"
                 className="single-view-content-item-form-item-input"
                 placeholder="FAX番号"
-                value={newEmployee.fax.value}
+                value={newEmployee.fax}
                 onChange={(e) => setNewEmployee({
                     ...newEmployee,
-                    fax: { ...newEmployee.fax, value: e.target.value }
+                    fax: e.target.value
                 })}
             />
             <FormInput
@@ -131,10 +107,10 @@ const Form: React.FC<EmployeeFormProps> = ({newEmployee, setNewEmployee, isEditi
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="職種コード"
-                value={newEmployee.occuCode.value}
+                value={newEmployee.occuCode}
                 onChange={(e) => setNewEmployee({
                     ...newEmployee,
-                    occuCode: { ...newEmployee.occuCode, value: e.target.value }
+                    occuCode: e.target.value
                 })}
             />
             <FormInput

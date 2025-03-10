@@ -52,7 +52,7 @@ export const EmployeeSelectModal: React.FC<EmployeeSelectModalProps> = ({ type }
                 handleSelect={(employee: EmployeeType) => {
                     setNewSalesOrder({
                         ...newSalesOrder,
-                        employeeCode: employee.empCode.value,
+                        employeeCode: employee.empCode,
                     });
                     setEmployeeModalIsOpen(false);
                 }}
@@ -78,7 +78,7 @@ export const EmployeeSelectModal: React.FC<EmployeeSelectModalProps> = ({ type }
                 handleSelect={(employee: EmployeeType) => {
                     setSearchSalesOrderCriteria({
                         ...searchSalesOrderCriteria,
-                        employeeCode: employee.empCode.value,
+                        employeeCode: employee.empCode,
                     });
                     setEmployeeSearchModalIsOpen(false);
                 }}

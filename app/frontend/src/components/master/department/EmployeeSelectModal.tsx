@@ -28,8 +28,8 @@ export const EmployeeSelectModal: React.FC = () => {
     };
 
     const handleEmployeeCollectionSelect = (employee: EmployeeType) => {
-        const newEmployees = newDepartment.employees.filter((e: EmployeeType) => e.empCode.value !== employee.empCode.value);
-        if (employee.empCode.value) {
+        const newEmployees = newDepartment.employees.filter((e: EmployeeType) => e.empCode !== employee.empCode);
+        if (employee.empCode) {
             newEmployees.push({
                 ...employee,
                 addFlag: true,

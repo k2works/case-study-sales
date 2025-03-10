@@ -37,7 +37,7 @@ export const EmployeeService = () => {
     };
 
     const update = async (employee: EmployeeType): Promise<void> => {
-        const url = `${endPoint}/${employee.empCode.value}`;
+        const url = `${endPoint}/${employee.empCode}`;
         await apiUtils.fetchPut<void>(url, mapToEmployeeResource(employee));
     };
 

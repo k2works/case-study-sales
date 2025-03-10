@@ -11,29 +11,13 @@ import {useFetchEntities} from "../../../application/hooks.ts";
 
 export const useEmployee = () => {
     const initialEmployee: EmployeeType = {
-        empCode: {value: ""},
-        empName: {
-            firstName: "",
-            lastName: "",
-            firstNameKana: "",
-            lastNameKana: ""
-        },
+        empCode: "",
+        empName: "",
+        empNameKana: "",
         loginPassword: "",
-        tel: {
-            value: "",
-            areaCode: "",
-            localExchange: "",
-            subscriberNumber: ""
-        },
-        fax: {
-            value: "",
-            areaCode: "",
-            localExchange: "",
-            subscriberNumber: ""
-        },
-        occuCode: {
-            value: ""
-        },
+        tel: "",
+        fax: "",
+        occuCode: "",
         approvalCode: "",
         department: {
             departmentCode: "",

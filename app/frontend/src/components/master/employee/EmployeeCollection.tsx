@@ -34,7 +34,7 @@ export const EmployeeCollection: React.FC = () => {
         if (employee) {
             employee.loginPassword = "";
             setNewEmployee(employee);
-            setEditId(employee.empCode.value);
+            setEditId(employee.empCode);
             setIsEditing(true);
         } else {
             setNewEmployee(initialEmployee);
@@ -53,14 +53,15 @@ export const EmployeeCollection: React.FC = () => {
             await employeeService.destroy(empCode);
             await fetchEmployees.load();
             setMessage("社員を削除しました。");
-        } catch (error: any) {
-            showErrorMessage(`社員の削除に失敗しました: ${error?.message}`, setError);
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            showErrorMessage(`社員の削除に失敗しました: ${errorMessage}`, setError);
         }
     };
 
     const handleCheckEmployee = (employee: EmployeeType) => {
         const newEmployee = employees.map((emp) => {
-            if (emp.empCode.value === employee.empCode.value) {
+            if (emp.empCode === employee.empCode) {
                 return {
                     ...emp,
                     checked: !emp.checked
@@ -90,11 +91,12 @@ export const EmployeeCollection: React.FC = () => {
         try {
             if (!window.confirm(`選択した社員を削除しますか？`)) return;
             const checkedEmployees = employees.filter((emp) => emp.checked);
-            await Promise.all(checkedEmployees.map((emp) => employeeService.destroy(emp.empCode.value)));
+            await Promise.all(checkedEmployees.map((emp) => employeeService.destroy(emp.empCode)));
             await fetchEmployees.load();
             setMessage("選択した社員を削除しました。");
-        } catch (error: any) {
-            showErrorMessage(`社員の削除に失敗しました: ${error?.message}`, setError);
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            showErrorMessage(`社員の削除に失敗しました: ${errorMessage}`, setError);
         }
     }
 

@@ -45,7 +45,7 @@ public class EmployeeResource {
                                 : null)
                         .departmentStartDate(employee.getDepartment() != null && employee.getDepartment().getDepartmentId() != null
                                 && employee.getDepartment().getDepartmentId().getDepartmentStartDate() != null
-                                ? employee.getDepartment().getDepartmentId().getDepartmentStartDate().toString()
+                                ? employee.getDepartment().getDepartmentId().getDepartmentStartDate().getValue().toString()
                                 : null)
                         .userId(employee.getUser() != null && employee.getUser().getUserId() != null
                                 ? employee.getUser().getUserId().getValue()
