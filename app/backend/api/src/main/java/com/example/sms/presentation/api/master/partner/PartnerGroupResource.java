@@ -5,16 +5,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serial;
-import java.io.Serializable;
-
 @Setter
 @Getter
 @Schema(description = "取引先グループ")
-public class PartnerGroupResource implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
+public class PartnerGroupResource {
     @NotNull
     String partnerGroupCode; // 取引先グループコード
     @NotNull

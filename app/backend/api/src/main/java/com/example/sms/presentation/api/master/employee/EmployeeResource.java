@@ -5,16 +5,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serial;
-import java.io.Serializable;
-
 @Setter
 @Getter
 @Schema(description = "社員")
-public class EmployeeResource implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
+public class EmployeeResource {
     @NotNull
     private String empCode;       // 社員コード
     @NotNull

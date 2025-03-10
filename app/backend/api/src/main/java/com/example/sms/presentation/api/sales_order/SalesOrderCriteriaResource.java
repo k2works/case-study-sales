@@ -4,17 +4,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.io.Serial;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Setter
 @Getter
 @Schema(description = "受注検索条件")
-public class SalesOrderCriteriaResource implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
+public class SalesOrderCriteriaResource {
     @Schema(description = "受注番号")
     String orderNumber;
 

@@ -8,17 +8,12 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.List;
 
 @Setter
 @Getter
 @Schema(description = "部門")
-public class DepartmentResource implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
+public class DepartmentResource {
     @NotNull
     private String departmentCode;
     @NotNull

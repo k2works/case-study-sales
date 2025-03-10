@@ -5,17 +5,12 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.List;
 
 @Setter
 @Getter
 @Schema(description = "商品分類")
-public class ProductCategoryResource implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
+public class ProductCategoryResource {
     @NotNull
     String productCategoryCode; // 商品分類コード
     String productCategoryName; // 商品分類名

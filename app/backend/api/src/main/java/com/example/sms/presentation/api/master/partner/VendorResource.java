@@ -9,16 +9,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serial;
-import java.io.Serializable;
-
 @Setter
 @Getter
 @Schema(description = "仕入先")
-public class VendorResource implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
+public class VendorResource {
     @NotNull
     String vendorCode;
     @NotNull

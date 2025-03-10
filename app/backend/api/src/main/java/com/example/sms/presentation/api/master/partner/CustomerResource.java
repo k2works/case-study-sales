@@ -12,17 +12,12 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.List;
 
 @Setter
 @Getter
 @Schema(description = "顧客")
-public class CustomerResource implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
+public class CustomerResource {
     @NotNull
     String customerCode;
     @NotNull

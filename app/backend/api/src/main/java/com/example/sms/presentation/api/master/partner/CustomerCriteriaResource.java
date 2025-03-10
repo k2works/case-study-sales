@@ -4,16 +4,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serial;
-import java.io.Serializable;
-
 @Setter
 @Getter
 @Schema(description = "顧客検索条件")
-public class CustomerCriteriaResource implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
+public class CustomerCriteriaResource {
     String customerCode;          // 顧客コード
     String customerName;          // 顧客名
     String customerNameKana;      // 顧客名カナ

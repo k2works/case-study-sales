@@ -5,17 +5,12 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.List;
 
 @Getter
 @Setter
 @Schema(description = "取引先分類種別")
-public class PartnerCategoryTypeResource implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
+public class PartnerCategoryTypeResource {
     @NotNull
     @Schema(description = "取引先分類種別コード")
     private String partnerCategoryTypeCode;

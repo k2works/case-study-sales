@@ -7,16 +7,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serial;
-import java.io.Serializable;
-
 @Getter
 @Setter
 @Schema(description = "ダウンロード条件")
-public class DownloadCriteriaResource implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
+public class DownloadCriteriaResource {
     @NotNull
     private DownloadTarget target;
     private String fileName;

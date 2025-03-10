@@ -4,15 +4,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serial;
-
 @Setter
 @Getter
 @Schema(description = "仕入先")
 public class VendorCriteriaResource {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     String vendorCode; // 仕入先コード
     String vendorName; // 仕入先名
     String vendorContactName; // 仕入先担当者名
