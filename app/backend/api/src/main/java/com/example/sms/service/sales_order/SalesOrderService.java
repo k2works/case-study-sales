@@ -113,8 +113,9 @@ public class SalesOrderService {
     public SalesOrderUploadErrorList uploadCsvFile(MultipartFile file) {
         notNull(file, "アップロードファイルは必須です。");
         isTrue(!file.isEmpty(), "アップロードファイルが空です。");
-        notNull(file.getOriginalFilename(), "アップロードファイル名は必須です。");
-        isTrue(file.getOriginalFilename().endsWith(".csv"), "アップロードファイルがCSVではありません。");
+        String originalFilename = Optional.ofNullable(file.getOriginalFilename())
+                .orElseThrow(() -> new IllegalArgumentException("アップロードファイル名は必須です。"));
+        isTrue(originalFilename.endsWith(".csv"), "アップロードファイルがCSVではありません。");
         isTrue(file.getSize() < 10000000, "アップロードファイルが大きすぎます。");
 
         Pattern2ReadCSVUtil<SalesOrderUploadCSV> csvUtil = new Pattern2ReadCSVUtil<>();
@@ -181,17 +182,20 @@ public class SalesOrderService {
         Map<String, SalesOrder> orderMap = new HashMap<>();
 
         for (SalesOrderUploadCSV csv : dataList) {
-            String orderNumber = csv.getOrderNumber();
-            if (orderNumber != null) {
-                orderNumber = orderNumber.replaceAll("\\s", ""); // すべての空白文字を削除
-            }
-            // 既にそのOrderNumberのSalesOrderが存在するかを確認
-            SalesOrder existingOrder = orderMap.get(orderNumber);
+            // OrderNumberの取得と空白削除
+            String orderNumber = Optional.ofNullable(csv.getOrderNumber())
+                    .map(num -> num.replaceAll("\\s", ""))
+                    .orElse(null);
 
-            if (existingOrder == null) {
-                // 新しくSalesOrderを作成
+            if (orderNumber == null) {
+                // OrderNumberがnullであればスキップ
+                continue;
+            }
+
+            // `computeIfAbsent`を使って、存在しなければ新しいSalesOrderを作成
+            SalesOrder salesOrder = orderMap.computeIfAbsent(orderNumber, key -> {
                 SalesOrder newOrder = SalesOrder.of(
-                        orderNumber,
+                        key,
                         csv.getOrderDate(),
                         csv.getDepartmentCode(),
                         csv.getDepartmentStartDate(),
@@ -204,14 +208,12 @@ public class SalesOrderService {
                         csv.getTotalOrderAmount(),
                         csv.getTotalConsumptionTax(),
                         csv.getRemarks(),
-                        new ArrayList<>()
+                        new ArrayList<>() // 空のSalesOrderLineリスト
                 );
-
-                // Mapと結果リストに登録
-                orderMap.put(orderNumber, newOrder);
+                // 結果のリストにも登録
                 salesOrders.add(newOrder);
-                existingOrder = newOrder;
-            }
+                return newOrder;
+            });
 
             // SalesOrderLineを作成して追加
             SalesOrderLine orderLine = SalesOrderLine.of(
@@ -230,10 +232,11 @@ public class SalesOrderService {
                     csv.getDeliveryDate()
             );
 
-            // SalesOrderのsalesOrderLinesリストに追加
-            existingOrder.getSalesOrderLines().add(orderLine);
+            // SalesOrderの`salesOrderLines`リストに追加
+            salesOrder.getSalesOrderLines().add(orderLine);
         }
 
+        // SalesOrderリストを返す
         return new SalesOrderList(salesOrders);
     }
 }
