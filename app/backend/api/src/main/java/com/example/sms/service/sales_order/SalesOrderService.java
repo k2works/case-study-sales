@@ -130,6 +130,9 @@ public class SalesOrderService {
         return errorList;
     }
 
+    /**
+     * CSVファイルアップロードバリデーション
+     */
     private SalesOrderUploadErrorList validateErrors(List<SalesOrderUploadCSV> dataList) {
         List<Map<String, String>> checkResult = new ArrayList<>();
 
@@ -166,6 +169,9 @@ public class SalesOrderService {
         return new SalesOrderUploadErrorList(checkResult);
     }
 
+    /**
+     * マスタデータ存在チェック
+     */
     private void checkEntityExistence(Optional<?> entity, List<Map<String, String>> checkResult, String orderNumber, String errorMessage) {
         if (entity.isEmpty()) {
             Map<String, String> errorMap = new HashMap<>();
