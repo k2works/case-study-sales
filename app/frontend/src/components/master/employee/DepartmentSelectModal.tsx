@@ -74,7 +74,7 @@ export const DepartmentSelectModal: React.FC<DepartmentSelectModalProps> = ({ ty
                 handleSelect={(department: DepartmentType) => {
                     setSearchEmployeeCriteria({
                         ...searchEmployeeCriteria,
-                        departmentCode: department.departmentId.deptCode.value,
+                        departmentCode: department.departmentCode,
                     });
                     setDepartmentSearchModalIsOpen(false);
                 }}

@@ -11,11 +11,12 @@ import {useFetchEntities} from "../../../application/hooks.ts";
 
 export const useDepartment = () => {
     const initialDepartment = {
-        departmentId: {deptCode: {value: ""}, departmentStartDate: {value: ""}},
-        endDate: {value: ""},
+        departmentCode: "",
+        startDate: "",
+        endDate: "",
         departmentName: "",
         layer: 0,
-        path: {value: ""},
+        path: "",
         lowerType: LowerType.NO,
         slitYn: SlitYnType.NO,
         employees: [],

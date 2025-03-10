@@ -1,13 +1,19 @@
 package com.example.sms.presentation.api.master.employee;
 
+import com.example.sms.domain.model.master.employee.Employee;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Setter
 @Getter
 @Schema(description = "社員")
+@Builder
 public class EmployeeResource {
     @NotNull
     private String empCode;       // 社員コード
@@ -23,4 +29,28 @@ public class EmployeeResource {
     private String userId;
     private boolean addFlag;
     private boolean deleteFlag;
+
+    public static List<EmployeeResource> from(List<Employee> employees) {
+        return employees.stream()
+                .map(employee -> EmployeeResource.builder()
+                        .empCode(employee.getEmpCode().getValue())
+                        .empName(employee.getEmpName().Name())
+                        .empNameKana(employee.getEmpName().getFirstNameKana() + " " + employee.getEmpName().getLastNameKana())
+                        .tel(employee.getTel().getValue())
+                        .fax(employee.getFax().getValue())
+                        .occuCode(employee.getOccuCode().getValue())
+                        .departmentCode(employee.getDepartment() != null && employee.getDepartment().getDepartmentId() != null
+                                && employee.getDepartment().getDepartmentId().getDeptCode() != null
+                                ? employee.getDepartment().getDepartmentId().getDeptCode().getValue()
+                                : null)
+                        .departmentStartDate(employee.getDepartment() != null && employee.getDepartment().getDepartmentId() != null
+                                && employee.getDepartment().getDepartmentId().getDepartmentStartDate() != null
+                                ? employee.getDepartment().getDepartmentId().getDepartmentStartDate().toString()
+                                : null)
+                        .userId(employee.getUser().getUserId().getValue())
+                        .addFlag(false)
+                        .deleteFlag(false)
+                        .build()
+                ).collect(Collectors.toList());
+    }
 }

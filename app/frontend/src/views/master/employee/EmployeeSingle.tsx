@@ -143,15 +143,12 @@ const Form: React.FC<EmployeeFormProps> = ({newEmployee, setNewEmployee, isEditi
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="部門コード"
-                value={newEmployee.department?.departmentId.deptCode.value}
+                value={newEmployee.department?.departmentCode}
                 onChange={(e) => setNewEmployee({
                     ...newEmployee,
                     department: {
                         ...newEmployee.department,
-                        departmentId: {
-                            ...newEmployee.department?.departmentId,
-                            deptCode: { value: e.target.value }
-                        }
+                        departmentCode: e.target.value
                     }
                 })}
             />
@@ -160,16 +157,13 @@ const Form: React.FC<EmployeeFormProps> = ({newEmployee, setNewEmployee, isEditi
                 id="departmentStartDate"
                 type="date"
                 className="single-view-content-item-form-item-input"
-                value={convertToDateInputFormat(newEmployee.department?.departmentId.departmentStartDate.value)}
+                value={convertToDateInputFormat(newEmployee.department?.startDate)}
                 placeholder="開始日"
                 onChange={(e) => setNewEmployee({
                     ...newEmployee,
                     department: {
                         ...newEmployee.department,
-                        departmentId: {
-                            ...newEmployee.department?.departmentId,
-                            departmentStartDate: { value: e.target.value }
-                        }
+                        startDate: e.target.value,
                     }
                 })}
             />

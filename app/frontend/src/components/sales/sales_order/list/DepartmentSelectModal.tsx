@@ -49,8 +49,8 @@ export const DepartmentSelectModal: React.FC<DepartmentSelectModalProps> = ({ ty
                 handleSelect={(department: DepartmentType) => {
                     setNewSalesOrder({
                         ...newSalesOrder,
-                        departmentCode: department.departmentId.deptCode.value,
-                        departmentStartDate: department.departmentId.departmentStartDate.value,
+                        departmentCode: department.departmentCode,
+                        departmentStartDate: department.startDate,
                     });
                     setDepartmentModalIsOpen(false);
                 }}
@@ -75,7 +75,7 @@ export const DepartmentSelectModal: React.FC<DepartmentSelectModalProps> = ({ ty
                 handleSelect={(department: DepartmentType) => {
                     setSearchSalesOrderCriteria({
                         ...searchSalesOrderCriteria,
-                        departmentCode: department.departmentId.deptCode.value,
+                        departmentCode: department.departmentCode,
                     });
                     setDepartmentSearchModalIsOpen(false);
                 }}

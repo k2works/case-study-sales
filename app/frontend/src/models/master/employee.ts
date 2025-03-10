@@ -72,8 +72,8 @@ export const mapToEmployeeResource = (employee: EmployeeType): EmployeeResourceT
         tel: employee.tel.value,
         fax: employee.fax.value,
         occuCode: employee.occuCode.value,
-        departmentCode: employee.department?.departmentId.deptCode.value,
-        departmentStartDate: toISOStringWithTimezone(new Date(employee.department?.departmentId.departmentStartDate.value)),
+        departmentCode: employee.department?.departmentCode,
+        departmentStartDate: toISOStringWithTimezone(new Date(employee.department?.startDate)),
         userId: employee.user?.userId.value,
         addFlag: employee.addFlag,
         deleteFlag: employee.deleteFlag

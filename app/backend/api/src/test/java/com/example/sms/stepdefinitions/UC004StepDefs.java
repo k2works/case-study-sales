@@ -79,15 +79,16 @@ public class UC004StepDefs extends SpringAcceptanceTest {
     @もし(":UC004 社員コード {string} 社員名 {string} 社員名カナ {string} で新規登録する")
     public void toRegist(String code, String name, String nameKana) throws IOException {
         String url = EMPLOYEE_API_URL;
-        EmployeeResource resource = new EmployeeResource();
-        resource.setEmpCode(code);
-        resource.setEmpName(name);
-        resource.setEmpNameKana(nameKana);
-        resource.setTel(null);
-        resource.setFax(null);
-        resource.setDepartmentCode("10000");
-        resource.setDepartmentStartDate("2021-01-01T00:00:00+09:00");
-        resource.setOccuCode("");
+        EmployeeResource resource = EmployeeResource.builder()
+                .empCode(code)
+                .empName(name)
+                .empNameKana(nameKana)
+                .tel(null)
+                .fax(null)
+                .departmentCode("10000")
+                .departmentStartDate("2021-01-01T00:00:00+09:00")
+                .occuCode("")
+                .build();
 
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(resource);
@@ -112,14 +113,16 @@ public class UC004StepDefs extends SpringAcceptanceTest {
     public void toUpdate(String code, String name, String nameKana) throws IOException {
         String url = EMPLOYEE_API_URL + "/" + code;
 
-        EmployeeResource resource = new EmployeeResource();
-        resource.setEmpName(name);
-        resource.setEmpNameKana(nameKana);
-        resource.setTel(null);
-        resource.setFax(null);
-        resource.setDepartmentCode("10000");
-        resource.setDepartmentStartDate("2021-01-01T00:00:00+09:00");
-        resource.setOccuCode("");
+        EmployeeResource resource = EmployeeResource.builder()
+                .empCode(code)
+                .empName(name)
+                .empNameKana(nameKana)
+                .tel(null)
+                .fax(null)
+                .departmentCode("10000")
+                .departmentStartDate("2021-01-01T00:00:00+09:00")
+                .occuCode("")
+                .build();
 
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(resource);

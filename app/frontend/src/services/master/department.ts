@@ -38,8 +38,8 @@ export const DepartmentService = () => {
     };
 
     const update = async (department: DepartmentType): Promise<void> => {
-        const startDate = toISOStringWithTimezone(new Date(department.departmentId.departmentStartDate.value));
-        const url = `${endPoint}/${department.departmentId.deptCode.value}/${startDate}`;
+        const startDate = toISOStringWithTimezone(new Date(department.startDate));
+        const url = `${endPoint}/${department.departmentCode}/${startDate}`;
         await apiUtils.fetchPut<void>(url, mapToDepartmentResource(department));
     };
 

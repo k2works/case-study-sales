@@ -7,29 +7,29 @@ import {Search} from "../../Common.tsx";
 interface DepartmentItemProps {
     department: DepartmentType;
     onEdit: (department: DepartmentType) => void;
-    onDelete: (departmentId: DepartmentType['departmentId']) => void;
+    onDelete: (departmentCode: string, startDate: string) => void;
     onCheck: (department: DepartmentType) => void;
 }
 
 const DepartmentItem: React.FC<DepartmentItemProps> = ({department, onEdit, onDelete, onCheck}) => (
-    <li className="collection-object-item" key={department.departmentId.deptCode.value}>
-        <div className="collection-object-item-content" data-id={department.departmentId.deptCode.value}>
+    <li className="collection-object-item" key={department.departmentCode}>
+        <div className="collection-object-item-content" data-id={department.departmentCode}>
             <input type="checkbox" className="collection-object-item-checkbox" checked={department.checked}
                    onChange={() => onCheck(department)}/>
         </div>
-        <div className="collection-object-item-content" data-id={department.departmentId.deptCode.value}>
+        <div className="collection-object-item-content" data-id={department.departmentCode}>
             <div className="collection-object-item-content-details">部門コード</div>
-            <div className="collection-object-item-content-name">{department.departmentId.deptCode.value}</div>
+            <div className="collection-object-item-content-name">{department.departmentCode}</div>
         </div>
-        <div className="collection-object-item-content" data-id={department.departmentId.deptCode.value}>
+        <div className="collection-object-item-content" data-id={department.departmentCode}>
             <div className="collection-object-item-content-details">部門名</div>
             <div className="collection-object-item-content-name">{department.departmentName}</div>
         </div>
-        <div className="collection-object-item-actions" data-id={department.departmentId.deptCode.value}>
+        <div className="collection-object-item-actions" data-id={department.departmentCode}>
             <button className="action-button" onClick={() => onEdit(department)} id="edit">編集</button>
         </div>
-        <div className="collection-object-item-actions" data-id={department.departmentId.deptCode.value}>
-            <button className="action-button" onClick={() => onDelete(department.departmentId)} id="delete">削除
+        <div className="collection-object-item-actions" data-id={department.departmentCode}>
+            <button className="action-button" onClick={() => onDelete(department.departmentCode, department.startDate)} id="delete">削除
             </button>
         </div>
     </li>
@@ -38,7 +38,7 @@ const DepartmentItem: React.FC<DepartmentItemProps> = ({department, onEdit, onDe
 interface DepartmentListProps {
     departments: DepartmentType[];
     onEdit: (department: DepartmentType) => void;
-    onDelete: (departmentId: DepartmentType['departmentId']) => void;
+    onDelete: (departmentCode: string, startDate: string) => void;
     onCheck: (department: DepartmentType) => void;
 }
 
@@ -47,7 +47,7 @@ const DepartmentList: React.FC<DepartmentListProps> = ({departments, onEdit, onD
         <ul className="collection-object-list">
             {departments.map(department => (
                 <DepartmentItem
-                    key={department.departmentId.deptCode.value}
+                    key={department.departmentCode}
                     department={department}
                     onEdit={onEdit}
                     onDelete={onDelete}
@@ -74,7 +74,7 @@ interface DepartmentCollectionViewProps {
     collectionItems: {
         departments: DepartmentType[];
         handleOpenModal: (department?: DepartmentType) => void;
-        handleDeleteDepartment: (departmentId: DepartmentType['departmentId']) => void;
+        handleDeleteDepartment: (departmentCode: string, startDate: string) => void;
         handleCheckDepartment: (department: DepartmentType) => void;
     }
     pageNationItems: {
@@ -128,4 +128,3 @@ export const DepartmentCollectionView: React.FC<DepartmentCollectionViewProps> =
         </div>
     </div>
 );
-

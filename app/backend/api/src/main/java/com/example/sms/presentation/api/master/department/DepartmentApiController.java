@@ -11,6 +11,7 @@ import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.master.employee.EmployeeResource;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
 import com.example.sms.service.BusinessException;
+import com.example.sms.service.PageNationService;
 import com.example.sms.service.master.department.DepartmentCriteria;
 import com.example.sms.service.master.department.DepartmentService;
 import com.example.sms.service.system.audit.AuditAnnotation;
@@ -36,11 +37,12 @@ import java.util.List;
 @PreAuthorize("hasRole('ADMIN')")
 public class DepartmentApiController {
     final DepartmentService departmentManagementService;
-
+    final PageNationService pageNationService;
     final Message message;
 
-    public DepartmentApiController(DepartmentService departmentManagementService, Message message) {
+    public DepartmentApiController(DepartmentService departmentManagementService, PageNationService pageNationService, Message message) {
         this.departmentManagementService = departmentManagementService;
+        this.pageNationService = pageNationService;
         this.message = message;
     }
 
@@ -52,7 +54,8 @@ public class DepartmentApiController {
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
             PageNation.startPage(page, pageSize);
-            PageInfo<Department> result = departmentManagementService.selectAllWithPageInfo();
+            PageInfo<Department> pageInfo = departmentManagementService.selectAllWithPageInfo();
+            PageInfo<DepartmentResource> result = pageNationService.getPageInfo(pageInfo, DepartmentResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
@@ -134,7 +137,8 @@ public class DepartmentApiController {
         try {
             PageNation.startPage(page, pageSize);
             DepartmentCriteria criteria = convertToCriteria(resource);
-            PageInfo<Department> result = departmentManagementService.searchWithPageInfo(criteria);
+            PageInfo<Department> entity = departmentManagementService.searchWithPageInfo(criteria);
+            PageInfo<DepartmentResource> result = pageNationService.getPageInfo(entity, DepartmentResource::from);
             return ResponseEntity.ok(result);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));

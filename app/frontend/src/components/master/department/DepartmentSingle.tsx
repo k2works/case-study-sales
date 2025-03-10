@@ -59,7 +59,7 @@ export const DepartmentSingle: React.FC = () => {
 
     const handleCreateOrUpdateDepartment = async () => {
         const validateDepartment = (): boolean => {
-            if (!newDepartment.departmentId.deptCode.value.trim() || !newDepartment.departmentName.trim()) {
+            if (!newDepartment.departmentCode.trim() || !newDepartment.departmentName.trim()) {
                 setError("部門コード、部門名は必須項目です。");
                 return false;
             }
