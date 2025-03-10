@@ -69,9 +69,9 @@ public class UC004StepDefs extends SpringAcceptanceTest {
 
         if (list.equals("社員一覧")) {
             String result = latestResponse.getBody();
-            ListResponse<Employee> employeeResponse = objectMapper.readValue(result, new TypeReference<>() {
+            ListResponse<EmployeeResource> employeeResponse = objectMapper.readValue(result, new TypeReference<>() {
             });
-            List<Employee> employeeList = employeeResponse.getList();
+            List<EmployeeResource> employeeList = employeeResponse.getList();
             assertEquals(2, employeeList.size());
         }
     }
@@ -135,8 +135,8 @@ public class UC004StepDefs extends SpringAcceptanceTest {
         objectMapper.registerModule(new JavaTimeModule());
 
         String result = latestResponse.getBody();
-        Employee employee = objectMapper.readValue(result, Employee.class);
-        assertEquals(name, employee.getEmpName().Name());
+        EmployeeResource employee = objectMapper.readValue(result, EmployeeResource.class);
+        assertEquals(name, employee.getEmpName());
     }
     @かつ(":UC004 社員コード {string} を削除する")
     public void toDelete(String code) throws IOException {
@@ -160,9 +160,9 @@ public class UC004StepDefs extends SpringAcceptanceTest {
         String result = latestResponse.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
-        ListResponse<Employee> response = objectMapper.readValue(result, new TypeReference<>() {
+        ListResponse<EmployeeResource> response = objectMapper.readValue(result, new TypeReference<>() {
         });
-        List<Employee> employeeList = response.getList();
+        List<EmployeeResource> employeeList = response.getList();
         assertEquals(2, employeeList.size());
     }
 }

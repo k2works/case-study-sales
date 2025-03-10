@@ -12,6 +12,7 @@ import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
 import com.example.sms.service.BusinessException;
+import com.example.sms.service.PageNationService;
 import com.example.sms.service.master.department.DepartmentService;
 import com.example.sms.service.master.employee.EmployeeCriteria;
 import com.example.sms.service.master.employee.EmployeeService;
@@ -40,13 +41,15 @@ public class EmployeeApiController {
     final EmployeeService employeeManagementService;
     final DepartmentService departmentService;
     final UserManagementService userManagementService;
+    final PageNationService pageNationService;
 
     final Message message;
 
-    public EmployeeApiController(EmployeeService employeeManagementService, DepartmentService departmentService, UserManagementService userManagementService, Message message) {
+    public EmployeeApiController(EmployeeService employeeManagementService, DepartmentService departmentService, UserManagementService userManagementService, PageNationService pageNationService, Message message) {
         this.employeeManagementService = employeeManagementService;
         this.departmentService = departmentService;
         this.userManagementService = userManagementService;
+        this.pageNationService = pageNationService;
         this.message = message;
     }
 
@@ -58,7 +61,8 @@ public class EmployeeApiController {
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
             PageNation.startPage(page, pageSize);
-            PageInfo<Employee> result = employeeManagementService.selectAllWithPageInfo();
+            PageInfo<Employee> pageInfo = employeeManagementService.selectAllWithPageInfo();
+            PageInfo<EmployeeResource> result = pageNationService.getPageInfo(pageInfo, EmployeeResource::fromSingle);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
@@ -71,7 +75,7 @@ public class EmployeeApiController {
         try {
             EmployeeCode code = EmployeeCode.of(employeeCode);
             Employee employee = employeeManagementService.find(code);
-            return ResponseEntity.ok(employee);
+            return ResponseEntity.ok(EmployeeResource.fromSingle(employee));
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
@@ -133,7 +137,8 @@ public class EmployeeApiController {
         try {
             PageNation.startPage(page, pageSize);
             EmployeeCriteria criteria = convertCriteria(resource);
-            PageInfo<Employee> result = employeeManagementService.searchWithPageInfo(criteria);
+            PageInfo<Employee> entity = employeeManagementService.searchWithPageInfo(criteria);
+            PageInfo<EmployeeResource> result = pageNationService.getPageInfo(entity, EmployeeResource::fromSingle);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));

@@ -55,4 +55,28 @@ public class EmployeeResource {
                         .build()
                 ).collect(Collectors.toList());
     }
+
+    public static EmployeeResource fromSingle(Employee employee) {
+        return EmployeeResource.builder()
+                .empCode(employee.getEmpCode().getValue())
+                .empName(employee.getEmpName().Name())
+                .empNameKana(employee.getEmpName().getFirstNameKana() + " " + employee.getEmpName().getLastNameKana())
+                .tel(employee.getTel().getValue())
+                .fax(employee.getFax().getValue())
+                .occuCode(employee.getOccuCode().getValue())
+                .departmentCode(employee.getDepartment() != null && employee.getDepartment().getDepartmentId() != null
+                        && employee.getDepartment().getDepartmentId().getDeptCode() != null
+                        ? employee.getDepartment().getDepartmentId().getDeptCode().getValue()
+                        : null)
+                .departmentStartDate(employee.getDepartment() != null && employee.getDepartment().getDepartmentId() != null
+                        && employee.getDepartment().getDepartmentId().getDepartmentStartDate() != null
+                        ? employee.getDepartment().getDepartmentId().getDepartmentStartDate().getValue().toString()
+                        : null)
+                .userId(employee.getUser() != null && employee.getUser().getUserId() != null
+                        ? employee.getUser().getUserId().getValue()
+                        : null)
+                .addFlag(false)
+                .deleteFlag(false)
+                .build();
+    }
 }
