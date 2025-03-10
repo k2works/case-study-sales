@@ -22,6 +22,7 @@ public class SalesOrderLine {
     Integer orderLineNumber; // 受注行番号
     ProductCode productCode; // 商品コード
     String productName; // 商品名
+    SalesAmount salesAmount; // 販売価格
     Money salesUnitPrice; // 販売単価
     Quantity orderQuantity; // 受注数量
     TaxRateType taxRate; // 消費税率
@@ -34,15 +35,63 @@ public class SalesOrderLine {
     Product product; // 商品
 
     public static SalesOrderLine of(String orderNumber, Integer orderLineNumber, String productCode, String productName, Integer salesUnitPrice, Integer salesQuantity, Integer taxRate, Integer allocationQuantity, Integer shipmentInstructionQuantity, Integer shippedQuantity, Integer completionFlag, Integer discountAmount, LocalDateTime deliveryDate) {
-        return new SalesOrderLine(OrderNumber.of(orderNumber), orderLineNumber, ProductCode.of(productCode), productName, Money.of(salesUnitPrice), Quantity.of(salesQuantity), TaxRateType.of(taxRate), Quantity.of(allocationQuantity), Quantity.of(shipmentInstructionQuantity), Quantity.of(shippedQuantity), CompletionFlag.of(completionFlag), Money.of(discountAmount), DeliveryDate.of(deliveryDate), null);
+        return new SalesOrderLine(
+                OrderNumber.of(orderNumber),
+                orderLineNumber,
+                ProductCode.of(productCode),
+                productName,
+                SalesAmount.of(Money.of(salesUnitPrice), Quantity.of(salesQuantity)),
+                Money.of(salesUnitPrice),
+                Quantity.of(salesQuantity),
+                TaxRateType.of(taxRate),
+                Quantity.of(allocationQuantity),
+                Quantity.of(shipmentInstructionQuantity),
+                Quantity.of(shippedQuantity),
+                CompletionFlag.of(completionFlag),
+                Money.of(discountAmount),
+                DeliveryDate.of(deliveryDate),
+                null
+        );
     }
 
     public static SalesOrderLine complete(SalesOrderLine salesOrderLine) {
-        return new SalesOrderLine(salesOrderLine.getOrderNumber(), salesOrderLine.getOrderLineNumber(), salesOrderLine.getProductCode(), salesOrderLine.getProductName(), salesOrderLine.getSalesUnitPrice(), salesOrderLine.getOrderQuantity(), salesOrderLine.getTaxRate(), salesOrderLine.getAllocationQuantity(), salesOrderLine.getShipmentInstructionQuantity(), salesOrderLine.getShippedQuantity(), CompletionFlag.完了, salesOrderLine.getDiscountAmount(), salesOrderLine.getDeliveryDate(), salesOrderLine.getProduct());
+        return new SalesOrderLine(
+                salesOrderLine.getOrderNumber(),
+                salesOrderLine.getOrderLineNumber(),
+                salesOrderLine.getProductCode(),
+                salesOrderLine.getProductName(),
+                SalesAmount.of(salesOrderLine.getSalesUnitPrice(), salesOrderLine.getOrderQuantity()),
+                salesOrderLine.getSalesUnitPrice(),
+                salesOrderLine.getOrderQuantity(),
+                salesOrderLine.getTaxRate(),
+                salesOrderLine.getAllocationQuantity(),
+                salesOrderLine.getShipmentInstructionQuantity(),
+                salesOrderLine.getShippedQuantity(),
+                CompletionFlag.完了,
+                salesOrderLine.getDiscountAmount(),
+                salesOrderLine.getDeliveryDate(),
+                salesOrderLine.getProduct()
+        );
     }
 
     public static SalesOrderLine of(SalesOrderLine salesOrderLine, Product product) {
-        return new SalesOrderLine(salesOrderLine.getOrderNumber(), salesOrderLine.getOrderLineNumber(), salesOrderLine.getProductCode(), salesOrderLine.getProductName(), salesOrderLine.getSalesUnitPrice(), salesOrderLine.getOrderQuantity(), salesOrderLine.getTaxRate(), salesOrderLine.getAllocationQuantity(), salesOrderLine.getShipmentInstructionQuantity(), salesOrderLine.getShippedQuantity(), salesOrderLine.getCompletionFlag(), salesOrderLine.getDiscountAmount(), salesOrderLine.getDeliveryDate(), product);
+        return new SalesOrderLine(
+                salesOrderLine.getOrderNumber(),
+                salesOrderLine.getOrderLineNumber(),
+                salesOrderLine.getProductCode(),
+                salesOrderLine.getProductName(),
+                SalesAmount.of(salesOrderLine.getSalesUnitPrice(), salesOrderLine.getOrderQuantity()),
+                salesOrderLine.getSalesUnitPrice(),
+                salesOrderLine.getOrderQuantity(),
+                salesOrderLine.getTaxRate(),
+                salesOrderLine.getAllocationQuantity(),
+                salesOrderLine.getShipmentInstructionQuantity(),
+                salesOrderLine.getShippedQuantity(),
+                salesOrderLine.getCompletionFlag(),
+                salesOrderLine.getDiscountAmount(),
+                salesOrderLine.getDeliveryDate(),
+                product
+        );
     }
 
     public Money calcSalesAmount() {
