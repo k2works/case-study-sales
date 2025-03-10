@@ -33,6 +33,7 @@ public class SalesOrderLine {
     DeliveryDate deliveryDate; // 納期
     Product product; // 商品
     SalesAmount salesAmount; // 販売価格
+    ConsumptionTaxAmount consumptionTaxAmount; // 消費税額
 
     public static SalesOrderLine of(String orderNumber, Integer orderLineNumber, String productCode, String productName, Integer salesUnitPrice, Integer salesQuantity, Integer taxRate, Integer allocationQuantity, Integer shipmentInstructionQuantity, Integer shippedQuantity, Integer completionFlag, Integer discountAmount, LocalDateTime deliveryDate) {
         return new SalesOrderLine(
@@ -50,7 +51,8 @@ public class SalesOrderLine {
                 Money.of(discountAmount),
                 DeliveryDate.of(deliveryDate),
                 null,
-                SalesAmount.of(Money.of(salesUnitPrice), Quantity.of(salesQuantity))
+                SalesAmount.of(Money.of(salesUnitPrice), Quantity.of(salesQuantity)),
+                ConsumptionTaxAmount.of(SalesAmount.of(Money.of(salesUnitPrice), Quantity.of(salesQuantity)), TaxRateType.of(taxRate))
         );
     }
 
@@ -70,7 +72,8 @@ public class SalesOrderLine {
                 salesOrderLine.getDiscountAmount(),
                 salesOrderLine.getDeliveryDate(),
                 salesOrderLine.getProduct(),
-                SalesAmount.of(salesOrderLine.getSalesUnitPrice(), salesOrderLine.getOrderQuantity())
+                SalesAmount.of(salesOrderLine.getSalesUnitPrice(), salesOrderLine.getOrderQuantity()),
+                ConsumptionTaxAmount.of(SalesAmount.of(salesOrderLine.getSalesUnitPrice(), salesOrderLine.getOrderQuantity()), salesOrderLine.getTaxRate())
         );
     }
 
@@ -90,7 +93,8 @@ public class SalesOrderLine {
                 salesOrderLine.getDiscountAmount(),
                 salesOrderLine.getDeliveryDate(),
                 product,
-                SalesAmount.of(salesOrderLine.getSalesUnitPrice(), salesOrderLine.getOrderQuantity())
+                SalesAmount.of(salesOrderLine.getSalesUnitPrice(), salesOrderLine.getOrderQuantity()),
+                ConsumptionTaxAmount.of(SalesAmount.of(salesOrderLine.getSalesUnitPrice(), salesOrderLine.getOrderQuantity()), salesOrderLine.getTaxRate())
         );
     }
 
@@ -99,22 +103,6 @@ public class SalesOrderLine {
     }
 
     public Money calcConsumptionTaxAmount() {
-        if (taxRate == null) {
-            return Money.of(0);
-        }
-        if (salesUnitPrice == null || orderQuantity == null) {
-            return Money.of(0);
-        }
-        if (taxRate == TaxRateType.軽減税率) {
-            double taxRateValue = getSalesAmount().getValue().getAmount() * ((double) TaxRateType.軽減税率.getRate() / 100);
-            int truncatedTaxRateValue = (int) Math.floor(taxRateValue);
-            return Money.of(truncatedTaxRateValue);
-        }
-        if (taxRate == TaxRateType.標準税率) {
-            double taxRateValue = getSalesAmount().getValue().getAmount() * ((double) TaxRateType.標準税率.getRate() / 100);
-            int truncatedTaxRateValue = (int) Math.floor(taxRateValue);
-            return Money.of(truncatedTaxRateValue);
-        }
-        return Money.of(0);
+        return Objects.requireNonNull(consumptionTaxAmount).getValue();
     }
 }

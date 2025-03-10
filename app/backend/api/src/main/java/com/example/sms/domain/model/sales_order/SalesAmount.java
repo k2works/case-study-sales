@@ -16,6 +16,7 @@ public class SalesAmount {
     public SalesAmount (Money salesUnitPrice, Quantity orderQuantity) {
         this.salesUnitPrice = salesUnitPrice;
         this.orderQuantity = orderQuantity;
+
         this.value = salesUnitPrice.multiply(orderQuantity);
     }
 
