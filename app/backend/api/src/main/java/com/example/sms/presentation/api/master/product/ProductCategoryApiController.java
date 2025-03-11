@@ -8,6 +8,7 @@ import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
 import com.example.sms.service.BusinessException;
+import com.example.sms.service.PageNationService;
 import com.example.sms.service.master.product.ProductCategoryCriteria;
 import com.example.sms.service.master.product.ProductService;
 import com.example.sms.service.system.audit.AuditAnnotation;
@@ -30,11 +31,12 @@ import java.util.List;
 @PreAuthorize("hasRole('ADMIN')")
 public class ProductCategoryApiController {
     final ProductService productService;
-
+    final PageNationService pageNationService;
     final Message message;
 
-    public ProductCategoryApiController(ProductService productService, Message message) {
+    public ProductCategoryApiController(ProductService productService, PageNationService pageNationService, Message message) {
         this.productService = productService;
+        this.pageNationService = pageNationService;
         this.message = message;
     }
 
@@ -45,7 +47,8 @@ public class ProductCategoryApiController {
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
             PageNation.startPage(page, pageSize);
-            PageInfo<ProductCategory> result = productService.selectAllCategoryWithPageInfo();
+            PageInfo<ProductCategory> pageInfo = productService.selectAllCategoryWithPageInfo();
+            PageInfo<ProductCategoryResource> result = pageNationService.getPageInfo(pageInfo, ProductCategoryResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
@@ -57,7 +60,7 @@ public class ProductCategoryApiController {
     public ResponseEntity<?> select(@PathVariable String productCategoryCode) {
         try {
             ProductCategory result = productService.findCategory(productCategoryCode);
-            return ResponseEntity.ok(result);
+            return ResponseEntity.ok(ProductCategoryResource.from(result));
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
@@ -125,7 +128,8 @@ public class ProductCategoryApiController {
                     .productCategoryName(resource.getProductCategoryName())
                     .productCategoryPath(resource.getProductCategoryPath())
                     .build();
-            PageInfo<ProductCategory> result = productService.searchProductCategoryWithPageInfo(criteria);
+            PageInfo<ProductCategory> entity = productService.searchProductCategoryWithPageInfo(criteria);
+            PageInfo<ProductCategoryResource> result = pageNationService.getPageInfo(entity, ProductCategoryResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));

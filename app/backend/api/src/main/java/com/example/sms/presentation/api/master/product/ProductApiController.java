@@ -65,7 +65,8 @@ public class ProductApiController {
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
             PageNation.startPage(page, pageSize);
-            PageInfo<Product> result = productService.selectAllBomsWithPageInfo();
+            PageInfo<Product> pageInfo = productService.selectAllBomsWithPageInfo();
+            PageInfo<ProductResource> result = pageNationService.getPageInfo(pageInfo, ProductResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
@@ -215,10 +216,9 @@ public class ProductApiController {
     }
 
     private CustomerSpecificSellingPrice convertToCustomerSpecificSellingPrice(CustomerSpecificSellingPriceResource resource) {
-        // CustomerSpecificSellingPriceResource から CustomerSpecificSellingPrice に変換するロジック
         return CustomerSpecificSellingPrice.of(
-                resource.getCustomerCode(),
                 resource.getProductCode(),
+                resource.getCustomerCode(),
                 resource.getSellingPrice().getAmount()
         );
     }
