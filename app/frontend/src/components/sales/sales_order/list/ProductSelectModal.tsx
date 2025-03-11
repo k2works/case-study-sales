@@ -26,9 +26,9 @@ export const ProductSelectModal: React.FC = () => {
             const updatedLines = [...newSalesOrder.salesOrderLines];
             updatedLines[selectedLineIndex] = {
                 ...updatedLines[selectedLineIndex],
-                productCode: product.productCode.value,
-                productName: product.productName.productFormalName,
-                salesUnitPrice: product.sellingPrice.amount,
+                productCode: product.productCode,
+                productName: product.productFormalName,
+                salesUnitPrice: product.sellingPrice,
             };
 
             setNewSalesOrder({

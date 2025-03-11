@@ -57,7 +57,7 @@ export const CustomerSpecificSellingPriceCollectionAddListView: React.FC<Custome
                     <div className="collection-object-container-modal">
                         <ul className="collection-object-list">
                             {prices.map((price, index) => (
-                                <li className="collection-object-item" key={price.productCode.value}>
+                                <li className="collection-object-item" key={price.productCode}>
                                     <div className="collection-object-item-content" data-id={price.customerCode}>
                                         <div className="collection-object-item-content-details">顧客コード</div>
                                         <div className="collection-object-item-content-name">
@@ -77,7 +77,7 @@ export const CustomerSpecificSellingPriceCollectionAddListView: React.FC<Custome
                                             )}
                                         </div>
                                     </div>
-                                    <div className="collection-object-item-content" data-id={price.productCode.value}>
+                                    <div className="collection-object-item-content" data-id={price.productCode}>
                                         <div className="collection-object-item-content-details">販売価格</div>
                                         <div className="collection-object-item-content-name">
                                             {editingPriceIndex === index ? (
@@ -96,7 +96,7 @@ export const CustomerSpecificSellingPriceCollectionAddListView: React.FC<Custome
                                             )}
                                         </div>
                                     </div>
-                                    <div className="collection-object-item-actions" data-id={price.productCode.value}>
+                                    <div className="collection-object-item-actions" data-id={price.productCode}>
                                         <button className="action-button" onClick={() => handleDelete(price)}>削除
                                         </button>
                                     </div>

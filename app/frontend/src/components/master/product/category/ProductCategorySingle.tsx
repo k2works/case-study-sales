@@ -87,8 +87,8 @@ export const ProductCategorySingle: React.FC = () => {
                         setProductModalIsOpen(true);
                     }}
                     handleDelete={(product: ProductType) => {
-                        const newProducts = newProductCategory.products.filter((e) => e.productCode.value !== product.productCode.value);
-                        if (product.productCode.value) {
+                        const newProducts = newProductCategory.products.filter((e) => e.productCode !== product.productCode);
+                        if (product.productCode) {
                             newProducts.push({
                                 ...product,
                                 addFlag: false,

@@ -44,15 +44,15 @@ export const BomCollectionAddListView: React.FC<BomCollectionProps> = ({
                     <div className="collection-object-container-modal">
                         <ul className="collection-object-list">
                             {boms.map((bom, index) => (
-                                <li className="collection-object-item" key={bom.componentCode.value}>
+                                <li className="collection-object-item" key={bom.componentCode}>
                                     <div className="collection-object-item-content"
-                                         data-id={bom.componentCode.value}>
+                                         data-id={bom.componentCode}>
                                         <div className="collection-object-item-content-details">部品コード</div>
                                         <div
-                                            className="collection-object-item-content-name">{bom.componentCode.value}</div>
+                                            className="collection-object-item-content-name">{bom.componentCode}</div>
                                     </div>
                                     <div className="collection-object-item-content"
-                                         data-id={bom.componentCode.value}>
+                                         data-id={bom.componentCode}>
                                         <div className="collection-object-item-content-details">部品数量</div>
                                         <div className="collection-object-item-content-name">
                                             {editingQuantity === index ? (
@@ -70,7 +70,7 @@ export const BomCollectionAddListView: React.FC<BomCollectionProps> = ({
                                         </div>
                                     </div>
                                     <div className="collection-object-item-actions"
-                                         data-id={bom.componentCode.value}>
+                                         data-id={bom.componentCode}>
                                         <button className="action-button" onClick={() => handleDelete(bom)}>削除
                                         </button>
                                     </div>
