@@ -7,6 +7,7 @@ import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
 import com.example.sms.service.BusinessException;
+import com.example.sms.service.PageNationService;
 import com.example.sms.service.master.product.ProductCriteria;
 import com.example.sms.service.master.product.ProductService;
 import com.example.sms.service.system.audit.AuditAnnotation;
@@ -17,6 +18,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 
 /**
@@ -28,11 +33,12 @@ import java.util.function.Function;
 @PreAuthorize("hasRole('ADMIN')")
 public class ProductApiController {
     final ProductService productService;
-
+    final PageNationService pageNationService;
     final Message message;
 
-    public ProductApiController(ProductService productService, Message message) {
+    public ProductApiController(ProductService productService, PageNationService pageNationService, Message message) {
         this.productService = productService;
+        this.pageNationService = pageNationService;
         this.message = message;
     }
 
@@ -44,7 +50,8 @@ public class ProductApiController {
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
             PageNation.startPage(page, pageSize);
-            PageInfo<Product> result = productService.selectAllWithPageInfo();
+            PageInfo<Product> pageInfo = productService.selectAllWithPageInfo();
+            PageInfo<ProductResource> result = pageNationService.getPageInfo(pageInfo, ProductResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
@@ -70,7 +77,7 @@ public class ProductApiController {
     public ResponseEntity<?> select(@PathVariable String productCode) {
         try {
             Product result = productService.find(productCode);
-            return ResponseEntity.ok(result);
+            return ResponseEntity.ok(ProductResource.from(result));
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
@@ -133,10 +140,9 @@ public class ProductApiController {
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
             PageNation.startPage(page, pageSize);
-
             ProductCriteria criteria = convertToCriteria(resource);
-            PageInfo<Product> result = productService.searchProductWithPageInfo(criteria);
-
+            PageInfo<Product> entity = productService.searchProductWithPageInfo(criteria);
+            PageInfo<ProductResource> result = pageNationService.getPageInfo(entity, ProductResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
@@ -161,13 +167,60 @@ public class ProductApiController {
                 resource.getVendorCode(),
                 resource.getVendorBranchNumber()
         );
+
+        List<SubstituteProduct> substituteProducts = Optional.ofNullable(resource.getSubstituteProduct())
+                .orElse(Collections.emptyList())
+                .stream()
+                .filter(Objects::nonNull)
+                .map(this::convertToSubstituteProduct)
+                .toList();
+
+        List<Bom> boms = Optional.ofNullable(resource.getBoms())
+                .orElse(Collections.emptyList())
+                .stream()
+                .filter(Objects::nonNull)
+                .map(this::convertToBom)
+                .toList();
+
+        List<CustomerSpecificSellingPrice> customerSpecificSellingPrices = Optional.ofNullable(resource.getCustomerSpecificSellingPrices())
+                .orElse(Collections.emptyList())
+                .stream()
+                .filter(Objects::nonNull)
+                .map(this::convertToCustomerSpecificSellingPrice)
+                .toList();
+
         product = Product.of(
                 product,
-                resource.getSubstituteProduct(),
-                resource.getBoms(),
-                resource.getCustomerSpecificSellingPrices()
+                substituteProducts,
+                boms,
+                customerSpecificSellingPrices
         );
         return product;
+    }
+
+    private SubstituteProduct convertToSubstituteProduct(SubstituteProductResource resource) {
+        return SubstituteProduct.of(
+                resource.getProductCode(),
+                resource.getSubstituteProductCode(),
+                resource.getPriority()
+        );
+    }
+
+    private Bom convertToBom(BomResource resource) {
+        return Bom.of(
+                resource.getProductCode(),
+                resource.getComponentCode(),
+                resource.getComponentQuantity().getAmount()
+        );
+    }
+
+    private CustomerSpecificSellingPrice convertToCustomerSpecificSellingPrice(CustomerSpecificSellingPriceResource resource) {
+        // CustomerSpecificSellingPriceResource から CustomerSpecificSellingPrice に変換するロジック
+        return CustomerSpecificSellingPrice.of(
+                resource.getCustomerCode(),
+                resource.getProductCode(),
+                resource.getSellingPrice().getAmount()
+        );
     }
 
     private ProductCriteria convertToCriteria(ProductCriteriaResource resource) {
