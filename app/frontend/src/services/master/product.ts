@@ -43,7 +43,7 @@ export const ProductService = (): ProductServiceType => {
     };
 
     const update = async (product: ProductType): Promise<void> => {
-        const url = `${endPoint}/${product.productCode.value}`;
+        const url = `${endPoint}/${product.productCode}`;
         await apiUtils.fetchPut<void>(url, mapToProductResource(product));
     };
 

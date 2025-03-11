@@ -56,10 +56,8 @@ export const VendorSelectModal: React.FC<SelectModalProps> = ({ type }) => {
                         handleSelect={(vendor: VendorType) => {
                             setNewProduct({
                                 ...newProduct,
-                                vendorCode: {
-                                    code: vendor.vendorCode.code,
-                                    branchNumber: vendor.vendorCode.branchNumber
-                                }
+                                vendorCode: vendor.vendorCode.code.value,
+                                vendorBranchNumber: vendor.vendorCode.branchNumber
                             });
                             setVendorModalIsOpen(false); // モーダルを閉じる
                         }}

@@ -44,15 +44,15 @@ export const SubstituteProductCollectionAddListView: React.FC<SubstituteProductC
                     <div className="collection-object-container-modal">
                         <ul className="collection-object-list">
                             {substituteProducts.map((product, index) => (
-                                <li className="collection-object-item" key={product.substituteProductCode.value}>
+                                <li className="collection-object-item" key={product.substituteProductCode}>
                                     <div className="collection-object-item-content"
-                                         data-id={product.substituteProductCode.value}>
+                                         data-id={product.substituteProductCode}>
                                         <div className="collection-object-item-content-details">代替商品コード</div>
                                         <div
-                                            className="collection-object-item-content-name">{product.substituteProductCode.value}</div>
+                                            className="collection-object-item-content-name">{product.substituteProductCode}</div>
                                     </div>
                                     <div className="collection-object-item-content"
-                                         data-id={product.substituteProductCode.value}>
+                                         data-id={product.substituteProductCode}>
                                         <div className="collection-object-item-content-details">優先度</div>
                                         <div className="collection-object-item-content-name">
                                             {editingPriority === index ? (
@@ -70,7 +70,7 @@ export const SubstituteProductCollectionAddListView: React.FC<SubstituteProductC
                                         </div>
                                     </div>
                                     <div className="collection-object-item-actions"
-                                         data-id={product.substituteProductCode.value}>
+                                         data-id={product.substituteProductCode}>
                                         <button className="action-button" onClick={() => handleDelete(product)}>削除
                                         </button>
                                     </div>

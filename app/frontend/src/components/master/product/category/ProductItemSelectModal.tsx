@@ -39,8 +39,8 @@ export const ProductItemSelectModal: React.FC = () => {
                 <ProductCollectionSelectView
                     products={products}
                     handleSelect={(product) => {
-                        const newProducts = newProductCategory.products.filter((e) => e.productCode.value !== product.productCode.value);
-                        if (product.productCode.value) {
+                        const newProducts = newProductCategory.products.filter((e) => e.productCode !== product.productCode);
+                        if (product.productCode) {
                             newProducts.push({
                                 ...product,
                                 addFlag: true,

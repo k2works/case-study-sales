@@ -28,7 +28,7 @@ export const ProductItemBomModal: React.FC = () => {
     }
 
     const handleSelectBomModal = (bom: ProductType) => {
-        const newProducts = newProduct.boms.filter((e) => e.productCode.value !== bom.productCode.value);
+        const newProducts = newProduct.boms.filter((e) => e.productCode !== bom.productCode);
         newProducts.push({
             productCode: newProduct.productCode,
             componentCode: bom.productCode,

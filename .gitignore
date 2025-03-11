@@ -151,3 +151,6 @@ my.secrets
 !docs/journal/public
 
 .DS_Store
+
+WIP
+.output.txt

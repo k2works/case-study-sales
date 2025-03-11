@@ -56,10 +56,10 @@ const Form = ({isEditing, newProduct, setNewProduct}: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="商品コード"
-                value={newProduct.productCode.value}
+                value={newProduct.productCode}
                 onChange={(e) => setNewProduct({
                     ...newProduct,
-                    productCode: { ...newProduct.productCode, value: e.target.value }
+                    productCode: e.target.value
                 })}
                 disabled={isEditing}
             />
@@ -69,10 +69,10 @@ const Form = ({isEditing, newProduct, setNewProduct}: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="商品名"
-                value={newProduct.productName.productFormalName}
+                value={newProduct.productFormalName}
                 onChange={(e) => setNewProduct({
                     ...newProduct,
-                    productName: { ...newProduct.productName, productFormalName: e.target.value }
+                    productFormalName: e.target.value
                 })}
             />
             <FormInput
@@ -81,10 +81,10 @@ const Form = ({isEditing, newProduct, setNewProduct}: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="商品名略称"
-                value={newProduct.productName.productAbbreviation}
+                value={newProduct.productAbbreviation}
                 onChange={(e) => setNewProduct({
                     ...newProduct,
-                    productName: { ...newProduct.productName, productAbbreviation: e.target.value }
+                    productAbbreviation: e.target.value
                 })}
             />
             <FormInput
@@ -93,10 +93,10 @@ const Form = ({isEditing, newProduct, setNewProduct}: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="商品名カナ"
-                value={newProduct.productName.productNameKana}
+                value={newProduct.productNameKana}
                 onChange={(e) => setNewProduct({
                     ...newProduct,
-                    productName: { ...newProduct.productName, productNameKana: e.target.value }
+                    productNameKana: e.target.value
                 })}
             />
             <FormSelect
@@ -117,10 +117,10 @@ const Form = ({isEditing, newProduct, setNewProduct}: FormProps) => {
                 id="sellingPrice"
                 type="number"
                 className="single-view-content-item-form-item-input"
-                value={newProduct.sellingPrice.amount}
+                value={newProduct.sellingPrice}
                 onChange={(e) => setNewProduct({
                     ...newProduct,
-                    sellingPrice: { ...newProduct.sellingPrice, amount: +e.target.value }
+                    sellingPrice: +e.target.value
                 })}
             />
             <FormInput
@@ -128,10 +128,10 @@ const Form = ({isEditing, newProduct, setNewProduct}: FormProps) => {
                 id="costOfSales"
                 type="number"
                 className="single-view-content-item-form-item-input"
-                value={newProduct.costOfSales.amount}
+                value={newProduct.costOfSales}
                 onChange={(e) => setNewProduct({
                     ...newProduct,
-                    costOfSales: { ...newProduct.costOfSales, amount: +e.target.value }
+                    costOfSales: +e.target.value
                 })}
             />
             <FormSelect
@@ -153,10 +153,10 @@ const Form = ({isEditing, newProduct, setNewProduct}: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="商品分類コード"
-                value={newProduct.productCategoryCode.value}
+                value={newProduct.productClassificationCode}
                 onChange={(e) => setNewProduct({
                     ...newProduct,
-                    productCategoryCode: { ...newProduct.productCategoryCode, value: e.target.value }
+                    productClassificationCode: e.target.value
                 })}
                 disabled={isEditing}
             />
@@ -205,10 +205,10 @@ const Form = ({isEditing, newProduct, setNewProduct}: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="仕入先コード"
-                value={newProduct.vendorCode.code.value}
+                value={newProduct.vendorCode}
                 onChange={(e) => setNewProduct({
                     ...newProduct,
-                    vendorCode: { ...newProduct.vendorCode, code: { value: e.target.value } }
+                    vendorCode: e.target.value
                 })}
             />
         </div>

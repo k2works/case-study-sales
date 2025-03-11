@@ -12,8 +12,8 @@ interface ProductItemProps {
 }
 
 const ProductItem: React.FC<ProductItemProps> = ({product, onEdit, onDelete, onCheck}) => (
-    <li className="collection-object-item" key={product.productCode.value}>
-        <div className="collection-object-item-content" data-id={product.productCode.value}>
+    <li className="collection-object-item" key={product.productCode}>
+        <div className="collection-object-item-content" data-id={product.productCode}>
             <input
                 type="checkbox"
                 className="collection-object-item-checkbox"
@@ -21,35 +21,35 @@ const ProductItem: React.FC<ProductItemProps> = ({product, onEdit, onDelete, onC
                 onChange={() => onCheck(product)}
             />
         </div>
-        <div className="collection-object-item-content" data-id={product.productCode.value}>
+        <div className="collection-object-item-content" data-id={product.productCode}>
             <div className="collection-object-item-content-details">商品コード</div>
-            <div className="collection-object-item-content-name">{product.productCode.value}</div>
+            <div className="collection-object-item-content-name">{product.productCode}</div>
         </div>
-        <div className="collection-object-item-content" data-id={product.productCode.value}>
+        <div className="collection-object-item-content" data-id={product.productCode}>
             <div className="collection-object-item-content-details">商品名</div>
-            <div className="collection-object-item-content-name">{product.productName.productFormalName}</div>
+            <div className="collection-object-item-content-name">{product.productFormalName}</div>
         </div>
-        <div className="collection-object-item-content" data-id={product.productCode.value}>
+        <div className="collection-object-item-content" data-id={product.productCode}>
             <div className="collection-object-item-content-details">売価</div>
-            <div className="collection-object-item-content-name">{product.sellingPrice.amount}</div>
+            <div className="collection-object-item-content-name">{product.sellingPrice}</div>
         </div>
-        <div className="collection-object-item-content" data-id={product.productCode.value}>
+        <div className="collection-object-item-content" data-id={product.productCode}>
             <div className="collection-object-item-content-details">原価</div>
-            <div className="collection-object-item-content-name">{product.costOfSales.amount}</div>
+            <div className="collection-object-item-content-name">{product.costOfSales}</div>
         </div>
-        <div className="collection-object-item-content" data-id={product.productCode.value}>
+        <div className="collection-object-item-content" data-id={product.productCode}>
             <div className="collection-object-item-content-details">税区分</div>
             <div className="collection-object-item-content-name">{product.taxType}</div>
         </div>
-        <div className="collection-object-item-content" data-id={product.productCode.value}>
+        <div className="collection-object-item-content" data-id={product.productCode}>
             <div className="collection-object-item-content-details">商品区分</div>
             <div className="collection-object-item-content-name">{product.productType}</div>
         </div>
-        <div className="collection-object-item-actions" data-id={product.productCode.value}>
+        <div className="collection-object-item-actions" data-id={product.productCode}>
             <button className="action-button" onClick={() => onEdit(product)} id="edit">編集</button>
         </div>
-        <div className="collection-object-item-actions" data-id={product.productCode.value}>
-            <button className="action-button" onClick={() => onDelete(product.productCode.value)} id="delete">削除
+        <div className="collection-object-item-actions" data-id={product.productCode}>
+            <button className="action-button" onClick={() => onDelete(product.productCode)} id="delete">削除
             </button>
         </div>
     </li>
@@ -67,7 +67,7 @@ const ProductList: React.FC<ProductListProps> = ({products, onEdit, onDelete, on
         <ul className="collection-object-list">
             {products.map(product => (
                 <ProductItem
-                    key={product.productCode.value}
+                    key={product.productCode}
                     product={product}
                     onEdit={onEdit}
                     onDelete={onDelete}
@@ -168,18 +168,18 @@ export const ProductCollectionAddListView: React.FC<ProductCollectionAddListProp
                     <div className="collection-object-container-modal">
                         <ul className="collection-object-list">
                             {products.map(product => (
-                                <li className="collection-object-item" key={product.productCode.value}>
-                                    <div className="collection-object-item-content" data-id={product.productCode.value}>
+                                <li className="collection-object-item" key={product.productCode}>
+                                    <div className="collection-object-item-content" data-id={product.productCode}>
                                         <div className="collection-object-item-content-details">商品コード</div>
                                         <div
-                                            className="collection-object-item-content-name">{product.productCode.value}</div>
+                                            className="collection-object-item-content-name">{product.productCode}</div>
                                     </div>
-                                    <div className="collection-object-item-content" data-id={product.productCode.value}>
+                                    <div className="collection-object-item-content" data-id={product.productCode}>
                                         <div className="collection-object-item-content-details">商品名</div>
                                         <div
-                                            className="collection-object-item-content-name">{product.productName.productFormalName}</div>
+                                            className="collection-object-item-content-name">{product.productFormalName}</div>
                                     </div>
-                                    <div className="collection-object-item-actions" data-id={product.productCode.value}>
+                                    <div className="collection-object-item-actions" data-id={product.productCode}>
                                         <button className="action-button" onClick={() => handleDelete(product)}>削除
                                         </button>
                                     </div>
@@ -192,4 +192,3 @@ export const ProductCollectionAddListView: React.FC<ProductCollectionAddListProp
         </div>
     );
 };
-
