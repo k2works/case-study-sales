@@ -16,25 +16,23 @@ import {
 
 export const useVendor = () => {
     const initialVendor: VendorType = {
-        vendorCode: { code: {value: ""}, branchNumber: 0 },
-        vendorName: { value: { name: "", nameKana: "" } },
+        vendorCode: "",
+        vendorBranchNumber: 0,
+        vendorName: "",
+        vendorNameKana: "",
         vendorContactName: "",
         vendorDepartmentName: "",
-        vendorAddress: {
-            postalCode: { value: "", regionCode: "" },
-            prefecture: PrefectureEnumType.東京都,
-            address1: "",
-            address2: "",
-        },
-        vendorPhoneNumber: { value: "", areaCode: "", localExchange: "", subscriberNumber: "" },
-        vendorFaxNumber: { value: "", areaCode: "", localExchange: "", subscriberNumber: "" },
-        vendorEmailAddress: { value: "" },
-        vendorClosingInvoice: {
-            closingDay: ClosingDateEnumType.末日,
-            paymentMonth: PaymentMonthEnumType.当月,
-            paymentDay: PaymentDayEnumType.末日,
-            paymentMethod: PaymentMethodEnumType.振込,
-        },
+        vendorPostalCode: "",
+        vendorPrefecture: PrefectureEnumType.東京都,
+        vendorAddress1: "",
+        vendorAddress2: "",
+        vendorPhoneNumber: "",
+        vendorFaxNumber: "",
+        vendorEmailAddress: "",
+        vendorClosingDate: ClosingDateEnumType.末日,
+        vendorPaymentMonth: PaymentMonthEnumType.当月,
+        vendorPaymentDate: PaymentDayEnumType.末日,
+        vendorPaymentMethod: PaymentMethodEnumType.振込,
         checked: false
     };
 

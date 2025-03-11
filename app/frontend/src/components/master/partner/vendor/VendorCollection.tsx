@@ -1,6 +1,6 @@
 import React from "react";
 import {useVendorContext} from "../../../../providers/master/partner/Vendor.tsx";
-import {VendorCodeType, VendorType} from "../../../../models/master/partner";
+import {VendorType} from "../../../../models/master/partner";
 import {showErrorMessage} from "../../../application/utils.ts";
 import {VendorCollectionView} from "../../../../views/master/partner/vendor/VendorCollection.tsx";
 import {VendorSearchModal} from "./VendorSearchModal.tsx";
@@ -33,7 +33,7 @@ export const VendorCollection: React.FC = () => {
         setError("");
         if (vendor) {
             setNewVendor(vendor);
-            setEditId(`${vendor.vendorCode.code}-${vendor.vendorCode.branchNumber}`);
+            setEditId(`${vendor.vendorCode}-${vendor.vendorBranchNumber}`);
             setIsEditing(true);
         } else {
             setNewVendor(initialVendor);
@@ -46,20 +46,21 @@ export const VendorCollection: React.FC = () => {
         setSearchModalIsOpen(true);
     };
 
-    const handleDeleteVendor = async (vendorCode: VendorCodeType) => {
+    const handleDeleteVendor = async (vendorCode: string, vendorBranchNumber: number) => {
         try {
-            if (!window.confirm(`仕入先コード:${vendorCode.code.value} 枝番:${vendorCode.branchNumber} を削除しますか？`)) return;
-            await vendorService.destroy(vendorCode);
+            if (!window.confirm(`仕入先コード:${vendorCode} 枝番:${vendorBranchNumber} を削除しますか？`)) return;
+            await vendorService.destroy(vendorCode, vendorBranchNumber);
             await fetchVendors.load();
             setMessage("仕入先を削除しました。");
-        } catch (error: any) {
-            showErrorMessage(`仕入先の削除に失敗しました: ${error?.message}`, setError);
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            showErrorMessage(`仕入先の削除に失敗しました: ${errorMessage}`, setError);
         }
     };
     const handleCheckVendor = (vendor: VendorType) => {
         const newVendors = vendors.map((v) => {
-            if (v.vendorCode.code === vendor.vendorCode.code &&
-                v.vendorCode.branchNumber === vendor.vendorCode.branchNumber) {
+            if (v.vendorCode === vendor.vendorCode &&
+                v.vendorBranchNumber === vendor.vendorBranchNumber) {
                 return { ...v, checked: !v.checked };
             }
             return v;
@@ -82,13 +83,14 @@ export const VendorCollection: React.FC = () => {
             if (!window.confirm("選択した仕入先を削除しますか？")) return;
             await Promise.all(
                 checkedVendors.map((vendor) =>
-                    vendorService.destroy(vendor.vendorCode)
+                    vendorService.destroy(vendor.vendorCode, vendor.vendorBranchNumber)
                 )
             );
             await fetchVendors.load();
             setMessage("選択した仕入先を削除しました。");
-        } catch (error: any) {
-            showErrorMessage(`選択した仕入先の削除に失敗しました: ${error?.message}`, setError);
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            showErrorMessage(`選択した仕入先の削除に失敗しました: ${errorMessage}`, setError);
         }
     }
     return (

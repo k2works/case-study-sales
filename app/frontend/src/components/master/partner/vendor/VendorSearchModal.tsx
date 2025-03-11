@@ -49,8 +49,9 @@ export const VendorSearchModal: React.FC = () => {
                             setMessage("");
                             setError("");
                         }
-                    } catch (error: any) {
-                        showErrorMessage(`検索に失敗しました: ${error?.message}`, setError);
+                    } catch (error: unknown) {
+                        const errorMessage = error instanceof Error ? error.message : String(error);
+                        showErrorMessage(`検索に失敗しました: ${errorMessage}`, setError);
                     } finally {
                         setLoading(false);
                     }

@@ -44,14 +44,11 @@ const Form = ({ isEditing, newVendor, setNewVendor }: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="仕入先コード"
-                value={newVendor.vendorCode.code.value}
+                value={newVendor.vendorCode}
                 onChange={(e) =>
                     setNewVendor({
                         ...newVendor,
-                        vendorCode: {
-                            ...newVendor.vendorCode,
-                            code: { value: e.target.value },
-                        },
+                        vendorCode: e.target.value,
                     })
                 }
                 disabled={isEditing}
@@ -64,14 +61,11 @@ const Form = ({ isEditing, newVendor, setNewVendor }: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="仕入先コード枝番"
-                value={newVendor.vendorCode.branchNumber}
+                value={newVendor.vendorBranchNumber}
                 onChange={(e) =>
                     setNewVendor({
                         ...newVendor,
-                        vendorCode: {
-                            ...newVendor.vendorCode,
-                            branchNumber: parseInt(e.target.value),
-                        },
+                        vendorBranchNumber: parseInt(e.target.value),
                     })
                 }
                 disabled={isEditing}
@@ -84,17 +78,11 @@ const Form = ({ isEditing, newVendor, setNewVendor }: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="仕入先名"
-                value={newVendor.vendorName.value.name}
+                value={newVendor.vendorName}
                 onChange={(e) =>
                     setNewVendor({
                         ...newVendor,
-                        vendorName: {
-                            ...newVendor.vendorName,
-                            value: {
-                                ...newVendor.vendorName?.value,
-                                name: e.target.value,
-                            },
-                        },
+                        vendorName: e.target.value,
                     })
                 }
             />
@@ -137,17 +125,11 @@ const Form = ({ isEditing, newVendor, setNewVendor }: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="郵便番号"
-                value={newVendor.vendorAddress.postalCode.value}
+                value={newVendor.vendorPostalCode}
                 onChange={(e) =>
                     setNewVendor({
                         ...newVendor,
-                        vendorAddress: {
-                            ...newVendor.vendorAddress,
-                            postalCode: {
-                                ...newVendor.vendorAddress?.postalCode,
-                                value: e.target.value,
-                            },
-                        },
+                        vendorPostalCode: e.target.value,
                     })
                 }
             />
@@ -159,14 +141,11 @@ const Form = ({ isEditing, newVendor, setNewVendor }: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="住所"
-                value={newVendor.vendorAddress?.address1 ?? ""}
+                value={newVendor.vendorAddress1}
                 onChange={(e) =>
                     setNewVendor({
                         ...newVendor,
-                        vendorAddress: {
-                            ...newVendor.vendorAddress,
-                            address1: e.target.value,
-                        },
+                        vendorAddress1: e.target.value,
                     })
                 }
             />
@@ -178,14 +157,11 @@ const Form = ({ isEditing, newVendor, setNewVendor }: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="住所2"
-                value={newVendor.vendorAddress?.address2 ?? ""}
+                value={newVendor.vendorAddress2}
                 onChange={(e) =>
                     setNewVendor({
                         ...newVendor,
-                        vendorAddress: {
-                            ...newVendor.vendorAddress,
-                            address2: e.target.value,
-                        },
+                        vendorAddress2: e.target.value,
                     })
                 }
             />
@@ -197,14 +173,11 @@ const Form = ({ isEditing, newVendor, setNewVendor }: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="電話番号"
-                value={newVendor.vendorPhoneNumber?.value ?? ""}
+                value={newVendor.vendorPhoneNumber}
                 onChange={(e) =>
                     setNewVendor({
                         ...newVendor,
-                        vendorPhoneNumber: {
-                            ...newVendor.vendorPhoneNumber,
-                            value: e.target.value,
-                        },
+                        vendorPhoneNumber: e.target.value,
                     })
                 }
             />
@@ -216,14 +189,11 @@ const Form = ({ isEditing, newVendor, setNewVendor }: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="FAX番号"
-                value={newVendor.vendorFaxNumber?.value ?? ""}
+                value={newVendor.vendorFaxNumber}
                 onChange={(e) =>
                     setNewVendor({
                         ...newVendor,
-                        vendorFaxNumber: {
-                            ...newVendor.vendorFaxNumber,
-                            value: e.target.value,
-                        },
+                        vendorFaxNumber: e.target.value,
                     })
                 }
             />
@@ -235,14 +205,11 @@ const Form = ({ isEditing, newVendor, setNewVendor }: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="メールアドレス"
-                value={newVendor.vendorEmailAddress?.value ?? ""}
+                value={newVendor.vendorEmailAddress}
                 onChange={(e) =>
                     setNewVendor({
                         ...newVendor,
-                        vendorEmailAddress: {
-                            ...newVendor.vendorEmailAddress,
-                            value: e.target.value,
-                        },
+                        vendorEmailAddress: e.target.value,
                     })
                 }
             />

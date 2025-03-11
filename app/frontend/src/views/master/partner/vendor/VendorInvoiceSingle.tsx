@@ -42,60 +42,48 @@ const Form = ({ newVendor, setNewVendor }: FormProps) => {
             <FormSelect
                 id="closingDate"
                 label="締日"
-                value={newVendor.vendorClosingInvoice.closingDay}
+                value={newVendor.vendorClosingDate}
                 options={ClosingDateEnumType}
                 onChange={(e) =>
                     setNewVendor({
                         ...newVendor,
-                        vendorClosingInvoice: {
-                            ...newVendor.vendorClosingInvoice,
-                            closingDay: e,
-                        },
+                        vendorClosingDate: e,
                     })
                 }
             />
             <FormSelect
                 id="paymentMonth"
                 label="支払月"
-                value={newVendor.vendorClosingInvoice.paymentMonth}
+                value={newVendor.vendorPaymentMonth}
                 options={PaymentMonthEnumType}
                 onChange={(e) =>
                     setNewVendor({
                         ...newVendor,
-                        vendorClosingInvoice: {
-                            ...newVendor.vendorClosingInvoice,
-                            paymentMonth: e,
-                        },
+                        vendorPaymentMonth: e,
                     })
                 }
             />
             <FormSelect
                 id="paymentDay"
                 label="支払日"
-                value={newVendor.vendorClosingInvoice.paymentDay}
+                value={newVendor.vendorPaymentDate}
                 options={PaymentDayEnumType}
                 onChange={(e) =>
                     setNewVendor({
                         ...newVendor,
-                        vendorClosingInvoice: {
-                            ...newVendor.vendorClosingInvoice,
-                            paymentDay: e,
-                        },
+                        vendorPaymentDate: e,
                     })
                 }
             />
             <FormSelect
                 id="paymentMethod"
                 label="支払方法"
-                value={newVendor.vendorClosingInvoice.paymentMethod}
+                value={newVendor.vendorPaymentMethod}
                 options={PaymentMethodEnumType}
                 onChange={(e) =>
                     setNewVendor({
                         ...newVendor,
-                        vendorClosingInvoice: {
-                            ...newVendor.vendorClosingInvoice,
-                            paymentMethod: e,
-                        },
+                        vendorPaymentMethod: e,
                     })
                 }
             />
