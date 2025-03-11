@@ -4,7 +4,6 @@ import {
     PartnerType,
     PartnerFetchType,
     PartnerCriteriaType,
-    PartnerCriteriaResourceType,
     mapToPartnerResource,
     mapToPartnerCriteriaResource,
 } from "../../models/master/partner";
@@ -55,7 +54,7 @@ export const PartnerService = (): PartnerServiceType => {
         pageSize?: number
     ): Promise<PartnerFetchType> => {
         const url = Utils.buildUrlWithPaging(`${endPoint}/search`, page, pageSize);
-        const criteriaResource: PartnerCriteriaResourceType = mapToPartnerCriteriaResource(criteria);
+        const criteriaResource: PartnerCriteriaType = mapToPartnerCriteriaResource(criteria);
         return await apiUtils.fetchPost(url, criteriaResource);
     };
 

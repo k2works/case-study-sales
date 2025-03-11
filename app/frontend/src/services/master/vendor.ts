@@ -4,7 +4,6 @@ import {
     VendorType,
     VendorFetchType,
     VendorCriteriaType,
-    VendorCriteriaResourceType,
     mapToVendorResourceType,
     mapToCriteriaResourceType,
 } from "../../models/master/partner";
@@ -55,7 +54,7 @@ export const VendorService = (): VendorServiceType => {
         pageSize?: number
     ): Promise<VendorFetchType> => {
         const url = Utils.buildUrlWithPaging(`${endPoint}/search`, page, pageSize);
-        const criteriaResource: VendorCriteriaResourceType = mapToCriteriaResourceType(criteria);
+        const criteriaResource: VendorCriteriaType = mapToCriteriaResourceType(criteria);
         return await apiUtils.fetchPost(url, criteriaResource);
     };
 

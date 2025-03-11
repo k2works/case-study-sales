@@ -81,31 +81,11 @@ export type CustomerCriteriaType = {
     customerBillingCategory?: string; // 顧客請求区分
 };
 
-export type CustomerCriteriaResourceType = {
-    customerCode?: string; // 顧客コード
-    customerName?: string; // 顧客名
-    customerNameKana?: string; // 顧客名カナ
-    customerType?: string; // 顧客区分
-    billingCode?: string; // 請求先コード
-    collectionCode?: string; // 回収先コード
-    companyRepresentativeCode?: string; // 自社担当者コード
-    customerRepresentativeName?: string; // 顧客担当者名
-    customerDepartmentName?: string; // 顧客部門名
-    postalCode?: string; // 郵便番号
-    prefecture?: string; // 都道府県
-    address1?: string; // 住所1
-    address2?: string; // 住所2
-    customerPhoneNumber?: string; // 顧客電話番号
-    customerFaxNumber?: string; // 顧客FAX番号
-    customerEmailAddress?: string; // 顧客メールアドレス
-    customerBillingCategory?: string; // 顧客請求区分
-};
-
 export type CustomerFetchType = {
     list: CustomerType[];
 } & PageNationType;
 
-export const mapToCustomerCriteriaType = (criteria: CustomerCriteriaType): CustomerCriteriaResourceType => {
+export const mapToCustomerCriteriaType = (criteria: CustomerCriteriaType): CustomerCriteriaType => {
     const isEmpty = (value: unknown) => value === "" || value === null || value === undefined;
     return {
         ...(isEmpty(criteria.customerCode) ? {} : { customerCode: criteria.customerCode }),

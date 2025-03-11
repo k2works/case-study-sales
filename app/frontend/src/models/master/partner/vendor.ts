@@ -5,7 +5,6 @@ import {
     PaymentMonthEnumType,
 } from "../shared.ts"; // 必要な型をインポート
 
-// 仕入先型 (APIリソース定義に合わせた構造)
 export type VendorType = {
     vendorCode: string; // 仕入先コード
     vendorBranchNumber: number; // 仕入先枝番号
@@ -46,18 +45,13 @@ export type VendorCriteriaType = {
     vendorEmailAddress?: string; // 仕入先メールアドレス
 };
 
-// 仕入先検索条件リソース型 (検索条件はそのままAPIに渡すため、VendorCriteriaTypeと同じ構造)
-export type VendorCriteriaResourceType = VendorCriteriaType;
-
-// VendorTypeはすでにAPIリソース定義に合わせた構造になっているため、
-// 変換関数は単純にオブジェクトをそのまま返すだけになります
 export const mapToVendorResourceType = (vendor: VendorType): VendorType => {
     return {
         ...vendor
     };
 }
 
-export const mapToCriteriaResourceType = (criteria: VendorCriteriaType): VendorCriteriaResourceType => {
+export const mapToCriteriaResourceType = (criteria: VendorCriteriaType): VendorCriteriaType => {
     const isEmpty = (value: unknown) => value === "" || value === null || value === undefined;
     // 空の値を除外したオブジェクトを返す
     const result: Record<string, string> = {};
@@ -74,5 +68,5 @@ export const mapToCriteriaResourceType = (criteria: VendorCriteriaType): VendorC
     if (!isEmpty(criteria.vendorFaxNumber)) result.vendorFaxNumber = criteria.vendorFaxNumber!;
     if (!isEmpty(criteria.vendorEmailAddress)) result.vendorEmailAddress = criteria.vendorEmailAddress!;
 
-    return result as VendorCriteriaResourceType;
+    return result as VendorCriteriaType;
 }

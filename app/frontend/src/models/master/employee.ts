@@ -38,22 +38,8 @@ export type EmployeeCriteriaType = {
 
 export const mapToEmployeeResource = (employee: EmployeeType): EmployeeType => {
     return {
-        empCode: employee.empCode,
-        empFirstName: employee.empFirstName,
-        empLastName: employee.empLastName,
-        empFirstNameKana: employee.empFirstNameKana,
-        empLastNameKana: employee.empLastNameKana,
-        tel: employee.tel,
-        fax: employee.fax,
-        occuCode: employee.occuCode,
-        departmentCode: employee.departmentCode,
+        ...employee,
         departmentStartDate: toISOStringWithTimezone(new Date(employee.departmentStartDate)),
-        departmentName: employee.departmentName,
-        userId: employee.userId,
-        addFlag: employee.addFlag,
-        deleteFlag: employee.deleteFlag,
-        loginPassword: employee.loginPassword,
-        approvalCode: employee.approvalCode,
     };
 };
 

@@ -90,20 +90,7 @@ export const mapToSalesOrderResource = (salesOrder: SalesOrderType): SalesOrderT
 
 export const mapToSalesOrderCriteriaResource = (criteria: SalesOrderCriteriaType) => {
     const isEmpty = (value: unknown) => value === "" || value === null || value === undefined;
-    type Resource = {
-        orderNumber?: string;
-        orderDate?: string;
-        departmentCode?: string;
-        departmentStartDate?: string;
-        customerCode?: string;
-        customerBranchNumber?: number;
-        employeeCode?: string;
-        desiredDeliveryDate?: string;
-        customerOrderNumber?: string;
-        warehouseCode?: string;
-        remarks?: string;
-    };
-    const resource: Resource = {
+    return  {
         ...(isEmpty(criteria.orderNumber) ? {} : { orderNumber: criteria.orderNumber }),
         ...(isEmpty(criteria.orderDate) ? {} : { orderDate: toISOStringLocal(new Date(criteria.orderDate)) }),
         ...(isEmpty(criteria.departmentCode) ? {} : { departmentCode: criteria.departmentCode }),
@@ -116,6 +103,4 @@ export const mapToSalesOrderCriteriaResource = (criteria: SalesOrderCriteriaType
         ...(isEmpty(criteria.warehouseCode) ? {} : { warehouseCode: criteria.warehouseCode }),
         ...(isEmpty(criteria.remarks) ? {} : { remarks: criteria.remarks })
     };
-
-    return resource;
 };

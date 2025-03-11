@@ -40,32 +40,12 @@ export type SlitYnType = typeof SlitYnType[keyof typeof SlitYnType];
 
 export const mapToDepartmentResource = (department: DepartmentType): DepartmentType => {
     return {
-        departmentCode: department.departmentCode,
+        ...department,
         startDate: toISOStringWithTimezone(new Date(department.startDate)),
         endDate: toISOStringWithTimezone(new Date(department.endDate)),
-        departmentName: department.departmentName,
-        layer: department.layer,
-        path: department.path,
-        lowerType: department.lowerType.toString(),
-        slitYn: department.slitYn.toString(),
         employees: department.employees.map(employee => ({
-            empCode: employee.empCode,
-            empFirstName: employee.empFirstName,
-            empLastName: employee.empLastName,
-            empFirstNameKana: employee.empFirstNameKana,
-            empLastNameKana: employee.empLastNameKana,
-            tel: employee.tel,
-            fax: employee.fax,
-            occuCode: employee.occuCode,
-            departmentCode: department.departmentCode,
+            ...employee,
             departmentStartDate: toISOStringWithTimezone(new Date(department.startDate)),
-            departmentName: department.departmentName,
-            userId: employee.userId,
-            addFlag: employee.addFlag,
-            deleteFlag: employee.deleteFlag,
-            loginPassword: employee.loginPassword,
-            checked: employee.checked,
-            approvalCode: employee.approvalCode
         }))
     };
 };

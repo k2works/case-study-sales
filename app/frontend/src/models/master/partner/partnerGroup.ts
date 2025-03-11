@@ -11,24 +11,17 @@ export type PartnerGroupCriteriaType = {
     partnerGroupName?: string; // 取引先グループ名（オプション）
 };
 
-export type PartnerGroupCriteriaResource = {
-    partnerGroupCode?: string; // 取引先グループコード（オプション）
-    partnerGroupName?: string; // 取引先グループ名（オプション）
-};
-
 export type PartnerGroupFetchType = {
     list: PartnerGroupType[]; // 取引先グループリスト
 } & PageNationType;
 
 export const mapToPartnerGroupResource = (type: PartnerGroupType): PartnerGroupType => {
     return {
-        partnerGroupCode: type.partnerGroupCode,
-        partnerGroupName: type.partnerGroupName,
-        checked: type.checked
+        ...type,
     }
 }
 
-export const mapToPartnerGroupCriteriaResource = (criteria: PartnerGroupCriteriaType): PartnerGroupCriteriaResource => {
+export const mapToPartnerGroupCriteriaResource = (criteria: PartnerGroupCriteriaType): PartnerGroupCriteriaType => {
     const isEmpty = (value: unknown) => value === "" || value === null || value === undefined;
     return {
         ...(isEmpty(criteria.partnerGroupCode) ? {} : {partnerGroupCode: criteria.partnerGroupCode}),

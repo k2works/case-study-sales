@@ -32,18 +32,9 @@ export type PartnerCategoryFetchType = {
     list: PartnerCategoryType[]; // 取引先分類リスト
 } & PageNationType;
 
-export type PartnerCategoryCriteriaResource = {
-    partnerCategoryTypeCode?: string; // 取引先分類種別コード
-    partnerCategoryTypeName?: string; // 取引先分類種別名
-    partnerCategoryItemCode?: string; // 取引先分類コード
-    partnerCategoryItemName?: string; // 取引先分類名
-    partnerCode?: string;            // 取引先コード
-};
-
 export const mapToPartnerCategoryTypeResource = (partnerCategoryType: PartnerCategoryType): PartnerCategoryType => {
     return {
-        partnerCategoryTypeCode: partnerCategoryType.partnerCategoryTypeCode,
-        partnerCategoryTypeName: partnerCategoryType.partnerCategoryTypeName,
+        ...partnerCategoryType,
         partnerCategoryItems: partnerCategoryType.partnerCategoryItems.map(partnerCategoryItem => {
             return {
                 partnerCategoryTypeCode: partnerCategoryItem.partnerCategoryTypeCode,
@@ -58,11 +49,10 @@ export const mapToPartnerCategoryTypeResource = (partnerCategoryType: PartnerCat
                 })
             }
         }),
-        checked: partnerCategoryType.checked
     }
 }
 
-export const mapToPartnerCategoryCriteriaResource = (partnerCategoryCriteria: PartnerCategoryCriteriaType): PartnerCategoryCriteriaResource => {
+export const mapToPartnerCategoryCriteriaResource = (partnerCategoryCriteria: PartnerCategoryCriteriaType): PartnerCategoryCriteriaType => {
     const isEmpty = (value: unknown) => value === "" || value === null || value === undefined;
     return {
         ...(isEmpty(partnerCategoryCriteria.partnerCategoryTypeCode) ? {} : { partnerCategoryTypeCode: partnerCategoryCriteria.partnerCategoryTypeCode }),

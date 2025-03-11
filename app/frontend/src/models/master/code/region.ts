@@ -17,16 +17,14 @@ export type RegionCriteriaType = {
 
 export const mapToRegionResource = (region: RegionType): RegionType => {
     return {
-        regionCode: region.regionCode,
-        regionName: region.regionName,
-        checked: region.checked
+        ...region
     }
 }
 
-export const mapToRegionCriteria = (criteria: RegionCriteriaType): Record<string, string> => {
+export const mapToRegionCriteria = (criteria: RegionCriteriaType): RegionCriteriaType => {
     const isEmpty = (value: unknown) => value === "" || value === null || value === undefined;
     return {
         ...(!isEmpty(criteria.regionCode) && {regionCode: criteria.regionCode}),
         ...(!isEmpty(criteria.regionName) && {regionName: criteria.regionName}),
-    } as Record<string, string>
+    }
 }

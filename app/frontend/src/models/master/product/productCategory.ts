@@ -23,13 +23,8 @@ export type ProductCategoryCriteriaType = {
 
 export const mapToProductCategoryResource = (productCategory: ProductCategoryType): ProductCategoryType => {
     return {
-        productCategoryCode: productCategory.productCategoryCode,
-        productCategoryName: productCategory.productCategoryName,
-        productCategoryHierarchy: productCategory.productCategoryHierarchy,
-        productCategoryPath: productCategory.productCategoryPath,
-        lowestLevelDivision: productCategory.lowestLevelDivision,
+        ...productCategory,
         products: productCategory.products.map(product => mapToProductResource(product)),
-        checked: productCategory.checked
     };
 }
 

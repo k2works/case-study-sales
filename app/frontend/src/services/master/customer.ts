@@ -4,7 +4,6 @@ import {
     CustomerType,
     CustomerFetchType,
     CustomerCriteriaType,
-    CustomerCriteriaResourceType,
     mapToCustomerCriteriaType,
 } from "../../models/master/partner";
 
@@ -52,7 +51,7 @@ export const CustomerService = (): CustomerServiceType => {
         pageSize?: number
     ): Promise<CustomerFetchType> => {
         const url = Utils.buildUrlWithPaging(`${endPoint}/search`, page, pageSize);
-        const criteriaResource: CustomerCriteriaResourceType = mapToCustomerCriteriaType(criteria);
+        const criteriaResource: CustomerCriteriaType = mapToCustomerCriteriaType(criteria);
         return await apiUtils.fetchPost(url, criteriaResource);
     };
 
