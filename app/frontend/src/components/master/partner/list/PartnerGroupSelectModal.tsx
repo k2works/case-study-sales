@@ -69,7 +69,7 @@ export const PartnerGroupSelectModal: React.FC<SelectModalProps> = ({ type }) =>
                         handleSelect={(partnerGroup) => {
                             setSearchPartnerCriteria({
                                 ...searchPartnerCriteria,
-                                partnerGroupCode: partnerGroup.partnerGroupCode.value
+                                partnerGroupCode: partnerGroup.partnerGroupCode
                             });
                             setPartnerGroupModalIsOpen(false);
                         }}

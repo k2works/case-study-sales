@@ -213,11 +213,11 @@ const Form = ({ isEditing, newPartner, setNewPartner }: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="取引先グループコード"
-                value={newPartner.partnerGroupCode?.value ?? ""}
+                value={newPartner.partnerGroupCode ?? ""}
                 onChange={(e) =>
                     setNewPartner({
                         ...newPartner,
-                        partnerGroupCode: { value: e.target.value },
+                        partnerGroupCode: e.target.value,
                     })
                 }
             />

@@ -38,7 +38,7 @@ export const PartnerGroupService = (): PartnerGroupServiceType => {
     };
 
     const update = async (partnerGroup: PartnerGroupType): Promise<void> => {
-        const url = `${endPoint}/${partnerGroup.partnerGroupCode.value}`;
+        const url = `${endPoint}/${partnerGroup.partnerGroupCode}`;
         const resource = mapToPartnerGroupResource(partnerGroup);
         await apiUtils.fetchPut(url, resource);
     };

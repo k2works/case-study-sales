@@ -28,7 +28,7 @@ export const PartnerGroupSingle: React.FC = () => {
 
     const handleCreateOrUpdatePartnerGroup = async () => {
         const validatePartnerGroup = (): boolean => {
-            if (!newPartnerGroup.partnerGroupCode.value.trim() ||
+            if (!newPartnerGroup.partnerGroupCode.trim() ||
                 !newPartnerGroup.partnerGroupName.trim()) {
                 setError("取引先グループコードと名称は必須項目です。");
                 return false;
@@ -48,8 +48,9 @@ export const PartnerGroupSingle: React.FC = () => {
             await fetchPartnerGroups.load();
             setMessage(isEditing ? "取引先グループを更新しました。" : "取引先グループを作成しました。");
             handleCloseModal();
-        } catch (error: any) {
-            showErrorMessage(`取引先グループの作成または更新に失敗しました: ${error?.message}`, setError);
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            showErrorMessage(`取引先グループの作成または更新に失敗しました: ${errorMessage}`, setError);
         }
     };
 

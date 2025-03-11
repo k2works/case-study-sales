@@ -1,4 +1,3 @@
-import {PartnerGroupCodeType} from "./partnerGroup.ts";
 import {PageNationType} from "../../../views/application/PageNation.tsx";
 import {CustomerType} from "./customer.ts";
 import {VendorType} from "./vendor.ts";
@@ -11,7 +10,7 @@ export type PartnerType = {
     address: AddressType; // 住所
     tradeProhibitedFlag: TradeProhibitedFlagEnumType; // 取引禁止フラグ
     miscellaneousType: MiscellaneousEnumType; // 雑区分
-    partnerGroupCode: PartnerGroupCodeType; // 取引先グループコード
+    partnerGroupCode: string; // 取引先グループコード
     credit: CreditType; // 与信
     customers: CustomerType[]; // 取引先顧客リスト
     vendors: VendorType[]; // 取引先仕入先リスト
@@ -116,7 +115,7 @@ export const mapToPartnerResource = (partner: PartnerType): PartnerResourceType 
         address2: partner.address.address2,
         tradeProhibitedFlag: partner.tradeProhibitedFlag,
         miscellaneousType: partner.miscellaneousType,
-        partnerGroupCode: partner.partnerGroupCode.value,
+        partnerGroupCode: partner.partnerGroupCode,
         creditLimit: partner.credit.creditLimit.amount,
         temporaryCreditIncrease: partner.credit.temporaryCreditIncrease.amount,
         customers: partner.customers,

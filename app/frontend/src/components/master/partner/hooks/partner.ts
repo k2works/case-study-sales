@@ -26,7 +26,7 @@ export const usePartner = () => {
         },
         tradeProhibitedFlag: TradeProhibitedFlagEnumType.OFF,
         miscellaneousType: MiscellaneousEnumType.対象外,
-        partnerGroupCode: { value: "" },
+        partnerGroupCode: "",
         credit: {
             creditLimit: { amount: 0, currency: "JPY" },
             temporaryCreditIncrease: { amount: 0, currency: "JPY" }

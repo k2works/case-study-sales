@@ -1,14 +1,10 @@
 import {PageNationType} from "../../../views/application/PageNation.tsx";
 
 export type PartnerGroupType = {
-    partnerGroupCode: PartnerGroupCodeType; // 取引先グループコード
+    partnerGroupCode: string; // 取引先グループコード
     partnerGroupName: string; // 取引先グループ名
     checked: boolean; // チェック状態
 };
-
-export type PartnerGroupCodeType = {
-    value: string;
-}
 
 export type PartnerGroupResource = {
     partnerGroupCode: string; // 取引先グループコード
@@ -31,7 +27,7 @@ export type PartnerGroupFetchType = {
 
 export const mapToPartnerGroupResource = (type: PartnerGroupType): PartnerGroupResource => {
     return {
-        partnerGroupCode: type.partnerGroupCode.value,
+        partnerGroupCode: type.partnerGroupCode,
         partnerGroupName: type.partnerGroupName,
     }
 }

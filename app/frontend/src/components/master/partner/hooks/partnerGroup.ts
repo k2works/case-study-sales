@@ -9,7 +9,7 @@ import {PartnerGroupService, PartnerGroupServiceType} from "../../../../services
 
 export const usePartnerGroup = () => {
     const initialPartnerGroup: PartnerGroupType = {
-        partnerGroupCode: { value: "" },
+        partnerGroupCode: "",
         partnerGroupName: "",
         checked: false
     };
