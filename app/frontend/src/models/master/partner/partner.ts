@@ -1,30 +1,27 @@
 import {PageNationType} from "../../../views/application/PageNation.tsx";
 import {CustomerType} from "./customer.ts";
 import {VendorType} from "./vendor.ts";
-import {AddressType} from "../shared.ts";
+import {PrefectureEnumType} from "../shared.ts";
 
 export type PartnerType = {
-    partnerCode: PartnerCodeType; // 取引先コード
-    partnerName: PartnerNameType; // 取引先名
+    partnerCode: string; // 取引先コード
+    partnerName: string; // 取引先名
+    partnerNameKana: string; // 取引先名カナ
     vendorType: VendorEnumType; // 仕入先区分
-    address: AddressType; // 住所
+    postalCode: string; // 郵便番号
+    prefecture: PrefectureEnumType; // 都道府県
+    address1: string; // 住所1
+    address2: string; // 住所2
     tradeProhibitedFlag: TradeProhibitedFlagEnumType; // 取引禁止フラグ
     miscellaneousType: MiscellaneousEnumType; // 雑区分
     partnerGroupCode: string; // 取引先グループコード
-    credit: CreditType; // 与信
+    creditLimit: number; // 与信限度額
+    temporaryCreditIncrease: number; // 与信一時増加枠
     customers: CustomerType[]; // 取引先顧客リスト
     vendors: VendorType[]; // 取引先仕入先リスト
     checked: boolean;
 };
 
-export type PartnerCodeType = {
-    value: string; // 取引先コードの値
-};
-
-export type PartnerNameType = {
-    name: string;
-    nameKana: string;
-};
 
 export enum VendorEnumType {
     仕入先でない = "仕入先でない",
@@ -39,15 +36,16 @@ export enum MiscellaneousEnumType {
     対象外 = "対象外", 対象 = "対象"
 }
 
-export type CreditType = {
-    creditLimit: MoneyType; // 与信限度額
-    temporaryCreditIncrease: MoneyType; // 与信一時増加枠
+// Dummy types for backward compatibility
+export type PartnerCodeType = {
+    value: string;
 };
 
-export type MoneyType = {
-    amount: number; // 金額の値
-    currency: string; // 通貨単位 (例: "JPY")
+export type PartnerNameType = {
+    name: string;
+    nameKana: string;
 };
+
 
 export type PartnerCriteriaType = {
     partnerCode?: string; // 取引先コード
@@ -105,19 +103,19 @@ export type PartnerCriteriaResourceType = {
 
 export const mapToPartnerResource = (partner: PartnerType): PartnerResourceType => {
     return {
-        partnerCode: partner.partnerCode.value,
-        partnerName: partner.partnerName.name,
-        partnerNameKana: partner.partnerName.nameKana,
+        partnerCode: partner.partnerCode,
+        partnerName: partner.partnerName,
+        partnerNameKana: partner.partnerNameKana,
         vendorType: partner.vendorType,
-        postalCode: partner.address.postalCode.value,
-        prefecture: partner.address.prefecture,
-        address1: partner.address.address1,
-        address2: partner.address.address2,
+        postalCode: partner.postalCode,
+        prefecture: partner.prefecture,
+        address1: partner.address1,
+        address2: partner.address2,
         tradeProhibitedFlag: partner.tradeProhibitedFlag,
         miscellaneousType: partner.miscellaneousType,
         partnerGroupCode: partner.partnerGroupCode,
-        creditLimit: partner.credit.creditLimit.amount,
-        temporaryCreditIncrease: partner.credit.temporaryCreditIncrease.amount,
+        creditLimit: partner.creditLimit,
+        temporaryCreditIncrease: partner.temporaryCreditIncrease,
         customers: partner.customers,
         vendors: partner.vendors
     }

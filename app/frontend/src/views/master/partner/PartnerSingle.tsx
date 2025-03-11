@@ -45,11 +45,11 @@ const Form = ({ isEditing, newPartner, setNewPartner }: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="取引先コード"
-                value={newPartner.partnerCode?.value ?? ""}
+                value={newPartner.partnerCode ?? ""}
                 onChange={(e) =>
                     setNewPartner({
                         ...newPartner,
-                        partnerCode: { value: e.target.value },
+                        partnerCode: e.target.value,
                     })
                 }
                 disabled={isEditing}
@@ -62,14 +62,11 @@ const Form = ({ isEditing, newPartner, setNewPartner }: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="取引先名"
-                value={newPartner.partnerName?.name ?? ""}
+                value={newPartner.partnerName ?? ""}
                 onChange={(e) =>
                     setNewPartner({
                         ...newPartner,
-                        partnerName: {
-                            ...newPartner.partnerName,
-                            name: e.target.value,
-                        },
+                        partnerName: e.target.value,
                     })
                 }
             />
@@ -81,14 +78,11 @@ const Form = ({ isEditing, newPartner, setNewPartner }: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="取引先名カナ"
-                value={newPartner.partnerName?.nameKana ?? ""}
+                value={newPartner.partnerNameKana ?? ""}
                 onChange={(e) =>
                     setNewPartner({
                         ...newPartner,
-                        partnerName: {
-                            ...newPartner.partnerName,
-                            nameKana: e.target.value,
-                        },
+                        partnerNameKana: e.target.value,
                     })
                 }
             />
@@ -114,32 +108,23 @@ const Form = ({ isEditing, newPartner, setNewPartner }: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="郵便番号"
-                value={newPartner.address?.postalCode?.value ?? ""}
+                value={newPartner.postalCode ?? ""}
                 onChange={(e) =>
                     setNewPartner({
                         ...newPartner,
-                        address: {
-                            ...newPartner.address,
-                            postalCode: {
-                                ...newPartner.address?.postalCode,
-                                value: e.target.value,
-                            },
-                        },
+                        postalCode: e.target.value,
                     })
                 }
             />
             <FormSelect
                 id="prefecture"
                 label="都道府県"
-                value={newPartner.address?.prefecture ?? ""}
+                value={newPartner.prefecture ?? ""}
                 options={PrefectureEnumType}
                 onChange={(e) => {
                     setNewPartner({
                         ...newPartner,
-                        address: {
-                            ...newPartner.address,
-                            prefecture: e,
-                        },
+                        prefecture: e,
                     });
                 }}
             />
@@ -149,14 +134,11 @@ const Form = ({ isEditing, newPartner, setNewPartner }: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="住所1"
-                value={newPartner.address?.address1 ?? ""}
+                value={newPartner.address1 ?? ""}
                 onChange={(e) =>
                     setNewPartner({
                         ...newPartner,
-                        address: {
-                            ...newPartner.address,
-                            address1: e.target.value,
-                        },
+                        address1: e.target.value,
                     })
                 }
             />
@@ -166,14 +148,11 @@ const Form = ({ isEditing, newPartner, setNewPartner }: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="住所2"
-                value={newPartner.address?.address2 ?? ""}
+                value={newPartner.address2 ?? ""}
                 onChange={(e) =>
                     setNewPartner({
                         ...newPartner,
-                        address: {
-                            ...newPartner.address,
-                            address2: e.target.value,
-                        },
+                        address2: e.target.value,
                     })
                 }
             />
@@ -229,17 +208,11 @@ const Form = ({ isEditing, newPartner, setNewPartner }: FormProps) => {
                 type="number"
                 className="single-view-content-item-form-item-input"
                 placeholder="与信限度額"
-                value={newPartner.credit?.creditLimit?.amount ?? ""}
+                value={newPartner.creditLimit ?? ""}
                 onChange={(e) =>
                     setNewPartner({
                         ...newPartner,
-                        credit: {
-                            ...newPartner.credit,
-                            creditLimit: {
-                                ...newPartner.credit?.creditLimit,
-                                amount: parseFloat(e.target.value),
-                            },
-                        },
+                        creditLimit: parseFloat(e.target.value),
                     })
                 }
             />
@@ -249,17 +222,11 @@ const Form = ({ isEditing, newPartner, setNewPartner }: FormProps) => {
                 type="number"
                 className="single-view-content-item-form-item-input"
                 placeholder="与信一時増加枠"
-                value={newPartner.credit?.temporaryCreditIncrease?.amount ?? ""}
+                value={newPartner.temporaryCreditIncrease ?? ""}
                 onChange={(e) =>
                     setNewPartner({
                         ...newPartner,
-                        credit: {
-                            ...newPartner.credit,
-                            temporaryCreditIncrease: {
-                                ...newPartner.credit?.temporaryCreditIncrease,
-                                amount: parseFloat(e.target.value),
-                            },
-                        },
+                        temporaryCreditIncrease: parseFloat(e.target.value),
                     })
                 }
             />

@@ -17,28 +17,28 @@ const PartnerItem: React.FC<PartnerItemProps> = ({
                                                      onDelete,
                                                      onCheck
                                                  }) => (
-    <li className="collection-object-item" key={partner.partnerCode.value}>
-        <div className="collection-object-item-content" data-id={partner.partnerCode.value}>
+    <li className="collection-object-item" key={partner.partnerCode}>
+        <div className="collection-object-item-content" data-id={partner.partnerCode}>
             <input
                 type="checkbox"
                 className="collection-object-item-checkbox"
-                checked={(partner as any).checked || false}
+                checked={partner.checked || false}
                 onChange={() => onCheck(partner)}
             />
         </div>
-        <div className="collection-object-item-content" data-id={partner.partnerCode.value}>
+        <div className="collection-object-item-content" data-id={partner.partnerCode}>
             <div className="collection-object-item-content-details">取引先コード</div>
-            <div className="collection-object-item-content-name">{partner.partnerCode.value}</div>
+            <div className="collection-object-item-content-name">{partner.partnerCode}</div>
         </div>
-        <div className="collection-object-item-content" data-id={partner.partnerCode.value}>
+        <div className="collection-object-item-content" data-id={partner.partnerCode}>
             <div className="collection-object-item-content-details">取引先名</div>
-            <div className="collection-object-item-content-name">{partner.partnerName.name}</div>
+            <div className="collection-object-item-content-name">{partner.partnerName}</div>
         </div>
-        <div className="collection-object-item-actions" data-id={partner.partnerCode.value}>
+        <div className="collection-object-item-actions" data-id={partner.partnerCode}>
             <button className="action-button" onClick={() => onEdit(partner)} id="edit">編集</button>
         </div>
-        <div className="collection-object-item-actions" data-id={partner.partnerCode.value}>
-            <button className="action-button" onClick={() => onDelete(partner.partnerCode.value)} id="delete">削除</button>
+        <div className="collection-object-item-actions" data-id={partner.partnerCode}>
+            <button className="action-button" onClick={() => onDelete(partner.partnerCode)} id="delete">削除</button>
         </div>
     </li>
 );
@@ -60,7 +60,7 @@ const PartnerList: React.FC<PartnerListProps> = ({
         <ul className="collection-object-list">
             {partners.map((partner) => (
                 <PartnerItem
-                    key={partner.partnerCode.value}
+                    key={partner.partnerCode}
                     partner={partner}
                     onEdit={onEdit}
                     onDelete={onDelete}

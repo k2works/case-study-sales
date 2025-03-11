@@ -33,18 +33,18 @@ export const PartnerCollectionSelectView: React.FC<PartnerCollectionSelectProps>
                     <div className="collection-object-container-modal">
                         <ul className="collection-object-list">
                             {partners.map(partner => (
-                                <li className="collection-object-item" key={partner.partnerCode.value}>
-                                    <div className="collection-object-item-content" data-id={partner.partnerCode.value}>
+                                <li className="collection-object-item" key={partner.partnerCode}>
+                                    <div className="collection-object-item-content" data-id={partner.partnerCode}>
                                         <div className="collection-object-item-content-details">取引先コード</div>
                                         <div
-                                            className="collection-object-item-content-name">{partner.partnerCode.value}</div>
+                                            className="collection-object-item-content-name">{partner.partnerCode}</div>
                                     </div>
-                                    <div className="collection-object-item-content" data-id={partner.partnerCode.value}>
+                                    <div className="collection-object-item-content" data-id={partner.partnerCode}>
                                         <div className="collection-object-item-content-details">取引先名</div>
                                         <div
-                                            className="collection-object-item-content-name">{partner.partnerName.name}</div>
+                                            className="collection-object-item-content-name">{partner.partnerName}</div>
                                     </div>
-                                    <div className="collection-object-item-actions" data-id={partner.partnerCode.value}>
+                                    <div className="collection-object-item-actions" data-id={partner.partnerCode}>
                                         <button className="action-button" onClick={() => handleSelect(partner)}
                                                 id="select-partner">選択
                                         </button>

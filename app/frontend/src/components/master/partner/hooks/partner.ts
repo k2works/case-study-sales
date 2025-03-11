@@ -15,22 +15,19 @@ import {
 
 export const usePartner = () => {
     const initialPartner: PartnerType = {
-        partnerCode: { value: "" },
-        partnerName: { name: "", nameKana: "" },
+        partnerCode: "",
+        partnerName: "",
+        partnerNameKana: "",
         vendorType: VendorEnumType.仕入先でない,
-        address: {
-            postalCode: { value: "", regionCode: "" },
-            prefecture: PrefectureEnumType.東京都,
-            address1: "",
-            address2: ""
-        },
+        postalCode: "",
+        prefecture: PrefectureEnumType.東京都,
+        address1: "",
+        address2: "",
         tradeProhibitedFlag: TradeProhibitedFlagEnumType.OFF,
         miscellaneousType: MiscellaneousEnumType.対象外,
         partnerGroupCode: "",
-        credit: {
-            creditLimit: { amount: 0, currency: "JPY" },
-            temporaryCreditIncrease: { amount: 0, currency: "JPY" }
-        },
+        creditLimit: 0,
+        temporaryCreditIncrease: 0,
         customers: [],
         vendors: [],
         checked: false

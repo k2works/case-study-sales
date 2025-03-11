@@ -32,14 +32,14 @@ export const PartnerSelectModal: React.FC = () => {
 
     const handlePartnerCollectionSelect = (partner: PartnerType) => {
         const newPartnerCategoryAffiliations = newPartnerCategoryItem.partnerCategoryAffiliations;
-        if (newPartnerCategoryAffiliations.some((e) => e.partnerCode === partner.partnerCode.value)) {
+        if (newPartnerCategoryAffiliations.some((e) => e.partnerCode === partner.partnerCode)) {
             showErrorMessage("既に追加されている取引先です", setError);
             return;
         }
         newPartnerCategoryAffiliations.push({
             partnerCategoryTypeCode: newPartnerCategory.partnerCategoryTypeCode,
             partnerCategoryItemCode: newPartnerCategoryItem.partnerCategoryItemCode,
-            partnerCode: partner.partnerCode.value,
+            partnerCode: partner.partnerCode,
         })
         setNewPartnerCategoryItem({
             ...newPartnerCategoryItem,

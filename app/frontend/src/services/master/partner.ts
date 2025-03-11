@@ -40,7 +40,7 @@ export const PartnerService = (): PartnerServiceType => {
     };
 
     const update = async (partner: PartnerType): Promise<void> => {
-        const url = `${endPoint}/${partner.partnerCode.value}`;
+        const url = `${endPoint}/${partner.partnerCode}`;
         const resource: PartnerResourceType = mapToPartnerResource(partner);
         await apiUtils.fetchPut(url, resource);
     };

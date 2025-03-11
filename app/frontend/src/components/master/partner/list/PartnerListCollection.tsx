@@ -33,7 +33,7 @@ export const PartnerListCollection: React.FC = () => {
         setError("");
         if (partner) {
             setNewPartner(partner);
-            setEditId(partner.partnerCode.value);
+            setEditId(partner.partnerCode);
             setIsEditing(true);
         } else {
             setNewPartner(initialPartner);
@@ -52,14 +52,15 @@ export const PartnerListCollection: React.FC = () => {
             await partnerService.destroy(partnerCode);
             await fetchPartners.load();
             setMessage("取引先を削除しました。");
-        } catch (error: any) {
-            showErrorMessage(`取引先の削除に失敗しました: ${error?.message}`, setError);
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            showErrorMessage(`取引先の削除に失敗しました: ${errorMessage}`, setError);
         }
     };
 
     const handleCheckPartner = (partner: PartnerType) => {
         const newPartners = partners.map((p) => {
-            if (p.partnerCode.value === partner.partnerCode.value) {
+            if (p.partnerCode === partner.partnerCode) {
                 return { ...p, checked: !p.checked };
             }
             return p;
@@ -83,14 +84,15 @@ export const PartnerListCollection: React.FC = () => {
         try {
             if (!window.confirm("選択した取引先を削除しますか？")) return;
             await Promise.all(
-                checkedPartners.map((partners) =>
-                    partnerService.destroy(partners.partnerCode.value)
+                checkedPartners.map((partner) =>
+                    partnerService.destroy(partner.partnerCode)
                 )
             );
             await fetchPartners.load();
             setMessage("選択した取引先を削除しました。");
-        } catch (error: any) {
-            showErrorMessage(`選択した取引先の削除に失敗しました: ${error?.message}`, setError);
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            showErrorMessage(`選択した取引先の削除に失敗しました: ${errorMessage}`, setError);
         }
     }
 
