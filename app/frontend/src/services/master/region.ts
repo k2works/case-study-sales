@@ -37,7 +37,7 @@ export const RegionService = (): RegionServiceType => {
     };
 
     const update = async (region: RegionType): Promise<void> => {
-        const url = `${endPoint}/${region.regionCode.value}`;
+        const url = `${endPoint}/${region.regionCode}`;
         await apiUtils.fetchPut(url, mapToRegionResource(region));
     };
 

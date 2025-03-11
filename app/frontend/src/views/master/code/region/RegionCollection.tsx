@@ -12,23 +12,23 @@ interface RegionItemProps {
 }
 
 const RegionItem: React.FC<RegionItemProps> = ({region, onEdit, onDelete, onCheck}) => (
-    <li className="collection-object-item" key={region.regionCode.value}>
-        <div className="collection-object-item-content" data-id={region.regionCode.value}>
+    <li className="collection-object-item" key={region.regionCode}>
+        <div className="collection-object-item-content" data-id={region.regionCode}>
             <input type="checkbox" className="collection-object-item-checkbox" checked={region.checked}
                    onChange={() => onCheck(region)}/>
         </div>
-        <div className="collection-object-item-content" data-id={region.regionCode.value}>
+        <div className="collection-object-item-content" data-id={region.regionCode}>
             <div className="collection-object-item-content-details">地域コード</div>
-            <div className="collection-object-item-content-name">{region.regionCode.value}</div>
+            <div className="collection-object-item-content-name">{region.regionCode}</div>
         </div>
-        <div className="collection-object-item-content" data-id={region.regionCode.value}>
+        <div className="collection-object-item-content" data-id={region.regionCode}>
             <div className="collection-object-item-content-details">地域名</div>
             <div className="collection-object-item-content-name">{region.regionName}</div>
         </div>
-        <div className="collection-object-item-actions" data-id={region.regionCode.value}>
+        <div className="collection-object-item-actions" data-id={region.regionCode}>
             <button className="action-button" onClick={() => onEdit(region)} id="edit">編集</button>
         </div>
-        <div className="collection-object-item-actions" data-id={region.regionCode.value}>
+        <div className="collection-object-item-actions" data-id={region.regionCode}>
             <button className="action-button" onClick={() => onDelete(region.regionCode)} id="delete">削除</button>
         </div>
     </li>
@@ -46,7 +46,7 @@ const RegionList: React.FC<RegionListProps> = ({regions, onEdit, onDelete, onChe
         <ul className="collection-object-list">
             {regions.map(region => (
                 <RegionItem
-                    key={region.regionCode.value}
+                    key={region.regionCode}
                     region={region}
                     onEdit={onEdit}
                     onDelete={onDelete}
