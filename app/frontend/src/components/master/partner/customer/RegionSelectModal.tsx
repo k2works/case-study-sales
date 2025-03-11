@@ -30,12 +30,14 @@ export const RegionSelectModal: React.FC = () => {
     const handleRegionCollectionSelect = (region: RegionType) => {
         setNewRegion(region);
         handleCloseRegionModal();
-        const updateShippings = newCustomer.shippings.filter((shipping) => shipping.shippingCode !== newShipping.shippingCode)
+        const updateShippings = newCustomer.shippings.filter((shipping) => 
+            shipping.customerCode !== newShipping.customerCode || 
+            shipping.customerBranchNumber !== newShipping.customerBranchNumber || 
+            shipping.destinationNumber !== newShipping.destinationNumber
+        )
         updateShippings.push({
             ...newShipping,
-            regionCode: {
-                value: region.regionCode.value,
-            }
+            regionCode: region.regionCode.value
         })
         setNewCustomer({
             ...newCustomer,

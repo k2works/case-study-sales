@@ -28,10 +28,10 @@ export const CustomerSelectModal: React.FC = () => {
     };
 
     const handleSelectModal = (customer: CustomerType) => {
-        const newProducts = newProduct.customerSpecificSellingPrices.filter((e) => e.customerCode !== customer.customerCode.code.value);
+        const newProducts = newProduct.customerSpecificSellingPrices.filter((e) => e.customerCode !== customer.customerCode);
         newProducts.push({
             productCode: newProduct.productCode,
-            customerCode: customer.customerCode.code.value,
+            customerCode: customer.customerCode,
             sellingPrice: {
                 amount: 0,
                 currency: "JPY"

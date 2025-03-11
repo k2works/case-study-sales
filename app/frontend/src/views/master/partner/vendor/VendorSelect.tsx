@@ -55,30 +55,30 @@ export const VendorCollectionSelectView: React.FC<VendorCollectionSelectProps> =
                     <div className="collection-object-container-modal">
                         <ul className="collection-object-list">
                             {vendors.map((vendor) => (
-                                <li className="collection-object-item" key={vendor.vendorCode.code.value}>
+                                <li className="collection-object-item" key={vendor.vendorCode}>
                                     <div className="collection-object-item-content"
-                                         data-id={vendor.vendorCode.code.value}>
+                                         data-id={vendor.vendorCode}>
                                         <div className="collection-object-item-content-details">仕入先コード</div>
                                         <div className="collection-object-item-content-name">
-                                            {vendor.vendorCode.code.value}
+                                            {vendor.vendorCode}
                                         </div>
                                     </div>
                                     <div className="collection-object-item-content"
-                                         data-id={vendor.vendorCode.code.value}>
+                                         data-id={vendor.vendorCode}>
                                         <div className="collection-object-item-content-details">仕入先コード枝番</div>
                                         <div className="collection-object-item-content-name">
-                                            {vendor.vendorCode.branchNumber}
+                                            {vendor.vendorBranchNumber}
                                         </div>
                                     </div>
                                     <div className="collection-object-item-content"
-                                         data-id={vendor.vendorCode.code.value}>
+                                         data-id={vendor.vendorCode}>
                                         <div className="collection-object-item-content-details">仕入先名</div>
                                         <div className="collection-object-item-content-name">
-                                            {vendor.vendorName.value.name}
+                                            {vendor.vendorName}
                                         </div>
                                     </div>
                                     <div className="collection-object-item-actions"
-                                         data-id={vendor.vendorCode.code.value}>
+                                         data-id={vendor.vendorCode}>
                                         <button
                                             className="action-button"
                                             onClick={() => handleSelect(vendor)}

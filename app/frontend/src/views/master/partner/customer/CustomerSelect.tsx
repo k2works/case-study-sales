@@ -33,27 +33,27 @@ export const CustomerCollectionSelectView: React.FC<CustomerCollectionSelectProp
                     <div className="collection-object-container-modal">
                         <ul className="collection-object-list">
                             {customers.map(customer => (
-                                <li className="collection-object-item" key={customer.customerCode.code.value}>
+                                <li className="collection-object-item" key={customer.customerCode}>
                                     <div className="collection-object-item-content"
-                                         data-id={customer.customerCode.code.value}>
+                                         data-id={customer.customerCode}>
                                         <div className="collection-object-item-content-details">顧客コード</div>
                                         <div
-                                            className="collection-object-item-content-name">{customer.customerCode.code.value}</div>
+                                            className="collection-object-item-content-name">{customer.customerCode}</div>
                                     </div>
                                     <div className="collection-object-item-content"
-                                         data-id={customer.customerCode.code.value}>
+                                         data-id={customer.customerCode}>
                                         <div className="collection-object-item-content-details">顧客コード枝番</div>
                                         <div
-                                            className="collection-object-item-content-name">{customer.customerCode.branchNumber}</div>
+                                            className="collection-object-item-content-name">{customer.customerBranchNumber}</div>
                                     </div>
                                     <div className="collection-object-item-content"
-                                         data-id={customer.customerCode.code.value}>
+                                         data-id={customer.customerCode}>
                                         <div className="collection-object-item-content-details">顧客名</div>
                                         <div
-                                            className="collection-object-item-content-name">{customer.customerName.value.name}</div>
+                                            className="collection-object-item-content-name">{customer.customerName}</div>
                                     </div>
                                     <div className="collection-object-item-actions"
-                                         data-id={customer.customerCode.code.value}>
+                                         data-id={customer.customerCode}>
                                         <button className="action-button" onClick={() => handleSelect(customer)}
                                                 id="select-customer">選択
                                         </button>

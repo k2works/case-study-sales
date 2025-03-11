@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {CustomerCodeType, CustomerCriteriaType, CustomerType, ShippingType} from "../../../../models/master/partner";
+import {CustomerCriteriaType, CustomerType, ShippingType} from "../../../../models/master/partner";
 import {PageNation, PageNationType} from "../../../application/PageNation.tsx";
 import {Message} from "../../../../components/application/Message.tsx";
 import {Search} from "../../../Common.tsx";
@@ -7,7 +7,7 @@ import {Search} from "../../../Common.tsx";
 interface CustomerItemProps {
     customer: CustomerType;
     onEdit: (customer: CustomerType) => void;
-    onDelete: (customerCode: CustomerCodeType) => void;
+    onDelete: (customerCode: string, branchNumber: number) => void;
     onCheck: (customer: CustomerType) => void;
 }
 
@@ -17,8 +17,8 @@ const CustomerItem: React.FC<CustomerItemProps> = ({
                                                        onDelete,
                                                        onCheck,
                                                    }) => (
-    <li className="collection-object-item" key={customer.customerCode.code.value + "-" + customer.customerCode.branchNumber}>
-        <div className="collection-object-item-content" data-id={customer.customerCode.branchNumber}>
+    <li className="collection-object-item" key={customer.customerCode + "-" + customer.customerBranchNumber}>
+        <div className="collection-object-item-content" data-id={customer.customerBranchNumber}>
             <input
                 type="checkbox"
                 className="collection-object-item-checkbox"
@@ -26,23 +26,23 @@ const CustomerItem: React.FC<CustomerItemProps> = ({
                 onChange={() => onCheck(customer)}
             />
         </div>
-        <div className="collection-object-item-content" data-id={customer.customerCode.branchNumber}>
+        <div className="collection-object-item-content" data-id={customer.customerBranchNumber}>
             <div className="collection-object-item-content-details">顧客コード</div>
-            <div className="collection-object-item-content-name">{customer.customerCode.code.value}</div>
+            <div className="collection-object-item-content-name">{customer.customerCode}</div>
         </div>
-        <div className="collection-object-item-content" data-id={customer.customerCode.branchNumber}>
+        <div className="collection-object-item-content" data-id={customer.customerBranchNumber}>
             <div className="collection-object-item-content-details">顧客コード枝番</div>
-            <div className="collection-object-item-content-name">{customer.customerCode.branchNumber}</div>
+            <div className="collection-object-item-content-name">{customer.customerBranchNumber}</div>
         </div>
-        <div className="collection-object-item-content" data-id={customer.customerCode.branchNumber}>
+        <div className="collection-object-item-content" data-id={customer.customerBranchNumber}>
             <div className="collection-object-item-content-details">顧客名</div>
-            <div className="collection-object-item-content-name">{customer.customerName.value.name}</div>
+            <div className="collection-object-item-content-name">{customer.customerName}</div>
         </div>
-        <div className="collection-object-item-actions" data-id={customer.customerCode.branchNumber}>
+        <div className="collection-object-item-actions" data-id={customer.customerBranchNumber}>
             <button className="action-button" onClick={() => onEdit(customer)} id="edit">編集</button>
         </div>
-        <div className="collection-object-item-actions" data-id={customer.customerCode.branchNumber}>
-            <button className="action-button" onClick={() => onDelete(customer.customerCode)} id="delete">削除</button>
+        <div className="collection-object-item-actions" data-id={customer.customerBranchNumber}>
+            <button className="action-button" onClick={() => onDelete(customer.customerCode, customer.customerBranchNumber)} id="delete">削除</button>
         </div>
     </li>
 );
@@ -50,7 +50,7 @@ const CustomerItem: React.FC<CustomerItemProps> = ({
 interface CustomerListProps {
     customers: CustomerType[];
     onEdit: (customer: CustomerType) => void;
-    onDelete: (customerCode: CustomerCodeType) => void;
+    onDelete: (customerCode: string, branchNumber: number) => void;
     onCheck: (customer: CustomerType) => void;
 }
 
@@ -64,7 +64,7 @@ const CustomerList: React.FC<CustomerListProps> = ({
         <ul className="collection-object-list">
             {customers.map((customer) => (
                 <CustomerItem
-                    key={customer.customerCode.code.value + "-" + customer.customerCode.branchNumber}
+                    key={customer.customerCode + "-" + customer.customerBranchNumber}
                     customer={customer}
                     onEdit={onEdit}
                     onDelete={onDelete}
@@ -91,7 +91,7 @@ interface CustomerCollectionViewProps {
     collectionItems: {
         customers: CustomerType[];
         handleOpenModal: (customer?: CustomerType) => void;
-        handleDeleteCustomer: (customerCode: CustomerCodeType) => void;
+        handleDeleteCustomer: (customerCode: string, branchNumber: number) => void;
         handleCheckCustomer: (customer: CustomerType) => void;
     };
     pageNationItems: {
@@ -171,7 +171,7 @@ export const CustomerCollectionView: React.FC<CustomerCollectionViewProps> = ({
 );
 
 interface CustomerShippingCollectionAddListViewProps {
-    setNewShipping: any;
+    setNewShipping: React.Dispatch<React.SetStateAction<ShippingType>>;
     shippings: ShippingType[];
     handleAddShipping: () => void;
     handleDeleteShipping: (shipping: ShippingType) => void;
@@ -220,16 +220,16 @@ export const CustomerShippingCollectionAddListView: React.FC<CustomerShippingCol
                     updatedShipping.destinationName = currentValue;
                     break;
                 case "regionCode":
-                    updatedShipping.regionCode.value = currentValue;
+                    updatedShipping.regionCode = currentValue;
                     break;
                 case "postalCode":
-                    updatedShipping.shippingAddress.postalCode.value = currentValue;
+                    updatedShipping.postalCode = currentValue;
                     break;
                 case "address1":
-                    updatedShipping.shippingAddress.address1 = currentValue;
+                    updatedShipping.address1 = currentValue;
                     break;
                 case "address2":
-                    updatedShipping.shippingAddress.address2 = currentValue;
+                    updatedShipping.address2 = currentValue;
                     break;
             }
 
@@ -256,14 +256,14 @@ export const CustomerShippingCollectionAddListView: React.FC<CustomerShippingCol
                     <div className="collection-object-container-modal">
                         <ul className="collection-object-list">
                             {shippings.map((shipping, index) => (
-                                <li className="collection-object-item" key={shipping.shippingCode.destinationNumber}>
-                                    <div className="collection-object-item-content" data-id={shipping.shippingCode.customerCode.code}>
+                                <li className="collection-object-item" key={shipping.destinationNumber}>
+                                    <div className="collection-object-item-content" data-id={shipping.customerCode}>
                                         <div className="collection-object-item-content-details">出荷先番号</div>
                                         <div className="collection-object-item-content-name">
-                                            {shipping.shippingCode.destinationNumber}
+                                            {shipping.destinationNumber}
                                         </div>
                                     </div>
-                                    <div className="collection-object-item-content" data-id={shipping.shippingCode.customerCode.code}>
+                                    <div className="collection-object-item-content" data-id={shipping.customerCode}>
                                         <div className="collection-object-item-content-details">出荷先名</div>
                                         <div className="collection-object-item-content-name">
                                             {editingFieldIndex.index === index && editingFieldIndex.field === "destinationName" ? (
@@ -281,7 +281,7 @@ export const CustomerShippingCollectionAddListView: React.FC<CustomerShippingCol
                                             )}
                                         </div>
                                     </div>
-                                    <div className="collection-object-item-content" data-id={shipping.shippingCode.customerCode.code}>
+                                    <div className="collection-object-item-content" data-id={shipping.customerCode}>
                                         <div className="collection-object-item-content-details">地域コード</div>
                                         <div className="collection-object-item-content-name">
                                             {editingFieldIndex.index === index && editingFieldIndex.field === "regionCode" ? (
@@ -294,12 +294,12 @@ export const CustomerShippingCollectionAddListView: React.FC<CustomerShippingCol
                                                 />
                                             ) : (
                                                 <span onClick={() => handleRegionClick(index)}>
-                                                    {shipping.regionCode.value}
+                                                    {shipping.regionCode}
                                                 </span>
                                             )}
                                         </div>
                                     </div>
-                                    <div className="collection-object-item-content" data-id={shipping.shippingCode.customerCode.code}>
+                                    <div className="collection-object-item-content" data-id={shipping.customerCode}>
                                         <div className="collection-object-item-content-details">郵便番号</div>
                                         <div className="collection-object-item-content-name">
                                             {editingFieldIndex.index === index && editingFieldIndex.field === "postalCode" ? (
@@ -311,13 +311,13 @@ export const CustomerShippingCollectionAddListView: React.FC<CustomerShippingCol
                                                     autoFocus
                                                 />
                                             ) : (
-                                                <span onClick={() => handleFieldClick(index, "postalCode", shipping.shippingAddress.postalCode.value)}>
-                                                    {shipping.shippingAddress.postalCode.value}
+                                                <span onClick={() => handleFieldClick(index, "postalCode", shipping.postalCode)}>
+                                                    {shipping.postalCode}
                                                 </span>
                                             )}
                                         </div>
                                     </div>
-                                    <div className="collection-object-item-content" data-id={shipping.shippingCode.customerCode.code}>
+                                    <div className="collection-object-item-content" data-id={shipping.customerCode}>
                                         <div className="collection-object-item-content-details">出荷先住所１</div>
                                         <div className="collection-object-item-content-name">
                                             {editingFieldIndex.index === index && editingFieldIndex.field === "address1" ? (
@@ -329,13 +329,13 @@ export const CustomerShippingCollectionAddListView: React.FC<CustomerShippingCol
                                                     autoFocus
                                                 />
                                             ) : (
-                                                <span onClick={() => handleFieldClick(index, "address1", shipping.shippingAddress.address1)}>
-                                                    {shipping.shippingAddress.address1}
+                                                <span onClick={() => handleFieldClick(index, "address1", shipping.address1)}>
+                                                    {shipping.address1}
                                                 </span>
                                             )}
                                         </div>
                                     </div>
-                                    <div className="collection-object-item-content" data-id={shipping.shippingCode.customerCode.code}>
+                                    <div className="collection-object-item-content" data-id={shipping.customerCode}>
                                         <div className="collection-object-item-content-details">出荷先住所２</div>
                                         <div className="collection-object-item-content-name">
                                             {editingFieldIndex.index === index && editingFieldIndex.field === "address2" ? (
@@ -347,13 +347,13 @@ export const CustomerShippingCollectionAddListView: React.FC<CustomerShippingCol
                                                     autoFocus
                                                 />
                                             ) : (
-                                                <span onClick={() => handleFieldClick(index, "address2", shipping.shippingAddress.address2)}>
-                                                    {shipping.shippingAddress.address2}
+                                                <span onClick={() => handleFieldClick(index, "address2", shipping.address2)}>
+                                                    {shipping.address2}
                                                 </span>
                                             )}
                                         </div>
                                     </div>
-                                    <div className="collection-object-item-actions" data-id={shipping.shippingCode.customerCode.code}>
+                                    <div className="collection-object-item-actions" data-id={shipping.customerCode}>
                                         <button className="action-button" onClick={() => handleDeleteShipping(shipping)}>
                                             削除
                                         </button>
