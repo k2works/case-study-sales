@@ -49,8 +49,7 @@ export const PartnerListSingle: React.FC = () => {
             setMessage(isEditing ? "取引先を更新しました。" : "取引先を作成しました。");
             handleCloseModal();
         } catch (error: unknown) {
-            const errorMessage = error instanceof Error ? error.message : String(error);
-            showErrorMessage(`取引先の作成または更新に失敗しました: ${errorMessage}`, setError);
+            showErrorMessage(error, setError, "取引先の作成または更新に失敗しました");
         }
     };
 

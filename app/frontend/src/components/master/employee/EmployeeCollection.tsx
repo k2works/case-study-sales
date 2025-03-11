@@ -54,8 +54,7 @@ export const EmployeeCollection: React.FC = () => {
             await fetchEmployees.load();
             setMessage("社員を削除しました。");
         } catch (error: unknown) {
-            const errorMessage = error instanceof Error ? error.message : String(error);
-            showErrorMessage(`社員の削除に失敗しました: ${errorMessage}`, setError);
+            showErrorMessage(error, setError, "社員の削除に失敗しました");
         }
     };
 
@@ -95,8 +94,7 @@ export const EmployeeCollection: React.FC = () => {
             await fetchEmployees.load();
             setMessage("選択した社員を削除しました。");
         } catch (error: unknown) {
-            const errorMessage = error instanceof Error ? error.message : String(error);
-            showErrorMessage(`社員の削除に失敗しました: ${errorMessage}`, setError);
+            showErrorMessage(error, setError, "社員の削除に失敗しました");
         }
     }
 

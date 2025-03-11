@@ -44,8 +44,7 @@ export const VendorSingle: React.FC = () => {
             setMessage(isEditing ? "仕入先を更新しました。" : "仕入先を作成しました。");
             handleCloseModal();
         } catch (error: unknown) {
-            const errorMessage = error instanceof Error ? error.message : String(error);
-            showErrorMessage(`仕入先の作成または更新に失敗しました: ${errorMessage}`, setError);
+            showErrorMessage(error, setError, "仕入先の作成または更新に失敗しました");
         }
     };
 

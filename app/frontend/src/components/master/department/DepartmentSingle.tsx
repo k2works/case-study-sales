@@ -85,21 +85,8 @@ export const DepartmentSingle: React.FC = () => {
             }
             handleCloseModal();
         } catch (error: unknown) {
-            let errorMessage: string;
-
-            if (error && typeof error === "object" && "message" in error) {
-                // error がオブジェクトで message プロパティを持つ場合
-                errorMessage = (error as { message: string }).message;
-            } else if (error instanceof Error) {
-                // Error クラスのインスタンスの場合
-                errorMessage = error.message;
-            } else {
-                // それ以外の場合は未知のエラーとして扱う
-                errorMessage = '不明なエラーが発生しました';
-            }
-
             // エラーを表示する処理
-            showErrorMessage(`部門の作成に失敗しました: ${errorMessage}`, setError);
+            showErrorMessage(error, setError, "部門の作成に失敗しました");
         }
     }
 

@@ -54,8 +54,7 @@ export const PartnerGroupCollection: React.FC = () => {
             await fetchPartnerGroups.load();
             setMessage("取引先グループを削除しました。");
         } catch (error: unknown) {
-            const errorMessage = error instanceof Error ? error.message : String(error);
-            showErrorMessage(`取引先グループの削除に失敗しました: ${errorMessage}`, setError);
+            showErrorMessage(error, setError, "取引先グループの削除に失敗しました");
         }
     };
 
@@ -93,11 +92,7 @@ export const PartnerGroupCollection: React.FC = () => {
             await fetchPartnerGroups.load();
             setMessage("選択した取引先グループを削除しました。");
         } catch (error: unknown) {
-            const errorMessage = error instanceof Error ? error.message : String(error);
-            showErrorMessage(
-                `選択した取引先グループの削除に失敗しました: ${errorMessage}`,
-                setError
-            );
+            showErrorMessage(error, setError, "選択した取引先グループの削除に失敗しました");
         }
     };
 

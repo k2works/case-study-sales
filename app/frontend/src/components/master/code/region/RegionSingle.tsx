@@ -55,8 +55,7 @@ export const RegionSingle: React.FC = () => {
             }
             handleCloseModal();
         } catch (error: unknown) {
-            const errorMessage = error instanceof Error ? error.message : String(error);
-            showErrorMessage(`地域の作成に失敗しました: ${errorMessage}`, setError);
+            showErrorMessage(error, setError, "地域の作成に失敗しました");
         }
     };
     return (

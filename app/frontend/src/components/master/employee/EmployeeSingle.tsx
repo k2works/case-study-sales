@@ -68,8 +68,7 @@ export const EmployeeSingle: React.FC = () => {
             }
             handleCloseModal();
         } catch (error: unknown) {
-            const errorMessage = error instanceof Error ? error.message : String(error);
-            showErrorMessage(`社員の作成に失敗しました: ${errorMessage}`, setError);
+            showErrorMessage(error, setError, "社員の作成に失敗しました");
         }
     };
 

@@ -49,8 +49,7 @@ export const PartnerGroupSingle: React.FC = () => {
             setMessage(isEditing ? "取引先グループを更新しました。" : "取引先グループを作成しました。");
             handleCloseModal();
         } catch (error: unknown) {
-            const errorMessage = error instanceof Error ? error.message : String(error);
-            showErrorMessage(`取引先グループの作成または更新に失敗しました: ${errorMessage}`, setError);
+            showErrorMessage(error, setError, "取引先グループの作成または更新に失敗しました");
         }
     };
 

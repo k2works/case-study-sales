@@ -53,8 +53,7 @@ export const VendorCollection: React.FC = () => {
             await fetchVendors.load();
             setMessage("仕入先を削除しました。");
         } catch (error: unknown) {
-            const errorMessage = error instanceof Error ? error.message : String(error);
-            showErrorMessage(`仕入先の削除に失敗しました: ${errorMessage}`, setError);
+            showErrorMessage(error, setError, "仕入先の削除に失敗しました");
         }
     };
     const handleCheckVendor = (vendor: VendorType) => {
@@ -89,8 +88,7 @@ export const VendorCollection: React.FC = () => {
             await fetchVendors.load();
             setMessage("選択した仕入先を削除しました。");
         } catch (error: unknown) {
-            const errorMessage = error instanceof Error ? error.message : String(error);
-            showErrorMessage(`選択した仕入先の削除に失敗しました: ${errorMessage}`, setError);
+            showErrorMessage(error, setError, "選択した仕入先の削除に失敗しました");
         }
     }
     return (

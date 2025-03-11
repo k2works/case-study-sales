@@ -53,8 +53,7 @@ export const PartnerListCollection: React.FC = () => {
             await fetchPartners.load();
             setMessage("取引先を削除しました。");
         } catch (error: unknown) {
-            const errorMessage = error instanceof Error ? error.message : String(error);
-            showErrorMessage(`取引先の削除に失敗しました: ${errorMessage}`, setError);
+            showErrorMessage(error, setError, "取引先の削除に失敗しました");
         }
     };
 
@@ -91,8 +90,7 @@ export const PartnerListCollection: React.FC = () => {
             await fetchPartners.load();
             setMessage("選択した取引先を削除しました。");
         } catch (error: unknown) {
-            const errorMessage = error instanceof Error ? error.message : String(error);
-            showErrorMessage(`選択した取引先の削除に失敗しました: ${errorMessage}`, setError);
+            showErrorMessage(error, setError, "選択した取引先の削除に失敗しました");
         }
     }
 

@@ -1,6 +1,45 @@
-export const showErrorMessage = (error: string, callback: (error: string) => void) => {
-    console.error(error);
-    callback(error);
+/**
+ * エラーオブジェクトからエラーメッセージを抽出する
+ * @param error エラーオブジェクト
+ * @returns エラーメッセージ
+ */
+export const extractErrorMessage = (error: unknown): string => {
+    let errorMessage: string;
+
+    if (error && typeof error === "object" && "message" in error) {
+        // error がオブジェクトで message プロパティを持つ場合
+        errorMessage = (error as { message: string }).message;
+    } else if (error instanceof Error) {
+        // Error クラスのインスタンスの場合
+        errorMessage = error.message;
+    } else {
+        // それ以外の場合は未知のエラーとして扱う
+        errorMessage = '不明なエラーが発生しました';
+    }
+
+    return errorMessage;
+};
+
+/**
+ * エラーメッセージを表示する
+ * @param error エラーメッセージまたはエラーオブジェクト
+ * @param callback エラーメッセージを処理するコールバック関数
+ * @param prefix エラーメッセージの接頭辞（オプション）
+ */
+export const showErrorMessage = (error: string | unknown, callback: (error: string) => void, prefix?: string) => {
+    let errorMessage: string;
+
+    if (typeof error === 'string') {
+        errorMessage = error;
+    } else {
+        errorMessage = extractErrorMessage(error);
+        if (prefix) {
+            errorMessage = `${prefix}: ${errorMessage}`;
+        }
+    }
+
+    console.error(errorMessage);
+    callback(errorMessage);
 };
 
 export const convertToDateInputFormat = (dateString: string): string => {
@@ -53,4 +92,3 @@ export const toISOStringLocal = (date: Date): string => {
 
     return `${year}-${month}-${day}T${hour}:${min}:${sec}`;
 }
-
