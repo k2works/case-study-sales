@@ -47,7 +47,7 @@ public class VendorResource {
                 .vendorContactName(vendor.getVendorContactName())
                 .vendorDepartmentName(vendor.getVendorDepartmentName())
                 .vendorPostalCode(vendor.getVendorAddress().getPostalCode().getValue())
-                .vendorPrefecture(vendor.getVendorAddress().getPrefecture().getRegion())
+                .vendorPrefecture(vendor.getVendorAddress().getPrefecture().name())
                 .vendorAddress1(vendor.getVendorAddress().getAddress1())
                 .vendorAddress2(vendor.getVendorAddress().getAddress2())
                 .vendorPhoneNumber(vendor.getVendorPhoneNumber().getValue())

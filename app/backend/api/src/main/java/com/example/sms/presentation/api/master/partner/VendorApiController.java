@@ -8,6 +8,7 @@ import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
 import com.example.sms.service.BusinessException;
+import com.example.sms.service.PageNationService;
 import com.example.sms.service.master.partner.VendorCriteria;
 import com.example.sms.service.master.partner.VendorService;
 import com.example.sms.service.system.audit.AuditAnnotation;
@@ -27,10 +28,12 @@ import org.springframework.web.bind.annotation.*;
 @PreAuthorize("hasRole('ADMIN')")
 public class VendorApiController {
     private final VendorService vendorService;
+    private final PageNationService pageNationService;
     private final Message message;
 
-    public VendorApiController(VendorService vendorService, Message message) {
+    public VendorApiController(VendorService vendorService, PageNationService pageNationService, Message message) {
         this.vendorService = vendorService;
+        this.pageNationService = pageNationService;
         this.message = message;
     }
 
@@ -41,7 +44,8 @@ public class VendorApiController {
                                     @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
             PageNation.startPage(page, pageSize);
-            PageInfo<Vendor> result = vendorService.selectAllWithPageInfo();
+            PageInfo<Vendor> pageInfo = vendorService.selectAllWithPageInfo();
+            PageInfo<VendorResource> result = pageNationService.getPageInfo(pageInfo, VendorResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
@@ -57,7 +61,7 @@ public class VendorApiController {
             if (result == null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.vendor.not.exist")));
             }
-            return ResponseEntity.ok(result);
+            return ResponseEntity.ok(VendorResource.from(result));
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
@@ -120,7 +124,8 @@ public class VendorApiController {
         try {
             PageNation.startPage(page, pageSize);
             VendorCriteria criteria = convertToCriteria(criteriaResource);
-            PageInfo<Vendor> result = vendorService.searchWithPageInfo(criteria);
+            PageInfo<Vendor> entity = vendorService.searchWithPageInfo(criteria);
+            PageInfo<VendorResource> result = pageNationService.getPageInfo(entity, VendorResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));

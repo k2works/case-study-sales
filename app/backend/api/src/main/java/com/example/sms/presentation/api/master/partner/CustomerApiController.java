@@ -8,6 +8,7 @@ import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
 import com.example.sms.service.BusinessException;
+import com.example.sms.service.PageNationService;
 import com.example.sms.service.master.partner.CustomerCriteria;
 import com.example.sms.service.master.partner.CustomerService;
 import com.example.sms.service.system.audit.AuditAnnotation;
@@ -30,12 +31,13 @@ import java.util.function.Function;
 @Tag(name = "Customer", description = "顧客管理")
 @PreAuthorize("hasRole('ADMIN')")
 public class CustomerApiController {
-
     private final CustomerService customerService;
+    private final PageNationService pageNationService;
     private final Message message;
 
-    public CustomerApiController(CustomerService customerService, Message message) {
+    public CustomerApiController(CustomerService customerService, PageNationService pageNationService, Message message) {
         this.customerService = customerService;
+        this.pageNationService = pageNationService;
         this.message = message;
     }
 
@@ -47,7 +49,8 @@ public class CustomerApiController {
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
             PageNation.startPage(page, pageSize);
-            PageInfo<Customer> result = customerService.selectAllWithPageInfo();
+            PageInfo<Customer> pageInfo = customerService.selectAllWithPageInfo();
+            PageInfo<CustomerResource> result = pageNationService.getPageInfo(pageInfo, CustomerResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
@@ -62,7 +65,7 @@ public class CustomerApiController {
             if (result == null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.customer.not.exist")));
             }
-            return ResponseEntity.ok(result);
+            return ResponseEntity.ok(CustomerResource.from(result));
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
@@ -127,7 +130,8 @@ public class CustomerApiController {
         try {
             PageNation.startPage(page, pageSize);
             CustomerCriteria criteria = convertToCriteria(criteriaResource);
-            PageInfo<Customer> result = customerService.searchWithPageInfo(criteria);
+            PageInfo<Customer> entity = customerService.searchWithPageInfo(criteria);
+            PageInfo<CustomerResource> result = pageNationService.getPageInfo(entity, CustomerResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));

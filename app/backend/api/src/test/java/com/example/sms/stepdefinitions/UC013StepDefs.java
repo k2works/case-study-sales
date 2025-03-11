@@ -7,7 +7,6 @@ import com.example.sms.domain.model.master.partner.invoice.ClosingDate;
 import com.example.sms.domain.model.master.partner.invoice.PaymentDay;
 import com.example.sms.domain.model.master.partner.invoice.PaymentMethod;
 import com.example.sms.domain.model.master.partner.invoice.PaymentMonth;
-import com.example.sms.domain.model.master.partner.vendor.Vendor;
 import com.example.sms.domain.model.master.partner.vendor.VendorType;
 import com.example.sms.presentation.api.master.partner.PartnerResource;
 import com.example.sms.presentation.api.master.partner.VendorResource;
@@ -70,9 +69,9 @@ public class UC013StepDefs extends SpringAcceptanceTest {
         objectMapper.registerModule(new JavaTimeModule());
         if (list.equals("仕入先一覧")) {
             String result = latestResponse.getBody();
-            ListResponse<Vendor> response = objectMapper.readValue(result, new TypeReference<>() {
+            ListResponse<VendorResource> response = objectMapper.readValue(result, new TypeReference<>() {
             });
-            List<Vendor> actual = response.getList();
+            List<VendorResource> actual = response.getList();
             assertEquals(3, actual.size()); // 登録済みの仕入先数に応じて変更してください
         }
     }
@@ -143,8 +142,8 @@ public class UC013StepDefs extends SpringAcceptanceTest {
     public void canFindVendor(String name) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         String result = latestResponse.getBody();
-        Vendor vendor = objectMapper.readValue(result, Vendor.class);
-        assertEquals(name, vendor.getVendorName().getValue().getName());
+        VendorResource vendor = objectMapper.readValue(result, VendorResource.class);
+        assertEquals(name, vendor.getVendorName());
     }
 
     @かつ(":UC013 仕入先コード {string} の情報を更新する \\(名前 {string})")
@@ -193,9 +192,9 @@ public class UC013StepDefs extends SpringAcceptanceTest {
     public void vendorSearchResultListFetch() throws JsonProcessingException {
         String result = latestResponse.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
-        ListResponse<Vendor> response = objectMapper.readValue(result, new TypeReference<>() {
+        ListResponse<VendorResource> response = objectMapper.readValue(result, new TypeReference<>() {
         });
-        List<Vendor> vendorList = response.getList();
+        List<VendorResource> vendorList = response.getList();
         assertEquals(3, vendorList.size()); // 検索結果の期待する件数を適宜変更してください
     }
 }
