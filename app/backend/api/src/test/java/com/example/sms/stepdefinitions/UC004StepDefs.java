@@ -1,7 +1,6 @@
 package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
-import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.presentation.api.master.employee.EmployeeCriteriaResource;
 import com.example.sms.presentation.api.master.employee.EmployeeResource;
 import com.example.sms.stepdefinitions.utils.ListResponse;
@@ -81,8 +80,10 @@ public class UC004StepDefs extends SpringAcceptanceTest {
         String url = EMPLOYEE_API_URL;
         EmployeeResource resource = EmployeeResource.builder()
                 .empCode(code)
-                .empName(name)
-                .empNameKana(nameKana)
+                .empFirstName(name.split(" ")[0])
+                .empLastName(name.split(" ")[1])
+                .empFirstNameKana(nameKana.split(" ")[0])
+                .empLastNameKana(nameKana.split(" ")[1])
                 .tel(null)
                 .fax(null)
                 .departmentCode("10000")
@@ -115,8 +116,10 @@ public class UC004StepDefs extends SpringAcceptanceTest {
 
         EmployeeResource resource = EmployeeResource.builder()
                 .empCode(code)
-                .empName(name)
-                .empNameKana(nameKana)
+                .empFirstName(name.split(" ")[0])
+                .empLastName(name.split(" ")[1])
+                .empFirstNameKana(nameKana.split(" ")[0])
+                .empLastNameKana(nameKana.split(" ")[1])
                 .tel(null)
                 .fax(null)
                 .departmentCode("10000")
@@ -136,7 +139,7 @@ public class UC004StepDefs extends SpringAcceptanceTest {
 
         String result = latestResponse.getBody();
         EmployeeResource employee = objectMapper.readValue(result, EmployeeResource.class);
-        assertEquals(name, employee.getEmpName());
+        assertEquals(name, employee.getEmpFirstName() + " " + employee.getEmpLastName());
     }
     @かつ(":UC004 社員コード {string} を削除する")
     public void toDelete(String code) throws IOException {

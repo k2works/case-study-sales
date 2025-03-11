@@ -169,8 +169,8 @@ public class EmployeeApiController {
 
         Employee employee = Employee.of(
                 resource.getEmpCode(),
-                resource.getEmpName(),
-                resource.getEmpNameKana(),
+                resource.getEmpFirstName() + " " + resource.getEmpLastName(),
+                resource.getEmpFirstName() + " " + resource.getEmpLastName(),
                 resource.getTel(),
                 resource.getFax(),
                 resource.getOccuCode());

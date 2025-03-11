@@ -151,8 +151,8 @@ public class DepartmentApiController {
                         .filter(EmployeeResource::isAddFlag)
                         .map(employeeResource -> Employee.of(
                                 employeeResource.getEmpCode(),
-                                employeeResource.getEmpName(),
-                                employeeResource.getEmpNameKana(),
+                                employeeResource.getEmpFirstName() + " " + employeeResource.getEmpLastName(),
+                                employeeResource.getEmpFirstNameKana() + " " + employeeResource.getEmpLastNameKana(),
                                 employeeResource.getTel(),
                                 employeeResource.getFax(),
                                 employeeResource.getOccuCode()
@@ -166,8 +166,8 @@ public class DepartmentApiController {
                         .filter(EmployeeResource::isDeleteFlag)
                         .map(employeeResource -> Employee.of(
                                 employeeResource.getEmpCode(),
-                                employeeResource.getEmpName(),
-                                employeeResource.getEmpNameKana(),
+                                employeeResource.getEmpFirstName() + " " + employeeResource.getEmpLastName(),
+                                employeeResource.getEmpFirstNameKana() + " " + employeeResource.getEmpLastNameKana(),
                                 employeeResource.getTel(),
                                 employeeResource.getFax(),
                                 employeeResource.getOccuCode()
