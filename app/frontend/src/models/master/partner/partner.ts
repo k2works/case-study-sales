@@ -36,17 +36,6 @@ export enum MiscellaneousEnumType {
     対象外 = "対象外", 対象 = "対象"
 }
 
-// Dummy types for backward compatibility
-export type PartnerCodeType = {
-    value: string;
-};
-
-export type PartnerNameType = {
-    name: string;
-    nameKana: string;
-};
-
-
 export type PartnerCriteriaType = {
     partnerCode?: string; // 取引先コード
     partnerName?: string; // 取引先名
@@ -67,24 +56,6 @@ export type PartnerFetchType = {
     list: PartnerType[]; // 取引先リスト
 } & PageNationType;
 
-export type PartnerResourceType = {
-    partnerCode: string; // 取引先コード
-    partnerName: string; // 取引先名
-    partnerNameKana: string; // 取引先名カナ
-    vendorType: VendorEnumType; // 仕入先区分 (Enum型)
-    postalCode: string; // 郵便番号
-    prefecture: string; // 都道府県
-    address1: string; // 住所1
-    address2: string; // 住所2
-    tradeProhibitedFlag: TradeProhibitedFlagEnumType; // 取引禁止フラグ (Enum型)
-    miscellaneousType: MiscellaneousEnumType; // 雑区分 (Enum型)
-    partnerGroupCode: string; // 取引先グループコード
-    creditLimit: number; // 与信限度額
-    temporaryCreditIncrease: number; // 与信一時増加枠
-    customers: CustomerType[]; // 取引先顧客リスト
-    vendors: VendorType[]; // 取引先仕入先リスト
-};
-
 export type PartnerCriteriaResourceType = {
     partnerCode?: string; // 取引先コード
     partnerName?: string; // 取引先名
@@ -101,7 +72,7 @@ export type PartnerCriteriaResourceType = {
     temporaryCreditIncrease?: number; // 与信一時増加枠
 };
 
-export const mapToPartnerResource = (partner: PartnerType): PartnerResourceType => {
+export const mapToPartnerResource = (partner: PartnerType): PartnerType => {
     return {
         partnerCode: partner.partnerCode,
         partnerName: partner.partnerName,
@@ -117,7 +88,8 @@ export const mapToPartnerResource = (partner: PartnerType): PartnerResourceType 
         creditLimit: partner.creditLimit,
         temporaryCreditIncrease: partner.temporaryCreditIncrease,
         customers: partner.customers,
-        vendors: partner.vendors
+        vendors: partner.vendors,
+        checked: partner.checked
     }
 }
 

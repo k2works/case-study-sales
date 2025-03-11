@@ -6,11 +6,6 @@ export type PartnerGroupType = {
     checked: boolean; // チェック状態
 };
 
-export type PartnerGroupResource = {
-    partnerGroupCode: string; // 取引先グループコード
-    partnerGroupName: string; // 取引先グループ名
-};
-
 export type PartnerGroupCriteriaType = {
     partnerGroupCode?: string; // 取引先グループコード（オプション）
     partnerGroupName?: string; // 取引先グループ名（オプション）
@@ -25,10 +20,11 @@ export type PartnerGroupFetchType = {
     list: PartnerGroupType[]; // 取引先グループリスト
 } & PageNationType;
 
-export const mapToPartnerGroupResource = (type: PartnerGroupType): PartnerGroupResource => {
+export const mapToPartnerGroupResource = (type: PartnerGroupType): PartnerGroupType => {
     return {
         partnerGroupCode: type.partnerGroupCode,
         partnerGroupName: type.partnerGroupName,
+        checked: type.checked
     }
 }
 

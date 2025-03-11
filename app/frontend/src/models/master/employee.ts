@@ -25,23 +25,6 @@ export type EmployeeFetchType = {
     list: EmployeeType[];
 } & PageNationType;
 
-export type EmployeeResourceType = {
-    empCode: string;
-    empFirstName: string;
-    empLastName: string;
-    empFirstNameKana: string;
-    empLastNameKana: string;
-    tel: string;
-    fax: string;
-    occuCode: string;
-    departmentCode: string;
-    departmentStartDate: string;
-    departmentName: string;
-    userId: string;
-    addFlag: boolean;
-    deleteFlag: boolean;
-}
-
 export type EmployeeCriteriaType = {
     empCode?: string;
     empNameFirst?: string;
@@ -53,7 +36,7 @@ export type EmployeeCriteriaType = {
     departmentCode?: string;
 }
 
-export const mapToEmployeeResource = (employee: EmployeeType): EmployeeResourceType => {
+export const mapToEmployeeResource = (employee: EmployeeType): EmployeeType => {
     return {
         empCode: employee.empCode,
         empFirstName: employee.empFirstName,
@@ -68,7 +51,9 @@ export const mapToEmployeeResource = (employee: EmployeeType): EmployeeResourceT
         departmentName: employee.departmentName,
         userId: employee.userId,
         addFlag: employee.addFlag,
-        deleteFlag: employee.deleteFlag
+        deleteFlag: employee.deleteFlag,
+        loginPassword: employee.loginPassword,
+        approvalCode: employee.approvalCode,
     };
 };
 

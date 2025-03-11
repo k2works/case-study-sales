@@ -1,4 +1,4 @@
-import {EmployeeResourceType, EmployeeType} from "./employee.ts";
+import {EmployeeType} from "./employee.ts";
 import {PageNationType} from "../../views/application/PageNation.tsx";
 import {toISOStringWithTimezone} from "../../components/application/utils.ts";
 
@@ -19,18 +19,6 @@ export type DepartmentFetchType = {
     list: DepartmentType[];
 } & PageNationType;
 
-export type DepartmentResourceType = {
-    departmentCode: string;
-    startDate: string;
-    endDate: string;
-    departmentName: string;
-    layer: string;
-    path: string;
-    lowerType: string;
-    slitYn: string;
-    employees: EmployeeResourceType[];
-}
-
 export type DepartmentCriteriaType = {
     departmentCode?: string;
     departmentName?: string;
@@ -50,13 +38,13 @@ export const SlitYnType = {
 }
 export type SlitYnType = typeof SlitYnType[keyof typeof SlitYnType];
 
-export const mapToDepartmentResource = (department: DepartmentType): DepartmentResourceType => {
+export const mapToDepartmentResource = (department: DepartmentType): DepartmentType => {
     return {
         departmentCode: department.departmentCode,
         startDate: toISOStringWithTimezone(new Date(department.startDate)),
         endDate: toISOStringWithTimezone(new Date(department.endDate)),
         departmentName: department.departmentName,
-        layer: department.layer.toString(),
+        layer: department.layer,
         path: department.path,
         lowerType: department.lowerType.toString(),
         slitYn: department.slitYn.toString(),
@@ -74,7 +62,10 @@ export const mapToDepartmentResource = (department: DepartmentType): DepartmentR
             departmentName: department.departmentName,
             userId: employee.userId,
             addFlag: employee.addFlag,
-            deleteFlag: employee.deleteFlag
+            deleteFlag: employee.deleteFlag,
+            loginPassword: employee.loginPassword,
+            checked: employee.checked,
+            approvalCode: employee.approvalCode
         }))
     };
 };

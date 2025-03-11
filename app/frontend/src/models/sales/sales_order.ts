@@ -55,23 +55,6 @@ export type SalesOrderFetchType = {
     list: SalesOrderType[];
 } & PageNationType;
 
-export type SalesOrderResourceType = {
-    orderNumber: string;
-    orderDate: string;
-    departmentCode: string;
-    departmentStartDate: string;
-    customerCode: string;
-    customerBranchNumber: number;
-    employeeCode: string;
-    desiredDeliveryDate: string;
-    customerOrderNumber: string;
-    warehouseCode: string;
-    totalOrderAmount: number;
-    totalConsumptionTax: number;
-    remarks: string;
-    salesOrderLines: SalesOrderLineType[];
-}
-
 export type SalesOrderCriteriaType = {
     orderNumber?: string;
     orderDate?: string;
@@ -86,7 +69,7 @@ export type SalesOrderCriteriaType = {
     remarks?: string;
 }
 
-export const mapToSalesOrderResource = (salesOrder: SalesOrderType): SalesOrderResourceType => {
+export const mapToSalesOrderResource = (salesOrder: SalesOrderType): SalesOrderType => {
     return {
         orderNumber: salesOrder.orderNumber,
         orderDate: toISOStringLocal(new Date(salesOrder.orderDate)),

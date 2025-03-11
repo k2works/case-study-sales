@@ -1,8 +1,6 @@
 import {PageNationType} from "../../../views/application/PageNation.tsx";
 import {PriceType, QuantityType} from "../shared.ts";
 
-
-
 export type SubstituteProductType = {
     productCode: string;
     substituteProductCode: string;
@@ -73,8 +71,6 @@ export type ProductFetchType = {
     list: ProductType[];
 } & PageNationType;
 
-export type ProductResourceType = ProductType;
-
 export type ProductCriteriaType = {
     productCode?: string;
     productFormalName?: string;
@@ -89,7 +85,7 @@ export type ProductCriteriaType = {
     stockAllocationType?: string;
 }
 
-export const mapToProductResource = (product: ProductType): ProductResourceType => {
+export const mapToProductResource = (product: ProductType): ProductType => {
     return {
         ...product
     };
