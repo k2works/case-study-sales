@@ -49,7 +49,8 @@ export const DepartmentSelectModal: React.FC<DepartmentSelectModalProps> = ({ ty
                 handleSelect={(department: DepartmentType) => {
                     setNewEmployee({
                         ...newEmployee,
-                        department: department
+                        departmentCode: department.departmentCode,
+                        departmentStartDate: department.startDate,
                     });
                     setDepartmentModalIsOpen(false);
                 }}

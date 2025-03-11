@@ -1,19 +1,21 @@
-import {DepartmentType} from './department.ts';
 import {toISOStringWithTimezone} from "../../components/application/utils.ts";
 import {PageNationType} from "../../views/application/PageNation.tsx";
-import {UserAccountType} from "../system/user.ts";
 
 export type EmployeeType = {
     empCode: string;
-    empName: string;
-    empNameKana: string;
+    empFirstName: string;
+    empLastName: string;
+    empFirstNameKana: string;
+    empLastNameKana: string;
     loginPassword: string;
     tel: string;
     fax: string;
     occuCode: string;
     approvalCode: string;
-    department: DepartmentType;
-    user: UserAccountType;
+    departmentCode: string;
+    departmentStartDate: string;
+    departmentName: string;
+    userId: string;
     addFlag: boolean;
     deleteFlag: boolean;
     checked?: boolean;
@@ -25,13 +27,16 @@ export type EmployeeFetchType = {
 
 export type EmployeeResourceType = {
     empCode: string;
-    empName: string;
-    empNameKana: string;
+    empFirstName: string;
+    empLastName: string;
+    empFirstNameKana: string;
+    empLastNameKana: string;
     tel: string;
     fax: string;
     occuCode: string;
     departmentCode: string;
     departmentStartDate: string;
+    departmentName: string;
     userId: string;
     addFlag: boolean;
     deleteFlag: boolean;
@@ -51,14 +56,17 @@ export type EmployeeCriteriaType = {
 export const mapToEmployeeResource = (employee: EmployeeType): EmployeeResourceType => {
     return {
         empCode: employee.empCode,
-        empName: employee.empName,
-        empNameKana: employee.empNameKana,
+        empFirstName: employee.empFirstName,
+        empLastName: employee.empLastName,
+        empFirstNameKana: employee.empFirstNameKana,
+        empLastNameKana: employee.empLastNameKana,
         tel: employee.tel,
         fax: employee.fax,
         occuCode: employee.occuCode,
-        departmentCode: employee.department?.departmentCode,
-        departmentStartDate: toISOStringWithTimezone(new Date(employee.department?.startDate)),
-        userId: employee.user?.userId.value,
+        departmentCode: employee.departmentCode,
+        departmentStartDate: toISOStringWithTimezone(new Date(employee.departmentStartDate)),
+        departmentName: employee.departmentName,
+        userId: employee.userId,
         addFlag: employee.addFlag,
         deleteFlag: employee.deleteFlag
     };

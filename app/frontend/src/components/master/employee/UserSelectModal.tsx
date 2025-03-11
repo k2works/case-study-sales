@@ -33,7 +33,7 @@ export const UserSelectModal: React.FC = () => {
                     handleSelect={(user) => {
                         setNewEmployee({
                             ...newEmployee,
-                            user: user
+                            userId: user.userId.value,
                         });
                         setUserModalIsOpen(false);
                     }}

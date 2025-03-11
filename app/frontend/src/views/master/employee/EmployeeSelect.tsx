@@ -37,7 +37,7 @@ export const EmployeeCollectionSelectView: React.FC<EmployeeCollectionSelectProp
                                     <div className="collection-object-item-content" data-id={employee.empCode}>
                                         <div className="collection-object-item-content-details">所属部門</div>
                                         <div
-                                            className="collection-object-item-content-name">{employee.department?.departmentName}</div>
+                                            className="collection-object-item-content-name">{employee.departmentCode}</div>
                                     </div>
                                     <div className="collection-object-item-content" data-id={employee.empCode}>
                                         <div className="collection-object-item-content-details">社員コード</div>
@@ -47,7 +47,7 @@ export const EmployeeCollectionSelectView: React.FC<EmployeeCollectionSelectProp
                                     <div className="collection-object-item-content" data-id={employee.empCode}>
                                         <div className="collection-object-item-content-details">名前</div>
                                         <div className="collection-object-item-content-name">
-                                            {employee.empNameKana}
+                                            {employee.empFirstName + ' ' + employee.empLastName}
                                         </div>
                                     </div>
                                     <div className="collection-object-item-actions" data-id={employee.empCode}>

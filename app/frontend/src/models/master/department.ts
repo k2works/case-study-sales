@@ -62,14 +62,17 @@ export const mapToDepartmentResource = (department: DepartmentType): DepartmentR
         slitYn: department.slitYn.toString(),
         employees: department.employees.map(employee => ({
             empCode: employee.empCode,
-            empName: employee.empName,
-            empNameKana: employee.empNameKana,
+            empFirstName: employee.empFirstName,
+            empLastName: employee.empLastName,
+            empFirstNameKana: employee.empFirstNameKana,
+            empLastNameKana: employee.empLastNameKana,
             tel: employee.tel,
             fax: employee.fax,
             occuCode: employee.occuCode,
             departmentCode: department.departmentCode,
             departmentStartDate: toISOStringWithTimezone(new Date(department.startDate)),
-            userId: employee.user?.userId.value,
+            departmentName: department.departmentName,
+            userId: employee.userId,
             addFlag: employee.addFlag,
             deleteFlag: employee.deleteFlag
         }))

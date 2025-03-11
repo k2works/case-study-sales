@@ -12,36 +12,19 @@ import {useFetchEntities} from "../../../application/hooks.ts";
 export const useEmployee = () => {
     const initialEmployee: EmployeeType = {
         empCode: "",
-        empName: "",
-        empNameKana: "",
+        empFirstName: "",
+        empLastName: "",
+        empFirstNameKana: "",
+        empLastNameKana: "",
         loginPassword: "",
         tel: "",
         fax: "",
         occuCode: "",
         approvalCode: "",
-        department: {
-            departmentCode: "",
-            startDate: "",
-            endDate: "",
-            departmentName: "",
-            layer: 0,
-            path: "",
-            lowerType: LowerType.NO,
-            slitYn: SlitYnType.NO,
-            employees: [],
-            checked: false
-        },
-        user: {
-            userId: {value: ""},
-            name: {
-                firstName: "",
-                lastName: ""
-            },
-            password: {
-                value: ""
-            },
-            roleName: ""
-        },
+        departmentCode: "",
+        departmentStartDate: "",
+        departmentName: "",
+        userId: "",
         addFlag: false,
         deleteFlag: false,
         checked: false

@@ -23,10 +23,10 @@ const EmployeeListItem: React.FC<EmployeeListItemProps> = ({employee, onEdit, on
                     <div className="collection-object-item-content-details">{label}</div>
                     <div className="collection-object-item-content-name">
                         {label === '社員コード' ? employee.empCode :
-                            label === '社員名' ? employee.empName :
+                            label === '社員名' ? employee.empFirstName + ' ' + employee.empLastName :
                                 label === '電話番号' ? employee.tel :
                                     label === 'FAX番号' ? employee.fax :
-                                        employee.department?.departmentName}
+                                        employee.departmentName}
                     </div>
                 </div>
             ))}
@@ -167,7 +167,7 @@ export const EmployeeCollectionAddListView: React.FC<EmployeeCollectionAddListPr
                                     <div className="collection-object-item-content" data-id={employee.empCode}>
                                         <div className="collection-object-item-content-details">名前</div>
                                         <div className="collection-object-item-content-name">
-                                            {employee.empNameKana}
+                                            {employee.empFirstName + ' ' + employee.empLastName}
                                         </div>
                                     </div>
                                     <div className="collection-object-item-actions" data-id={employee.empCode}>

@@ -54,27 +54,51 @@ const Form: React.FC<EmployeeFormProps> = ({newEmployee, setNewEmployee, isEditi
                 disabled={isEditing}
             />
             <FormInput
-                label="社員名"
-                id="empName"
+                label="姓"
+                id="firstName"
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="社員名"
-                value={newEmployee.empName}
+                value={newEmployee.empFirstName}
                 onChange={(e) => setNewEmployee({
                     ...newEmployee,
-                    empName: e.target.value
+                    empFirstName: e.target.value
                 })}
             />
             <FormInput
-                label="社員名カナ"
-                id="empNameKana"
+                label="名"
+                id="lastName"
+                type="text"
+                className="single-view-content-item-form-item-input"
+                placeholder="社員名"
+                value={newEmployee.empLastName}
+                onChange={(e) => setNewEmployee({
+                    ...newEmployee,
+                    empLastName: e.target.value
+                })}
+            />
+            <FormInput
+                label="姓カナ"
+                id="firstNameKana"
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="社員名カナ"
-                value={newEmployee.empNameKana}
+                value={newEmployee.empFirstNameKana}
                 onChange={(e) => setNewEmployee({
                     ...newEmployee,
-                    empNameKana: e.target.value
+                    empFirstNameKana: e.target.value
+                })}
+            />
+            <FormInput
+                label="名カナ"
+                id="lastNameKana"
+                type="text"
+                className="single-view-content-item-form-item-input"
+                placeholder="社員名カナ"
+                value={newEmployee.empLastNameKana}
+                onChange={(e) => setNewEmployee({
+                    ...newEmployee,
+                    empLastNameKana: e.target.value
                 })}
             />
             <FormInput
@@ -119,13 +143,10 @@ const Form: React.FC<EmployeeFormProps> = ({newEmployee, setNewEmployee, isEditi
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="部門コード"
-                value={newEmployee.department?.departmentCode}
+                value={newEmployee.departmentCode}
                 onChange={(e) => setNewEmployee({
                     ...newEmployee,
-                    department: {
-                        ...newEmployee.department,
-                        departmentCode: e.target.value
-                    }
+                    departmentCode: e.target.value
                 })}
             />
             <FormInput
@@ -133,14 +154,11 @@ const Form: React.FC<EmployeeFormProps> = ({newEmployee, setNewEmployee, isEditi
                 id="departmentStartDate"
                 type="date"
                 className="single-view-content-item-form-item-input"
-                value={convertToDateInputFormat(newEmployee.department?.startDate)}
+                value={convertToDateInputFormat(newEmployee.departmentStartDate)}
                 placeholder="開始日"
                 onChange={(e) => setNewEmployee({
                     ...newEmployee,
-                    department: {
-                        ...newEmployee.department,
-                        startDate: e.target.value,
-                    }
+                    departmentStartDate: e.target.value
                 })}
             />
             <FormInput
@@ -149,10 +167,10 @@ const Form: React.FC<EmployeeFormProps> = ({newEmployee, setNewEmployee, isEditi
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="ユーザーID"
-                value={newEmployee.user?.userId.value}
+                value={newEmployee.userId}
                 onChange={(e) => setNewEmployee({
                     ...newEmployee,
-                    user: { ...newEmployee.user, userId: { value: e.target.value } }
+                    userId: e.target.value
                 })}
             />
         </div>

@@ -40,11 +40,11 @@ export const EmployeeSingle: React.FC = () => {
 
     const handleCreateOrUpdateEmployee = async () => {
         const validateEmployee = (): boolean => {
-            if (!newEmployee.empCode.trim() || !newEmployee.empName.trim()) {
+            if (!newEmployee.empCode.trim() || !newEmployee.empFirstName.trim() || !newEmployee.empLastName.trim()) {
                 setError("社員コード、社員名は必須項目です。");
                 return false;
             }
-            if (!newEmployee.department) {
+            if (!newEmployee.departmentCode) {
                 setError("部門は必須項目です。");
                 return false;
             }
