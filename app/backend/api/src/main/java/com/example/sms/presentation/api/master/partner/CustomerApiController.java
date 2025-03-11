@@ -1,11 +1,9 @@
 package com.example.sms.presentation.api.master.partner;
 
-import com.example.sms.domain.model.master.partner.customer.Customer;
-import com.example.sms.domain.model.master.partner.customer.CustomerBillingCategory;
-import com.example.sms.domain.model.master.partner.customer.CustomerCode;
-import com.example.sms.domain.model.master.partner.customer.CustomerType;
+import com.example.sms.domain.model.master.partner.customer.*;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType;
+import com.example.sms.domain.type.address.Address;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
@@ -20,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+import java.util.Optional;
 import java.util.function.Function;
 
 /**
@@ -166,7 +166,28 @@ public class CustomerApiController {
                 resource.getCustomerPaymentMethod2().getValue()
         );
 
-        return Customer.of(customer, resource.getShippings());
+        return Customer.of(
+                customer,
+                Optional.ofNullable(resource.getShippings())
+                        .orElse(Collections.emptyList())
+                        .stream()
+                        .map(this::convertToShipping)
+                        .toList()
+        );
+    }
+
+    private Shipping convertToShipping(ShippingResource shippingResource) {
+        return Shipping.of(
+                shippingResource.getShippingCode(),
+                shippingResource.getDestinationName(),
+                shippingResource.getRegionCode(),
+                Address.of(
+                        shippingResource.getShippingAddress().getPostalCode().getValue(),
+                        shippingResource.getShippingAddress().getPrefecture().name(),
+                        shippingResource.getShippingAddress().getAddress1(),
+                        shippingResource.getShippingAddress().getAddress2()
+                )
+        );
     }
 
     private CustomerCriteria convertToCriteria(CustomerCriteriaResource resource) {
