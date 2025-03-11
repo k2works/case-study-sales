@@ -1,5 +1,4 @@
 import {PageNationType} from "../../../views/application/PageNation.tsx";
-import {PartnerCodeType} from "./partner.ts";
 
 export type PartnerCategoryType = {
     partnerCategoryTypeCode: string; // 取引先分類種別コード
@@ -17,7 +16,7 @@ export type PartnerCategoryItemType = {
 
 export type PartnerCategoryAffiliationType = {
     partnerCategoryTypeCode: string; // 取引先分類種別コード
-    partnerCode: PartnerCodeType;    // 取引先コード
+    partnerCode: string;    // 取引先コード
     partnerCategoryItemCode: string; // 取引先分類コード
 };
 
@@ -70,7 +69,7 @@ export const mapToPartnerCategoryTypeResource = (partnerCategoryType: PartnerCat
                 partnerCategoryAffiliations: partnerCategoryItem.partnerCategoryAffiliations.map(partnerCategoryAffiliation => {
                     return {
                         partnerCategoryTypeCode: partnerCategoryAffiliation.partnerCategoryTypeCode,
-                        partnerCode: partnerCategoryAffiliation.partnerCode.value,
+                        partnerCode: partnerCategoryAffiliation.partnerCode,
                         partnerCategoryItemCode: partnerCategoryAffiliation.partnerCategoryItemCode,
                     }
                 })
