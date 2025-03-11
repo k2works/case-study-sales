@@ -52,8 +52,8 @@ export const CustomerSelectModal: React.FC<CustomerSelectModalProps> = ({ type }
                 handleSelect={(customer: CustomerType) => {
                     setNewSalesOrder({
                         ...newSalesOrder,
-                        customerCode: customer.customerCode.code.value,
-                        customerBranchNumber: customer.customerCode.branchNumber,
+                        customerCode: customer.customerCode,
+                        customerBranchNumber: customer.customerBranchNumber,
                     });
                     setCustomerModalIsOpen(false);
                 }}
@@ -79,7 +79,7 @@ export const CustomerSelectModal: React.FC<CustomerSelectModalProps> = ({ type }
                 handleSelect={(customer: CustomerType) => {
                     setSearchSalesOrderCriteria({
                         ...searchSalesOrderCriteria,
-                        customerCode: customer.customerCode.code.value,
+                        customerCode: customer.customerCode,
                     });
                     setCustomerSearchModalIsOpen(false);
                 }}

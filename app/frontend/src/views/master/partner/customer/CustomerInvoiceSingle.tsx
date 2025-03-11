@@ -41,144 +41,96 @@ const Form = ({ newCustomer, setNewCustomer }: FormProps) => {
             <FormSelect
                 id="closingDay1"
                 label="締請求1 締日"
-                value={newCustomer.invoice.closingInvoice1.closingDay}
+                value={newCustomer.customerClosingDay1}
                 options={ClosingDateEnumType}
                 onChange={(e) => {
                     setNewCustomer({
                         ...newCustomer,
-                        invoice: {
-                            ...newCustomer.invoice,
-                            closingInvoice1: {
-                                ...newCustomer.invoice.closingInvoice1,
-                                closingDay: e,
-                            },
-                        },
+                        customerClosingDay1: e,
                     });
                 }}
             />
             <FormSelect
                 id="paymentMonth1"
                 label="締請求1 支払月"
-                value={newCustomer.invoice.closingInvoice1.paymentMonth}
+                value={newCustomer.customerPaymentMonth1}
                 options={PaymentMonthEnumType}
                 onChange={(e) => {
                     setNewCustomer({
                         ...newCustomer,
-                        invoice: {
-                            ...newCustomer.invoice,
-                            closingInvoice1: {
-                                ...newCustomer.invoice.closingInvoice1,
-                                paymentMonth: e,
-                            },
-                        },
+                        customerPaymentMonth1: e,
                     });
                 }}
             />
             <FormSelect
                 id="paymentDay1"
                 label="締請求1 支払日"
-                value={newCustomer.invoice.closingInvoice1.paymentDay}
+                value={newCustomer.customerPaymentDay1}
                 options={PaymentDayEnumType}
                 onChange={(e) => {
                     setNewCustomer({
                         ...newCustomer,
-                        invoice: {
-                            ...newCustomer.invoice,
-                            closingInvoice1: {
-                                ...newCustomer.invoice.closingInvoice1,
-                                paymentDay: e,
-                            },
-                        },
+                        customerPaymentDay1: e,
                     });
                 }}
             />
             <FormSelect
                 id="paymentMethod1"
                 label="締請求1 支払方法"
-                value={newCustomer.invoice.closingInvoice1.paymentMethod}
+                value={newCustomer.customerPaymentMethod1}
                 options={PaymentMethodEnumType}
                 onChange={(e) => {
                     setNewCustomer({
                         ...newCustomer,
-                        invoice: {
-                            ...newCustomer.invoice,
-                            closingInvoice1: {
-                                ...newCustomer.invoice.closingInvoice1,
-                                paymentMethod: e,
-                            },
-                        },
+                        customerPaymentMethod1: e,
                     });
                 }}
             />
             <FormSelect
                 id="closingDay2"
                 label="締請求2 締日"
-                value={newCustomer.invoice.closingInvoice2.closingDay}
+                value={newCustomer.customerClosingDay2}
                 options={ClosingDateEnumType}
                 onChange={(e) => {
                     setNewCustomer({
                         ...newCustomer,
-                        invoice: {
-                            ...newCustomer.invoice,
-                            closingInvoice1: {
-                                ...newCustomer.invoice.closingInvoice2,
-                                closingDay: e,
-                            },
-                        },
+                        customerClosingDay2: e,
                     });
                 }}
             />
             <FormSelect
                 id="paymentMonth2"
                 label="締請求2 支払月"
-                value={newCustomer.invoice.closingInvoice2.paymentMonth}
+                value={newCustomer.customerPaymentMonth2}
                 options={PaymentMonthEnumType}
                 onChange={(e) => {
                     setNewCustomer({
                         ...newCustomer,
-                        invoice: {
-                            ...newCustomer.invoice,
-                            closingInvoice2: {
-                                ...newCustomer.invoice.closingInvoice2,
-                                paymentMonth: e,
-                            },
-                        },
+                        customerPaymentMonth2: e,
                     });
                 }}
             />
             <FormSelect
                 id="paymentDay2"
                 label="締請求2 支払日"
-                value={newCustomer.invoice.closingInvoice2.paymentDay}
+                value={newCustomer.customerPaymentDay2}
                 options={PaymentDayEnumType}
                 onChange={(e) => {
                     setNewCustomer({
                         ...newCustomer,
-                        invoice: {
-                            ...newCustomer.invoice,
-                            closingInvoice2: {
-                                ...newCustomer.invoice.closingInvoice2,
-                                paymentDay: e,
-                            },
-                        },
+                        customerPaymentDay2: e,
                     });
                 }}
             />
             <FormSelect
                 id="paymentMethod2"
                 label="締請求2 支払方法"
-                value={newCustomer.invoice.closingInvoice1.paymentMethod}
+                value={newCustomer.customerPaymentMethod2}
                 options={PaymentMethodEnumType}
                 onChange={(e) => {
                     setNewCustomer({
                         ...newCustomer,
-                        invoice: {
-                            ...newCustomer.invoice,
-                            closingInvoice2: {
-                                ...newCustomer.invoice.closingInvoice2,
-                                paymentMethod: e,
-                            },
-                        },
+                        customerPaymentMethod2: e,
                     });
                 }}
             />

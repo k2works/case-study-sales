@@ -49,14 +49,11 @@ const Form = ({ isEditing, newCustomer, setNewCustomer }: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="顧客コード"
-                value={newCustomer.customerCode?.code?.value ?? ""}
+                value={newCustomer.customerCode ?? ""}
                 onChange={(e) =>
                     setNewCustomer({
                         ...newCustomer,
-                        customerCode: {
-                            ...newCustomer.customerCode,
-                            code: { value: e.target.value },
-                        },
+                        customerCode: e.target.value,
                     })
                 }
                 disabled={isEditing}
@@ -68,14 +65,11 @@ const Form = ({ isEditing, newCustomer, setNewCustomer }: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="顧客コード枝番"
-                value={newCustomer.customerCode?.branchNumber ?? ""}
+                value={newCustomer.customerBranchNumber ?? ""}
                 onChange={(e) =>
                     setNewCustomer({
                         ...newCustomer,
-                        customerCode: {
-                            ...newCustomer.customerCode,
-                            branchNumber: parseInt(e.target.value),
-                        },
+                        customerBranchNumber: parseInt(e.target.value),
                     })
                 }
                 disabled={isEditing}
@@ -102,17 +96,11 @@ const Form = ({ isEditing, newCustomer, setNewCustomer }: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="請求先コード"
-                value={newCustomer.billingCode?.code?.value ?? ""}
+                value={newCustomer.billingCode ?? ""}
                 onChange={(e) =>
                     setNewCustomer({
                         ...newCustomer,
-                        billingCode: {
-                            ...newCustomer.billingCode, // billingCode全体を保持
-                            code: {
-                                ...newCustomer.billingCode?.code, // codeオブジェクト全体を保持
-                                value: e.target.value, // valueに新しい入力値を適用
-                            },
-                        },
+                        billingCode: e.target.value,
                     })
                 }
             />
@@ -124,14 +112,11 @@ const Form = ({ isEditing, newCustomer, setNewCustomer }: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="請求先コード枝番"
-                value={newCustomer.billingCode?.branchNumber ?? ""}
+                value={newCustomer.billingBranchNumber ?? ""}
                 onChange={(e) =>
                     setNewCustomer({
                         ...newCustomer,
-                        billingCode: {
-                            ...newCustomer.billingCode,
-                            branchNumber: parseInt(e.target.value),
-                        },
+                        billingBranchNumber: parseInt(e.target.value),
                     })
                 }
             />
@@ -143,17 +128,11 @@ const Form = ({ isEditing, newCustomer, setNewCustomer }: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="回収先コード"
-                value={newCustomer.collectionCode?.code?.value ?? ""}
+                value={newCustomer.collectionCode ?? ""}
                 onChange={(e) =>
                     setNewCustomer({
                         ...newCustomer,
-                        collectionCode: {
-                            ...newCustomer.collectionCode,
-                            code: {
-                                ...newCustomer.collectionCode?.code,
-                                value: e.target.value,
-                            },
-                        },
+                        collectionCode: e.target.value,
                     })
                 }
             />
@@ -164,14 +143,11 @@ const Form = ({ isEditing, newCustomer, setNewCustomer }: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="回収先コード枝番"
-                value={newCustomer.collectionCode?.branchNumber ?? ""}
+                value={newCustomer.collectionBranchNumber ?? ""}
                 onChange={(e) =>
                     setNewCustomer({
                         ...newCustomer,
-                        collectionCode: {
-                            ...newCustomer.collectionCode,
-                            branchNumber: parseInt(e.target.value),
-                        },
+                        collectionBranchNumber: parseInt(e.target.value),
                     })
                 }
             />
@@ -183,17 +159,11 @@ const Form = ({ isEditing, newCustomer, setNewCustomer }: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="顧客名"
-                value={newCustomer.customerName?.value?.name ?? ""}
+                value={newCustomer.customerName ?? ""}
                 onChange={(e) =>
                     setNewCustomer({
                         ...newCustomer,
-                        customerName: {
-                            ...newCustomer.customerName,
-                            value: {
-                                ...newCustomer.customerName?.value,
-                                name: e.target.value,
-                            },
-                        },
+                        customerName: e.target.value,
                     })
                 }
             />
@@ -249,32 +219,23 @@ const Form = ({ isEditing, newCustomer, setNewCustomer }: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="郵便番号"
-                value={newCustomer.customerAddress?.postalCode?.value ?? ""}
+                value={newCustomer.customerPostalCode ?? ""}
                 onChange={(e) =>
                     setNewCustomer({
                         ...newCustomer,
-                        customerAddress: {
-                            ...newCustomer.customerAddress,
-                            postalCode: {
-                                ...newCustomer.customerAddress?.postalCode,
-                                value: e.target.value,
-                            },
-                        },
+                        customerPostalCode: e.target.value,
                     })
                 }
             />
             <FormSelect
                 id="prefecture"
                 label="都道府県"
-                value={newCustomer.customerAddress?.prefecture ?? ""}
+                value={newCustomer.customerPrefecture ?? ""}
                 options={PrefectureEnumType}
                 onChange={(e) => {
                     setNewCustomer({
                         ...newCustomer,
-                        customerAddress: {
-                            ...newCustomer.customerAddress,
-                            prefecture: e,
-                        },
+                        customerPrefecture: e,
                     });
                 }}
             />
@@ -284,14 +245,11 @@ const Form = ({ isEditing, newCustomer, setNewCustomer }: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="住所1"
-                value={newCustomer.customerAddress?.address1 ?? ""}
+                value={newCustomer.customerAddress1 ?? ""}
                 onChange={(e) =>
                     setNewCustomer({
                         ...newCustomer,
-                        customerAddress: {
-                            ...newCustomer.customerAddress,
-                            address1: e.target.value,
-                        },
+                        customerAddress1: e.target.value,
                     })
                 }
             />
@@ -301,14 +259,11 @@ const Form = ({ isEditing, newCustomer, setNewCustomer }: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="住所2"
-                value={newCustomer.customerAddress?.address2 ?? ""}
+                value={newCustomer.customerAddress2 ?? ""}
                 onChange={(e) =>
                     setNewCustomer({
                         ...newCustomer,
-                        customerAddress: {
-                            ...newCustomer.customerAddress,
-                            address2: e.target.value,
-                        },
+                        customerAddress2: e.target.value,
                     })
                 }
             />
@@ -320,14 +275,11 @@ const Form = ({ isEditing, newCustomer, setNewCustomer }: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="電話番号"
-                value={newCustomer.customerPhoneNumber?.value ?? ""}
+                value={newCustomer.customerPhoneNumber ?? ""}
                 onChange={(e) =>
                     setNewCustomer({
                         ...newCustomer,
-                        customerPhoneNumber: {
-                            ...newCustomer.customerPhoneNumber,
-                            value: e.target.value,
-                        },
+                        customerPhoneNumber: e.target.value,
                     })
                 }
             />
@@ -339,14 +291,11 @@ const Form = ({ isEditing, newCustomer, setNewCustomer }: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="FAX番号"
-                value={newCustomer.customerFaxNumber?.value ?? ""}
+                value={newCustomer.customerFaxNumber ?? ""}
                 onChange={(e) =>
                     setNewCustomer({
                         ...newCustomer,
-                        customerFaxNumber: {
-                            ...newCustomer.customerFaxNumber,
-                            value: e.target.value,
-                        },
+                        customerFaxNumber: e.target.value,
                     })
                 }
             />
@@ -358,14 +307,11 @@ const Form = ({ isEditing, newCustomer, setNewCustomer }: FormProps) => {
                 type="email"
                 className="single-view-content-item-form-item-input"
                 placeholder="メールアドレス"
-                value={newCustomer.customerEmailAddress?.value ?? ""}
+                value={newCustomer.customerEmailAddress ?? ""}
                 onChange={(e) =>
                     setNewCustomer({
                         ...newCustomer,
-                        customerEmailAddress: {
-                            ...newCustomer.customerEmailAddress,
-                            value: e.target.value,
-                        },
+                        customerEmailAddress: e.target.value,
                     })
                 }
             />
@@ -374,15 +320,12 @@ const Form = ({ isEditing, newCustomer, setNewCustomer }: FormProps) => {
             <FormSelect
                 id="customerBillingCategory"
                 label="顧客請求区分"
-                value={newCustomer.invoice.customerBillingCategory}
+                value={newCustomer.customerBillingType}
                 options={CustomerBillingCategoryEnumType}
                 onChange={(e) => {
                     setNewCustomer({
                         ...newCustomer,
-                        invoice: {
-                            ...newCustomer.invoice,
-                            customerBillingCategory: e,
-                        },
+                        customerBillingType: e,
                     });
                 }}
             />

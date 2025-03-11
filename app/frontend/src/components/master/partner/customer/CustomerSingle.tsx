@@ -40,7 +40,7 @@ export const CustomerSingle: React.FC = () => {
     };
 
     const handleCreateOrUpdateCustomer = async () => {
-        if (!newCustomer.customerCode.code.value.trim() || !newCustomer.customerName.value.name.trim()) {
+        if (!newCustomer.customerCode.trim() || !newCustomer.customerName.trim()) {
             setError("顧客コードと名称は必須項目です。");
             return;
         }
@@ -69,26 +69,18 @@ export const CustomerSingle: React.FC = () => {
     const handleAddShipping = () => {
         setMessage("");
         setError("");
-        const maxDestinationNumber = Math.max(...newCustomer.shippings.map((shipping) => shipping.shippingCode.destinationNumber));
+        const maxDestinationNumber = Math.max(...newCustomer.shippings.map((shipping) => shipping.destinationNumber));
         const initialDestinationNumber = maxDestinationNumber === -Infinity ? 1 : maxDestinationNumber + 1;
         const shipping : ShippingType = {
-            shippingCode: {
-                customerCode: newCustomer.customerCode,
-                destinationNumber: initialDestinationNumber,
-            },
+            customerCode: newCustomer.customerCode,
+            customerBranchNumber: newCustomer.customerBranchNumber,
+            destinationNumber: initialDestinationNumber,
             destinationName: "出荷先名",
-            regionCode: {
-                value: "R001",
-            },
-            shippingAddress: {
-                postalCode: {
-                    value: "1234567",
-                    regionCode: "",
-                },
-                prefecture: PrefectureEnumType.東京都,
-                address1: "住所1",
-                address2: "住所2",
-            },
+            regionCode: "R001",
+            postalCode: "1234567",
+            prefecture: PrefectureEnumType.東京都,
+            address1: "住所1",
+            address2: "住所2",
         }
 
         setNewCustomer({
@@ -101,7 +93,7 @@ export const CustomerSingle: React.FC = () => {
         setNewCustomer({
             ...newCustomer,
             shippings: newCustomer.shippings.filter(
-                (shippingAddressItem) => shippingAddressItem.shippingCode.destinationNumber !== shippingAddress.shippingCode.destinationNumber
+                (shippingAddressItem) => shippingAddressItem.destinationNumber !== shippingAddress.destinationNumber
             )
         });
     }

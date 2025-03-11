@@ -19,52 +19,48 @@ import {
 
 export const useCustomer = () => {
     const initialCustomer: CustomerType = {
-        customerCode: { code: { value: "" }, branchNumber: 0 },
+        customerCode: "",
+        customerBranchNumber: 0,
         customerType: CustomerEnumType.顧客でない,
-        billingCode: { code: { value: "" }, branchNumber: 0 },
-        collectionCode: { code: { value: "" }, branchNumber: 0 },
-        customerName: { value: { name: "", nameKana: "" } },
+        billingCode: "",
+        billingBranchNumber: 0,
+        collectionCode: "",
+        collectionBranchNumber: 0,
+        customerName: "",
+        customerNameKana: "",
         companyRepresentativeCode: "",
         customerRepresentativeName: "",
         customerDepartmentName: "",
-        customerAddress: {
-            postalCode: { value: "", regionCode: "" },
-            prefecture: PrefectureEnumType.東京都,
-            address1: "",
-            address2: ""
-        },
-        customerPhoneNumber: { value: "", areaCode: "", localExchange: "", subscriberNumber: "" },
-        customerFaxNumber: { value: "", areaCode: "", localExchange: "", subscriberNumber: "" },
-        customerEmailAddress: { value: "" },
-        invoice: {
-            customerBillingCategory: CustomerBillingCategoryEnumType.都度請求,
-            closingInvoice1: {
-                closingDay: ClosingDateEnumType.末日,
-                paymentMonth: PaymentMonthEnumType.当月,
-                paymentDay: PaymentDayEnumType.末日,
-                paymentMethod: PaymentMethodEnumType.振込
-            },
-            closingInvoice2: {
-                closingDay: ClosingDateEnumType.末日,
-                paymentMonth: PaymentMonthEnumType.当月,
-                paymentDay: PaymentDayEnumType.末日,
-                paymentMethod: PaymentMethodEnumType.振込
-            }
-        },
+        customerPostalCode: "",
+        customerPrefecture: PrefectureEnumType.東京都,
+        customerAddress1: "",
+        customerAddress2: "",
+        customerPhoneNumber: "",
+        customerFaxNumber: "",
+        customerEmailAddress: "",
+        customerBillingType: CustomerBillingCategoryEnumType.都度請求,
+        customerClosingDay1: ClosingDateEnumType.末日,
+        customerPaymentMonth1: PaymentMonthEnumType.当月,
+        customerPaymentDay1: PaymentDayEnumType.末日,
+        customerPaymentMethod1: PaymentMethodEnumType.振込,
+        customerClosingDay2: ClosingDateEnumType.末日,
+        customerPaymentMonth2: PaymentMonthEnumType.当月,
+        customerPaymentDay2: PaymentDayEnumType.末日,
+        customerPaymentMethod2: PaymentMethodEnumType.振込,
         shippings: [],
         checked: false
     };
 
     const initialShipping: ShippingType = {
-        shippingCode: { customerCode: { code: {value: ""}, branchNumber: 0 }, destinationNumber: 0 },
+        customerCode: "",
+        customerBranchNumber: 0,
+        destinationNumber: 0,
         destinationName: "",
-        regionCode: { value: "" },
-        shippingAddress: {
-            postalCode: { value: "", regionCode: "" },
-            prefecture: PrefectureEnumType.東京都,
-            address1: "",
-            address2: ""
-        }
+        regionCode: "",
+        postalCode: "",
+        prefecture: PrefectureEnumType.東京都,
+        address1: "",
+        address2: ""
     };
 
     const [customers, setCustomers] = useState<CustomerType[]>([]);
