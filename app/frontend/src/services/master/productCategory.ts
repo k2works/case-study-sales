@@ -37,7 +37,7 @@ export const ProductCategoryService = (): ProductCategoryServiceType => {
     };
 
     const update = async (category: ProductCategoryType): Promise<void> => {
-        const url = `${endPoint}/${category.productCategoryCode.value}`;
+        const url = `${endPoint}/${category.productCategoryCode}`;
         await apiUtils.fetchPut<void>(url, mapToProductCategoryResource(category));
     };
 

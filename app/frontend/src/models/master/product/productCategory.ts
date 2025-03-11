@@ -1,12 +1,8 @@
 import {PageNationType} from "../../../views/application/PageNation.tsx";
 import {mapToProductResource, ProductResourceType, ProductType} from "./productItem.ts";
 
-type ProductCategoryCode = {
-    value: string;
-};
-
 export type ProductCategoryType = {
-    productCategoryCode: ProductCategoryCode;
+    productCategoryCode: string;
     productCategoryName: string;
     productCategoryHierarchy: number;
     productCategoryPath: string;
@@ -36,7 +32,7 @@ export type ProductCategoryCriteriaType = {
 
 export const mapToProductCategoryResource = (productCategory: ProductCategoryType): ProductCategoryResourceType => {
     return {
-        productCategoryCode: productCategory.productCategoryCode.value,
+        productCategoryCode: productCategory.productCategoryCode,
         productCategoryName: productCategory.productCategoryName,
         productCategoryHierarchy: productCategory.productCategoryHierarchy,
         productCategoryPath: productCategory.productCategoryPath,

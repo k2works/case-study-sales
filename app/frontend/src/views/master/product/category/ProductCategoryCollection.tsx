@@ -12,24 +12,24 @@ interface ProductCategoryItemProps {
 }
 
 const ProductCategoryItem: React.FC<ProductCategoryItemProps> = ({productCategory, onEdit, onDelete, onCheck}) => (
-    <li className="collection-object-item" key={productCategory.productCategoryCode.value}>
-        <div className="collection-object-item-content" data-id={productCategory.productCategoryCode.value}>
+    <li className="collection-object-item" key={productCategory.productCategoryCode}>
+        <div className="collection-object-item-content" data-id={productCategory.productCategoryCode}>
             <input type="checkbox" className="collection-object-item-checkbox" checked={productCategory.checked}
                    onChange={() => onCheck(productCategory)}/>
         </div>
-        <div className="collection-object-item-content" data-id={productCategory.productCategoryCode.value}>
+        <div className="collection-object-item-content" data-id={productCategory.productCategoryCode}>
             <div className="collection-object-item-content-details">商品分類コード</div>
-            <div className="collection-object-item-content-name">{productCategory.productCategoryCode.value}</div>
+            <div className="collection-object-item-content-name">{productCategory.productCategoryCode}</div>
         </div>
-        <div className="collection-object-item-content" data-id={productCategory.productCategoryCode.value}>
+        <div className="collection-object-item-content" data-id={productCategory.productCategoryCode}>
             <div className="collection-object-item-content-details">商品分類名</div>
             <div className="collection-object-item-content-name">{productCategory.productCategoryName}</div>
         </div>
-        <div className="collection-object-item-actions" data-id={productCategory.productCategoryCode.value}>
+        <div className="collection-object-item-actions" data-id={productCategory.productCategoryCode}>
             <button className="action-button" onClick={() => onEdit(productCategory)} id="edit">編集</button>
         </div>
-        <div className="collection-object-item-actions" data-id={productCategory.productCategoryCode.value}>
-            <button className="action-button" onClick={() => onDelete(productCategory.productCategoryCode.value)}
+        <div className="collection-object-item-actions" data-id={productCategory.productCategoryCode}>
+            <button className="action-button" onClick={() => onDelete(productCategory.productCategoryCode)}
                     id="delete">削除
             </button>
         </div>
@@ -48,7 +48,7 @@ const ProductCategoryList: React.FC<ProductCategoryListProps> = ({productCategor
         <ul className="collection-object-list">
             {productCategories.map(productCategory => (
                 <ProductCategoryItem
-                    key={productCategory.productCategoryCode.value}
+                    key={productCategory.productCategoryCode}
                     productCategory={productCategory}
                     onEdit={onEdit}
                     onDelete={onDelete}

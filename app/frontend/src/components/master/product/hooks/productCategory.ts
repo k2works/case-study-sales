@@ -6,7 +6,7 @@ import {useFetchEntities} from "../../../application/hooks.ts";
 
 export const useProductCategory = () => {
     const initialProductCategory: ProductCategoryType = {
-        productCategoryCode: {value: ""},
+        productCategoryCode: "",
         productCategoryName: "",
         productCategoryHierarchy: 0,
         productCategoryPath: "",
