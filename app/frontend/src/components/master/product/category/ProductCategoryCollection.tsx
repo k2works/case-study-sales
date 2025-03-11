@@ -33,7 +33,7 @@ export const ProductCategoryCollection: React.FC = () => {
         setError("");
         if (productCategory) {
             setNewProductCategory(productCategory);
-            setEditId(productCategory.productCategoryCode.value);
+            setEditId(productCategory.productCategoryCode);
             setIsEditing(true);
         } else {
             setNewProductCategory(initialProductCategory);
@@ -59,7 +59,7 @@ export const ProductCategoryCollection: React.FC = () => {
 
     const handleCheckProductCategory = (productCategory: ProductCategoryType) => {
         const newProductCategories = productCategories.map((cat) => {
-            if (cat.productCategoryCode.value === productCategory.productCategoryCode.value) {
+            if (cat.productCategoryCode === productCategory.productCategoryCode) {
                 return {
                     ...cat,
                     checked: !cat.checked
@@ -88,7 +88,7 @@ export const ProductCategoryCollection: React.FC = () => {
         try {
             if (!window.confirm(`選択した商品分類を削除しますか？`)) return;
             const checkedProductCategories = productCategories.filter((cat) => cat.checked);
-            await Promise.all(checkedProductCategories.map((cat) => productCategoryService.destroy(cat.productCategoryCode.value)));
+            await Promise.all(checkedProductCategories.map((cat) => productCategoryService.destroy(cat.productCategoryCode)));
             await fetchProductCategories.load();
             setMessage("選択した商品分類を削除しました。");
         } catch (error: any) {

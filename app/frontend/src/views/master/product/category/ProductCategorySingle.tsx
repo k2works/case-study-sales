@@ -42,10 +42,10 @@ const Form = ({isEditing, newProductCategory, setNewProductCategory}: FormProps)
             type="text"
             className="single-view-content-item-form-item-input"
             placeholder="商品分類コード"
-            value={newProductCategory.productCategoryCode.value}
+            value={newProductCategory.productCategoryCode}
             onChange={(e) => setNewProductCategory({
                 ...newProductCategory,
-                productCategoryCode: { value: e.target.value }
+                productCategoryCode: e.target.value
             })}
             disabled={isEditing}
         />

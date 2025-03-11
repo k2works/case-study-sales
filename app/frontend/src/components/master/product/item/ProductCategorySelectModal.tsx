@@ -54,7 +54,7 @@ export const ProductCategorySelectModal: React.FC<SelectModalProps> = ({ type })
                         handleSelect={(productCategory: ProductCategoryType) => {
                             setNewProduct({
                                 ...newProduct,
-                                productClassificationCode: productCategory.productCategoryCode.value
+                                productClassificationCode: productCategory.productCategoryCode
                             })
                             setProductCategoryModalIsOpen(false);
                         }}
@@ -84,7 +84,7 @@ export const ProductCategorySelectModal: React.FC<SelectModalProps> = ({ type })
                             setSearchProductCriteria(
                                 {
                                     ...searchProductCriteria,
-                                    productCategoryCode: productCategory.productCategoryCode.value
+                                    productCategoryCode: productCategory.productCategoryCode
                                 }
                             )
                             setProductCategoryModalIsOpen(false);
