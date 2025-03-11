@@ -33,18 +33,18 @@ export const RegionCodeCollectionSelectView: React.FC<RegionCodeCollectionSelect
                     <div className="collection-object-container-modal">
                         <ul className="collection-object-list">
                             {regions.map((region) => (
-                                <li className="collection-object-item" key={region.regionCode.value}>
-                                    <div className="collection-object-item-content" data-id={region.regionCode.value}>
+                                <li className="collection-object-item" key={region.regionCode}>
+                                    <div className="collection-object-item-content" data-id={region.regionCode}>
                                         <div className="collection-object-item-content-details">地域コード</div>
                                         <div
-                                            className="collection-object-item-content-name">{region.regionCode.value}</div>
+                                            className="collection-object-item-content-name">{region.regionCode}</div>
                                     </div>
-                                    <div className="collection-object-item-content" data-id={region.regionCode.value}>
+                                    <div className="collection-object-item-content" data-id={region.regionCode}>
                                         <div className="collection-object-item-content-details">地域名</div>
                                         <div
                                             className="collection-object-item-content-name">{region.regionName}</div>
                                     </div>
-                                    <div className="collection-object-item-actions" data-id={region.regionCode.value}>
+                                    <div className="collection-object-item-actions" data-id={region.regionCode}>
                                         <button className="action-button" onClick={() => handleSelect(region)}
                                                 id="select-region">選択
                                         </button>

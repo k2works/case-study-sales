@@ -41,10 +41,10 @@ const Form = ({ isEditing, newRegion, setNewRegion }: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="地域コード"
-                value={newRegion.regionCode.value}
+                value={newRegion.regionCode}
                 onChange={(e) => setNewRegion({
                     ...newRegion,
-                    regionCode: { value: e.target.value }
+                    regionCode: e.target.value
                 })}
                 disabled={isEditing}
             />

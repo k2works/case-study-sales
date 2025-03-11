@@ -37,7 +37,7 @@ export const RegionSelectModal: React.FC = () => {
         )
         updateShippings.push({
             ...newShipping,
-            regionCode: region.regionCode.value
+            regionCode: region.regionCode
         })
         setNewCustomer({
             ...newCustomer,
