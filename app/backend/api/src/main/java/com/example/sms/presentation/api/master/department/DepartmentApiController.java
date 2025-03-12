@@ -28,6 +28,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 
+import static com.example.sms.presentation.api.master.department.DepartmentResourceDTOMapper.convertToCriteria;
+import static com.example.sms.presentation.api.master.department.DepartmentResourceDTOMapper.convertToEntity;
+
 /**
  * 部門API
  */
@@ -173,29 +176,6 @@ public class DepartmentApiController {
                                 employeeResource.getOccuCode()
                         ))
                         .toList();
-    }
-
-    private Department convertToEntity(DepartmentResource resource) {
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
-        return Department.of(
-                DepartmentId.of(resource.getDepartmentCode(), LocalDateTime.parse(resource.getStartDate(), formatter)),
-                LocalDateTime.parse(resource.getEndDate(), formatter),
-                resource.getDepartmentName(),
-                Integer.parseInt(resource.getLayer()),
-                resource.getPath(),
-                resource.getLowerType().getValue(),
-                resource.getSlitYn().getValue()
-        );
-    }
-
-    private DepartmentCriteria convertToCriteria(DepartmentCriteriaResource resource) {
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
-        return DepartmentCriteria.builder()
-                .departmentCode(resource.getDepartmentCode())
-                .departmentName(resource.getDepartmentName())
-                .startDate(resource.getStartDate() != null ? LocalDateTime.parse(resource.getStartDate(), formatter) : null)
-                .endDate(resource.getEndDate() != null ? LocalDateTime.parse(resource.getEndDate(), formatter) : null)
-                .build();
     }
 }
 
