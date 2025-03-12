@@ -5,8 +5,6 @@ import com.example.sms.domain.model.master.partner.invoice.ClosingDate;
 import com.example.sms.domain.model.master.partner.invoice.PaymentDay;
 import com.example.sms.domain.model.master.partner.invoice.PaymentMethod;
 import com.example.sms.domain.model.master.partner.invoice.PaymentMonth;
-import com.example.sms.domain.model.master.region.RegionCode;
-import com.example.sms.domain.type.address.Address;
 import com.example.sms.service.master.partner.CustomerCriteria;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -53,15 +51,15 @@ class CustomerResourceDTOMapperTest {
 
         // Create shipping resource
         ShippingResource shippingResource = ShippingResource.builder()
-                .shippingCode(ShippingCode.of("001", 1, 1))
+                .customerCode("001")
+                .customerBranchNumber(1)
+                .destinationNumber(1)
                 .destinationName("配送先1")
-                .regionCode(RegionCode.of("R001"))
-                .shippingAddress(Address.of(
-                        "123-4567",
-                        "東京都",
-                        "千代田区",
-                        "1-1-1"
-                ))
+                .regionCode("R001")
+                .postalCode("123-4567")
+                .prefecture("東京都")
+                .address1("千代田区")
+                .address2("1-1-1")
                 .build();
 
         CustomerResource resource = CustomerResource.builder()

@@ -2,6 +2,7 @@ package com.example.sms.domain.model.master.partner.customer;
 
 import com.example.sms.domain.type.address.Address;
 import com.example.sms.domain.model.master.region.RegionCode;
+import com.zaxxer.hikari.util.ConcurrentBag;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;
