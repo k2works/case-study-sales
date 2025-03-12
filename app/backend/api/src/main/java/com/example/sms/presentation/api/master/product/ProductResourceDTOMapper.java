@@ -1,13 +1,13 @@
 package com.example.sms.presentation.api.master.product;
 
 import com.example.sms.domain.model.master.product.*;
+import com.example.sms.presentation.ResourceDTOMapperHelper;
 import com.example.sms.service.master.product.ProductCriteria;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Function;
 
 public class ProductResourceDTOMapper {
 
@@ -92,15 +92,12 @@ public class ProductResourceDTOMapper {
                 .productNameKana(resource.getProductNameKana())
                 .productCategoryCode(resource.getProductCategoryCode())
                 .vendorCode(resource.getVendorCode())
-                .productType(mapStringToCode(resource.getProductType(), ProductType::getCodeByName))
-                .taxType(mapStringToCode(resource.getTaxType(), TaxType::getCodeByName))
-                .miscellaneousType(mapStringToCode(resource.getMiscellaneousType(), MiscellaneousType::getCodeByName))
-                .stockManagementTargetType(mapStringToCode(resource.getStockManagementTargetType(), StockManagementTargetType::getCodeByName))
-                .stockAllocationType(mapStringToCode(resource.getStockAllocationType(), StockAllocationType::getCodeByName))
+                .productType(ResourceDTOMapperHelper.mapStringToCode(resource.getProductType(), ProductType::getCodeByName))
+                .taxType(ResourceDTOMapperHelper.mapStringToCode(resource.getTaxType(), TaxType::getCodeByName))
+                .miscellaneousType(ResourceDTOMapperHelper.mapStringToCode(resource.getMiscellaneousType(), MiscellaneousType::getCodeByName))
+                .stockManagementTargetType(ResourceDTOMapperHelper.mapStringToCode(resource.getStockManagementTargetType(), StockManagementTargetType::getCodeByName))
+                .stockAllocationType(ResourceDTOMapperHelper.mapStringToCode(resource.getStockAllocationType(), StockAllocationType::getCodeByName))
                 .build();
     }
 
-    private static <T> T mapStringToCode(String value, Function<String, T> mapper) {
-        return value != null ? mapper.apply(value) : null;
-    }
 }

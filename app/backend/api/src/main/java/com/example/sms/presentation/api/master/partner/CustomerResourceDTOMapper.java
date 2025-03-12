@@ -2,11 +2,11 @@ package com.example.sms.presentation.api.master.partner;
 
 import com.example.sms.domain.model.master.partner.customer.*;
 import com.example.sms.domain.type.address.Address;
+import com.example.sms.presentation.ResourceDTOMapperHelper;
 import com.example.sms.service.master.partner.CustomerCriteria;
 
 import java.util.Collections;
 import java.util.Optional;
-import java.util.function.Function;
 
 public class CustomerResourceDTOMapper {
 
@@ -71,7 +71,7 @@ public class CustomerResourceDTOMapper {
                 .customerCode(resource.getCustomerCode())
                 .customerName(resource.getCustomerName())
                 .customerNameKana(resource.getCustomerNameKana())
-                .customerType(mapStringToCode(resource.getCustomerType(), CustomerType::getCodeByName))
+                .customerType(ResourceDTOMapperHelper.mapStringToCode(resource.getCustomerType(), CustomerType::getCodeByName))
                 .companyRepresentativeCode(resource.getCompanyRepresentativeCode())
                 .customerRepresentativeName(resource.getCustomerRepresentativeName())
                 .customerDepartmentName(resource.getCustomerDepartmentName())
@@ -82,11 +82,8 @@ public class CustomerResourceDTOMapper {
                 .customerPhoneNumber(resource.getCustomerPhoneNumber())
                 .customerFaxNumber(resource.getCustomerFaxNumber())
                 .customerEmailAddress(resource.getCustomerEmailAddress())
-                .customerBillingCategory(mapStringToCode(resource.getCustomerBillingCategory(), CustomerBillingCategory::getCodeByName))
+                .customerBillingCategory(ResourceDTOMapperHelper.mapStringToCode(resource.getCustomerBillingCategory(), CustomerBillingCategory::getCodeByName))
                 .build();
     }
 
-    private static <T> T mapStringToCode(String value, Function<String, T> mapper) {
-        return value != null ? mapper.apply(value) : null;
-    }
 }

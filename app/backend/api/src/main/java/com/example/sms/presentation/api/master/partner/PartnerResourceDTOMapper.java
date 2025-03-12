@@ -14,13 +14,13 @@ import com.example.sms.domain.type.address.Address;
 import com.example.sms.domain.type.mail.EmailAddress;
 import com.example.sms.domain.type.phone.FaxNumber;
 import com.example.sms.domain.type.phone.PhoneNumber;
+import com.example.sms.presentation.ResourceDTOMapperHelper;
 import com.example.sms.service.master.partner.PartnerCriteria;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Function;
 
 public class PartnerResourceDTOMapper {
 
@@ -164,20 +164,17 @@ public class PartnerResourceDTOMapper {
                 .partnerCode(resource.getPartnerCode())
                 .partnerName(resource.getPartnerName())
                 .partnerNameKana(resource.getPartnerNameKana())
-                .vendorType(mapStringToCode(resource.getVendorType(), VendorType::getCodeByName))
+                .vendorType(ResourceDTOMapperHelper.mapStringToCode(resource.getVendorType(), VendorType::getCodeByName))
                 .postalCode(resource.getPostalCode())
                 .prefecture(resource.getPrefecture())
                 .address1(resource.getAddress1())
                 .address2(resource.getAddress2())
-                .tradeProhibitedFlag(mapStringToCode(resource.getTradeProhibitedFlag(), TradeProhibitedFlag::getCodeByName))
-                .miscellaneousType(mapStringToCode(resource.getMiscellaneousType(), MiscellaneousType::getCodeByName))
+                .tradeProhibitedFlag(ResourceDTOMapperHelper.mapStringToCode(resource.getTradeProhibitedFlag(), TradeProhibitedFlag::getCodeByName))
+                .miscellaneousType(ResourceDTOMapperHelper.mapStringToCode(resource.getMiscellaneousType(), MiscellaneousType::getCodeByName))
                 .partnerGroupCode(resource.getPartnerGroupCode())
                 .creditLimit(resource.getCreditLimit())
                 .temporaryCreditIncrease(resource.getTemporaryCreditIncrease())
                 .build();
     }
 
-    private static <T> T mapStringToCode(String value, Function<String, T> mapper) {
-        return value != null ? mapper.apply(value) : null;
-    }
 }
