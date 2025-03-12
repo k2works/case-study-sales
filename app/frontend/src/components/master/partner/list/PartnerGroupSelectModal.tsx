@@ -84,7 +84,8 @@ export const PartnerGroupSelectModal: React.FC<SelectModalProps> = ({ type }) =>
 
     return (
         <>
-            {type === "edit" ? partnerGroupModalView() : partnerGroupSearchModalView()}
+            {type === "edit" ? partnerGroupModalView() : null}
+            {type === "search" ? partnerGroupSearchModalView() : null}
         </>
     );
 }

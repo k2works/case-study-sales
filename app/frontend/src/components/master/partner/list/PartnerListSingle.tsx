@@ -3,7 +3,6 @@ import {usePartnerListContext} from "../../../../providers/master/partner/Partne
 import {usePartnerGroupContext} from "../../../../providers/master/partner/PartnerGroup.tsx";
 import {showErrorMessage} from "../../../application/utils.ts";
 import {PartnerSingleView} from "../../../../views/master/partner/PartnerSingle.tsx";
-import {PartnerGroupSelectView} from "../../../../views/master/partner/group/PartnerGroupSelect.tsx";
 import {PartnerGroupSelectModal} from "./PartnerGroupSelectModal.tsx";
 
 export const PartnerListSingle: React.FC = () => {
@@ -61,12 +60,10 @@ export const PartnerListSingle: React.FC = () => {
                 isEditing={isEditing}
                 headerItems={{ handleCreateOrUpdatePartner, handleCloseModal }}
                 formItems={{ newPartner, setNewPartner }}
+                handleSelectPartnerGroup={() => setPartnerGroupModalIsOpen(true)}
             />
 
             <PartnerGroupSelectModal type={"edit"}/>
-            <PartnerGroupSelectView
-                handleSelect={() => setPartnerGroupModalIsOpen(true)}
-            />
         </>
     );
 }
