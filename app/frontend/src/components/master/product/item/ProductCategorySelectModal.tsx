@@ -100,7 +100,8 @@ export const ProductCategorySelectModal: React.FC<SelectModalProps> = ({ type })
 
     return (
         <>
-            {type === "edit" ? productCategoryEditModalView() : productCategorySearchModalView()}
+            {type === "edit" ? productCategoryEditModalView() : null}
+            {type === "search" ? productCategorySearchModalView() : null}
         </>
     )
 }
