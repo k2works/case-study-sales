@@ -62,7 +62,7 @@ public class EmployeeApiController {
         try {
             PageNation.startPage(page, pageSize);
             PageInfo<Employee> pageInfo = employeeManagementService.selectAllWithPageInfo();
-            PageInfo<EmployeeResource> result = pageNationService.getPageInfo(pageInfo, EmployeeResource::fromSingle);
+            PageInfo<EmployeeResource> result = pageNationService.getPageInfo(pageInfo, EmployeeResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
@@ -75,7 +75,7 @@ public class EmployeeApiController {
         try {
             EmployeeCode code = EmployeeCode.of(employeeCode);
             Employee employee = employeeManagementService.find(code);
-            return ResponseEntity.ok(EmployeeResource.fromSingle(employee));
+            return ResponseEntity.ok(EmployeeResource.from(employee));
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
@@ -138,7 +138,7 @@ public class EmployeeApiController {
             PageNation.startPage(page, pageSize);
             EmployeeCriteria criteria = convertCriteria(resource);
             PageInfo<Employee> entity = employeeManagementService.searchWithPageInfo(criteria);
-            PageInfo<EmployeeResource> result = pageNationService.getPageInfo(entity, EmployeeResource::fromSingle);
+            PageInfo<EmployeeResource> result = pageNationService.getPageInfo(entity, EmployeeResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));

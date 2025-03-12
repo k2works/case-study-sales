@@ -89,7 +89,7 @@ public class EmployeeResource {
                 ).collect(Collectors.toList());
     }
 
-    public static EmployeeResource fromSingle(Employee employee) {
+    public static EmployeeResource from(Employee employee) {
         return EmployeeResource.builder()
                 .empCode(employee.getEmpCode().getValue())
                 .empFirstName(employee.getEmpName().getFirstName())
