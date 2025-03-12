@@ -8,9 +8,14 @@ import lombok.Setter;
 @Getter
 @Schema(description = "取引先グループ検索条件")
 public class PartnerCategoryCriteriaResource {
-    String partnerCategoryTypeCode; //取引先分類種別コード
-    String partnerCategoryTypeName; //取引先分類種別名
-    String partnerCategoryItemCode; //取引先分類コード
-    String partnerCategoryItemName; //取引先分類名
-    String partnerCode;        // 取引先コード
+    @Schema(description = "取引先分類種別コード")
+    String partnerCategoryTypeCode;
+    @Schema(description = "取引先分類種別名")
+    String partnerCategoryTypeName;
+    @Schema(description = "取引先分類コード")
+    String partnerCategoryItemCode;
+    @Schema(description = "取引先分類名")
+    String partnerCategoryItemName;
+    @Schema(description = "取引先コード")
+    String partnerCode;
 }

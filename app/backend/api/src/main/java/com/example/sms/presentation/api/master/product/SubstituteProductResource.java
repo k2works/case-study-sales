@@ -13,9 +13,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SubstituteProductResource {
-    String productCode; // 商品コード
-    String substituteProductCode; // 代替商品コード
-    Integer priority; // 優先順位
+    @Schema(description = "商品コード")
+    String productCode;
+    @Schema(description = "代替商品コード")
+    String substituteProductCode;
+    @Schema(description = "優先順位")
+    Integer priority;
 
     public static SubstituteProductResource from(SubstituteProduct substituteProduct) {
         return SubstituteProductResource.builder()

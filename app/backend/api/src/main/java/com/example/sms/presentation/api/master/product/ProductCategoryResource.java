@@ -15,13 +15,19 @@ import java.util.List;
 @NoArgsConstructor
 public class ProductCategoryResource {
     @NotNull
-    String productCategoryCode; // 商品分類コード
-    String productCategoryName; // 商品分類名
+    @Schema(description = "商品分類コード")
+    String productCategoryCode;
+    @Schema(description = "商品分類名")
+    String productCategoryName;
     @NotNull
-    Integer productCategoryHierarchy; // 商品分類階層
-    String productCategoryPath; // 商品分類パス
-    Integer lowestLevelDivision; // 最下層区分
-    List<ProductResource> Products; // 商品
+    @Schema(description = "商品分類階層")
+    Integer productCategoryHierarchy;
+    @Schema(description = "商品分類パス")
+    String productCategoryPath;
+    @Schema(description = "最下層区分")
+    Integer lowestLevelDivision;
+    @Schema(description = "商品")
+    List<ProductResource> Products;
 
     public static ProductCategoryResource from(ProductCategory productCategory) {
         return ProductCategoryResource.builder()

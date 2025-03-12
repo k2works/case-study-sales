@@ -20,19 +20,33 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class EmployeeResource {
     @NotNull
-    private String empCode;       // 社員コード
-    private String empFirstName;       // 社員名
-    private String empLastName;       // 社員名
-    private String empFirstNameKana;   // 社員名カナ
-    private String empLastNameKana;   // 社員名カナ
-    private String tel;           // 電話番号
-    private String fax;           // fax番号
-    private String occuCode;      // 職種コード
+    @Schema(description = "社員コード")
+    private String empCode;
+    @Schema(description = "社員名（名）")
+    private String empFirstName;
+    @Schema(description = "社員名（姓）")
+    private String empLastName;
+    @Schema(description = "社員名カナ（名）")
+    private String empFirstNameKana;
+    @Schema(description = "社員名カナ（姓）")
+    private String empLastNameKana;
+    @Schema(description = "電話番号")
+    private String tel;
+    @Schema(description = "FAX番号")
+    private String fax;
+    @Schema(description = "職種コード")
+    private String occuCode;
+    @Schema(description = "部門コード")
     private String departmentCode;
+    @Schema(description = "部門開始日")
     private String departmentStartDate;
+    @Schema(description = "部門名")
     private String departmentName;
+    @Schema(description = "ユーザーID")
     private String userId;
+    @Schema(description = "追加フラグ")
     private boolean addFlag;
+    @Schema(description = "削除フラグ")
     private boolean deleteFlag;
 
     public static List<EmployeeResource> from(List<Employee> employees) {

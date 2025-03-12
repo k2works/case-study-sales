@@ -14,9 +14,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BomResource {
-    String productCode; // 商品コード
-    String componentCode; // 部品コード
-    Quantity componentQuantity; // 部品数量
+    @Schema(description = "商品コード")
+    String productCode;
+    @Schema(description = "部品コード")
+    String componentCode;
+    @Schema(description = "部品数量")
+    Quantity componentQuantity;
 
     public static BomResource from(Bom bom) {
         return BomResource.builder()

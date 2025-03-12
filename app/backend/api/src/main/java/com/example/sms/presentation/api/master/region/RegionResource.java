@@ -11,8 +11,10 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegionResource {
-    String regionCode; //地域コード
-    String regionName;  //地域名
+    @Schema(description = "地域コード")
+    String regionCode;
+    @Schema(description = "地域名")
+    String regionName;
 
 
     public static RegionResource from(Region region) {

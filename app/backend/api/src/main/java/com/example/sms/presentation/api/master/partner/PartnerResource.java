@@ -19,21 +19,36 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PartnerResource {
-    String partnerCode;          // 取引先コード
-    String partnerName;          // 取引先名
-    String partnerNameKana;      // 取引先名カナ
-    VendorType vendorType;        // 仕入先区分
+    @Schema(description = "取引先コード")
+    String partnerCode;
+    @Schema(description = "取引先名")
+    String partnerName;
+    @Schema(description = "取引先名カナ")
+    String partnerNameKana;
+    @Schema(description = "仕入先区分")
+    VendorType vendorType;
+    @Schema(description = "郵便番号")
     String postalCode;
+    @Schema(description = "都道府県")
     String prefecture;
+    @Schema(description = "住所1")
     String address1;
+    @Schema(description = "住所2")
     String address2;
-    TradeProhibitedFlag tradeProhibitedFlag; // 取引禁止フラグ
-    MiscellaneousType miscellaneousType;   // 雑区分
-    String partnerGroupCode;     // 取引先グループコード
-    Integer creditLimit; // 与信限度額
-    Integer temporaryCreditIncrease; // 与信一時増加枠
-    List<CustomerResource> customers; // 取引先顧客
-    List<VendorResource> vendors; // 取引先仕入先
+    @Schema(description = "取引禁止フラグ")
+    TradeProhibitedFlag tradeProhibitedFlag;
+    @Schema(description = "雑区分")
+    MiscellaneousType miscellaneousType;
+    @Schema(description = "取引先グループコード")
+    String partnerGroupCode;
+    @Schema(description = "与信限度額")
+    Integer creditLimit;
+    @Schema(description = "与信一時増加枠")
+    Integer temporaryCreditIncrease;
+    @Schema(description = "取引先顧客リスト")
+    List<CustomerResource> customers;
+    @Schema(description = "取引先仕入先リスト")
+    List<VendorResource> vendors;
 
     public static PartnerResource from(Partner partner) {
         return PartnerResource.builder()

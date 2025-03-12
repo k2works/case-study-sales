@@ -18,16 +18,25 @@ import java.util.List;
 @NoArgsConstructor
 public class DepartmentResource {
     @NotNull
+    @Schema(description = "部門コード")
     private String departmentCode;
     @NotNull
+    @Schema(description = "開始日")
     private String startDate;
     @NotNull
+    @Schema(description = "終了日")
     private String endDate;
+    @Schema(description = "部門名")
     private String departmentName;
+    @Schema(description = "階層")
     private String layer;
+    @Schema(description = "パス")
     private String path;
+    @Schema(description = "下位区分")
     private DepartmentLowerType lowerType;
+    @Schema(description = "スリット区分")
     private SlitYnType slitYn;
+    @Schema(description = "所属社員リスト")
     private List<EmployeeResource> employees;
 
     public static DepartmentResource from(Department department) {

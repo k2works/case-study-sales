@@ -8,6 +8,8 @@ import lombok.Setter;
 @Getter
 @Schema(description = "取引先グループ検索条件")
 public class PartnerGroupCriteriaResource {
+    @Schema(description = "取引先グループコード")
     String partnerGroupCode;
+    @Schema(description = "取引先グループ名")
     String partnerGroupName;
 }

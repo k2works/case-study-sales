@@ -8,6 +8,8 @@ import lombok.Setter;
 @Getter
 @Schema(description = "地域検索条件")
 public class RegionCriteriaResource {
-    String regionCode; //地域コード
-    String regionName;  //地域名
+    @Schema(description = "地域コード")
+    String regionCode;
+    @Schema(description = "地域名")
+    String regionName;
 }

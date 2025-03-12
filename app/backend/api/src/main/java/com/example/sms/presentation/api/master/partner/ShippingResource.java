@@ -16,10 +16,14 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ShippingResource {
-    ShippingCode shippingCode; // 出荷先コード
-    String destinationName; // 出荷先名
-    RegionCode regionCode; // 地域コード
-    Address shippingAddress; // 出荷先住所
+    @Schema(description = "出荷先コード")
+    ShippingCode shippingCode;
+    @Schema(description = "出荷先名")
+    String destinationName;
+    @Schema(description = "地域コード")
+    RegionCode regionCode;
+    @Schema(description = "出荷先住所")
+    Address shippingAddress;
 
     public static ShippingResource from(Shipping shipping) {
         return ShippingResource.builder()

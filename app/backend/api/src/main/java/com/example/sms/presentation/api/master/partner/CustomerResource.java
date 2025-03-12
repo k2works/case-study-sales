@@ -21,35 +21,64 @@ import java.util.List;
 @NoArgsConstructor
 public class CustomerResource {
     @NotNull
+    @Schema(description = "顧客コード")
     String customerCode;
     @NotNull
+    @Schema(description = "顧客枝番")
     Integer customerBranchNumber;
+    @Schema(description = "顧客種別")
     CustomerType customerType;
+    @Schema(description = "請求先コード")
     String billingCode;
+    @Schema(description = "請求先枝番")
     Integer billingBranchNumber;
+    @Schema(description = "回収先コード")
     String collectionCode;
+    @Schema(description = "回収先枝番")
     Integer collectionBranchNumber;
+    @Schema(description = "顧客名")
     String customerName;
+    @Schema(description = "顧客名カナ")
     String customerNameKana;
+    @Schema(description = "会社担当者コード")
     String companyRepresentativeCode;
+    @Schema(description = "顧客担当者名")
     String customerRepresentativeName;
+    @Schema(description = "顧客部署名")
     String customerDepartmentName;
+    @Schema(description = "顧客郵便番号")
     String customerPostalCode;
+    @Schema(description = "顧客都道府県")
     String customerPrefecture;
+    @Schema(description = "顧客住所1")
     String customerAddress1;
+    @Schema(description = "顧客住所2")
     String customerAddress2;
+    @Schema(description = "顧客電話番号")
     String customerPhoneNumber;
+    @Schema(description = "顧客FAX番号")
     String customerFaxNumber;
+    @Schema(description = "顧客メールアドレス")
     String customerEmailAddress;
+    @Schema(description = "顧客請求区分")
     CustomerBillingCategory customerBillingType;
+    @Schema(description = "顧客締め日1")
     ClosingDate customerClosingDay1;
+    @Schema(description = "顧客支払月1")
     PaymentMonth customerPaymentMonth1;
+    @Schema(description = "顧客支払日1")
     PaymentDay customerPaymentDay1;
+    @Schema(description = "顧客支払方法1")
     PaymentMethod customerPaymentMethod1;
+    @Schema(description = "顧客締め日2")
     ClosingDate customerClosingDay2;
+    @Schema(description = "顧客支払月2")
     PaymentMonth customerPaymentMonth2;
+    @Schema(description = "顧客支払日2")
     PaymentDay customerPaymentDay2;
+    @Schema(description = "顧客支払方法2")
     PaymentMethod customerPaymentMethod2;
+    @Schema(description = "出荷先リスト")
     List<ShippingResource> shippings;
 
     public static CustomerResource from(Customer customer) {

@@ -13,9 +13,11 @@ import lombok.*;
 @NoArgsConstructor
 public class PartnerGroupResource {
     @NotNull
-    String partnerGroupCode; // 取引先グループコード
+    @Schema(description = "取引先グループコード")
+    String partnerGroupCode;
     @NotNull
-    String partnerGroupName; // 取引先グループ名
+    @Schema(description = "取引先グループ名")
+    String partnerGroupName;
 
     public static PartnerGroupResource from(PartnerGroup partnerGroup) {
         return PartnerGroupResource.builder()

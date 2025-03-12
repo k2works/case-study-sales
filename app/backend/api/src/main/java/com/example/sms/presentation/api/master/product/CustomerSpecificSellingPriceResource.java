@@ -14,9 +14,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CustomerSpecificSellingPriceResource {
-    String productCode; // 商品コード
-    String customerCode; // 顧客コード
-    Money sellingPrice; // 販売単価
+    @Schema(description = "商品コード")
+    String productCode;
+    @Schema(description = "顧客コード")
+    String customerCode;
+    @Schema(description = "販売単価")
+    Money sellingPrice;
 
     public static CustomerSpecificSellingPriceResource from(CustomerSpecificSellingPrice customerSpecificSellingPrice) {
         return CustomerSpecificSellingPriceResource.builder()
