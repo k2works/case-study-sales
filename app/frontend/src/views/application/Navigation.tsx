@@ -45,6 +45,19 @@ const NaveItems: React.FC = () => {
                         </ul>
                     </li>
                     <li className="nav-item">
+                        販売
+                        <ul className="nav-sub-list">
+                            <SubNavItem id="side-nav-sales-order-nav" to="/sales-order">受注</SubNavItem>
+                            {!Env.isProduction() && (
+                                <ul className="nav-sub-list">
+                                    <SubNavItem id="side-nav-product-nav" to="/sales-order-list">一覧</SubNavItem>
+                                    <SubNavItem id="side-nav-product-nav" to="/sales-order-upload">一括登録</SubNavItem>
+                                    <SubNavItem id="side-nav-product-nav" to="/sales-order-rule">ルール</SubNavItem>
+                                </ul>
+                            )}
+                        </ul>
+                    </li>
+                    <li className="nav-item">
                         マスタ
                         <ul className="nav-sub-list">
                             <SubNavItem id="side-nav-department-nav" to="/department">部門</SubNavItem>
@@ -82,6 +95,19 @@ const NaveItems: React.FC = () => {
                         <SubNavItem id="side-nav-audit-nav" to="/audit">実行履歴</SubNavItem>
                         <SubNavItem id="side-nav-download-nav" to="/download">ダウンロード</SubNavItem>
                     </ul>
+                    <li className="nav-item">
+                        販売
+                        <ul className="nav-sub-list">
+                            <SubNavItem id="side-nav-sales-order-nav" to="/sales-order">受注</SubNavItem>
+                            {!Env.isProduction() && (
+                                <ul className="nav-sub-list">
+                                    <SubNavItem id="side-nav-product-nav" to="/sales-order-list">一覧</SubNavItem>
+                                    <SubNavItem id="side-nav-product-nav" to="/sales-order-upload">一括登録</SubNavItem>
+                                    <SubNavItem id="side-nav-product-nav" to="/sales-order-rule">ルール</SubNavItem>
+                                </ul>
+                            )}
+                        </ul>
+                    </li>
                 </li>
             )}
             <NavItem id="side-nav-logout-nav" to="/logout" className="nav-item">ログアウト</NavItem>

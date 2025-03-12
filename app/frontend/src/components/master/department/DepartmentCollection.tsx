@@ -1,7 +1,7 @@
 import React from "react";
 import {useDepartmentContext} from "../../../providers/master/Department.tsx";
 import {DepartmentCollectionView} from "../../../views/master/department/DepartmentCollection.tsx";
-import {DepartmentIdType, DepartmentType} from "../../../models";
+import {DepartmentType} from "../../../models";
 import {showErrorMessage} from "../../application/utils.ts";
 import {DepartmentSearchModal} from "./DepartmentSearchModal.tsx";
 import {DepartmentEditModal} from "./DepartmentEditModal.tsx";
@@ -33,7 +33,7 @@ export const DepartmentCollection: React.FC = () => {
         setError("");
         if (department) {
             setNewDepartment(department);
-            setEditId(department.departmentId.deptCode.value);
+            setEditId(department.departmentCode);
             setIsEditing(true);
         } else {
             setNewDepartment(initialDepartment);
@@ -46,10 +46,10 @@ export const DepartmentCollection: React.FC = () => {
         setSearchModalIsOpen(true);
     }
 
-    const handleDeleteDepartment = async (departmentId: DepartmentIdType) => {
+    const handleDeleteDepartment = async (departmentCode: string, startDate: string) => {
         try {
-            if (!window.confirm(`部門コード:${departmentId.deptCode.value} を削除しますか？`)) return;
-            await departmentService.destroy(departmentId.deptCode.value, departmentId.departmentStartDate.value);
+            if (!window.confirm(`部門コード:${departmentCode} を削除しますか？`)) return;
+            await departmentService.destroy(departmentCode, startDate);
             await fetchDepartments.load();
             setMessage("部門を削除しました。");
         } catch (error: any) {
@@ -59,7 +59,7 @@ export const DepartmentCollection: React.FC = () => {
 
     const handleCheckDepartment = (department: DepartmentType) => {
         const newDepartments = departments.map((d: DepartmentType) => {
-            if (d.departmentId.deptCode.value === department.departmentId.deptCode.value && d.departmentId.departmentStartDate.value === department.departmentId.departmentStartDate.value) {
+            if (d.departmentCode === department.departmentCode && d.departmentCode === department.startDate) {
                 return {
                     ...d,
                     checked: !d.checked
@@ -89,7 +89,7 @@ export const DepartmentCollection: React.FC = () => {
 
         try {
             if (!window.confirm("選択した部門を削除しますか？")) return;
-            await Promise.all(checkedDepartments.map((d: DepartmentType) => departmentService.destroy(d.departmentId.deptCode.value, d.departmentId.departmentStartDate.value)));
+            await Promise.all(checkedDepartments.map((d: DepartmentType) => departmentService.destroy(d.departmentCode, d.startDate)));
             await fetchDepartments.load();
             setMessage("選択した部門を削除しました。");
         } catch (error: any) {

@@ -12,6 +12,7 @@ import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
 import com.example.sms.service.BusinessException;
+import com.example.sms.service.PageNationService;
 import com.example.sms.service.master.department.DepartmentService;
 import com.example.sms.service.master.employee.EmployeeCriteria;
 import com.example.sms.service.master.employee.EmployeeService;
@@ -24,6 +25,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import static com.example.sms.presentation.api.master.employee.EmployeeResourceDTOMapper.convertToCriteria;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -40,24 +43,28 @@ public class EmployeeApiController {
     final EmployeeService employeeManagementService;
     final DepartmentService departmentService;
     final UserManagementService userManagementService;
+    final PageNationService pageNationService;
 
     final Message message;
 
-    public EmployeeApiController(EmployeeService employeeManagementService, DepartmentService departmentService, UserManagementService userManagementService, Message message) {
+    public EmployeeApiController(EmployeeService employeeManagementService, DepartmentService departmentService, UserManagementService userManagementService, PageNationService pageNationService, Message message) {
         this.employeeManagementService = employeeManagementService;
         this.departmentService = departmentService;
         this.userManagementService = userManagementService;
+        this.pageNationService = pageNationService;
         this.message = message;
     }
 
     @Operation(summary = "社員一覧を取得する", description = "社員一覧を取得する")
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> select(
             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
             PageNation.startPage(page, pageSize);
-            PageInfo<Employee> result = employeeManagementService.selectAllWithPageInfo();
+            PageInfo<Employee> pageInfo = employeeManagementService.selectAllWithPageInfo();
+            PageInfo<EmployeeResource> result = pageNationService.getPageInfo(pageInfo, EmployeeResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
@@ -70,7 +77,7 @@ public class EmployeeApiController {
         try {
             EmployeeCode code = EmployeeCode.of(employeeCode);
             Employee employee = employeeManagementService.find(code);
-            return ResponseEntity.ok(employee);
+            return ResponseEntity.ok(EmployeeResource.from(employee));
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
@@ -131,8 +138,9 @@ public class EmployeeApiController {
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
             PageNation.startPage(page, pageSize);
-            EmployeeCriteria criteria = convertCriteria(resource);
-            PageInfo<Employee> result = employeeManagementService.searchWithPageInfo(criteria);
+            EmployeeCriteria criteria = convertToCriteria(resource);
+            PageInfo<Employee> entity = employeeManagementService.searchWithPageInfo(criteria);
+            PageInfo<EmployeeResource> result = pageNationService.getPageInfo(entity, EmployeeResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
@@ -161,27 +169,7 @@ public class EmployeeApiController {
                     .orElseThrow(() -> new IllegalArgumentException("ユーザが存在しません。"));
         }
 
-        Employee employee = Employee.of(
-                resource.getEmpCode(),
-                resource.getEmpName(),
-                resource.getEmpNameKana(),
-                resource.getTel(),
-                resource.getFax(),
-                resource.getOccuCode());
+        return EmployeeResourceDTOMapper.convertEntity(resource, department, user);
 
-        return Employee.of(employee, department, user);
-    }
-
-    private EmployeeCriteria convertCriteria(EmployeeCriteriaResource resource) {
-        return EmployeeCriteria.builder()
-                .employeeCode(resource.getEmployeeCode())
-                .employeeFirstName(resource.getEmployeeFirstName())
-                .employeeLastName(resource.getEmployeeLastName())
-                .employeeFirstNameKana(resource.getEmployeeFirstNameKana())
-                .employeeLastNameKana(resource.getEmployeeLastNameKana())
-                .phoneNumber(resource.getPhoneNumber())
-                .faxNumber(resource.getFaxNumber())
-                .departmentCode(resource.getDepartmentCode())
-                .build();
     }
 }

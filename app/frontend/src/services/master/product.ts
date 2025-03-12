@@ -25,36 +25,36 @@ export const ProductService = (): ProductServiceType => {
 
     const select = async (page?: number, pageSize?: number): Promise<ProductFetchType> => {
         const url = Utils.buildUrlWithPaging(endPoint, page, pageSize);
-        return await apiUtils.fetchGet(url);
+        return await apiUtils.fetchGet<ProductFetchType>(url);
     };
 
     const selectBoms = async (page?: number, pageSize?: number): Promise<ProductFetchType> => {
         const url = Utils.buildUrlWithPaging(`${endPoint}/boms`, page, pageSize);
-        return await apiUtils.fetchGet(url);
+        return await apiUtils.fetchGet<ProductFetchType>(url);
     };
 
     const find = async (productCode: string): Promise<ProductType> => {
         const url = `${endPoint}/${productCode}`;
-        return await apiUtils.fetchGet(url);
+        return await apiUtils.fetchGet<ProductType>(url);
     };
 
-    const create = async (product: ProductType) => {
-        return await apiUtils.fetchPost(endPoint, mapToProductResource(product));
+    const create = async (product: ProductType): Promise<void> => {
+        await apiUtils.fetchPost<void>(endPoint, mapToProductResource(product));
     };
 
-    const update = async (product: ProductType) => {
-        const url = `${endPoint}/${product.productCode.value}`;
-        return await apiUtils.fetchPut(url, mapToProductResource(product));
+    const update = async (product: ProductType): Promise<void> => {
+        const url = `${endPoint}/${product.productCode}`;
+        await apiUtils.fetchPut<void>(url, mapToProductResource(product));
     };
 
-    const search = (criteria: ProductCriteriaType, page?: number, pageSize?: number): Promise<ProductFetchType> => {
+    const search = async (criteria: ProductCriteriaType, page?: number, pageSize?: number): Promise<ProductFetchType> => {
         const url = Utils.buildUrlWithPaging(`${endPoint}/search`, page, pageSize);
-        return apiUtils.fetchPost(url, mapToProductCriteriaResource(criteria));
+        return await apiUtils.fetchPost<ProductFetchType>(url, mapToProductCriteriaResource(criteria));
     };
 
     const destroy = async (productCode: string): Promise<void> => {
         const url = `${endPoint}/${productCode}`;
-        await apiUtils.fetchDelete(url);
+        await apiUtils.fetchDelete<void>(url);
     };
 
     return {

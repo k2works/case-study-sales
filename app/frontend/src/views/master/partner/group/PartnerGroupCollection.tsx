@@ -7,7 +7,7 @@ import {PartnerGroupCriteriaType, PartnerGroupType} from "../../../../models/mas
 interface PartnerGroupItemProps {
     groupItem: PartnerGroupType;
     onEdit: (group: PartnerGroupType) => void;
-    onDelete: (groupId: PartnerGroupType["partnerGroupCode"]["value"]) => void;
+    onDelete: (groupId: string) => void;
     onCheck: (group: PartnerGroupType) => void;
 }
 
@@ -17,8 +17,8 @@ const PartnerGroupItem: React.FC<PartnerGroupItemProps> = ({
                                                                onDelete,
                                                                onCheck,
                                                            }) => (
-    <li className="collection-object-item" key={groupItem.partnerGroupCode.value}>
-        <div className="collection-object-item-content" data-id={groupItem.partnerGroupCode.value}>
+    <li className="collection-object-item" key={groupItem.partnerGroupCode}>
+        <div className="collection-object-item-content" data-id={groupItem.partnerGroupCode}>
             <input
                 type="checkbox"
                 className="collection-object-item-checkbox"
@@ -26,19 +26,19 @@ const PartnerGroupItem: React.FC<PartnerGroupItemProps> = ({
                 onChange={() => onCheck(groupItem)}
             />
         </div>
-        <div className="collection-object-item-content" data-id={groupItem.partnerGroupCode.value}>
+        <div className="collection-object-item-content" data-id={groupItem.partnerGroupCode}>
             <div className="collection-object-item-content-details">取引先グループコード</div>
-            <div className="collection-object-item-content-name">{groupItem.partnerGroupCode.value}</div>
+            <div className="collection-object-item-content-name">{groupItem.partnerGroupCode}</div>
         </div>
-        <div className="collection-object-item-content" data-id={groupItem.partnerGroupCode.value}>
+        <div className="collection-object-item-content" data-id={groupItem.partnerGroupCode}>
             <div className="collection-object-item-content-details">取引先グループ名</div>
             <div className="collection-object-item-content-name">{groupItem.partnerGroupName}</div>
         </div>
-        <div className="collection-object-item-actions" data-id={groupItem.partnerGroupCode.value}>
+        <div className="collection-object-item-actions" data-id={groupItem.partnerGroupCode}>
             <button className="action-button" onClick={() => onEdit(groupItem)} id="edit">編集</button>
         </div>
-        <div className="collection-object-item-actions" data-id={groupItem.partnerGroupCode.value}>
-            <button className="action-button" onClick={() => onDelete(groupItem.partnerGroupCode.value)} id="delete">削除</button>
+        <div className="collection-object-item-actions" data-id={groupItem.partnerGroupCode}>
+            <button className="action-button" onClick={() => onDelete(groupItem.partnerGroupCode)} id="delete">削除</button>
         </div>
     </li>
 );
@@ -46,7 +46,7 @@ const PartnerGroupItem: React.FC<PartnerGroupItemProps> = ({
 interface PartnerGroupListProps {
     groups: PartnerGroupType[];
     onEdit: (group: PartnerGroupType) => void;
-    onDelete: (groupId: PartnerGroupType["partnerGroupCode"]["value"]) => void;
+    onDelete: (groupId: string) => void;
     onCheck: (group: PartnerGroupType) => void;
 }
 
@@ -60,7 +60,7 @@ const PartnerGroupList: React.FC<PartnerGroupListProps> = ({
         <ul className="collection-object-list">
             {groups.map(group => (
                 <PartnerGroupItem
-                    key={group.partnerGroupCode.value}
+                    key={group.partnerGroupCode}
                     groupItem={group}
                     onEdit={onEdit}
                     onDelete={onDelete}
@@ -87,7 +87,7 @@ interface PartnerGroupCollectionViewProps {
     collectionItems: {
         partnerGroups: PartnerGroupType[];
         handleOpenModal: (group?: PartnerGroupType) => void;
-        handleDeletePartnerGroup: (groupId: PartnerGroupType["partnerGroupCode"]["value"]) => void;
+        handleDeletePartnerGroup: (groupId: string) => void;
         handleCheckPartnerGroup: (group: PartnerGroupType) => void;
     };
     pageNationItems: {

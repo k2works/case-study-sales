@@ -1,35 +1,15 @@
 import {PageNationType} from "../../../views/application/PageNation.tsx";
 import {PriceType, QuantityType} from "../shared.ts";
-import {PartnerCodeType} from "../partner";
-
-type ProductCodeType = {
-    value: string;
-    businessType: string;
-    itemType: string;
-    livestockType: string;
-    serialNumber: number;
-};
-
-type ProductNameType = {
-    productFormalName: string;
-    productAbbreviation: string;
-    productNameKana: string;
-};
-
-type VendorCodeType = {
-    code: PartnerCodeType;
-    branchNumber: number;
-};
 
 export type SubstituteProductType = {
-    productCode: ProductCodeType;
-    substituteProductCode: ProductCodeType;
+    productCode: string;
+    substituteProductCode: string;
     priority: number;
 };
 
 export type BomType = {
-    productCode: ProductCodeType;
-    componentCode: ProductCodeType;
+    productCode: string;
+    componentCode: string;
     componentQuantity: QuantityType;
 }
 
@@ -38,24 +18,27 @@ export type BomFetchType = {
 } & PageNationType;
 
 export type CustomerSpecificSellingPriceType = {
-    productCode: ProductCodeType;
+    productCode: string;
     customerCode: string;
     sellingPrice: PriceType;
 };
 
 export type ProductType = {
-    productCode: ProductCodeType;
-    productName: ProductNameType;
+    productCode: string;
+    productFormalName: string;
+    productAbbreviation: string;
+    productNameKana: string;
     productType: string;
-    sellingPrice: PriceType;
-    purchasePrice: PriceType;
-    costOfSales: PriceType;
+    sellingPrice: number;
+    purchasePrice?: number;
+    costOfSales: number;
     taxType: string;
-    productCategoryCode: { value: string };
-    miscellaneousType: string;
-    stockManagementTargetType: string;
-    stockAllocationType: string;
-    vendorCode: VendorCodeType;
+    productClassificationCode?: string;
+    miscellaneousType?: string;
+    stockManagementTargetType?: string;
+    stockAllocationType?: string;
+    vendorCode: string;
+    vendorBranchNumber?: number;
     substituteProduct: SubstituteProductType[];
     boms: BomType[];
     customerSpecificSellingPrices: CustomerSpecificSellingPriceType[];
@@ -88,29 +71,6 @@ export type ProductFetchType = {
     list: ProductType[];
 } & PageNationType;
 
-export type ProductResourceType = {
-    productCode: string;
-    productFormalName: string;
-    productAbbreviation: string;
-    productNameKana: string;
-    productType: string;
-    sellingPrice: number;
-    purchasePrice?: number;
-    costOfSales: number;
-    taxType: string;
-    productClassificationCode?: string;
-    miscellaneousType?: string;
-    stockManagementTargetType?: string;
-    stockAllocationType?: string;
-    vendorCode: string;
-    vendorBranchNumber?: number;
-    substituteProduct?: SubstituteProductType[];
-    boms?: BomType[];
-    customerSpecificSellingPrices?: CustomerSpecificSellingPriceType[];
-    addFlag: boolean;
-    deleteFlag: boolean;
-}
-
 export type ProductCriteriaType = {
     productCode?: string;
     productFormalName?: string;
@@ -125,28 +85,9 @@ export type ProductCriteriaType = {
     stockAllocationType?: string;
 }
 
-export const mapToProductResource = (product: ProductType): ProductResourceType => {
+export const mapToProductResource = (product: ProductType): ProductType => {
     return {
-        productCode: product.productCode.value,
-        productFormalName: product.productName.productFormalName,
-        productAbbreviation: product.productName.productAbbreviation,
-        productNameKana: product.productName.productNameKana,
-        productType: product.productType,
-        sellingPrice: product.sellingPrice.amount,
-        purchasePrice: product.purchasePrice.amount,
-        costOfSales: product.costOfSales.amount,
-        taxType: product.taxType,
-        productClassificationCode: product.productCategoryCode.value,
-        miscellaneousType: product.miscellaneousType,
-        stockManagementTargetType: product.stockManagementTargetType,
-        stockAllocationType: product.stockAllocationType,
-        vendorCode: product.vendorCode.code.value,
-        vendorBranchNumber: product.vendorCode.branchNumber,
-        substituteProduct: product.substituteProduct,
-        boms: product.boms,
-        customerSpecificSellingPrices: product.customerSpecificSellingPrices,
-        addFlag: product.addFlag,
-        deleteFlag: product.deleteFlag
+        ...product
     };
 }
 

@@ -1,15 +1,13 @@
 package com.example.sms.presentation.api.master.partner;
 
 import com.example.sms.domain.model.master.partner.Partner;
-import com.example.sms.domain.model.master.partner.TradeProhibitedFlag;
-import com.example.sms.domain.model.master.partner.vendor.VendorType;
-import com.example.sms.domain.model.master.partner.MiscellaneousType;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
 import com.example.sms.service.BusinessException;
+import com.example.sms.service.PageNationService;
 import com.example.sms.service.master.partner.PartnerCriteria;
 import com.example.sms.service.master.partner.PartnerService;
 import com.example.sms.service.system.audit.AuditAnnotation;
@@ -20,7 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.function.Function;
+import static com.example.sms.presentation.api.master.partner.PartnerResourceDTOMapper.convertToCriteria;
+import static com.example.sms.presentation.api.master.partner.PartnerResourceDTOMapper.convertToEntity;
 
 /**
  * 取引先 API
@@ -30,23 +29,26 @@ import java.util.function.Function;
 @Tag(name = "Partner", description = "取引先管理")
 @PreAuthorize("hasRole('ADMIN')")
 public class PartnerApiController {
-
     private final PartnerService partnerService;
+    private final PageNationService pageNationService;
     private final Message message;
 
-    public PartnerApiController(PartnerService partnerService, Message message) {
+    public PartnerApiController(PartnerService partnerService, PageNationService pageNationService, Message message) {
         this.partnerService = partnerService;
+        this.pageNationService = pageNationService;
         this.message = message;
     }
 
     @Operation(summary = "取引先一覧を取得する")
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> select(
             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
             PageNation.startPage(page, pageSize);
-            PageInfo<Partner> result = partnerService.selectAllWithPageInfo();
+            PageInfo<Partner> pageInfo = partnerService.selectAllWithPageInfo();
+            PageInfo<PartnerResource> result = pageNationService.getPageInfo(pageInfo, PartnerResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
@@ -61,7 +63,7 @@ public class PartnerApiController {
             if (result == null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.partner.not.exist")));
             }
-            return ResponseEntity.ok(result);
+            return ResponseEntity.ok(PartnerResource.from(result));
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
@@ -126,63 +128,12 @@ public class PartnerApiController {
         try {
             PageNation.startPage(page, pageSize);
             PartnerCriteria criteria = convertToCriteria(criteriaResource);
-            PageInfo<Partner> result = partnerService.searchWithPageInfo(criteria);
+            PageInfo<Partner> entity = partnerService.searchWithPageInfo(criteria);
+            PageInfo<PartnerResource> result = pageNationService.getPageInfo(entity, PartnerResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
 
-    private Partner convertToEntity(PartnerResource resource) {
-        Partner partner = Partner.of(
-                resource.getPartnerCode(),
-                resource.getPartnerName(),
-                resource.getPartnerNameKana(),
-                resource.getVendorType().getValue(),
-                resource.getPostalCode(),
-                resource.getPrefecture(),
-                resource.getAddress1(),
-                resource.getAddress2(),
-                resource.getTradeProhibitedFlag().getValue(),
-                resource.getMiscellaneousType().getCode(),
-                resource.getPartnerGroupCode(),
-                resource.getCreditLimit(),
-                resource.getTemporaryCreditIncrease()
-        );
-
-        return Partner.of(
-                partner.getPartnerCode(),
-                partner.getPartnerName(),
-                partner.getVendorType(),
-                partner.getAddress(),
-                partner.getTradeProhibitedFlag(),
-                partner.getMiscellaneousType(),
-                partner.getPartnerGroupCode(),
-                partner.getCredit(),
-                resource.getCustomers(),
-                resource.getVendors()
-        );
-    }
-
-    private PartnerCriteria convertToCriteria(PartnerCriteriaResource resource) {
-        return PartnerCriteria.builder()
-                .partnerCode(resource.getPartnerCode())
-                .partnerName(resource.getPartnerName())
-                .partnerNameKana(resource.getPartnerNameKana())
-                .vendorType(mapStringToCode(resource.getVendorType(), VendorType::getCodeByName))
-                .postalCode(resource.getPostalCode())
-                .prefecture(resource.getPrefecture())
-                .address1(resource.getAddress1())
-                .address2(resource.getAddress2())
-                .tradeProhibitedFlag(mapStringToCode(resource.getTradeProhibitedFlag(), TradeProhibitedFlag::getCodeByName))
-                .miscellaneousType(mapStringToCode(resource.getMiscellaneousType(), MiscellaneousType::getCodeByName))
-                .partnerGroupCode(resource.getPartnerGroupCode())
-                .creditLimit(resource.getCreditLimit())
-                .temporaryCreditIncrease(resource.getTemporaryCreditIncrease())
-                .build();
-    }
-
-    private <T> T mapStringToCode(String value, Function<String, T> mapper) {
-        return value != null ? mapper.apply(value) : null;
-    }
 }

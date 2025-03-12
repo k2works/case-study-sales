@@ -1,7 +1,6 @@
 package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
-import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.presentation.api.master.employee.EmployeeCriteriaResource;
 import com.example.sms.presentation.api.master.employee.EmployeeResource;
 import com.example.sms.stepdefinitions.utils.ListResponse;
@@ -69,9 +68,9 @@ public class UC004StepDefs extends SpringAcceptanceTest {
 
         if (list.equals("社員一覧")) {
             String result = latestResponse.getBody();
-            ListResponse<Employee> employeeResponse = objectMapper.readValue(result, new TypeReference<>() {
+            ListResponse<EmployeeResource> employeeResponse = objectMapper.readValue(result, new TypeReference<>() {
             });
-            List<Employee> employeeList = employeeResponse.getList();
+            List<EmployeeResource> employeeList = employeeResponse.getList();
             assertEquals(2, employeeList.size());
         }
     }
@@ -79,15 +78,18 @@ public class UC004StepDefs extends SpringAcceptanceTest {
     @もし(":UC004 社員コード {string} 社員名 {string} 社員名カナ {string} で新規登録する")
     public void toRegist(String code, String name, String nameKana) throws IOException {
         String url = EMPLOYEE_API_URL;
-        EmployeeResource resource = new EmployeeResource();
-        resource.setEmpCode(code);
-        resource.setEmpName(name);
-        resource.setEmpNameKana(nameKana);
-        resource.setTel(null);
-        resource.setFax(null);
-        resource.setDepartmentCode("10000");
-        resource.setDepartmentStartDate("2021-01-01T00:00:00+09:00");
-        resource.setOccuCode("");
+        EmployeeResource resource = EmployeeResource.builder()
+                .empCode(code)
+                .empFirstName(name.split(" ")[0])
+                .empLastName(name.split(" ")[1])
+                .empFirstNameKana(nameKana.split(" ")[0])
+                .empLastNameKana(nameKana.split(" ")[1])
+                .tel(null)
+                .fax(null)
+                .departmentCode("10000")
+                .departmentStartDate("2021-01-01T00:00:00+09:00")
+                .occuCode("")
+                .build();
 
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(resource);
@@ -112,14 +114,18 @@ public class UC004StepDefs extends SpringAcceptanceTest {
     public void toUpdate(String code, String name, String nameKana) throws IOException {
         String url = EMPLOYEE_API_URL + "/" + code;
 
-        EmployeeResource resource = new EmployeeResource();
-        resource.setEmpName(name);
-        resource.setEmpNameKana(nameKana);
-        resource.setTel(null);
-        resource.setFax(null);
-        resource.setDepartmentCode("10000");
-        resource.setDepartmentStartDate("2021-01-01T00:00:00+09:00");
-        resource.setOccuCode("");
+        EmployeeResource resource = EmployeeResource.builder()
+                .empCode(code)
+                .empFirstName(name.split(" ")[0])
+                .empLastName(name.split(" ")[1])
+                .empFirstNameKana(nameKana.split(" ")[0])
+                .empLastNameKana(nameKana.split(" ")[1])
+                .tel(null)
+                .fax(null)
+                .departmentCode("10000")
+                .departmentStartDate("2021-01-01T00:00:00+09:00")
+                .occuCode("")
+                .build();
 
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(resource);
@@ -132,8 +138,8 @@ public class UC004StepDefs extends SpringAcceptanceTest {
         objectMapper.registerModule(new JavaTimeModule());
 
         String result = latestResponse.getBody();
-        Employee employee = objectMapper.readValue(result, Employee.class);
-        assertEquals(name, employee.getEmpName().Name());
+        EmployeeResource employee = objectMapper.readValue(result, EmployeeResource.class);
+        assertEquals(name, employee.getEmpFirstName() + " " + employee.getEmpLastName());
     }
     @かつ(":UC004 社員コード {string} を削除する")
     public void toDelete(String code) throws IOException {
@@ -157,9 +163,9 @@ public class UC004StepDefs extends SpringAcceptanceTest {
         String result = latestResponse.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
-        ListResponse<Employee> response = objectMapper.readValue(result, new TypeReference<>() {
+        ListResponse<EmployeeResource> response = objectMapper.readValue(result, new TypeReference<>() {
         });
-        List<Employee> employeeList = response.getList();
+        List<EmployeeResource> employeeList = response.getList();
         assertEquals(2, employeeList.size());
     }
 }

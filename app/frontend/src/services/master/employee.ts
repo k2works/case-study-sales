@@ -24,31 +24,31 @@ export const EmployeeService = () => {
 
     const select = async (page?: number, pageSize?: number): Promise<EmployeeFetchType> => {
         const url = Utils.buildUrlWithPaging(endPoint, page, pageSize);
-        return await apiUtils.fetchGet(url);
+        return await apiUtils.fetchGet<EmployeeFetchType>(url);
     };
 
     const find = async (empCode: string): Promise<EmployeeType> => {
         const url = `${endPoint}/${empCode}`;
-        return await apiUtils.fetchGet(url);
+        return await apiUtils.fetchGet<EmployeeType>(url);
     };
 
-    const create = async (employee: EmployeeType) => {
-        return await apiUtils.fetchPost(endPoint, mapToEmployeeResource(employee));
+    const create = async (employee: EmployeeType): Promise<void> => {
+        await apiUtils.fetchPost<void>(endPoint, mapToEmployeeResource(employee));
     };
 
-    const update = async (employee: EmployeeType) => {
-        const url = `${endPoint}/${employee.empCode.value}`;
-        return await apiUtils.fetchPut(url, mapToEmployeeResource(employee));
+    const update = async (employee: EmployeeType): Promise<void> => {
+        const url = `${endPoint}/${employee.empCode}`;
+        await apiUtils.fetchPut<void>(url, mapToEmployeeResource(employee));
     };
 
-    const search = (criteria: EmployeeCriteriaType, page?: number, pageSize?: number): Promise<EmployeeFetchType> => {
+    const search = async (criteria: EmployeeCriteriaType, page?: number, pageSize?: number): Promise<EmployeeFetchType> => {
         const url = Utils.buildUrlWithPaging(`${endPoint}/search`, page, pageSize);
-        return apiUtils.fetchPost(url, mapToEmployeeCriteriaResource(criteria));
+        return await apiUtils.fetchPost<EmployeeFetchType>(url, mapToEmployeeCriteriaResource(criteria));
     };
 
     const destroy = async (empCode: string): Promise<void> => {
         const url = `${endPoint}/${empCode}`;
-        await apiUtils.fetchDelete(url);
+        await apiUtils.fetchDelete<void>(url);
     };
 
     return {

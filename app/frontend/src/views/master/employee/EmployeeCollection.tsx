@@ -13,29 +13,28 @@ interface EmployeeListItemProps {
 
 const EmployeeListItem: React.FC<EmployeeListItemProps> = ({employee, onEdit, onDelete, onCheck}) => {
     return (
-        <li className="collection-object-item" key={employee.empCode.value}>
-            <div className="collection-object-item-actions" data-id={employee.empCode.value}>
+        <li className="collection-object-item" key={employee.empCode}>
+            <div className="collection-object-item-actions" data-id={employee.empCode}>
                 <input type="checkbox" className="collection-object-item-checkbox" checked={employee.checked}
                        onChange={() => onCheck(employee)}/>
             </div>
-            {['社員コード', '姓', '名', '電話番号', 'FAX番号', '部門'].map((label, idx) => (
-                <div className="collection-object-item-content" data-id={employee.empCode.value} key={idx}>
+            {['社員コード', '社員名', '電話番号', 'FAX番号', '部門'].map((label, idx) => (
+                <div className="collection-object-item-content" data-id={employee.empCode} key={idx}>
                     <div className="collection-object-item-content-details">{label}</div>
                     <div className="collection-object-item-content-name">
-                        {label === '社員コード' ? employee.empCode.value :
-                            label === '姓' ? employee.empName.firstName :
-                                label === '名' ? employee.empName.lastName :
-                                    label === '電話番号' ? employee.tel.value :
-                                        label === 'FAX番号' ? employee.fax.value :
-                                            employee.department?.departmentName}
+                        {label === '社員コード' ? employee.empCode :
+                            label === '社員名' ? employee.empFirstName + ' ' + employee.empLastName :
+                                label === '電話番号' ? employee.tel :
+                                    label === 'FAX番号' ? employee.fax :
+                                        employee.departmentName}
                     </div>
                 </div>
             ))}
-            <div className="collection-object-item-actions" data-id={employee.empCode.value}>
+            <div className="collection-object-item-actions" data-id={employee.empCode}>
                 <button className="action-button" onClick={() => onEdit(employee)} id="edit">編集</button>
             </div>
-            <div className="collection-object-item-actions" data-id={employee.empCode.value}>
-                <button className="action-button" onClick={() => onDelete(employee.empCode.value)} id="delete">削除
+            <div className="collection-object-item-actions" data-id={employee.empCode}>
+                <button className="action-button" onClick={() => onDelete(employee.empCode)} id="delete">削除
                 </button>
             </div>
         </li>
@@ -54,7 +53,7 @@ const EmployeeList: React.FC<EmployeeListProps> = ({employees, onEdit, onDelete,
         <ul className="collection-object-list">
             {employees.map((employee) => (
                 <EmployeeListItem
-                    key={employee.empCode.value}
+                    key={employee.empCode}
                     employee={employee}
                     onEdit={onEdit}
                     onDelete={onDelete}
@@ -79,7 +78,7 @@ interface EmployeeCollectionViewProps {
         handleDeleteCheckedCollection: () => void;
     }
     collectionItems: {
-        employees: any[];
+        employees: EmployeeType[];
         handleDeleteEmployee: (empCode: string) => void;
         handleCheckEmployee: (employee: EmployeeType) => void;
     }
@@ -159,19 +158,19 @@ export const EmployeeCollectionAddListView: React.FC<EmployeeCollectionAddListPr
                     <div className="collection-object-container-modal">
                         <ul className="collection-object-list">
                             {employees.map(employee => (
-                                <li className="collection-object-item" key={employee.empCode.value}>
-                                    <div className="collection-object-item-content" data-id={employee.empCode.value}>
+                                <li className="collection-object-item" key={employee.empCode}>
+                                    <div className="collection-object-item-content" data-id={employee.empCode}>
                                         <div className="collection-object-item-content-details">社員コード</div>
                                         <div
-                                            className="collection-object-item-content-name">{employee.empCode.value}</div>
+                                            className="collection-object-item-content-name">{employee.empCode}</div>
                                     </div>
-                                    <div className="collection-object-item-content" data-id={employee.empCode.value}>
+                                    <div className="collection-object-item-content" data-id={employee.empCode}>
                                         <div className="collection-object-item-content-details">名前</div>
                                         <div className="collection-object-item-content-name">
-                                            {employee.empName.firstNameKana} {employee.empName.lastNameKana}
+                                            {employee.empFirstName + ' ' + employee.empLastName}
                                         </div>
                                     </div>
-                                    <div className="collection-object-item-actions" data-id={employee.empCode.value}>
+                                    <div className="collection-object-item-actions" data-id={employee.empCode}>
                                         <button className="action-button" onClick={() => handleDelete(employee)}>削除
                                         </button>
                                     </div>
@@ -184,4 +183,3 @@ export const EmployeeCollectionAddListView: React.FC<EmployeeCollectionAddListPr
         </div>
     );
 };
-

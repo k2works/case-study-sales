@@ -64,9 +64,9 @@ public class UC003StepDefs extends SpringAcceptanceTest {
 
         if (list.equals("部門一覧")) {
             result = latestResponse.getBody();
-            ListResponse<Department> departmentResponse = objectMapper.readValue(result, new TypeReference<>() {
+            ListResponse<DepartmentResource> departmentResponse = objectMapper.readValue(result, new TypeReference<>() {
             });
-            List<Department> departmentList = departmentResponse.getList();
+            List<DepartmentResource> departmentList = departmentResponse.getList();
             assertEquals(2, departmentList.size());
         }
     }
@@ -81,15 +81,16 @@ public class UC003StepDefs extends SpringAcceptanceTest {
 
     @もし(":UC003 部門コード {string} 部門名 {string} で新規登録する")
     public void toRegister(String code, String name) throws IOException {
-        DepartmentResource departmentResource = new DepartmentResource();
-        departmentResource.setDepartmentCode(code);
-        departmentResource.setStartDate("2021-01-01T00:00:00+09:00");
-        departmentResource.setEndDate("9999-12-29T12:00:00+09:00");
-        departmentResource.setDepartmentName(name);
-        departmentResource.setLayer("1");
-        departmentResource.setPath(code + "~");
-        departmentResource.setLowerType(DepartmentLowerType.LOWER);
-        departmentResource.setSlitYn(SlitYnType.SLIT);
+        DepartmentResource departmentResource = DepartmentResource.builder()
+                .departmentCode(code)
+                .startDate("2021-01-01T00:00:00+09:00")
+                .endDate("9999-12-29T12:00:00+09:00")
+                .departmentName(name)
+                .layer("1")
+                .path(code + "~")
+                .lowerType(DepartmentLowerType.LOWER)
+                .slitYn(SlitYnType.SLIT)
+                .build();
 
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(departmentResource);
@@ -107,13 +108,16 @@ public class UC003StepDefs extends SpringAcceptanceTest {
     public void toUpdate(String code, String name) throws IOException {
         String from = "2021-01-01T00:00:00+09:00";
         String url = DEPARTMENT_API_URL + "/" + code + "/" + from;
-        DepartmentResource departmentResource = new DepartmentResource();
-        departmentResource.setEndDate("9999-12-29T12:00:00+09:00");
-        departmentResource.setDepartmentName(name);
-        departmentResource.setLayer("1");
-        departmentResource.setPath(code + "~");
-        departmentResource.setLowerType(DepartmentLowerType.LOWER);
-        departmentResource.setSlitYn(SlitYnType.SLIT);
+        DepartmentResource departmentResource = DepartmentResource.builder()
+                .departmentCode(code)
+                .startDate("2021-01-01T00:00:00+09:00")
+                .endDate("9999-12-29T12:00:00+09:00")
+                .departmentName(name)
+                .layer("1")
+                .path(code + "~")
+                .lowerType(DepartmentLowerType.LOWER)
+                .slitYn(SlitYnType.SLIT)
+                .build();;
 
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(departmentResource);
@@ -153,9 +157,9 @@ public class UC003StepDefs extends SpringAcceptanceTest {
         String result = latestResponse.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
-        ListResponse<Department> response = objectMapper.readValue(result, new TypeReference<>() {
+        ListResponse<DepartmentResource> response = objectMapper.readValue(result, new TypeReference<>() {
         });
-        List<Department> departmentList = response.getList();
+        List<DepartmentResource> departmentList = response.getList();
         assertEquals(2, departmentList.size());
     }
 }

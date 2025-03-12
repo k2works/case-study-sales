@@ -7,6 +7,7 @@ import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
 import com.example.sms.service.BusinessException;
+import com.example.sms.service.PageNationService;
 import com.example.sms.service.master.partner.PartnerGroupCriteria;
 import com.example.sms.service.master.partner.PartnerGroupService;
 import com.example.sms.service.system.audit.AuditAnnotation;
@@ -17,6 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import static com.example.sms.presentation.api.master.partner.PartnerGroupResourceDTOMapper.convertToCriteria;
+import static com.example.sms.presentation.api.master.partner.PartnerGroupResourceDTOMapper.convertToEntity;
+
 /**
  * 取引先グループAPI
  */
@@ -26,10 +30,12 @@ import org.springframework.web.bind.annotation.*;
 @PreAuthorize("hasRole('ADMIN')")
 public class PartnerGroupApiController {
     final PartnerGroupService partnerGroupService;
+    final PageNationService pageNationService;
     final Message message;
 
-    public PartnerGroupApiController(PartnerGroupService partnerGroupService, Message message) {
+    public PartnerGroupApiController(PartnerGroupService partnerGroupService, PageNationService pageNationService, Message message) {
         this.partnerGroupService = partnerGroupService;
+        this.pageNationService = pageNationService;
         this.message = message;
     }
 
@@ -40,7 +46,8 @@ public class PartnerGroupApiController {
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
             PageNation.startPage(page, pageSize);
-            PageInfo<PartnerGroup> result = partnerGroupService.selectAllWithPageInfo();
+            PageInfo<PartnerGroup> pageInfo = partnerGroupService.selectAllWithPageInfo();
+            PageInfo<PartnerGroupResource> result = pageNationService.getPageInfo(pageInfo, PartnerGroupResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
@@ -52,7 +59,7 @@ public class PartnerGroupApiController {
     public ResponseEntity<?> select(@PathVariable("partnerGroupCode") String partnerGroupCode) {
         try {
             PartnerGroup result = partnerGroupService.find(partnerGroupCode);
-            return ResponseEntity.ok(result);
+            return ResponseEntity.ok(PartnerGroupResource.from(result));
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
@@ -114,25 +121,13 @@ public class PartnerGroupApiController {
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
             PageNation.startPage(page, pageSize);
-
             PartnerGroupCriteria criteria = convertToCriteria(resource);
-            PageInfo<PartnerGroup> result = partnerGroupService.searchWithPageInfo(criteria);
-
+            PageInfo<PartnerGroup> entity = partnerGroupService.searchWithPageInfo(criteria);
+            PageInfo<PartnerGroupResource> result = pageNationService.getPageInfo(entity, PartnerGroupResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
 
-    private PartnerGroup convertToEntity(PartnerGroupResource resource) {
-        return PartnerGroup.of(resource.getPartnerGroupCode(), resource.getPartnerGroupName());
-    }
-
-    private PartnerGroupCriteria convertToCriteria(PartnerGroupCriteriaResource resource) {
-        return PartnerGroupCriteria.builder()
-                .partnerGroupCode(resource.getPartnerGroupCode())
-                .partnerGroupName(resource.getPartnerGroupName())
-                .build();
-    }
 }
-

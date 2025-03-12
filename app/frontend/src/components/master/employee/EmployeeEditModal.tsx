@@ -28,7 +28,7 @@ export const EmployeeEditModal: React.FC = () => {
             overlayClassName="modal-overlay"
             bodyOpenClassName="modal-open"
         >
-            <DepartmentSelectModal/>
+            <DepartmentSelectModal type={"edit"}/>
             <UserSelectModal/>
             <EmployeeSingle/>
         </Modal>

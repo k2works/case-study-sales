@@ -1,26 +1,12 @@
 import {PageNationType} from "../../../views/application/PageNation.tsx";
 
 export type PartnerGroupType = {
-    partnerGroupCode: PartnerGroupCodeType; // 取引先グループコード
+    partnerGroupCode: string; // 取引先グループコード
     partnerGroupName: string; // 取引先グループ名
     checked: boolean; // チェック状態
 };
 
-export type PartnerGroupCodeType = {
-    value: string;
-}
-
-export type PartnerGroupResource = {
-    partnerGroupCode: string; // 取引先グループコード
-    partnerGroupName: string; // 取引先グループ名
-};
-
 export type PartnerGroupCriteriaType = {
-    partnerGroupCode?: string; // 取引先グループコード（オプション）
-    partnerGroupName?: string; // 取引先グループ名（オプション）
-};
-
-export type PartnerGroupCriteriaResource = {
     partnerGroupCode?: string; // 取引先グループコード（オプション）
     partnerGroupName?: string; // 取引先グループ名（オプション）
 };
@@ -29,14 +15,13 @@ export type PartnerGroupFetchType = {
     list: PartnerGroupType[]; // 取引先グループリスト
 } & PageNationType;
 
-export const mapToPartnerGroupResource = (type: PartnerGroupType): PartnerGroupResource => {
+export const mapToPartnerGroupResource = (type: PartnerGroupType): PartnerGroupType => {
     return {
-        partnerGroupCode: type.partnerGroupCode.value,
-        partnerGroupName: type.partnerGroupName,
+        ...type,
     }
 }
 
-export const mapToPartnerGroupCriteriaResource = (criteria: PartnerGroupCriteriaType): PartnerGroupCriteriaResource => {
+export const mapToPartnerGroupCriteriaResource = (criteria: PartnerGroupCriteriaType): PartnerGroupCriteriaType => {
     const isEmpty = (value: unknown) => value === "" || value === null || value === undefined;
     return {
         ...(isEmpty(criteria.partnerGroupCode) ? {} : {partnerGroupCode: criteria.partnerGroupCode}),

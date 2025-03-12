@@ -28,7 +28,7 @@ export const ProductItemSubstituteModal: React.FC = () => {
     }
 
     const handleSelectProductModal = (product: ProductType) => {
-        const newProducts = newProduct.substituteProduct.filter((e) => e.substituteProductCode.value !== product.productCode.value);
+        const newProducts = newProduct.substituteProduct.filter((e) => e.substituteProductCode !== product.productCode);
         newProducts.push({
             productCode: newProduct.productCode,
             substituteProductCode: product.productCode,

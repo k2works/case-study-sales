@@ -7,6 +7,7 @@ import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
 import com.example.sms.service.BusinessException;
+import com.example.sms.service.PageNationService;
 import com.example.sms.service.master.region.RegionCriteria;
 import com.example.sms.service.master.region.RegionService;
 import com.example.sms.service.system.audit.AuditAnnotation;
@@ -17,6 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import static com.example.sms.presentation.api.master.region.RegionResourceDTOMapper.convertToCriteria;
+import static com.example.sms.presentation.api.master.region.RegionResourceDTOMapper.convertToEntity;
+
 /**
  * 地域コードAPI
  */
@@ -26,21 +30,25 @@ import org.springframework.web.bind.annotation.*;
 @PreAuthorize("hasRole('ADMIN')")
 public class RegionApiController {
     final RegionService regionService;
+    final PageNationService pageNationService;
     final Message message;
 
-    public RegionApiController(RegionService regionService, Message message) {
+    public RegionApiController(RegionService regionService, PageNationService pageNationService, Message message) {
         this.regionService = regionService;
+        this.pageNationService = pageNationService;
         this.message = message;
     }
 
     @Operation(summary = "地域一覧を取得")
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> selectAll(
             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
             PageNation.startPage(page, pageSize);
-            PageInfo<Region> result = regionService.selectAllWithPageInfo();
+            PageInfo<Region> pageInfo = regionService.selectAllWithPageInfo();
+            PageInfo<RegionResource> result = pageNationService.getPageInfo(pageInfo, RegionResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
@@ -55,7 +63,7 @@ public class RegionApiController {
             if (result == null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.region.not.exist")));
             }
-            return ResponseEntity.ok(result);
+            return ResponseEntity.ok(RegionResource.from(result));
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
@@ -121,21 +129,12 @@ public class RegionApiController {
         try {
             PageNation.startPage(page, pageSize);
             RegionCriteria criteria = convertToCriteria(resource);
-            PageInfo<Region> result = regionService.searchWithPageInfo(criteria);
+            PageInfo<Region> entity = regionService.searchWithPageInfo(criteria);
+            PageInfo<RegionResource> result = pageNationService.getPageInfo(entity, RegionResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
 
-    private Region convertToEntity(RegionResource resource) {
-        return Region.of(resource.getRegionCode(), resource.getRegionName());
-    }
-
-    private RegionCriteria convertToCriteria(RegionCriteriaResource resource) {
-        return RegionCriteria.builder()
-                .regionCode(resource.getRegionCode())
-                .regionName(resource.getRegionName())
-                .build();
-    }
 }

@@ -1,5 +1,7 @@
 package com.example.sms.domain.type.money;
 
+import com.example.sms.domain.type.quantity.Quantity;
+
 /**
  * 集計
  */

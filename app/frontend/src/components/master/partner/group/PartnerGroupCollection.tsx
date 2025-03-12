@@ -33,7 +33,7 @@ export const PartnerGroupCollection: React.FC = () => {
         setError("");
         if (partnerGroup) {
             setNewPartnerGroup(partnerGroup);
-            setEditId(partnerGroup.partnerGroupCode.value);
+            setEditId(partnerGroup.partnerGroupCode);
             setIsEditing(true);
         } else {
             setNewPartnerGroup(initialPartnerGroup);
@@ -53,8 +53,8 @@ export const PartnerGroupCollection: React.FC = () => {
             await partnerGroupService.destroy(partnerGroupTypeCode);
             await fetchPartnerGroups.load();
             setMessage("取引先グループを削除しました。");
-        } catch (error: any) {
-            showErrorMessage(`取引先グループの削除に失敗しました: ${error?.message}`, setError);
+        } catch (error: unknown) {
+            showErrorMessage(error, setError, "取引先グループの削除に失敗しました");
         }
     };
 
@@ -86,16 +86,13 @@ export const PartnerGroupCollection: React.FC = () => {
             if (!window.confirm("選択した取引先グループを削除しますか？")) return;
             await Promise.all(
                 checkedPartnerGroups.map((group) =>
-                    partnerGroupService.destroy(group.partnerGroupCode.value)
+                    partnerGroupService.destroy(group.partnerGroupCode)
                 )
             );
             await fetchPartnerGroups.load();
             setMessage("選択した取引先グループを削除しました。");
-        } catch (error: any) {
-            showErrorMessage(
-                `選択した取引先グループの削除に失敗しました: ${error?.message}`,
-                setError
-            );
+        } catch (error: unknown) {
+            showErrorMessage(error, setError, "選択した取引先グループの削除に失敗しました");
         }
     };
 

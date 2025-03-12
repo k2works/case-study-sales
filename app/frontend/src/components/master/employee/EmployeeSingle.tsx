@@ -40,11 +40,11 @@ export const EmployeeSingle: React.FC = () => {
 
     const handleCreateOrUpdateEmployee = async () => {
         const validateEmployee = (): boolean => {
-            if (!newEmployee.empCode.value.trim() || !newEmployee.empName.firstName.trim() || !newEmployee.empName.lastName.trim()) {
-                setError("社員コード、姓、名は必須項目です。");
+            if (!newEmployee.empCode.trim() || !newEmployee.empFirstName.trim() || !newEmployee.empLastName.trim()) {
+                setError("社員コード、社員名は必須項目です。");
                 return false;
             }
-            if (!newEmployee.department) {
+            if (!newEmployee.departmentCode) {
                 setError("部門は必須項目です。");
                 return false;
             }
@@ -67,8 +67,8 @@ export const EmployeeSingle: React.FC = () => {
                 setMessage("社員を作成しました。");
             }
             handleCloseModal();
-        } catch (error: any) {
-            showErrorMessage(`社員の作成に失敗しました: ${error?.message}`, setError);
+        } catch (error: unknown) {
+            showErrorMessage(error, setError, "社員の作成に失敗しました");
         }
     };
 

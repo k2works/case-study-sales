@@ -57,18 +57,18 @@ export const ProductCategoryCollectionSelectView: React.FC<ProductCategoryCollec
                     <div className="collection-object-container-modal">
                         <ul className="collection-object-list">
                             {productCategories.map(productCategory => (
-                                <li className="collection-object-item" key={productCategory.productCategoryCode.value}>
-                                    <div className="collection-object-item-content" data-id={productCategory.productCategoryCode.value}>
+                                <li className="collection-object-item" key={productCategory.productCategoryCode}>
+                                    <div className="collection-object-item-content" data-id={productCategory.productCategoryCode}>
                                         <div className="collection-object-item-content-details">商品分類コード</div>
                                         <div
-                                            className="collection-object-item-content-name">{productCategory.productCategoryCode.value}</div>
+                                            className="collection-object-item-content-name">{productCategory.productCategoryCode}</div>
                                     </div>
-                                    <div className="collection-object-item-content" data-id={productCategory.productCategoryCode.value}>
+                                    <div className="collection-object-item-content" data-id={productCategory.productCategoryCode}>
                                         <div className="collection-object-item-content-details">商品分類名</div>
                                         <div
                                             className="collection-object-item-content-name">{productCategory.productCategoryName}</div>
                                     </div>
-                                    <div className="collection-object-item-actions" data-id={productCategory.productCategoryCode.value}>
+                                    <div className="collection-object-item-actions" data-id={productCategory.productCategoryCode}>
                                         <button className="action-button" onClick={() => handleSelect(productCategory)} id="select-product">選択</button>
                                     </div>
                                 </li>

@@ -22,6 +22,10 @@ import {CustomerContainer} from "../master/partner/customer/CustomerContainer.ts
 import {VendorContainer} from "../master/partner/vendor/VendorContainer.tsx";
 import {AuditContainer} from "../system/audit/AuditContainer.tsx";
 import {UserContainer} from "../system/user/UserContainer.tsx";
+import {SalesOrderTabContainer} from "../sales/sales_order/SalesOrderTabContainer.tsx";
+import {SalesOrderContainer} from "../sales/sales_order/list/SalesOrderContainer.tsx";
+import {SalesOrderUploadContainer} from "../sales/sales_order/upload/SalesOrderUploadContainer.tsx";
+import {SalesOrderRuleContainer} from "../sales/sales_order/rule/SalesOrderRuleContainer.tsx";
 
 export const RouteConfig: React.FC = () => {
     const ProductCategoryPage = () => {
@@ -88,6 +92,31 @@ export const RouteConfig: React.FC = () => {
         );
     }
 
+    const SalesOrderPage = () => {
+        return (
+            <SiteLayout>
+                <SalesOrderContainer/>
+            </SiteLayout>
+        )
+    }
+
+    const SalesOrderUploadPage = () => {
+        return (
+            <SiteLayout>
+                <SalesOrderUploadContainer/>
+            </SiteLayout>
+        )
+    }
+
+    const SalesOrderRulePage = () => {
+        return (
+            <SiteLayout>
+                <SalesOrderRuleContainer/>
+            </SiteLayout>
+        )
+    }
+
+
     return (
             <Routes>
                 <Route path="/" element={<RouteAuthGuard component={<Home/>} redirectPath="/login"/>}/>
@@ -97,6 +126,14 @@ export const RouteConfig: React.FC = () => {
                                                                             allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/download" element={<RouteAuthGuard component={<DownloadContainer/>} redirectPath="/"
                                                                  allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/sales-order" element={<RouteAuthGuard component={<SalesOrderTabContainer/>} redirectPath="/"
+                                                                    allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/sales-order-list" element={<RouteAuthGuard component={<SalesOrderPage/>} redirectPath="/"
+                                                                         allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/sales-order-upload" element={<RouteAuthGuard component={<SalesOrderUploadPage/>} redirectPath="/"
+                                                                         allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/sales-order-rule" element={<RouteAuthGuard component={<SalesOrderRulePage/>} redirectPath="/"
+                                                                           allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/department" element={<RouteAuthGuard component={<DepartmentContainer/>} redirectPath="/"
                                                                    allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/employee" element={<RouteAuthGuard component={<EmployeeContainer/>} redirectPath="/"

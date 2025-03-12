@@ -7,6 +7,7 @@ import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
 import com.example.sms.service.BusinessException;
+import com.example.sms.service.PageNationService;
 import com.example.sms.service.master.product.ProductCriteria;
 import com.example.sms.service.master.product.ProductService;
 import com.example.sms.service.system.audit.AuditAnnotation;
@@ -17,7 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.function.Function;
+import static com.example.sms.presentation.api.master.product.ProductResourceDTOMapper.convertToCriteria;
+import static com.example.sms.presentation.api.master.product.ProductResourceDTOMapper.convertToEntity;
 
 /**
  * 商品API
@@ -28,22 +30,25 @@ import java.util.function.Function;
 @PreAuthorize("hasRole('ADMIN')")
 public class ProductApiController {
     final ProductService productService;
-
+    final PageNationService pageNationService;
     final Message message;
 
-    public ProductApiController(ProductService productService, Message message) {
+    public ProductApiController(ProductService productService, PageNationService pageNationService, Message message) {
         this.productService = productService;
+        this.pageNationService = pageNationService;
         this.message = message;
     }
 
     @Operation(summary = "商品一覧を取得する")
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> select(
             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
             PageNation.startPage(page, pageSize);
-            PageInfo<Product> result = productService.selectAllWithPageInfo();
+            PageInfo<Product> pageInfo = productService.selectAllWithPageInfo();
+            PageInfo<ProductResource> result = pageNationService.getPageInfo(pageInfo, ProductResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
@@ -57,7 +62,8 @@ public class ProductApiController {
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
             PageNation.startPage(page, pageSize);
-            PageInfo<Product> result = productService.selectAllBomsWithPageInfo();
+            PageInfo<Product> pageInfo = productService.selectAllBomsWithPageInfo();
+            PageInfo<ProductResource> result = pageNationService.getPageInfo(pageInfo, ProductResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
@@ -69,7 +75,7 @@ public class ProductApiController {
     public ResponseEntity<?> select(@PathVariable String productCode) {
         try {
             Product result = productService.find(productCode);
-            return ResponseEntity.ok(result);
+            return ResponseEntity.ok(ProductResource.from(result));
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
@@ -132,60 +138,13 @@ public class ProductApiController {
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
             PageNation.startPage(page, pageSize);
-
             ProductCriteria criteria = convertToCriteria(resource);
-            PageInfo<Product> result = productService.searchProductWithPageInfo(criteria);
-
+            PageInfo<Product> entity = productService.searchProductWithPageInfo(criteria);
+            PageInfo<ProductResource> result = pageNationService.getPageInfo(entity, ProductResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
 
-    private Product convertToEntity(ProductResource resource) {
-        Product product = Product.of(
-                resource.getProductCode(),
-                resource.getProductFormalName(),
-                resource.getProductAbbreviation(),
-                resource.getProductNameKana(),
-                resource.getProductType(),
-                resource.getSellingPrice(),
-                resource.getPurchasePrice(),
-                resource.getCostOfSales(),
-                resource.getTaxType(),
-                resource.getProductClassificationCode(),
-                resource.getMiscellaneousType(),
-                resource.getStockManagementTargetType(),
-                resource.getStockAllocationType(),
-                resource.getVendorCode(),
-                resource.getVendorBranchNumber()
-        );
-        product = Product.of(
-                product,
-                resource.getSubstituteProduct(),
-                resource.getBoms(),
-                resource.getCustomerSpecificSellingPrices()
-        );
-        return product;
-    }
-
-    private ProductCriteria convertToCriteria(ProductCriteriaResource resource) {
-        return ProductCriteria.builder()
-                .productCode(resource.getProductCode())
-                .productNameFormal(resource.getProductNameFormal())
-                .productNameAbbreviation(resource.getProductNameAbbreviation())
-                .productNameKana(resource.getProductNameKana())
-                .productCategoryCode(resource.getProductCategoryCode())
-                .vendorCode(resource.getVendorCode())
-                .productType(mapStringToCode(resource.getProductType(), ProductType::getCodeByName))
-                .taxType(mapStringToCode(resource.getTaxType(), TaxType::getCodeByName))
-                .miscellaneousType(mapStringToCode(resource.getMiscellaneousType(), MiscellaneousType::getCodeByName))
-                .stockManagementTargetType(mapStringToCode(resource.getStockManagementTargetType(), StockManagementTargetType::getCodeByName))
-                .stockAllocationType(mapStringToCode(resource.getStockAllocationType(), StockAllocationType::getCodeByName))
-                .build();
-    }
-
-    private <T> T mapStringToCode(String value, Function<String, T> mapper) {
-        return value != null ? mapper.apply(value) : null;
-    }
 }

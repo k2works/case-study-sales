@@ -6,7 +6,7 @@ import {PageNationType} from "../../../../views/application/PageNation.tsx";
 
 export const useRegion = () => {
     const initialRegion: RegionType = {
-        regionCode: {value: ""},
+        regionCode: "",
         regionName: "",
         checked: false
     };

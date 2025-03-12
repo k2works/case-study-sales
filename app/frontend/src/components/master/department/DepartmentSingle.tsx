@@ -43,8 +43,8 @@ export const DepartmentSingle: React.FC = () => {
     };
 
     const handleDeleteEmployee = (employee: EmployeeType) => {
-        const newEmployees = newDepartment.employees.filter((e: EmployeeType) => e.empCode.value !== employee.empCode.value);
-        if (employee.empCode.value) {
+        const newEmployees = newDepartment.employees.filter((e: EmployeeType) => e.empCode !== employee.empCode);
+        if (employee.empCode) {
             newEmployees.push({
                 ...employee,
                 addFlag: false,
@@ -59,7 +59,7 @@ export const DepartmentSingle: React.FC = () => {
 
     const handleCreateOrUpdateDepartment = async () => {
         const validateDepartment = (): boolean => {
-            if (!newDepartment.departmentId.deptCode.value.trim() || !newDepartment.departmentName.trim()) {
+            if (!newDepartment.departmentCode.trim() || !newDepartment.departmentName.trim()) {
                 setError("部門コード、部門名は必須項目です。");
                 return false;
             }
@@ -84,10 +84,11 @@ export const DepartmentSingle: React.FC = () => {
                 setMessage("部門を作成しました。");
             }
             handleCloseModal();
-        } catch (error: any) {
-            showErrorMessage(`部門の作成に失敗しました: ${error?.message}`, setError);
+        } catch (error: unknown) {
+            // エラーを表示する処理
+            showErrorMessage(error, setError, "部門の作成に失敗しました");
         }
-    };
+    }
 
     return (
         <>

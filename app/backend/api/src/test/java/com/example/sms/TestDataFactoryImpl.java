@@ -11,6 +11,8 @@ import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.master.partner.*;
 import com.example.sms.domain.model.master.partner.Partner;
 import com.example.sms.domain.model.master.product.*;
+import com.example.sms.domain.model.sales_order.SalesOrder;
+import com.example.sms.domain.model.sales_order.SalesOrderLine;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
@@ -24,11 +26,16 @@ import com.example.sms.service.master.partner.PartnerGroupRepository;
 import com.example.sms.service.master.partner.PartnerRepository;
 import com.example.sms.service.master.product.ProductCategoryRepository;
 import com.example.sms.service.master.product.ProductRepository;
+import com.example.sms.service.sales_order.SalesOrderRepository;
 import com.example.sms.service.system.audit.AuditRepository;
 import com.example.sms.service.system.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -55,6 +62,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
     PartnerCategoryRepository partnerCategoryRepository;
     @Autowired
     PartnerRepository partnerRepository;
+    @Autowired
+    SalesOrderRepository salesOrderRepository;
 
     @Override
     public void setUpForAuthApiService() {
@@ -148,6 +157,23 @@ public class TestDataFactoryImpl implements TestDataFactory {
         partnerRepository.save(getPartner("003"));
         partnerRepository.save(Partner.ofWithCustomers(getPartner("001"), List.of(getCustomer("001", 1), getCustomer("001", 2), getCustomer("001", 3))));
         partnerRepository.save(Partner.ofWithVendors(getPartner("002"), List.of(getVendor("002", 1), getVendor("002", 2), getVendor("002", 3))));
+
+        salesOrderRepository.deleteAll();
+        SalesOrder order1 = getSalesOrder("1000000001");
+        IntStream.rangeClosed(1, 3).forEach(i -> {
+            SalesOrderLine line = getSalesOrderLine(order1.getOrderNumber().getValue(), i);
+            salesOrderRepository.save(SalesOrder.of(order1, List.of(line)));
+        });
+        SalesOrder order2 = getSalesOrder("1000000002");
+        IntStream.rangeClosed(1, 3).forEach(i -> {
+            SalesOrderLine line = getSalesOrderLine(order2.getOrderNumber().getValue(), i);
+            salesOrderRepository.save(SalesOrder.of(order2, List.of(line)));
+        });
+        SalesOrder order3 = getSalesOrder("1000000003");
+        IntStream.rangeClosed(1, 3).forEach(i -> {
+            SalesOrderLine line = getSalesOrderLine(order3.getOrderNumber().getValue(), i);
+            salesOrderRepository.save(SalesOrder.of(order3, List.of(line)));
+        });
     }
 
     private void setUpUser() {
@@ -239,6 +265,110 @@ public class TestDataFactoryImpl implements TestDataFactory {
                     .toList();
             partnerRepository.save(Partner.ofWithVendors(partner,vendors));
         });
+    }
+
+    @Override
+    public void setUpForSalesOrderService() {
+        Department department = getDepartment("10000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門1");
+        departmentRepository.save(department);
+        Employee employee = getEmployee("EMP001", "10000", LocalDateTime.of(2021, 1, 1, 0, 0));
+        employeeRepository.save(employee);
+        Partner partner = getPartner("001");
+        Customer customer = getCustomer(partner.getPartnerCode().getValue(), 1);
+        List<Shipping> shippingList = IntStream.rangeClosed(1, 3)
+                .mapToObj(i -> getShipping(partner.getPartnerCode().getValue(), i, customer.getCustomerCode().getBranchNumber()))
+                .toList();
+        partnerRepository.save(Partner.ofWithCustomers(partner, List.of(Customer.of(customer, shippingList))));
+        productRepository.save(Product.of("99999999", "商品1", "商品1", "ショウヒンイチ", ProductType.その他, 900, 810, 90, TaxType.その他, "カテゴリ9", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "009", 9));
+
+        salesOrderRepository.deleteAll();
+
+        IntStream.rangeClosed(1, 3).forEach(i -> {
+            String orderNumber = String.format("1%09d", i);
+            SalesOrder order = getSalesOrder(orderNumber);
+            List<SalesOrderLine> lines = IntStream.range(1, 4)
+                    .mapToObj(lineNumber -> getSalesOrderLine(order.getOrderNumber().getValue(), lineNumber))
+                    .toList();
+            SalesOrder newOrder = SalesOrder.of(
+                    order.getOrderNumber().getValue(),
+                    order.getOrderDate().getValue(),
+                    department.getDepartmentId().getDeptCode().getValue(),
+                    department.getDepartmentId().getDepartmentStartDate().getValue(),
+                    customer.getCustomerCode().getCode().getValue(),
+                    customer.getCustomerCode().getBranchNumber(),
+                    employee.getEmpCode().getValue(),
+                    order.getDesiredDeliveryDate().getValue(),
+                    order.getCustomerOrderNumber(),
+                    order.getWarehouseCode(),
+                    order.getTotalOrderAmount().getAmount(),
+                    order.getTotalConsumptionTax().getAmount(),
+                    order.getRemarks(),
+                    lines);
+            salesOrderRepository.save(newOrder);
+        });
+    }
+
+    @Override
+    public void setUpForSalesOrderUploadService() {
+        salesOrderRepository.deleteAll();
+        setUpForDepartmentService();
+        setUpForProductService();
+        setUpForPartnerService();
+        setUpForEmployeeService();
+    }
+
+    @Override
+    public void setUpForSalesOrderRuleCheckService() {
+        salesOrderRepository.deleteAll();
+        setUpForDepartmentService();
+        setUpForProductService();
+        setUpForPartnerService();
+        setUpForEmployeeService();
+    }
+
+    @Override
+    public MultipartFile createSalesOrderFile() {
+        InputStream is = getClass().getResourceAsStream("/csv/sales_order/sales_order_multiple.csv");
+        try {
+            return new MockMultipartFile(
+                    "sales_order_multiple.csv",
+                    "sales_order_multiple.csv",
+                    "text/csv",
+                    is
+            );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public MultipartFile createSalesOrderInvalidFile() {
+        InputStream is = getClass().getResourceAsStream("/csv/sales_order/sales_order_unregistered_code.csv");
+        try {
+            return new MockMultipartFile(
+                    "sales_order_multiple.csv",
+                    "sales_order_multiple.csv",
+                    "text/csv",
+                    is
+            );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public MultipartFile createSalesOrderCheckRuleFile() {
+        InputStream is = getClass().getResourceAsStream("/csv/sales_order/sales_order_check_rule.csv");
+        try {
+            return new MockMultipartFile(
+                    "sales_order_multiple.csv",
+                    "sales_order_multiple.csv",
+                    "text/csv",
+                    is
+            );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static User getUser() {
@@ -386,4 +516,42 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 2
         );
     }
+
+    public static SalesOrder getSalesOrder(String orderNumber) {
+        return SalesOrder.of(
+                orderNumber,  // orderNumber（受注番号）
+                LocalDateTime.of(2021, 1, 1, 0, 0),  // orderDate（受注日）
+                "10009",  // departmentCode（部門コード）
+                LocalDateTime.of(2021, 1, 1, 0, 0),  // departmentStartDate（部門開始日）
+                "009",  // customerCode（顧客コード）
+                1,  // customerBranchNumber（顧客枝番）
+                "EMP009",  // employeeCode（社員コード）
+                LocalDateTime.of(2021, 1, 1, 0, 0),  // desiredDeliveryDate（希望納期）
+                "001",  // customerOrderNumber（客先注文番号）
+                "001",  // warehouseCode（倉庫コード）
+                1000,  // totalOrderAmount（受注金額合計）
+                100,  // totalConsumptionTax（消費税合計）
+                "備考",  // remarks（備考）
+                List.of()
+        );
+    }
+
+    public static SalesOrderLine getSalesOrderLine(String orderNumber, int lineNumber) {
+        return SalesOrderLine.of(
+                orderNumber,  // orderNumber（受注番号）
+                lineNumber,  // orderLineNumber（受注行番号）
+                "99999999",  // productCode（商品コード）
+                "商品1",  // productName（商品名）
+                1000,  // salesUnitPrice（販売単価）
+                10,  // orderQuantity（受注数量）
+                10,  // taxRate（消費税率）
+                10,  // allocationQuantity（引当数量）
+                10,  // shipmentInstructionQuantity（出荷指示数量）
+                10,  // shippedQuantity（出荷済数量）
+                0,  // completionFlag（完了フラグ）
+                10,  // discountAmount（値引金額）
+                LocalDateTime.of(2021, 1, 1, 0, 0)  // deliveryDate（納期）
+        );
+    }
+
 }

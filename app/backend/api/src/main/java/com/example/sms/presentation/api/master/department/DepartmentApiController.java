@@ -11,6 +11,7 @@ import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.master.employee.EmployeeResource;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
 import com.example.sms.service.BusinessException;
+import com.example.sms.service.PageNationService;
 import com.example.sms.service.master.department.DepartmentCriteria;
 import com.example.sms.service.master.department.DepartmentService;
 import com.example.sms.service.system.audit.AuditAnnotation;
@@ -27,6 +28,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 
+import static com.example.sms.presentation.api.master.department.DepartmentResourceDTOMapper.convertToCriteria;
+import static com.example.sms.presentation.api.master.department.DepartmentResourceDTOMapper.convertToEntity;
+
 /**
  * 部門API
  */
@@ -36,22 +40,25 @@ import java.util.List;
 @PreAuthorize("hasRole('ADMIN')")
 public class DepartmentApiController {
     final DepartmentService departmentManagementService;
-
+    final PageNationService pageNationService;
     final Message message;
 
-    public DepartmentApiController(DepartmentService departmentManagementService, Message message) {
+    public DepartmentApiController(DepartmentService departmentManagementService, PageNationService pageNationService, Message message) {
         this.departmentManagementService = departmentManagementService;
+        this.pageNationService = pageNationService;
         this.message = message;
     }
 
     @Operation(summary = "部門一覧を取得する", description = "部門一覧を取得する")
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> select(
             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
             PageNation.startPage(page, pageSize);
-            PageInfo<Department> result = departmentManagementService.selectAllWithPageInfo();
+            PageInfo<Department> pageInfo = departmentManagementService.selectAllWithPageInfo();
+            PageInfo<DepartmentResource> result = pageNationService.getPageInfo(pageInfo, DepartmentResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
@@ -133,7 +140,8 @@ public class DepartmentApiController {
         try {
             PageNation.startPage(page, pageSize);
             DepartmentCriteria criteria = convertToCriteria(resource);
-            PageInfo<Department> result = departmentManagementService.searchWithPageInfo(criteria);
+            PageInfo<Department> entity = departmentManagementService.searchWithPageInfo(criteria);
+            PageInfo<DepartmentResource> result = pageNationService.getPageInfo(entity, DepartmentResource::from);
             return ResponseEntity.ok(result);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
@@ -146,8 +154,8 @@ public class DepartmentApiController {
                         .filter(EmployeeResource::isAddFlag)
                         .map(employeeResource -> Employee.of(
                                 employeeResource.getEmpCode(),
-                                employeeResource.getEmpName(),
-                                employeeResource.getEmpNameKana(),
+                                employeeResource.getEmpFirstName() + " " + employeeResource.getEmpLastName(),
+                                employeeResource.getEmpFirstNameKana() + " " + employeeResource.getEmpLastNameKana(),
                                 employeeResource.getTel(),
                                 employeeResource.getFax(),
                                 employeeResource.getOccuCode()
@@ -161,36 +169,13 @@ public class DepartmentApiController {
                         .filter(EmployeeResource::isDeleteFlag)
                         .map(employeeResource -> Employee.of(
                                 employeeResource.getEmpCode(),
-                                employeeResource.getEmpName(),
-                                employeeResource.getEmpNameKana(),
+                                employeeResource.getEmpFirstName() + " " + employeeResource.getEmpLastName(),
+                                employeeResource.getEmpFirstNameKana() + " " + employeeResource.getEmpLastNameKana(),
                                 employeeResource.getTel(),
                                 employeeResource.getFax(),
                                 employeeResource.getOccuCode()
                         ))
                         .toList();
-    }
-
-    private Department convertToEntity(DepartmentResource resource) {
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
-        return Department.of(
-                DepartmentId.of(resource.getDepartmentCode(), LocalDateTime.parse(resource.getStartDate(), formatter)),
-                LocalDateTime.parse(resource.getEndDate(), formatter),
-                resource.getDepartmentName(),
-                Integer.parseInt(resource.getLayer()),
-                resource.getPath(),
-                resource.getLowerType().getValue(),
-                resource.getSlitYn().getValue()
-        );
-    }
-
-    private DepartmentCriteria convertToCriteria(DepartmentCriteriaResource resource) {
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
-        return DepartmentCriteria.builder()
-                .departmentCode(resource.getDepartmentCode())
-                .departmentName(resource.getDepartmentName())
-                .startDate(resource.getStartDate() != null ? LocalDateTime.parse(resource.getStartDate(), formatter) : null)
-                .endDate(resource.getEndDate() != null ? LocalDateTime.parse(resource.getEndDate(), formatter) : null)
-                .build();
     }
 }
 

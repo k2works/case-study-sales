@@ -33,7 +33,7 @@ export const ProductItemCollection: React.FC = () => {
         setError("");
         if (product) {
             setNewProduct(product);
-            setEditId(product.productCode.value);
+            setEditId(product.productCode);
             setIsEditing(true);
         } else {
             setNewProduct(initialProduct);
@@ -59,7 +59,7 @@ export const ProductItemCollection: React.FC = () => {
 
     const handleCheckProduct = (product: ProductType) => {
         const newProducts = products.map((prod) => {
-            if (prod.productCode.value === product.productCode.value) {
+            if (prod.productCode === product.productCode) {
                 return {
                     ...prod,
                     checked: !prod.checked
@@ -88,7 +88,7 @@ export const ProductItemCollection: React.FC = () => {
         try {
             if (!window.confirm(`選択した商品を削除しますか？`)) return;
             const checkedProducts = products.filter((prod) => prod.checked);
-            await Promise.all(checkedProducts.map((prod) => productService.destroy(prod.productCode.value)));
+            await Promise.all(checkedProducts.map((prod) => productService.destroy(prod.productCode)));
             await fetchProducts.load();
             setMessage("選択した商品を削除しました。");
         } catch (error: any) {

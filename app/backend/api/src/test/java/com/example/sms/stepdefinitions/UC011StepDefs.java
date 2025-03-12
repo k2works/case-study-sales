@@ -60,9 +60,9 @@ public class UC011StepDefs extends SpringAcceptanceTest {
         objectMapper.registerModule(new JavaTimeModule());
         if (list.equals("取引先一覧")) {
             String result = latestResponse.getBody();
-            ListResponse<Partner> response = objectMapper.readValue(result, new TypeReference<>() {
+            ListResponse<PartnerResource> response = objectMapper.readValue(result, new TypeReference<>() {
             });
-            List<Partner> actual = response.getList();
+            List<PartnerResource> actual = response.getList();
             assertEquals(4, actual.size());
         }
     }
@@ -108,8 +108,8 @@ public class UC011StepDefs extends SpringAcceptanceTest {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         String result = latestResponse.getBody();
-        Partner partner = objectMapper.readValue(result, Partner.class);
-        assertEquals(name, partner.getPartnerName().getName());
+        PartnerResource partner = objectMapper.readValue(result, PartnerResource.class);
+        assertEquals(name, partner.getPartnerName());
     }
 
     @かつ(":UC011 取引先コード {string} の情報を更新する \\(名前 {string})")
@@ -155,9 +155,9 @@ public class UC011StepDefs extends SpringAcceptanceTest {
         String result = latestResponse.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
-        ListResponse<Partner> response = objectMapper.readValue(result, new TypeReference<>() {
+        ListResponse<PartnerResource> response = objectMapper.readValue(result, new TypeReference<>() {
         });
-        List<Partner> partnerList = response.getList();
+        List<PartnerResource> partnerList = response.getList();
         assertEquals(4, partnerList.size());
     }
 }

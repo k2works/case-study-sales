@@ -43,11 +43,11 @@ const Form = ({ isEditing, newPartnerGroup, setNewPartnerGroup }: FormProps) => 
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="取引先グループコード"
-                value={newPartnerGroup.partnerGroupCode?.value ?? ""}
+                value={newPartnerGroup.partnerGroupCode ?? ""}
                 onChange={(e) =>
                     setNewPartnerGroup({
                         ...newPartnerGroup,
-                        partnerGroupCode: { value: e.target.value },
+                        partnerGroupCode: e.target.value,
                     })
                 }
                 disabled={isEditing}

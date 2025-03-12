@@ -70,7 +70,7 @@ export const ProductItemSingle: React.FC = () => {
 
     const handleCreateOrUpdateProduct = async () => {
         const validateProduct = (): boolean => {
-            if (!newProduct.productCode.value.trim() || !newProduct.productName.productFormalName.trim()) {
+            if (!newProduct.productCode.trim() || !newProduct.productFormalName.trim()) {
                 setError("商品コード、商品名は必須項目です。");
                 return false;
             }

@@ -4,7 +4,7 @@ describe('仕入先管理', () => {
     });
     // 仕入先管理画面を開く関数
     const openVendorPage = () => {
-        cy.get('#side-nav-menu > :nth-child(1) > :nth-child(3) > :nth-child(1) > :nth-child(6) > :nth-child(5) > #side-nav-partner-nav').click();
+        cy.get('#side-nav-menu > :nth-child(1) > :nth-child(4) > :nth-child(1) > :nth-child(6) > :nth-child(5) > #side-nav-partner-nav').click();
     };
     context('仕入先一覧', () => {
         it('仕入先一覧の表示', () => {

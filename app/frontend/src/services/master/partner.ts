@@ -4,8 +4,6 @@ import {
     PartnerType,
     PartnerFetchType,
     PartnerCriteriaType,
-    PartnerResourceType,
-    PartnerCriteriaResourceType,
     mapToPartnerResource,
     mapToPartnerCriteriaResource,
 } from "../../models/master/partner";
@@ -35,13 +33,13 @@ export const PartnerService = (): PartnerServiceType => {
     };
 
     const create = async (partner: PartnerType): Promise<void> => {
-        const resource: PartnerResourceType = mapToPartnerResource(partner);
+        const resource: PartnerType = mapToPartnerResource(partner);
         await apiUtils.fetchPost(endPoint, resource);
     };
 
     const update = async (partner: PartnerType): Promise<void> => {
-        const url = `${endPoint}/${partner.partnerCode.value}`;
-        const resource: PartnerResourceType = mapToPartnerResource(partner);
+        const url = `${endPoint}/${partner.partnerCode}`;
+        const resource: PartnerType = mapToPartnerResource(partner);
         await apiUtils.fetchPut(url, resource);
     };
 
@@ -56,7 +54,7 @@ export const PartnerService = (): PartnerServiceType => {
         pageSize?: number
     ): Promise<PartnerFetchType> => {
         const url = Utils.buildUrlWithPaging(`${endPoint}/search`, page, pageSize);
-        const criteriaResource: PartnerCriteriaResourceType = mapToPartnerCriteriaResource(criteria);
+        const criteriaResource: PartnerCriteriaType = mapToPartnerCriteriaResource(criteria);
         return await apiUtils.fetchPost(url, criteriaResource);
     };
 

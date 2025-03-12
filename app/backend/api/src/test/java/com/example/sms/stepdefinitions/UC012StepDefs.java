@@ -3,7 +3,6 @@ package com.example.sms.stepdefinitions;
 import com.example.sms.TestDataFactory;
 import com.example.sms.domain.model.master.partner.MiscellaneousType;
 import com.example.sms.domain.model.master.partner.TradeProhibitedFlag;
-import com.example.sms.domain.model.master.partner.customer.Customer;
 import com.example.sms.domain.model.master.partner.customer.CustomerBillingCategory;
 import com.example.sms.domain.model.master.partner.customer.CustomerType;
 import com.example.sms.domain.model.master.partner.invoice.ClosingDate;
@@ -71,9 +70,9 @@ public class UC012StepDefs extends SpringAcceptanceTest {
         objectMapper.registerModule(new JavaTimeModule());
         if (list.equals("顧客一覧")) {
             String result = latestResponse.getBody();
-            ListResponse<Customer> response = objectMapper.readValue(result, new TypeReference<>() {
+            ListResponse<CustomerResource> response = objectMapper.readValue(result, new TypeReference<>() {
             });
-            List<Customer> actual = response.getList();
+            List<CustomerResource> actual = response.getList();
             assertEquals(3, actual.size());
         }
     }
@@ -156,8 +155,8 @@ public class UC012StepDefs extends SpringAcceptanceTest {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         String result = latestResponse.getBody();
-        Customer customer = objectMapper.readValue(result, Customer.class);
-        assertEquals(name, customer.getCustomerName().getValue().getName());
+        CustomerResource customer = objectMapper.readValue(result, CustomerResource.class);
+        assertEquals(name, customer.getCustomerName());
     }
 
     @かつ(":UC012 顧客コード {string} の情報を更新する \\(名前 {string})")
@@ -218,9 +217,9 @@ public class UC012StepDefs extends SpringAcceptanceTest {
         String result = latestResponse.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
-        ListResponse<Customer> response = objectMapper.readValue(result, new TypeReference<>() {
+        ListResponse<CustomerResource> response = objectMapper.readValue(result, new TypeReference<>() {
         });
-        List<Customer> customerList = response.getList();
+        List<CustomerResource> customerList = response.getList();
         assertEquals(3, customerList.size());
     }
 }

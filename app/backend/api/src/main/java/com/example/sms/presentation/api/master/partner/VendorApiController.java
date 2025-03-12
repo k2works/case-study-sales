@@ -8,6 +8,7 @@ import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
 import com.example.sms.service.BusinessException;
+import com.example.sms.service.PageNationService;
 import com.example.sms.service.master.partner.VendorCriteria;
 import com.example.sms.service.master.partner.VendorService;
 import com.example.sms.service.system.audit.AuditAnnotation;
@@ -18,6 +19,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import static com.example.sms.presentation.api.master.partner.VendorResourceDTOMapper.convertToCriteria;
+import static com.example.sms.presentation.api.master.partner.VendorResourceDTOMapper.convertToEntity;
+
 /**
  * 仕入先 API
  */
@@ -27,20 +31,24 @@ import org.springframework.web.bind.annotation.*;
 @PreAuthorize("hasRole('ADMIN')")
 public class VendorApiController {
     private final VendorService vendorService;
+    private final PageNationService pageNationService;
     private final Message message;
 
-    public VendorApiController(VendorService vendorService, Message message) {
+    public VendorApiController(VendorService vendorService, PageNationService pageNationService, Message message) {
         this.vendorService = vendorService;
+        this.pageNationService = pageNationService;
         this.message = message;
     }
 
     @Operation(summary = "仕入先一覧を取得する")
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> select(@RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
                                     @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
             PageNation.startPage(page, pageSize);
-            PageInfo<Vendor> result = vendorService.selectAllWithPageInfo();
+            PageInfo<Vendor> pageInfo = vendorService.selectAllWithPageInfo();
+            PageInfo<VendorResource> result = pageNationService.getPageInfo(pageInfo, VendorResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
@@ -56,7 +64,7 @@ public class VendorApiController {
             if (result == null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.vendor.not.exist")));
             }
-            return ResponseEntity.ok(result);
+            return ResponseEntity.ok(VendorResource.from(result));
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
@@ -119,48 +127,12 @@ public class VendorApiController {
         try {
             PageNation.startPage(page, pageSize);
             VendorCriteria criteria = convertToCriteria(criteriaResource);
-            PageInfo<Vendor> result = vendorService.searchWithPageInfo(criteria);
+            PageInfo<Vendor> entity = vendorService.searchWithPageInfo(criteria);
+            PageInfo<VendorResource> result = pageNationService.getPageInfo(entity, VendorResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
 
-    private Vendor convertToEntity(VendorResource resource) {
-        return Vendor.of(
-                resource.getVendorCode(),
-                resource.getVendorBranchNumber(),
-                resource.getVendorName(),
-                resource.getVendorNameKana(),
-                resource.getVendorContactName(),
-                resource.getVendorDepartmentName(),
-                resource.getVendorPostalCode(),
-                resource.getVendorPrefecture(),
-                resource.getVendorAddress1(),
-                resource.getVendorAddress2(),
-                resource.getVendorPhoneNumber(),
-                resource.getVendorFaxNumber(),
-                resource.getVendorEmailAddress(),
-                resource.getVendorClosingDate().getValue(),
-                resource.getVendorPaymentMonth().getValue(),
-                resource.getVendorPaymentDate().getValue(),
-                resource.getVendorPaymentMethod().getValue()
-        );
-    }
-
-    private VendorCriteria convertToCriteria(VendorCriteriaResource resource) {
-        return VendorCriteria.builder()
-                .vendorCode(resource.getVendorCode())
-                .vendorName(resource.getVendorName())
-                .vendorContactName(resource.getVendorContactName())
-                .vendorDepartmentName(resource.getVendorDepartmentName())
-                .postalCode(resource.getPostalCode())
-                .prefecture(resource.getPrefecture())
-                .address1(resource.getAddress1())
-                .address2(resource.getAddress2())
-                .vendorPhoneNumber(resource.getVendorPhoneNumber())
-                .vendorFaxNumber(resource.getVendorFaxNumber())
-                .vendorEmailAddress(resource.getVendorEmailAddress())
-                .build();
-    }
 }

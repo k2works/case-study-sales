@@ -24,7 +24,7 @@ export const PartnerCategoryAffiliationCollectionAddListView: React.FC<PartnerCa
     };
     const handlePartnerCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setCurrentPartnerCode(e.target.value);
-        partnerCategoryAffiliations[editingPartnerCode!].partnerCode.value = e.target.value;
+        partnerCategoryAffiliations[editingPartnerCode!].partnerCode = e.target.value;
     };
     const handlePartnerCodeBlur = () => {
         setEditingPartnerCode(null);
@@ -56,11 +56,11 @@ export const PartnerCategoryAffiliationCollectionAddListView: React.FC<PartnerCa
                             {partnerCategoryAffiliations.map((affiliation, index) => (
                                 <li
                                     className="collection-object-item"
-                                    key={`${affiliation.partnerCategoryTypeCode}-${affiliation.partnerCategoryItemCode}-${affiliation.partnerCode.value}`}
+                                    key={`${affiliation.partnerCategoryTypeCode}-${affiliation.partnerCategoryItemCode}-${affiliation.partnerCode}`}
                                 >
                                     <div
                                         className="collection-object-item-content"
-                                        data-id={`${affiliation.partnerCategoryTypeCode}-${affiliation.partnerCategoryItemCode}-${affiliation.partnerCode.value}`}
+                                        data-id={`${affiliation.partnerCategoryTypeCode}-${affiliation.partnerCategoryItemCode}-${affiliation.partnerCode}`}
                                     >
                                         <div className="collection-object-item-content-details">分類種別コード</div>
                                         <div className="collection-object-item-content-name">
@@ -69,7 +69,7 @@ export const PartnerCategoryAffiliationCollectionAddListView: React.FC<PartnerCa
                                     </div>
                                     <div
                                         className="collection-object-item-content"
-                                        data-id={`${affiliation.partnerCategoryTypeCode}-${affiliation.partnerCategoryItemCode}-${affiliation.partnerCode.value}`}
+                                        data-id={`${affiliation.partnerCategoryTypeCode}-${affiliation.partnerCategoryItemCode}-${affiliation.partnerCode}`}
                                     >
                                         <div className="collection-object-item-content-details">取引先コード</div>
                                         <div className="collection-object-item-content-name">
@@ -83,13 +83,13 @@ export const PartnerCategoryAffiliationCollectionAddListView: React.FC<PartnerCa
                                                 />
                                             ) : (
                                                 <span
-                                                    onClick={() => handlePartnerCodeClick(index, affiliation.partnerCode.value)}>{affiliation.partnerCode.value}</span>
+                                                    onClick={() => handlePartnerCodeClick(index, affiliation.partnerCode)}>{affiliation.partnerCode}</span>
                                             )}
                                         </div>
                                     </div>
                                     <div
                                         className="collection-object-item-content"
-                                        data-id={`${affiliation.partnerCategoryTypeCode}-${affiliation.partnerCategoryItemCode}-${affiliation.partnerCode.value}`}
+                                        data-id={`${affiliation.partnerCategoryTypeCode}-${affiliation.partnerCategoryItemCode}-${affiliation.partnerCode}`}
                                     >
                                         <div className="collection-object-item-content-details">分類コード</div>
                                         <div className="collection-object-item-content-name">
@@ -98,7 +98,7 @@ export const PartnerCategoryAffiliationCollectionAddListView: React.FC<PartnerCa
                                     </div>
                                     <div
                                         className="collection-object-item-actions"
-                                        data-id={`${affiliation.partnerCategoryTypeCode}-${affiliation.partnerCategoryItemCode}-${affiliation.partnerCode.value}`}
+                                        data-id={`${affiliation.partnerCategoryTypeCode}-${affiliation.partnerCategoryItemCode}-${affiliation.partnerCode}`}
                                     >
                                         <button
                                             className="action-button"

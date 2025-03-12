@@ -1,12 +1,8 @@
 import {PageNationType} from "../../../views/application/PageNation.tsx";
-import {mapToProductResource, ProductResourceType, ProductType} from "./productItem.ts";
-
-type ProductCategoryCode = {
-    value: string;
-};
+import {mapToProductResource, ProductType} from "./productItem.ts";
 
 export type ProductCategoryType = {
-    productCategoryCode: ProductCategoryCode;
+    productCategoryCode: string;
     productCategoryName: string;
     productCategoryHierarchy: number;
     productCategoryPath: string;
@@ -19,29 +15,16 @@ export type ProductCategoryFetchType = {
     list: ProductCategoryType[];
 } & PageNationType;
 
-export type ProductCategoryResourceType = {
-    productCategoryCode: string;
-    productCategoryName?: string;
-    productCategoryHierarchy: number;
-    productCategoryPath?: string;
-    lowestLevelDivision?: number;
-    products?: ProductResourceType[];
-};
-
 export type ProductCategoryCriteriaType = {
     productCategoryCode?: string;
     productCategoryName?: string;
     productCategoryPath?: string;
 }
 
-export const mapToProductCategoryResource = (productCategory: ProductCategoryType): ProductCategoryResourceType => {
+export const mapToProductCategoryResource = (productCategory: ProductCategoryType): ProductCategoryType => {
     return {
-        productCategoryCode: productCategory.productCategoryCode.value,
-        productCategoryName: productCategory.productCategoryName,
-        productCategoryHierarchy: productCategory.productCategoryHierarchy,
-        productCategoryPath: productCategory.productCategoryPath,
-        lowestLevelDivision: productCategory.lowestLevelDivision,
-        products: productCategory.products.map(product => mapToProductResource(product))
+        ...productCategory,
+        products: productCategory.products.map(product => mapToProductResource(product)),
     };
 }
 

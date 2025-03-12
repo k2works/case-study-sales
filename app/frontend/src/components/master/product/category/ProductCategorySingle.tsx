@@ -37,7 +37,7 @@ export const ProductCategorySingle: React.FC = () => {
 
     const handleCreateOrUpdateProductCategory = async () => {
         const validateProductCategory = (): boolean => {
-            if (!newProductCategory.productCategoryCode.value.trim() || !newProductCategory.productCategoryName.trim()) {
+            if (!newProductCategory.productCategoryCode.trim() || !newProductCategory.productCategoryName.trim()) {
                 setError("商品分類コード、カテゴリ名は必須項目です。");
                 return false;
             }
@@ -87,8 +87,8 @@ export const ProductCategorySingle: React.FC = () => {
                         setProductModalIsOpen(true);
                     }}
                     handleDelete={(product: ProductType) => {
-                        const newProducts = newProductCategory.products.filter((e) => e.productCode.value !== product.productCode.value);
-                        if (product.productCode.value) {
+                        const newProducts = newProductCategory.products.filter((e) => e.productCode !== product.productCode);
+                        if (product.productCode) {
                             newProducts.push({
                                 ...product,
                                 addFlag: false,

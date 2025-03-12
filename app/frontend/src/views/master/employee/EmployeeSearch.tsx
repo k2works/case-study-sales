@@ -142,7 +142,7 @@ export const EmployeeSearchSingleView: React.FC<EmployeeSearchSingleViewProps> =
         <div className="single-view-object-container">
             <div className="single-view-header">
                 <div>
-                    <SingleViewHeaderItem title={"部門"} subtitle={"検索"}/>
+                    <SingleViewHeaderItem title={"社員"} subtitle={"検索"}/>
                 </div>
             </div>
             <div className="single-view-container">

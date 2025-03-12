@@ -1,6 +1,6 @@
 import React from "react";
 import {useRegionContext} from "../../../../providers/master/code/Region.tsx";
-import {RegionCodeType, RegionType} from "../../../../models/master/code";
+import {RegionType} from "../../../../models/master/code";
 import {showErrorMessage} from "../../../application/utils.ts";
 import {RegionCollectionView} from "../../../../views/master/code/region/RegionCollection.tsx";
 import {RegionSearchModal} from "./RegionSearchModal.tsx";
@@ -33,7 +33,7 @@ export const RegionCollection: React.FC = () => {
         setError("");
         if (region) {
             setNewRegion(region);
-            setEditId(region.regionCode.value);
+            setEditId(region.regionCode);
             setIsEditing(true);
         } else {
             setNewRegion(initialRegion);
@@ -46,20 +46,20 @@ export const RegionCollection: React.FC = () => {
         setSearchModalIsOpen(true);
     };
 
-    const handleDeleteRegion = async (regionCode: RegionCodeType) => {
+    const handleDeleteRegion = async (regionCode: string) => {
         try {
-            if (!window.confirm(`地域コード:${regionCode.value} を削除しますか？`))
+            if (!window.confirm(`地域コード:${regionCode} を削除しますか？`))
                 return;
-            await regionService.destroy(regionCode.value);
+            await regionService.destroy(regionCode);
             await fetchRegions.load();
             setMessage("地域を削除しました。");
-        } catch (error: any) {
-            showErrorMessage(`地域の削除に失敗しました: ${error?.message}`, setError);
+        } catch (error: unknown) {
+            showErrorMessage(error, setError, "地域の削除に失敗しました");
         }
     };
     const handleCheckRegion = (region: RegionType) => {
         const newRegions = regions.map((r) => {
-            if (r.regionCode.value === region.regionCode.value) {
+            if (r.regionCode === region.regionCode) {
                 return { ...r, checked: !r.checked };
             }
             return r;
@@ -83,16 +83,13 @@ export const RegionCollection: React.FC = () => {
             if (!window.confirm("選択した地域を削除しますか？")) return;
             await Promise.all(
                 checkedRegions.map((r) =>
-                    regionService.destroy(r.regionCode.value)
+                    regionService.destroy(r.regionCode)
                 )
             );
             await fetchRegions.load();
             setMessage("選択した地域を削除しました。");
-        } catch (error: any) {
-            showErrorMessage(
-                `選択した地域の削除に失敗しました: ${error?.message}`,
-                setError
-            );
+        } catch (error: unknown) {
+            showErrorMessage(error, setError, "選択した地域の削除に失敗しました");
         }
     };
     return (

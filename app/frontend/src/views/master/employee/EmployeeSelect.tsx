@@ -1,13 +1,13 @@
 import {EmployeeType} from "../../../models";
 import React from "react";
-import {PageNation} from "../../application/PageNation.tsx";
+import {PageNation, PageNationType} from "../../application/PageNation.tsx";
 import {FaTimes} from "react-icons/fa";
 
 interface EmployeeCollectionSelectProps {
     employees: EmployeeType[];
     handleSelect: (employee: EmployeeType) => void;
     handleClose: () => void;
-    pageNation: any; // 適切な型を使用してください
+    pageNation: PageNationType | null;
     fetchEmployees: () => void;
 }
 
@@ -33,24 +33,24 @@ export const EmployeeCollectionSelectView: React.FC<EmployeeCollectionSelectProp
                     <div className="collection-object-container-modal">
                         <ul className="collection-object-list">
                             {employees.map(employee => (
-                                <li className="collection-object-item" key={employee.empCode.value}>
-                                    <div className="collection-object-item-content" data-id={employee.empCode.value}>
+                                <li className="collection-object-item" key={employee.empCode}>
+                                    <div className="collection-object-item-content" data-id={employee.empCode}>
                                         <div className="collection-object-item-content-details">所属部門</div>
                                         <div
-                                            className="collection-object-item-content-name">{employee.department?.departmentName}</div>
+                                            className="collection-object-item-content-name">{employee.departmentCode}</div>
                                     </div>
-                                    <div className="collection-object-item-content" data-id={employee.empCode.value}>
+                                    <div className="collection-object-item-content" data-id={employee.empCode}>
                                         <div className="collection-object-item-content-details">社員コード</div>
                                         <div
-                                            className="collection-object-item-content-name">{employee.empCode.value}</div>
+                                            className="collection-object-item-content-name">{employee.empCode}</div>
                                     </div>
-                                    <div className="collection-object-item-content" data-id={employee.empCode.value}>
+                                    <div className="collection-object-item-content" data-id={employee.empCode}>
                                         <div className="collection-object-item-content-details">名前</div>
                                         <div className="collection-object-item-content-name">
-                                            {employee.empName.firstNameKana} {employee.empName.lastNameKana}
+                                            {employee.empFirstName + ' ' + employee.empLastName}
                                         </div>
                                     </div>
-                                    <div className="collection-object-item-actions" data-id={employee.empCode.value}>
+                                    <div className="collection-object-item-actions" data-id={employee.empCode}>
                                         <button className="action-button" onClick={() => handleSelect(employee)}
                                                 id="select-employee">選択
                                         </button>

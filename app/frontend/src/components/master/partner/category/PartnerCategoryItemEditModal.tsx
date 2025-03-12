@@ -53,13 +53,13 @@ export const PartnerCategoryItemEditModal: React.FC = () => {
                 handleDelete={(partnerCategoryAffiliation) => {
                     setNewPartnerCategoryItem({
                         ...newPartnerCategoryItem,
-                        partnerCategoryAffiliations: newPartnerCategoryItem.partnerCategoryAffiliations.filter((e) => e.partnerCode.value !== partnerCategoryAffiliation.partnerCode.value)
+                        partnerCategoryAffiliations: newPartnerCategoryItem.partnerCategoryAffiliations.filter((e) => e.partnerCode !== partnerCategoryAffiliation.partnerCode)
                     });
 
                     const newPartnerCategoryItems = newPartnerCategory.partnerCategoryItems.filter((e) => e.partnerCategoryItemCode !== newPartnerCategoryItem.partnerCategoryItemCode);
                     newPartnerCategoryItems.push({
                         ...newPartnerCategoryItem,
-                        partnerCategoryAffiliations: newPartnerCategoryItem.partnerCategoryAffiliations.filter((e) => e.partnerCode.value !== partnerCategoryAffiliation.partnerCode.value)
+                        partnerCategoryAffiliations: newPartnerCategoryItem.partnerCategoryAffiliations.filter((e) => e.partnerCode !== partnerCategoryAffiliation.partnerCode)
                     });
                     setNewPartnerCategory({
                         ...newPartnerCategory,

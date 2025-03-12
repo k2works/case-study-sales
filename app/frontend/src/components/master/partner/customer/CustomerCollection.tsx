@@ -1,6 +1,6 @@
 import React from "react";
 import {useCustomerContext} from "../../../../providers/master/partner/Customer.tsx";
-import {CustomerCodeType, CustomerType} from "../../../../models/master/partner";
+import {CustomerType} from "../../../../models/master/partner";
 import {showErrorMessage} from "../../../application/utils.ts";
 import {CustomerCollectionView} from "../../../../views/master/partner/customer/CustomerCollection.tsx";
 import {CustomerSearchModal} from "./CustomerSearchModal.tsx";
@@ -33,7 +33,7 @@ export const CustomerCollection: React.FC = () => {
         setError("");
         if (customer) {
             setNewCustomer(customer);
-            setEditId(customer.customerCode.code.value);
+            setEditId(customer.customerCode);
             setIsEditing(true);
         } else {
             setNewCustomer(initialCustomer);
@@ -46,10 +46,10 @@ export const CustomerCollection: React.FC = () => {
         setSearchModalIsOpen(true);
     };
 
-    const handleDeleteCustomer = async (customerCode: CustomerCodeType) => {
+    const handleDeleteCustomer = async (customerCode: string, branchNumber: number) => {
         try {
-            if (!window.confirm(`顧客コード:${customerCode.code.value} 枝番:${customerCode.branchNumber} を削除しますか？`)) return;
-            await customerService.destroy(customerCode);
+            if (!window.confirm(`顧客コード:${customerCode} 枝番:${branchNumber} を削除しますか？`)) return;
+            await customerService.destroy(customerCode, branchNumber);
             await fetchCustomers.load();
             setMessage("顧客を削除しました。");
         } catch (error: any) {
@@ -59,7 +59,7 @@ export const CustomerCollection: React.FC = () => {
 
     const handleCheckCustomer = (customer: CustomerType) => {
         const newCustomers = customers.map((c) => {
-            if (c.customerCode.code.value === customer.customerCode.code.value) {
+            if (c.customerCode === customer.customerCode && c.customerBranchNumber === customer.customerBranchNumber) {
                 return { ...c, checked: !c.checked };
             }
             return c;
@@ -84,7 +84,7 @@ export const CustomerCollection: React.FC = () => {
             if (!window.confirm("選択した顧客を削除しますか？")) return;
             await Promise.all(
                 checkedCustomers.map((customer) =>
-                    customerService.destroy(customer.customerCode)
+                    customerService.destroy(customer.customerCode, customer.customerBranchNumber)
                 )
             );
             await fetchCustomers.load();

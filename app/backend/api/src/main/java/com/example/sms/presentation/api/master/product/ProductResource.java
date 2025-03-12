@@ -3,47 +3,89 @@ package com.example.sms.presentation.api.master.product;
 import com.example.sms.domain.model.master.product.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.List;
 
 @Setter
 @Getter
 @Schema(description = "商品")
-public class ProductResource implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class ProductResource {
+    @NotNull
+    @Schema(description = "商品コード")
+    String productCode;
+    @NotNull
+    @Schema(description = "商品正式名")
+    String productFormalName;
+    @NotNull
+    @Schema(description = "商品略称")
+    String productAbbreviation;
+    @NotNull
+    @Schema(description = "商品名カナ")
+    String productNameKana;
+    @Schema(description = "商品区分")
+    ProductType productType;
+    @NotNull
+    @Schema(description = "販売単価")
+    Integer sellingPrice;
+    @Schema(description = "仕入単価")
+    Integer purchasePrice;
+    @NotNull
+    @Schema(description = "売上原価")
+    Integer costOfSales;
+    @NotNull
+    @Schema(description = "税区分")
+    TaxType taxType;
+    @Schema(description = "商品分類コード")
+    String productClassificationCode;
+    @Schema(description = "雑区分")
+    MiscellaneousType miscellaneousType;
+    @Schema(description = "在庫管理対象区分")
+    StockManagementTargetType stockManagementTargetType;
+    @Schema(description = "在庫引当区分")
+    StockAllocationType stockAllocationType;
+    @NotNull
+    @Schema(description = "仕入先コード")
+    String vendorCode;
+    @Schema(description = "仕入先枝番")
+    Integer vendorBranchNumber;
+    @Schema(description = "代替商品")
+    List<SubstituteProductResource> substituteProduct;
+    @Schema(description = "部品表")
+    List<BomResource> boms;
+    @Schema(description = "顧客別販売単価")
+    List<CustomerSpecificSellingPriceResource> customerSpecificSellingPrices;
 
-    @NotNull
-    String productCode; // 商品コード
-    @NotNull
-    String productFormalName; // 商品正式名
-    @NotNull
-    String productAbbreviation; // 商品略称
-    @NotNull
-    String productNameKana; // 商品名カナ
-    ProductType productType; // 商品区分
-    @NotNull
-    Integer sellingPrice; // 販売単価
-    Integer purchasePrice; // 仕入単価
-    @NotNull
-    Integer costOfSales; // 売上原価
-    @NotNull
-    TaxType taxType; // 税区分
-    String productClassificationCode; // 商品分類コード
-    MiscellaneousType miscellaneousType; // 雑区分
-    StockManagementTargetType stockManagementTargetType; // 在庫管理対象区分
-    StockAllocationType stockAllocationType; // 在庫引当区分
-    @NotNull
-    String vendorCode; // 仕入先コード
-    Integer vendorBranchNumber; // 仕入先枝番
-    List<SubstituteProduct> substituteProduct; // 代替商品
-    List<Bom> boms; // 部品表
-    List<CustomerSpecificSellingPrice> customerSpecificSellingPrices; // 顧客別販売単価
-
+    @Schema(description = "追加フラグ")
     boolean addFlag;
+    @Schema(description = "削除フラグ")
     boolean deleteFlag;
+
+    public static ProductResource from(Product product) {
+        return ProductResource.builder()
+                .productCode(product.getProductCode().getValue())
+                .productFormalName(product.getProductName().getProductFormalName())
+                .productAbbreviation(product.getProductName().getProductAbbreviation())
+                .productNameKana(product.getProductName().getProductNameKana())
+                .productType(product.getProductType())
+                .sellingPrice(product.getSellingPrice().getAmount())
+                .purchasePrice(product.getPurchasePrice().getAmount())
+                .costOfSales(product.getCostOfSales().getAmount())
+                .taxType(product.getTaxType())
+                .productClassificationCode(product.getProductCategoryCode().getValue())
+                .miscellaneousType(product.getMiscellaneousType())
+                .stockManagementTargetType(product.getStockManagementTargetType())
+                .stockAllocationType(product.getStockAllocationType())
+                .vendorCode(product.getVendorCode().getCode().getValue())
+                .vendorBranchNumber(product.getVendorCode().getBranchNumber())
+                .substituteProduct(SubstituteProductResource.from(product.getSubstituteProduct()))
+                .boms(BomResource.from(product.getBoms()))
+                .customerSpecificSellingPrices(CustomerSpecificSellingPriceResource.from(product.getCustomerSpecificSellingPrices()))
+                .addFlag(false)
+                .deleteFlag(false)
+                .build();
+    }
 }

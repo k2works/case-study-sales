@@ -59,9 +59,9 @@ public class UC010StepDefs extends SpringAcceptanceTest {
         objectMapper.registerModule(new JavaTimeModule());
         if (list.equals("地域コード一覧")) {
             String result = latestResponse.getBody();
-            ListResponse<Region> response = objectMapper.readValue(result, new TypeReference<>() {
+            ListResponse<RegionResource> response = objectMapper.readValue(result, new TypeReference<>() {
             });
-            List<Region> actual = response.getList();
+            List<RegionResource> actual = response.getList();
             assertEquals(3, actual.size());
         }
     }
@@ -130,9 +130,9 @@ public class UC010StepDefs extends SpringAcceptanceTest {
         String result = latestResponse.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
-        ListResponse<Region> response = objectMapper.readValue(result, new TypeReference<>() {
+        ListResponse<RegionResource> response = objectMapper.readValue(result, new TypeReference<>() {
         });
-        List<Region> regionCodeList = response.getList();
+        List<RegionResource> regionCodeList = response.getList();
         assertEquals(3, regionCodeList.size());
     }
 }

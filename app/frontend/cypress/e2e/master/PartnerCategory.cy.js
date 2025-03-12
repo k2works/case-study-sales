@@ -4,7 +4,7 @@ describe('取引先分類管理', () => {
     });
 
     const openPartnerCategoryPage = () => {
-        cy.get('#side-nav-menu > :nth-child(1) > :nth-child(3) > :nth-child(1) > :nth-child(6) > :nth-child(1) > #side-nav-partner-nav').click();
+        cy.get('#side-nav-menu > :nth-child(1) > :nth-child(4) > :nth-child(1) > :nth-child(6) > :nth-child(1) > #side-nav-partner-nav').click();
     };
 
     context('取引先分類一覧', () => {

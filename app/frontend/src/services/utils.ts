@@ -1,8 +1,14 @@
 import Config from "./config.ts";
 
+type ApiResponse<T> = T;
+type ApiResult = {
+    message: string;
+    details?: Array<{ [key: string]: string }>;
+};
+
 const Utils = (() => {
     const apiUtils = (() => {
-        const fetchGet = async (url: string): Promise<any> => {
+        const fetchGet = async <T>(url: string): Promise<ApiResponse<T>> => {
             const config = Config();
             try {
                 const res = await fetch(url, {
@@ -26,7 +32,7 @@ const Utils = (() => {
             }
         };
 
-        const fetchPost = async (url: string, body: any): Promise<any> => {
+        const fetchPost = async <T>(url: string, body: unknown): Promise<ApiResponse<T>> => {
             const config = Config();
             try {
                 const res = await fetch(url, {
@@ -49,7 +55,7 @@ const Utils = (() => {
             }
         };
 
-        const fetchPut = async (url: string, body: any): Promise<any> => {
+        const fetchPut = async <T>(url: string, body: unknown): Promise<ApiResponse<T>> => {
             const config = Config();
             try {
                 const res = await fetch(url, {
@@ -70,10 +76,9 @@ const Utils = (() => {
                 console.log(err);
                 throw err;
             }
-
         };
 
-        const fetchDelete = async (url: string): Promise<any> => {
+        const fetchDelete = async <T>(url: string): Promise<ApiResponse<T>> => {
             const config = Config();
             try {
                 const res = await fetch(url, {
@@ -89,12 +94,15 @@ const Utils = (() => {
                 }
                 return await res.json();
             } catch (err) {
+                if (!(err instanceof Error)) {
+                    throw new Error('Unknown error occurred');
+                }
                 console.log(err);
                 throw err;
             }
         };
 
-        const fetchGetDownload = async (url: string): Promise<any> => {
+        const fetchGetDownload = async (url: string): Promise<Blob> => {
             const config = Config();
             try {
                 const res = await fetch(url, {
@@ -115,7 +123,7 @@ const Utils = (() => {
             }
         };
 
-        const fetchPostDownload = async (url: string, body: any): Promise<any> => {
+        const fetchPostDownload = async (url: string, body: unknown): Promise<Blob> => {
             const config = Config();
             try {
                 const res = await fetch(url, {
@@ -138,13 +146,35 @@ const Utils = (() => {
             }
         };
 
+        const fetchPostFormData = async <T>(url: string, formData: FormData): Promise<ApiResponse<T>> => {
+            const config = Config();
+            try {
+                const res = await fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": config.authHeader
+                    },
+                    body: formData
+                });
+                if (!res.ok) {
+                    const errorResponse: ApiResult = await res.json();
+                    throw new Error(errorResponse.message);
+                }
+                return await res.json();
+            } catch (err) {
+                console.log(err);
+                throw err;
+            }
+        };
+
         return {
             fetchGet,
             fetchPost,
             fetchPut,
             fetchDelete,
             fetchGetDownload,
-            fetchPostDownload
+            fetchPostDownload,
+            fetchPostFormData
         };
     })();
 

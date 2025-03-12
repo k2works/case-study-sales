@@ -7,16 +7,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serial;
-import java.io.Serializable;
-
 @Getter
 @Setter
 @Schema(description = "ダウンロード条件")
-public class DownloadCriteriaResource implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
+public class DownloadCriteriaResource {
     @NotNull
     private DownloadTarget target;
     private String fileName;
@@ -31,6 +25,7 @@ public class DownloadCriteriaResource implements Serializable {
             case 取引先 -> Partner.of();
             case 顧客 -> Customer.of();
             case 仕入先 -> Vendor.of();
+            case 受注 -> SalesOrder.of();
         };
     }
 }

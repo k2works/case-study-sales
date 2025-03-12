@@ -24,34 +24,34 @@ export const DepartmentService = () => {
 
     const select = async (page?: number, pageSize?: number): Promise<DepartmentFetchType> => {
         const url = Utils.buildUrlWithPaging(endPoint, page, pageSize);
-        return await apiUtils.fetchGet(url);
+        return await apiUtils.fetchGet<DepartmentFetchType>(url);
     };
 
     const find = async (deptCode: string, departmentStartDate: string): Promise<DepartmentType[]> => {
         const startDate = toISOStringWithTimezone(new Date(departmentStartDate));
         const url = `${endPoint}/${deptCode}/${startDate}`;
-        return await apiUtils.fetchGet(url);
+        return await apiUtils.fetchGet<DepartmentType[]>(url);
     };
 
-    const create = async (department: DepartmentType) => {
-        return await apiUtils.fetchPost(endPoint, mapToDepartmentResource(department));
+    const create = async (department: DepartmentType): Promise<void> => {
+        await apiUtils.fetchPost<void>(endPoint, mapToDepartmentResource(department));
     };
 
-    const update = async (department: DepartmentType) => {
-        const startDate = toISOStringWithTimezone(new Date(department.departmentId.departmentStartDate.value));
-        const url = `${endPoint}/${department.departmentId.deptCode.value}/${startDate}`;
-        return await apiUtils.fetchPut(url, mapToDepartmentResource(department));
+    const update = async (department: DepartmentType): Promise<void> => {
+        const startDate = toISOStringWithTimezone(new Date(department.startDate));
+        const url = `${endPoint}/${department.departmentCode}/${startDate}`;
+        await apiUtils.fetchPut<void>(url, mapToDepartmentResource(department));
     };
 
-    const search = (criteria: DepartmentCriteriaType, page?: number, pageSize?: number): Promise<DepartmentFetchType> => {
+    const search = async (criteria: DepartmentCriteriaType, page?: number, pageSize?: number): Promise<DepartmentFetchType> => {
         const url = Utils.buildUrlWithPaging(`${endPoint}/search`, page, pageSize);
-        return apiUtils.fetchPost(url, mapToDepartmentCriteriaResource(criteria));
+        return await apiUtils.fetchPost<DepartmentFetchType>(url, mapToDepartmentCriteriaResource(criteria));
     };
 
     const destroy = async (deptCode: string, departmentStartDate: string): Promise<void> => {
         const startDate = toISOStringWithTimezone(new Date(departmentStartDate));
         const url = `${endPoint}/${deptCode}/${startDate}`;
-        await apiUtils.fetchDelete(url);
+        await apiUtils.fetchDelete<void>(url);
     };
 
     return {

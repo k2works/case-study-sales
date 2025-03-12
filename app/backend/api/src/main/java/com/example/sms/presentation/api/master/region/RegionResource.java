@@ -1,21 +1,26 @@
 package com.example.sms.presentation.api.master.region;
 
+import com.example.sms.domain.model.master.region.Region;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Getter;
-import lombok.Setter;
-
-import java.io.Serial;
-import java.io.Serializable;
+import lombok.*;
 
 @Setter
 @Getter
 @Schema(description = "地域")
-public class RegionResource implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class RegionResource {
+    @Schema(description = "地域コード")
+    String regionCode;
+    @Schema(description = "地域名")
+    String regionName;
 
-    String regionCode; //地域コード
-    String regionName;  //地域名
 
-
+    public static RegionResource from(Region region) {
+        return RegionResource.builder()
+                .regionCode(region.getRegionCode().getValue())
+                .regionName(region.getRegionName())
+                .build();
+    }
 }

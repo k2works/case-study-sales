@@ -8,6 +8,7 @@ import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
 import com.example.sms.service.BusinessException;
+import com.example.sms.service.PageNationService;
 import com.example.sms.service.master.product.ProductCategoryCriteria;
 import com.example.sms.service.master.product.ProductService;
 import com.example.sms.service.system.audit.AuditAnnotation;
@@ -18,7 +19,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
+import static com.example.sms.presentation.api.master.product.ProductCategoryResourceDTOMapper.convertToCriteria;
+import static com.example.sms.presentation.api.master.product.ProductCategoryResourceDTOMapper.convertToEntity;
+import static com.example.sms.presentation.api.master.product.ProductCategoryResourceDTOMapper.getAddFilteredProducts;
+import static com.example.sms.presentation.api.master.product.ProductCategoryResourceDTOMapper.getDeleteFilteredProducts;
+
 import java.util.List;
 
 /**
@@ -30,11 +35,12 @@ import java.util.List;
 @PreAuthorize("hasRole('ADMIN')")
 public class ProductCategoryApiController {
     final ProductService productService;
-
+    final PageNationService pageNationService;
     final Message message;
 
-    public ProductCategoryApiController(ProductService productService, Message message) {
+    public ProductCategoryApiController(ProductService productService, PageNationService pageNationService, Message message) {
         this.productService = productService;
+        this.pageNationService = pageNationService;
         this.message = message;
     }
 
@@ -45,7 +51,8 @@ public class ProductCategoryApiController {
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
             PageNation.startPage(page, pageSize);
-            PageInfo<ProductCategory> result = productService.selectAllCategoryWithPageInfo();
+            PageInfo<ProductCategory> pageInfo = productService.selectAllCategoryWithPageInfo();
+            PageInfo<ProductCategoryResource> result = pageNationService.getPageInfo(pageInfo, ProductCategoryResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
@@ -57,7 +64,7 @@ public class ProductCategoryApiController {
     public ResponseEntity<?> select(@PathVariable String productCategoryCode) {
         try {
             ProductCategory result = productService.findCategory(productCategoryCode);
-            return ResponseEntity.ok(result);
+            return ResponseEntity.ok(ProductCategoryResource.from(result));
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
@@ -68,7 +75,7 @@ public class ProductCategoryApiController {
     @AuditAnnotation(process = ApplicationExecutionProcessType.商品分類登録, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> create(@RequestBody ProductCategoryResource productCategoryResource) {
         try {
-            ProductCategory productCategory = ProductCategory.of(productCategoryResource.getProductCategoryCode(), productCategoryResource.getProductCategoryName(), productCategoryResource.getProductCategoryHierarchy(), productCategoryResource.getProductCategoryPath(), productCategoryResource.getLowestLevelDivision());
+            ProductCategory productCategory = convertToEntity(productCategoryResource);
             if (productService.findCategory(productCategory.getProductCategoryCode().getValue()) != null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.product_category.already.exist")));
             }
@@ -84,7 +91,7 @@ public class ProductCategoryApiController {
     @AuditAnnotation(process = ApplicationExecutionProcessType.商品分類更新, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> update(@PathVariable String productCategoryCode, @RequestBody ProductCategoryResource productCategoryResource) {
         try {
-            ProductCategory productCategory = ProductCategory.of(productCategoryCode, productCategoryResource.getProductCategoryName(), productCategoryResource.getProductCategoryHierarchy(), productCategoryResource.getProductCategoryPath(), productCategoryResource.getLowestLevelDivision());
+            ProductCategory productCategory = convertToEntity(productCategoryCode, productCategoryResource);
             if (productService.findCategory(productCategory.getProductCategoryCode().getValue()) == null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.product_category.not.exist")));
             }
@@ -120,64 +127,12 @@ public class ProductCategoryApiController {
             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
-            ProductCategoryCriteria criteria = ProductCategoryCriteria.builder()
-                    .productCategoryCode(resource.getProductCategoryCode())
-                    .productCategoryName(resource.getProductCategoryName())
-                    .productCategoryPath(resource.getProductCategoryPath())
-                    .build();
-            PageInfo<ProductCategory> result = productService.searchProductCategoryWithPageInfo(criteria);
+            ProductCategoryCriteria criteria = convertToCriteria(resource);
+            PageInfo<ProductCategory> entity = productService.searchProductCategoryWithPageInfo(criteria);
+            PageInfo<ProductCategoryResource> result = pageNationService.getPageInfo(entity, ProductCategoryResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
-
-    private static List<Product> getAddFilteredProducts(ProductCategoryResource productCategoryResource) {
-        return productCategoryResource.getProducts() == null ? Collections.emptyList() :
-                productCategoryResource.getProducts().stream()
-                        .filter(ProductResource::isAddFlag)
-                        .map(resource -> Product.of(
-                                resource.getProductCode(),
-                                resource.getProductFormalName(),
-                                resource.getProductAbbreviation(),
-                                resource.getProductNameKana(),
-                                resource.getProductType(),
-                                resource.getSellingPrice(),
-                                resource.getPurchasePrice(),
-                                resource.getCostOfSales(),
-                                resource.getTaxType(),
-                                resource.getProductClassificationCode(),
-                                resource.getMiscellaneousType(),
-                                resource.getStockManagementTargetType(),
-                                resource.getStockAllocationType(),
-                                resource.getVendorCode(),
-                                resource.getVendorBranchNumber()
-                        ))
-                        .toList();
-    }
-
-    private static List<Product> getDeleteFilteredProducts(ProductCategoryResource productCategoryResource) {
-        return productCategoryResource.getProducts() == null ? Collections.emptyList() :
-                productCategoryResource.getProducts().stream()
-                        .filter(ProductResource::isDeleteFlag)
-                        .map(resource -> Product.of(
-                                resource.getProductCode(),
-                                resource.getProductFormalName(),
-                                resource.getProductAbbreviation(),
-                                resource.getProductNameKana(),
-                                resource.getProductType(),
-                                resource.getSellingPrice(),
-                                resource.getPurchasePrice(),
-                                resource.getCostOfSales(),
-                                resource.getTaxType(),
-                                resource.getProductClassificationCode(),
-                                resource.getMiscellaneousType(),
-                                resource.getStockManagementTargetType(),
-                                resource.getStockAllocationType(),
-                                resource.getVendorCode(),
-                                resource.getVendorBranchNumber()
-                        ))
-                        .toList();
-    }
-
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import {FaTimes} from 'react-icons/fa';
-import {PageNation} from "../../../application/PageNation.tsx";
+import {PageNation, PageNationType} from "../../../application/PageNation.tsx";
 import {PartnerGroupType} from "../../../../models/master/partner";
 
 interface PartnerGroupSelectProps {
@@ -30,7 +30,7 @@ interface PartnerGroupCollectionSelectProps {
     partnerGroups: PartnerGroupType[];
     handleSelect: (partnerGroup: PartnerGroupType) => void;
     handleClose: () => void;
-    pageNation: any; // 適切な型を使用してください
+    pageNation: PageNationType | null; // ページネーション情報
     fetchPartnerGroups: () => void;
 }
 
@@ -57,17 +57,17 @@ export const PartnerGroupCollectionSelectView: React.FC<PartnerGroupCollectionSe
                         <ul className="collection-object-list">
                             {partnerGroups.map(partnerGroup => (
                                 <li className="collection-object-item"
-                                    key={partnerGroup.partnerGroupCode.value}>
+                                    key={partnerGroup.partnerGroupCode}>
                                     <div className="collection-object-item-content"
-                                         data-id={partnerGroup.partnerGroupCode.value}>
+                                         data-id={partnerGroup.partnerGroupCode}>
                                         <div
                                             className="collection-object-item-content-details">取引先グループコード
                                         </div>
                                         <div
-                                            className="collection-object-item-content-name">{partnerGroup.partnerGroupCode.value}</div>
+                                            className="collection-object-item-content-name">{partnerGroup.partnerGroupCode}</div>
                                     </div>
                                     <div className="collection-object-item-content"
-                                         data-id={partnerGroup.partnerGroupCode.value}>
+                                         data-id={partnerGroup.partnerGroupCode}>
                                         <div
                                             className="collection-object-item-content-details">取引先グループ名
                                         </div>
@@ -75,7 +75,7 @@ export const PartnerGroupCollectionSelectView: React.FC<PartnerGroupCollectionSe
                                             className="collection-object-item-content-name">{partnerGroup.partnerGroupName}</div>
                                     </div>
                                     <div className="collection-object-item-actions"
-                                         data-id={partnerGroup.partnerGroupCode.value}>
+                                         data-id={partnerGroup.partnerGroupCode}>
                                         <button className="action-button"
                                                 onClick={() => handleSelect(partnerGroup)}>選択
                                         </button>

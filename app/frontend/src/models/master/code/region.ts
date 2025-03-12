@@ -1,11 +1,7 @@
 import {PageNationType} from "../../../views/application/PageNation.tsx";
 
-export type RegionCodeType = {
-    value: string;
-}
-
 export type RegionType = {
-    regionCode: RegionCodeType;
+    regionCode: string;
     regionName: string;
     checked: boolean;
 }
@@ -14,24 +10,18 @@ export type RegionFetchType = {
     list: RegionType[];
 } & PageNationType;
 
-export type RegionResponseType = {
-    regionCode: string;
-    regionName: string;
-}
-
 export type RegionCriteriaType = {
     regionCode?: string;
     regionName?: string;
 }
 
-export const mapToRegionResource = (region: RegionType): RegionResponseType => {
+export const mapToRegionResource = (region: RegionType): RegionType => {
     return {
-        regionCode: region.regionCode.value,
-        regionName: region.regionName
+        ...region
     }
 }
 
-export const mapToRegionCriteria = (criteria: RegionCriteriaType): any => {
+export const mapToRegionCriteria = (criteria: RegionCriteriaType): RegionCriteriaType => {
     const isEmpty = (value: unknown) => value === "" || value === null || value === undefined;
     return {
         ...(!isEmpty(criteria.regionCode) && {regionCode: criteria.regionCode}),

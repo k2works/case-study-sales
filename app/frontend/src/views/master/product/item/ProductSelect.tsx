@@ -33,18 +33,18 @@ export const ProductCollectionSelectView: React.FC<ProductCollectionSelectProps>
                     <div className="collection-object-container-modal">
                         <ul className="collection-object-list">
                             {products.map(product => (
-                                <li className="collection-object-item" key={product.productCode.value}>
-                                    <div className="collection-object-item-content" data-id={product.productCode.value}>
+                                <li className="collection-object-item" key={product.productCode}>
+                                    <div className="collection-object-item-content" data-id={product.productCode}>
                                         <div className="collection-object-item-content-details">商品コード</div>
                                         <div
-                                            className="collection-object-item-content-name">{product.productCode.value}</div>
+                                            className="collection-object-item-content-name">{product.productCode}</div>
                                     </div>
-                                    <div className="collection-object-item-content" data-id={product.productCode.value}>
+                                    <div className="collection-object-item-content" data-id={product.productCode}>
                                         <div className="collection-object-item-content-details">商品名</div>
                                         <div
-                                            className="collection-object-item-content-name">{product.productName.productFormalName}</div>
+                                            className="collection-object-item-content-name">{product.productFormalName}</div>
                                     </div>
-                                    <div className="collection-object-item-actions" data-id={product.productCode.value}>
+                                    <div className="collection-object-item-actions" data-id={product.productCode}>
                                         <button className="action-button" onClick={() => handleSelect(product)}
                                                 id="select-product">選択
                                         </button>

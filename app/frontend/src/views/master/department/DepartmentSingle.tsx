@@ -44,13 +44,10 @@ const Form = ({isEditing, newDepartment, setNewDepartment}: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="部門コード"
-                value={newDepartment.departmentId.deptCode.value}
+                value={newDepartment.departmentCode}
                 onChange={(e) => setNewDepartment({
                     ...newDepartment,
-                    departmentId: {
-                        ...newDepartment.departmentId,
-                        deptCode: { value: e.target.value }
-                    }
+                    departmentCode: e.target.value
                 })}
                 disabled={isEditing}
             />
@@ -71,13 +68,10 @@ const Form = ({isEditing, newDepartment, setNewDepartment}: FormProps) => {
                 id="startDate"
                 type="date"
                 className="single-view-content-item-form-item-input"
-                value={convertToDateInputFormat(newDepartment.departmentId.departmentStartDate.value)}
+                value={convertToDateInputFormat(newDepartment.startDate)}
                 onChange={(e) => setNewDepartment({
                     ...newDepartment,
-                    departmentId: {
-                        ...newDepartment.departmentId,
-                        departmentStartDate: { value: e.target.value }
-                    }
+                    startDate: e.target.value
                 })}
                 disabled={isEditing}
             />
@@ -86,10 +80,10 @@ const Form = ({isEditing, newDepartment, setNewDepartment}: FormProps) => {
                 id="endDate"
                 type="date"
                 className="single-view-content-item-form-item-input"
-                value={convertToDateInputFormat(newDepartment.endDate.value)}
+                value={convertToDateInputFormat(newDepartment.endDate)}
                 onChange={(e) => setNewDepartment({
                     ...newDepartment,
-                    endDate: { value: e.target.value }
+                    endDate: e.target.value
                 })}
             />
             <FormInput
@@ -109,10 +103,10 @@ const Form = ({isEditing, newDepartment, setNewDepartment}: FormProps) => {
                 type="text"
                 className="single-view-content-item-form-item-input"
                 placeholder="部門パス"
-                value={newDepartment.path.value}
+                value={newDepartment.path}
                 onChange={(e) => setNewDepartment({
                     ...newDepartment,
-                    path: { value: e.target.value }
+                    path: e.target.value
                 })}
             />
             {/* 最下層区分フィールド */}

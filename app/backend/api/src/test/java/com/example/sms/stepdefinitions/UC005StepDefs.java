@@ -1,7 +1,6 @@
 package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
-import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.ProductCategory;
 import com.example.sms.domain.model.master.product.*;
 import com.example.sms.presentation.api.master.product.ProductCategoryCriteriaResource;
@@ -74,15 +73,15 @@ public class UC005StepDefs extends SpringAcceptanceTest {
 
         if (list.equals("商品一覧")) {
             String result = latestResponse.getBody();
-            ListResponse<Product> response = objectMapper.readValue(result, new TypeReference<>() {
+            ListResponse<ProductResource> response = objectMapper.readValue(result, new TypeReference<>() {
             });
-            List<Product> actual = response.getList();
+            List<ProductResource> actual = response.getList();
             assertEquals(3, actual.size());
         } else if (list.equals("商品分類一覧")) {
             String result = latestResponse.getBody();
-            ListResponse<ProductCategory> response = objectMapper.readValue(result, new TypeReference<>() {
+            ListResponse<ProductCategoryResource> response = objectMapper.readValue(result, new TypeReference<>() {
             });
-            List<ProductCategory> actual = response.getList();
+            List<ProductCategoryResource> actual = response.getList();
             assertEquals(2, actual.size());
         }
     }
@@ -131,8 +130,8 @@ public class UC005StepDefs extends SpringAcceptanceTest {
         objectMapper.registerModule(new JavaTimeModule());
 
         String result = latestResponse.getBody();
-        Product product = objectMapper.readValue(result, Product.class);
-        Assertions.assertEquals(name, product.getProductName().getProductFormalName());
+        ProductResource product = objectMapper.readValue(result, ProductResource.class);
+        Assertions.assertEquals(name, product.getProductFormalName());
     }
 
     @かつ(":UC005 商品コード {string} の情報を更新する \\(商品名 {string})")
@@ -233,9 +232,9 @@ public class UC005StepDefs extends SpringAcceptanceTest {
         String result = latestResponse.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
-        ListResponse<Product> response = objectMapper.readValue(result, new TypeReference<>() {
+        ListResponse<ProductResource> response = objectMapper.readValue(result, new TypeReference<>() {
         });
-        List<Product> productList = response.getList();
+        List<ProductResource> productList = response.getList();
         assertEquals(3, productList.size());
     }
 
@@ -255,9 +254,9 @@ public class UC005StepDefs extends SpringAcceptanceTest {
         String result = latestResponse.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
-        ListResponse<ProductCategory> response = objectMapper.readValue(result, new TypeReference<>() {
+        ListResponse<ProductCategoryResource> response = objectMapper.readValue(result, new TypeReference<>() {
         });
-        List<ProductCategory> productCategoryList = response.getList();
+        List<ProductCategoryResource> productCategoryList = response.getList();
         assertEquals(2, productCategoryList.size());
     }
 }

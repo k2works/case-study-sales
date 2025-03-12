@@ -34,7 +34,7 @@ export const PartnerListSingle: React.FC = () => {
     };
 
     const handleCreateOrUpdatePartner = async () => {
-        if (!newPartner.partnerCode.value.trim() || !newPartner.partnerName.name.trim()) {
+        if (!newPartner.partnerCode.trim() || !newPartner.partnerName.trim()) {
             setError("取引先コードと名称は必須項目です。");
             return;
         }
@@ -48,8 +48,8 @@ export const PartnerListSingle: React.FC = () => {
             await fetchPartners.load();
             setMessage(isEditing ? "取引先を更新しました。" : "取引先を作成しました。");
             handleCloseModal();
-        } catch (error: any) {
-            showErrorMessage(`取引先の作成または更新に失敗しました: ${error?.message}`, setError);
+        } catch (error: unknown) {
+            showErrorMessage(error, setError, "取引先の作成または更新に失敗しました");
         }
     };
 

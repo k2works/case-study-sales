@@ -29,7 +29,7 @@ export const RegionSingle: React.FC = () => {
     const handleCreateOrUpdateRegion = async () => {
         const validateRegion = (): boolean => {
             if (
-                !newRegion.regionCode.value.trim() ||
+                !newRegion.regionCode.trim() ||
                 !newRegion.regionName.trim()
             ) {
                 setError("地域コード、地域名は必須項目です。");
@@ -54,8 +54,8 @@ export const RegionSingle: React.FC = () => {
                 setMessage("地域を作成しました。");
             }
             handleCloseModal();
-        } catch (error: any) {
-            showErrorMessage(`地域の作成に失敗しました: ${error?.message}`, setError);
+        } catch (error: unknown) {
+            showErrorMessage(error, setError, "地域の作成に失敗しました");
         }
     };
     return (
