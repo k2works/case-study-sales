@@ -82,14 +82,8 @@ export const EmployeeSingle: React.FC = () => {
                 isEditing={isEditing}
                 handleCreateOrUpdateEmployee={handleCreateOrUpdateEmployee}
                 handleCloseModal={handleCloseModal}
-            />
-
-            <DepartmentSelectView
-                handleSelect={() => setDepartmentModalIsOpen(true)}
-            />
-
-            <UserSelectView
-                handleSelect={() => setUserModalIsOpen(true)}
+                handleDepartmentSelect={() => setDepartmentModalIsOpen(true)}
+                handleUserSelect={() => setUserModalIsOpen(true)}
             />
         </>
     )

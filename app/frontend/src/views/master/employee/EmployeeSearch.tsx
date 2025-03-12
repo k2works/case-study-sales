@@ -6,10 +6,11 @@ interface FormProps {
     criteria: EmployeeCriteriaType,
     setCondition:(criteria: EmployeeCriteriaType) => void,
     handleClick: (e: React.MouseEvent<HTMLButtonElement>) => void,
-    handleClose: (e: React.MouseEvent<HTMLButtonElement>) => void
+    handleClose: (e: React.MouseEvent<HTMLButtonElement>) => void,
+    handleDepartmentSelect: () => void
 }
 
-const Form = ({criteria, setCondition, handleClick, handleClose}: FormProps) => {
+const Form = ({criteria, setCondition, handleClick, handleClose, handleDepartmentSelect}: FormProps) => {
     return (
         <div className="single-view-content-item-form">
             <FormInput
@@ -99,6 +100,7 @@ const Form = ({criteria, setCondition, handleClick, handleClose}: FormProps) => 
                 onChange={(e) => setCondition(
                     {...criteria, departmentCode: e.target.value}
                 )}
+                onClick={handleDepartmentSelect}
             />
             {/* 他のフォーム入力項目をここに追加 */}
 
@@ -118,7 +120,8 @@ interface EmployeeSearchSingleViewProps {
     criteria: EmployeeCriteriaType,
     setCondition: (criteria: EmployeeCriteriaType) => void,
     handleSelect: (criteria: EmployeeCriteriaType) => Promise<void>,
-    handleClose: () => void
+    handleClose: () => void,
+    handleDepartmentSelect: () => void
 }
 
 export const EmployeeSearchSingleView: React.FC<EmployeeSearchSingleViewProps> = ({
@@ -126,6 +129,7 @@ export const EmployeeSearchSingleView: React.FC<EmployeeSearchSingleViewProps> =
                                                                                       setCondition,
                                                                                       handleSelect,
                                                                                       handleClose,
+                                                                                      handleDepartmentSelect
                                                                                   }) => {
     const handleClick: MouseEventHandler<HTMLButtonElement> = async(e) => {
         e.preventDefault();
@@ -148,7 +152,7 @@ export const EmployeeSearchSingleView: React.FC<EmployeeSearchSingleViewProps> =
             <div className="single-view-container">
                 <div className="single-view-content">
                     <div className="single-view-content-item">
-                        <Form criteria={criteria} setCondition={setCondition} handleClick={handleClick} handleClose={handleCancel}/>
+                        <Form criteria={criteria} setCondition={setCondition} handleClick={handleClick} handleClose={handleCancel} handleDepartmentSelect={handleDepartmentSelect}/>
                     </div>
                 </div>
             </div>

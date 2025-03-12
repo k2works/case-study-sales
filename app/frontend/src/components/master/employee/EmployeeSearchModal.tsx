@@ -69,12 +69,10 @@ export const EmployeeSearchModal: React.FC = () => {
                             }
                         }}
                         handleClose={handleCloseSearchModal}
+                        handleDepartmentSelect={() => setDepartmentSearchModalIsOpen(true)}
                     />
 
                     <DepartmentSelectModal type={"search"}/>
-                    <DepartmentSelectView
-                        handleSelect={() => setDepartmentSearchModalIsOpen(true)}
-                    />
                 </>
             }
         </Modal>
