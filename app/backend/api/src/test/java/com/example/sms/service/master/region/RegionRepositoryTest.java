@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @Testcontainers
 @ActiveProfiles("container")
 @DisplayName("地域レポジトリ")
-public class RegionRepositoryTest {
+class RegionRepositoryTest {
 
     @Container
     private static final PostgreSQLContainer<?> postgres =
