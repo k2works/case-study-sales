@@ -18,6 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import static com.example.sms.presentation.api.master.region.RegionResourceDTOMapper.convertToCriteria;
+import static com.example.sms.presentation.api.master.region.RegionResourceDTOMapper.convertToEntity;
+
 /**
  * 地域コードAPI
  */
@@ -134,14 +137,4 @@ public class RegionApiController {
         }
     }
 
-    private Region convertToEntity(RegionResource resource) {
-        return Region.of(resource.getRegionCode(), resource.getRegionName());
-    }
-
-    private RegionCriteria convertToCriteria(RegionCriteriaResource resource) {
-        return RegionCriteria.builder()
-                .regionCode(resource.getRegionCode())
-                .regionName(resource.getRegionName())
-                .build();
-    }
 }

@@ -18,6 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import static com.example.sms.presentation.api.master.partner.PartnerGroupResourceDTOMapper.convertToCriteria;
+import static com.example.sms.presentation.api.master.partner.PartnerGroupResourceDTOMapper.convertToEntity;
+
 /**
  * 取引先グループAPI
  */
@@ -127,15 +130,4 @@ public class PartnerGroupApiController {
         }
     }
 
-    private PartnerGroup convertToEntity(PartnerGroupResource resource) {
-        return PartnerGroup.of(resource.getPartnerGroupCode(), resource.getPartnerGroupName());
-    }
-
-    private PartnerGroupCriteria convertToCriteria(PartnerGroupCriteriaResource resource) {
-        return PartnerGroupCriteria.builder()
-                .partnerGroupCode(resource.getPartnerGroupCode())
-                .partnerGroupName(resource.getPartnerGroupName())
-                .build();
-    }
 }
-

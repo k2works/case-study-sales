@@ -26,6 +26,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import static com.example.sms.presentation.api.master.employee.EmployeeResourceDTOMapper.convertToCriteria;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
@@ -136,7 +138,7 @@ public class EmployeeApiController {
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
             PageNation.startPage(page, pageSize);
-            EmployeeCriteria criteria = convertCriteria(resource);
+            EmployeeCriteria criteria = convertToCriteria(resource);
             PageInfo<Employee> entity = employeeManagementService.searchWithPageInfo(criteria);
             PageInfo<EmployeeResource> result = pageNationService.getPageInfo(entity, EmployeeResource::from);
             return ResponseEntity.ok(result);
@@ -176,18 +178,5 @@ public class EmployeeApiController {
                 resource.getOccuCode());
 
         return Employee.of(employee, department, user);
-    }
-
-    private EmployeeCriteria convertCriteria(EmployeeCriteriaResource resource) {
-        return EmployeeCriteria.builder()
-                .employeeCode(resource.getEmployeeCode())
-                .employeeFirstName(resource.getEmployeeFirstName())
-                .employeeLastName(resource.getEmployeeLastName())
-                .employeeFirstNameKana(resource.getEmployeeFirstNameKana())
-                .employeeLastNameKana(resource.getEmployeeLastNameKana())
-                .phoneNumber(resource.getPhoneNumber())
-                .faxNumber(resource.getFaxNumber())
-                .departmentCode(resource.getDepartmentCode())
-                .build();
     }
 }

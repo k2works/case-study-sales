@@ -19,7 +19,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
+import static com.example.sms.presentation.api.master.product.ProductCategoryResourceDTOMapper.convertToCriteria;
+import static com.example.sms.presentation.api.master.product.ProductCategoryResourceDTOMapper.convertToEntity;
+import static com.example.sms.presentation.api.master.product.ProductCategoryResourceDTOMapper.getAddFilteredProducts;
+import static com.example.sms.presentation.api.master.product.ProductCategoryResourceDTOMapper.getDeleteFilteredProducts;
+
 import java.util.List;
 
 /**
@@ -71,7 +75,7 @@ public class ProductCategoryApiController {
     @AuditAnnotation(process = ApplicationExecutionProcessType.商品分類登録, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> create(@RequestBody ProductCategoryResource productCategoryResource) {
         try {
-            ProductCategory productCategory = ProductCategory.of(productCategoryResource.getProductCategoryCode(), productCategoryResource.getProductCategoryName(), productCategoryResource.getProductCategoryHierarchy(), productCategoryResource.getProductCategoryPath(), productCategoryResource.getLowestLevelDivision());
+            ProductCategory productCategory = convertToEntity(productCategoryResource);
             if (productService.findCategory(productCategory.getProductCategoryCode().getValue()) != null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.product_category.already.exist")));
             }
@@ -87,7 +91,7 @@ public class ProductCategoryApiController {
     @AuditAnnotation(process = ApplicationExecutionProcessType.商品分類更新, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> update(@PathVariable String productCategoryCode, @RequestBody ProductCategoryResource productCategoryResource) {
         try {
-            ProductCategory productCategory = ProductCategory.of(productCategoryCode, productCategoryResource.getProductCategoryName(), productCategoryResource.getProductCategoryHierarchy(), productCategoryResource.getProductCategoryPath(), productCategoryResource.getLowestLevelDivision());
+            ProductCategory productCategory = convertToEntity(productCategoryCode, productCategoryResource);
             if (productService.findCategory(productCategory.getProductCategoryCode().getValue()) == null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.product_category.not.exist")));
             }
@@ -123,11 +127,7 @@ public class ProductCategoryApiController {
             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(value = "page", defaultValue = "1") int... page) {
         try {
-            ProductCategoryCriteria criteria = ProductCategoryCriteria.builder()
-                    .productCategoryCode(resource.getProductCategoryCode())
-                    .productCategoryName(resource.getProductCategoryName())
-                    .productCategoryPath(resource.getProductCategoryPath())
-                    .build();
+            ProductCategoryCriteria criteria = convertToCriteria(resource);
             PageInfo<ProductCategory> entity = productService.searchProductCategoryWithPageInfo(criteria);
             PageInfo<ProductCategoryResource> result = pageNationService.getPageInfo(entity, ProductCategoryResource::from);
             return ResponseEntity.ok(result);
@@ -135,53 +135,4 @@ public class ProductCategoryApiController {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
-
-    private static List<Product> getAddFilteredProducts(ProductCategoryResource productCategoryResource) {
-        return productCategoryResource.getProducts() == null ? Collections.emptyList() :
-                productCategoryResource.getProducts().stream()
-                        .filter(ProductResource::isAddFlag)
-                        .map(resource -> Product.of(
-                                resource.getProductCode(),
-                                resource.getProductFormalName(),
-                                resource.getProductAbbreviation(),
-                                resource.getProductNameKana(),
-                                resource.getProductType(),
-                                resource.getSellingPrice(),
-                                resource.getPurchasePrice(),
-                                resource.getCostOfSales(),
-                                resource.getTaxType(),
-                                resource.getProductClassificationCode(),
-                                resource.getMiscellaneousType(),
-                                resource.getStockManagementTargetType(),
-                                resource.getStockAllocationType(),
-                                resource.getVendorCode(),
-                                resource.getVendorBranchNumber()
-                        ))
-                        .toList();
-    }
-
-    private static List<Product> getDeleteFilteredProducts(ProductCategoryResource productCategoryResource) {
-        return productCategoryResource.getProducts() == null ? Collections.emptyList() :
-                productCategoryResource.getProducts().stream()
-                        .filter(ProductResource::isDeleteFlag)
-                        .map(resource -> Product.of(
-                                resource.getProductCode(),
-                                resource.getProductFormalName(),
-                                resource.getProductAbbreviation(),
-                                resource.getProductNameKana(),
-                                resource.getProductType(),
-                                resource.getSellingPrice(),
-                                resource.getPurchasePrice(),
-                                resource.getCostOfSales(),
-                                resource.getTaxType(),
-                                resource.getProductClassificationCode(),
-                                resource.getMiscellaneousType(),
-                                resource.getStockManagementTargetType(),
-                                resource.getStockAllocationType(),
-                                resource.getVendorCode(),
-                                resource.getVendorBranchNumber()
-                        ))
-                        .toList();
-    }
-
 }

@@ -18,11 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.function.Function;
+import static com.example.sms.presentation.api.master.product.ProductResourceDTOMapper.convertToCriteria;
+import static com.example.sms.presentation.api.master.product.ProductResourceDTOMapper.convertToEntity;
 
 /**
  * 商品API
@@ -150,96 +147,4 @@ public class ProductApiController {
         }
     }
 
-    private Product convertToEntity(ProductResource resource) {
-        Product product = Product.of(
-                resource.getProductCode(),
-                resource.getProductFormalName(),
-                resource.getProductAbbreviation(),
-                resource.getProductNameKana(),
-                resource.getProductType(),
-                resource.getSellingPrice(),
-                resource.getPurchasePrice(),
-                resource.getCostOfSales(),
-                resource.getTaxType(),
-                resource.getProductClassificationCode(),
-                resource.getMiscellaneousType(),
-                resource.getStockManagementTargetType(),
-                resource.getStockAllocationType(),
-                resource.getVendorCode(),
-                resource.getVendorBranchNumber()
-        );
-
-        List<SubstituteProduct> substituteProducts = Optional.ofNullable(resource.getSubstituteProduct())
-                .orElse(Collections.emptyList())
-                .stream()
-                .filter(Objects::nonNull)
-                .map(this::convertToSubstituteProduct)
-                .toList();
-
-        List<Bom> boms = Optional.ofNullable(resource.getBoms())
-                .orElse(Collections.emptyList())
-                .stream()
-                .filter(Objects::nonNull)
-                .map(this::convertToBom)
-                .toList();
-
-        List<CustomerSpecificSellingPrice> customerSpecificSellingPrices = Optional.ofNullable(resource.getCustomerSpecificSellingPrices())
-                .orElse(Collections.emptyList())
-                .stream()
-                .filter(Objects::nonNull)
-                .map(this::convertToCustomerSpecificSellingPrice)
-                .toList();
-
-        product = Product.of(
-                product,
-                substituteProducts,
-                boms,
-                customerSpecificSellingPrices
-        );
-        return product;
-    }
-
-    private SubstituteProduct convertToSubstituteProduct(SubstituteProductResource resource) {
-        return SubstituteProduct.of(
-                resource.getProductCode(),
-                resource.getSubstituteProductCode(),
-                resource.getPriority()
-        );
-    }
-
-    private Bom convertToBom(BomResource resource) {
-        return Bom.of(
-                resource.getProductCode(),
-                resource.getComponentCode(),
-                resource.getComponentQuantity().getAmount()
-        );
-    }
-
-    private CustomerSpecificSellingPrice convertToCustomerSpecificSellingPrice(CustomerSpecificSellingPriceResource resource) {
-        return CustomerSpecificSellingPrice.of(
-                resource.getProductCode(),
-                resource.getCustomerCode(),
-                resource.getSellingPrice().getAmount()
-        );
-    }
-
-    private ProductCriteria convertToCriteria(ProductCriteriaResource resource) {
-        return ProductCriteria.builder()
-                .productCode(resource.getProductCode())
-                .productNameFormal(resource.getProductNameFormal())
-                .productNameAbbreviation(resource.getProductNameAbbreviation())
-                .productNameKana(resource.getProductNameKana())
-                .productCategoryCode(resource.getProductCategoryCode())
-                .vendorCode(resource.getVendorCode())
-                .productType(mapStringToCode(resource.getProductType(), ProductType::getCodeByName))
-                .taxType(mapStringToCode(resource.getTaxType(), TaxType::getCodeByName))
-                .miscellaneousType(mapStringToCode(resource.getMiscellaneousType(), MiscellaneousType::getCodeByName))
-                .stockManagementTargetType(mapStringToCode(resource.getStockManagementTargetType(), StockManagementTargetType::getCodeByName))
-                .stockAllocationType(mapStringToCode(resource.getStockAllocationType(), StockAllocationType::getCodeByName))
-                .build();
-    }
-
-    private <T> T mapStringToCode(String value, Function<String, T> mapper) {
-        return value != null ? mapper.apply(value) : null;
-    }
 }

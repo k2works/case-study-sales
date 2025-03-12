@@ -3,7 +3,6 @@ package com.example.sms.presentation.api.master.partner;
 import com.example.sms.domain.model.master.partner.customer.*;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType;
-import com.example.sms.domain.type.address.Address;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
@@ -19,9 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.Optional;
-import java.util.function.Function;
+import static com.example.sms.presentation.api.master.partner.CustomerResourceDTOMapper.convertToCriteria;
+import static com.example.sms.presentation.api.master.partner.CustomerResourceDTOMapper.convertToEntity;
 
 /**
  * 顧客 API
@@ -138,83 +136,4 @@ public class CustomerApiController {
         }
     }
 
-    private Customer convertToEntity(CustomerResource resource) {
-        Customer customer = Customer.of(
-                resource.getCustomerCode(),
-                resource.getCustomerBranchNumber(),
-                resource.getCustomerType().getValue(),
-                resource.getBillingCode(),
-                resource.getBillingBranchNumber(),
-                resource.getCollectionCode(),
-                resource.getCollectionBranchNumber(),
-                resource.getCustomerName(),
-                resource.getCustomerNameKana(),
-                resource.getCompanyRepresentativeCode(),
-                resource.getCustomerRepresentativeName(),
-                resource.getCustomerDepartmentName(),
-                resource.getCustomerPostalCode(),
-                resource.getCustomerPrefecture(),
-                resource.getCustomerAddress1(),
-                resource.getCustomerAddress2(),
-                resource.getCustomerPhoneNumber(),
-                resource.getCustomerFaxNumber(),
-                resource.getCustomerEmailAddress(),
-                resource.getCustomerBillingType().getValue(),
-                resource.getCustomerClosingDay1().getValue(),
-                resource.getCustomerPaymentMonth1().getValue(),
-                resource.getCustomerPaymentDay1().getValue(),
-                resource.getCustomerPaymentMethod1().getValue(),
-                resource.getCustomerClosingDay2().getValue(),
-                resource.getCustomerPaymentMonth2().getValue(),
-                resource.getCustomerPaymentDay2().getValue(),
-                resource.getCustomerPaymentMethod2().getValue()
-        );
-
-        return Customer.of(
-                customer,
-                Optional.ofNullable(resource.getShippings())
-                        .orElse(Collections.emptyList())
-                        .stream()
-                        .map(this::convertToShipping)
-                        .toList()
-        );
-    }
-
-    private Shipping convertToShipping(ShippingResource shippingResource) {
-        return Shipping.of(
-                shippingResource.getShippingCode(),
-                shippingResource.getDestinationName(),
-                shippingResource.getRegionCode(),
-                Address.of(
-                        shippingResource.getShippingAddress().getPostalCode().getValue(),
-                        shippingResource.getShippingAddress().getPrefecture().name(),
-                        shippingResource.getShippingAddress().getAddress1(),
-                        shippingResource.getShippingAddress().getAddress2()
-                )
-        );
-    }
-
-    private CustomerCriteria convertToCriteria(CustomerCriteriaResource resource) {
-        return CustomerCriteria.builder()
-                .customerCode(resource.getCustomerCode())
-                .customerName(resource.getCustomerName())
-                .customerNameKana(resource.getCustomerNameKana())
-                .customerType(mapStringToCode(resource.getCustomerType(), CustomerType::getCodeByName))
-                .companyRepresentativeCode(resource.getCompanyRepresentativeCode())
-                .customerRepresentativeName(resource.getCustomerRepresentativeName())
-                .customerDepartmentName(resource.getCustomerDepartmentName())
-                .postalCode(resource.getPostalCode())
-                .prefecture(resource.getPrefecture())
-                .address1(resource.getAddress1())
-                .address2(resource.getAddress2())
-                .customerPhoneNumber(resource.getCustomerPhoneNumber())
-                .customerFaxNumber(resource.getCustomerFaxNumber())
-                .customerEmailAddress(resource.getCustomerEmailAddress())
-                .customerBillingCategory(mapStringToCode(resource.getCustomerBillingCategory(), CustomerBillingCategory::getCodeByName))
-                .build();
-    }
-
-    private <T> T mapStringToCode(String value, Function<String, T> mapper) {
-        return value != null ? mapper.apply(value) : null;
-    }
 }
