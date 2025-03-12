@@ -169,14 +169,7 @@ public class EmployeeApiController {
                     .orElseThrow(() -> new IllegalArgumentException("ユーザが存在しません。"));
         }
 
-        Employee employee = Employee.of(
-                resource.getEmpCode(),
-                resource.getEmpFirstName() + " " + resource.getEmpLastName(),
-                resource.getEmpFirstName() + " " + resource.getEmpLastName(),
-                resource.getTel(),
-                resource.getFax(),
-                resource.getOccuCode());
+        return EmployeeResourceDTOMapper.convertEntity(resource, department, user);
 
-        return Employee.of(employee, department, user);
     }
 }
