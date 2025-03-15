@@ -86,6 +86,7 @@ dependencies {
 	testImplementation group: 'org.junit.vintage', name: 'junit-vintage-engine', version: '5.11.0-M1'
 	testImplementation 'com.tngtech.archunit:archunit:1.2.2'
 	testImplementation 'com.tngtech.archunit:archunit-junit5:1.2.2'
+	testImplementation 'io.github.hakky54:logcaptor:2.10.1'
 	implementation 'com.github.pagehelper:pagehelper-spring-boot-starter:1.4.7'
 	testImplementation platform("io.qameta.allure:allure-bom:$allureVersion")
 	testImplementation "io.qameta.allure:allure-cucumber7-jvm"
