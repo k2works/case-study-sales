@@ -4,7 +4,6 @@ import {usePartnerGroupContext} from "../../../../providers/master/partner/Partn
 import Modal from "react-modal";
 import {PartnerSearchView} from "../../../../views/master/partner/PartnerSearch.tsx";
 import {showErrorMessage} from "../../../application/utils.ts";
-import {PartnerGroupSelectView} from "../../../../views/master/partner/group/PartnerGroupSelect.tsx";
 import {PartnerGroupSelectModal} from "./PartnerGroupSelectModal.tsx";
 
 export const PartnerListSearchModal: React.FC = () => {
@@ -65,12 +64,10 @@ export const PartnerListSearchModal: React.FC = () => {
                             }
                         }}
                         handleClose={handleCloseSearchModal}
+                        handleSelectPartnerGroup={() => setPartnerGroupModalIsOpen(true)}
                     />
 
                     <PartnerGroupSelectModal type={"search"}/>
-                    <PartnerGroupSelectView
-                        handleSelect={() => setPartnerGroupModalIsOpen(true)}
-                    />
                 </>
             }
         </Modal>

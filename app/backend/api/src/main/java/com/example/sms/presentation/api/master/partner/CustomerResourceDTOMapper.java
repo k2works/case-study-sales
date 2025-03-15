@@ -1,7 +1,6 @@
 package com.example.sms.presentation.api.master.partner;
 
 import com.example.sms.domain.model.master.partner.customer.*;
-import com.example.sms.domain.type.address.Address;
 import com.example.sms.presentation.ResourceDTOMapperHelper;
 import com.example.sms.service.master.partner.CustomerCriteria;
 
@@ -47,22 +46,8 @@ public class CustomerResourceDTOMapper {
                 Optional.ofNullable(resource.getShippings())
                         .orElse(Collections.emptyList())
                         .stream()
-                        .map(CustomerResourceDTOMapper::convertToShipping)
+                        .map(PartnerResourceDTOMapper::convertToShipping)
                         .toList()
-        );
-    }
-
-    private static Shipping convertToShipping(ShippingResource shippingResource) {
-        return Shipping.of(
-                shippingResource.getShippingCode(),
-                shippingResource.getDestinationName(),
-                shippingResource.getRegionCode(),
-                Address.of(
-                        shippingResource.getShippingAddress().getPostalCode().getValue(),
-                        shippingResource.getShippingAddress().getPrefecture().name(),
-                        shippingResource.getShippingAddress().getAddress1(),
-                        shippingResource.getShippingAddress().getAddress2()
-                )
         );
     }
 

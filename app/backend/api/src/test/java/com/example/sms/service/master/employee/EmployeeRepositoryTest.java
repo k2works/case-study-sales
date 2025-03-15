@@ -2,26 +2,53 @@ package com.example.sms.service.master.employee;
 
 import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.master.employee.Employee;
-import com.example.sms.domain.model.system.download.Department;
+import com.example.sms.service.master.department.DepartmentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
+@Testcontainers
+@ActiveProfiles("container")
 @DisplayName("社員レポジトリ")
 class EmployeeRepositoryTest {
+
+    @Container
+    private static final PostgreSQLContainer<?> postgres =
+            new PostgreSQLContainer<>(DockerImageName.parse("postgres:15"))
+                    .withUsername("root")
+                    .withPassword("password")
+                    .withDatabaseName("postgres");
+
+    @DynamicPropertySource
+    static void setup(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", postgres::getJdbcUrl);
+    }
+
     @Autowired
     private EmployeeRepository repository;
+
+    @Autowired
+    private DepartmentRepository departmentRepository;
 
     @BeforeEach
     void setUp() {
         repository.deleteAll();
+        departmentRepository.deleteAll();
+        departmentRepository.save(TestDataFactoryImpl.getDepartment("10000", LocalDateTime.of(2021, 1, 1, 0, 0), "全社"));
     }
 
     private Employee getEmployee() {

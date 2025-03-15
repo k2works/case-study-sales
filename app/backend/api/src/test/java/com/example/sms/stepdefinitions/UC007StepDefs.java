@@ -79,6 +79,10 @@ public class UC007StepDefs extends SpringAcceptanceTest {
             downloadCriteriaResource = new DownloadCriteriaResource();
             downloadCriteriaResource.setTarget(DownloadTarget.仕入先);
         }
+        if (target.equals("受注")) {
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.受注);
+        }
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(downloadCriteriaResource);
         executePost(url, json);
@@ -128,6 +132,10 @@ public class UC007StepDefs extends SpringAcceptanceTest {
         if (target.equals("仕入先")) {
             downloadCriteriaResource = new DownloadCriteriaResource();
             downloadCriteriaResource.setTarget(DownloadTarget.仕入先);
+        }
+        if (target.equals("受注")) {
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.受注);
         }
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(downloadCriteriaResource);

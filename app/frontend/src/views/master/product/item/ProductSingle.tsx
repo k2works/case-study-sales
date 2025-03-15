@@ -39,9 +39,11 @@ interface FormProps {
     isEditing: boolean;
     newProduct: ProductType;
     setNewProduct: React.Dispatch<React.SetStateAction<ProductType>>;
+    handleSelectVendor: () => void;
+    handleSelectProductCategory: () => void;
 }
 
-const Form = ({isEditing, newProduct, setNewProduct}: FormProps) => {
+const Form = ({isEditing, newProduct, setNewProduct, handleSelectProductCategory, handleSelectVendor}: FormProps) => {
     const [productType, setProductType] = React.useState<ProductEnumType>(newProduct.productType as ProductEnumType);
     const [taxType, setTaxType] = React.useState<TaxEnumType>(newProduct.taxType as TaxEnumType);
     const [miscellaneousType, setMiscellaneousType] = React.useState<MiscellaneousEnumType>(newProduct.miscellaneousType as MiscellaneousEnumType);
@@ -158,7 +160,7 @@ const Form = ({isEditing, newProduct, setNewProduct}: FormProps) => {
                     ...newProduct,
                     productClassificationCode: e.target.value
                 })}
-                disabled={isEditing}
+                onClick={handleSelectProductCategory}
             />
             <FormSelect
                 id="miscellaneousType"
@@ -210,6 +212,7 @@ const Form = ({isEditing, newProduct, setNewProduct}: FormProps) => {
                     ...newProduct,
                     vendorCode: e.target.value
                 })}
+                onClick={handleSelectVendor}
             />
         </div>
     )
@@ -223,6 +226,8 @@ interface ProductSingleViewProps {
     setNewProduct: React.Dispatch<React.SetStateAction<ProductType>>;
     handleCreateOrUpdateProduct: () => void;
     handleCloseModal: () => void;
+    handleSelectVendor: () => void;
+    handleSelectProductCategory: () => void;
 }
 
 export const ProductSingleView = ({
@@ -232,7 +237,9 @@ export const ProductSingleView = ({
                                       newProduct,
                                       setNewProduct,
                                       handleCreateOrUpdateProduct,
-                                      handleCloseModal
+                                      handleCloseModal,
+                                      handleSelectVendor,
+                                      handleSelectProductCategory
                                   }: ProductSingleViewProps) => (
     <div className="single-view-object-container">
         <Message error={error} message={message}/>
@@ -252,6 +259,8 @@ export const ProductSingleView = ({
                         isEditing={isEditing}
                         newProduct={newProduct}
                         setNewProduct={setNewProduct}
+                        handleSelectVendor={handleSelectVendor}
+                        handleSelectProductCategory={handleSelectProductCategory}
                     />
                 </div>
             </div>

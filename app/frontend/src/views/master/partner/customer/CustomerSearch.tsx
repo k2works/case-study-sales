@@ -4,6 +4,7 @@ import {
     CustomerBillingCategoryEnumType, CustomerEnumType
 } from "../../../../models/master/partner";
 import { FormInput, FormSelect, SingleViewHeaderItem } from "../../../Common.tsx";
+import {PrefectureEnumType} from "../../../../models";
 
 interface CustomerSearchFormProps {
     criteria: CustomerCriteriaType;
@@ -157,16 +158,15 @@ const CustomerSearchForm = ({
                     })
                 }
             />
-            <FormInput
+            <FormSelect
                 id="search-prefecture"
-                type="text"
-                className="single-view-content-item-form-item-input"
                 label="都道府県"
                 value={criteria.prefecture}
+                options={PrefectureEnumType}
                 onChange={(e) =>
                     setCondition({
                         ...criteria,
-                        prefecture: e.target.value
+                        prefecture: e
                     })
                 }
             />

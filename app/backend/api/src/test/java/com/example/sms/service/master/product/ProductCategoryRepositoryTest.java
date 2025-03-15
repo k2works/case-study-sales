@@ -10,6 +10,13 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
 import java.util.List;
 import java.util.stream.IntStream;
@@ -17,8 +24,23 @@ import java.util.stream.IntStream;
 import static org.junit.Assert.assertEquals;
 
 @SpringBootTest
+@Testcontainers
+@ActiveProfiles("container")
 @DisplayName("商品分類レポジトリ")
-public class ProductCategoryRepositoryTest {
+class ProductCategoryRepositoryTest {
+
+    @Container
+    private static final PostgreSQLContainer<?> postgres =
+            new PostgreSQLContainer<>(DockerImageName.parse("postgres:15"))
+                    .withUsername("root")
+                    .withPassword("password")
+                    .withDatabaseName("postgres");
+
+    @DynamicPropertySource
+    static void setup(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", postgres::getJdbcUrl);
+    }
+
     @Autowired
     private ProductCategoryRepository repository;
     @Autowired

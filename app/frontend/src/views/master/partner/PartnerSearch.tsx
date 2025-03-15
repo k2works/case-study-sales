@@ -7,6 +7,7 @@ interface PartnerSearchFormProps {
     setCondition: (criteria: PartnerCriteriaType) => void;
     handleClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
     handleClose: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    handleSelectPartnerGroup: () => void;
 }
 
 /**
@@ -17,6 +18,7 @@ const PartnerSearchForm = ({
                                setCondition,
                                handleClick,
                                handleClose,
+                               handleSelectPartnerGroup,
                            }: PartnerSearchFormProps) => {
     return (
         <div className="single-view-content-item-form">
@@ -110,6 +112,7 @@ const PartnerSearchForm = ({
                 onChange={(e) =>
                     setCondition({ ...criteria, partnerGroupCode: e.target.value })
                 }
+                onClick={handleSelectPartnerGroup}
             />
             <div className="button-container">
                 <button className="action-button" id="search-all" onClick={handleClick}>
@@ -128,6 +131,7 @@ interface PartnerSearchViewProps {
     setCondition: (criteria: PartnerCriteriaType) => void;
     handleSelect: (criteria: PartnerCriteriaType) => Promise<void>;
     handleClose: () => void;
+    handleSelectPartnerGroup: () => void;
 }
 
 /**
@@ -138,6 +142,7 @@ export const PartnerSearchView: React.FC<PartnerSearchViewProps> = ({
                                                                         setCondition,
                                                                         handleSelect,
                                                                         handleClose,
+                                                                        handleSelectPartnerGroup
                                                                     }) => {
     const handleClick: MouseEventHandler<HTMLButtonElement> = async (e) => {
         e.preventDefault();
@@ -163,6 +168,7 @@ export const PartnerSearchView: React.FC<PartnerSearchViewProps> = ({
                             setCondition={setCondition}
                             handleClick={handleClick}
                             handleClose={handleCancel}
+                            handleSelectPartnerGroup={handleSelectPartnerGroup}
                         />
                     </div>
                 </div>

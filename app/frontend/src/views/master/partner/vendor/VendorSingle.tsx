@@ -1,7 +1,8 @@
 import React from "react";
-import { FormInput, SingleViewHeaderActions, SingleViewHeaderItem } from "../../../Common.tsx";
+import {FormInput, FormSelect, SingleViewHeaderActions, SingleViewHeaderItem} from "../../../Common.tsx";
 import { VendorType } from "../../../../models/master/partner";
 import { Message } from "../../../../components/application/Message.tsx";
+import {PrefectureEnumType} from "../../../../models";
 
 interface HeaderProps {
     title: string;
@@ -132,6 +133,20 @@ const Form = ({ isEditing, newVendor, setNewVendor }: FormProps) => {
                         vendorPostalCode: e.target.value,
                     })
                 }
+            />
+
+            {/* 都道府県 */}
+            <FormSelect
+                id="prefecture"
+                label="都道府県"
+                value={newVendor.vendorPrefecture}
+                options={PrefectureEnumType}
+                onChange={(e) => {
+                    setNewVendor({
+                        ...newVendor,
+                        vendorPrefecture: e,
+                    })
+                }}
             />
 
             {/* 住所 */}

@@ -121,17 +121,16 @@ public class PartnerResourceDTOMapper {
         );
     }
 
-    private static Shipping convertToShipping(ShippingResource shippingResource) {
+    static Shipping convertToShipping(ShippingResource shippingResource) {
         return Shipping.of(
-                shippingResource.getShippingCode(),
+                shippingResource.getCustomerCode(),
+                shippingResource.getDestinationNumber(),
+                shippingResource.getCustomerBranchNumber(),
                 shippingResource.getDestinationName(),
                 shippingResource.getRegionCode(),
-                Address.of(
-                        shippingResource.getShippingAddress().getPostalCode().getValue(),
-                        shippingResource.getShippingAddress().getPrefecture().name(),
-                        shippingResource.getShippingAddress().getAddress1(),
-                        shippingResource.getShippingAddress().getAddress2()
-                )
+                shippingResource.getPostalCode(),
+                shippingResource.getAddress1(),
+                shippingResource.getAddress2()
         );
     }
 

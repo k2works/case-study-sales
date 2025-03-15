@@ -5,8 +5,6 @@ import {useVendorContext} from "../../../../providers/master/partner/Vendor.tsx"
 import Modal from "react-modal";
 import {ProductSearchSingleView} from "../../../../views/master/product/ProductSearch.tsx";
 import {showErrorMessage} from "../../../application/utils.ts";
-import {VendorSelectView} from "../../../../views/master/partner/vendor/VendorSelect.tsx";
-import {ProductCategorySelectView} from "../../../../views/master/product/ProductCategorySelect.tsx";
 import {VendorSelectModal} from "./VendorSelectModal.tsx";
 import {ProductCategorySelectModal} from "./ProductCategorySelectModal.tsx";
 
@@ -79,14 +77,8 @@ export const ProductItemSearchModal: React.FC = () => {
                             }
                         }}
                         handleClose={handleCloseSearchModal}
-                    />
-
-                    <VendorSelectView
-                        handleSelect={() => setVendorSearchModalIsOpen(true)}
-                    />
-
-                    <ProductCategorySelectView
-                        handleSelect={() => setProductCategoryModalIsOpen(true)}
+                        handleSelectVendor={() => setVendorSearchModalIsOpen(true)}
+                        handleSelectProductCategory={() => setProductCategoryModalIsOpen(true)}
                     />
                 </>
             }

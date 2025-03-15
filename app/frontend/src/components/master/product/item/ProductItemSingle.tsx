@@ -7,7 +7,6 @@ import {useVendorContext} from "../../../../providers/master/partner/Vendor.tsx"
 import {showErrorMessage} from "../../../application/utils.ts";
 import {Tab, TabList, TabPanel, Tabs} from "react-tabs";
 import {ProductSingleView} from "../../../../views/master/product/item/ProductSingle.tsx";
-import {VendorSelectView} from "../../../../views/master/partner/vendor/VendorSelect.tsx";
 import {
     SubstituteProductCollectionAddListView
 } from "../../../../views/master/product/item/SubstituteProductCollection.tsx";
@@ -19,7 +18,6 @@ import {VendorSelectModal} from "./VendorSelectModal.tsx";
 import {ProductItemSubstituteModal} from "./ProductItemSubstituteModal.tsx";
 import {ProductItemBomModal} from "./ProductItemBomModal.tsx";
 import {ProductCategorySelectModal} from "./ProductCategorySelectModal.tsx";
-import {ProductCategorySelectView} from "../../../../views/master/product/ProductCategorySelect.tsx";
 import {useProductCategoryContext} from "../../../../providers/master/product/ProductCategory.tsx";
 import {CustomerSelectModal} from "./CustomerSelectModal.tsx";
 
@@ -117,9 +115,9 @@ export const ProductItemSingle: React.FC = () => {
         <>
             <VendorSelectModal type={"edit"}/>
             <ProductCategorySelectModal  type={"edit"}/>
+            <CustomerSelectModal type={"edit"}/>
             <ProductItemSubstituteModal/>
             <ProductItemBomModal/>
-            <CustomerSelectModal/>
             {isEditing ? (
                 <Tabs>
                     <TabList>
@@ -137,14 +135,8 @@ export const ProductItemSingle: React.FC = () => {
                             isEditing={isEditing}
                             handleCreateOrUpdateProduct={handleCreateOrUpdateProduct}
                             handleCloseModal={handleCloseModal}
-                        />
-
-                        <VendorSelectView
-                            handleSelect={() => setVendorModalIsOpen(true)}
-                        />
-
-                        <ProductCategorySelectView
-                            handleSelect={() => setProductCategoryModalIsOpen(true)}
+                            handleSelectVendor={() => setVendorModalIsOpen(true)}
+                            handleSelectProductCategory={() => setProductCategoryModalIsOpen(true)}
                         />
                     </TabPanel>
                     <TabPanel>
@@ -210,7 +202,6 @@ export const ProductItemSingle: React.FC = () => {
                     </TabPanel>
                 </Tabs>
             ) : (
-                <>
                     <ProductSingleView
                         error={error}
                         message={message}
@@ -219,16 +210,9 @@ export const ProductItemSingle: React.FC = () => {
                         isEditing={isEditing}
                         handleCreateOrUpdateProduct={handleCreateOrUpdateProduct}
                         handleCloseModal={handleCloseModal}
+                        handleSelectVendor={() => setVendorModalIsOpen(true)}
+                        handleSelectProductCategory={() => setProductCategoryModalIsOpen(true)}
                     />
-
-                    <VendorSelectView
-                        handleSelect={() => setVendorModalIsOpen(true)}
-                    />
-
-                    <ProductCategorySelectView
-                        handleSelect={() => setProductCategoryModalIsOpen(true)}
-                    />
-                </>
             )}
         </>
     );

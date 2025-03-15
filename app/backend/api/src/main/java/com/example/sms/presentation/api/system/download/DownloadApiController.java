@@ -40,7 +40,7 @@ public class DownloadApiController {
         try {
             DownloadCriteria condition = DownloadCriteriaResource.of(resource.getTarget());
             return ResponseEntity.ok(downloadService.count(condition));
-        } catch (BusinessException | IllegalArgumentException e) {
+        } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }

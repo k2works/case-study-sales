@@ -33,7 +33,7 @@ export const CustomerCollectionSelectView: React.FC<CustomerCollectionSelectProp
                     <div className="collection-object-container-modal">
                         <ul className="collection-object-list">
                             {customers.map(customer => (
-                                <li className="collection-object-item" key={customer.customerCode}>
+                                <li className="collection-object-item" key={customer.customerCode + customer.customerBranchNumber}>
                                     <div className="collection-object-item-content"
                                          data-id={customer.customerCode}>
                                         <div className="collection-object-item-content-details">顧客コード</div>

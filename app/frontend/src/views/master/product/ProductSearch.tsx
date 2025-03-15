@@ -11,9 +11,11 @@ interface FormProps {
     setCondition:(criteria: ProductCriteriaType) => void,
     handleClick: (e: React.MouseEvent<HTMLButtonElement>) => void,
     handleClose: (e: React.MouseEvent<HTMLButtonElement>) => void
+    handleSelectVendor: () => void,
+    handleSelectProductCategory: () => void
 }
 
-const Form = ({criteria, setCondition, handleClick, handleClose}: FormProps) => {
+const Form = ({criteria, setCondition, handleClick, handleClose, handleSelectVendor, handleSelectProductCategory}: FormProps) => {
     return (
         <div className="single-view-content-item-form">
             <FormInput
@@ -70,6 +72,7 @@ const Form = ({criteria, setCondition, handleClick, handleClose}: FormProps) => 
                 onChange={(e) => setCondition(
                     {...criteria, productCategoryCode: e.target.value}
                 )}
+                onClick={handleSelectProductCategory}
             />
             <FormInput
                 label="仕入先コード"
@@ -81,6 +84,7 @@ const Form = ({criteria, setCondition, handleClick, handleClose}: FormProps) => 
                 onChange={(e) => setCondition(
                     {...criteria, vendorCode: e.target.value}
                 )}
+                onClick={handleSelectVendor}
             />
             <FormSelect
                 id="productType"
@@ -144,6 +148,8 @@ interface ProductSearchSingleViewProps {
     setCondition: (criteria: ProductCriteriaType) => void,
     handleSelect: (criteria: ProductCriteriaType) => Promise<void>,
     handleClose: () => void
+    handleSelectVendor: () => void,
+    handleSelectProductCategory: () => void
 }
 
 export const ProductSearchSingleView: React.FC<ProductSearchSingleViewProps> = ({
@@ -151,6 +157,8 @@ export const ProductSearchSingleView: React.FC<ProductSearchSingleViewProps> = (
                                                                                       setCondition,
                                                                                       handleSelect,
                                                                                       handleClose,
+                                                                                      handleSelectVendor,
+                                                                                      handleSelectProductCategory
                                                                                   }) => {
     const handleClick: MouseEventHandler<HTMLButtonElement> = async(e) => {
         e.preventDefault();
@@ -173,7 +181,12 @@ export const ProductSearchSingleView: React.FC<ProductSearchSingleViewProps> = (
             <div className="single-view-container">
                 <div className="single-view-content">
                     <div className="single-view-content-item">
-                        <Form criteria={criteria} setCondition={setCondition} handleClick={handleClick} handleClose={handleCancel}/>
+                        <Form criteria={criteria}
+                              setCondition={setCondition}
+                              handleClick={handleClick}
+                              handleClose={handleCancel}
+                              handleSelectProductCategory={handleSelectProductCategory}
+                              handleSelectVendor={handleSelectVendor}/>
                     </div>
                 </div>
             </div>

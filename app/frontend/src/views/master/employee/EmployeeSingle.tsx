@@ -35,9 +35,11 @@ interface EmployeeFormProps {
     newEmployee: EmployeeType;
     setNewEmployee: (employee: EmployeeType) => void;
     isEditing: boolean;
+    handleDepartmentSelect: () => void;
+    handleUserSelect: () => void;
 }
 
-const Form: React.FC<EmployeeFormProps> = ({newEmployee, setNewEmployee, isEditing}) => {
+const Form: React.FC<EmployeeFormProps> = ({newEmployee, setNewEmployee, isEditing, handleUserSelect, handleDepartmentSelect}) => {
     return (
         <div className="single-view-content-item-form">
             <FormInput
@@ -148,6 +150,7 @@ const Form: React.FC<EmployeeFormProps> = ({newEmployee, setNewEmployee, isEditi
                     ...newEmployee,
                     departmentCode: e.target.value
                 })}
+                onClick={handleDepartmentSelect}
             />
             <FormInput
                 label="開始日"
@@ -172,6 +175,7 @@ const Form: React.FC<EmployeeFormProps> = ({newEmployee, setNewEmployee, isEditi
                     ...newEmployee,
                     userId: e.target.value
                 })}
+                onClick={handleUserSelect}
             />
         </div>
     );
@@ -185,6 +189,8 @@ interface EmployeeSingleViewProps {
     message: string | null;
     handleCreateOrUpdateEmployee: () => void;
     handleCloseModal: () => void;
+    handleDepartmentSelect: () => void;
+    handleUserSelect: () => void;
 }
 
 export const EmployeeSingleView: React.FC<EmployeeSingleViewProps> = ({
@@ -194,7 +200,9 @@ export const EmployeeSingleView: React.FC<EmployeeSingleViewProps> = ({
                                                                           error,
                                                                           message,
                                                                           handleCreateOrUpdateEmployee,
-                                                                          handleCloseModal
+                                                                          handleCloseModal,
+                                                                          handleDepartmentSelect,
+                                                                          handleUserSelect
                                                                       }) => (
     <div className="single-view-object-container">
         <Message error={error} message={message}/>
@@ -214,6 +222,8 @@ export const EmployeeSingleView: React.FC<EmployeeSingleViewProps> = ({
                         isEditing={isEditing}
                         newEmployee={newEmployee}
                         setNewEmployee={setNewEmployee}
+                        handleDepartmentSelect={handleDepartmentSelect}
+                        handleUserSelect={handleUserSelect}
                     />
                 </div>
             </div>
