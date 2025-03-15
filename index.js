@@ -3,7 +3,7 @@ import render from "@k2works/full-stack-lab";
 
 const mindmap = `
 @startmindmap
-* 取引先管理
+* 受注管理
 -- ユースケース
 --- 受注一覧
 --- 受注詳細
