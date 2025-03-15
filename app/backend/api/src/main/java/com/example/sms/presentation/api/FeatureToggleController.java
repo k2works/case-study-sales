@@ -4,6 +4,7 @@ import com.example.sms.FeatureToggleProperties;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/features")
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public class FeatureToggleController {
 
     private final FeatureToggleProperties featureToggleProperties;
+    private final Set<String> allowedFeatures = Set.of("newFeature", "betaFeature", "legacyFeature");
 
     // コンストラクタインジェクション
     public FeatureToggleController(FeatureToggleProperties featureToggleProperties) {
@@ -27,6 +29,10 @@ public class FeatureToggleController {
     // フィーチャートグルの特定の値を動的に変更する例（開発・テスト向け）
     @PostMapping("/{featureName}/toggle")
     public String toggleFeature(@PathVariable String featureName, @RequestParam boolean enabled) {
+        if (!allowedFeatures.contains(featureName)) {
+            return "Feature not found or not allowed: " + featureName;
+        }
+
         switch (featureName) {
             case "newFeature":
                 featureToggleProperties.setNewFeature(enabled);
@@ -38,7 +44,8 @@ public class FeatureToggleController {
                 featureToggleProperties.setLegacyFeature(enabled);
                 break;
             default:
-                return "Feature not found: " + featureName;
+                // ここには到達しないはずですが、安全のため例外をスロー
+                throw new IllegalArgumentException("Unexpected feature: " + featureName);
         }
         return "Feature " + featureName + " set to " + enabled;
     }

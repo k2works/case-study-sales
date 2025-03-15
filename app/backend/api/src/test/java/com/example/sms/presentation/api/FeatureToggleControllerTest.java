@@ -63,7 +63,7 @@ class FeatureToggleControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/features/unknownFeature/toggle")
                         .param("enabled", "true"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Feature not found: unknownFeature"));
+                .andExpect(content().string("Feature not found or not allowed: unknownFeature"));
     }
 
     @Test
