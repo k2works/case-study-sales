@@ -58,6 +58,32 @@ class FeatureToggleControllerTest {
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @DisplayName("ベータ機能トグル: ON→OFF")
+    void toggleFeatureBetaFeatureTest() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/features/betaFeature/toggle")
+                        .param("enabled", "false"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Feature betaFeature set to false"));
+
+        // ログや動作の確認のため、configが呼び出されるかを検証
+        Mockito.verify(featureToggleProperties).setBetaFeature(false);
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @DisplayName("レガシー機能トグル: ON→OFF")
+    void toggleFeatureLegacyFeatureTest() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/features/legacyFeature/toggle")
+                        .param("enabled", "false"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Feature legacyFeature set to false"));
+
+        // ログや動作の確認のため、configが呼び出されるかを検証
+        Mockito.verify(featureToggleProperties).setLegacyFeature(false);
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     @DisplayName("存在しないフィーチャー指定")
     void toggleFeatureNotFoundTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/features/unknownFeature/toggle")
