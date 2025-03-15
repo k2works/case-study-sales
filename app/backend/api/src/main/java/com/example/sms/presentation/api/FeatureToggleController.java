@@ -2,11 +2,13 @@ package com.example.sms.presentation.api;
 
 import com.example.sms.FeatureToggleProperties;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/features")
 @Tag(name = "FeatureToggle", description = "フィーチャートグル")
+@PreAuthorize("hasRole('ADMIN')")
 public class FeatureToggleController {
 
     private final FeatureToggleProperties featureToggleProperties;
