@@ -1,5 +1,6 @@
 package com.example.sms.service.sales_order;
 
+import com.example.sms.FeatureToggleProperties;
 import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.employee.EmployeeCode;
 import com.example.sms.domain.model.sales_order.SalesOrder;
@@ -14,6 +15,7 @@ import com.example.sms.service.master.employee.EmployeeRepository;
 import com.example.sms.service.master.partner.PartnerRepository;
 import com.example.sms.service.master.product.ProductRepository;
 import com.github.pagehelper.PageInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,6 +30,7 @@ import static org.apache.commons.lang3.Validate.*;
  */
 @Service
 @Transactional
+@Slf4j
 public class SalesOrderService {
     final SalesOrderRepository salesOrderRepository;
     final ProductRepository productRepository;
@@ -35,14 +38,30 @@ public class SalesOrderService {
     final PartnerRepository partnerRepository;
     final EmployeeRepository employeeRepository;
     final SalesOrderDomainService salesOrderDomainService;
+    final FeatureToggleProperties featureToggleProperties;
 
-    public SalesOrderService(SalesOrderRepository salesOrderRepository, ProductRepository productRepository, DepartmentRepository departmentRepository, PartnerRepository partnerRepository, EmployeeRepository employeeRepository, SalesOrderDomainService salesOrderDomainService) {
+    public SalesOrderService(SalesOrderRepository salesOrderRepository, ProductRepository productRepository, DepartmentRepository departmentRepository, PartnerRepository partnerRepository, EmployeeRepository employeeRepository, SalesOrderDomainService salesOrderDomainService, FeatureToggleProperties featureToggleProperties) {
         this.salesOrderRepository = salesOrderRepository;
         this.productRepository = productRepository;
         this.departmentRepository = departmentRepository;
         this.partnerRepository = partnerRepository;
         this.employeeRepository = employeeRepository;
         this.salesOrderDomainService = salesOrderDomainService;
+        this.featureToggleProperties = featureToggleProperties;
+    }
+
+    public void executeFeature() {
+        if (featureToggleProperties.isNewFeature()) {
+            log.info("新機能が有効です: 新しい処理を実行します！");
+        } else {
+            log.info("新機能は無効です: 従来の処理を実行します。");
+        }
+
+        if (featureToggleProperties.isBetaFeature()) {
+            log.info("ベータ機能が有効です: 特定の機能にアクセス可能です。");
+        } else {
+            log.info("ベータ機能は無効です: ロックされています。");
+        }
     }
 
     /**
