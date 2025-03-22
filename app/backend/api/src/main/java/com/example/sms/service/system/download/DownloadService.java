@@ -84,7 +84,6 @@ public class DownloadService {
                 yield countVendor(condition);
             }
             case 受注 -> {
-                checkPermission("ROLE_ADMIN");
                 yield countSalesOrder(condition);
             }
         };

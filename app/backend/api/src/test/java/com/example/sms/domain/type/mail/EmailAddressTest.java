@@ -52,7 +52,6 @@ class EmailAddressTest {
                             repeat("X", 65) + "@example.com",
                             "address_with_invalid_char@example.com",
                             "jane@doe@example.com",
-                            "jane.doe@subdomain.example.com",
                             ".jane@example.com",
                             "jane.@example.com",
                             "jane.a.doe@example.com")

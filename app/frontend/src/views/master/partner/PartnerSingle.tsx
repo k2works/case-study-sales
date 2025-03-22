@@ -33,9 +33,10 @@ interface FormProps {
     isEditing: boolean;
     newPartner: PartnerType;
     setNewPartner: React.Dispatch<React.SetStateAction<PartnerType>>;
+    handleSelectPartnerGroup: () => void;
 }
 
-const Form = ({ isEditing, newPartner, setNewPartner }: FormProps) => {
+const Form = ({ isEditing, newPartner, setNewPartner, handleSelectPartnerGroup }: FormProps) => {
     return (
         <div className="single-view-content-item-form">
             {/* 取引先コード */}
@@ -199,6 +200,7 @@ const Form = ({ isEditing, newPartner, setNewPartner }: FormProps) => {
                         partnerGroupCode: e.target.value,
                     })
                 }
+                onClick={handleSelectPartnerGroup}
             />
 
             {/* 与信 */}
@@ -246,6 +248,7 @@ interface PartnerSingleViewProps {
         newPartner: PartnerType;
         setNewPartner: React.Dispatch<React.SetStateAction<PartnerType>>;
     };
+    handleSelectPartnerGroup: () => void;
 }
 
 export const PartnerSingleView: React.FC<PartnerSingleViewProps> = ({
@@ -260,6 +263,7 @@ export const PartnerSingleView: React.FC<PartnerSingleViewProps> = ({
                                                                             newPartner,
                                                                             setNewPartner,
                                                                         },
+                                                                        handleSelectPartnerGroup,
                                                                     }) => (
     <div className="single-view-object-container">
         <Message error={error} message={message} />
@@ -279,6 +283,7 @@ export const PartnerSingleView: React.FC<PartnerSingleViewProps> = ({
                         isEditing={isEditing}
                         newPartner={newPartner}
                         setNewPartner={setNewPartner}
+                        handleSelectPartnerGroup={handleSelectPartnerGroup}
                     />
                 </div>
             </div>

@@ -1,6 +1,7 @@
 import React, { MouseEventHandler } from "react";
 import { VendorCriteriaType } from "../../../../models/master/partner";
-import { FormInput, SingleViewHeaderItem } from "../../../Common.tsx";
+import {FormInput, FormSelect, SingleViewHeaderItem} from "../../../Common.tsx";
+import {PrefectureEnumType} from "../../../../models";
 
 interface VendorSearchFormProps {
     criteria: VendorCriteriaType;
@@ -88,16 +89,15 @@ const VendorSearchForm = ({
                 }
             />
             {/* 都道府県 */}
-            <FormInput
+            <FormSelect
                 id="search-prefecture"
-                type="text"
-                className="single-view-content-item-form-item-input"
                 label="都道府県"
                 value={criteria.prefecture}
+                options={PrefectureEnumType}
                 onChange={(e) =>
                     setCondition({
                         ...criteria,
-                        prefecture: e.target.value
+                        prefecture: e
                     })
                 }
             />

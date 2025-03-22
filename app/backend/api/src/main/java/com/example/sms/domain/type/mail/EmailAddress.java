@@ -23,7 +23,7 @@ public class EmailAddress {
                 "ローカル部は64文字以下である必要があります");
 
         matchesPattern(value.toLowerCase(),
-                "^[a-z0-9]+\\.?[a-z0-9]+@\\bexample.com$",
+                "^[a-z0-9]+\\.?[a-z0-9]+@[a-z0-9.-]+\\.[a-z]{2,}$",
                 "不正なメールアドレスです");
 
         this.value = value;

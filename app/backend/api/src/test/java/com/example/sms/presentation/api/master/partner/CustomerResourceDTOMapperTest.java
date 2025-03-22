@@ -7,10 +7,14 @@ import com.example.sms.domain.model.master.partner.invoice.PaymentMethod;
 import com.example.sms.domain.model.master.partner.invoice.PaymentMonth;
 import com.example.sms.domain.model.master.region.RegionCode;
 import com.example.sms.domain.type.address.Address;
+import com.example.sms.domain.type.address.PostalCode;
+import com.example.sms.domain.type.address.Prefecture;
 import com.example.sms.service.master.partner.CustomerCriteria;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -53,15 +57,15 @@ class CustomerResourceDTOMapperTest {
 
         // Create shipping resource
         ShippingResource shippingResource = ShippingResource.builder()
-                .shippingCode(ShippingCode.of("001", 1, 1))
+                .customerCode("001")
+                .customerBranchNumber(1)
+                .destinationNumber(1)
                 .destinationName("配送先1")
-                .regionCode(RegionCode.of("R001"))
-                .shippingAddress(Address.of(
-                        "123-4567",
-                        "東京都",
-                        "千代田区",
-                        "1-1-1"
-                ))
+                .regionCode("R001")
+                .postalCode("123-4567")
+                .prefecture("東京都")
+                .address1("千代田区")
+                .address2("1-1-1")
                 .build();
 
         CustomerResource resource = CustomerResource.builder()
@@ -244,5 +248,104 @@ class CustomerResourceDTOMapperTest {
         assertNull(criteria.getCustomerFaxNumber());
         assertNull(criteria.getCustomerEmailAddress());
         assertNull(criteria.getCustomerBillingCategory());
+    }
+
+    @Nested
+    @DisplayName("出荷先リソース")
+    class ShippingResourceTest {
+        @Test
+        @DisplayName("単一のShippingインスタンスをShippingResourceに変換する")
+        void testFrom_withSingleShipping_shouldReturnShippingResource() {
+            // Arrange
+            ShippingCode shippingCode = new ShippingCode("001", 1, 1);
+            Address address = new Address(PostalCode.of("123-4567"), Prefecture.東京都, "address1", "address2");
+            Shipping shipping = new Shipping(shippingCode, "destination_name", RegionCode.of("R001"), address);
+
+            // Act
+            ShippingResource result = ShippingResource.from(shipping);
+
+            // Assert
+            assertNotNull(result);
+            assertEquals("001", result.getCustomerCode());
+            assertEquals(1, result.getCustomerBranchNumber());
+            assertEquals(1, result.getDestinationNumber());
+            assertEquals("destination_name", result.getDestinationName());
+            assertEquals("R001", result.getRegionCode());
+            assertEquals("1234567", result.getPostalCode());
+            assertEquals("東京都", result.getPrefecture());
+            assertEquals("address1", result.getAddress1());
+            assertEquals("address2", result.getAddress2());
+        }
+
+        @Test
+        @DisplayName("ShippingのリストをShippingResourceのリストに変換する")
+        void testFrom_withListOfShipping_shouldReturnListOfShippingResource() {
+            // Arrange
+            ShippingCode shippingCode1 = new ShippingCode("001", 1, 1);
+            Address address1 = new Address(PostalCode.of("123-4567"), Prefecture.東京都, "address11", "address21");
+            Shipping shipping1 = new Shipping(shippingCode1, "destination_name1", RegionCode.of("R001"), address1);
+
+            ShippingCode shippingCode2 = new ShippingCode("002", 2, 2);
+            Address address2 = new Address(PostalCode.of("987-5432"), Prefecture.大阪府, "address12", "address22");
+            Shipping shipping2 = new Shipping(shippingCode2, "destination_name2", RegionCode.of("R002"), address2);
+
+            List<Shipping> shippings = new ArrayList<>();
+            shippings.add(shipping1);
+            shippings.add(shipping2);
+
+            // Act
+            List<ShippingResource> result = ShippingResource.from(shippings);
+
+            // Assert
+            assertNotNull(result);
+            assertEquals(2, result.size());
+
+            ShippingResource result1 = result.get(0);
+            ShippingResource result2 = result.get(1);
+
+            // 1つ目のShippingResourceを検証
+            assertEquals("001", result1.getCustomerCode());
+            assertEquals(1, result1.getCustomerBranchNumber());
+            assertEquals(1, result1.getDestinationNumber());
+            assertEquals("destination_name1", result1.getDestinationName());
+            assertEquals("R001", result1.getRegionCode());
+            assertEquals("1234567", result1.getPostalCode());
+            assertEquals("東京都", result1.getPrefecture());
+            assertEquals("address11", result1.getAddress1());
+            assertEquals("address21", result1.getAddress2());
+
+            // 2つ目のShippingResourceを検証
+            assertEquals("002", result2.getCustomerCode());
+            assertEquals(2, result2.getCustomerBranchNumber());
+            assertEquals(2, result2.getDestinationNumber());
+            assertEquals("destination_name2", result2.getDestinationName());
+            assertEquals("R002", result2.getRegionCode());
+            assertEquals("9875432", result2.getPostalCode());
+            assertEquals("大阪府", result2.getPrefecture());
+            assertEquals("address12", result2.getAddress1());
+            assertEquals("address22", result2.getAddress2());
+        }
+
+        @Test
+        @DisplayName("nullのShippingを渡した場合、例外をスローする")
+        void testFrom_withNullShipping_shouldThrowException() {
+            // Arrange, Act & Assert
+            try {
+                ShippingResource.from((Shipping.of(null, null, null, null)));
+            } catch (NullPointerException e) {
+                assertNotNull(e.getMessage());
+            }
+        }
+
+        @Test
+        @DisplayName("nullのリストを渡すと例外をスローする")
+        void testFrom_withNullList_shouldThrowException() {
+            // Arrange, Act & Assert
+            try {
+                ShippingResource.from(List.of(Shipping.of(null, null, null, null)));
+            } catch (NullPointerException e) {
+                assertNotNull(e.getMessage());
+            }
+        }
     }
 }

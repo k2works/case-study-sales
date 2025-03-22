@@ -36,12 +36,12 @@ describe('取引先管理', () => {
             cy.get('#tradeProhibitedFlag').select('OFF'); // 取引禁止フラグ
             cy.get('#miscellaneousType').select('対象外'); // 雑区分
 
-            cy.get('#partnerGroupCode').type('0001'); // 取引先グループコード
+            cy.get('#partnerGroupCode').click(); // 取引先グループコード
+            cy.get('.collection-object-container-modal > .collection-object-list > :nth-child(1) > .collection-object-item-actions > .action-button').click();
+
             cy.get('#creditLimit').type('5000000'); // 与信限度額
             cy.get('#temporaryCreditIncrease').type('1000000'); // 与信一時増加枠
 
-            cy.get('#select-partner-group').click();
-            cy.get('.collection-object-container-modal > .collection-object-list > :nth-child(1) > .collection-object-item-actions > .action-button').click();
 
             // 「保存」ボタンをクリック
             cy.get('#save').click();
