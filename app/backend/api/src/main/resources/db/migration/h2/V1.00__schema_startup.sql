@@ -345,11 +345,3 @@ create table if not exists 与信残高データ
     更新日時     timestamp(6) default CURRENT_DATE not null,
     更新者名     varchar(12)
 );
-
-create table if not exists 自動採番マスタ
-(
-    伝票種別コード varchar(2)        not null,
-    年月           timestamp(6)      not null,
-    最終伝票番号   integer default 0 not null,
-    primary key (伝票種別コード, 年月)
-);
