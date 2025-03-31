@@ -11,6 +11,8 @@ import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.master.partner.*;
 import com.example.sms.domain.model.master.partner.Partner;
 import com.example.sms.domain.model.master.product.*;
+import com.example.sms.domain.model.sales.Sales;
+import com.example.sms.domain.model.sales.SalesLine;
 import com.example.sms.domain.model.sales_order.SalesOrder;
 import com.example.sms.domain.model.sales_order.SalesOrderLine;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
@@ -18,6 +20,7 @@ import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag;
 import com.example.sms.domain.model.system.user.RoleName;
+import com.example.sms.domain.type.money.Money;
 import com.example.sms.service.master.region.RegionRepository;
 import com.example.sms.service.master.department.DepartmentRepository;
 import com.example.sms.service.master.employee.EmployeeRepository;
@@ -551,6 +554,40 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 0,  // completionFlag（完了フラグ）
                 10,  // discountAmount（値引金額）
                 LocalDateTime.of(2021, 1, 1, 0, 0)  // deliveryDate（納期）
+        );
+    }
+
+    public static Sales getSales(String salesNumber) {
+        return Sales.of(
+                salesNumber,
+                "1000000009",
+                LocalDateTime.of(2023, 10, 1, 0, 0),
+                1,
+                "10000",
+                LocalDateTime.of(2023, 10, 1, 0, 0),
+                "10000",
+                "EMP001",
+                1,
+                "V001",
+                "テスト備考",
+                List.of()
+        );
+    }
+
+    public static SalesLine getSalesLine(String salesNumber, int lineNumber) {
+        return SalesLine.of(
+                salesNumber,
+                lineNumber,
+                "99999999",
+                "商品名",
+                1000,
+                10,
+                10,
+                10,
+                LocalDateTime.of(2023, 10, 1, 0, 0),
+                "001",
+                10,
+                LocalDateTime.of(2023, 10, 1, 0, 0) // 納期
         );
     }
 
