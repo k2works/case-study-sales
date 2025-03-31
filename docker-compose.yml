@@ -130,6 +130,7 @@ services:
     links:
       - wiki_db
       - plantuml
+      - mkdocs
     ports:
       - "80:3000"
 
@@ -140,6 +141,19 @@ services:
       BASE_URL: plantuml
     ports:
       - "9999:8080"
+
+  mkdocs:
+    build:
+      context: .
+      dockerfile: ./ops/docker/mkdocs/Dockerfile
+    volumes:
+      - ./docs/wiki:/docs/docs
+      - ./mkdocs.yml:/docs/mkdocs.yml
+    ports:
+      - "8000:8000"
+    command: mkdocs serve --dev-addr=0.0.0.0:8000
+    links:
+      - plantuml
 
 volumes:
   mysql8-data:
