@@ -77,7 +77,7 @@
             作成者名 = #{作成者名,jdbcType=VARCHAR},
             更新日時 = #{更新日時,jdbcType=TIMESTAMP},
             更新者名 = #{更新者名,jdbcType=VARCHAR},
-            version = #{version,jdbcType=INTEGER}
+            version = #{version,jdbcType=INTEGER} + 1
         where 受注番号 = #{受注番号,jdbcType=VARCHAR}
         and version = #{version,jdbcType=INTEGER}
     </update>
