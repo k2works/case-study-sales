@@ -53,3 +53,40 @@ create table if not exists 自動採番マスタ
     最終伝票番号   integer default 0 not null,
     primary key (伝票種別コード, 年月)
 );
+
+create table if not exists 請求データ
+(
+    請求番号     varchar(10)                       not null
+    constraint pk_invoice
+    primary key,
+    請求日       timestamp(6),
+    取引先コード varchar(8)                        not null,
+    顧客枝番     integer      default 0,
+    前回入金額   integer      default 0,
+    当月売上額   integer      default 0,
+    当月入金額   integer      default 0,
+    当月請求額   integer      default 0,
+    消費税金額   integer      default 0            not null,
+    請求消込金額 integer      default 0,
+    作成日時     timestamp(6) default CURRENT_DATE not null,
+    作成者名     varchar(12),
+    更新日時     timestamp(6) default CURRENT_DATE not null,
+    更新者名     varchar(12)
+    );
+
+create table if not exists 請求データ明細
+(
+    請求番号   varchar(10)                       not null
+    references 請求データ
+    on update cascade on delete restrict,
+    売上番号   varchar(10)                       not null,
+    売上行番号 integer                           not null,
+    作成日時   timestamp(6) default CURRENT_DATE not null,
+    作成者名   varchar(12),
+    更新日時   timestamp(6) default CURRENT_DATE not null,
+    更新者名   varchar(12),
+    constraint pk_invoice_details
+    primary key (請求番号, 売上番号, 売上行番号),
+    foreign key (売上番号, 売上行番号) references 売上データ明細
+    on update cascade on delete restrict
+    );
