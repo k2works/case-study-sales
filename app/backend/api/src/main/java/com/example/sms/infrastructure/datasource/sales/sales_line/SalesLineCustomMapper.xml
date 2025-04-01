@@ -6,7 +6,7 @@
             id="BaseResultMap"
             type="com.example.sms.infrastructure.datasource.sales.sales_line.SalesLineCustomEntity"
             extends="com.example.sms.infrastructure.datasource.autogen.mapper.売上データ明細Mapper.BaseResultMap">
-        <association property="商品情報"
+        <association property="商品マスタ"
                      javaType="com.example.sms.infrastructure.datasource.master.product.ProductCustomEntity"
                      column="商品コード"
                      select="com.example.sms.infrastructure.datasource.master.product.ProductCustomMapper.selectByPrimaryKey"

@@ -145,7 +145,7 @@ public class SalesDataSource implements SalesRepository {
                 salesLineMapper.deleteByPrimaryKey(key);
             });
         }
-        salesCustomMapper.deleteAll(); // Assume single deletion not supported.
+        salesMapper.deleteByPrimaryKey(sales.getSalesNumber());
     }
 
     @Override
