@@ -13,14 +13,14 @@ import com.example.sms.domain.model.master.partner.Partner;
 import com.example.sms.domain.model.master.product.*;
 import com.example.sms.domain.model.sales.Sales;
 import com.example.sms.domain.model.sales.SalesLine;
-import com.example.sms.domain.model.sales_order.SalesOrder;
-import com.example.sms.domain.model.sales_order.SalesOrderLine;
+import com.example.sms.domain.model.sales_order.*;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag;
 import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.domain.type.money.Money;
+import com.example.sms.domain.type.quantity.Quantity;
 import com.example.sms.service.master.region.RegionRepository;
 import com.example.sms.service.master.department.DepartmentRepository;
 import com.example.sms.service.master.employee.EmployeeRepository;
@@ -29,6 +29,7 @@ import com.example.sms.service.master.partner.PartnerGroupRepository;
 import com.example.sms.service.master.partner.PartnerRepository;
 import com.example.sms.service.master.product.ProductCategoryRepository;
 import com.example.sms.service.master.product.ProductRepository;
+import com.example.sms.service.sales.SalesRepository;
 import com.example.sms.service.sales_order.SalesOrderRepository;
 import com.example.sms.service.system.audit.AuditRepository;
 import com.example.sms.service.system.user.UserRepository;
@@ -67,6 +68,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
     PartnerRepository partnerRepository;
     @Autowired
     SalesOrderRepository salesOrderRepository;
+    @Autowired
+    SalesRepository salesRepository;
 
     @Override
     public void setUpForAuthApiService() {
@@ -327,6 +330,92 @@ public class TestDataFactoryImpl implements TestDataFactory {
         setUpForProductService();
         setUpForPartnerService();
         setUpForEmployeeService();
+    }
+
+    @Override
+    public void setUpForSalesService() {
+        // 部門データの準備
+        Department department = getDepartment("10000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門1");
+        departmentRepository.save(department);
+
+        // 社員データの準備
+        Employee employee = getEmployee("EMP001", "10000", LocalDateTime.of(2021, 1, 1, 0, 0));
+        employeeRepository.save(employee);
+
+        // 取引先・顧客データの準備
+        Partner partner = getPartner("001");
+        Customer customer = getCustomer(partner.getPartnerCode().getValue(), 1);
+        List<Shipping> shippingList = IntStream.rangeClosed(1, 3)
+                .mapToObj(i -> getShipping(partner.getPartnerCode().getValue(), i, customer.getCustomerCode().getBranchNumber()))
+                .toList();
+        partnerRepository.save(Partner.ofWithCustomers(partner, List.of(Customer.of(customer, shippingList))));
+
+        // 商品データの準備
+        productRepository.save(Product.of(
+                "99999999", // 商品コード
+                "商品1",    // 商品名
+                "商品1",    // 商品名カナ
+                "ショウヒンイチ", // 商品英語名
+                ProductType.その他, // 商品種別
+                900, // 商品標準価格
+                810, // 売上単価
+                90,  // 利益額
+                TaxType.その他, // 税種別
+                "カテゴリ9", // カテゴリ
+                MiscellaneousType.適用外, // 雑費区分
+                StockManagementTargetType.対象, // 在庫管理対象
+                StockAllocationType.引当済, // 在庫引当区分
+                "009", // 倉庫コード
+                9    // 入荷リードタイム
+        ));
+
+        // 売上データの削除
+        salesRepository.deleteAll();
+
+        // 売上データの準備
+        IntStream.rangeClosed(1, 3).forEach(i -> {
+            // 売上番号をフォーマット
+            String salesNumber = String.format("S%09d", i);
+
+            // 売上明細の準備
+            List<SalesLine> salesLines = IntStream.range(1, 4)
+                    .mapToObj(lineNumber -> new SalesLine(
+                            salesNumber,
+                            lineNumber,
+                            "99999999", // 商品コード
+                            "商品1",    // 商品名
+                            Money.of(800), // 売上単価
+                            Quantity.of(10), // 売上数量
+                            Quantity.of(10), // 出荷数量
+                            Money.of(0), // 値引金額
+                            LocalDateTime.now(), // 請求日
+                            "B001", // 請求番号
+                            0, // 請求遅延区分
+                            LocalDateTime.now(), // 自動仕訳日
+                            SalesAmount.of(Money.of(10000), Quantity.of(10)), // 明細売上金額
+                            ConsumptionTaxAmount.of(SalesAmount.of(Money.of(10000), Quantity.of(10)), TaxRateType.標準税率) // 明細消費税金額
+                    ))
+                    .toList();
+
+            // 売上エンティティの作成
+            Sales newSales = Sales.of(
+                    salesNumber,
+                    salesNumber.replace("s", "o"), // 仮登録用の受注番号
+                    LocalDateTime.now(), // 売上日
+                    1, // 売上区分
+                    department.getDepartmentId().getDeptCode().getValue(), // 部門コード
+                    department.getDepartmentId().getDepartmentStartDate().getValue(), // 部門開始日
+                    customer.getCustomerCode().getCode().getValue(), // 取引先コード
+                    employee.getEmpCode().getValue(), // 社員コード
+                    null, // 赤黒伝票番号
+                    null, // 元伝票番号
+                    "テスト備考", // 備考
+                    salesLines // 売上明細
+            );
+
+            // 作成した売上データを保存
+            salesRepository.save(newSales);
+        });
     }
 
     @Override

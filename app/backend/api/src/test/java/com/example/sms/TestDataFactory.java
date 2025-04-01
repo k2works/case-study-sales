@@ -40,4 +40,6 @@ public interface TestDataFactory {
     MultipartFile createSalesOrderInvalidFile();
 
     MultipartFile createSalesOrderCheckRuleFile();
+
+    void setUpForSalesService();
 }
