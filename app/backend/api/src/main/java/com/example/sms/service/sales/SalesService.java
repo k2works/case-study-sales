@@ -6,8 +6,6 @@ import com.github.pagehelper.PageInfo;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 /**
  * 売上サービス
  */
@@ -60,8 +58,7 @@ public class SalesService {
      * 売上をIDで検索
      */
     public Sales find(String salesId) {
-        Optional<Sales> sales = salesRepository.findById(salesId);
-        return sales.orElseThrow(() -> new IllegalArgumentException("売上が見つかりません: " + salesId));
+        return salesRepository.findById(salesId).orElse(null);
     }
 
     /**
