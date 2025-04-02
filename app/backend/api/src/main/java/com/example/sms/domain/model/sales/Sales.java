@@ -32,11 +32,12 @@ public class Sales {
     // 値リストの使い方例
     List<SalesLine> salesLines; // 売上明細
 
-    /** ファクトリーメソッド */
+    /**
+     * ファクトリーメソッド
+     */
     public static Sales of(String salesNumber, String orderNumber, LocalDateTime salesDate, Integer salesCategory, String departmentCode, LocalDateTime departmentStartDate,
                            String customerCode, String employeeCode, Integer voucherNumber, String originalVoucherNumber,
                            String remarks, List<SalesLine> salesLines) {
-        isValidDateRange(departmentStartDate, salesDate); // 日付の妥当性確認
         Money calcTotalSalesAmount = salesLines.stream()
                 .map(SalesLine::calcSalesAmount)
                 .reduce(Money.of(0), Money::plusMoney);
@@ -60,12 +61,5 @@ public class Sales {
                 originalVoucherNumber,
                 salesLines
         );
-    }
-
-    /** 日付妥当性確認 */
-    private static void isValidDateRange(LocalDateTime departmentStartDate, LocalDateTime salesDate) {
-        if (departmentStartDate.isAfter(salesDate)) {
-            throw new IllegalArgumentException("部門開始日は売上日より先にすることはできません。");
-        }
     }
 }
