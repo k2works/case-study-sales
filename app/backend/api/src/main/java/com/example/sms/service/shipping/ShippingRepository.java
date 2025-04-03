@@ -1,8 +1,8 @@
 package com.example.sms.service.shipping;
 
-import com.example.sms.domain.model.sales_order.SalesOrder;
 import com.example.sms.domain.model.sales_order.SalesOrderList;
-import com.example.sms.service.sales_order.SalesOrderCriteria;
+import com.example.sms.domain.model.shipping.Shipping;
+import com.example.sms.domain.model.shipping.ShippingList;
 import com.github.pagehelper.PageInfo;
 
 import java.util.Optional;
@@ -10,19 +10,19 @@ import java.util.Optional;
 public interface ShippingRepository {
     void deleteAll();
 
-    void save(SalesOrder salesOrder);
+    void save(Shipping salesOrder);
 
     SalesOrderList selectAll();
 
-    Optional<SalesOrder> findById(String salesOrderCode);
+    Optional<Shipping> findById(String orderCode);
 
-    void delete(SalesOrder salesOrderCode);
+    void delete(Shipping orderCode);
 
-    PageInfo<SalesOrder> selectAllWithPageInfo();
+    PageInfo<Shipping> selectAllWithPageInfo();
 
-    PageInfo<SalesOrder> searchWithPageInfo(SalesOrderCriteria criteria);
+    PageInfo<Shipping> searchWithPageInfo(ShippingCriteria criteria);
 
-    void save(SalesOrderList salesOrderList);
+    void save(ShippingList orderList);
 
-    SalesOrderList selectAllNotComplete();
+    ShippingList selectAllNotComplete();
 }

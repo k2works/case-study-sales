@@ -1,22 +1,17 @@
 package com.example.sms.infrastructure.datasource.shipping;
 
-import com.example.sms.domain.model.sales_order.CompletionFlag;
-import com.example.sms.domain.model.sales_order.SalesOrder;
 import com.example.sms.domain.model.sales_order.SalesOrderList;
 import com.example.sms.domain.model.shipping.Shipping;
-import com.example.sms.infrastructure.PageInfoHelper;
+import com.example.sms.domain.model.shipping.ShippingList;
 import com.example.sms.infrastructure.datasource.autogen.mapper.受注データMapper;
 import com.example.sms.infrastructure.datasource.autogen.mapper.受注データ明細Mapper;
-import com.example.sms.infrastructure.datasource.sales_order.SalesOrderCustomEntity;
 import com.example.sms.infrastructure.datasource.sales_order.SalesOrderCustomMapper;
 import com.example.sms.infrastructure.datasource.sales_order.sales_order_line.SalesOrderLineCustomMapper;
-import com.example.sms.service.sales_order.SalesOrderCriteria;
+import com.example.sms.service.shipping.ShippingCriteria;
 import com.example.sms.service.shipping.ShippingRepository;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -37,59 +32,46 @@ public class ShippingDataSource implements ShippingRepository {
 
     @Override
     public void deleteAll() {
-        salesOrderLineCustomMapper.deleteAll();
-        salesOrderCustomMapper.deleteAll();
+
     }
 
     @Override
-    public void save(SalesOrder salesOrder) {
-        // Implementation omitted for brevity
+    public void save(Shipping salesOrder) {
+
     }
 
     @Override
     public SalesOrderList selectAll() {
-        List<SalesOrderCustomEntity> salesOrderCustomEntities = salesOrderCustomMapper.selectAll();
-        List<Shipping> shippings = shippingEntityMapper.mapToDomainModelList(salesOrderCustomEntities);
-        
-        return new SalesOrderList(new ArrayList<>());
+        return null;
     }
 
     @Override
-    public Optional<SalesOrder> findById(String salesOrderCode) {
+    public Optional<Shipping> findById(String orderCode) {
         return Optional.empty();
     }
 
     @Override
-    public void delete(SalesOrder salesOrder) {
-        // Implementation omitted for brevity
+    public void delete(Shipping orderCode) {
+
     }
 
     @Override
-    public PageInfo<SalesOrder> selectAllWithPageInfo() {
-        List<SalesOrderCustomEntity> salesOrderCustomEntities = salesOrderCustomMapper.selectAll();
-        PageInfo<SalesOrderCustomEntity> pageInfo = new PageInfo<>(salesOrderCustomEntities);
-        
-        return PageInfoHelper.of(pageInfo, entity -> null);
+    public PageInfo<Shipping> selectAllWithPageInfo() {
+        return null;
     }
 
     @Override
-    public PageInfo<SalesOrder> searchWithPageInfo(SalesOrderCriteria criteria) {
-        List<SalesOrderCustomEntity> salesOrderCustomEntities = salesOrderCustomMapper.selectByCriteria(criteria);
-        PageInfo<SalesOrderCustomEntity> pageInfo = new PageInfo<>(salesOrderCustomEntities);
-        
-        return PageInfoHelper.of(pageInfo, entity -> null);
+    public PageInfo<Shipping> searchWithPageInfo(ShippingCriteria criteria) {
+        return null;
     }
 
     @Override
-    public void save(SalesOrderList salesOrderList) {
-        // Implementation omitted for brevity
+    public void save(ShippingList orderList) {
+
     }
 
     @Override
-    public SalesOrderList selectAllNotComplete() {
-        List<SalesOrderCustomEntity> salesOrderCustomEntities = salesOrderCustomMapper.selectAllNotComplete(CompletionFlag.未完了.getValue());
-        List<Shipping> shippings = shippingEntityMapper.mapToDomainModelList(salesOrderCustomEntities);
-        
-        return new SalesOrderList(new ArrayList<>());
+    public ShippingList selectAllNotComplete() {
+        return null;
     }
 }
