@@ -1,6 +1,6 @@
-package com.example.sms.infrastructure.datasource.autonumber;
+package com.example.sms.infrastructure.datasource.system.autonumber;
 
-import com.example.sms.domain.model.autonumber.AutoNumber;
+import com.example.sms.domain.model.system.autonumber.AutoNumber;
 import com.example.sms.infrastructure.datasource.autogen.mapper.自動採番マスタMapper;
 import com.example.sms.infrastructure.datasource.autogen.model.自動採番マスタ;
 import com.example.sms.infrastructure.datasource.autogen.model.自動採番マスタKey;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Repository
 public class AutoNumberDataSource implements AutoNumberRepository {

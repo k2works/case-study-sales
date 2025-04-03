@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.sms.infrastructure.datasource.autonumber.AutoNumberCustomMapper">
-  <resultMap id="BaseResultMap" type="com.example.sms.infrastructure.datasource.autonumber.AutoNumberCustomEntity">
+<mapper namespace="com.example.sms.infrastructure.datasource.system.autonumber.AutoNumberCustomMapper">
+  <resultMap id="BaseResultMap" type="com.example.sms.infrastructure.datasource.system.autonumber.AutoNumberCustomEntity">
     <id column="伝票種別コード" jdbcType="VARCHAR" property="伝票種別コード" />
     <id column="年月" jdbcType="TIMESTAMP" property="年月" />
     <result column="最終伝票番号" jdbcType="INTEGER" property="最終伝票番号" />
@@ -26,7 +26,7 @@
     from public.自動採番マスタ
   </select>
 
-  <insert id="insert" parameterType="com.example.sms.infrastructure.datasource.autonumber.AutoNumberCustomEntity">
+  <insert id="insert" parameterType="com.example.sms.infrastructure.datasource.system.autonumber.AutoNumberCustomEntity">
     insert into public.自動採番マスタ (伝票種別コード, 年月, 最終伝票番号)
     values (#{伝票種別コード,jdbcType=VARCHAR}, #{年月,jdbcType=TIMESTAMP}, #{最終伝票番号,jdbcType=INTEGER})
   </insert>

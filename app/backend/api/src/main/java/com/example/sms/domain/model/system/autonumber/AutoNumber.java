@@ -1,4 +1,4 @@
-package com.example.sms.domain.model.autonumber;
+package com.example.sms.domain.model.system.autonumber;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -7,7 +7,7 @@ import lombok.Value;
 import java.time.LocalDateTime;
 
 /**
- * 自動採番マスタ
+ * 自動採番
  */
 @Value
 @AllArgsConstructor

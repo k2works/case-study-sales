@@ -1,6 +1,6 @@
 package com.example.sms.service.autonumber;
 
-import com.example.sms.domain.model.autonumber.AutoNumber;
+import com.example.sms.domain.model.system.autonumber.AutoNumber;
 
 import java.time.LocalDateTime;
 import java.util.List;

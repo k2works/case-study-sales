@@ -1,6 +1,6 @@
-package com.example.sms.infrastructure.datasource.autonumber;
+package com.example.sms.infrastructure.datasource.system.autonumber;
 
-import com.example.sms.domain.model.autonumber.AutoNumber;
+import com.example.sms.domain.model.system.autonumber.AutoNumber;
 import com.example.sms.infrastructure.datasource.autogen.model.自動採番マスタ;
 import com.example.sms.infrastructure.datasource.autogen.model.自動採番マスタKey;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package com.example.sms.infrastructure.datasource.autonumber;
+package com.example.sms.infrastructure.datasource.system.autonumber;
 
 import com.example.sms.infrastructure.datasource.autogen.model.自動採番マスタ;
 import lombok.Getter;
