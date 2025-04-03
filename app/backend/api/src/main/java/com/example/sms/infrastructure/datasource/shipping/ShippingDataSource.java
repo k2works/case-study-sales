@@ -123,10 +123,10 @@ public class ShippingDataSource implements ShippingRepository {
     }
 
     @Override
-    public Optional<Shipping> findById(String orderCode) {
-        SalesOrderCustomEntity salesOrderCustomEntity = salesOrderCustomMapper.selectByPrimaryKey(orderCode);
+    public Optional<Shipping> findById(String orderNumber) {
+        SalesOrderCustomEntity salesOrderCustomEntity = salesOrderCustomMapper.selectByPrimaryKey(orderNumber);
         if (salesOrderCustomEntity != null) {
-            List<SalesOrderLineCustomEntity> salesOrderLineCustomEntities = salesOrderLineCustomMapper.selectBySalesOrderNumber(orderCode);
+            List<SalesOrderLineCustomEntity> salesOrderLineCustomEntities = salesOrderLineCustomMapper.selectBySalesOrderNumber(orderNumber);
             if (!salesOrderLineCustomEntities.isEmpty()) {
                 return Optional.of(shippingEntityMapper.mapToDomainModel(salesOrderCustomEntity, salesOrderLineCustomEntities.get(0)));
             }

@@ -12,7 +12,7 @@ public interface ShippingRepository {
 
     ShippingList selectAll();
 
-    Optional<Shipping> findById(String orderCode);
+    Optional<Shipping> findById(String orderNumber);
 
     PageInfo<Shipping> selectAllWithPageInfo();
 
