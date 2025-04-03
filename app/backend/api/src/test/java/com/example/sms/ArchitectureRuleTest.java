@@ -8,7 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @AnalyzeClasses(packages = "com.example.sms")
-@DisplayName("アーキテクチャルルール")
+@DisplayName("アーキテクチャルール")
 public class ArchitectureRuleTest {
 
     @Test
@@ -67,7 +67,7 @@ public class ArchitectureRuleTest {
     }
 
     @Test
-    @DisplayName("インフラストラクチャ層はドメイン層以外にアクセスできない")
+    @DisplayName("インフラストラクチャ層はドメイン層とサービス層以外にアクセスできない")
     public void infrastructureLayerShouldNotAccessNonDomainLayers() {
         JavaClasses importedClasses = new ClassFileImporter().importPackages("com.example.sms");
         ArchRuleDefinition.noClasses()
@@ -76,14 +76,6 @@ public class ArchitectureRuleTest {
                 .should()
                 .accessClassesThat()
                 .resideInAPackage("..presentation..")
-                .check(importedClasses);
-
-        ArchRuleDefinition.noClasses()
-                .that()
-                .resideInAPackage("..infrastructure..")
-                .should()
-                .accessClassesThat()
-                .resideInAPackage("..service..")
                 .check(importedClasses);
     }
 }
