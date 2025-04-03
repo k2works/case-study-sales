@@ -1,5 +1,6 @@
 package com.example.sms.service.shipping;
 
+import com.example.sms.service.sales_order.SalesOrderCriteria;
 import lombok.Builder;
 import lombok.Value;
 
@@ -26,4 +27,19 @@ public class ShippingCriteria {
     String productName; // 商品名
     LocalDateTime deliveryDate; // 納期
     Boolean completionFlag; // 完了フラグ
+
+    public SalesOrderCriteria convertToSalesOrderCriteria() {
+        return SalesOrderCriteria.builder()
+                .orderNumber(this.getOrderNumber())
+                .orderDate(this.getOrderDate())
+                .departmentCode(this.getDepartmentCode())
+                .departmentStartDate(this.getDepartmentStartDate())
+                .customerCode(this.getCustomerCode())
+                .employeeCode(this.getEmployeeCode())
+                .desiredDeliveryDate(this.getDesiredDeliveryDate())
+                .customerOrderNumber(this.getCustomerOrderNumber())
+                .warehouseCode(this.getWarehouseCode())
+                .remarks(this.getRemarks())
+                .build();
+    }
 }

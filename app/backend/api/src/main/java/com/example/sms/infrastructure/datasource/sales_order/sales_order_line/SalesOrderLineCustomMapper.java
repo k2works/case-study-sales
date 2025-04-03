@@ -12,6 +12,9 @@ public interface SalesOrderLineCustomMapper {
     @Delete("DELETE FROM public.受注データ明細")
     void deleteAll();
 
+    @Delete("DELETE FROM public.受注データ明細 WHERE 完了フラグ = 0")
+    void deleteAllNotComplete();
+
     List<SalesOrderLineCustomEntity> selectBySalesOrderNumber(String salesOrderNumber);
 
     void deleteBySalesOrderNumber(String customerOrderNumber);

@@ -1,8 +1,6 @@
 package com.example.sms.infrastructure.datasource.shipping;
 
 import com.example.sms.domain.model.sales_order.CompletionFlag;
-import com.example.sms.domain.model.sales_order.SalesOrder;
-import com.example.sms.domain.model.sales_order.SalesOrderList;
 import com.example.sms.domain.model.shipping.Shipping;
 import com.example.sms.domain.model.shipping.ShippingList;
 import com.example.sms.infrastructure.datasource.ObjectOptimisticLockingFailureException;
@@ -42,12 +40,6 @@ public class ShippingDataSource implements ShippingRepository {
         this.salesOrderLineMapper = salesOrderLineMapper;
         this.salesOrderLineCustomMapper = salesOrderLineCustomMapper;
         this.shippingEntityMapper = shippingEntityMapper;
-    }
-
-    @Override
-    public void deleteAll() {
-        salesOrderLineCustomMapper.deleteAll();
-        salesOrderCustomMapper.deleteAll();
     }
 
     @Override
@@ -114,17 +106,20 @@ public class ShippingDataSource implements ShippingRepository {
     }
 
     @Override
-    public SalesOrderList selectAll() {
-        List<SalesOrderCustomEntity> salesOrderCustomEntities = salesOrderCustomMapper.selectAll();
-        List<SalesOrder> salesOrders = new ArrayList<>();
+    public ShippingList selectAll() {
+        List<SalesOrderCustomEntity> salesOrderCustomEntities = salesOrderCustomMapper.selectAllNotComplete(CompletionFlag.未完了.getValue());
+        List<Shipping> shippings = new ArrayList<>();
 
         for (SalesOrderCustomEntity salesOrderCustomEntity : salesOrderCustomEntities) {
-            // This is a simplified implementation. In a real implementation, you would
-            // convert the SalesOrderCustomEntity to a SalesOrder object.
-            // For now, we'll just return an empty list.
+            List<SalesOrderLineCustomEntity> salesOrderLineCustomEntities = salesOrderLineCustomMapper.selectBySalesOrderNumber(salesOrderCustomEntity.get受注番号());
+            for (SalesOrderLineCustomEntity salesOrderLineCustomEntity : salesOrderLineCustomEntities) {
+                if (salesOrderLineCustomEntity.get完了フラグ() == CompletionFlag.未完了.getValue()) {
+                    shippings.add(shippingEntityMapper.mapToDomainModel(salesOrderCustomEntity, salesOrderLineCustomEntity));
+                }
+            }
         }
 
-        return new SalesOrderList(salesOrders);
+        return shippingEntityMapper.mapToShippingList(shippings);
     }
 
     @Override
@@ -140,16 +135,6 @@ public class ShippingDataSource implements ShippingRepository {
     }
 
     @Override
-    public void delete(Shipping shipping) {
-        受注データ明細Key key = new 受注データ明細Key();
-        key.set受注番号(shipping.getOrderNumber().getValue());
-        key.set受注行番号(shipping.getOrderLineNumber());
-        salesOrderLineMapper.deleteByPrimaryKey(key);
-
-        salesOrderMapper.deleteByPrimaryKey(shipping.getOrderNumber().getValue());
-    }
-
-    @Override
     public PageInfo<Shipping> selectAllWithPageInfo() {
         List<SalesOrderCustomEntity> salesOrderCustomEntities = salesOrderCustomMapper.selectAll();
         List<Shipping> shippings = new ArrayList<>();
@@ -161,27 +146,12 @@ public class ShippingDataSource implements ShippingRepository {
             }
         }
 
-        PageInfo<SalesOrderCustomEntity> pageInfo = new PageInfo<>(salesOrderCustomEntities);
-
         return new PageInfo<>(shippings);
     }
 
     @Override
-    public PageInfo<Shipping> searchWithPageInfo(ShippingCriteria criteria) {
-        List<SalesOrderCustomEntity> salesOrderCustomEntities = salesOrderCustomMapper.selectByCriteria(
-                SalesOrderCriteria.builder()
-                        .orderNumber(criteria.getOrderNumber())
-                        .orderDate(criteria.getOrderDate())
-                        .departmentCode(criteria.getDepartmentCode())
-                        .departmentStartDate(criteria.getDepartmentStartDate())
-                        .customerCode(criteria.getCustomerCode())
-                        .employeeCode(criteria.getEmployeeCode())
-                        .desiredDeliveryDate(criteria.getDesiredDeliveryDate())
-                        .customerOrderNumber(criteria.getCustomerOrderNumber())
-                        .warehouseCode(criteria.getWarehouseCode())
-                        .remarks(criteria.getRemarks())
-                        .build()
-        );
+    public PageInfo<Shipping> searchWithPageInfo(ShippingCriteria criteria, SalesOrderCriteria salesOrderCriteria) {
+        List<SalesOrderCustomEntity> salesOrderCustomEntities = salesOrderCustomMapper.selectByCriteria(salesOrderCriteria);
 
         List<Shipping> shippings = new ArrayList<>();
 
@@ -197,30 +167,6 @@ public class ShippingDataSource implements ShippingRepository {
             }
         }
 
-        PageInfo<SalesOrderCustomEntity> pageInfo = new PageInfo<>(salesOrderCustomEntities);
-
         return new PageInfo<>(shippings);
-    }
-
-    @Override
-    public void save(ShippingList shippingList) {
-        shippingList.asList().forEach(this::save);
-    }
-
-    @Override
-    public ShippingList selectAllNotComplete() {
-        List<SalesOrderCustomEntity> salesOrderCustomEntities = salesOrderCustomMapper.selectAllNotComplete(CompletionFlag.未完了.getValue());
-        List<Shipping> shippings = new ArrayList<>();
-
-        for (SalesOrderCustomEntity salesOrderCustomEntity : salesOrderCustomEntities) {
-            List<SalesOrderLineCustomEntity> salesOrderLineCustomEntities = salesOrderLineCustomMapper.selectBySalesOrderNumber(salesOrderCustomEntity.get受注番号());
-            for (SalesOrderLineCustomEntity salesOrderLineCustomEntity : salesOrderLineCustomEntities) {
-                if (salesOrderLineCustomEntity.get完了フラグ() == CompletionFlag.未完了.getValue()) {
-                    shippings.add(shippingEntityMapper.mapToDomainModel(salesOrderCustomEntity, salesOrderLineCustomEntity));
-                }
-            }
-        }
-
-        return shippingEntityMapper.mapToShippingList(shippings);
     }
 }
