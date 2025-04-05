@@ -1,6 +1,7 @@
 package com.example.sms.presentation.api.shipping;
 
 import com.example.sms.domain.model.shipping.Shipping;
+import com.example.sms.domain.model.shipping.ShippingList;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
@@ -87,6 +88,21 @@ public class ShippingApiController {
             PageInfo<Shipping> entity = shippingService.searchWithPageInfo(criteria);
             PageInfo<ShippingResource> result = pageNationService.getPageInfo(entity, ShippingResource::from);
             return ResponseEntity.ok(result);
+        } catch (BusinessException | IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
+    }
+
+    @Operation(summary = "出荷を指示する", description = "指定された検索条件で出荷指示をします。")
+    @PostMapping("/order-shipping")
+    public ResponseEntity<?> orderShipping(
+            @RequestBody ShippingCriteriaResource resource )
+    {
+        try {
+            ShippingCriteria criteria = ShippingResourceDTOMapper.convertToCriteria(resource);
+            ShippingList shippingList = shippingService.search(criteria);
+            shippingService.orderShipping(shippingList);
+            return ResponseEntity.ok(new MessageResponse(message.getMessage("success.shipping-order.exec")));
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }

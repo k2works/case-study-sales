@@ -129,6 +129,18 @@ public class UC018StepDefs extends SpringAcceptanceTest {
         // 詳細な検証はここに追加
     }
 
+    @もし(":UC018 受注番号 {string} で出荷指示を行う")
+    public void orderShipping(String orderNumber) throws JsonProcessingException {
+        ShippingCriteriaResource resource = new ShippingCriteriaResource();
+        resource.setOrderNumber(orderNumber);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        String json = objectMapper.writeValueAsString(resource);
+
+        executePost(SHIPPING_API_URL + "/order-shipping", json);
+    }
+
     private static @NotNull ShippingResource getShippingResource(String orderNumber) {
         ShippingResource resource = new ShippingResource();
         resource.setOrderNumber(orderNumber);

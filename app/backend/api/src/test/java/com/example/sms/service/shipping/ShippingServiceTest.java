@@ -2,8 +2,13 @@ package com.example.sms.service.shipping;
 
 import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactory;
+import com.example.sms.domain.model.sales_order.CompletionFlag;
+import com.example.sms.domain.model.sales_order.SalesOrder;
+import com.example.sms.domain.model.sales_order.SalesOrderLine;
+import com.example.sms.domain.model.sales_order.SalesOrderList;
 import com.example.sms.domain.model.shipping.Shipping;
 import com.example.sms.domain.model.shipping.ShippingList;
+import com.example.sms.service.sales_order.SalesOrderService;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,6 +27,8 @@ class ShippingServiceTest {
 
     @Autowired
     private TestDataFactory testDataFactory;
+    @Autowired
+    private SalesOrderService salesOrderService;
 
     @Nested
     @DisplayName("出荷")
@@ -98,15 +105,36 @@ class ShippingServiceTest {
             if (!allShippings.asList().isEmpty()) {
                 Shipping shipping = allShippings.asList().getFirst();
                 
-                // 出荷データを保存
                 shippingService.save(shipping);
-                
-                // 再取得して確認
+
                 Shipping savedShipping = shippingService.findById(shipping.getOrderNumber().getValue()).orElse(null);
                 
                 assertNotNull(savedShipping);
                 assertEquals(shipping.getOrderNumber().getValue(), savedShipping.getOrderNumber().getValue());
                 assertEquals(shipping.getProductCode().getValue(), savedShipping.getProductCode().getValue());
+            }
+        }
+
+        @Test
+        @DisplayName("出荷指示を行う")
+        void shouldOrderShipping() {
+            ShippingList allShippings = shippingService.selectAll();
+            if (!allShippings.asList().isEmpty()) {
+                Shipping shipping = allShippings.asList().getFirst();
+                shippingService.orderShipping(allShippings);
+
+                Shipping orderedShipping = shippingService.findById(shipping.getOrderNumber().getValue()).orElse(null);
+                SalesOrderList salesOrderList = salesOrderService.selectAll();
+
+                assertNotNull(orderedShipping);
+                assertEquals(CompletionFlag.完了, orderedShipping.getCompletionFlag());
+                for (SalesOrder salesOrder : salesOrderList.asList()) {
+                    for (SalesOrderLine salesOrderLine : salesOrder.getSalesOrderLines()) {
+                        if (salesOrderLine.getProductCode().getValue().equals(shipping.getProductCode().getValue())) {
+                            assertEquals(CompletionFlag.完了, salesOrderLine.getCompletionFlag());
+                        }
+                    }
+                }
             }
         }
     }

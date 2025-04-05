@@ -17,4 +17,8 @@ public interface ShippingRepository {
     PageInfo<Shipping> selectAllWithPageInfo();
 
     PageInfo<Shipping> searchWithPageInfo(ShippingCriteria shippingCriteria, SalesOrderCriteria salesOrderCriteria);
+
+    void orderShipping(ShippingList shippingList);
+
+    ShippingList search(ShippingCriteria criteria, SalesOrderCriteria salesOrderCriteria);
 }

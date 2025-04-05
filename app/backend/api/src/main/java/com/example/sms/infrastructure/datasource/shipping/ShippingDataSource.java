@@ -169,4 +169,57 @@ public class ShippingDataSource implements ShippingRepository {
 
         return new PageInfo<>(shippings);
     }
+
+    @Override
+    public ShippingList search(ShippingCriteria criteria, SalesOrderCriteria salesOrderCriteria) {
+        List<SalesOrderCustomEntity> salesOrderCustomEntities = salesOrderCustomMapper.selectByCriteria(salesOrderCriteria);
+
+        List<Shipping> shippings = new ArrayList<>();
+
+        for (SalesOrderCustomEntity salesOrderCustomEntity : salesOrderCustomEntities) {
+            List<SalesOrderLineCustomEntity> salesOrderLineCustomEntities = salesOrderLineCustomMapper.selectBySalesOrderNumber(salesOrderCustomEntity.get受注番号());
+            for (SalesOrderLineCustomEntity salesOrderLineCustomEntity : salesOrderLineCustomEntities) {
+                if ((criteria.getOrderLineNumber() == null || criteria.getOrderLineNumber().equals(salesOrderLineCustomEntity.get受注行番号())) &&
+                    (criteria.getProductCode() == null || criteria.getProductCode().equals(salesOrderLineCustomEntity.get商品コード())) &&
+                    (criteria.getProductName() == null || salesOrderLineCustomEntity.get商品名().contains(criteria.getProductName())) &&
+                    (criteria.getDeliveryDate() == null || criteria.getDeliveryDate().equals(salesOrderLineCustomEntity.get納期()))) {
+                    shippings.add(shippingEntityMapper.mapToDomainModel(salesOrderCustomEntity, salesOrderLineCustomEntity));
+                }
+            }
+        }
+
+        return shippingEntityMapper.mapToShippingList(shippings);
+    }
+
+    @Override
+    public void orderShipping(ShippingList shippingList) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication != null && authentication.getName() != null ? authentication.getName() : "system";
+
+        shippingList.asList().forEach(
+            shipping -> {
+                SalesOrderCustomEntity salesOrderEntity = salesOrderCustomMapper.selectByPrimaryKey(shipping.getOrderNumber().getValue());
+                if (salesOrderEntity != null) {
+                    salesOrderEntity.get受注データ明細().forEach(
+                        salesOrderLineEntity -> {
+                            if (salesOrderLineEntity.get受注行番号().equals(shipping.getOrderLineNumber())) {
+                                salesOrderLineCustomMapper.deleteBySalesOrderNumber(shipping.getOrderNumber().getValue());
+
+                                受注データ明細Key key = new 受注データ明細Key();
+                                key.set受注番号(shipping.getOrderNumber().getValue());
+                                key.set受注行番号(shipping.getOrderLineNumber());
+                                受注データ明細 salesOrderLineData = shippingEntityMapper.mapToEntity(key, shipping);
+                                salesOrderLineData.set完了フラグ(CompletionFlag.完了.getValue());
+                                salesOrderLineData.set作成日時(salesOrderLineEntity.get作成日時());
+                                salesOrderLineData.set作成者名(salesOrderLineEntity.get作成者名());
+                                salesOrderLineData.set更新日時(LocalDateTime.now());
+                                salesOrderLineData.set更新者名(username);
+                                salesOrderLineMapper.insert(salesOrderLineData);
+                            }
+                        }
+                    );
+                }
+            }
+        );
+    }
 }

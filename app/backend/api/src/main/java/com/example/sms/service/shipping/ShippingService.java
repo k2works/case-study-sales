@@ -57,4 +57,19 @@ public class ShippingService {
         SalesOrderCriteria salesOrderCriteria = criteria.convertToSalesOrderCriteria();
         return shippingRepository.searchWithPageInfo(criteria, salesOrderCriteria);
     }
+
+    /**
+     * 出荷指示
+     */
+    public void orderShipping(ShippingList shippingList) {
+        shippingRepository.orderShipping(shippingList);
+    }
+
+    /**
+     * 出荷情報を検索
+     */
+    public ShippingList search(ShippingCriteria criteria) {
+        SalesOrderCriteria salesOrderCriteria = criteria.convertToSalesOrderCriteria();
+        return shippingRepository.search(criteria, salesOrderCriteria);
+    }
 }
