@@ -123,6 +123,23 @@ public class ShippingDataSource implements ShippingRepository {
     }
 
     @Override
+    public ShippingList selectAllNotComplete() {
+        List<SalesOrderCustomEntity> salesOrderCustomEntities = salesOrderCustomMapper.selectAllNotComplete(CompletionFlag.未完了.getValue());
+        List<Shipping> shippings = new ArrayList<>();
+
+        for (SalesOrderCustomEntity salesOrderCustomEntity : salesOrderCustomEntities) {
+            List<SalesOrderLineCustomEntity> salesOrderLineCustomEntities = salesOrderLineCustomMapper.selectBySalesOrderNumber(salesOrderCustomEntity.get受注番号());
+            for (SalesOrderLineCustomEntity salesOrderLineCustomEntity : salesOrderLineCustomEntities) {
+                if (salesOrderLineCustomEntity.get完了フラグ() == CompletionFlag.未完了.getValue()) {
+                    shippings.add(shippingEntityMapper.mapToDomainModel(salesOrderCustomEntity, salesOrderLineCustomEntity));
+                }
+            }
+        }
+
+        return shippingEntityMapper.mapToShippingList(shippings);
+    }
+
+    @Override
     public Optional<Shipping> findById(String orderNumber) {
         SalesOrderCustomEntity salesOrderCustomEntity = salesOrderCustomMapper.selectByPrimaryKey(orderNumber);
         if (salesOrderCustomEntity != null) {

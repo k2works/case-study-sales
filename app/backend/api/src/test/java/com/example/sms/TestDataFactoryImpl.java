@@ -333,6 +333,15 @@ public class TestDataFactoryImpl implements TestDataFactory {
     }
 
     @Override
+    public void setUpForShippingRuleCheckService() {
+        salesOrderRepository.deleteAll();
+        setUpForDepartmentService();
+        setUpForProductService();
+        setUpForPartnerService();
+        setUpForEmployeeService();
+    }
+
+    @Override
     public void setUpForSalesService() {
         // 部門データの準備
         Department department = getDepartment("10000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門1");

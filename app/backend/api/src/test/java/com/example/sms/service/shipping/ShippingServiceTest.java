@@ -2,12 +2,14 @@ package com.example.sms.service.shipping;
 
 import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactory;
+import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.sales_order.CompletionFlag;
 import com.example.sms.domain.model.sales_order.SalesOrder;
 import com.example.sms.domain.model.sales_order.SalesOrderLine;
 import com.example.sms.domain.model.sales_order.SalesOrderList;
 import com.example.sms.domain.model.shipping.Shipping;
 import com.example.sms.domain.model.shipping.ShippingList;
+import com.example.sms.domain.model.shipping.rule.ShippingRuleCheckList;
 import com.example.sms.service.sales_order.SalesOrderService;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +17,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,7 +39,7 @@ class ShippingServiceTest {
     @Nested
     @DisplayName("出荷")
     class ShippingTest {
-        
+
         @BeforeEach
         void setUp() {
             testDataFactory.setUpForSalesOrderService();
@@ -57,9 +63,9 @@ class ShippingServiceTest {
             ShippingList allShippings = shippingService.selectAll();
             if (!allShippings.asList().isEmpty()) {
                 Shipping shipping = allShippings.asList().getFirst();
-                
+
                 Shipping foundShipping = shippingService.findById(shipping.getOrderNumber().getValue()).orElse(null);
-                
+
                 assertNotNull(foundShipping);
                 assertEquals(shipping.getOrderNumber().getValue(), foundShipping.getOrderNumber().getValue());
                 assertEquals(shipping.getProductCode().getValue(), foundShipping.getProductCode().getValue());
@@ -71,7 +77,7 @@ class ShippingServiceTest {
         @DisplayName("出荷一覧をページング付きで取得できる")
         void shouldRetrieveAllShippingsWithPageInfo() {
             PageInfo<Shipping> result = shippingService.selectAllWithPageInfo();
-            
+
             assertNotNull(result);
             assertNotNull(result.getList());
             assertFalse(result.getList().isEmpty());
@@ -83,13 +89,13 @@ class ShippingServiceTest {
             ShippingList allShippings = shippingService.selectAll();
             if (!allShippings.asList().isEmpty()) {
                 Shipping shipping = allShippings.asList().getFirst();
-                
+
                 ShippingCriteria criteria = ShippingCriteria.builder()
                         .productCode(shipping.getProductCode().getValue())
                         .build();
-                
+
                 PageInfo<Shipping> result = shippingService.searchWithPageInfo(criteria);
-                
+
                 assertNotNull(result);
                 assertNotNull(result.getList());
                 assertFalse(result.getList().isEmpty());
@@ -104,11 +110,11 @@ class ShippingServiceTest {
             ShippingList allShippings = shippingService.selectAll();
             if (!allShippings.asList().isEmpty()) {
                 Shipping shipping = allShippings.asList().getFirst();
-                
+
                 shippingService.save(shipping);
 
                 Shipping savedShipping = shippingService.findById(shipping.getOrderNumber().getValue()).orElse(null);
-                
+
                 assertNotNull(savedShipping);
                 assertEquals(shipping.getOrderNumber().getValue(), savedShipping.getOrderNumber().getValue());
                 assertEquals(shipping.getProductCode().getValue(), savedShipping.getProductCode().getValue());
@@ -136,6 +142,102 @@ class ShippingServiceTest {
                     }
                 }
             }
+        }
+    }
+
+    @Nested
+    @DisplayName("出荷ルール")
+    class ShippingRuleTest {
+
+        @BeforeEach
+        void setUp() {
+            testDataFactory.setUpForShippingRuleCheckService();
+        }
+
+        @Test
+        @DisplayName("出荷数量が受注数量を超えている場合")
+        void shouldCheckShippingRules() {
+            SalesOrder salesOrder = TestDataFactoryImpl.getSalesOrder("1000000009");
+            SalesOrderLine salesOrderLine = TestDataFactoryImpl.getSalesOrderLine("1000000009", 1);
+            SalesOrderLine newSalesOrderLine = SalesOrderLine.of(
+                    salesOrderLine.getOrderNumber().getValue(),
+                    salesOrderLine.getOrderLineNumber(),
+                    salesOrderLine.getProductCode().getValue(),
+                    salesOrderLine.getProductName(),
+                    salesOrderLine.getSalesUnitPrice().getAmount(),
+                    1,
+                    salesOrderLine.getTaxRate().getRate(),
+                    salesOrderLine.getAllocationQuantity().getAmount(),
+                    salesOrderLine.getShipmentInstructionQuantity().getAmount(),
+                    10,
+                    CompletionFlag.未完了.getValue(),
+                    salesOrderLine.getDiscountAmount().getAmount(),
+                    LocalDateTime.now().plus(10, ChronoUnit.DAYS)
+            );
+            SalesOrder newSalesOrder = SalesOrder.of(
+                    salesOrder.getOrderNumber().getValue(),
+                    salesOrder.getOrderDate().getValue(),
+                    salesOrder.getDepartmentCode().getValue(),
+                    salesOrder.getDepartmentStartDate(),
+                    salesOrder.getCustomerCode().getCode().getValue(),
+                    salesOrder.getCustomerCode().getBranchNumber(),
+                    salesOrder.getEmployeeCode().getValue(),
+                    salesOrder.getDesiredDeliveryDate().getValue(),
+                    salesOrder.getCustomerOrderNumber(),
+                    salesOrder.getWarehouseCode(),
+                    salesOrder.getTotalOrderAmount().getAmount(),
+                    salesOrder.getTotalConsumptionTax().getAmount(),
+                    salesOrder.getRemarks(),
+                    List.of(newSalesOrderLine)
+            );
+            salesOrderService.save(newSalesOrder);
+
+            ShippingRuleCheckList checkList = shippingService.checkRule();
+            assertNotNull(checkList);
+            assertTrue(checkList.asList().getFirst().containsValue("出荷数量が受注数量を超えています。"));
+        }
+
+        @Test
+        @DisplayName("納期を超過している場合")
+        void shouldCheckShippingOverdue() {
+            SalesOrder salesOrder = TestDataFactoryImpl.getSalesOrder("1000000009");
+            SalesOrderLine salesOrderLine = TestDataFactoryImpl.getSalesOrderLine("1000000009", 1);
+            SalesOrderLine newSalesOrderLine = SalesOrderLine.of(
+                    salesOrderLine.getOrderNumber().getValue(),
+                    salesOrderLine.getOrderLineNumber(),
+                    salesOrderLine.getProductCode().getValue(),
+                    salesOrderLine.getProductName(),
+                    salesOrderLine.getSalesUnitPrice().getAmount(),
+                    salesOrderLine.getOrderQuantity().getAmount(),
+                    salesOrderLine.getTaxRate().getRate(),
+                    salesOrderLine.getAllocationQuantity().getAmount(),
+                    salesOrderLine.getShipmentInstructionQuantity().getAmount(),
+                    salesOrderLine.getShippedQuantity().getAmount(),
+                    CompletionFlag.未完了.getValue(),
+                    salesOrderLine.getDiscountAmount().getAmount(),
+                    LocalDateTime.now().minus(10, ChronoUnit.DAYS)
+            );
+            SalesOrder newSalesOrder = SalesOrder.of(
+                    salesOrder.getOrderNumber().getValue(),
+                    salesOrder.getOrderDate().getValue(),
+                    salesOrder.getDepartmentCode().getValue(),
+                    salesOrder.getDepartmentStartDate(),
+                    salesOrder.getCustomerCode().getCode().getValue(),
+                    salesOrder.getCustomerCode().getBranchNumber(),
+                    salesOrder.getEmployeeCode().getValue(),
+                    salesOrder.getDesiredDeliveryDate().getValue(),
+                    salesOrder.getCustomerOrderNumber(),
+                    salesOrder.getWarehouseCode(),
+                    salesOrder.getTotalOrderAmount().getAmount(),
+                    salesOrder.getTotalConsumptionTax().getAmount(),
+                    salesOrder.getRemarks(),
+                    List.of(newSalesOrderLine)
+            );
+            salesOrderService.save(newSalesOrder);
+
+            ShippingRuleCheckList checkList = shippingService.checkRule();
+            assertNotNull(checkList);
+            assertTrue(checkList.asList().getFirst().containsValue("納期を超過しています。"));
         }
     }
 }

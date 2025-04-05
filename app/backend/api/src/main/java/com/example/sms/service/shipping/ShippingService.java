@@ -2,6 +2,8 @@ package com.example.sms.service.shipping;
 
 import com.example.sms.domain.model.shipping.Shipping;
 import com.example.sms.domain.model.shipping.ShippingList;
+import com.example.sms.domain.model.shipping.rule.ShippingRuleCheckList;
+import com.example.sms.domain.service.shipping.ShippingDomainService;
 import com.example.sms.service.sales_order.SalesOrderCriteria;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -17,9 +19,11 @@ import java.util.Optional;
 public class ShippingService {
 
     private final ShippingRepository shippingRepository;
+    private final ShippingDomainService shippingDomainService;
 
-    public ShippingService(ShippingRepository shippingRepository) {
+    public ShippingService(ShippingRepository shippingRepository, ShippingDomainService shippingDomainService) {
         this.shippingRepository = shippingRepository;
+        this.shippingDomainService = shippingDomainService;
     }
 
     /**
@@ -71,5 +75,13 @@ public class ShippingService {
     public ShippingList search(ShippingCriteria criteria) {
         SalesOrderCriteria salesOrderCriteria = criteria.convertToSalesOrderCriteria();
         return shippingRepository.search(criteria, salesOrderCriteria);
+    }
+
+    /**
+     * 出荷ルールチェック
+     */
+    public ShippingRuleCheckList checkRule() {
+        ShippingList shippings = shippingRepository.selectAllNotComplete();
+        return shippingDomainService.checkRule(shippings);
     }
 }

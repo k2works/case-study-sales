@@ -12,6 +12,8 @@ public interface ShippingRepository {
 
     ShippingList selectAll();
 
+    ShippingList selectAllNotComplete();
+
     Optional<Shipping> findById(String orderNumber);
 
     PageInfo<Shipping> selectAllWithPageInfo();
