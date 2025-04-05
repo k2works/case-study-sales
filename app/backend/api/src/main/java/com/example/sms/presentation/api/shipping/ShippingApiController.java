@@ -2,6 +2,8 @@ package com.example.sms.presentation.api.shipping;
 
 import com.example.sms.domain.model.shipping.Shipping;
 import com.example.sms.domain.model.shipping.ShippingList;
+import com.example.sms.domain.model.shipping.rule.ShippingRuleCheckList;
+import com.example.sms.presentation.api.system.auth.payload.response.MessageResponseWithDetail;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
@@ -104,6 +106,20 @@ public class ShippingApiController {
             shippingService.orderShipping(shippingList);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.shipping-order.exec")));
         } catch (BusinessException | IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
+    }
+
+    @Operation(summary = "出荷ルールを確認する", description = "出荷ルール確認を実行する")
+    @PostMapping("/check")
+    public ResponseEntity<?> check() {
+        try {
+            ShippingRuleCheckList result = shippingService.checkRule();
+            if (result.isEmpty()) {
+                return ResponseEntity.ok(new MessageResponseWithDetail(message.getMessage("success.shipping.check"), result.asList()));
+            }
+            return ResponseEntity.ok(new MessageResponseWithDetail(message.getMessage("error.shipping.check"), result.asList()));
+        } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
