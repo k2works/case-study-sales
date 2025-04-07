@@ -85,6 +85,7 @@ interface FormInputProps {
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onClick?: () => void;
     disabled?: boolean;
+    checked?: boolean;
 }
 
 export const FormInput: React.FC<FormInputProps> = ({
@@ -97,6 +98,7 @@ export const FormInput: React.FC<FormInputProps> = ({
                                                  onChange,
                                                  onClick,
                                                  disabled,
+                                                 checked,
                                              }) => {
     return (
         <FormItem label={label}>
@@ -109,6 +111,7 @@ export const FormInput: React.FC<FormInputProps> = ({
                 onChange={onChange}
                 onClick={onClick}
                 disabled={disabled}
+                checked={checked}
             />
         </FormItem>
     );

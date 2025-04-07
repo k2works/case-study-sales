@@ -29,6 +29,8 @@ import {SalesOrderRuleContainer} from "../sales/sales_order/rule/SalesOrderRuleC
 import {SalesTabContainer} from "../sales/sales/SalesTabContainer.tsx";
 import {SalesContainer} from "../sales/sales/list/SalesContainer.tsx";
 import {SalesSummaryContainer} from "../sales/sales/summary/SalesSummaryContainer.tsx";
+import {ShippingTabContainer} from "../shipping/shipping/ShippingTabContainer.tsx";
+import {ShippingContainer} from "../shipping/shipping/list/ShippingContainer.tsx";
 
 export const RouteConfig: React.FC = () => {
     const ProductCategoryPage = () => {
@@ -135,6 +137,14 @@ export const RouteConfig: React.FC = () => {
         )
     }
 
+    const ShippingPage = () => {
+        return (
+            <SiteLayout>
+                <ShippingContainer/>
+            </SiteLayout>
+        )
+    }
+
 
     return (
             <Routes>
@@ -159,6 +169,10 @@ export const RouteConfig: React.FC = () => {
                                                                          allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/sales-summary" element={<RouteAuthGuard component={<SalesSummaryPage/>} redirectPath="/"
                                                                            allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/shipping" element={<RouteAuthGuard component={<ShippingTabContainer/>} redirectPath="/"
+                                                                    allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/shipping-list" element={<RouteAuthGuard component={<ShippingPage/>} redirectPath="/"
+                                                                         allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/department" element={<RouteAuthGuard component={<DepartmentContainer/>} redirectPath="/"
                                                                    allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/employee" element={<RouteAuthGuard component={<EmployeeContainer/>} redirectPath="/"
