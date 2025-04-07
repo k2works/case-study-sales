@@ -5,8 +5,10 @@ import { SalesType } from "../../../../models/sales/sales";
 import { showErrorMessage } from "../../../application/utils.ts";
 import { SalesSearchModal } from "./SalesSearchModal.tsx";
 import { SalesEditModal } from "./SalesEditModal.tsx";
+import { useNavigate } from "react-router-dom";
 
 export const SalesCollection: React.FC = () => {
+    const navigate = useNavigate();
     const {
         message,
         setMessage,
