@@ -3,6 +3,7 @@ import { useShippingContext } from "../../../../providers/shipping/Shipping.tsx"
 import { ShippingCollectionView } from "../../../../views/shipping/shipping/list/ShippingCollection.tsx";
 import { ShippingType } from "../../../../models/shipping/shipping";
 import { ShippingSearchModal } from "./ShippingSearchModal.tsx";
+import { ShippingEditModal } from "./ShippingEditModal.tsx";
 
 export const ShippingCollection: React.FC = () => {
     const {
@@ -79,6 +80,7 @@ export const ShippingCollection: React.FC = () => {
     return (
         <>
             <ShippingSearchModal/>
+            <ShippingEditModal/>
             <ShippingCollectionView
                 error={error}
                 message={message}
