@@ -40,13 +40,12 @@ export const useFetchUsers = (
 
         try {
             const fetchedUsers = await service.select(page);
-            const {list, ...pagination} = fetchedUsers;
-
-            setList(list);
-            setPageNation(pagination);
+            setList(fetchedUsers.list);
+            setPageNation(fetchedUsers);
             setError("");
-        } catch (error: any) {
-            showErrorMessage(`${ERROR_MESSAGE} ${error?.message}`, setError);
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : '不明なエラーが発生しました';
+            showErrorMessage(`${ERROR_MESSAGE} ${errorMessage}`, setError);
         } finally {
             setLoading(false);
         }
