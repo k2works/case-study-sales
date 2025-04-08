@@ -55,10 +55,10 @@ public class ShippingApiController {
     }
 
     @Operation(summary = "出荷情報を取得する", description = "指定された受注番号に基づいて出荷データを取得します。")
-    @GetMapping("/{orderNumber}")
-    public ResponseEntity<?> select(@PathVariable String orderNumber) {
+    @GetMapping("/{orderNumber}/{orderLineNumber}")
+    public ResponseEntity<?> select(@PathVariable String orderNumber, @PathVariable String orderLineNumber) {
         try {
-            Optional<Shipping> entity = shippingService.findById(orderNumber);
+            Optional<Shipping> entity = shippingService.findById(orderNumber, orderLineNumber);
             if (entity.isEmpty()) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.shipping.not.exist")));
             }

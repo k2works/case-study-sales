@@ -26,8 +26,22 @@
         where 受注番号 = #{salesOrderNumber}
     </select>
 
+    <select id="selectBySalesOrderNumberAndLineNumber" resultMap="BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.受注データ明細Mapper.Base_Column_List"/>
+        from public.受注データ明細
+        where 受注番号 = #{salesOrderNumber}
+        and 受注行番号 = #{lineNumber}
+    </select>
+
     <delete id="deleteBySalesOrderNumber" parameterType="java.lang.String">
         delete from public.受注データ明細
         where 受注番号 = #{salesOrderNumber}
+    </delete>
+
+    <delete id="deleteBySalesOrderNumberAndLineNumber">
+        delete from public.受注データ明細
+        where 受注番号 = #{salesOrderNumber}
+        and 受注行番号 = #{lineNumber}
     </delete>
 </mapper>

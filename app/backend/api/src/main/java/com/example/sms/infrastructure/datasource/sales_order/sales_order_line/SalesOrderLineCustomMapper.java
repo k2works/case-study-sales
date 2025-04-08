@@ -2,6 +2,7 @@ package com.example.sms.infrastructure.datasource.sales_order.sales_order_line;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -17,5 +18,11 @@ public interface SalesOrderLineCustomMapper {
 
     List<SalesOrderLineCustomEntity> selectBySalesOrderNumber(String salesOrderNumber);
 
+    SalesOrderLineCustomEntity selectBySalesOrderNumberAndLineNumber(@Param("salesOrderNumber") String salesOrderNumber,
+                                                                     @Param("lineNumber") String lineNumber);
+
     void deleteBySalesOrderNumber(String customerOrderNumber);
+
+    void deleteBySalesOrderNumberAndLineNumber(@Param("salesOrderNumber") String salesOrderNumber,
+                                               @Param("lineNumber") String lineNumber);
 }

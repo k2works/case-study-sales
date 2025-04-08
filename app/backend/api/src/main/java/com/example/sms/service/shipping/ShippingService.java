@@ -43,8 +43,8 @@ public class ShippingService {
     /**
      * 注文番号で検索
      */
-    public Optional<Shipping> findById(String orderNumber) {
-        return shippingRepository.findById(orderNumber);
+    public Optional<Shipping> findById(String orderNumber, String orderLineNumber) {
+        return shippingRepository.findById(orderNumber, orderLineNumber);
     }
 
     /**

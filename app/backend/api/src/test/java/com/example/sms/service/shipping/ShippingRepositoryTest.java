@@ -154,7 +154,7 @@ class ShippingRepositoryTest {
             Shipping shipping = convertToShipping(newOrder, lines.getFirst());
             shippingRepository.save(shipping);
 
-            Shipping actual = shippingRepository.findById(order.getOrderNumber().getValue()).orElse(new Shipping());
+            Shipping actual = shippingRepository.findById(order.getOrderNumber().getValue(), order.getCustomerOrderNumber()).orElse(new Shipping());
             assertEquals(shipping, actual);
         }
 
@@ -185,7 +185,7 @@ class ShippingRepositoryTest {
             Shipping shipping = convertToShipping(newOrder, lines.getFirst());
             shippingRepository.save(shipping);
 
-            Shipping actual = shippingRepository.findById(order.getOrderNumber().getValue()).orElse(new Shipping());
+            Shipping actual = shippingRepository.findById(order.getOrderNumber().getValue(), order.getCustomerOrderNumber()).orElse(new Shipping());
             assertEquals(shipping, actual);
         }
     }

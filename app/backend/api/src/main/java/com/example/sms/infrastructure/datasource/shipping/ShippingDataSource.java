@@ -73,7 +73,7 @@ public class ShippingDataSource implements ShippingRepository {
         key.set受注番号(shipping.getOrderNumber().getValue());
         key.set受注行番号(shipping.getOrderLineNumber());
 
-        salesOrderLineCustomMapper.deleteBySalesOrderNumber(shipping.getOrderNumber().getValue());
+        salesOrderLineCustomMapper.deleteBySalesOrderNumberAndLineNumber(shipping.getOrderNumber().getValue(), String.valueOf(shipping.getOrderLineNumber()));
 
         受注データ明細 salesOrderLineData = shippingEntityMapper.mapToEntity(key, shipping);
         salesOrderLineData.set作成日時(LocalDateTime.now());
@@ -95,7 +95,7 @@ public class ShippingDataSource implements ShippingRepository {
         key.set受注番号(shipping.getOrderNumber().getValue());
         key.set受注行番号(shipping.getOrderLineNumber());
 
-        salesOrderLineCustomMapper.deleteBySalesOrderNumber(shipping.getOrderNumber().getValue());
+        salesOrderLineCustomMapper.deleteBySalesOrderNumberAndLineNumber(shipping.getOrderNumber().getValue(), String.valueOf(shipping.getOrderLineNumber()));
 
         受注データ明細 salesOrderLineData = shippingEntityMapper.mapToEntity(key, shipping);
         salesOrderLineData.set作成日時(LocalDateTime.now());
@@ -140,12 +140,12 @@ public class ShippingDataSource implements ShippingRepository {
     }
 
     @Override
-    public Optional<Shipping> findById(String orderNumber) {
+    public Optional<Shipping> findById(String orderNumber, String orderLineNumber) {
         SalesOrderCustomEntity salesOrderCustomEntity = salesOrderCustomMapper.selectByPrimaryKey(orderNumber);
         if (salesOrderCustomEntity != null) {
-            List<SalesOrderLineCustomEntity> salesOrderLineCustomEntities = salesOrderLineCustomMapper.selectBySalesOrderNumber(orderNumber);
-            if (!salesOrderLineCustomEntities.isEmpty()) {
-                return Optional.of(shippingEntityMapper.mapToDomainModel(salesOrderCustomEntity, salesOrderLineCustomEntities.get(0)));
+            SalesOrderLineCustomEntity salesOrderLineCustomEntities = salesOrderLineCustomMapper.selectBySalesOrderNumberAndLineNumber(orderNumber, orderLineNumber);
+            if (salesOrderLineCustomEntities != null) {
+                return Optional.of(shippingEntityMapper.mapToDomainModel(salesOrderCustomEntity, salesOrderLineCustomEntities));
             }
         }
         return Optional.empty();
@@ -220,7 +220,7 @@ public class ShippingDataSource implements ShippingRepository {
                     salesOrderEntity.get受注データ明細().forEach(
                         salesOrderLineEntity -> {
                             if (salesOrderLineEntity.get受注行番号().equals(shipping.getOrderLineNumber())) {
-                                salesOrderLineCustomMapper.deleteBySalesOrderNumber(shipping.getOrderNumber().getValue());
+                                salesOrderLineCustomMapper.deleteBySalesOrderNumberAndLineNumber(shipping.getOrderNumber().getValue(), String.valueOf(shipping.getOrderLineNumber()));
 
                                 受注データ明細Key key = new 受注データ明細Key();
                                 key.set受注番号(shipping.getOrderNumber().getValue());

@@ -64,7 +64,7 @@ class ShippingServiceTest {
             if (!allShippings.asList().isEmpty()) {
                 Shipping shipping = allShippings.asList().getFirst();
 
-                Shipping foundShipping = shippingService.findById(shipping.getOrderNumber().getValue()).orElse(null);
+                Shipping foundShipping = shippingService.findById(shipping.getOrderNumber().getValue(), shipping.getCustomerOrderNumber()).orElse(null);
 
                 assertNotNull(foundShipping);
                 assertEquals(shipping.getOrderNumber().getValue(), foundShipping.getOrderNumber().getValue());
@@ -113,7 +113,7 @@ class ShippingServiceTest {
 
                 shippingService.save(shipping);
 
-                Shipping savedShipping = shippingService.findById(shipping.getOrderNumber().getValue()).orElse(null);
+                Shipping savedShipping = shippingService.findById(shipping.getOrderNumber().getValue(), String.valueOf(shipping.getOrderLineNumber())).orElse(null);
 
                 assertNotNull(savedShipping);
                 assertEquals(shipping.getOrderNumber().getValue(), savedShipping.getOrderNumber().getValue());
@@ -121,25 +121,43 @@ class ShippingServiceTest {
             }
         }
 
-        @Test
-        @DisplayName("出荷指示を行う")
-        void shouldOrderShipping() {
-            ShippingList allShippings = shippingService.selectAll();
-            if (!allShippings.asList().isEmpty()) {
-                Shipping shipping = allShippings.asList().getFirst();
-                shippingService.orderShipping(allShippings);
+        @Nested
+        @DisplayName("出荷指示")
+        class ShippingInstructionTest {
 
-                Shipping orderedShipping = shippingService.findById(shipping.getOrderNumber().getValue()).orElse(null);
-                SalesOrderList salesOrderList = salesOrderService.selectAll();
+            @Test
+            @DisplayName("出荷指示を行う")
+            void shouldOrderShipping() {
+                ShippingList allShippings = shippingService.selectAll();
+                if (!allShippings.asList().isEmpty()) {
+                    Shipping shipping = allShippings.asList().getFirst();
+                    shippingService.orderShipping(allShippings);
 
-                assertNotNull(orderedShipping);
-                assertEquals(CompletionFlag.完了, orderedShipping.getCompletionFlag());
-                for (SalesOrder salesOrder : salesOrderList.asList()) {
-                    for (SalesOrderLine salesOrderLine : salesOrder.getSalesOrderLines()) {
-                        if (salesOrderLine.getProductCode().getValue().equals(shipping.getProductCode().getValue())) {
-                            assertEquals(CompletionFlag.完了, salesOrderLine.getCompletionFlag());
+                    Shipping orderedShipping = shippingService.findById(shipping.getOrderNumber().getValue(), shipping.getCustomerOrderNumber()).orElse(null);
+                    SalesOrderList salesOrderList = salesOrderService.selectAll();
+
+                    assertNotNull(orderedShipping);
+                    assertEquals(CompletionFlag.完了, orderedShipping.getCompletionFlag());
+                    for (SalesOrder salesOrder : salesOrderList.asList()) {
+                        for (SalesOrderLine salesOrderLine : salesOrder.getSalesOrderLines()) {
+                            if (salesOrderLine.getProductCode().getValue().equals(shipping.getProductCode().getValue())) {
+                                assertEquals(CompletionFlag.完了, salesOrderLine.getCompletionFlag());
+                            }
                         }
                     }
+                }
+            }
+            @Test
+            @DisplayName("受注明細の件数は出荷件数と一致する")
+            void shouldMatchShippingCountWithOrderDetails() {
+                ShippingList allShippings = shippingService.selectAll();
+                if (!allShippings.asList().isEmpty()) {
+                    Shipping shipping = allShippings.asList().getFirst();
+                    shippingService.orderShipping(allShippings);
+
+                    SalesOrder salesOrder = salesOrderService.find(shipping.getOrderNumber().getValue());
+                    assertNotNull(salesOrder);
+                    assertEquals(allShippings.asList().stream().filter(s -> s.getOrderNumber().getValue().equals(shipping.getOrderNumber().getValue())).count(), salesOrder.getSalesOrderLines().size());
                 }
             }
         }
