@@ -54,9 +54,8 @@ export const ShippingSingle: React.FC = () => {
             }
             await fetchShippings.load();
             handleCloseModal();
-        } catch (error: unknown) {
-            const errorMessage = error instanceof Error ? error.message : '不明なエラーが発生しました';
-            showErrorMessage(`出荷の更新に失敗しました: ${errorMessage}`, setError);
+        } catch (error: any) {
+            showErrorMessage(`出荷の更新に失敗しました: ${error?.message}`, setError);
         }
     };
 

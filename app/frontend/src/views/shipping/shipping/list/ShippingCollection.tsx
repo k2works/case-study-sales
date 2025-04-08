@@ -120,9 +120,6 @@ export const ShippingCollectionView: React.FC<ShippingCollectionViewProps> = ({
                     handleSearchAudit={handleOpenSearchModal}
                 />
                 <div className="button-container">
-                    <button className="action-button" onClick={() => handleOpenModal()} id="edit">
-                        編集
-                    </button>
                     <button className="action-button" onClick={() => handleCheckToggleCollection()} id="checkAll">
                         一括選択
                     </button>

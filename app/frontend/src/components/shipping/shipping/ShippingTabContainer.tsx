@@ -1,6 +1,7 @@
 import {useTab} from "../../application/hooks";
 import {SiteLayout} from "../../../views/SiteLayout";
 import {ShippingContainer} from "./list/ShippingContainer";
+import {ShippingRuleContainer} from "./rule/ShippingRuleContainer";
 
 export const ShippingTabContainer: React.FC = () => {
     const {
@@ -22,8 +23,7 @@ export const ShippingTabContainer: React.FC = () => {
                     <ShippingContainer/>
                 </TabPanel>
                 <TabPanel>
-                    {/* ShippingRuleContainer will be implemented later */}
-                    <div>出荷ルール画面（実装予定）</div>
+                    <ShippingRuleContainer/>
                 </TabPanel>
                 <TabPanel>
                     {/* ShippingOrderContainer will be implemented later */}
