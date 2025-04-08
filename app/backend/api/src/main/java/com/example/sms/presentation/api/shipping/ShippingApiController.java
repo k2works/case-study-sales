@@ -3,6 +3,8 @@ package com.example.sms.presentation.api.shipping;
 import com.example.sms.domain.model.shipping.Shipping;
 import com.example.sms.domain.model.shipping.ShippingList;
 import com.example.sms.domain.model.shipping.rule.ShippingRuleCheckList;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponseWithDetail;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
@@ -11,6 +13,7 @@ import com.example.sms.service.BusinessException;
 import com.example.sms.service.PageNationService;
 import com.example.sms.service.shipping.ShippingCriteria;
 import com.example.sms.service.shipping.ShippingService;
+import com.example.sms.service.system.audit.AuditAnnotation;
 import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -68,6 +71,7 @@ public class ShippingApiController {
 
     @Operation(summary = "出荷情報を保存する", description = "出荷データを保存します。")
     @PostMapping
+    @AuditAnnotation(process = ApplicationExecutionProcessType.出荷更新, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> save(@RequestBody ShippingResource resource) {
         try {
             Shipping shipping = ShippingResourceDTOMapper.convertToEntity(resource);
@@ -97,6 +101,7 @@ public class ShippingApiController {
 
     @Operation(summary = "出荷を指示する", description = "指定された検索条件で出荷指示をします。")
     @PostMapping("/order-shipping")
+    @AuditAnnotation(process = ApplicationExecutionProcessType.出荷登録, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> orderShipping(
             @RequestBody ShippingCriteriaResource resource )
     {
@@ -112,6 +117,7 @@ public class ShippingApiController {
 
     @Operation(summary = "出荷ルールを確認する", description = "出荷ルール確認を実行する")
     @PostMapping("/check")
+    @AuditAnnotation(process = ApplicationExecutionProcessType.その他, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> check() {
         try {
             ShippingRuleCheckList result = shippingService.checkRule();
