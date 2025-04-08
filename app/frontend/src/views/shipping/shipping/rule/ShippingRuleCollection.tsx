@@ -42,7 +42,11 @@ export const ShippingRuleCollectionView: React.FC<ShippingRuleCollectionViewProp
                                                         {Object.entries(detail).map(([key, value]) => (
                                                             <div key={key} className="detail-item">
                                                                 <span className="detail-key">{key}:</span>
-                                                                <span className="detail-value">{value}</span>
+                                                                <span className="detail-value">
+                                                                  {typeof value === 'object' && value !== null
+                                                                      ? JSON.stringify(value)
+                                                                      : String(value)}
+                                                                </span>
                                                             </div>
                                                         ))}
                                                     </div>

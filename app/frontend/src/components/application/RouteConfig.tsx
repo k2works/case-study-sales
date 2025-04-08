@@ -32,6 +32,7 @@ import {SalesSummaryContainer} from "../sales/sales/summary/SalesSummaryContaine
 import {ShippingTabContainer} from "../shipping/shipping/ShippingTabContainer.tsx";
 import {ShippingContainer} from "../shipping/shipping/list/ShippingContainer.tsx";
 import {ShippingRuleContainer} from "../shipping/shipping/rule/ShippingRuleContainer.tsx";
+import {ShippingOrderContainer} from "../shipping/shipping/order/ShippingOrderContainer.tsx";
 
 export const RouteConfig: React.FC = () => {
     const ProductCategoryPage = () => {
@@ -154,6 +155,14 @@ export const RouteConfig: React.FC = () => {
         )
     }
 
+    const ShippingOrderPage = () => {
+        return (
+            <SiteLayout>
+                <ShippingOrderContainer/>
+            </SiteLayout>
+        )
+    }
+
 
     return (
             <Routes>
@@ -184,6 +193,8 @@ export const RouteConfig: React.FC = () => {
                                                                          allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/shipping-rule" element={<RouteAuthGuard component={<ShippingRulePage/>} redirectPath="/"
                                                                            allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/shipping-order" element={<RouteAuthGuard component={<ShippingOrderPage/>} redirectPath="/"
+                                                                      allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/department" element={<RouteAuthGuard component={<DepartmentContainer/>} redirectPath="/"
                                                                    allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/employee" element={<RouteAuthGuard component={<EmployeeContainer/>} redirectPath="/"

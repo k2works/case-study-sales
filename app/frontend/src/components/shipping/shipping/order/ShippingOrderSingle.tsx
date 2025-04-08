@@ -7,7 +7,7 @@ import { useCustomerContext } from "../../../../providers/master/partner/Custome
 import { useProductItemContext } from "../../../../providers/master/product/ProductItem.tsx";
 import {ShippingSingleView} from "../../../../views/shipping/shipping/list/ShippingSingle.tsx";
 
-export const ShippingSingle: React.FC = () => {
+export const ShippingOrderSingle: React.FC = () => {
     const {
         message,
         setMessage,

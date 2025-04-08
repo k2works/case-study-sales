@@ -48,7 +48,6 @@ const ShippingItem: React.FC<ShippingItemProps> = ({shipping, onEdit}) => (
 interface ShippingListProps {
     shippings: ShippingType[];
     onEdit: (shipping: ShippingType) => void;
-    onCheck: (shipping: ShippingType) => void;
 }
 
 const ShippingList: React.FC<ShippingListProps> = ({shippings, onEdit}) => (
@@ -76,6 +75,7 @@ interface ShippingCollectionViewProps {
     headerItems: {
         handleOpenModal: (shipping?: ShippingType) => void;
         handleCheckToggleCollection: () => void;
+        handleExecuteShippingOrder: () => void;
     }
     collectionItems: {
         shippings: ShippingType[];
@@ -89,12 +89,12 @@ interface ShippingCollectionViewProps {
     }
 }
 
-export const ShippingCollectionView: React.FC<ShippingCollectionViewProps> = ({
+export const ShippingOrderCollectionView: React.FC<ShippingCollectionViewProps> = ({
     error,
     message,
     searchItems: {searchShippingCriteria, setSearchShippingCriteria, handleOpenSearchModal},
-    headerItems: {handleOpenModal},
-    collectionItems: { shippings, handleCheckShipping },
+    headerItems: {handleOpenModal, handleExecuteShippingOrder},
+    collectionItems: { shippings },
     pageNationItems: { pageNation, criteria, fetchShippings }
 }) => (
     <div className="collection-view-object-container">
@@ -102,7 +102,7 @@ export const ShippingCollectionView: React.FC<ShippingCollectionViewProps> = ({
         <div className="collection-view-container">
             <div className="collection-view-header">
                 <div className="single-view-header-item">
-                    <h1 className="single-view-title">出荷一覧</h1>
+                    <h1 className="single-view-title">出荷指示</h1>
                 </div>
             </div>
             <div className="collection-view-content">
@@ -112,11 +112,13 @@ export const ShippingCollectionView: React.FC<ShippingCollectionViewProps> = ({
                     handleSearchAudit={handleOpenSearchModal}
                 />
                 <div className="button-container">
+                    <button className="action-button" onClick={() => handleExecuteShippingOrder()} id="orderShipping">
+                        出荷指示
+                    </button>
                 </div>
                 <ShippingList
                     shippings={shippings}
                     onEdit={handleOpenModal}
-                    onCheck={handleCheckShipping}
                 />
                 <PageNation pageNation={pageNation} callBack={fetchShippings} criteria={criteria}/>
             </div>

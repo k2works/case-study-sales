@@ -1,11 +1,11 @@
 import React from "react";
 import { useShippingContext } from "../../../../providers/shipping/Shipping.tsx";
-import { ShippingCollectionView } from "../../../../views/shipping/shipping/list/ShippingCollection.tsx";
 import { ShippingType } from "../../../../models/shipping/shipping";
-import { ShippingSearchModal } from "./ShippingSearchModal.tsx";
-import { ShippingEditModal } from "./ShippingEditModal.tsx";
+import {ShippingOrderSearchModal} from "./ShippingOrderSearchModal.tsx";
+import {ShippingOrderEditModal} from "./ShippingOrderEditModal.tsx";
+import {ShippingOrderCollectionView} from "../../../../views/shipping/shipping/order/ShippingOrderCollection.tsx";
 
-export const ShippingCollection: React.FC = () => {
+export const ShippingOrderCollection: React.FC = () => {
     const {
         message,
         setMessage,
@@ -24,6 +24,7 @@ export const ShippingCollection: React.FC = () => {
         setSearchShippingCriteria,
         fetchShippings,
         setSearchModalIsOpen,
+        shippingService,
     } = useShippingContext();
 
     const handleOpenModal = (shippingItem?: ShippingType) => {
@@ -67,17 +68,31 @@ export const ShippingCollection: React.FC = () => {
         setShippings(newShippings);
     }
 
+    const handleExecuteShippingOrder = async () => {
+        if (!searchShippingCriteria) {
+            return;
+        }
+        try {
+            await shippingService.orderShipping(searchShippingCriteria);
+            setMessage("出荷を確定しました。");
+        } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : '不明なエラーが発生しました';
+            console.error('Rule check failed:', errorMessage);
+        }
+    };
+
     return (
         <>
-            <ShippingSearchModal/>
-            <ShippingEditModal/>
-            <ShippingCollectionView
+            <ShippingOrderSearchModal/>
+            <ShippingOrderEditModal/>
+            <ShippingOrderCollectionView
                 error={error}
                 message={message}
                 searchItems={{searchShippingCriteria, setSearchShippingCriteria, handleOpenSearchModal}}
                 headerItems={{
-                    handleOpenModal, 
-                    handleCheckToggleCollection: handleCheckAllShippings, 
+                    handleOpenModal,
+                    handleCheckToggleCollection: handleCheckAllShippings,
+                    handleExecuteShippingOrder
                 }}
                 collectionItems={{shippings, handleOpenModal, handleCheckShipping}}
                 pageNationItems={{pageNation, fetchShippings: fetchShippings.load, criteria}}
