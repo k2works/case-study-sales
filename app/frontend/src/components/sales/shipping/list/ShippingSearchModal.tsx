@@ -1,13 +1,13 @@
 import React from "react";
 import Modal from "react-modal";
-import { ShippingSearchSingleView } from "../../../../views/shipping/shipping/list/ShippingSearch.tsx";
+import { ShippingSearchSingleView } from "../../../../views/sales/shipping/list/ShippingSearch.tsx";
 import { showErrorMessage } from "../../../application/utils.ts";
 import { useShippingContext } from "../../../../providers/sales/Shipping.tsx";
 import { useDepartmentContext } from "../../../../providers/master/Department.tsx";
 import { useCustomerContext } from "../../../../providers/master/partner/Customer.tsx";
 import { useEmployeeContext } from "../../../../providers/master/Employee.tsx";
 
-export const ShippingOrderSearchModal: React.FC = () => {
+export const ShippingSearchModal: React.FC = () => {
     const {
         searchShippingCriteria,
         setSearchShippingCriteria,

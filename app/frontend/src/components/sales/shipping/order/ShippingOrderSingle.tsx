@@ -5,7 +5,7 @@ import { useDepartmentContext } from "../../../../providers/master/Department.ts
 import { useEmployeeContext } from "../../../../providers/master/Employee.tsx";
 import { useCustomerContext } from "../../../../providers/master/partner/Customer.tsx";
 import { useProductItemContext } from "../../../../providers/master/product/ProductItem.tsx";
-import {ShippingSingleView} from "../../../../views/shipping/shipping/list/ShippingSingle.tsx";
+import {ShippingSingleView} from "../../../../views/sales/shipping/list/ShippingSingle.tsx";
 
 export const ShippingOrderSingle: React.FC = () => {
     const {

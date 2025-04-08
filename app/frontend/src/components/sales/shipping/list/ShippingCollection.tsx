@@ -1,6 +1,6 @@
 import React from "react";
 import { useShippingContext } from "../../../../providers/sales/Shipping.tsx";
-import { ShippingCollectionView } from "../../../../views/shipping/shipping/list/ShippingCollection.tsx";
+import { ShippingCollectionView } from "../../../../views/sales/shipping/list/ShippingCollection.tsx";
 import { ShippingSearchModal } from "./ShippingSearchModal.tsx";
 import { ShippingEditModal } from "./ShippingEditModal.tsx";
 import {ShippingType} from "../../../../models/sales/shipping.ts";

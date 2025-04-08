@@ -29,10 +29,10 @@ import {SalesOrderRuleContainer} from "../sales/sales_order/rule/SalesOrderRuleC
 import {SalesTabContainer} from "../sales/sales/SalesTabContainer.tsx";
 import {SalesContainer} from "../sales/sales/list/SalesContainer.tsx";
 import {SalesSummaryContainer} from "../sales/sales/summary/SalesSummaryContainer.tsx";
-import {ShippingTabContainer} from "../shipping/shipping/ShippingTabContainer.tsx";
-import {ShippingContainer} from "../shipping/shipping/list/ShippingContainer.tsx";
-import {ShippingRuleContainer} from "../shipping/shipping/rule/ShippingRuleContainer.tsx";
-import {ShippingOrderContainer} from "../shipping/shipping/order/ShippingOrderContainer.tsx";
+import {ShippingTabContainer} from "../sales/shipping/ShippingTabContainer.tsx";
+import {ShippingContainer} from "../sales/shipping/list/ShippingContainer.tsx";
+import {ShippingRuleContainer} from "../sales/shipping/rule/ShippingRuleContainer.tsx";
+import {ShippingOrderContainer} from "../sales/shipping/order/ShippingOrderContainer.tsx";
 
 export const RouteConfig: React.FC = () => {
     const ProductCategoryPage = () => {
