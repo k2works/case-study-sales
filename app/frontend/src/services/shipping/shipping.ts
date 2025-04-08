@@ -6,7 +6,7 @@ import {
     ShippingType,
     mapToShippingCriteriaResource,
     mapToShippingResource
-} from "../../models/shipping/shipping";
+} from "../../models/sales/shipping";
 
 // 出荷ルール確認結果の型定義
 export interface ShippingRuleCheckResponse {

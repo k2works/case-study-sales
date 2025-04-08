@@ -1,9 +1,9 @@
 import React from "react";
-import { useShippingContext } from "../../../../providers/shipping/Shipping.tsx";
-import { ShippingType } from "../../../../models/shipping/shipping";
+import { useShippingContext } from "../../../../providers/sales/Shipping.tsx";
 import {ShippingOrderSearchModal} from "./ShippingOrderSearchModal.tsx";
 import {ShippingOrderEditModal} from "./ShippingOrderEditModal.tsx";
 import {ShippingOrderCollectionView} from "../../../../views/shipping/shipping/order/ShippingOrderCollection.tsx";
+import {ShippingType} from "../../../../models/sales/shipping.ts";
 
 export const ShippingOrderCollection: React.FC = () => {
     const {

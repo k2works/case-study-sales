@@ -1,5 +1,5 @@
 import React from "react";
-import { useShippingContext } from "../../../../providers/shipping/Shipping.tsx";
+import { useShippingContext } from "../../../../providers/sales/Shipping.tsx";
 import { showErrorMessage } from "../../../application/utils.ts";
 import { useDepartmentContext } from "../../../../providers/master/Department.tsx";
 import { useEmployeeContext } from "../../../../providers/master/Employee.tsx";

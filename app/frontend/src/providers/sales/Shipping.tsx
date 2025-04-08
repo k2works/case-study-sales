@@ -1,6 +1,6 @@
 import React, { createContext, useContext, ReactNode, Dispatch, SetStateAction, useState, useMemo } from "react";
 import { PageNationType, usePageNation } from "../../views/application/PageNation.tsx";
-import { ShippingCriteriaType, ShippingType, initialShipping, initialShippingCriteria } from "../../models/shipping/shipping";
+import { ShippingCriteriaType, ShippingType, initialShipping, initialShippingCriteria } from "../../models/sales/shipping";
 import { useModal } from "../../components/application/hooks.ts";
 import { useMessage } from "../../components/application/Message.tsx";
 import { ShippingService, ShippingServiceType } from "../../services/shipping/shipping";

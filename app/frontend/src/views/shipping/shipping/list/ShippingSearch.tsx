@@ -1,6 +1,6 @@
 import React, { MouseEventHandler } from "react";
 import { FormInput, SingleViewHeaderItem } from "../../../Common.tsx";
-import { ShippingCriteriaType } from "../../../../models/shipping/shipping";
+import { ShippingCriteriaType } from "../../../../models/sales/shipping";
 
 interface FormProps {
     criteria: ShippingCriteriaType,

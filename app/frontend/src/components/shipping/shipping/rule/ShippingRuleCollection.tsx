@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {ShippingRuleCheckResponse} from "../../../../services/shipping/shipping";
-import {useShippingContext} from "../../../../providers/shipping/Shipping";
+import {useShippingContext} from "../../../../providers/sales/Shipping";
 import {ShippingRuleCollectionView} from "../../../../views/shipping/shipping/rule/ShippingRuleCollection";
 
 export const ShippingRuleCollection: React.FC = () => {

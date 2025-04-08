@@ -1,5 +1,5 @@
 import React from "react";
-import { ShippingCriteriaType, ShippingType } from "../../../../models/shipping/shipping";
+import { ShippingCriteriaType, ShippingType } from "../../../../models/sales/shipping";
 import { Message } from "../../../../components/application/Message.tsx";
 import { PageNation, PageNationType } from "../../../application/PageNation.tsx";
 import { Search } from "../../../Common.tsx";

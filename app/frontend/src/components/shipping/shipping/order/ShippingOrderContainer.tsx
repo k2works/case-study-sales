@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { showErrorMessage } from "../../../application/utils.ts";
 import LoadingIndicator from "../../../../views/application/LoadingIndicatior.tsx";
-import { ShippingProvider, useShippingContext } from "../../../../providers/shipping/Shipping.tsx";
+import { ShippingProvider, useShippingContext } from "../../../../providers/sales/Shipping.tsx";
 import { DepartmentProvider, useDepartmentContext } from "../../../../providers/master/Department.tsx";
 import { EmployeeProvider, useEmployeeContext } from "../../../../providers/master/Employee.tsx";
 import { CustomerProvider, useCustomerContext } from "../../../../providers/master/partner/Customer.tsx";

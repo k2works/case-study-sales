@@ -1,7 +1,7 @@
 import React from "react";
 import Modal from "react-modal";
 import { ShippingSingle } from "./ShippingSingle.tsx";
-import { useShippingContext } from "../../../../providers/shipping/Shipping.tsx";
+import { useShippingContext } from "../../../../providers/sales/Shipping.tsx";
 
 export const ShippingEditModal: React.FC = () => {
     const {

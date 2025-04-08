@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { showErrorMessage } from "../../../application/utils";
 import LoadingIndicator from "../../../../views/application/LoadingIndicatior";
-import { ShippingProvider, useShippingContext } from "../../../../providers/shipping/Shipping";
+import { ShippingProvider, useShippingContext } from "../../../../providers/sales/Shipping";
 import { ShippingRuleCollection } from "./ShippingRuleCollection";
 
 export const ShippingRuleContainer: React.FC = () => {

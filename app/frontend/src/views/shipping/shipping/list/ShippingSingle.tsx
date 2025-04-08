@@ -1,6 +1,6 @@
 import React from 'react';
 import { Message } from "../../../../components/application/Message.tsx";
-import { ShippingType } from "../../../../models/shipping/shipping";
+import { ShippingType } from "../../../../models/sales/shipping";
 import { convertToDateInputFormat } from "../../../../components/application/utils.ts";
 import { FormInput, SingleViewHeaderActions, SingleViewHeaderItem } from "../../../Common.tsx";
 
