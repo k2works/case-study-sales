@@ -30,21 +30,21 @@ public class ShippingService {
      * 出荷一覧を取得
      */
     public ShippingList selectAll() {
-        return shippingRepository.selectAll();
+        return shippingRepository.selectAllComplete();
     }
 
     /**
      * 出荷一覧をページング付きで取得
      */
     public PageInfo<Shipping> selectAllWithPageInfo() {
-        return shippingRepository.selectAllWithPageInfo();
+        return shippingRepository.selectAllWithPageInfoAllComplete();
     }
 
     /**
      * 注文番号で検索
      */
     public Optional<Shipping> findById(String orderNumber, String orderLineNumber) {
-        return shippingRepository.findById(orderNumber, orderLineNumber);
+        return shippingRepository.findById(orderNumber, Integer.valueOf(orderLineNumber));
     }
 
     /**

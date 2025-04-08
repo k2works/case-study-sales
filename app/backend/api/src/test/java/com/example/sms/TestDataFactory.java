@@ -35,6 +35,8 @@ public interface TestDataFactory {
 
     void setUpForSalesOrderRuleCheckService();
 
+    void setUpForShippingService();
+
     void setUpForShippingRuleCheckService();
 
     MultipartFile createSalesOrderFile();

@@ -24,5 +24,5 @@ public interface SalesOrderCustomMapper {
 
     List<SalesOrderCustomEntity> selectByCriteria(SalesOrderCriteria criteria);
 
-    List<SalesOrderCustomEntity> selectAllNotComplete(Integer completionFlag);
+    List<SalesOrderCustomEntity> selectAllWithCompletionFlag(Integer completionFlag);
 }

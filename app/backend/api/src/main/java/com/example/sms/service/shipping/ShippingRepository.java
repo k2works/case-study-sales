@@ -12,11 +12,17 @@ public interface ShippingRepository {
 
     ShippingList selectAll();
 
+    ShippingList selectAllComplete();
+
     ShippingList selectAllNotComplete();
 
-    Optional<Shipping> findById(String orderNumber, String  orderLineNumber);
+    Optional<Shipping> findById(String orderNumber, Integer orderLineNumber);
 
     PageInfo<Shipping> selectAllWithPageInfo();
+
+    PageInfo<Shipping> selectAllWithPageInfoAllComplete();
+
+    PageInfo<Shipping> selectAllWithPageInfoNotComplete();
 
     PageInfo<Shipping> searchWithPageInfo(ShippingCriteria shippingCriteria, SalesOrderCriteria salesOrderCriteria);
 

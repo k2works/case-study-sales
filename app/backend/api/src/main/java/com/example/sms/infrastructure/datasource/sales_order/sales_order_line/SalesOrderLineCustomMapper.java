@@ -19,10 +19,10 @@ public interface SalesOrderLineCustomMapper {
     List<SalesOrderLineCustomEntity> selectBySalesOrderNumber(String salesOrderNumber);
 
     SalesOrderLineCustomEntity selectBySalesOrderNumberAndLineNumber(@Param("salesOrderNumber") String salesOrderNumber,
-                                                                     @Param("lineNumber") String lineNumber);
+                                                                     @Param("lineNumber") Integer lineNumber);
 
     void deleteBySalesOrderNumber(String customerOrderNumber);
 
     void deleteBySalesOrderNumberAndLineNumber(@Param("salesOrderNumber") String salesOrderNumber,
-                                               @Param("lineNumber") String lineNumber);
+                                               @Param("lineNumber") Integer lineNumber);
 }

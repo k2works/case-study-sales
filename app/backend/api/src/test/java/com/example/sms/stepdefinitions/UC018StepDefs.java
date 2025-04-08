@@ -51,7 +51,7 @@ public class UC018StepDefs extends SpringAcceptanceTest {
                 testDataFactory.setUpForProductService();
                 break;
             case "受注データ":
-                testDataFactory.setUpForSalesOrderService();
+                testDataFactory.setUpForShippingService();
                 break;
             default:
                 throw new IllegalArgumentException("Unknown data type: " + data);
@@ -74,9 +74,9 @@ public class UC018StepDefs extends SpringAcceptanceTest {
         // 詳細な検証はここに追加
     }
 
-    @もし(":UC018 受注番号 {string} で検索する")
-    public void searchShipping(String orderNumber) {
-        executeGet(SHIPPING_API_URL + "/" + orderNumber);
+    @もし(":UC018 受注番号 {string} 受注行番号 {string} で検索する")
+    public void searchShipping(String orderNumber, String orderLineNumber) {
+        executeGet(SHIPPING_API_URL + "/" + orderNumber + "/" + orderLineNumber);
     }
 
     @ならば(":UC018 受注番号 {string} の出荷情報を取得できる")

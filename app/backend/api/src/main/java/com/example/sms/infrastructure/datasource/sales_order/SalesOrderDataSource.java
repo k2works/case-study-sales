@@ -174,7 +174,7 @@ public class SalesOrderDataSource implements SalesOrderRepository {
 
     @Override
     public SalesOrderList selectAllNotComplete() {
-        List<SalesOrderCustomEntity> salesOrderCustomEntities = salesOrderCustomMapper.selectAllNotComplete(CompletionFlag.未完了.getValue());
+        List<SalesOrderCustomEntity> salesOrderCustomEntities = salesOrderCustomMapper.selectAllWithCompletionFlag(CompletionFlag.未完了.getValue());
 
         return new SalesOrderList(salesOrderCustomEntities.stream()
                 .map(salesOrderEntityMapper::mapToDomainModel)

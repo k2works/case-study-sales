@@ -42,7 +42,7 @@ class ShippingServiceTest {
 
         @BeforeEach
         void setUp() {
-            testDataFactory.setUpForSalesOrderService();
+            testDataFactory.setUpForShippingService();
         }
 
         @Test

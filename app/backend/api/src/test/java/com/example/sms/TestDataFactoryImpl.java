@@ -41,6 +41,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -330,6 +331,42 @@ public class TestDataFactoryImpl implements TestDataFactory {
         setUpForProductService();
         setUpForPartnerService();
         setUpForEmployeeService();
+    }
+
+    @Override
+    public void setUpForShippingService() {
+        setUpForSalesOrderService();
+
+        SalesOrderList  salesOrderList = salesOrderRepository.selectAll();
+
+        salesOrderRepository.deleteAll();
+
+        salesOrderList.asList().forEach(
+                salesOrder -> {
+                    List<SalesOrderLine> lines = salesOrder.getSalesOrderLines();
+                    List<SalesOrderLine> newLines = new ArrayList<>();
+                    for (SalesOrderLine line : lines) {
+                        SalesOrderLine newLine = SalesOrderLine.of(
+                                line.getOrderNumber().getValue(),  // orderNumber（受注番号）
+                                line.getOrderLineNumber(),  // orderLineNumber（受注行番号）
+                                "99999999",  // productCode（商品コード）
+                                "商品1",  // productName（商品名）
+                                1000,  // salesUnitPrice（販売単価）
+                                10,  // orderQuantity（受注数量）
+                                10,  // taxRate（消費税率）
+                                10,  // allocationQuantity（引当数量）
+                                10,  // shipmentInstructionQuantity（出荷指示数量）
+                                10,  // shippedQuantity（出荷済数量）
+                                1,  // completionFlag（完了フラグ）
+                                10,  // discountAmount（値引金額）
+                                LocalDateTime.of(2021, 1, 1, 0, 0)  // deliveryDate（納期）
+                        );
+                        newLines.add(newLine);
+                    }
+                    SalesOrder newSalesOrder = SalesOrder.of(salesOrder, newLines);
+                    salesOrderRepository.save(newSalesOrder);
+                }
+        );
     }
 
     @Override
