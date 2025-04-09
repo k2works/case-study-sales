@@ -103,7 +103,7 @@ export const mapToShippingCriteriaResource = (criteria: ShippingCriteriaType) =>
         productCode: criteria.productCode || null,
         productName: criteria.productName || null,
         deliveryDate: criteria.deliveryDate || null,
-        completionFlag: criteria.completionFlag || null
+        completionFlag: criteria.completionFlag || false
     };
 };
 

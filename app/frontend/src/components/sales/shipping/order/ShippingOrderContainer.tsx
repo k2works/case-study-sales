@@ -14,6 +14,7 @@ export const ShippingOrderContainer: React.FC = () => {
             loading,
             setError,
             fetchShippings,
+            searchShippingCriteria
         } = useShippingContext();
 
         const {
@@ -36,7 +37,7 @@ export const ShippingOrderContainer: React.FC = () => {
             (async () => {
                 try {
                     await Promise.all([
-                        await fetchShippings.load(),
+                        await fetchShippings.load(1, searchShippingCriteria),
                         fetchDepartments.load(),
                         fetchEmployees.load(),
                         fetchCustomers.load(),
