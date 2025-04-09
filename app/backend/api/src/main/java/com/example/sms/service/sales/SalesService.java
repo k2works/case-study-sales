@@ -1,10 +1,18 @@
 package com.example.sms.service.sales;
 
 import com.example.sms.domain.model.sales.Sales;
+import com.example.sms.domain.model.sales.SalesLine;
 import com.example.sms.domain.model.sales.SalesList;
+import com.example.sms.domain.model.shipping.Shipping;
+import com.example.sms.domain.model.shipping.ShippingList;
+import com.example.sms.service.shipping.ShippingRepository;
 import com.github.pagehelper.PageInfo;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * 売上サービス
@@ -14,9 +22,11 @@ import org.springframework.stereotype.Service;
 public class SalesService {
 
     private final SalesRepository salesRepository;
+    private final ShippingRepository shippingRepository;
 
-    public SalesService(SalesRepository salesRepository) {
+    public SalesService(SalesRepository salesRepository, ShippingRepository shippingRepository) {
         this.salesRepository = salesRepository;
+        this.shippingRepository = shippingRepository;
     }
 
     /**
@@ -68,4 +78,59 @@ public class SalesService {
         return salesRepository.searchWithPageInfo(criteria);
     }
 
+    /**
+     * 売上集計
+     */
+    public void aggregateSales() {
+        ShippingList  shippingList = shippingRepository.selectAllComplete();
+
+        List<String> orderNumberList = shippingList.asList().stream()
+                .map(shipping -> shipping.getOrderNumber().getValue())
+                .distinct()
+                .toList();
+
+        List<Sales> salesList = new ArrayList<>();
+
+        orderNumberList.forEach(orderNumber -> {
+            List<Shipping> shippingListByOrderNumber = shippingList.asList().stream()
+                    .filter(shipping -> Objects.equals(shipping.getOrderNumber().getValue(), orderNumber))
+                    .toList();
+
+            List<SalesLine> salesLines = shippingListByOrderNumber.stream()
+                    .map(shipping -> SalesLine.of(
+                            shipping.getOrderNumber().getValue(),
+                            shipping.getOrderLineNumber(),
+                            shipping.getProductCode().getValue(),
+                            shipping.getProductName(),
+                            shipping.getSalesUnitPrice().getAmount(),
+                            shipping.getSalesAmount().getValue().getAmount(),
+                            shipping.getShippedQuantity().getAmount(),
+                            shipping.getDiscountAmount().getAmount(),
+                            null,
+                            null,
+                            null,
+                            shipping.getDeliveryDate().getValue()
+                    ))
+                    .toList();
+
+            Shipping shipping = shippingListByOrderNumber.getFirst();
+            Sales sales = Sales.of(
+                    shipping.getOrderNumber().getValue(),
+                    shipping.getOrderNumber().getValue(),
+                    shipping.getDeliveryDate().getValue(),
+                    null,
+                    shipping.getDepartmentCode().getValue(),
+                    shipping.getDepartmentStartDate(),
+                    shipping.getCustomerCode().getCode().getValue(),
+                    shipping.getEmployeeCode().getValue(),
+                    null,
+                    null,
+                    shipping.getRemarks(),
+                    salesLines
+            );
+            salesList.add(sales);
+        });
+
+        salesList.forEach(salesRepository::save);
+    }
 }

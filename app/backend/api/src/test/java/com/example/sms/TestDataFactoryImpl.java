@@ -415,6 +415,9 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 9    // 入荷リードタイム
         ));
 
+        // 出荷データの準備
+        setUpForShippingService();
+
         // 売上データの削除
         salesRepository.deleteAll();
 

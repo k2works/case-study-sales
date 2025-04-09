@@ -39,11 +39,11 @@ public interface TestDataFactory {
 
     void setUpForShippingRuleCheckService();
 
+    void setUpForSalesService();
+
     MultipartFile createSalesOrderFile();
 
     MultipartFile createSalesOrderInvalidFile();
 
     MultipartFile createSalesOrderCheckRuleFile();
-
-    void setUpForSalesService();
 }

@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -167,6 +168,60 @@ class SalesServiceTest {
             assertNotNull(result);
             assertEquals(1, result.getList().size());
             assertEquals(departmentCode, result.getList().get(0).getDepartmentCode());
+        }
+
+        @Test
+        @DisplayName("売上を集計できる")
+        void shouldAggregateSales() {
+            String salesNumber = "1000000001";
+            List<SalesLine> salesLines = IntStream.range(1, 4)
+                    .mapToObj(lineNumber -> SalesLine.of(
+                            salesNumber,
+                            lineNumber,
+                            "99999999",
+                            "商品1",
+                            1000,
+                            10000,
+                            10,
+                            10,
+                            null,
+                            null,
+                            null,
+                            LocalDateTime.of(2021, 1, 1, 0, 0)
+                    ))
+                    .toList();
+
+            Sales expected = Sales.of(
+                    salesNumber,
+                    "1000000001",
+                    LocalDateTime.of(2021, 1, 1, 0, 0),
+                    null,
+                    "10000",
+                    LocalDateTime.of(2021, 1, 1, 0, 0),
+                    "001",
+                    "EMP001",
+                    null,
+                    null,
+                    "備考",
+                    salesLines
+            );
+
+            salesService.aggregateSales();
+            Sales actual = salesService.find(salesNumber);
+
+            assertNotNull(actual);
+            assertEquals(3, actual.getSalesLines().size());
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        @DisplayName("2回目の集計で売上が重複しない")
+        void shouldNotDuplicateSalesOnSecondAggregation() {
+            salesService.aggregateSales();
+            salesService.aggregateSales();
+
+            SalesList result = salesService.selectAll();
+            assertEquals(6, result.asList().size());
         }
     }
 }
