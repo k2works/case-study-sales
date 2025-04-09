@@ -3,7 +3,7 @@ import { PageNationType, usePageNation } from "../../views/application/PageNatio
 import { ShippingCriteriaType, ShippingType, initialShipping, initialShippingCriteria } from "../../models/sales/shipping";
 import { useModal } from "../../components/application/hooks.ts";
 import { useMessage } from "../../components/application/Message.tsx";
-import { ShippingService, ShippingServiceType } from "../../services/shipping/shipping";
+import { ShippingService, ShippingServiceType } from "../../services/sales/shipping";
 import { showErrorMessage } from "../../components/application/utils.ts";
 
 type ShippingContextType = {

@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {ShippingRuleCheckResponse} from "../../../../services/shipping/shipping";
+import {ShippingRuleCheckResponse} from "../../../../services/sales/shipping";
 import {useShippingContext} from "../../../../providers/sales/Shipping";
 import {ShippingRuleCollectionView} from "../../../../views/sales/shipping/rule/ShippingRuleCollection";
 

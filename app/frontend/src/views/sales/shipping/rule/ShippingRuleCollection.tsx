@@ -1,6 +1,6 @@
 import React from "react";
 import {Message} from "../../../../components/application/Message.tsx";
-import {ShippingRuleCheckResponse} from "../../../../services/shipping/shipping.ts";
+import {ShippingRuleCheckResponse} from "../../../../services/sales/shipping.ts";
 
 interface ShippingRuleCollectionViewProps {
     ruleHeaderItems: {
