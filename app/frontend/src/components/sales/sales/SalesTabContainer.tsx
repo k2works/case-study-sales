@@ -1,7 +1,7 @@
 import {useTab} from "../../application/hooks";
 import {SiteLayout} from "../../../views/SiteLayout";
 import {SalesContainer} from "./list/SalesContainer";
-import {SalesSummaryContainer} from "./summary/SalesSummaryContainer";
+import {SalesAggregateContainer} from "./aggregate/SalesAggregateContainer.tsx";
 
 export const SalesTabContainer: React.FC = () => {
     const {
@@ -22,7 +22,7 @@ export const SalesTabContainer: React.FC = () => {
                     <SalesContainer/>
                 </TabPanel>
                 <TabPanel>
-                    <SalesSummaryContainer/>
+                    <SalesAggregateContainer/>
                 </TabPanel>
             </Tabs>
         </SiteLayout>

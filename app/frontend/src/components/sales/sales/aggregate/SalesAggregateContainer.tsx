@@ -1,6 +1,6 @@
 import React from "react";
 
-export const SalesSummaryContainer: React.FC = () => {
+export const SalesAggregateContainer: React.FC = () => {
     return (
         <div className="single-view-object-container">
             <div className="single-view-header">

@@ -51,12 +51,18 @@ export const SalesService = () => {
         await apiUtils.fetchDelete<void>(url);
     };
 
+    const aggregate = async (): Promise<void> => {
+        const url = `${endPoint}/aggregate`;
+        await apiUtils.fetchPost<void>(url, null);
+    };
+
     return {
         select,
         find,
         create,
         update,
         destroy,
-        search
+        search,
+        aggregate
     };
 }
