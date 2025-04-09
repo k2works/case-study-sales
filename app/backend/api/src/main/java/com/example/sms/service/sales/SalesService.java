@@ -82,6 +82,8 @@ public class SalesService {
      * 売上集計
      */
     public void aggregate() {
+        salesRepository.deleteAll();
+
         ShippingList  shippingList = shippingRepository.selectAllComplete();
 
         List<String> orderNumberList = shippingList.asList().stream()

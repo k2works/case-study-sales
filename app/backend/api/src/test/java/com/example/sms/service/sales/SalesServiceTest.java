@@ -221,7 +221,7 @@ class SalesServiceTest {
             salesService.aggregate();
 
             SalesList result = salesService.selectAll();
-            assertEquals(6, result.asList().size());
+            assertEquals(3, result.asList().size());
         }
     }
 }
