@@ -1,6 +1,8 @@
 package com.example.sms.presentation.api.sales;
 
 import com.example.sms.domain.model.sales.Sales;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
+import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
@@ -8,6 +10,7 @@ import com.example.sms.service.BusinessException;
 import com.example.sms.service.PageNationService;
 import com.example.sms.service.sales.SalesCriteria;
 import com.example.sms.service.sales.SalesService;
+import com.example.sms.service.system.audit.AuditAnnotation;
 import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -63,6 +66,7 @@ public class SalesApiController {
 
     @Operation(summary = "売上を登録する", description = "新しい売上データを登録します。")
     @PostMapping
+    @AuditAnnotation(process = ApplicationExecutionProcessType.売上登録, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> create(@RequestBody SalesResource resource) {
         try {
             Sales sales = SalesResourceDTOMapper.convertToEntity(resource);
@@ -78,6 +82,7 @@ public class SalesApiController {
 
     @Operation(summary = "売上情報を更新する", description = "指定された売上データを更新します。")
     @PutMapping("/{salesNumber}")
+    @AuditAnnotation(process = ApplicationExecutionProcessType.売上更新, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> update(@PathVariable String salesNumber, @RequestBody SalesResource resource) {
         try {
             resource.setSalesNumber(salesNumber);
@@ -94,6 +99,7 @@ public class SalesApiController {
 
     @Operation(summary = "売上を削除する", description = "指定された売上データを削除します。")
     @DeleteMapping("/{salesNumber}")
+    @AuditAnnotation(process = ApplicationExecutionProcessType.売上削除, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> delete(@PathVariable String salesNumber) {
         try {
             Sales sales = salesService.find(salesNumber);
@@ -126,6 +132,7 @@ public class SalesApiController {
 
     @Operation(summary = "売上を集計する", description = "売上を集計します。")
     @PostMapping("/aggregate")
+    @AuditAnnotation(process = ApplicationExecutionProcessType.売上集計, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> aggregate(@RequestBody SalesResource resource) {
         try {
             salesService.aggregate();
