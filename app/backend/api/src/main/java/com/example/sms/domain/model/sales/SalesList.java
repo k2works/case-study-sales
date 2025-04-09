@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * 販売一覧
+ * 売上一覧
  */
 public class SalesList {
     private final List<Sales> value;
