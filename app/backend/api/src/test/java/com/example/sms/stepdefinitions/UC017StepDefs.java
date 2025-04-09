@@ -150,6 +150,18 @@ public class UC017StepDefs extends SpringAcceptanceTest {
         executePost(SALES_API_URL, json);
     }
 
+    @もし(":UC017 売上集計を実行した")
+    public void aggregate() throws JsonProcessingException {
+        String url = SALES_API_URL + "/aggregate";
+
+        SalesResource sales = getSalesResource("1000000", "2023-10-01T00:00:00Z", "D0001", "C0001", "E0001", "10000");
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        String json = objectMapper.writeValueAsString(sales);
+        executePost(url, json);
+    }
+
     @かつ(":UC017 売上番号 {string} の売上明細を更新する \\(製品コード {string} 製品名 {string} 売上数量 {string})")
     public void updateSalesLine(String salesNumber, String productCode, String productName, String amount) throws JsonProcessingException {
         String url = SALES_API_URL + "/" + salesNumber;
@@ -294,6 +306,5 @@ public class UC017StepDefs extends SpringAcceptanceTest {
                 .discountAmount(Integer.parseInt(entry.get("割引額")))
                 .build();
     }
-
 }
 

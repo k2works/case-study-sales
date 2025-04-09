@@ -123,4 +123,15 @@ public class SalesApiController {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
+
+    @Operation(summary = "売上を集計する", description = "売上を集計します。")
+    @PostMapping("/aggregate")
+    public ResponseEntity<?> aggregate(@RequestBody SalesResource resource) {
+        try {
+            salesService.aggregate();
+            return ResponseEntity.ok(new MessageResponse(message.getMessage("success.sales.aggregated")));
+        } catch (BusinessException | IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
+    }
 }

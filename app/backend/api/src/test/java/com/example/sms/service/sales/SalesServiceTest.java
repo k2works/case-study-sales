@@ -206,7 +206,7 @@ class SalesServiceTest {
                     salesLines
             );
 
-            salesService.aggregateSales();
+            salesService.aggregate();
             Sales actual = salesService.find(salesNumber);
 
             assertNotNull(actual);
@@ -217,8 +217,8 @@ class SalesServiceTest {
         @Test
         @DisplayName("2回目の集計で売上が重複しない")
         void shouldNotDuplicateSalesOnSecondAggregation() {
-            salesService.aggregateSales();
-            salesService.aggregateSales();
+            salesService.aggregate();
+            salesService.aggregate();
 
             SalesList result = salesService.selectAll();
             assertEquals(6, result.asList().size());
