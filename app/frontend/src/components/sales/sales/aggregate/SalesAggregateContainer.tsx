@@ -1,18 +1,44 @@
-import React from "react";
+import { useEffect } from "react";
+import { showErrorMessage } from "../../../application/utils";
+import LoadingIndicator from "../../../../views/application/LoadingIndicatior";
+import { SalesProvider, useSalesContext } from "../../../../providers/sales/Sales";
+import { SalesAggregateCollection } from "./SalesAggregateCollection";
 
 export const SalesAggregateContainer: React.FC = () => {
+    const Content: React.FC = () => {
+        const {
+            loading,
+            setError,
+            fetchSales,
+        } = useSalesContext();
+
+        useEffect(() => {
+            (async () => {
+                try {
+                    await Promise.all([
+                        fetchSales.load(),
+                    ]);
+                } catch (error) {
+                    const errorMessage = error instanceof Error ? error.message : '不明なエラーが発生しました';
+                    showErrorMessage(`売上情報の取得に失敗しました: ${errorMessage}`, setError);
+                }
+            })();
+        }, []);
+
+        return (
+            <>
+                {loading ? (
+                    <LoadingIndicator/>
+                ) : (
+                    <SalesAggregateCollection/>
+                )}
+            </>
+        );
+    };
+
     return (
-        <div className="single-view-object-container">
-            <div className="single-view-header">
-                <div className="single-view-header-item">
-                    <h1 className="single-view-title">売上集計</h1>
-                </div>
-            </div>
-            <div className="single-view-container">
-                <div className="single-view-content">
-                    <p>売上集計機能は実装中です。</p>
-                </div>
-            </div>
-        </div>
+        <SalesProvider>
+            <Content />
+        </SalesProvider>
     );
 };

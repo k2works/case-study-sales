@@ -8,6 +8,12 @@ import {
     mapToSalesResource
 } from "../../models/sales/sales";
 
+// 売上集計結果の型定義
+export interface SalesAggregateResponse {
+    message: string;
+    details: string[];
+}
+
 export interface SalesServiceType {
     select: (page?: number, pageSize?: number) => Promise<SalesPageInfoType>;
     find: (salesNumber: string) => Promise<SalesType>;
@@ -15,6 +21,7 @@ export interface SalesServiceType {
     update: (sales: SalesType) => Promise<void>;
     destroy: (salesNumber: string) => Promise<void>;
     search: (criteria: SalesCriteriaType, page?: number, pageSize?: number) => Promise<SalesPageInfoType>;
+    aggregate: () => Promise<SalesAggregateResponse>;
 }
 
 export const SalesService = () => {
@@ -51,9 +58,9 @@ export const SalesService = () => {
         await apiUtils.fetchDelete<void>(url);
     };
 
-    const aggregate = async (): Promise<void> => {
+    const aggregate = async (): Promise<SalesAggregateResponse> => {
         const url = `${endPoint}/aggregate`;
-        await apiUtils.fetchPost<void>(url, null);
+        return await apiUtils.fetchPost<SalesAggregateResponse>(url, {});
     };
 
     return {
