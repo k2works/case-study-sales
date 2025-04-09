@@ -181,7 +181,7 @@ class SalesServiceTest {
                             "99999999",
                             "商品1",
                             1000,
-                            10000,
+                            10,
                             10,
                             10,
                             null,

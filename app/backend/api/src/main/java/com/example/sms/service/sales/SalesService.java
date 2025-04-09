@@ -103,7 +103,7 @@ public class SalesService {
                             shipping.getProductCode().getValue(),
                             shipping.getProductName(),
                             shipping.getSalesUnitPrice().getAmount(),
-                            shipping.getSalesAmount().getValue().getAmount(),
+                            shipping.getOrderQuantity().getAmount(),
                             shipping.getShippedQuantity().getAmount(),
                             shipping.getDiscountAmount().getAmount(),
                             null,
