@@ -225,6 +225,10 @@ public class ShippingDataSource implements ShippingRepository {
                 }
             }
         }
+        if (criteria.getCompletionFlag() != null) {
+            CompletionFlag checkFlag = CompletionFlag.of(criteria.getCompletionFlag() ? 1 : 0);
+            shippings.removeIf(shipping -> !shipping.getCompletionFlag().equals(checkFlag));
+        }
 
         return new PageInfo<>(shippings);
     }
@@ -245,6 +249,10 @@ public class ShippingDataSource implements ShippingRepository {
                     shippings.add(shippingEntityMapper.mapToDomainModel(salesOrderCustomEntity, salesOrderLineCustomEntity));
                 }
             }
+        }
+        if (criteria.getCompletionFlag() != null) {
+            CompletionFlag checkFlag = CompletionFlag.of(criteria.getCompletionFlag() ? 1 : 0);
+            shippings.removeIf(shipping -> !shipping.getCompletionFlag().equals(checkFlag));
         }
 
         return shippingEntityMapper.mapToShippingList(shippings);
