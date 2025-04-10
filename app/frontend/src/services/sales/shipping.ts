@@ -20,6 +20,7 @@ export interface ShippingServiceType {
     save: (shipping: ShippingType) => Promise<void>;
     search: (criteria: ShippingCriteriaType, page?: number, pageSize?: number) => Promise<ShippingPageInfoType>;
     orderShipping: (criteria: ShippingCriteriaType) => Promise<void>;
+    confirmShipping: (criteria: ShippingCriteriaType) => Promise<void>;
     checkRule: () => Promise<ShippingRuleCheckResponse>;
 }
 
@@ -52,6 +53,11 @@ export const ShippingService = () => {
         await apiUtils.fetchPost<void>(url, mapToShippingCriteriaResource(criteria));
     };
 
+    const confirmShipping = async (criteria: ShippingCriteriaType): Promise<void> => {
+        const url = `${endPoint}/confirm-shipping`;
+        await apiUtils.fetchPost<void>(url, mapToShippingCriteriaResource(criteria));
+    };
+
     const checkRule = async (): Promise<ShippingRuleCheckResponse> => {
         const url = `${endPoint}/check`;
         return await apiUtils.fetchPost<ShippingRuleCheckResponse>(url, {});
@@ -63,6 +69,7 @@ export const ShippingService = () => {
         save,
         search,
         orderShipping,
+        confirmShipping,
         checkRule
     };
 }
