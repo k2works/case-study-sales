@@ -28,6 +28,10 @@ const ShippingItem: React.FC<ShippingItemProps> = ({shipping, onEdit}) => (
             <div className="collection-object-item-content-name">{shipping.productName}</div>
         </div>
         <div className="collection-object-item-content" data-id={shipping.orderNumber}>
+            <div className="collection-object-item-content-details">受注数量</div>
+            <div className="collection-object-item-content-name">{shipping.orderQuantity}</div>
+        </div>
+        <div className="collection-object-item-content" data-id={shipping.orderNumber}>
             <div className="collection-object-item-content-details">出荷指示数量</div>
             <div className="collection-object-item-content-name">{shipping.shipmentInstructionQuantity}</div>
         </div>

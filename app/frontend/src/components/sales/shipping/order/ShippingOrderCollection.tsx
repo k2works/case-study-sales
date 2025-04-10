@@ -74,7 +74,7 @@ export const ShippingOrderCollection: React.FC = () => {
         }
         try {
             await shippingService.orderShipping(searchShippingCriteria);
-            setMessage("出荷を確定しました。");
+            setMessage("出荷を指示しました。");
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : '不明なエラーが発生しました';
             console.error('Rule check failed:', errorMessage);
