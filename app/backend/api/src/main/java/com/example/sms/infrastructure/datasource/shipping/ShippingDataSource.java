@@ -259,7 +259,7 @@ public class ShippingDataSource implements ShippingRepository {
     }
 
     @Override
-    public void orderShipping(ShippingList shippingList) {
+    public void updateSalesOrderLine(ShippingList shippingList) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication != null && authentication.getName() != null ? authentication.getName() : "system";
 
@@ -276,7 +276,10 @@ public class ShippingDataSource implements ShippingRepository {
                                 key.set受注番号(shipping.getOrderNumber().getValue());
                                 key.set受注行番号(shipping.getOrderLineNumber());
                                 受注データ明細 salesOrderLineData = shippingEntityMapper.mapToEntity(key, shipping);
-                                salesOrderLineData.set完了フラグ(CompletionFlag.完了.getValue());
+                                if (shipping.getOrderQuantity().getAmount() == shipping.getShipmentInstructionQuantity().getAmount() &&
+                                        shipping.getShipmentInstructionQuantity().getAmount() == shipping.getShippedQuantity().getAmount()) {
+                                    salesOrderLineData.set完了フラグ(CompletionFlag.完了.getValue());
+                                }
                                 salesOrderLineData.set作成日時(salesOrderLineEntity.get作成日時());
                                 salesOrderLineData.set作成者名(salesOrderLineEntity.get作成者名());
                                 salesOrderLineData.set更新日時(LocalDateTime.now());

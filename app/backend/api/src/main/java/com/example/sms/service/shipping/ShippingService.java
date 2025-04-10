@@ -66,7 +66,14 @@ public class ShippingService {
      * 出荷指示
      */
     public void orderShipping(ShippingList shippingList) {
-        shippingRepository.orderShipping(shippingList);
+        shippingRepository.updateSalesOrderLine(shippingList);
+    }
+
+    /**
+     * 出荷確認
+     */
+    public void confirmShipping(ShippingList shippingList) {
+        shippingRepository.updateSalesOrderLine(shippingList);
     }
 
     /**

@@ -26,7 +26,7 @@ public interface ShippingRepository {
 
     PageInfo<Shipping> searchWithPageInfo(ShippingCriteria shippingCriteria, SalesOrderCriteria salesOrderCriteria);
 
-    void orderShipping(ShippingList shippingList);
+    void updateSalesOrderLine(ShippingList shippingList);
 
     ShippingList search(ShippingCriteria criteria, SalesOrderCriteria salesOrderCriteria);
 }

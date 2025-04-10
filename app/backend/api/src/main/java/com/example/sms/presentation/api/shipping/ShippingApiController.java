@@ -115,6 +115,22 @@ public class ShippingApiController {
         }
     }
 
+    @Operation(summary = "出荷を確認する", description = "指定された検索条件で出荷確認をします。")
+    @PostMapping("/confirm-shipping")
+    @AuditAnnotation(process = ApplicationExecutionProcessType.出荷登録, type = ApplicationExecutionHistoryType.同期)
+    public ResponseEntity<?> confirmShipping(
+            @RequestBody ShippingCriteriaResource resource )
+    {
+        try {
+            ShippingCriteria criteria = ShippingResourceDTOMapper.convertToCriteria(resource);
+            ShippingList shippingList = shippingService.search(criteria);
+            shippingService.confirmShipping(shippingList);
+            return ResponseEntity.ok(new MessageResponse(message.getMessage("success.shipping-confirm.exec")));
+        } catch (BusinessException | IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
+    }
+
     @Operation(summary = "出荷ルールを確認する", description = "出荷ルール確認を実行する")
     @PostMapping("/check")
     @AuditAnnotation(process = ApplicationExecutionProcessType.その他, type = ApplicationExecutionHistoryType.同期)

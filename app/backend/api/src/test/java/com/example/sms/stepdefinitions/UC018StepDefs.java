@@ -3,11 +3,9 @@ package com.example.sms.stepdefinitions;
 import com.example.sms.TestDataFactory;
 import com.example.sms.presentation.api.shipping.ShippingCriteriaResource;
 import com.example.sms.presentation.api.shipping.ShippingResource;
-import com.example.sms.stepdefinitions.utils.ListResponse;
 import com.example.sms.stepdefinitions.utils.MessageResponse;
 import com.example.sms.stepdefinitions.utils.SpringAcceptanceTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.cucumber.java.ja.ならば;
@@ -18,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -139,6 +136,18 @@ public class UC018StepDefs extends SpringAcceptanceTest {
         String json = objectMapper.writeValueAsString(resource);
 
         executePost(SHIPPING_API_URL + "/order-shipping", json);
+    }
+
+    @もし(":UC018 受注番号 {string} で出荷確認を行う")
+    public void confirmShipping(String orderNumber) throws JsonProcessingException {
+        ShippingCriteriaResource resource = new ShippingCriteriaResource();
+        resource.setOrderNumber(orderNumber);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        String json = objectMapper.writeValueAsString(resource);
+
+        executePost(SHIPPING_API_URL + "/confirm-shipping", json);
     }
 
     private static @NotNull ShippingResource getShippingResource(String orderNumber) {
