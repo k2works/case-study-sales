@@ -24,7 +24,6 @@ public class ShippingDomainService {
         List<Map<String, String>> checkList = new ArrayList<>();
 
         List<Shipping> shippingList = shippings.asList();
-        ShippingRule shipmentQuantityRule = new ShipmentQuantityRule();
         ShippingRule shipmentDeliveryOverDueRule = new ShipmentDeliveryOverDueRule();
 
         BiConsumer<String, String> addCheck = (orderNumber, message) -> {
@@ -34,9 +33,6 @@ public class ShippingDomainService {
         };
 
         shippingList.forEach(shipping -> {
-            if (shipmentQuantityRule.isSatisfiedBy(shipping)) {
-                addCheck.accept(shipping.getOrderNumber().getValue(), "出荷数量が受注数量を超えています。");
-            }
             if (shipmentDeliveryOverDueRule.isSatisfiedBy(shipping)) {
                 addCheck.accept(shipping.getOrderNumber().getValue(), "納期を超過しています。");
             }

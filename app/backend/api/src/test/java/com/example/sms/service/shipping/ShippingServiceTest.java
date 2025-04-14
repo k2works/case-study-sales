@@ -173,49 +173,6 @@ class ShippingServiceTest {
         }
 
         @Test
-        @DisplayName("出荷数量が受注数量を超えている場合")
-        void shouldCheckShippingRules() {
-            SalesOrder salesOrder = TestDataFactoryImpl.getSalesOrder("1000000009");
-            SalesOrderLine salesOrderLine = TestDataFactoryImpl.getSalesOrderLine("1000000009", 1);
-            SalesOrderLine newSalesOrderLine = SalesOrderLine.of(
-                    salesOrderLine.getOrderNumber().getValue(),
-                    salesOrderLine.getOrderLineNumber(),
-                    salesOrderLine.getProductCode().getValue(),
-                    salesOrderLine.getProductName(),
-                    salesOrderLine.getSalesUnitPrice().getAmount(),
-                    1,
-                    salesOrderLine.getTaxRate().getRate(),
-                    salesOrderLine.getAllocationQuantity().getAmount(),
-                    salesOrderLine.getShipmentInstructionQuantity().getAmount(),
-                    10,
-                    CompletionFlag.未完了.getValue(),
-                    salesOrderLine.getDiscountAmount().getAmount(),
-                    LocalDateTime.now().plus(10, ChronoUnit.DAYS)
-            );
-            SalesOrder newSalesOrder = SalesOrder.of(
-                    salesOrder.getOrderNumber().getValue(),
-                    salesOrder.getOrderDate().getValue(),
-                    salesOrder.getDepartmentCode().getValue(),
-                    salesOrder.getDepartmentStartDate(),
-                    salesOrder.getCustomerCode().getCode().getValue(),
-                    salesOrder.getCustomerCode().getBranchNumber(),
-                    salesOrder.getEmployeeCode().getValue(),
-                    salesOrder.getDesiredDeliveryDate().getValue(),
-                    salesOrder.getCustomerOrderNumber(),
-                    salesOrder.getWarehouseCode(),
-                    salesOrder.getTotalOrderAmount().getAmount(),
-                    salesOrder.getTotalConsumptionTax().getAmount(),
-                    salesOrder.getRemarks(),
-                    List.of(newSalesOrderLine)
-            );
-            salesOrderService.save(newSalesOrder);
-
-            ShippingRuleCheckList checkList = shippingService.checkRule();
-            assertNotNull(checkList);
-            assertTrue(checkList.asList().getFirst().containsValue("出荷数量が受注数量を超えています。"));
-        }
-
-        @Test
         @DisplayName("納期を超過している場合")
         void shouldCheckShippingOverdue() {
             SalesOrder salesOrder = TestDataFactoryImpl.getSalesOrder("1000000009");

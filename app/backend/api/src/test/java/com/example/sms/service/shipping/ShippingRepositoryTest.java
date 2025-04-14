@@ -84,7 +84,6 @@ class ShippingRepositoryTest {
                 salesOrderLine.getAllocationQuantity(),
                 salesOrderLine.getShipmentInstructionQuantity(),
                 salesOrderLine.getShippedQuantity(),
-                salesOrderLine.getCompletionFlag(),
                 salesOrderLine.getDiscountAmount(),
                 salesOrderLine.getDeliveryDate(),
                 salesOrderLine.getProduct(),

@@ -207,7 +207,6 @@ public class ShippingEntityMapper {
                 Quantity.of(salesOrderLineCustomEntity.get引当数量()),
                 Quantity.of(salesOrderLineCustomEntity.get出荷指示数量()),
                 Quantity.of(salesOrderLineCustomEntity.get出荷済数量()),
-                CompletionFlag.of(salesOrderLineCustomEntity.get完了フラグ()),
                 discountAmount,
                 DeliveryDate.of(salesOrderLineCustomEntity.get納期()),
                 Objects.nonNull(salesOrderLineCustomEntity.get商品マスタ()) ? mapToProduct.apply(salesOrderLineCustomEntity.get商品マスタ()) : null,

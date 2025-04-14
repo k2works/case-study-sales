@@ -83,7 +83,6 @@ public class Shipping {
             Quantity allocationQuantity,
             Quantity shipmentInstructionQuantity,
             Quantity shippedQuantity,
-            CompletionFlag completionFlag,
             Money discountAmount,
             DeliveryDate deliveryDate,
             Product product,
@@ -92,6 +91,12 @@ public class Shipping {
             Department department,
             Customer customer,
             Employee employee) {
+
+        isTrue(orderQuantity.getAmount() >= shipmentInstructionQuantity.getAmount(), "受注数量より出荷指示数量が多いです。");
+        isTrue(orderQuantity.getAmount() >= shippedQuantity.getAmount(), "受注数量より出荷済数量が多いです。");
+        isTrue(shipmentInstructionQuantity.getAmount() >= shippedQuantity.getAmount(), "受注指示数量より出荷済数量が多いです。");
+
+        CompletionFlag status = orderQuantity.getAmount() == shippedQuantity.getAmount() ? CompletionFlag.完了 : CompletionFlag.未完了;
 
         return new Shipping(
                 orderNumber,
@@ -115,7 +120,7 @@ public class Shipping {
                 allocationQuantity,
                 shipmentInstructionQuantity,
                 shippedQuantity,
-                completionFlag,
+                status,
                 discountAmount,
                 deliveryDate,
                 product,

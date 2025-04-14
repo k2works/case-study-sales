@@ -46,7 +46,6 @@ public class ShippingResourceDTOMapper {
                 Quantity.of(Optional.ofNullable(resource.getAllocationQuantity()).orElse(0)),
                 Quantity.of(Optional.ofNullable(resource.getShipmentInstructionQuantity()).orElse(0)),
                 Quantity.of(Optional.ofNullable(resource.getShippedQuantity()).orElse(0)),
-                CompletionFlag.of(resource.getCompletionFlag() ? 1 : 0),
                 Money.of(Optional.ofNullable(resource.getDiscountAmount()).orElse(0)),
                 DeliveryDate.of(resource.getDeliveryDate()),
                 null, // product
