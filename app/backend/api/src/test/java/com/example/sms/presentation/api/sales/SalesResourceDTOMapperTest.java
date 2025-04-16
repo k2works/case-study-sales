@@ -17,8 +17,8 @@ class SalesResourceDTOMapperTest {
     @DisplayName("売上リソースを売上エンティティに変換する")
     void testConvertToEntity_validResource_shouldReturnSales() {
         // Arrange
-        String salesNumber = "1001";
-        String orderNumber = "ORD001";
+        String salesNumber = "S123456789";
+        String orderNumber = "1234567890";
         LocalDateTime salesDate = LocalDateTime.now();
         Integer salesCategory = 1;
         String departmentCode = "DPT001";
@@ -67,8 +67,8 @@ class SalesResourceDTOMapperTest {
 
         // Assert
         assertNotNull(sales);
-        assertEquals(salesNumber, sales.getSalesNumber());
-        assertEquals(orderNumber, sales.getOrderNumber());
+        assertEquals(salesNumber, sales.getSalesNumber().getValue());
+        assertEquals(orderNumber, sales.getOrderNumber().getValue());
         assertEquals(salesDate, sales.getSalesDate());
         assertEquals(salesCategory, sales.getSalesCategory());
         assertEquals(departmentCode, sales.getDepartmentCode());
@@ -86,7 +86,7 @@ class SalesResourceDTOMapperTest {
     @DisplayName("売上検索条件リソースを売上検索条件に変換する")
     void testConvertToCriteria_validResource_shouldReturnSalesCriteria() {
         // Arrange
-        String salesNumber = "1001";
+        String salesNumber = "S123456789";
         String orderNumber = "ORD001";
         String salesDate = "2023-10-01";
         String departmentCode = "DPT001";

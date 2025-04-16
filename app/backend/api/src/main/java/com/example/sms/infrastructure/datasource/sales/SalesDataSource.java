@@ -53,7 +53,7 @@ public class SalesDataSource implements SalesRepository {
     public void save(Sales sales) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication != null && authentication.getName() != null ? authentication.getName() : "system";
-        Optional<SalesCustomEntity> salesEntity = Optional.ofNullable(salesCustomMapper.selectByPrimaryKey(sales.getSalesNumber()));
+        Optional<SalesCustomEntity> salesEntity = Optional.ofNullable(salesCustomMapper.selectByPrimaryKey(sales.getSalesNumber().getValue()));
 
         if (salesEntity.isEmpty()) {
             createSales(sales, username);
@@ -78,11 +78,11 @@ public class SalesDataSource implements SalesRepository {
         }
 
         if (sales.getSalesLines() != null) {
-            salesLineCustomMapper.deleteBySalesNumber(sales.getSalesNumber());
+            salesLineCustomMapper.deleteBySalesNumber(sales.getSalesNumber().getValue());
             AtomicInteger index = new AtomicInteger(1);
             sales.getSalesLines().forEach(salesLine -> {
                 売上データ明細Key key = new 売上データ明細Key();
-                key.set売上番号(sales.getSalesNumber());
+                key.set売上番号(sales.getSalesNumber().getValue());
                 key.set売上行番号(index.getAndIncrement());
                 売上データ明細 salesLineData = salesEntityMapper.mapToEntity(key, salesLine);
                 salesLineData.set作成日時(LocalDateTime.now());
@@ -103,11 +103,11 @@ public class SalesDataSource implements SalesRepository {
         salesCustomMapper.insertForOptimisticLock(salesData);
 
         if (sales.getSalesLines() != null) {
-            salesLineCustomMapper.deleteBySalesNumber(sales.getSalesNumber());
+            salesLineCustomMapper.deleteBySalesNumber(sales.getSalesNumber().getValue());
             AtomicInteger index = new AtomicInteger(1);
             売上データ明細Key key = new 売上データ明細Key();
             sales.getSalesLines().forEach(salesLine -> {
-                key.set売上番号(sales.getSalesNumber());
+                key.set売上番号(sales.getSalesNumber().getValue());
                 key.set売上行番号(index.getAndIncrement());
                 売上データ明細 salesLineData = salesEntityMapper.mapToEntity(key, salesLine);
                 salesLineData.set作成日時(LocalDateTime.now());
@@ -140,12 +140,12 @@ public class SalesDataSource implements SalesRepository {
         if (!sales.getSalesLines().isEmpty()) {
             sales.getSalesLines().forEach(salesLine -> {
                 売上データ明細Key key = new 売上データ明細Key();
-                key.set売上番号(sales.getSalesNumber());
+                key.set売上番号(sales.getSalesNumber().getValue());
                 key.set売上行番号(salesLine.getSalesLineNumber());
                 salesLineMapper.deleteByPrimaryKey(key);
             });
         }
-        salesMapper.deleteByPrimaryKey(sales.getSalesNumber());
+        salesMapper.deleteByPrimaryKey(sales.getSalesNumber().getValue());
     }
 
     @Override

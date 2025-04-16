@@ -70,7 +70,7 @@ public class SalesApiController {
     public ResponseEntity<?> create(@RequestBody SalesResource resource) {
         try {
             Sales sales = SalesResourceDTOMapper.convertToEntity(resource);
-            if (salesService.find(sales.getSalesNumber()) != null) {
+            if (salesService.find(sales.getSalesNumber().getValue()) != null) {
                 return ResponseEntity.badRequest().body(new MessageResponse(message.getMessage("error.sales.already.exist")));
             }
             salesService.register(sales);

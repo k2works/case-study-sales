@@ -58,7 +58,7 @@ class SalesServiceTest {
         @DisplayName("売上を新規登録できる")
         void shouldRegisterNewSales() {
             SalesLine salesLine = new SalesLine(
-                    "10001",
+                    "S000000009",
                     1,
                     "P001",
                     "Product 1",
@@ -75,8 +75,8 @@ class SalesServiceTest {
             );
 
             Sales newSales = Sales.of(
-                    "S1001",
-                    "O1001",
+                    "S000000009",
+                    "1000000001",
                     LocalDateTime.now(),
                     1,
                     "D001",
@@ -93,7 +93,7 @@ class SalesServiceTest {
 
             SalesList result = salesService.selectAll();
             assertEquals(4, result.asList().size());
-            Sales sales = salesService.find(newSales.getSalesNumber());
+            Sales sales = salesService.find(newSales.getSalesNumber().getValue());
             assertEquals(newSales.getSalesNumber(), sales.getSalesNumber());
             assertEquals(1, sales.getSalesLines().size());
         }
@@ -101,12 +101,12 @@ class SalesServiceTest {
         @Test
         @DisplayName("売上情報を編集できる")
         void shouldEditSalesDetails() {
-            Sales sales = TestDataFactoryImpl.getSales("1000000010");
+            Sales sales = TestDataFactoryImpl.getSales("S000000010");
             salesService.register(sales);
 
             Sales updatedSales = Sales.of(
-                    sales.getSalesNumber(),
-                    sales.getOrderNumber(),
+                    sales.getSalesNumber().getValue(),
+                    sales.getOrderNumber().getValue(),
                     LocalDateTime.of(2025, 10, 1, 0, 0),
                     sales.getSalesCategory(),
                     sales.getDepartmentCode(),
@@ -121,7 +121,7 @@ class SalesServiceTest {
 
             salesService.save(updatedSales);
 
-            Sales result = salesService.find(sales.getSalesNumber());
+            Sales result = salesService.find(sales.getSalesNumber().getValue());
             assertEquals("Updated remarks", result.getRemarks());
             assertEquals(updatedSales, result);
         }
@@ -129,7 +129,7 @@ class SalesServiceTest {
         @Test
         @DisplayName("売上を削除できる")
         void shouldDeleteSales() {
-            Sales sales = TestDataFactoryImpl.getSales("1000000010");
+            Sales sales = TestDataFactoryImpl.getSales("S000000010");
             salesService.register(sales);
 
             salesService.delete(sales);
@@ -142,10 +142,10 @@ class SalesServiceTest {
         @DisplayName("条件付きで売上を検索できる (ページング)")
         void shouldSearchSalesWithPaging() {
             String departmentCode = "90000";
-            Sales sales = TestDataFactoryImpl.getSales("1000000010");
+            Sales sales = TestDataFactoryImpl.getSales("S000000010");
             Sales newSales = Sales.of(
-                    sales.getSalesNumber(),
-                    sales.getOrderNumber(),
+                    sales.getSalesNumber().getValue(),
+                    sales.getOrderNumber().getValue(),
                     sales.getSalesDate(),
                     sales.getSalesCategory(),
                     departmentCode, // 部門コードを条件に設定
@@ -173,7 +173,7 @@ class SalesServiceTest {
         @Test
         @DisplayName("売上を集計できる")
         void shouldAggregateSales() {
-            String salesNumber = "1000000001";
+            String salesNumber = "S000000001";
             List<SalesLine> salesLines = IntStream.range(1, 4)
                     .mapToObj(lineNumber -> SalesLine.of(
                             salesNumber,

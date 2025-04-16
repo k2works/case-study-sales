@@ -2,7 +2,6 @@ package com.example.sms.domain.model.sales_order;
 
 import com.example.sms.domain.type.money.Money;
 import org.junit.jupiter.api.*;
-import org.testcontainers.shaded.org.checkerframework.checker.units.qual.N;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -89,7 +88,7 @@ class SalesOrderTest {
     @DisplayName("受注番号")
     class OrderNumberTest {
         @Test
-        @DisplayName("注文番号は注文番号は10桁の数字で作成できる")
+        @DisplayName("注文番号は10桁の数字で作成できる")
         void shouldCreateEmployeeCode() {
             assertDoesNotThrow(() -> OrderNumber.of("1234567890"));
             assertThrows(IllegalArgumentException.class, () -> OrderNumber.of("ORD1234567"));

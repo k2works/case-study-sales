@@ -449,7 +449,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
             // 売上エンティティの作成
             Sales newSales = Sales.of(
                     salesNumber,
-                    salesNumber.replace("s", "o"), // 仮登録用の受注番号
+                    salesNumber.replace("S", "1"), // 仮登録用の受注番号
                     LocalDateTime.now(), // 売上日
                     1, // 売上区分
                     department.getDepartmentId().getDeptCode().getValue(), // 部門コード

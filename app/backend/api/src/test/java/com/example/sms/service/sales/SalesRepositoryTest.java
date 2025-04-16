@@ -77,7 +77,7 @@ class SalesRepositoryTest {
             Sales sales = getSales("S000000001");
             repository.save(sales);
 
-            Optional<Sales> actual = repository.findById(sales.getSalesNumber());
+            Optional<Sales> actual = repository.findById(sales.getSalesNumber().getValue());
             assertEquals(sales, actual.orElse(null));
         }
 
@@ -106,7 +106,7 @@ class SalesRepositoryTest {
 
             repository.save(updatedSales);
 
-            Optional<Sales> actual = repository.findById(sales.getSalesNumber());
+            Optional<Sales> actual = repository.findById(sales.getSalesNumber().getValue());
             assertEquals(updatedSales, actual.orElse(null));
         }
 
@@ -131,10 +131,10 @@ class SalesRepositoryTest {
         @DisplayName("売上明細を登録できる")
         void shouldRegisterSalesLine() {
             Sales sales = getSales("S000000001");
-            SalesLine salesLine = getSalesLine(sales.getSalesNumber(), 1);
+            SalesLine salesLine = getSalesLine(sales.getSalesNumber().getValue(), 1);
             Sales newSales = Sales.of(
-                    sales.getSalesNumber(),
-                    sales.getOrderNumber(),
+                    sales.getSalesNumber().getValue(),
+                    sales.getOrderNumber().getValue(),
                     sales.getSalesDate(),
                     sales.getSalesCategory(),
                     sales.getDepartmentCode(),
@@ -149,7 +149,7 @@ class SalesRepositoryTest {
 
             repository.save(newSales);
 
-            Optional<Sales> actual = repository.findById(newSales.getSalesNumber());
+            Optional<Sales> actual = repository.findById(newSales.getSalesNumber().getValue());
             assertEquals(salesLine, actual.orElse(null).getSalesLines().getFirst());
         }
 
@@ -157,10 +157,10 @@ class SalesRepositoryTest {
         @DisplayName("売上明細を更新できる")
         void shouldUpdateSalesLine() {
             Sales sales = getSales("S000000001");
-            SalesLine salesLine = getSalesLine(sales.getSalesNumber(), 1);
+            SalesLine salesLine = getSalesLine(sales.getSalesNumber().getValue(), 1);
             Sales newSales = Sales.of(
-                    sales.getSalesNumber(),
-                    sales.getOrderNumber(),
+                    sales.getSalesNumber().getValue(),
+                    sales.getOrderNumber().getValue(),
                     sales.getSalesDate(),
                     sales.getSalesCategory(),
                     sales.getDepartmentCode(),
@@ -189,8 +189,8 @@ class SalesRepositoryTest {
                     salesLine.getAutoJournalDate()
             );
             Sales updateNewSales = Sales.of(
-                    sales.getSalesNumber(),
-                    sales.getOrderNumber(),
+                    sales.getSalesNumber().getValue(),
+                    sales.getOrderNumber().getValue(),
                     sales.getSalesDate(),
                     sales.getSalesCategory(),
                     sales.getDepartmentCode(),
@@ -205,7 +205,7 @@ class SalesRepositoryTest {
 
             repository.save(updateNewSales);
 
-            Optional<Sales> actual = repository.findById(updateNewSales.getSalesNumber());
+            Optional<Sales> actual = repository.findById(updateNewSales.getSalesNumber().getValue());
             assertEquals(updatedSalesLine, actual.orElse(null).getSalesLines().getFirst());
         }
 
@@ -213,10 +213,10 @@ class SalesRepositoryTest {
         @DisplayName("売上明細を削除できる")
         void shouldDeleteSalesLine() {
             Sales sales = getSales("S000000001");
-            SalesLine salesLine = getSalesLine(sales.getSalesNumber(), 1);
+            SalesLine salesLine = getSalesLine(sales.getSalesNumber().getValue(), 1);
             Sales newSales = Sales.of(
-                    sales.getSalesNumber(),
-                    sales.getOrderNumber(),
+                    sales.getSalesNumber().getValue(),
+                    sales.getOrderNumber().getValue(),
                     sales.getSalesDate(),
                     sales.getSalesCategory(),
                     sales.getDepartmentCode(),
@@ -230,9 +230,9 @@ class SalesRepositoryTest {
             );
             repository.save(newSales);
 
-            repository.findById(newSales.getSalesNumber()).ifPresent(s -> repository.delete(s));
+            repository.findById(newSales.getSalesNumber().getValue()).ifPresent(s -> repository.delete(s));
 
-            Optional<Sales> actual  = repository.findById(sales.getSalesNumber());
+            Optional<Sales> actual  = repository.findById(sales.getSalesNumber().getValue());
             assertEquals(Optional.empty(), actual);
         }
     }

@@ -98,9 +98,12 @@ public class SalesService {
                     .filter(shipping -> Objects.equals(shipping.getOrderNumber().getValue(), orderNumber))
                     .toList();
 
+            //TODO:売上番号は自動生成するように修正
+            String  salesNumber = "S" + orderNumber.substring(1);
+
             List<SalesLine> salesLines = shippingListByOrderNumber.stream()
                     .map(shipping -> SalesLine.of(
-                            shipping.getOrderNumber().getValue(),
+                            salesNumber,
                             shipping.getOrderLineNumber(),
                             shipping.getProductCode().getValue(),
                             shipping.getProductName(),
@@ -117,7 +120,7 @@ public class SalesService {
 
             Shipping shipping = shippingListByOrderNumber.getFirst();
             Sales sales = Sales.of(
-                    shipping.getOrderNumber().getValue(),
+                    salesNumber,
                     shipping.getOrderNumber().getValue(),
                     shipping.getDeliveryDate().getValue(),
                     null,

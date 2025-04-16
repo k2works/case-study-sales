@@ -23,8 +23,8 @@ public class SalesEntityMapper {
         売上データ salesEntity = new 売上データ();
 
         // 各プロパティにnullチェックを追加
-        salesEntity.set売上番号(sales.getSalesNumber());
-        salesEntity.set受注番号(sales.getOrderNumber());
+        salesEntity.set売上番号(sales.getSalesNumber().getValue());
+        salesEntity.set受注番号(sales.getOrderNumber().getValue());
         salesEntity.set売上日(sales.getSalesDate());
         salesEntity.set売上区分(sales.getSalesCategory());
         salesEntity.set部門コード(sales.getDepartmentCode());

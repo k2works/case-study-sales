@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.sales;
 
+import com.example.sms.domain.model.sales_order.OrderNumber;
 import com.example.sms.domain.type.money.Money;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -15,8 +16,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 public class Sales {
-    String salesNumber; // 売上番号
-    String orderNumber; // 受注番号
+    SalesNumber salesNumber; // 売上番号
+    OrderNumber orderNumber; // 受注番号
     LocalDateTime salesDate; // 売上日
     Integer salesCategory; // 売上区分
     String departmentCode; // 部門コード
@@ -46,8 +47,8 @@ public class Sales {
                 .reduce(Money.of(0), Money::plusMoney);
 
         return new Sales(
-                salesNumber,
-                orderNumber,
+                SalesNumber.of(salesNumber),
+                OrderNumber.of(orderNumber),
                 salesDate,
                 salesCategory,
                 departmentCode,

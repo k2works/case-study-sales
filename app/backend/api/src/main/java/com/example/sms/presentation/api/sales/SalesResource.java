@@ -60,8 +60,8 @@ public class SalesResource {
      */
     public static SalesResource from(Sales sales) {
         SalesResource resource = new SalesResource();
-        resource.setSalesNumber(sales.getSalesNumber());
-        resource.setOrderNumber(sales.getOrderNumber());
+        resource.setSalesNumber(sales.getSalesNumber().getValue());
+        resource.setOrderNumber(sales.getOrderNumber().getValue());
         resource.setSalesDate(sales.getSalesDate());
         resource.setSalesCategory(sales.getSalesCategory());
         resource.setDepartmentCode(sales.getDepartmentCode());
