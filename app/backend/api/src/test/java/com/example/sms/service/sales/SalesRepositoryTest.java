@@ -183,7 +183,7 @@ class SalesRepositoryTest {
                     2, // 出荷数量を変更
                     0, // 割引額を変更
                     salesLine.getBillingDate().getValue(),
-                    salesLine.getBillingNumber(),
+                    salesLine.getBillingNumber().getValue(),
                     salesLine.getBillingDelayCategory(),
                     salesLine.getAutoJournalDate()
             );

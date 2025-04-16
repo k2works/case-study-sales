@@ -1,0 +1,25 @@
+package com.example.sms.domain.model.sales;
+
+import lombok.NoArgsConstructor;
+import lombok.Value;
+
+import static io.jsonwebtoken.lang.Assert.notNull;
+
+/**
+ * 請求番号
+ */
+@Value
+@NoArgsConstructor(force = true)
+public class BillingNumber {
+    String value;
+
+    public BillingNumber(String billingNumber) {
+        notNull(billingNumber, "請求番号は必須です");
+
+        this.value = billingNumber;
+    }
+
+    public static BillingNumber of(String billingNumber) {
+        return new BillingNumber(billingNumber);
+    }
+}

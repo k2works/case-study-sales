@@ -28,7 +28,7 @@ public class SalesLine {
     Quantity shippedQuantity; // 出荷数量
     Money discountAmount; // 値引金額
     BillingDate billingDate; // 請求日
-    String billingNumber; // 請求番号
+    BillingNumber billingNumber; // 請求番号
     Integer billingDelayCategory; // 請求遅延区分
     LocalDateTime autoJournalDate; // 自動仕訳日
 
@@ -59,7 +59,7 @@ public class SalesLine {
                 Quantity.of(shippedQuantity),
                 Money.of(discountAmount),
                 billingDate == null ? null : BillingDate.of(billingDate),
-                billingNumber,
+                billingNumber == null ? null : BillingNumber.of(billingNumber),
                 billingDelayCategory,
                 autoJournalDate,
                 calcSalesAmount,

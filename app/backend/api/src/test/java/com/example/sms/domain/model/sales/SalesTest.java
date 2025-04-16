@@ -93,7 +93,7 @@ class SalesTest {
                     () -> assertEquals(2, line.getShippedQuantity().getAmount()),
                     () -> assertEquals(100, line.getDiscountAmount().getAmount()),
                     () -> assertNotNull(line.getBillingDate()),
-                    () -> assertEquals("B12345", line.getBillingNumber()),
+                    () -> assertEquals("B12345", line.getBillingNumber().getValue()),
                     () -> assertEquals(1, line.getBillingDelayCategory())
             );
         }
