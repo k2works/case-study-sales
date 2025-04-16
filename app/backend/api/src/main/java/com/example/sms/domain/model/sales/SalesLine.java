@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 public class SalesLine {
-    String salesNumber; // 売上番号
+    SalesNumber salesNumber; // 売上番号
     Integer salesLineNumber; // 売上行番号
     String productCode; // 商品コード
     String productName; // 商品名
@@ -49,7 +49,7 @@ public class SalesLine {
         ConsumptionTaxAmount calcConsumptionTaxAmount = ConsumptionTaxAmount.of(calcSalesAmount, TaxRateType.of(10)); // 例: 10%固定税率
 
         return new SalesLine(
-                salesNumber,
+                SalesNumber.of(salesNumber),
                 salesLineNumber,
                 productCode,
                 productName,

@@ -63,7 +63,7 @@ public class SalesEntityMapper {
 
     public 売上データ明細Key mapToKey(SalesLine salesLine) {
         売上データ明細Key key = new 売上データ明細Key();
-        key.set売上番号(salesLine.getSalesNumber());
+        key.set売上番号(salesLine.getSalesNumber().getValue());
         key.set売上行番号(salesLine.getSalesLineNumber());
         return key;
     }

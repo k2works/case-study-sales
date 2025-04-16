@@ -43,6 +43,7 @@ import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.IntFunction;
 import java.util.stream.IntStream;
 
 @Component
@@ -428,21 +429,19 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
             // 売上明細の準備
             List<SalesLine> salesLines = IntStream.range(1, 4)
-                    .mapToObj(lineNumber -> new SalesLine(
+                    .mapToObj((IntFunction<SalesLine>) lineNumber -> SalesLine.of(
                             salesNumber,
                             lineNumber,
                             "99999999", // 商品コード
                             "商品1",    // 商品名
-                            Money.of(800), // 売上単価
-                            Quantity.of(10), // 売上数量
-                            Quantity.of(10), // 出荷数量
-                            Money.of(0), // 値引金額
+                            800, // 売上単価
+                            10, // 売上数量
+                            10, // 出荷数量
+                            0, // 値引金額
                             LocalDateTime.now(), // 請求日
                             "B001", // 請求番号
                             0, // 請求遅延区分
-                            LocalDateTime.now(), // 自動仕訳日
-                            SalesAmount.of(Money.of(10000), Quantity.of(10)), // 明細売上金額
-                            ConsumptionTaxAmount.of(SalesAmount.of(Money.of(10000), Quantity.of(10)), TaxRateType.標準税率) // 明細消費税金額
+                            LocalDateTime.now() // 自動仕訳日
                     ))
                     .toList();
 

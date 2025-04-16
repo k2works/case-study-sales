@@ -174,7 +174,7 @@ class SalesRepositoryTest {
             repository.save(newSales);
 
             SalesLine updatedSalesLine = SalesLine.of(
-                    salesLine.getSalesNumber(),
+                    salesLine.getSalesNumber().getValue(),
                     salesLine.getSalesLineNumber(),
                     salesLine.getProductCode(),
                     salesLine.getProductName(),

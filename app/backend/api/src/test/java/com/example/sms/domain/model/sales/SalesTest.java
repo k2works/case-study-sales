@@ -69,7 +69,7 @@ class SalesTest {
         @DisplayName("売上明細を作成できる")
         void shouldCreateSalesLine() {
             SalesLine line = SalesLine.of(
-                    "S1234567890",
+                    "S123456789",
                     1,
                     "P12345",
                     "テスト商品",
@@ -84,7 +84,7 @@ class SalesTest {
             );
 
             assertAll(
-                    () -> assertEquals("S1234567890", line.getSalesNumber()),
+                    () -> assertEquals("S123456789", line.getSalesNumber().getValue()),
                     () -> assertEquals(1, line.getSalesLineNumber()),
                     () -> assertEquals("P12345", line.getProductCode()),
                     () -> assertEquals("テスト商品", line.getProductName()),
@@ -102,7 +102,7 @@ class SalesTest {
         @DisplayName("売上金額を計算できる")
         void shouldCalculateSalesAmount() {
             SalesLine line = SalesLine.of(
-                    "S1234567890",
+                    "S123456789",
                     1,
                     "P12345",
                     "テスト商品",
@@ -125,7 +125,7 @@ class SalesTest {
         @DisplayName("消費税金額を計算できる")
         void shouldCalculateConsumptionTaxAmount() {
             SalesLine line = SalesLine.of(
-                    "S1234567890",
+                    "S123456789",
                     1,
                     "P12345",
                     "テスト商品",
@@ -148,7 +148,7 @@ class SalesTest {
         @DisplayName("売上明細を完了にできる")
         void shouldCompleteSalesLine() {
             SalesLine line = SalesLine.of(
-                    "S1234567890",
+                    "S123456789",
                     1,
                     "P12345",
                     "テスト商品",

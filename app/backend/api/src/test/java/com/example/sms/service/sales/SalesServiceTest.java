@@ -3,10 +3,7 @@ package com.example.sms.service.sales;
 import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactory;
 import com.example.sms.TestDataFactoryImpl;
-import com.example.sms.domain.model.sales.Sales;
-import com.example.sms.domain.model.sales.SalesList;
-import com.example.sms.domain.model.sales.SalesLine;
-import com.example.sms.domain.model.sales.SalesType;
+import com.example.sms.domain.model.sales.*;
 import com.example.sms.domain.model.sales_order.ConsumptionTaxAmount;
 import com.example.sms.domain.model.sales_order.SalesAmount;
 import com.example.sms.domain.model.sales_order.TaxRateType;
@@ -58,21 +55,19 @@ class SalesServiceTest {
         @Test
         @DisplayName("売上を新規登録できる")
         void shouldRegisterNewSales() {
-            SalesLine salesLine = new SalesLine(
+            SalesLine salesLine = SalesLine.of(
                     "S000000009",
                     1,
                     "P001",
                     "Product 1",
-                    Money.of(1000),
-                    Quantity.of(10),
-                    Quantity.of(10),
-                    Money.of(0),
+                    1000,
+                    10,
+                    10,
+                    0,
                     LocalDateTime.now(),
                     "B001",
                     0,
-                    LocalDateTime.now(),
-                    SalesAmount.of(Money.of(10000), Quantity.of(10)),
-                    ConsumptionTaxAmount.of(SalesAmount.of(Money.of(10000), Quantity.of(10)),TaxRateType.標準税率)
+                    LocalDateTime.now()
             );
 
             Sales newSales = Sales.of(
