@@ -1,6 +1,8 @@
 package com.example.sms.domain.model.sales;
 
 import com.example.sms.domain.model.master.department.DepartmentId;
+import com.example.sms.domain.model.master.partner.PartnerCode;
+import com.example.sms.domain.model.master.partner.customer.CustomerCode;
 import com.example.sms.domain.model.sales_order.OrderNumber;
 import com.example.sms.domain.type.money.Money;
 import lombok.AllArgsConstructor;
@@ -22,7 +24,7 @@ public class Sales {
     SalesDate salesDate; // 売上日
     SalesType salesType; // 売上区分
     DepartmentId departmentId; // 部門ID
-    String customerCode; // 取引先コード
+    PartnerCode customerCode; // 取引先コード
     String employeeCode; // 社員コード
     Money totalSalesAmount; // 売上金額合計
     Money totalConsumptionTax; // 消費税合計
@@ -52,7 +54,7 @@ public class Sales {
                 SalesDate.of(salesDate),
                 SalesType.fromCode(salesType),
                 DepartmentId.of(departmentCode, departmentStartDate),
-                customerCode,
+                PartnerCode.of(customerCode),
                 employeeCode,
                 calcTotalSalesAmount,
                 calcTotalConsumptionTax,

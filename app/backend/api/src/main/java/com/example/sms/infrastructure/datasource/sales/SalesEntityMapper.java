@@ -29,7 +29,7 @@ public class SalesEntityMapper {
         salesEntity.set売上区分(sales.getSalesType().getCode());
         salesEntity.set部門コード(sales.getDepartmentId().getDeptCode().getValue());
         salesEntity.set部門開始日(sales.getDepartmentId().getDepartmentStartDate().getValue());
-        salesEntity.set取引先コード(sales.getCustomerCode());
+        salesEntity.set取引先コード(sales.getCustomerCode().getValue());
         salesEntity.set社員コード(sales.getEmployeeCode());
         salesEntity.set売上金額合計(
                 sales.getTotalSalesAmount() != null ? sales.getTotalSalesAmount().getAmount() : 0

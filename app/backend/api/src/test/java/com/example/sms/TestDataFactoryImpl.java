@@ -703,7 +703,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 1,
                 "10000",
                 LocalDateTime.of(2023, 10, 1, 0, 0),
-                "10000",
+                "001",
                 "EMP001",
                 1,
                 "V001",

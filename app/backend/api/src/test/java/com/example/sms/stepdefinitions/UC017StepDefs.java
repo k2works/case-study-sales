@@ -88,7 +88,7 @@ public class UC017StepDefs extends SpringAcceptanceTest {
 
     @もし(":UC017 売上番号{string}、受注番号{string}、売上日{string}、部門コード{string}で売上データを登録する")
     public void registerSales(String salesNumber, String orderNumber, String salesDate, String departmentCode) throws JsonProcessingException {
-        SalesResource sales = getSalesResource(salesNumber, salesDate, departmentCode, "C0001", "E0001", "10000");
+        SalesResource sales = getSalesResource(salesNumber, salesDate, departmentCode, "001", "E0001", "10000");
         sales.setOrderNumber(orderNumber);
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -108,7 +108,7 @@ public class UC017StepDefs extends SpringAcceptanceTest {
     @もし(":UC017 売上番号 {string} の売上データを更新する（備考 {string}）")
     public void updateSales(String salesNumber, String remarks) throws JsonProcessingException {
         String url = SALES_API_URL + "/" + salesNumber;
-        SalesResource sales = getSalesResource(salesNumber, "2023-10-01T00:00:00Z", "10000", "C0001", "E0001", "10000");
+        SalesResource sales = getSalesResource(salesNumber, "2023-10-01T00:00:00Z", "10000", "001", "E0001", "10000");
         sales.setRemarks(remarks);
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -142,7 +142,7 @@ public class UC017StepDefs extends SpringAcceptanceTest {
 
     @もし(":UC017 売上番号 {string} をもとに以下の売上明細を登録する")
     public void addSalesLine(String salesNumber, List<SalesLineResource> salesLine) throws JsonProcessingException {
-        SalesResource sales = getSalesResource(salesNumber, "2023-10-01T00:00:00Z", "10000", "C0001", "E0001", "10000");
+        SalesResource sales = getSalesResource(salesNumber, "2023-10-01T00:00:00Z", "10000", "001", "E0001", "10000");
         sales.setSalesLines(salesLine);
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -155,7 +155,7 @@ public class UC017StepDefs extends SpringAcceptanceTest {
     public void aggregate() throws JsonProcessingException {
         String url = SALES_API_URL + "/aggregate";
 
-        SalesResource sales = getSalesResource("1000000", "2023-10-01T00:00:00Z", "10000", "C0001", "E0001", "10000");
+        SalesResource sales = getSalesResource("1000000", "2023-10-01T00:00:00Z", "10000", "001", "E0001", "10000");
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
@@ -167,7 +167,7 @@ public class UC017StepDefs extends SpringAcceptanceTest {
     public void updateSalesLine(String salesNumber, String productCode, String productName, String amount) throws JsonProcessingException {
         String url = SALES_API_URL + "/" + salesNumber;
 
-        SalesResource sales = getSalesResource(salesNumber, "2023-10-01T00:00:00Z", "10000", "C0001", "E0001", "10000");
+        SalesResource sales = getSalesResource(salesNumber, "2023-10-01T00:00:00Z", "10000", "001", "E0001", "10000");
         SalesLineResource salesLine = SalesLineResource.builder()
                 .salesNumber(salesNumber)
                 .salesLineNumber(1)
@@ -193,7 +193,7 @@ public class UC017StepDefs extends SpringAcceptanceTest {
 
     @かつ(":UC017 売上番号 {string} 製品コード {string} の売上明細を削除する")
     public void deleteSalesLine(String salesNumber, String productCode) throws JsonProcessingException {
-        SalesResource sales = getSalesResource(salesNumber, "2023-10-01T00:00:00Z", "10000", "C0001", "E0001", "10000");
+        SalesResource sales = getSalesResource(salesNumber, "2023-10-01T00:00:00Z", "10000", "001", "E0001", "10000");
         sales.setSalesLines(List.of());
 
         ObjectMapper objectMapper = new ObjectMapper();
