@@ -67,7 +67,7 @@ public class SalesResource {
         resource.setDepartmentCode(sales.getDepartmentId().getDeptCode().getValue());
         resource.setDepartmentStartDate(sales.getDepartmentId().getDepartmentStartDate().getValue());
         resource.setCustomerCode(sales.getCustomerCode().getValue());
-        resource.setEmployeeCode(sales.getEmployeeCode());
+        resource.setEmployeeCode(sales.getEmployeeCode().getValue());
         resource.setTotalSalesAmount(sales.getTotalSalesAmount().getAmount());
         resource.setTotalConsumptionTax(sales.getTotalConsumptionTax().getAmount());
         resource.setRemarks(sales.getRemarks());

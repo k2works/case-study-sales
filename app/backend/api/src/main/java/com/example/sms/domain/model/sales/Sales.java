@@ -1,8 +1,8 @@
 package com.example.sms.domain.model.sales;
 
 import com.example.sms.domain.model.master.department.DepartmentId;
+import com.example.sms.domain.model.master.employee.EmployeeCode;
 import com.example.sms.domain.model.master.partner.PartnerCode;
-import com.example.sms.domain.model.master.partner.customer.CustomerCode;
 import com.example.sms.domain.model.sales_order.OrderNumber;
 import com.example.sms.domain.type.money.Money;
 import lombok.AllArgsConstructor;
@@ -25,14 +25,13 @@ public class Sales {
     SalesType salesType; // 売上区分
     DepartmentId departmentId; // 部門ID
     PartnerCode customerCode; // 取引先コード
-    String employeeCode; // 社員コード
+    EmployeeCode employeeCode; // 社員コード
     Money totalSalesAmount; // 売上金額合計
     Money totalConsumptionTax; // 消費税合計
     String remarks; // 備考
     Integer voucherNumber; // 赤黒伝票番号
     String originalVoucherNumber; // 元伝票番号
 
-    // 値リストの使い方例
     List<SalesLine> salesLines; // 売上明細
 
     /**
@@ -55,7 +54,7 @@ public class Sales {
                 SalesType.fromCode(salesType),
                 DepartmentId.of(departmentCode, departmentStartDate),
                 PartnerCode.of(customerCode),
-                employeeCode,
+                EmployeeCode.of(employeeCode),
                 calcTotalSalesAmount,
                 calcTotalConsumptionTax,
                 remarks,

@@ -50,7 +50,7 @@ class SalesTest {
                 () -> assertEquals("O123456789", sales.getOrderNumber().getValue()),
                 () -> assertEquals("12345", sales.getDepartmentId().getDeptCode().getValue()),
                 () -> assertEquals("001", sales.getCustomerCode().getValue()),
-                () -> assertEquals("EMP001", sales.getEmployeeCode()),
+                () -> assertEquals("EMP001", sales.getEmployeeCode().getValue()),
                 () -> assertEquals(1, sales.getSalesType().getCode()),
                 () -> assertEquals(1, sales.getVoucherNumber()),
                 () -> assertEquals("ORG12345", sales.getOriginalVoucherNumber()),
