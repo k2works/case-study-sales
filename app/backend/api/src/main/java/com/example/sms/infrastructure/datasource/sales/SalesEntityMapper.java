@@ -66,7 +66,10 @@ public class SalesEntityMapper {
                 .map(SalesLine::getBillingDelayType)
                 .map(BillingDelayType::getCode)
                 .orElse(null));
-        salesEntity.set自動仕訳日(salesLine.getAutoJournalDate());
+        salesEntity.set自動仕訳日(Optional.of(salesLine)
+                .map(SalesLine::getAutoJournalDate)
+                .map(AutoJournalDate::getValue)
+                .orElse(null));
         return salesEntity;
     }
 

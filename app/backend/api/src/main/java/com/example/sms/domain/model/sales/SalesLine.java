@@ -30,7 +30,7 @@ public class SalesLine {
     BillingDate billingDate; // 請求日
     BillingNumber billingNumber; // 請求番号
     BillingDelayType billingDelayType; // 請求遅延区分
-    LocalDateTime autoJournalDate; // 自動仕訳日
+    AutoJournalDate autoJournalDate; // 自動仕訳日
 
     /** 明細金額 (売上金額) */
     SalesAmount salesAmount;
@@ -61,7 +61,7 @@ public class SalesLine {
                 billingDate == null ? null : BillingDate.of(billingDate),
                 billingNumber == null ? null : BillingNumber.of(billingNumber),
                 billingDelayCategory == null ? null : BillingDelayType.fromCode(billingDelayCategory),
-                autoJournalDate,
+                autoJournalDate == null ? null : AutoJournalDate.of(autoJournalDate),
                 calcSalesAmount,
                 calcConsumptionTaxAmount
         );

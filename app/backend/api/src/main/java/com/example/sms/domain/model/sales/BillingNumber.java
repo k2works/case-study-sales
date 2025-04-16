@@ -3,7 +3,7 @@ package com.example.sms.domain.model.sales;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
-import static io.jsonwebtoken.lang.Assert.notNull;
+import static org.apache.commons.lang3.Validate.notNull;
 
 /**
  * 請求番号

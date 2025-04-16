@@ -1,9 +1,6 @@
 package com.example.sms.presentation.api.sales;
 
-import com.example.sms.domain.model.sales.BillingDate;
-import com.example.sms.domain.model.sales.BillingDelayType;
-import com.example.sms.domain.model.sales.BillingNumber;
-import com.example.sms.domain.model.sales.SalesLine;
+import com.example.sms.domain.model.sales.*;
 import lombok.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -80,7 +77,10 @@ public class SalesLineResource {
                         .map(SalesLine::getBillingDelayType)
                         .map(BillingDelayType::getCode)
                         .orElse(null))
-                .autoJournalDate(salesLine.getAutoJournalDate())
+                .autoJournalDate(Optional.of(salesLine)
+                        .map(SalesLine::getAutoJournalDate)
+                        .map(AutoJournalDate::getValue)
+                        .orElse(null))
                 .build();
     }
 
