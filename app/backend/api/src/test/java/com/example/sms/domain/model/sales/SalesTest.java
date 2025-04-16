@@ -86,7 +86,7 @@ class SalesTest {
             assertAll(
                     () -> assertEquals("S123456789", line.getSalesNumber().getValue()),
                     () -> assertEquals(1, line.getSalesLineNumber()),
-                    () -> assertEquals("P12345", line.getProductCode()),
+                    () -> assertEquals("P12345", line.getProductCode().getValue()),
                     () -> assertEquals("テスト商品", line.getProductName()),
                     () -> assertEquals(1500, line.getSalesUnitPrice().getAmount()),
                     () -> assertEquals(3, line.getSalesQuantity().getAmount()),

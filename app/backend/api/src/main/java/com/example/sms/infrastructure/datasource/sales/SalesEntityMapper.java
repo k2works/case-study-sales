@@ -48,7 +48,7 @@ public class SalesEntityMapper {
         売上データ明細 salesEntity = new 売上データ明細();
         salesEntity.set売上番号(key.get売上番号());
         salesEntity.set売上行番号(key.get売上行番号());
-        salesEntity.set商品コード(salesLine.getProductCode());
+        salesEntity.set商品コード(salesLine.getProductCode().getValue());
         salesEntity.set商品名(salesLine.getProductName());
         salesEntity.set販売単価(salesLine.getSalesUnitPrice().getAmount());
         salesEntity.set売上数量(salesLine.getSalesQuantity().getAmount());

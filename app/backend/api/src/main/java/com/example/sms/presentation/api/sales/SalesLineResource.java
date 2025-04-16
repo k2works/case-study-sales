@@ -59,7 +59,7 @@ public class SalesLineResource {
         return SalesLineResource.builder()
                 .salesNumber(salesLine.getSalesNumber().getValue())
                 .salesLineNumber(salesLine.getSalesLineNumber())
-                .productCode(salesLine.getProductCode())
+                .productCode(salesLine.getProductCode().getValue())
                 .productName(salesLine.getProductName())
                 .salesUnitPrice(salesLine.getSalesUnitPrice().getAmount())
                 .salesQuantity(salesLine.getSalesQuantity().getAmount())

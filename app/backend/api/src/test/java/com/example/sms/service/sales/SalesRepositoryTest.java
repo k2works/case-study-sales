@@ -176,7 +176,7 @@ class SalesRepositoryTest {
             SalesLine updatedSalesLine = SalesLine.of(
                     salesLine.getSalesNumber().getValue(),
                     salesLine.getSalesLineNumber(),
-                    salesLine.getProductCode(),
+                    salesLine.getProductCode().getValue(),
                     salesLine.getProductName(),
                     2000, // 売上単価を変更
                     2, // 売上数量を変更

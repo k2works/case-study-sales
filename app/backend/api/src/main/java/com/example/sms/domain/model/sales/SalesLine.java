@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.sales;
 
+import com.example.sms.domain.model.master.product.ProductCode;
 import com.example.sms.domain.model.sales_order.ConsumptionTaxAmount;
 import com.example.sms.domain.model.sales_order.SalesAmount;
 import com.example.sms.domain.model.sales_order.TaxRateType;
@@ -20,7 +21,7 @@ import java.time.LocalDateTime;
 public class SalesLine {
     SalesNumber salesNumber; // 売上番号
     Integer salesLineNumber; // 売上行番号
-    String productCode; // 商品コード
+    ProductCode productCode; // 商品コード
     String productName; // 商品名
     Money salesUnitPrice; // 販売単価
     Quantity salesQuantity; // 売上数量
@@ -51,7 +52,7 @@ public class SalesLine {
         return new SalesLine(
                 SalesNumber.of(salesNumber),
                 salesLineNumber,
-                productCode,
+                ProductCode.of(productCode),
                 productName,
                 Money.of(salesUnitPrice),
                 Quantity.of(salesQuantity),
