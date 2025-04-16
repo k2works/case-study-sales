@@ -88,20 +88,18 @@ class SalesRepositoryTest {
             Sales sales = getSales("S000000001");
             repository.save(sales);
 
-            Sales updatedSales = new Sales(
-                    sales.getSalesNumber(),
-                    sales.getOrderNumber(),
-                    sales.getSalesDate(),
-                    SalesType.その他,
-                    sales.getDepartmentCode(),
-                    sales.getDepartmentStartDate(),
+            Sales updatedSales = Sales.of(
+                    sales.getSalesNumber().getValue(),
+                    sales.getOrderNumber().getValue(),
+                    sales.getSalesDate().getValue(),
+                    SalesType.その他.getCode(),
+                    sales.getDepartmentId().getDeptCode().getValue(),
+                    sales.getDepartmentId().getDepartmentStartDate().getValue(),
                     sales.getCustomerCode(),
                     sales.getEmployeeCode(),
-                    sales.getTotalSalesAmount(),
-                    sales.getTotalConsumptionTax(),
-                    "更新済み備考", // 備考の更新
                     sales.getVoucherNumber(),
                     sales.getOriginalVoucherNumber(),
+                    "更新済み備考", // 備考の更新
                     sales.getSalesLines()
             );
 
@@ -138,8 +136,8 @@ class SalesRepositoryTest {
                     sales.getOrderNumber().getValue(),
                     sales.getSalesDate().getValue(),
                     sales.getSalesType().getCode(),
-                    sales.getDepartmentCode(),
-                    sales.getDepartmentStartDate(),
+                    sales.getDepartmentId().getDeptCode().getValue(),
+                    sales.getDepartmentId().getDepartmentStartDate().getValue(),
                     sales.getCustomerCode(),
                     sales.getEmployeeCode(),
                     sales.getVoucherNumber(),
@@ -164,8 +162,8 @@ class SalesRepositoryTest {
                     sales.getOrderNumber().getValue(),
                     sales.getSalesDate().getValue(),
                     sales.getSalesType().getCode(),
-                    sales.getDepartmentCode(),
-                    sales.getDepartmentStartDate(),
+                    sales.getDepartmentId().getDeptCode().getValue(),
+                    sales.getDepartmentId().getDepartmentStartDate().getValue(),
                     sales.getCustomerCode(),
                     sales.getEmployeeCode(),
                     sales.getVoucherNumber(),
@@ -194,8 +192,8 @@ class SalesRepositoryTest {
                     sales.getOrderNumber().getValue(),
                     sales.getSalesDate().getValue(),
                     sales.getSalesType().getCode(),
-                    sales.getDepartmentCode(),
-                    sales.getDepartmentStartDate(),
+                    sales.getDepartmentId().getDeptCode().getValue(),
+                    sales.getDepartmentId().getDepartmentStartDate().getValue(),
                     sales.getCustomerCode(),
                     sales.getEmployeeCode(),
                     sales.getVoucherNumber(),
@@ -220,8 +218,8 @@ class SalesRepositoryTest {
                     sales.getOrderNumber().getValue(),
                     sales.getSalesDate().getValue(),
                     sales.getSalesType().getCode(),
-                    sales.getDepartmentCode(),
-                    sales.getDepartmentStartDate(),
+                    sales.getDepartmentId().getDeptCode().getValue(),
+                    sales.getDepartmentId().getDepartmentStartDate().getValue(),
                     sales.getCustomerCode(),
                     sales.getEmployeeCode(),
                     sales.getVoucherNumber(),

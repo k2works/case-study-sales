@@ -80,7 +80,7 @@ class SalesServiceTest {
                     "O000000001",
                     LocalDateTime.now(),
                     1,
-                    "D001",
+                    "10000",
                     LocalDateTime.now(),
                     "C001",
                     "E001",
@@ -110,8 +110,8 @@ class SalesServiceTest {
                     sales.getOrderNumber().getValue(),
                     LocalDateTime.of(2025, 10, 1, 0, 0),
                     sales.getSalesType().getCode(),
-                    sales.getDepartmentCode(),
-                    sales.getDepartmentStartDate(),
+                    sales.getDepartmentId().getDeptCode().getValue(),
+                    sales.getDepartmentId().getDepartmentStartDate().getValue(),
                     sales.getCustomerCode(),
                     sales.getEmployeeCode(),
                     sales.getVoucherNumber(),
@@ -150,7 +150,7 @@ class SalesServiceTest {
                     sales.getSalesDate().getValue(),
                     sales.getSalesType().getCode(),
                     departmentCode, // 部門コードを条件に設定
-                    sales.getDepartmentStartDate(),
+                    sales.getDepartmentId().getDepartmentStartDate().getValue(),
                     sales.getCustomerCode(),
                     sales.getEmployeeCode(),
                     sales.getVoucherNumber(),
@@ -168,7 +168,7 @@ class SalesServiceTest {
 
             assertNotNull(result);
             assertEquals(1, result.getList().size());
-            assertEquals(departmentCode, result.getList().get(0).getDepartmentCode());
+            assertEquals(departmentCode, result.getList().getFirst().getDepartmentId().getDeptCode().getValue());
         }
 
         @Test

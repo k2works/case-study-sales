@@ -64,8 +64,8 @@ public class SalesResource {
         resource.setOrderNumber(sales.getOrderNumber().getValue());
         resource.setSalesDate(sales.getSalesDate().getValue());
         resource.setSalesType(sales.getSalesType().getCode());
-        resource.setDepartmentCode(sales.getDepartmentCode());
-        resource.setDepartmentStartDate(sales.getDepartmentStartDate());
+        resource.setDepartmentCode(sales.getDepartmentId().getDeptCode().getValue());
+        resource.setDepartmentStartDate(sales.getDepartmentId().getDepartmentStartDate().getValue());
         resource.setCustomerCode(sales.getCustomerCode());
         resource.setEmployeeCode(sales.getEmployeeCode());
         resource.setTotalSalesAmount(sales.getTotalSalesAmount().getAmount());

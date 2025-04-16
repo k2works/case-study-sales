@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.sales;
 
+import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.sales_order.OrderNumber;
 import com.example.sms.domain.type.money.Money;
 import lombok.AllArgsConstructor;
@@ -20,8 +21,7 @@ public class Sales {
     OrderNumber orderNumber; // 受注番号
     SalesDate salesDate; // 売上日
     SalesType salesType; // 売上区分
-    String departmentCode; // 部門コード
-    LocalDateTime departmentStartDate; // 部門開始日
+    DepartmentId departmentId; // 部門ID
     String customerCode; // 取引先コード
     String employeeCode; // 社員コード
     Money totalSalesAmount; // 売上金額合計
@@ -51,8 +51,7 @@ public class Sales {
                 OrderNumber.of(orderNumber),
                 SalesDate.of(salesDate),
                 SalesType.fromCode(salesType),
-                departmentCode,
-                departmentStartDate,
+                DepartmentId.of(departmentCode, departmentStartDate),
                 customerCode,
                 employeeCode,
                 calcTotalSalesAmount,
