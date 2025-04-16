@@ -26,7 +26,7 @@ public class SalesEntityMapper {
         salesEntity.set売上番号(sales.getSalesNumber().getValue());
         salesEntity.set受注番号(sales.getOrderNumber().getValue());
         salesEntity.set売上日(sales.getSalesDate().getValue());
-        salesEntity.set売上区分(sales.getSalesCategory());
+        salesEntity.set売上区分(sales.getSalesType().getCode());
         salesEntity.set部門コード(sales.getDepartmentCode());
         salesEntity.set部門開始日(sales.getDepartmentStartDate());
         salesEntity.set取引先コード(sales.getCustomerCode());

@@ -3,6 +3,7 @@ package com.example.sms.service.sales;
 import com.example.sms.domain.model.sales.Sales;
 import com.example.sms.domain.model.sales.SalesLine;
 import com.example.sms.domain.model.sales.SalesList;
+import com.example.sms.domain.model.sales.SalesType;
 import com.example.sms.domain.model.shipping.Shipping;
 import com.example.sms.domain.model.shipping.ShippingList;
 import com.example.sms.service.shipping.ShippingRepository;
@@ -123,7 +124,7 @@ public class SalesService {
                     salesNumber,
                     shipping.getOrderNumber().getValue(),
                     shipping.getDeliveryDate().getValue(),
-                    null,
+                    SalesType.現金.getCode(),
                     shipping.getDepartmentCode().getValue(),
                     shipping.getDepartmentStartDate(),
                     shipping.getCustomerCode().getCode().getValue(),

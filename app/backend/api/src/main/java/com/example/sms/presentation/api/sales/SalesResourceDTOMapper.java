@@ -46,7 +46,7 @@ public class SalesResourceDTOMapper {
                 resource.getSalesNumber(),
                 resource.getOrderNumber(),
                 resource.getSalesDate(),
-                resource.getSalesCategory(),
+                resource.getSalesType(),
                 resource.getDepartmentCode(),
                 resource.getDepartmentStartDate(),
                 resource.getCustomerCode(),
@@ -66,7 +66,7 @@ public class SalesResourceDTOMapper {
         resource.setSalesNumber(sales.getSalesNumber().getValue());
         resource.setOrderNumber(sales.getOrderNumber().getValue());
         resource.setSalesDate(sales.getSalesDate().getValue());
-        resource.setSalesCategory(sales.getSalesCategory());
+        resource.setSalesType(sales.getSalesType().getCode());
         resource.setDepartmentCode(sales.getDepartmentCode());
         resource.setDepartmentStartDate(sales.getDepartmentStartDate());
         resource.setCustomerCode(sales.getCustomerCode());

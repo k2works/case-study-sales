@@ -6,6 +6,7 @@ import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.sales.Sales;
 import com.example.sms.domain.model.sales.SalesList;
 import com.example.sms.domain.model.sales.SalesLine;
+import com.example.sms.domain.model.sales.SalesType;
 import com.example.sms.domain.model.sales_order.ConsumptionTaxAmount;
 import com.example.sms.domain.model.sales_order.SalesAmount;
 import com.example.sms.domain.model.sales_order.TaxRateType;
@@ -108,7 +109,7 @@ class SalesServiceTest {
                     sales.getSalesNumber().getValue(),
                     sales.getOrderNumber().getValue(),
                     LocalDateTime.of(2025, 10, 1, 0, 0),
-                    sales.getSalesCategory(),
+                    sales.getSalesType().getCode(),
                     sales.getDepartmentCode(),
                     sales.getDepartmentStartDate(),
                     sales.getCustomerCode(),
@@ -147,7 +148,7 @@ class SalesServiceTest {
                     sales.getSalesNumber().getValue(),
                     sales.getOrderNumber().getValue(),
                     sales.getSalesDate().getValue(),
-                    sales.getSalesCategory(),
+                    sales.getSalesType().getCode(),
                     departmentCode, // 部門コードを条件に設定
                     sales.getDepartmentStartDate(),
                     sales.getCustomerCode(),
@@ -195,7 +196,7 @@ class SalesServiceTest {
                     salesNumber,
                     "O000000001",
                     LocalDateTime.of(2021, 1, 1, 0, 0),
-                    null,
+                    SalesType.現金.getCode(),
                     "10000",
                     LocalDateTime.of(2021, 1, 1, 0, 0),
                     "001",

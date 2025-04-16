@@ -1,6 +1,7 @@
 package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
+import com.example.sms.domain.model.sales.SalesType;
 import com.example.sms.presentation.api.sales.SalesCriteriaResource;
 import com.example.sms.presentation.api.sales.SalesLineResource;
 import com.example.sms.presentation.api.sales.SalesResource;
@@ -284,6 +285,7 @@ public class UC017StepDefs extends SpringAcceptanceTest {
         salesResource.setSalesNumber(salesNumber);
         salesResource.setOrderNumber("O" + salesNumber.substring(1));
         salesResource.setSalesDate(OffsetDateTime.parse(salesDate).toLocalDateTime());
+        salesResource.setSalesType(SalesType.現金.getCode());
         salesResource.setDepartmentCode(departmentCode);
         salesResource.setDepartmentStartDate(OffsetDateTime.parse(salesDate).toLocalDateTime());
         salesResource.setCustomerCode(customerCode);

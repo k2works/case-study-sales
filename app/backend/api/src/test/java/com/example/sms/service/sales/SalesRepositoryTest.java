@@ -4,6 +4,7 @@ import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.sales.Sales;
 import com.example.sms.domain.model.sales.SalesLine;
 import com.example.sms.domain.model.sales.SalesList;
+import com.example.sms.domain.model.sales.SalesType;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -91,7 +92,7 @@ class SalesRepositoryTest {
                     sales.getSalesNumber(),
                     sales.getOrderNumber(),
                     sales.getSalesDate(),
-                    2, // 売上区分を変更
+                    SalesType.その他,
                     sales.getDepartmentCode(),
                     sales.getDepartmentStartDate(),
                     sales.getCustomerCode(),
@@ -136,7 +137,7 @@ class SalesRepositoryTest {
                     sales.getSalesNumber().getValue(),
                     sales.getOrderNumber().getValue(),
                     sales.getSalesDate().getValue(),
-                    sales.getSalesCategory(),
+                    sales.getSalesType().getCode(),
                     sales.getDepartmentCode(),
                     sales.getDepartmentStartDate(),
                     sales.getCustomerCode(),
@@ -162,7 +163,7 @@ class SalesRepositoryTest {
                     sales.getSalesNumber().getValue(),
                     sales.getOrderNumber().getValue(),
                     sales.getSalesDate().getValue(),
-                    sales.getSalesCategory(),
+                    sales.getSalesType().getCode(),
                     sales.getDepartmentCode(),
                     sales.getDepartmentStartDate(),
                     sales.getCustomerCode(),
@@ -192,7 +193,7 @@ class SalesRepositoryTest {
                     sales.getSalesNumber().getValue(),
                     sales.getOrderNumber().getValue(),
                     sales.getSalesDate().getValue(),
-                    sales.getSalesCategory(),
+                    sales.getSalesType().getCode(),
                     sales.getDepartmentCode(),
                     sales.getDepartmentStartDate(),
                     sales.getCustomerCode(),
@@ -218,7 +219,7 @@ class SalesRepositoryTest {
                     sales.getSalesNumber().getValue(),
                     sales.getOrderNumber().getValue(),
                     sales.getSalesDate().getValue(),
-                    sales.getSalesCategory(),
+                    sales.getSalesType().getCode(),
                     sales.getDepartmentCode(),
                     sales.getDepartmentStartDate(),
                     sales.getCustomerCode(),

@@ -23,7 +23,7 @@ public class SalesResource {
     LocalDateTime salesDate;
 
     @Schema(description = "売上区分")
-    Integer salesCategory;
+    Integer salesType;
 
     @Schema(description = "部門コード")
     String departmentCode;
@@ -63,7 +63,7 @@ public class SalesResource {
         resource.setSalesNumber(sales.getSalesNumber().getValue());
         resource.setOrderNumber(sales.getOrderNumber().getValue());
         resource.setSalesDate(sales.getSalesDate().getValue());
-        resource.setSalesCategory(sales.getSalesCategory());
+        resource.setSalesType(sales.getSalesType().getCode());
         resource.setDepartmentCode(sales.getDepartmentCode());
         resource.setDepartmentStartDate(sales.getDepartmentStartDate());
         resource.setCustomerCode(sales.getCustomerCode());

@@ -50,7 +50,7 @@ class SalesResourceDTOMapperTest {
         resource.setSalesNumber(salesNumber);
         resource.setOrderNumber(orderNumber);
         resource.setSalesDate(salesDate);
-        resource.setSalesCategory(salesCategory);
+        resource.setSalesType(salesCategory);
         resource.setDepartmentCode(departmentCode);
         resource.setDepartmentStartDate(departmentStartDate);
         resource.setCustomerCode(customerCode);
@@ -70,7 +70,7 @@ class SalesResourceDTOMapperTest {
         assertEquals(salesNumber, sales.getSalesNumber().getValue());
         assertEquals(orderNumber, sales.getOrderNumber().getValue());
         assertEquals(salesDate, sales.getSalesDate().getValue());
-        assertEquals(salesCategory, sales.getSalesCategory());
+        assertEquals(salesCategory, sales.getSalesType().getCode());
         assertEquals(departmentCode, sales.getDepartmentCode());
         assertEquals(departmentStartDate, sales.getDepartmentStartDate());
         assertEquals(customerCode, sales.getCustomerCode());

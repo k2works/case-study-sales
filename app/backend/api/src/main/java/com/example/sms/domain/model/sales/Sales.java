@@ -19,7 +19,7 @@ public class Sales {
     SalesNumber salesNumber; // 売上番号
     OrderNumber orderNumber; // 受注番号
     SalesDate salesDate; // 売上日
-    Integer salesCategory; // 売上区分
+    SalesType salesType; // 売上区分
     String departmentCode; // 部門コード
     LocalDateTime departmentStartDate; // 部門開始日
     String customerCode; // 取引先コード
@@ -36,7 +36,7 @@ public class Sales {
     /**
      * ファクトリーメソッド
      */
-    public static Sales of(String salesNumber, String orderNumber, LocalDateTime salesDate, Integer salesCategory, String departmentCode, LocalDateTime departmentStartDate,
+    public static Sales of(String salesNumber, String orderNumber, LocalDateTime salesDate, Integer salesType, String departmentCode, LocalDateTime departmentStartDate,
                            String customerCode, String employeeCode, Integer voucherNumber, String originalVoucherNumber,
                            String remarks, List<SalesLine> salesLines) {
         Money calcTotalSalesAmount = salesLines.stream()
@@ -50,7 +50,7 @@ public class Sales {
                 SalesNumber.of(salesNumber),
                 OrderNumber.of(orderNumber),
                 SalesDate.of(salesDate),
-                salesCategory,
+                SalesType.fromCode(salesType),
                 departmentCode,
                 departmentStartDate,
                 customerCode,
