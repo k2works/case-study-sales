@@ -29,7 +29,7 @@ public class SalesLine {
     Money discountAmount; // 値引金額
     BillingDate billingDate; // 請求日
     BillingNumber billingNumber; // 請求番号
-    Integer billingDelayCategory; // 請求遅延区分
+    BillingDelayType billingDelayType; // 請求遅延区分
     LocalDateTime autoJournalDate; // 自動仕訳日
 
     /** 明細金額 (売上金額) */
@@ -60,7 +60,7 @@ public class SalesLine {
                 Money.of(discountAmount),
                 billingDate == null ? null : BillingDate.of(billingDate),
                 billingNumber == null ? null : BillingNumber.of(billingNumber),
-                billingDelayCategory,
+                billingDelayCategory == null ? null : BillingDelayType.fromCode(billingDelayCategory),
                 autoJournalDate,
                 calcSalesAmount,
                 calcConsumptionTaxAmount
@@ -79,7 +79,7 @@ public class SalesLine {
                 salesLine.getDiscountAmount(),
                 salesLine.getBillingDate(),
                 salesLine.getBillingNumber(),
-                salesLine.getBillingDelayCategory(),
+                salesLine.getBillingDelayType(),
                 salesLine.getAutoJournalDate(),
                 SalesAmount.of(salesLine.getSalesUnitPrice(), salesLine.getSalesQuantity()),
                 //TODO: 商品マスタから税率を取得するロジックを追加
@@ -109,7 +109,7 @@ public class SalesLine {
                 salesLine.getDiscountAmount(),
                 salesLine.getBillingDate(),
                 salesLine.getBillingNumber(),
-                salesLine.getBillingDelayCategory(),
+                salesLine.getBillingDelayType(),
                 salesLine.getAutoJournalDate(),
                 SalesAmount.of(salesLine.getSalesUnitPrice(), salesLine.getSalesQuantity()),
                 ConsumptionTaxAmount.of(SalesAmount.of(salesLine.getSalesUnitPrice(), salesLine.getSalesQuantity()), TaxRateType.of(10)) // 固定税率例

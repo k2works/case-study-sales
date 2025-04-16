@@ -184,7 +184,7 @@ class SalesRepositoryTest {
                     0, // 割引額を変更
                     salesLine.getBillingDate().getValue(),
                     salesLine.getBillingNumber().getValue(),
-                    salesLine.getBillingDelayCategory(),
+                    salesLine.getBillingDelayType().getCode(),
                     salesLine.getAutoJournalDate()
             );
             Sales updateNewSales = Sales.of(

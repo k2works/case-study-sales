@@ -1,11 +1,11 @@
 package com.example.sms.presentation.api.sales;
 
 import com.example.sms.domain.model.sales.BillingDate;
+import com.example.sms.domain.model.sales.BillingDelayType;
 import com.example.sms.domain.model.sales.BillingNumber;
 import com.example.sms.domain.model.sales.SalesLine;
 import lombok.*;
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -76,7 +76,10 @@ public class SalesLineResource {
                         .map(SalesLine::getBillingNumber)
                         .map(BillingNumber::getValue)
                         .orElse(null))
-                .billingDelayCategory(salesLine.getBillingDelayCategory())
+                .billingDelayCategory(Optional.of(salesLine)
+                        .map(SalesLine::getBillingDelayType)
+                        .map(BillingDelayType::getCode)
+                        .orElse(null))
                 .autoJournalDate(salesLine.getAutoJournalDate())
                 .build();
     }

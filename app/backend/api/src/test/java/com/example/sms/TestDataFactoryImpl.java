@@ -723,7 +723,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 10,
                 LocalDateTime.of(2023, 10, 1, 0, 0),
                 "001",
-                10,
+                0,
                 LocalDateTime.of(2023, 10, 1, 0, 0) // 納期
         );
     }

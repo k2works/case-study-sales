@@ -1,9 +1,6 @@
 package com.example.sms.infrastructure.datasource.sales;
 
-import com.example.sms.domain.model.sales.BillingDate;
-import com.example.sms.domain.model.sales.BillingNumber;
-import com.example.sms.domain.model.sales.Sales;
-import com.example.sms.domain.model.sales.SalesLine;
+import com.example.sms.domain.model.sales.*;
 import com.example.sms.infrastructure.datasource.autogen.model.売上データ;
 import com.example.sms.infrastructure.datasource.autogen.model.売上データ明細;
 import com.example.sms.infrastructure.datasource.autogen.model.売上データ明細Key;
@@ -65,7 +62,10 @@ public class SalesEntityMapper {
                 .map(SalesLine::getBillingNumber)
                 .map(BillingNumber::getValue)
                 .orElse(null));
-        salesEntity.set請求遅延区分(salesLine.getBillingDelayCategory());
+        salesEntity.set請求遅延区分(Optional.of(salesLine)
+                .map(SalesLine::getBillingDelayType)
+                .map(BillingDelayType::getCode)
+                .orElse(null));
         salesEntity.set自動仕訳日(salesLine.getAutoJournalDate());
         return salesEntity;
     }
