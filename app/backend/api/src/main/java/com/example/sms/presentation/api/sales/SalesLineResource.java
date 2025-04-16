@@ -1,5 +1,6 @@
 package com.example.sms.presentation.api.sales;
 
+import com.example.sms.domain.model.sales.BillingDate;
 import com.example.sms.domain.model.sales.SalesLine;
 import lombok.*;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Data
 @Builder
@@ -65,7 +67,10 @@ public class SalesLineResource {
                 .salesQuantity(salesLine.getSalesQuantity().getAmount())
                 .shippedQuantity(salesLine.getShippedQuantity().getAmount())
                 .discountAmount(salesLine.getDiscountAmount().getAmount())
-                .billingDate(salesLine.getBillingDate())
+                .billingDate(Optional.of(salesLine)
+                        .map(SalesLine::getBillingDate)
+                        .map(BillingDate::getValue)
+                        .orElse(null))
                 .billingNumber(salesLine.getBillingNumber())
                 .billingDelayCategory(salesLine.getBillingDelayCategory())
                 .autoJournalDate(salesLine.getAutoJournalDate())

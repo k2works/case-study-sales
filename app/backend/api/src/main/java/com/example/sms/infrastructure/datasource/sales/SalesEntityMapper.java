@@ -1,5 +1,6 @@
 package com.example.sms.infrastructure.datasource.sales;
 
+import com.example.sms.domain.model.sales.BillingDate;
 import com.example.sms.domain.model.sales.Sales;
 import com.example.sms.domain.model.sales.SalesLine;
 import com.example.sms.infrastructure.datasource.autogen.model.売上データ;
@@ -9,6 +10,7 @@ import com.example.sms.infrastructure.datasource.sales.sales_line.SalesLineCusto
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 
 @Component
@@ -54,7 +56,10 @@ public class SalesEntityMapper {
         salesEntity.set売上数量(salesLine.getSalesQuantity().getAmount());
         salesEntity.set出荷数量(salesLine.getShippedQuantity().getAmount());
         salesEntity.set値引金額(salesLine.getDiscountAmount().getAmount());
-        salesEntity.set請求日(salesLine.getBillingDate());
+        salesEntity.set請求日(Optional.of(salesLine)
+                .map(SalesLine::getBillingDate)
+                .map(BillingDate::getValue)
+                .orElse(null));
         salesEntity.set請求番号(salesLine.getBillingNumber());
         salesEntity.set請求遅延区分(salesLine.getBillingDelayCategory());
         salesEntity.set自動仕訳日(salesLine.getAutoJournalDate());
