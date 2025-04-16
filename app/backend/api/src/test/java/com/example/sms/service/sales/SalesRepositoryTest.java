@@ -135,7 +135,7 @@ class SalesRepositoryTest {
             Sales newSales = Sales.of(
                     sales.getSalesNumber().getValue(),
                     sales.getOrderNumber().getValue(),
-                    sales.getSalesDate(),
+                    sales.getSalesDate().getValue(),
                     sales.getSalesCategory(),
                     sales.getDepartmentCode(),
                     sales.getDepartmentStartDate(),
@@ -161,7 +161,7 @@ class SalesRepositoryTest {
             Sales newSales = Sales.of(
                     sales.getSalesNumber().getValue(),
                     sales.getOrderNumber().getValue(),
-                    sales.getSalesDate(),
+                    sales.getSalesDate().getValue(),
                     sales.getSalesCategory(),
                     sales.getDepartmentCode(),
                     sales.getDepartmentStartDate(),
@@ -191,7 +191,7 @@ class SalesRepositoryTest {
             Sales updateNewSales = Sales.of(
                     sales.getSalesNumber().getValue(),
                     sales.getOrderNumber().getValue(),
-                    sales.getSalesDate(),
+                    sales.getSalesDate().getValue(),
                     sales.getSalesCategory(),
                     sales.getDepartmentCode(),
                     sales.getDepartmentStartDate(),
@@ -217,7 +217,7 @@ class SalesRepositoryTest {
             Sales newSales = Sales.of(
                     sales.getSalesNumber().getValue(),
                     sales.getOrderNumber().getValue(),
-                    sales.getSalesDate(),
+                    sales.getSalesDate().getValue(),
                     sales.getSalesCategory(),
                     sales.getDepartmentCode(),
                     sales.getDepartmentStartDate(),

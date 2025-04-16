@@ -18,7 +18,7 @@ import java.util.List;
 public class Sales {
     SalesNumber salesNumber; // 売上番号
     OrderNumber orderNumber; // 受注番号
-    LocalDateTime salesDate; // 売上日
+    SalesDate salesDate; // 売上日
     Integer salesCategory; // 売上区分
     String departmentCode; // 部門コード
     LocalDateTime departmentStartDate; // 部門開始日
@@ -49,7 +49,7 @@ public class Sales {
         return new Sales(
                 SalesNumber.of(salesNumber),
                 OrderNumber.of(orderNumber),
-                salesDate,
+                SalesDate.of(salesDate),
                 salesCategory,
                 departmentCode,
                 departmentStartDate,

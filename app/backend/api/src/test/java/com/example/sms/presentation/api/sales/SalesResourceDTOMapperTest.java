@@ -69,7 +69,7 @@ class SalesResourceDTOMapperTest {
         assertNotNull(sales);
         assertEquals(salesNumber, sales.getSalesNumber().getValue());
         assertEquals(orderNumber, sales.getOrderNumber().getValue());
-        assertEquals(salesDate, sales.getSalesDate());
+        assertEquals(salesDate, sales.getSalesDate().getValue());
         assertEquals(salesCategory, sales.getSalesCategory());
         assertEquals(departmentCode, sales.getDepartmentCode());
         assertEquals(departmentStartDate, sales.getDepartmentStartDate());

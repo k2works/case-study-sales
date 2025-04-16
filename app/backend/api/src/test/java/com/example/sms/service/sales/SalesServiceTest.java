@@ -146,7 +146,7 @@ class SalesServiceTest {
             Sales newSales = Sales.of(
                     sales.getSalesNumber().getValue(),
                     sales.getOrderNumber().getValue(),
-                    sales.getSalesDate(),
+                    sales.getSalesDate().getValue(),
                     sales.getSalesCategory(),
                     departmentCode, // 部門コードを条件に設定
                     sales.getDepartmentStartDate(),
