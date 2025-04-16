@@ -32,7 +32,7 @@ class SalesTest {
 
         Sales sales = Sales.of(
                 "S123456789",
-                "1234567890",
+                "O123456789",
                 LocalDateTime.now(),
                 1,
                 "12345",
@@ -47,7 +47,7 @@ class SalesTest {
 
         assertAll(
                 () -> assertEquals("S123456789", sales.getSalesNumber().getValue()),
-                () -> assertEquals("1234567890", sales.getOrderNumber().getValue()),
+                () -> assertEquals("O123456789", sales.getOrderNumber().getValue()),
                 () -> assertEquals("12345", sales.getDepartmentCode()),
                 () -> assertEquals("001", sales.getCustomerCode()),
                 () -> assertEquals("EMP001", sales.getEmployeeCode()),
@@ -193,7 +193,7 @@ class SalesTest {
 
             Sales sales = Sales.of(
                     "S123456789",
-                    "1234567890",
+                    "O123456789",
                     LocalDateTime.now(),
                     1,
                     "12345",
@@ -244,7 +244,7 @@ class SalesTest {
 
             Sales sales = Sales.of(
                     "S123456789",
-                    "1234567890",
+                    "O123456789",
                     LocalDateTime.now(),
                     1,
                     "12345",
@@ -301,7 +301,7 @@ class SalesTest {
 
             Sales sales = Sales.of(
                     "S123456789",
-                    "1234567890",
+                    "O123456789",
                     LocalDateTime.now(),
                     1,
                     "12345",
@@ -352,7 +352,7 @@ class SalesTest {
 
             Sales sales = Sales.of(
                     "S123456789",
-                    "1234567890",
+                    "O123456789",
                     LocalDateTime.now(),
                     1,
                     "12345",

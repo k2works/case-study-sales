@@ -76,7 +76,7 @@ class SalesServiceTest {
 
             Sales newSales = Sales.of(
                     "S000000009",
-                    "1000000001",
+                    "O000000001",
                     LocalDateTime.now(),
                     1,
                     "D001",
@@ -193,7 +193,7 @@ class SalesServiceTest {
 
             Sales expected = Sales.of(
                     salesNumber,
-                    "1000000001",
+                    "O000000001",
                     LocalDateTime.of(2021, 1, 1, 0, 0),
                     null,
                     "10000",

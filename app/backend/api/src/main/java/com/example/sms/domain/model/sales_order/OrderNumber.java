@@ -16,8 +16,8 @@ public class OrderNumber {
 
     public OrderNumber(String orderNumber) {
         notNull(orderNumber, "受注番号は必須です");
-        isTrue(!orderNumber.startsWith("0"), "注文番号は先頭が0であってはいけません");
-        matchesPattern(orderNumber, "[0-9]{10}", "注文番号は10桁の数字である必要があります");
+        isTrue(orderNumber.startsWith("O"), "注文番号は先頭がOで始まる必要があります");
+        matchesPattern(orderNumber, "^[A-Za-z][0-9]{9}$", "注文番号は先頭が文字、続いて9桁の数字である必要があります");
         this.value = orderNumber;
     }
 

@@ -18,7 +18,7 @@ class SalesResourceDTOMapperTest {
     void testConvertToEntity_validResource_shouldReturnSales() {
         // Arrange
         String salesNumber = "S123456789";
-        String orderNumber = "1234567890";
+        String orderNumber = "O123456789";
         LocalDateTime salesDate = LocalDateTime.now();
         Integer salesCategory = 1;
         String departmentCode = "DPT001";

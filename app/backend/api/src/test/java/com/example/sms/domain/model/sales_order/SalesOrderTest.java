@@ -16,7 +16,7 @@ class SalesOrderTest {
     @DisplayName("受注を作成できる")
     void shouldCreateSalesOrder() {
         SalesOrderLine salesOrderLine = SalesOrderLine.of(
-                "1234567890",
+                "O123456789",
                 1,
                 "P12345",
                 "テスト商品",
@@ -32,7 +32,7 @@ class SalesOrderTest {
         );
 
         SalesOrder salesOrder = SalesOrder.of(
-                "1234567890",
+                "O123456789",
                 LocalDateTime.now(),
                 "12345",
                 LocalDateTime.now(),
@@ -49,7 +49,7 @@ class SalesOrderTest {
         );
 
         assertAll(
-                () -> assertEquals("1234567890", salesOrder.getOrderNumber().getValue()),
+                () -> assertEquals("O123456789", salesOrder.getOrderNumber().getValue()),
                 () -> assertEquals("12345", salesOrder.getDepartmentCode().getValue()),
                 () -> assertEquals("001", salesOrder.getCustomerCode().getCode().getValue()),
                 () -> assertEquals(1, salesOrder.getCustomerCode().getBranchNumber()),
@@ -67,7 +67,7 @@ class SalesOrderTest {
     @DisplayName("受注日より前に納品希望日を設定できない")
     void shouldNotCreateSalesOrder() {
         assertThrows(IllegalArgumentException.class, () -> SalesOrder.of(
-                "1234567890",
+                "O123456789",
                 LocalDateTime.now(),
                 "12345",
                 LocalDateTime.now(),
@@ -90,10 +90,11 @@ class SalesOrderTest {
         @Test
         @DisplayName("注文番号は10桁の数字で作成できる")
         void shouldCreateEmployeeCode() {
-            assertDoesNotThrow(() -> OrderNumber.of("1234567890"));
+            assertDoesNotThrow(() -> OrderNumber.of("O123456789"));
             assertThrows(IllegalArgumentException.class, () -> OrderNumber.of("ORD1234567"));
             assertThrows(IllegalArgumentException.class, () -> OrderNumber.of("0123456789"));
             assertThrows(IllegalArgumentException.class, () -> OrderNumber.of("12345678901"));
+            assertThrows(IllegalArgumentException.class, () -> OrderNumber.of("O12345678901"));
             assertThrows(IllegalArgumentException.class, () -> OrderNumber.of("ORD"));
             assertThrows(IllegalArgumentException.class, () -> OrderNumber.of("1234"));
             assertThrows(IllegalArgumentException.class, () -> OrderNumber.of("123a"));
@@ -132,7 +133,7 @@ class SalesOrderTest {
         @DisplayName("受注明細を作成できる")
         void shouldCreateSalesOrderLine() {
             SalesOrderLine line = SalesOrderLine.of(
-                    "1234567890",
+                    "O123456789",
                     1,
                     "P12345",
                     "テスト商品",
@@ -148,7 +149,7 @@ class SalesOrderTest {
             );
 
             assertAll(
-                    () -> assertEquals("1234567890", line.getOrderNumber().getValue()),
+                    () -> assertEquals("O123456789", line.getOrderNumber().getValue()),
                     () -> assertEquals(1, line.getOrderLineNumber()),
                     () -> assertEquals("P12345", line.getProductCode().getValue()),
                     () -> assertEquals("テスト商品", line.getProductName()),
@@ -167,7 +168,7 @@ class SalesOrderTest {
         @DisplayName("受注金額を計算できる")
         void shouldCalculateSalesAmount() {
             SalesOrderLine line = SalesOrderLine.of(
-                    "1234567890",
+                    "O123456789",
                     1,
                     "P12345",
                     "テスト商品",
@@ -191,7 +192,7 @@ class SalesOrderTest {
         @DisplayName("消費税金額を計算できる")
         void shouldCalculateConsumptionTaxAmount() {
             SalesOrderLine line = SalesOrderLine.of(
-                    "1234567890",
+                    "O123456789",
                     1,
                     "P12345",
                     "テスト商品",
@@ -215,7 +216,7 @@ class SalesOrderTest {
         @DisplayName("消費税金額を計算できる")
         void shouldCalculateConsumptionTaxAmount2() {
             SalesOrderLine line = SalesOrderLine.of(
-                    "1234567890",
+                    "O123456789",
                     1,
                     "P12345",
                     "テスト商品",
@@ -241,7 +242,7 @@ class SalesOrderTest {
     @DisplayName("受注明細を完了にできる")
     void shouldCompleteSalesOrderLine() {
         SalesOrderLine line = SalesOrderLine.of(
-                "1234567890",
+                "O123456789",
                 1,
                 "P12345",
                 "テスト商品",
@@ -294,7 +295,7 @@ class SalesOrderTest {
         @DisplayName("受注金額合計を作成できる")
         void shouldCreateTotalOrderAmount() {
             SalesOrderLine salesOrderLine = SalesOrderLine.of(
-                    "1234567890",
+                    "O123456789",
                     1,
                     "P12345",
                     "テスト商品",
@@ -310,7 +311,7 @@ class SalesOrderTest {
             );
 
             SalesOrder salesOrder = SalesOrder.of(
-                    "1234567890",
+                    "O123456789",
                     LocalDateTime.now(),
                     "12345",
                     LocalDateTime.now(),
@@ -333,7 +334,7 @@ class SalesOrderTest {
         void shouldCreateTotalOrderAmount2() {
             SalesOrderLine salesOrderLine1 =
                     SalesOrderLine.of(
-                    "1234567890",
+                    "O123456789",
                     1,
                     "P12345",
                     "テスト商品",
@@ -350,7 +351,7 @@ class SalesOrderTest {
 
             SalesOrderLine salesOrderLine2 =
                     SalesOrderLine.of(
-                            "1234567890",
+                            "O123456789",
                             1,
                             "P12345",
                             "テスト商品",
@@ -366,7 +367,7 @@ class SalesOrderTest {
                     );
 
             SalesOrder salesOrder = SalesOrder.of(
-                    "1234567890",
+                    "O123456789",
                     LocalDateTime.now(),
                     "12345",
                     LocalDateTime.now(),
@@ -393,7 +394,7 @@ class SalesOrderTest {
         @DisplayName("消費税合計を作成できる")
         void shouldCreateTotalConsumptionTax() {
             SalesOrderLine salesOrderLine = SalesOrderLine.of(
-                    "1234567890",
+                    "O123456789",
                     1,
                     "P12345",
                     "テスト商品",
@@ -409,7 +410,7 @@ class SalesOrderTest {
             );
 
             SalesOrder salesOrder = SalesOrder.of(
-                    "1234567890",
+                    "O123456789",
                     LocalDateTime.now(),
                     "12345",
                     LocalDateTime.now(),
@@ -433,7 +434,7 @@ class SalesOrderTest {
         void shouldCreateTotalConsumptionTax2() {
             SalesOrderLine salesOrderLine1 =
                     SalesOrderLine.of(
-                            "1234567890",
+                            "O123456789",
                             1,
                             "P12345",
                             "テスト商品",
@@ -450,7 +451,7 @@ class SalesOrderTest {
 
             SalesOrderLine salesOrderLine2 =
                     SalesOrderLine.of(
-                            "1234567890",
+                            "O123456789",
                             1,
                             "P12345",
                             "テスト商品",
@@ -467,7 +468,7 @@ class SalesOrderTest {
 
 
             SalesOrder salesOrder = SalesOrder.of(
-                    "1234567890",
+                    "O123456789",
                     LocalDateTime.now(),
                     "12345",
                     LocalDateTime.now(),

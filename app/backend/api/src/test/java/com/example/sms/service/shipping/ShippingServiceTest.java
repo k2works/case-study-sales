@@ -175,8 +175,8 @@ class ShippingServiceTest {
         @Test
         @DisplayName("納期を超過している場合")
         void shouldCheckShippingOverdue() {
-            SalesOrder salesOrder = TestDataFactoryImpl.getSalesOrder("1000000009");
-            SalesOrderLine salesOrderLine = TestDataFactoryImpl.getSalesOrderLine("1000000009", 1);
+            SalesOrder salesOrder = TestDataFactoryImpl.getSalesOrder("O000000009");
+            SalesOrderLine salesOrderLine = TestDataFactoryImpl.getSalesOrderLine("O000000009", 1);
             SalesOrderLine newSalesOrderLine = SalesOrderLine.of(
                     salesOrderLine.getOrderNumber().getValue(),
                     salesOrderLine.getOrderLineNumber(),
