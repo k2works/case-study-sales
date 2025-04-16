@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Value;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * 売上明細
@@ -89,11 +90,11 @@ public class SalesLine {
 
     // 明細の計算メソッド
     public Money calcSalesAmount() {
-        return salesAmount.getValue();
+        return Objects.requireNonNull(salesAmount).getValue();
     }
 
     public Money calcConsumptionTaxAmount() {
-        return consumptionTaxAmount.getValue();
+        return Objects.requireNonNull(consumptionTaxAmount).getValue();
     }
 
     // 完了済み明細の生成
