@@ -4,6 +4,7 @@ import com.example.sms.domain.model.sales.*;
 import com.example.sms.infrastructure.datasource.autogen.model.売上データ;
 import com.example.sms.infrastructure.datasource.autogen.model.売上データ明細;
 import com.example.sms.infrastructure.datasource.autogen.model.売上データ明細Key;
+import com.example.sms.infrastructure.datasource.master.product.ProductEntityMapper;
 import com.example.sms.infrastructure.datasource.sales.sales_line.SalesLineCustomEntity;
 import org.springframework.stereotype.Component;
 
@@ -84,7 +85,7 @@ public class SalesEntityMapper {
 
         Function<SalesLineCustomEntity, SalesLine> salesLineMapper = e -> {
             if (Objects.isNull(e)) {
-                return SalesLine.of(null, null, null, null, null, null, null, null, null, null, null, null);
+                return SalesLine.of(null, null, null, null, null, null, null, null, null, null, null, null, null);
             }
 
             return SalesLine.of(
@@ -99,7 +100,8 @@ public class SalesEntityMapper {
                     e.get請求日(),
                     e.get請求番号(),
                     e.get請求遅延区分(),
-                    e.get自動仕訳日()
+                    e.get自動仕訳日(),
+                    e.get商品マスタ()  != null ? ProductEntityMapper.mapToDomainModel(e.get商品マスタ()) : null
             );
         };
 

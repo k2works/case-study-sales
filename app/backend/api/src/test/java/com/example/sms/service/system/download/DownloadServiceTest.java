@@ -132,7 +132,7 @@ class DownloadServiceTest {
             assertEquals(900, result.getFirst().getSalesPrice().intValue());
             assertEquals(810, result.getFirst().getPurchasePrice().intValue());
             assertEquals(90, result.getFirst().getCostOfGoodsSold().intValue());
-            assertEquals(TaxType.その他.getCode(), result.getFirst().getTaxCategory());
+            assertEquals(TaxType.外税.getCode(), result.getFirst().getTaxCategory());
             assertEquals("カテゴリ9", result.getFirst().getProductCategoryCode());
             assertEquals(MiscellaneousType.適用外.getCode(), result.getFirst().getMiscellaneousCategory());
             assertEquals(StockManagementTargetType.対象.getCode(), result.getFirst().getInventoryManagementCategory());
@@ -174,7 +174,7 @@ class DownloadServiceTest {
             assertEquals(900, result.getFirst().getSalesPrice().intValue());
             assertEquals(810, result.getFirst().getPurchasePrice().intValue());
             assertEquals(90, result.getFirst().getCostOfGoodsSold().intValue());
-            assertEquals(TaxType.その他.getCode(), result.getFirst().getTaxCategory());
+            assertEquals(TaxType.外税.getCode(), result.getFirst().getTaxCategory());
             assertEquals("カテゴリ9", result.getFirst().getProductCategoryCode());
             assertEquals(MiscellaneousType.適用外.getCode(), result.getFirst().getMiscellaneousCategory());
             assertEquals(StockManagementTargetType.対象.getCode(), result.getFirst().getInventoryManagementCategory());

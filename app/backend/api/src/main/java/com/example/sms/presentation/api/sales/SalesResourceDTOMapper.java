@@ -34,7 +34,8 @@ public class SalesResourceDTOMapper {
                                 line.getBillingDate(),
                                 line.getBillingNumber(),
                                 line.getBillingDelayCategory(),
-                                line.getAutoJournalDate()
+                                line.getAutoJournalDate(),
+                        null
                         )
                                 : null
                 )

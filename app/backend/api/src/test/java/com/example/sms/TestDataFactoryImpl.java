@@ -19,8 +19,6 @@ import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag;
 import com.example.sms.domain.model.system.user.RoleName;
-import com.example.sms.domain.type.money.Money;
-import com.example.sms.domain.type.quantity.Quantity;
 import com.example.sms.service.master.region.RegionRepository;
 import com.example.sms.service.master.department.DepartmentRepository;
 import com.example.sms.service.master.employee.EmployeeRepository;
@@ -150,9 +148,9 @@ public class TestDataFactoryImpl implements TestDataFactory {
         productCategoryRepository.save(ProductCategory.of("00000002", "カテゴリ4", 1, "2", 3));
         productCategoryRepository.save(ProductCategory.of("00000003", "カテゴリ5", 1, "2", 3));
         productRepository.deleteAll();
-        productRepository.save(Product.of("99999999", "商品1", "商品1", "ショウヒンイチ", ProductType.その他, 900, 810, 90, TaxType.その他, "カテゴリ9", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "009", 9));
-        productRepository.save(Product.of("99999998", "商品2", "商品2", "ショウヒン二", ProductType.その他, 800, 720, 80, TaxType.その他, "カテゴリ8", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "008", 8));
-        productRepository.save(Product.of("99999997", "商品3", "商品3", "ショウヒンサン", ProductType.その他, 700, 630, 70, TaxType.その他, "カテゴリ7", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "007", 7));
+        productRepository.save(Product.of("99999999", "商品1", "商品1", "ショウヒンイチ", ProductType.その他, 900, 810, 90, TaxType.外税, "カテゴリ9", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "009", 9));
+        productRepository.save(Product.of("99999998", "商品2", "商品2", "ショウヒン二", ProductType.その他, 800, 720, 80, TaxType.外税, "カテゴリ8", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "008", 8));
+        productRepository.save(Product.of("99999997", "商品3", "商品3", "ショウヒンサン", ProductType.その他, 700, 630, 70, TaxType.外税, "カテゴリ7", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "007", 7));
 
         partnerGroupRepository.deleteAll();
         partnerGroupRepository.save(PartnerGroup.of("0001", "取引先グループ1"));
@@ -287,7 +285,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 .mapToObj(i -> getShipping(partner.getPartnerCode().getValue(), i, customer.getCustomerCode().getBranchNumber()))
                 .toList();
         partnerRepository.save(Partner.ofWithCustomers(partner, List.of(Customer.of(customer, shippingList))));
-        productRepository.save(Product.of("99999999", "商品1", "商品1", "ショウヒンイチ", ProductType.その他, 900, 810, 90, TaxType.その他, "カテゴリ9", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "009", 9));
+        productRepository.save(Product.of("99999999", "商品1", "商品1", "ショウヒンイチ", ProductType.その他, 900, 810, 90, TaxType.外税, "カテゴリ9", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "009", 9));
 
         salesOrderRepository.deleteAll();
 
@@ -441,7 +439,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
                             LocalDateTime.now(), // 請求日
                             "B001", // 請求番号
                             0, // 請求遅延区分
-                            LocalDateTime.now() // 自動仕訳日
+                            LocalDateTime.now(), // 自動仕訳日,
+                            null
                     ))
                     .toList();
 
@@ -724,7 +723,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 LocalDateTime.of(2023, 10, 1, 0, 0),
                 "001",
                 0,
-                LocalDateTime.of(2023, 10, 1, 0, 0) // 納期
+                LocalDateTime.of(2023, 10, 1, 0, 0),
+                null
         );
     }
 

@@ -185,7 +185,7 @@ public class ProductDataSource implements ProductRepository {
         List<ProductCustomEntity> productEntities = productCustomMapper.selectAll();
 
         return new ProductList(productEntities.stream()
-                .map(productEntityMapper::mapToDomainModel)
+                .map(ProductEntityMapper::mapToDomainModel)
                 .toList());
     }
 
@@ -194,7 +194,7 @@ public class ProductDataSource implements ProductRepository {
         List<ProductCustomEntity> productEntities = productCustomMapper.selectAll();
         PageInfo<ProductCustomEntity> pageInfo = new PageInfo<>(productEntities);
 
-        return PageInfoHelper.of(pageInfo, productEntityMapper::mapToDomainModel);
+        return PageInfoHelper.of(pageInfo, ProductEntityMapper::mapToDomainModel);
     }
 
     @Override
@@ -202,7 +202,7 @@ public class ProductDataSource implements ProductRepository {
         List<ProductCustomEntity> productEntities = productCustomMapper.selectAllBoms(List.of(ProductType.製品.getCode(), ProductType.部品.getCode(), ProductType.包材.getCode()));
         PageInfo<ProductCustomEntity> pageInfo = new PageInfo<>(productEntities);
 
-        return PageInfoHelper.of(pageInfo, productEntityMapper::mapToDomainModel);
+        return PageInfoHelper.of(pageInfo, ProductEntityMapper::mapToDomainModel);
     }
 
     @Override
@@ -210,14 +210,14 @@ public class ProductDataSource implements ProductRepository {
         List<ProductCustomEntity> productEntities = productCustomMapper.selectByCriteria(criteria);
         PageInfo<ProductCustomEntity> pageInfo = new PageInfo<>(productEntities);
 
-        return PageInfoHelper.of(pageInfo, productEntityMapper::mapToDomainModel);
+        return PageInfoHelper.of(pageInfo, ProductEntityMapper::mapToDomainModel);
     }
 
     @Override
     public Optional<Product> findById(String productCode) {
         ProductCustomEntity productEntity = productCustomMapper.selectByPrimaryKey(productCode);
         if (productEntity != null) {
-            return Optional.of(productEntityMapper.mapToDomainModel(productEntity));
+            return Optional.of(ProductEntityMapper.mapToDomainModel(productEntity));
         }
         return Optional.empty();
     }

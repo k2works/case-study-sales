@@ -73,7 +73,7 @@ public class SalesOrderLine {
                 salesOrderLine.getDeliveryDate(),
                 salesOrderLine.getProduct(),
                 SalesAmount.of(salesOrderLine.getSalesUnitPrice(), salesOrderLine.getOrderQuantity()),
-                ConsumptionTaxAmount.of(SalesAmount.of(salesOrderLine.getSalesUnitPrice(), salesOrderLine.getOrderQuantity()), salesOrderLine.getTaxRate())
+                ConsumptionTaxAmount.of(SalesAmount.of(salesOrderLine.getSalesUnitPrice(), salesOrderLine.getOrderQuantity()), salesOrderLine.getTaxRate(), salesOrderLine.getProduct())
         );
     }
 
@@ -94,7 +94,7 @@ public class SalesOrderLine {
                 salesOrderLine.getDeliveryDate(),
                 product,
                 SalesAmount.of(salesOrderLine.getSalesUnitPrice(), salesOrderLine.getOrderQuantity()),
-                ConsumptionTaxAmount.of(SalesAmount.of(salesOrderLine.getSalesUnitPrice(), salesOrderLine.getOrderQuantity()), salesOrderLine.getTaxRate())
+                ConsumptionTaxAmount.of(SalesAmount.of(salesOrderLine.getSalesUnitPrice(), salesOrderLine.getOrderQuantity()), salesOrderLine.getTaxRate(), product)
         );
     }
 

@@ -185,7 +185,8 @@ class SalesRepositoryTest {
                     salesLine.getBillingDate().getValue(),
                     salesLine.getBillingNumber().getValue(),
                     salesLine.getBillingDelayType().getCode(),
-                    salesLine.getAutoJournalDate().getValue()
+                    salesLine.getAutoJournalDate().getValue(),
+                    null
             );
             Sales updateNewSales = Sales.of(
                     sales.getSalesNumber().getValue(),

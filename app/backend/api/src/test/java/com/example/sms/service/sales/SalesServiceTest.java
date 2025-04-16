@@ -3,12 +3,8 @@ package com.example.sms.service.sales;
 import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactory;
 import com.example.sms.TestDataFactoryImpl;
+import com.example.sms.domain.model.master.product.*;
 import com.example.sms.domain.model.sales.*;
-import com.example.sms.domain.model.sales_order.ConsumptionTaxAmount;
-import com.example.sms.domain.model.sales_order.SalesAmount;
-import com.example.sms.domain.model.sales_order.TaxRateType;
-import com.example.sms.domain.type.money.Money;
-import com.example.sms.domain.type.quantity.Quantity;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -67,7 +63,8 @@ class SalesServiceTest {
                     LocalDateTime.now(),
                     "B001",
                     0,
-                    LocalDateTime.now()
+                    LocalDateTime.now(),
+                    null
             );
 
             Sales newSales = Sales.of(
@@ -170,6 +167,24 @@ class SalesServiceTest {
         @DisplayName("売上を集計できる")
         void shouldAggregateSales() {
             String salesNumber = "S000000001";
+            Product  product = Product.of(
+                            "99999999", // 商品コード
+                            "商品1",    // 商品名
+                            "商品1",    // 商品名カナ
+                            "ショウヒンイチ", // 商品英語名
+                            ProductType.その他, // 商品種別
+                            900, // 商品標準価格
+                            810, // 売上単価
+                            90,  // 利益額
+                            TaxType.外税, // 税種別
+                            "カテゴリ9", // カテゴリ
+                            MiscellaneousType.適用外, // 雑費区分
+                            StockManagementTargetType.対象, // 在庫管理対象
+                            StockAllocationType.引当済, // 在庫引当区分
+                            "009", // 倉庫コード
+                            9    // 入荷リードタイム
+                    );
+
             List<SalesLine> salesLines = IntStream.range(1, 4)
                     .mapToObj(lineNumber -> SalesLine.of(
                             salesNumber,
@@ -183,10 +198,10 @@ class SalesServiceTest {
                             null,
                             null,
                             null,
-                            LocalDateTime.of(2021, 1, 1, 0, 0)
+                            LocalDateTime.of(2021, 1, 1, 0, 0),
+                            product
                     ))
                     .toList();
-
             Sales expected = Sales.of(
                     salesNumber,
                     "O000000001",

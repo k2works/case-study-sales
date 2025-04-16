@@ -115,7 +115,8 @@ public class SalesService {
                             null,
                             null,
                             null,
-                            shipping.getDeliveryDate().getValue()
+                            shipping.getDeliveryDate().getValue(),
+                            null
                     ))
                     .toList();
 

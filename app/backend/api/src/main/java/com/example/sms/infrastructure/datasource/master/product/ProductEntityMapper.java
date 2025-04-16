@@ -66,7 +66,7 @@ public class ProductEntityMapper {
         return customerSellingPriceEntity;
     }
 
-    public Product mapToDomainModel(ProductCustomEntity productEntity) {
+    public static Product mapToDomainModel(ProductCustomEntity productEntity) {
         Function<代替商品, SubstituteProduct> mapToSubstituteProduct = s -> (
                 SubstituteProduct.of(
                         s.get商品コード(),

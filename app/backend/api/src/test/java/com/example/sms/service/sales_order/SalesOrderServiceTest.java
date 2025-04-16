@@ -183,7 +183,7 @@ class SalesOrderServiceTest {
                 assertEquals(LocalDateTime.parse("2025-02-19T00:00"), result.getOrderDate().getValue());
                 assertEquals("10000", result.getDepartmentCode().getValue());
                 assertEquals(21000, result.getTotalOrderAmount().getAmount());
-                assertEquals(2100, result.getTotalConsumptionTax().getAmount());
+                assertEquals(2045, result.getTotalConsumptionTax().getAmount());
                 assertEquals("初回注文", result.getRemarks());
 
                 assertEquals(2, result.getSalesOrderLines().size());
@@ -226,7 +226,7 @@ class SalesOrderServiceTest {
                 assertEquals(LocalDateTime.parse("2025-02-19T00:00"), result.getOrderDate().getValue());
                 assertEquals("10000", result.getDepartmentCode().getValue());
                 assertEquals(21000, result.getTotalOrderAmount().getAmount());
-                assertEquals(2100, result.getTotalConsumptionTax().getAmount());
+                assertEquals(2045, result.getTotalConsumptionTax().getAmount());
                 assertEquals("初回注文", result.getRemarks());
 
                 assertEquals(2, result.getSalesOrderLines().size());

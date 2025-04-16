@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.sales;
 
+import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.ProductCode;
 import com.example.sms.domain.model.sales_order.ConsumptionTaxAmount;
 import com.example.sms.domain.model.sales_order.SalesAmount;
@@ -39,16 +40,17 @@ public class SalesLine {
     /** 消費税額 */
     ConsumptionTaxAmount consumptionTaxAmount;
 
+    Product product; // 商品マスタ情報
+    //TODO:消費税率追加
+
     // ファクトリーメソッド
     public static SalesLine of(String salesNumber, Integer salesLineNumber, String productCode, String productName,
                                Integer salesUnitPrice, Integer salesQuantity, Integer shippedQuantity,
                                Integer discountAmount, LocalDateTime billingDate, String billingNumber,
-                               Integer billingDelayCategory, LocalDateTime autoJournalDate) {
+                               Integer billingDelayCategory, LocalDateTime autoJournalDate, Product product) {
 
-        // 必要な計算ロジックを追加
         SalesAmount calcSalesAmount = SalesAmount.of(Money.of(salesUnitPrice), Quantity.of(salesQuantity));
-        //TODO: 商品マスタから税率を取得するロジックを追加
-        ConsumptionTaxAmount calcConsumptionTaxAmount = ConsumptionTaxAmount.of(calcSalesAmount, TaxRateType.of(10)); // 例: 10%固定税率
+        ConsumptionTaxAmount calcConsumptionTaxAmount = ConsumptionTaxAmount.of(calcSalesAmount, TaxRateType.標準税率, product);
 
         return new SalesLine(
                 SalesNumber.of(salesNumber),
@@ -64,7 +66,8 @@ public class SalesLine {
                 billingDelayCategory == null ? null : BillingDelayType.fromCode(billingDelayCategory),
                 autoJournalDate == null ? null : AutoJournalDate.of(autoJournalDate),
                 calcSalesAmount,
-                calcConsumptionTaxAmount
+                calcConsumptionTaxAmount,
+                product
         );
     }
 
@@ -83,8 +86,8 @@ public class SalesLine {
                 salesLine.getBillingDelayType(),
                 salesLine.getAutoJournalDate(),
                 SalesAmount.of(salesLine.getSalesUnitPrice(), salesLine.getSalesQuantity()),
-                //TODO: 商品マスタから税率を取得するロジックを追加
-                ConsumptionTaxAmount.of(SalesAmount.of(salesLine.getSalesUnitPrice(), salesLine.getSalesQuantity()), TaxRateType.of(10))
+                ConsumptionTaxAmount.of(SalesAmount.of(salesLine.getSalesUnitPrice(), salesLine.getSalesQuantity()), TaxRateType.軽減税率, salesLine.getProduct()),
+                salesLine.getProduct()
         );
     }
 
@@ -113,7 +116,8 @@ public class SalesLine {
                 salesLine.getBillingDelayType(),
                 salesLine.getAutoJournalDate(),
                 SalesAmount.of(salesLine.getSalesUnitPrice(), salesLine.getSalesQuantity()),
-                ConsumptionTaxAmount.of(SalesAmount.of(salesLine.getSalesUnitPrice(), salesLine.getSalesQuantity()), TaxRateType.of(10)) // 固定税率例
+                ConsumptionTaxAmount.of(SalesAmount.of(salesLine.getSalesUnitPrice(), salesLine.getSalesQuantity()), TaxRateType.標準税率),
+                salesLine.getProduct()
         );
     }
 }
