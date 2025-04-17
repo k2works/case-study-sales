@@ -23,7 +23,7 @@ describe('受注管理', () => {
                 cy.get('#new').click();
 
                 // ヘッダ情報を入力
-                cy.get('#orderNumber').type('1000000009');
+                cy.get('#orderNumber').type('O000000009');
                 cy.get('#orderDate').type('2024-01-01');
                 cy.get('#departmentCode').type('10000');
                 cy.get('.collection-object-container-modal > .collection-object-list > :nth-child(1) > .collection-object-item-actions > .action-button').click();
@@ -77,10 +77,10 @@ describe('受注管理', () => {
             it('検索', () => {
                 userPage();
                 cy.get('#search').click();
-                cy.get('#search-order-number').type('1000000009');
+                cy.get('#search-order-number').type('O000000009');
                 cy.wait(1000);
                 cy.get('#search-all').click();
-                cy.get(':nth-child(2) > .collection-object-item-content-name').contains('1000000009');
+                cy.get(':nth-child(2) > .collection-object-item-content-name').contains('O000000009');
             });
         });
 
@@ -88,7 +88,7 @@ describe('受注管理', () => {
             it('登録情報編集', () => {
                 userPage();
                 cy.get('#search').click();
-                cy.get('#search-order-number').type('1000000009');
+                cy.get('#search-order-number').type('O000000009');
                 cy.wait(1000);
                 cy.get('#search-all').click();
                 cy.wait(1000);
@@ -111,7 +111,7 @@ describe('受注管理', () => {
             it('削除', () => {
                 userPage();
                 cy.get('#search').click();
-                cy.get('#search-order-number').type('1000000009');
+                cy.get('#search-order-number').type('O000000009');
                 cy.wait(1000);
                 cy.get('#search-all').click();
                 cy.wait(1000);
@@ -145,7 +145,7 @@ describe('受注管理', () => {
                 cy.get('#new').click();
 
                 // ヘッダ情報を入力
-                cy.get('#orderNumber').type('1000000009');
+                cy.get('#orderNumber').type('O000000009');
                 cy.get('#orderDate').type('2024-01-01');
                 cy.get('#departmentCode').type('10000');
                 cy.get('.collection-object-container-modal > .collection-object-list > :nth-child(1) > .collection-object-item-actions > .action-button').click();
@@ -199,10 +199,10 @@ describe('受注管理', () => {
             it('検索', () => {
                 userPage();
                 cy.get('#search').click();
-                cy.get('#search-order-number').type('1000000009');
+                cy.get('#search-order-number').type('O000000009');
                 cy.wait(1000);
                 cy.get('#search-all').click();
-                cy.get(':nth-child(2) > .collection-object-item-content-name').contains('1000000009');
+                cy.get(':nth-child(2) > .collection-object-item-content-name').contains('O000000009');
             });
         });
 
@@ -210,7 +210,7 @@ describe('受注管理', () => {
             it('登録情報編集', () => {
                 userPage();
                 cy.get('#search').click();
-                cy.get('#search-order-number').type('1000000009');
+                cy.get('#search-order-number').type('O000000009');
                 cy.wait(1000);
                 cy.get('#search-all').click();
                 cy.wait(1000);
@@ -233,7 +233,7 @@ describe('受注管理', () => {
             it('削除', () => {
                 userPage();
                 cy.get('#search').click();
-                cy.get('#search-order-number').type('1000000009');
+                cy.get('#search-order-number').type('O000000009');
                 cy.wait(1000);
                 cy.get('#search-all').click();
                 cy.wait(1000);
