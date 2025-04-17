@@ -2,8 +2,10 @@ package com.example.sms.domain.model.sales;
 
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.ProductCode;
+import com.example.sms.domain.model.master.product.TaxType;
 import com.example.sms.domain.model.sales_order.ConsumptionTaxAmount;
 import com.example.sms.domain.model.sales_order.SalesAmount;
+import com.example.sms.domain.model.sales_order.SalesCalculation;
 import com.example.sms.domain.model.sales_order.TaxRateType;
 import com.example.sms.domain.type.money.Money;
 import com.example.sms.domain.type.quantity.Quantity;
@@ -43,14 +45,11 @@ public class SalesLine {
     Product product; // 商品マスタ情報
     //TODO:消費税率追加
 
-    // ファクトリーメソッド
     public static SalesLine of(String salesNumber, Integer salesLineNumber, String productCode, String productName,
                                Integer salesUnitPrice, Integer salesQuantity, Integer shippedQuantity,
                                Integer discountAmount, LocalDateTime billingDate, String billingNumber,
                                Integer billingDelayCategory, LocalDateTime autoJournalDate, Product product) {
-
-        SalesAmount calcSalesAmount = SalesAmount.of(Money.of(salesUnitPrice), Quantity.of(salesQuantity));
-        ConsumptionTaxAmount calcConsumptionTaxAmount = ConsumptionTaxAmount.of(calcSalesAmount, TaxRateType.標準税率, product);
+        SalesCalculation salesCalculation = SalesCalculation.of(Money.of(salesUnitPrice), Quantity.of(salesQuantity), product, TaxRateType.標準税率);
 
         return new SalesLine(
                 SalesNumber.of(salesNumber),
@@ -65,13 +64,15 @@ public class SalesLine {
                 billingNumber == null ? null : BillingNumber.of(billingNumber),
                 billingDelayCategory == null ? null : BillingDelayType.fromCode(billingDelayCategory),
                 autoJournalDate == null ? null : AutoJournalDate.of(autoJournalDate),
-                calcSalesAmount,
-                calcConsumptionTaxAmount,
+                salesCalculation.getSalesAmount(),
+                salesCalculation.getConsumptionTaxAmount(),
                 product
         );
     }
 
     public static SalesLine of(SalesLine salesLine) {
+        SalesCalculation salesCalculation = SalesCalculation.of(salesLine.getSalesUnitPrice(), salesLine.getSalesQuantity(), salesLine.getProduct(), TaxRateType.標準税率);
+
         return new SalesLine(
                 salesLine.getSalesNumber(),
                 salesLine.getSalesLineNumber(),
@@ -85,8 +86,8 @@ public class SalesLine {
                 salesLine.getBillingNumber(),
                 salesLine.getBillingDelayType(),
                 salesLine.getAutoJournalDate(),
-                SalesAmount.of(salesLine.getSalesUnitPrice(), salesLine.getSalesQuantity()),
-                ConsumptionTaxAmount.of(SalesAmount.of(salesLine.getSalesUnitPrice(), salesLine.getSalesQuantity()), TaxRateType.軽減税率, salesLine.getProduct()),
+                salesCalculation.getSalesAmount(),
+                salesCalculation.getConsumptionTaxAmount(),
                 salesLine.getProduct()
         );
     }
@@ -102,6 +103,8 @@ public class SalesLine {
 
     // 完了済み明細の生成
     public static SalesLine complete(SalesLine salesLine) {
+        SalesCalculation salesCalculation = SalesCalculation.of(salesLine.getSalesUnitPrice(), salesLine.getSalesQuantity(), salesLine.getProduct(), TaxRateType.標準税率);
+
         return new SalesLine(
                 salesLine.getSalesNumber(),
                 salesLine.getSalesLineNumber(),
@@ -115,8 +118,8 @@ public class SalesLine {
                 salesLine.getBillingNumber(),
                 salesLine.getBillingDelayType(),
                 salesLine.getAutoJournalDate(),
-                SalesAmount.of(salesLine.getSalesUnitPrice(), salesLine.getSalesQuantity()),
-                ConsumptionTaxAmount.of(SalesAmount.of(salesLine.getSalesUnitPrice(), salesLine.getSalesQuantity()), TaxRateType.標準税率),
+                salesCalculation.getSalesAmount(),
+                salesCalculation.getConsumptionTaxAmount(),
                 salesLine.getProduct()
         );
     }

@@ -3,6 +3,7 @@ package com.example.sms.service.sales_order;
 import com.example.sms.FeatureToggleProperties;
 import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.employee.EmployeeCode;
+import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.sales_order.SalesOrder;
 import com.example.sms.domain.model.sales_order.SalesOrderLine;
 import com.example.sms.domain.model.sales_order.SalesOrderList;
@@ -194,7 +195,10 @@ public class SalesOrderService {
         }
     }
 
-    private static SalesOrderList convert(List<SalesOrderUploadCSV> dataList) {
+    /**
+     * CSVデータをSalesOrderListに変換
+     */
+    private SalesOrderList convert(List<SalesOrderUploadCSV> dataList) {
         // 結果を格納するリスト
         List<SalesOrder> salesOrders = new ArrayList<>();
 
@@ -251,9 +255,11 @@ public class SalesOrderService {
                     csv.getDiscountAmount(),
                     csv.getDeliveryDate()
             );
+            // Productを取得
+            Product product = productRepository.findById(csv.getProductCode()).orElse(null);
 
             // SalesOrderの`salesOrderLines`リストに追加
-            salesOrder.getSalesOrderLines().add(orderLine);
+            Objects.requireNonNull(salesOrder.getSalesOrderLines()).add(SalesOrderLine.of(orderLine, product));
         }
 
         // SalesOrderリストを返す

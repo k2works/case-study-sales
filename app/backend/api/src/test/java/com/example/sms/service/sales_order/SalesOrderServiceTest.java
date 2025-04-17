@@ -3,6 +3,7 @@ package com.example.sms.service.sales_order;
 import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactory;
 import com.example.sms.TestDataFactoryImpl;
+import com.example.sms.domain.model.master.product.TaxType;
 import com.example.sms.domain.model.sales_order.DeliveryDate;
 import com.example.sms.domain.model.sales_order.SalesOrder;
 import com.example.sms.domain.model.sales_order.SalesOrderLine;
@@ -182,7 +183,7 @@ class SalesOrderServiceTest {
                 assertEquals("O000000001", result.getOrderNumber().getValue());
                 assertEquals(LocalDateTime.parse("2025-02-19T00:00"), result.getOrderDate().getValue());
                 assertEquals("10000", result.getDepartmentCode().getValue());
-                assertEquals(21000, result.getTotalOrderAmount().getAmount());
+                assertEquals(20454, result.getTotalOrderAmount().getAmount());
                 assertEquals(2045, result.getTotalConsumptionTax().getAmount());
                 assertEquals("初回注文", result.getRemarks());
 
@@ -194,6 +195,7 @@ class SalesOrderServiceTest {
                 assertEquals("商品1", line1.getProductName());
                 assertEquals(3000, line1.getSalesUnitPrice().getAmount());
                 assertEquals(5, line1.getOrderQuantity().getAmount());
+                assertEquals(TaxType.外税, line1.getProduct().getTaxType());
 
                 SalesOrderLine line2 = result.getSalesOrderLines().get(1);
                 assertEquals(2, line2.getOrderLineNumber());
@@ -201,6 +203,7 @@ class SalesOrderServiceTest {
                 assertEquals("商品2", line2.getProductName());
                 assertEquals(2000, line2.getSalesUnitPrice().getAmount());
                 assertEquals(3, line2.getOrderQuantity().getAmount());
+                assertEquals(TaxType.内税, line2.getProduct().getTaxType());
             }
 
             @Test
@@ -225,7 +228,7 @@ class SalesOrderServiceTest {
                 assertEquals("O000000001", result.getOrderNumber().getValue());
                 assertEquals(LocalDateTime.parse("2025-02-19T00:00"), result.getOrderDate().getValue());
                 assertEquals("10000", result.getDepartmentCode().getValue());
-                assertEquals(21000, result.getTotalOrderAmount().getAmount());
+                assertEquals(20454, result.getTotalOrderAmount().getAmount());
                 assertEquals(2045, result.getTotalConsumptionTax().getAmount());
                 assertEquals("初回注文", result.getRemarks());
 
@@ -238,6 +241,7 @@ class SalesOrderServiceTest {
                 assertEquals("商品1", line1.getProductName());
                 assertEquals(3000, line1.getSalesUnitPrice().getAmount());
                 assertEquals(5, line1.getOrderQuantity().getAmount());
+                assertEquals(TaxType.外税, line1.getProduct().getTaxType());
 
                 SalesOrderLine line2 = result.getSalesOrderLines().get(1);
                 assertEquals(2, line2.getOrderLineNumber());
@@ -245,6 +249,7 @@ class SalesOrderServiceTest {
                 assertEquals("商品2", line2.getProductName());
                 assertEquals(2000, line2.getSalesUnitPrice().getAmount());
                 assertEquals(3, line2.getOrderQuantity().getAmount());
+                assertEquals(TaxType.内税, line2.getProduct().getTaxType());
             }
 
             @Test
@@ -274,7 +279,7 @@ class SalesOrderServiceTest {
 
                 SalesOrder order2 = result.asList().get(1);
                 assertEquals("O000000002", order2.getOrderNumber().getValue());
-                assertEquals(60000, order2.getTotalOrderAmount().getAmount());
+                assertEquals(54540, order2.getTotalOrderAmount().getAmount());
                 assertEquals(2, order2.getSalesOrderLines().size());
             }
 
@@ -306,7 +311,7 @@ class SalesOrderServiceTest {
 
                 SalesOrder order2 = result.asList().get(1);
                 assertEquals("O000000002", order2.getOrderNumber().getValue());
-                assertEquals(60000, order2.getTotalOrderAmount().getAmount());
+                assertEquals(54540, order2.getTotalOrderAmount().getAmount());
                 assertEquals(2, order2.getSalesOrderLines().size());
             }
         }

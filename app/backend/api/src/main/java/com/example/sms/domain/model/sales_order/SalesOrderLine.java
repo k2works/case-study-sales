@@ -36,6 +36,8 @@ public class SalesOrderLine {
     ConsumptionTaxAmount consumptionTaxAmount; // 消費税額
 
     public static SalesOrderLine of(String orderNumber, Integer orderLineNumber, String productCode, String productName, Integer salesUnitPrice, Integer salesQuantity, Integer taxRate, Integer allocationQuantity, Integer shipmentInstructionQuantity, Integer shippedQuantity, Integer completionFlag, Integer discountAmount, LocalDateTime deliveryDate) {
+        SalesCalculation salesCalculation = SalesCalculation.of(Money.of(salesUnitPrice), Quantity.of(salesQuantity), null, TaxRateType.of(taxRate));
+
         return new SalesOrderLine(
                 OrderNumber.of(orderNumber),
                 orderLineNumber,
@@ -51,12 +53,14 @@ public class SalesOrderLine {
                 Money.of(discountAmount),
                 DeliveryDate.of(deliveryDate),
                 null,
-                SalesAmount.of(Money.of(salesUnitPrice), Quantity.of(salesQuantity)),
-                ConsumptionTaxAmount.of(SalesAmount.of(Money.of(salesUnitPrice), Quantity.of(salesQuantity)), TaxRateType.of(taxRate))
+                salesCalculation.getSalesAmount(),
+                salesCalculation.getConsumptionTaxAmount()
         );
     }
 
     public static SalesOrderLine complete(SalesOrderLine salesOrderLine) {
+        SalesCalculation salesCalculation = SalesCalculation.of(salesOrderLine.getSalesUnitPrice(), salesOrderLine.getOrderQuantity(), salesOrderLine.getProduct(), salesOrderLine.getTaxRate());
+
         return new SalesOrderLine(
                 salesOrderLine.getOrderNumber(),
                 salesOrderLine.getOrderLineNumber(),
@@ -72,12 +76,14 @@ public class SalesOrderLine {
                 salesOrderLine.getDiscountAmount(),
                 salesOrderLine.getDeliveryDate(),
                 salesOrderLine.getProduct(),
-                SalesAmount.of(salesOrderLine.getSalesUnitPrice(), salesOrderLine.getOrderQuantity()),
-                ConsumptionTaxAmount.of(SalesAmount.of(salesOrderLine.getSalesUnitPrice(), salesOrderLine.getOrderQuantity()), salesOrderLine.getTaxRate(), salesOrderLine.getProduct())
+                salesCalculation.getSalesAmount(),
+                salesCalculation.getConsumptionTaxAmount()
         );
     }
 
     public static SalesOrderLine of(SalesOrderLine salesOrderLine, Product product) {
+        SalesCalculation salesCalculation = SalesCalculation.of(salesOrderLine.getSalesUnitPrice(), salesOrderLine.getOrderQuantity(), product, salesOrderLine.getTaxRate());
+
         return new SalesOrderLine(
                 salesOrderLine.getOrderNumber(),
                 salesOrderLine.getOrderLineNumber(),
@@ -93,8 +99,8 @@ public class SalesOrderLine {
                 salesOrderLine.getDiscountAmount(),
                 salesOrderLine.getDeliveryDate(),
                 product,
-                SalesAmount.of(salesOrderLine.getSalesUnitPrice(), salesOrderLine.getOrderQuantity()),
-                ConsumptionTaxAmount.of(SalesAmount.of(salesOrderLine.getSalesUnitPrice(), salesOrderLine.getOrderQuantity()), salesOrderLine.getTaxRate(), product)
+                salesCalculation.getSalesAmount(),
+                salesCalculation.getConsumptionTaxAmount()
         );
     }
 
