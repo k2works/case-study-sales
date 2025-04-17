@@ -4,7 +4,7 @@ import com.example.sms.domain.model.system.autonumber.AutoNumber;
 import com.example.sms.infrastructure.datasource.autogen.mapper.自動採番マスタMapper;
 import com.example.sms.infrastructure.datasource.autogen.model.自動採番マスタ;
 import com.example.sms.infrastructure.datasource.autogen.model.自動採番マスタKey;
-import com.example.sms.service.autonumber.AutoNumberRepository;
+import com.example.sms.service.system.autonumber.AutoNumberRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;

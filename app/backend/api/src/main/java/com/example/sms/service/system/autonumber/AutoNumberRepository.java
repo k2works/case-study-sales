@@ -1,4 +1,4 @@
-package com.example.sms.service.autonumber;
+package com.example.sms.service.system.autonumber;
 
 import com.example.sms.domain.model.system.autonumber.AutoNumber;
 
@@ -18,19 +18,7 @@ public interface AutoNumberRepository {
 
     void delete(AutoNumber autoNumber);
 
-    /**
-     * 次の伝票番号を取得する
-     * @param documentTypeCode 伝票種別コード
-     * @param yearMonth 年月
-     * @return 次の伝票番号
-     */
     Integer getNextDocumentNumber(String documentTypeCode, LocalDateTime yearMonth);
 
-    /**
-     * 伝票番号を更新する
-     * @param documentTypeCode 伝票種別コード
-     * @param yearMonth 年月
-     * @return 更新後の自動採番マスタ
-     */
     AutoNumber incrementDocumentNumber(String documentTypeCode, LocalDateTime yearMonth);
 }

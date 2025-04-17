@@ -1,4 +1,4 @@
-package com.example.sms.service.autonumber;
+package com.example.sms.service.system.autonumber;
 
 import com.example.sms.domain.model.system.autonumber.AutoNumber;
 import org.junit.jupiter.api.BeforeEach;
