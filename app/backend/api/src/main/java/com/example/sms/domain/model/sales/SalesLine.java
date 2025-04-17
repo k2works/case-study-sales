@@ -47,8 +47,10 @@ public class SalesLine {
                                Integer billingDelayCategory, LocalDateTime autoJournalDate, Product product, TaxRateType taxRate) {
         SalesCalculation salesCalculation = SalesCalculation.of(Money.of(salesUnitPrice), Quantity.of(salesQuantity), product, taxRate);
 
+        SalesNumber salesNumberValueObject = salesNumber == null ? null : SalesNumber.of(salesNumber);
+
         return new SalesLine(
-                SalesNumber.of(salesNumber),
+                salesNumberValueObject,
                 salesLineNumber,
                 ProductCode.of(productCode),
                 productName,

@@ -47,8 +47,10 @@ public class Sales {
                 .map(SalesLine::calcConsumptionTaxAmount)
                 .reduce(Money.of(0), Money::plusMoney);
 
+        SalesNumber salesNumberValueObject = salesNumber == null ? null : SalesNumber.of(salesNumber);
+
         return new Sales(
-                SalesNumber.of(salesNumber),
+                salesNumberValueObject,
                 OrderNumber.of(orderNumber),
                 SalesDate.of(salesDate),
                 SalesType.fromCode(salesType),

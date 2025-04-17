@@ -6,11 +6,16 @@ import com.example.sms.domain.model.sales.SalesList;
 import com.example.sms.domain.model.sales.SalesType;
 import com.example.sms.domain.model.shipping.Shipping;
 import com.example.sms.domain.model.shipping.ShippingList;
+import com.example.sms.domain.model.system.autonumber.AutoNumber;
 import com.example.sms.service.shipping.ShippingRepository;
+import com.example.sms.service.system.autonumber.AutoNumberService;
 import com.github.pagehelper.PageInfo;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -22,12 +27,14 @@ import java.util.Objects;
 @Transactional
 public class SalesService {
 
-    private final SalesRepository salesRepository;
-    private final ShippingRepository shippingRepository;
+    final SalesRepository salesRepository;
+    final ShippingRepository shippingRepository;
+    final AutoNumberService autoNumberService;
 
-    public SalesService(SalesRepository salesRepository, ShippingRepository shippingRepository) {
+    public SalesService(SalesRepository salesRepository, ShippingRepository shippingRepository, AutoNumberService autoNumberService) {
         this.salesRepository = salesRepository;
         this.shippingRepository = shippingRepository;
+        this.autoNumberService = autoNumberService;
     }
 
     /**
@@ -48,6 +55,29 @@ public class SalesService {
      * 売上を新規登録
      */
     public void register(Sales sales) {
+        if (sales.getSalesNumber() == null) {
+            LocalDateTime saleDate = Objects.requireNonNull(Objects.requireNonNull(sales.getSalesDate()).getValue());
+            LocalDateTime yearMonth = YearMonth.of(saleDate.getYear(), saleDate.getMonth()).atDay(1).atStartOfDay();
+            Integer autoNumber = autoNumberService.getNextDocumentNumber("S", yearMonth);
+            String salesNumber = "S" + yearMonth.format(DateTimeFormatter.ofPattern("yyMM")) + String.format("%05d", autoNumber);
+
+            sales = Sales.of(
+                    salesNumber,
+                    Objects.requireNonNull(sales.getOrderNumber()).getValue(),
+                    saleDate,
+                    Objects.requireNonNull(sales.getSalesType()).getCode(),
+                    Objects.requireNonNull(Objects.requireNonNull(sales.getDepartmentId()).getDeptCode()).getValue(),
+                    Objects.requireNonNull(sales.getDepartmentId().getDepartmentStartDate()).getValue(),
+                    Objects.requireNonNull(sales.getCustomerCode()).getValue(),
+                    Objects.requireNonNull(sales.getEmployeeCode()).getValue(),
+                    sales.getVoucherNumber(),
+                    sales.getOriginalVoucherNumber(),
+                    sales.getRemarks(),
+                    Objects.requireNonNull(sales.getSalesLines())
+            );
+            autoNumberService.save(AutoNumber.of("S", yearMonth, autoNumber));
+            autoNumberService.incrementDocumentNumber("S", yearMonth);
+        }
         salesRepository.save(sales);
     }
 

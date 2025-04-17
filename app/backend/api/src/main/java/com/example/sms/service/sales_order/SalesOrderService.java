@@ -4,9 +4,11 @@ import com.example.sms.FeatureToggleProperties;
 import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.employee.EmployeeCode;
 import com.example.sms.domain.model.master.product.Product;
+import com.example.sms.domain.model.sales.Sales;
 import com.example.sms.domain.model.sales_order.SalesOrder;
 import com.example.sms.domain.model.sales_order.SalesOrderLine;
 import com.example.sms.domain.model.sales_order.SalesOrderList;
+import com.example.sms.domain.model.system.autonumber.AutoNumber;
 import com.example.sms.domain.service.sales_order.SalesOrderDomainService;
 import com.example.sms.domain.model.sales_order.rule.SalesOrderRuleCheckList;
 import com.example.sms.infrastructure.Pattern2ReadCSVUtil;
@@ -15,12 +17,16 @@ import com.example.sms.service.master.department.DepartmentRepository;
 import com.example.sms.service.master.employee.EmployeeRepository;
 import com.example.sms.service.master.partner.PartnerRepository;
 import com.example.sms.service.master.product.ProductRepository;
+import com.example.sms.service.system.autonumber.AutoNumberService;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static org.apache.commons.lang3.Validate.*;
@@ -40,8 +46,9 @@ public class SalesOrderService {
     final EmployeeRepository employeeRepository;
     final SalesOrderDomainService salesOrderDomainService;
     final FeatureToggleProperties featureToggleProperties;
+    final AutoNumberService autoNumberService;
 
-    public SalesOrderService(SalesOrderRepository salesOrderRepository, ProductRepository productRepository, DepartmentRepository departmentRepository, PartnerRepository partnerRepository, EmployeeRepository employeeRepository, SalesOrderDomainService salesOrderDomainService, FeatureToggleProperties featureToggleProperties) {
+    public SalesOrderService(SalesOrderRepository salesOrderRepository, ProductRepository productRepository, DepartmentRepository departmentRepository, PartnerRepository partnerRepository, EmployeeRepository employeeRepository, SalesOrderDomainService salesOrderDomainService, FeatureToggleProperties featureToggleProperties, AutoNumberService autoNumberService) {
         this.salesOrderRepository = salesOrderRepository;
         this.productRepository = productRepository;
         this.departmentRepository = departmentRepository;
@@ -49,6 +56,7 @@ public class SalesOrderService {
         this.employeeRepository = employeeRepository;
         this.salesOrderDomainService = salesOrderDomainService;
         this.featureToggleProperties = featureToggleProperties;
+        this.autoNumberService = autoNumberService;
     }
 
     public void executeFeature() {
@@ -83,6 +91,30 @@ public class SalesOrderService {
      * 受注新規登録
      */
     public void register(SalesOrder salesOrder) {
+        if (salesOrder.getOrderNumber() == null) {
+            LocalDateTime orderDate = Objects.requireNonNull(Objects.requireNonNull(salesOrder.getOrderDate()).getValue());
+            LocalDateTime yearMonth = YearMonth.of(orderDate.getYear(), orderDate.getMonth()).atDay(1).atStartOfDay();
+            Integer autoNumber = autoNumberService.getNextDocumentNumber("O", yearMonth);
+            String orderNumber = "O" + yearMonth.format(DateTimeFormatter.ofPattern("yyMM")) + String.format("%05d", autoNumber);
+            salesOrder = SalesOrder.of(
+                    orderNumber,
+                    orderDate,
+                    Objects.requireNonNull(salesOrder.getDepartmentCode()).getValue(),
+                    salesOrder.getDepartmentStartDate(),
+                    Objects.requireNonNull(Objects.requireNonNull(salesOrder.getCustomerCode()).getCode()).getValue(),
+                    salesOrder.getCustomerCode().getBranchNumber(),
+                    Objects.requireNonNull(salesOrder.getEmployeeCode()).getValue(),
+                    Objects.requireNonNull(salesOrder.getDesiredDeliveryDate()).getValue(),
+                    salesOrder.getCustomerOrderNumber(),
+                    salesOrder.getWarehouseCode(),
+                    Objects.requireNonNull(salesOrder.getTotalOrderAmount()).getAmount(),
+                    Objects.requireNonNull(salesOrder.getTotalConsumptionTax()).getAmount(),
+                    salesOrder.getRemarks(),
+                    Objects.requireNonNull(salesOrder.getSalesOrderLines())
+            );
+            autoNumberService.save(AutoNumber.of("O", yearMonth, autoNumber));
+            autoNumberService.incrementDocumentNumber("O", yearMonth);
+        }
         salesOrderRepository.save(salesOrder);
     }
 

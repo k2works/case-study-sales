@@ -94,6 +94,47 @@ class SalesServiceTest {
         }
 
         @Test
+        @DisplayName("売上を新規登録できる")
+        void shouldRegisterNewSalesNullSalesNumber() {
+            SalesLine salesLine = SalesLine.of(
+                    null,
+                    1,
+                    "P001",
+                    "Product 1",
+                    1000,
+                    10,
+                    10,
+                    0,
+                    LocalDateTime.now(),
+                    "B001",
+                    0,
+                    LocalDateTime.now(),
+                    null,
+                    TaxRateType.標準税率
+            );
+
+            Sales newSales = Sales.of(
+                    null,
+                    "O000000001",
+                    LocalDateTime.now(),
+                    1,
+                    "10000",
+                    LocalDateTime.now(),
+                    "001",
+                    "EMP001",
+                    123,
+                    "V001",
+                    "New Sales Entry",
+                    List.of(salesLine)
+            );
+
+            salesService.register(newSales);
+
+            SalesList result = salesService.selectAll();
+            assertEquals(4, result.asList().size());
+        }
+
+        @Test
         @DisplayName("売上情報を編集できる")
         void shouldEditSalesDetails() {
             Sales sales = TestDataFactoryImpl.getSales("S000000010");

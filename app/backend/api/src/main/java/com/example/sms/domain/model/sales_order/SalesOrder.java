@@ -51,7 +51,9 @@ public class SalesOrder {
                 .map(SalesOrderLine::calcConsumptionTaxAmount)
                 .reduce(Money.of(0), Money::plusMoney);
 
-        return new SalesOrder(OrderNumber.of(orderNumber), OrderDate.of(orderDate), DepartmentCode.of(departmentCode), departmentStartDate, CustomerCode.of(customerCode, customerBranchNumber), EmployeeCode.of(employeeCode), DesiredDeliveryDate.of(desiredDeliveryDate), customerOrderNumber, warehouseCode, calcTotalOrderAmount, calcTotalConsumptionTax, remarks, salesOrderLines, null, null, null);
+        OrderNumber orderNumberValueObject = orderNumber == null ? null : OrderNumber.of(orderNumber);
+
+        return new SalesOrder(orderNumberValueObject, OrderDate.of(orderDate), DepartmentCode.of(departmentCode), departmentStartDate, CustomerCode.of(customerCode, customerBranchNumber), EmployeeCode.of(employeeCode), DesiredDeliveryDate.of(desiredDeliveryDate), customerOrderNumber, warehouseCode, calcTotalOrderAmount, calcTotalConsumptionTax, remarks, salesOrderLines, null, null, null);
     }
 
     public static SalesOrder of(SalesOrder order, List<SalesOrderLine> line) {

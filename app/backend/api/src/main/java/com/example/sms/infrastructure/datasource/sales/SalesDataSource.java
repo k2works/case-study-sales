@@ -20,6 +20,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -53,7 +54,7 @@ public class SalesDataSource implements SalesRepository {
     public void save(Sales sales) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication != null && authentication.getName() != null ? authentication.getName() : "system";
-        Optional<SalesCustomEntity> salesEntity = Optional.ofNullable(salesCustomMapper.selectByPrimaryKey(sales.getSalesNumber().getValue()));
+        Optional<SalesCustomEntity> salesEntity = Optional.ofNullable(salesCustomMapper.selectByPrimaryKey(Objects.requireNonNull(sales.getSalesNumber()).getValue()));
 
         if (salesEntity.isEmpty()) {
             createSales(sales, username);

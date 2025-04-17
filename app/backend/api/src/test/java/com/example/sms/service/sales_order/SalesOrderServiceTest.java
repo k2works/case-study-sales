@@ -63,8 +63,20 @@ class SalesOrderServiceTest {
 
             SalesOrderList result = salesOrderService.selectAll();
             assertEquals(4, result.asList().size());
+            assertNotNull(newSalesOrder.getOrderNumber());
             SalesOrder salesOrder = salesOrderService.find(newSalesOrder.getOrderNumber().getValue());
             assertEquals(newSalesOrder, salesOrder);
+        }
+
+        @Test
+        @DisplayName("受注を新規登録できる")
+        void shouldRegisterNewSalesOrderNullOrderNumber() {
+            SalesOrder newSalesOrder = TestDataFactoryImpl.getSalesOrder(null);
+
+            salesOrderService.register(newSalesOrder);
+
+            SalesOrderList result = salesOrderService.selectAll();
+            assertEquals(4, result.asList().size());
         }
 
         @Test
