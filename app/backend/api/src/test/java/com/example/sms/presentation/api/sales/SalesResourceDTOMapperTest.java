@@ -44,6 +44,7 @@ class SalesResourceDTOMapperTest {
                 .billingNumber("BILL123")
                 .billingDelayCategory(0)
                 .autoJournalDate(salesDate.plusDays(1))
+                .taxRate(10)
                 .build();
 
         SalesResource resource = new SalesResource();

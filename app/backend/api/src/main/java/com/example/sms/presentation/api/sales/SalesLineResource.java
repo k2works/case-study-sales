@@ -51,6 +51,9 @@ public class SalesLineResource {
     @Schema(description = "自動仕訳日")
     private LocalDateTime autoJournalDate;
 
+    @Schema(description = "消費税率")
+    private Integer taxRate;
+
     /**
      * SalesLine エンティティを SalesLineResource に変換するメソッド
      */

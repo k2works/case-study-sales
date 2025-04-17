@@ -440,7 +440,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
                             "B001", // 請求番号
                             0, // 請求遅延区分
                             LocalDateTime.now(), // 自動仕訳日,
-                            null
+                            null,
+                            TaxRateType.標準税率
                     ))
                     .toList();
 
@@ -724,7 +725,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 "001",
                 0,
                 LocalDateTime.of(2023, 10, 1, 0, 0),
-                null
+                null,
+                TaxRateType.標準税率
         );
     }
 

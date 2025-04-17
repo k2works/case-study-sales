@@ -1,6 +1,7 @@
 package com.example.sms.domain.model.sales;
 
 import com.example.sms.domain.model.master.product.*;
+import com.example.sms.domain.model.sales_order.TaxRateType;
 import com.example.sms.domain.type.money.Money;
 import org.junit.jupiter.api.*;
 
@@ -44,6 +45,7 @@ class SalesTest {
                 "009", // 倉庫コード
                 9    // 入荷リードタイム
         );
+        private TaxRateType taxRate = TaxRateType.標準税率;
 
         public SalesLineBuilder withSalesNumber(String salesNumber) {
             this.salesNumber = salesNumber;
@@ -104,7 +106,8 @@ class SalesTest {
                     billingNumber,
                     billingDelayType,
                     createdAt,
-                    product
+                    product,
+                    taxRate
             );
         }
     }

@@ -34,6 +34,7 @@ create table if not exists 売上データ明細
     出荷数量     integer      default 0,
     売上数量     integer      default 1            not null,
     値引金額     integer      default 0            not null,
+    消費税率     integer      default 0,
     請求日       timestamp(6),
     請求番号     varchar(10),
     請求遅延区分 integer,

@@ -5,6 +5,7 @@ import com.example.sms.TestDataFactory;
 import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.master.product.*;
 import com.example.sms.domain.model.sales.*;
+import com.example.sms.domain.model.sales_order.TaxRateType;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -64,7 +65,8 @@ class SalesServiceTest {
                     "B001",
                     0,
                     LocalDateTime.now(),
-                    null
+                    null,
+                    TaxRateType.標準税率
             );
 
             Sales newSales = Sales.of(
@@ -199,7 +201,8 @@ class SalesServiceTest {
                             null,
                             null,
                             LocalDateTime.of(2021, 1, 1, 0, 0),
-                            product
+                            product,
+                            TaxRateType.標準税率
                     ))
                     .toList();
             Sales expected = Sales.of(

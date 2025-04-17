@@ -2,7 +2,6 @@ package com.example.sms.domain.model.sales;
 
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.ProductCode;
-import com.example.sms.domain.model.master.product.TaxType;
 import com.example.sms.domain.model.sales_order.ConsumptionTaxAmount;
 import com.example.sms.domain.model.sales_order.SalesAmount;
 import com.example.sms.domain.model.sales_order.SalesCalculation;
@@ -35,21 +34,18 @@ public class SalesLine {
     BillingNumber billingNumber; // 請求番号
     BillingDelayType billingDelayType; // 請求遅延区分
     AutoJournalDate autoJournalDate; // 自動仕訳日
-
     /** 明細金額 (売上金額) */
     SalesAmount salesAmount;
-
     /** 消費税額 */
     ConsumptionTaxAmount consumptionTaxAmount;
-
     Product product; // 商品マスタ情報
-    //TODO:消費税率追加
+    TaxRateType taxRate; // 消費税率
 
     public static SalesLine of(String salesNumber, Integer salesLineNumber, String productCode, String productName,
                                Integer salesUnitPrice, Integer salesQuantity, Integer shippedQuantity,
                                Integer discountAmount, LocalDateTime billingDate, String billingNumber,
-                               Integer billingDelayCategory, LocalDateTime autoJournalDate, Product product) {
-        SalesCalculation salesCalculation = SalesCalculation.of(Money.of(salesUnitPrice), Quantity.of(salesQuantity), product, TaxRateType.標準税率);
+                               Integer billingDelayCategory, LocalDateTime autoJournalDate, Product product, TaxRateType taxRate) {
+        SalesCalculation salesCalculation = SalesCalculation.of(Money.of(salesUnitPrice), Quantity.of(salesQuantity), product, taxRate);
 
         return new SalesLine(
                 SalesNumber.of(salesNumber),
@@ -66,12 +62,13 @@ public class SalesLine {
                 autoJournalDate == null ? null : AutoJournalDate.of(autoJournalDate),
                 salesCalculation.getSalesAmount(),
                 salesCalculation.getConsumptionTaxAmount(),
-                product
+                product,
+                taxRate
         );
     }
 
     public static SalesLine of(SalesLine salesLine) {
-        SalesCalculation salesCalculation = SalesCalculation.of(salesLine.getSalesUnitPrice(), salesLine.getSalesQuantity(), salesLine.getProduct(), TaxRateType.標準税率);
+        SalesCalculation salesCalculation = SalesCalculation.of(salesLine.getSalesUnitPrice(), salesLine.getSalesQuantity(), salesLine.getProduct(), salesLine.getTaxRate());
 
         return new SalesLine(
                 salesLine.getSalesNumber(),
@@ -88,7 +85,8 @@ public class SalesLine {
                 salesLine.getAutoJournalDate(),
                 salesCalculation.getSalesAmount(),
                 salesCalculation.getConsumptionTaxAmount(),
-                salesLine.getProduct()
+                salesLine.getProduct(),
+                salesLine.getTaxRate()
         );
     }
 
@@ -103,7 +101,7 @@ public class SalesLine {
 
     // 完了済み明細の生成
     public static SalesLine complete(SalesLine salesLine) {
-        SalesCalculation salesCalculation = SalesCalculation.of(salesLine.getSalesUnitPrice(), salesLine.getSalesQuantity(), salesLine.getProduct(), TaxRateType.標準税率);
+        SalesCalculation salesCalculation = SalesCalculation.of(salesLine.getSalesUnitPrice(), salesLine.getSalesQuantity(), salesLine.getProduct(), salesLine.getTaxRate());
 
         return new SalesLine(
                 salesLine.getSalesNumber(),
@@ -120,7 +118,8 @@ public class SalesLine {
                 salesLine.getAutoJournalDate(),
                 salesCalculation.getSalesAmount(),
                 salesCalculation.getConsumptionTaxAmount(),
-                salesLine.getProduct()
+                salesLine.getProduct(),
+                salesLine.getTaxRate()
         );
     }
 }

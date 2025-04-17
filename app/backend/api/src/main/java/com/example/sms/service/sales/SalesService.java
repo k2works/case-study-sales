@@ -116,10 +116,12 @@ public class SalesService {
                             null,
                             null,
                             shipping.getDeliveryDate().getValue(),
-                            null
+                            null,
+                            shipping.getTaxRate()
                     ))
                     .toList();
 
+            // TODO:販売区分の判定追加
             Shipping shipping = shippingListByOrderNumber.getFirst();
             Sales sales = Sales.of(
                     salesNumber,

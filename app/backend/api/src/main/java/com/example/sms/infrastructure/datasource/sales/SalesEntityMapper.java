@@ -1,6 +1,7 @@
 package com.example.sms.infrastructure.datasource.sales;
 
 import com.example.sms.domain.model.sales.*;
+import com.example.sms.domain.model.sales_order.TaxRateType;
 import com.example.sms.infrastructure.datasource.autogen.model.売上データ;
 import com.example.sms.infrastructure.datasource.autogen.model.売上データ明細;
 import com.example.sms.infrastructure.datasource.autogen.model.売上データ明細Key;
@@ -49,12 +50,12 @@ public class SalesEntityMapper {
         売上データ明細 salesEntity = new 売上データ明細();
         salesEntity.set売上番号(key.get売上番号());
         salesEntity.set売上行番号(key.get売上行番号());
-        salesEntity.set商品コード(salesLine.getProductCode().getValue());
+        salesEntity.set商品コード(Objects.requireNonNull(salesLine.getProductCode()).getValue());
         salesEntity.set商品名(salesLine.getProductName());
-        salesEntity.set販売単価(salesLine.getSalesUnitPrice().getAmount());
-        salesEntity.set売上数量(salesLine.getSalesQuantity().getAmount());
-        salesEntity.set出荷数量(salesLine.getShippedQuantity().getAmount());
-        salesEntity.set値引金額(salesLine.getDiscountAmount().getAmount());
+        salesEntity.set販売単価(Objects.requireNonNull(salesLine.getSalesUnitPrice()).getAmount());
+        salesEntity.set売上数量(Objects.requireNonNull(salesLine.getSalesQuantity()).getAmount());
+        salesEntity.set出荷数量(Objects.requireNonNull(salesLine.getShippedQuantity()).getAmount());
+        salesEntity.set値引金額(Objects.requireNonNull(salesLine.getDiscountAmount()).getAmount());
         salesEntity.set請求日(Optional.of(salesLine)
                 .map(SalesLine::getBillingDate)
                 .map(BillingDate::getValue)
@@ -71,6 +72,7 @@ public class SalesEntityMapper {
                 .map(SalesLine::getAutoJournalDate)
                 .map(AutoJournalDate::getValue)
                 .orElse(null));
+        salesEntity.set消費税率(Objects.requireNonNull(salesLine.getTaxRate()).getRate());
         return salesEntity;
     }
 
@@ -85,7 +87,7 @@ public class SalesEntityMapper {
 
         Function<SalesLineCustomEntity, SalesLine> salesLineMapper = e -> {
             if (Objects.isNull(e)) {
-                return SalesLine.of(null, null, null, null, null, null, null, null, null, null, null, null, null);
+                return SalesLine.of(null, null, null, null, null, null, null, null, null, null, null, null, null, null);
             }
 
             return SalesLine.of(
@@ -101,7 +103,8 @@ public class SalesEntityMapper {
                     e.get請求番号(),
                     e.get請求遅延区分(),
                     e.get自動仕訳日(),
-                    e.get商品マスタ()  != null ? ProductEntityMapper.mapToDomainModel(e.get商品マスタ()) : null
+                    e.get商品マスタ()  != null ? ProductEntityMapper.mapToDomainModel(e.get商品マスタ()) : null,
+                    TaxRateType.of(e.get消費税率())
             );
         };
 

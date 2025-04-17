@@ -181,6 +181,7 @@ public class UC017StepDefs extends SpringAcceptanceTest {
                 .billingNumber(null)
                 .billingDelayCategory(0)
                 .autoJournalDate(null)
+                .taxRate(10)
                 .build();
         sales.setSalesLines(List.of(salesLine));
 
@@ -306,6 +307,7 @@ public class UC017StepDefs extends SpringAcceptanceTest {
                 .salesUnitPrice(Integer.parseInt(entry.get("売上単価")))
                 .salesQuantity(Integer.parseInt(entry.get("売上数量")))
                 .discountAmount(Integer.parseInt(entry.get("割引額")))
+                .taxRate(10)
                 .build();
     }
 }

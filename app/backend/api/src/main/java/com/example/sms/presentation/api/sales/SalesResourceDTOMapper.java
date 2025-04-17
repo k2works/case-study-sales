@@ -2,6 +2,7 @@ package com.example.sms.presentation.api.sales;
 
 import com.example.sms.domain.model.sales.Sales;
 import com.example.sms.domain.model.sales.SalesLine;
+import com.example.sms.domain.model.sales_order.TaxRateType;
 import com.example.sms.service.sales.SalesCriteria;
 
 import java.time.LocalDate;
@@ -35,7 +36,8 @@ public class SalesResourceDTOMapper {
                                 line.getBillingNumber(),
                                 line.getBillingDelayCategory(),
                                 line.getAutoJournalDate(),
-                        null
+                        null,
+                        TaxRateType.of(line.getTaxRate())
                         )
                                 : null
                 )
