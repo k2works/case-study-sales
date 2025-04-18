@@ -1,6 +1,7 @@
 package com.example.sms.service.system.autonumber;
 
 import com.example.sms.domain.model.system.autonumber.AutoNumber;
+import com.example.sms.domain.model.system.autonumber.DocumentTypeCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -55,16 +56,16 @@ class AutoNumberRepositoryTest {
         @DisplayName("自動採番マスタを保存できる")
         void save() {
             // 準備
-            String documentTypeCode = "99";
+            DocumentTypeCode documentTypeCode = DocumentTypeCode.その他;
             LocalDateTime yearMonth = YearMonth.of(2025, 4).atDay(1).atStartOfDay();
             Integer lastDocumentNumber = 1;
-            AutoNumber autoNumber = AutoNumber.of(documentTypeCode, yearMonth, lastDocumentNumber);
+            AutoNumber autoNumber = AutoNumber.of(documentTypeCode.getCode(), yearMonth, lastDocumentNumber);
 
             // 実行
             autoNumberRepository.save(autoNumber);
 
             // 検証
-            Optional<AutoNumber> found = autoNumberRepository.findByDocumentTypeAndYearMonth(documentTypeCode, yearMonth);
+            Optional<AutoNumber> found = autoNumberRepository.findByDocumentTypeAndYearMonth(documentTypeCode.getCode(), yearMonth);
             assertThat(found).isPresent();
             assertThat(found.get().getDocumentTypeCode()).isEqualTo(documentTypeCode);
             assertThat(found.get().getYearMonth()).isEqualTo(yearMonth);
@@ -75,18 +76,18 @@ class AutoNumberRepositoryTest {
         @DisplayName("自動採番マスタを更新できる")
         void update() {
             // 準備
-            String documentTypeCode = "99";
+            DocumentTypeCode documentTypeCode = DocumentTypeCode.その他;
             LocalDateTime yearMonth = YearMonth.of(2025, 4).atDay(1).atStartOfDay();
             Integer lastDocumentNumber = 1;
-            AutoNumber autoNumber = AutoNumber.of(documentTypeCode, yearMonth, lastDocumentNumber);
+            AutoNumber autoNumber = AutoNumber.of(documentTypeCode.getCode(), yearMonth, lastDocumentNumber);
             autoNumberRepository.save(autoNumber);
 
             // 実行
-            AutoNumber updatedAutoNumber = AutoNumber.of(documentTypeCode, yearMonth, 2);
+            AutoNumber updatedAutoNumber = AutoNumber.of(documentTypeCode.getCode(), yearMonth, 2);
             autoNumberRepository.save(updatedAutoNumber);
 
             // 検証
-            Optional<AutoNumber> found = autoNumberRepository.findByDocumentTypeAndYearMonth(documentTypeCode, yearMonth);
+            Optional<AutoNumber> found = autoNumberRepository.findByDocumentTypeAndYearMonth(documentTypeCode.getCode(), yearMonth);
             assertThat(found).isPresent();
             assertThat(found.get().getLastDocumentNumber()).isEqualTo(2);
         }
@@ -95,11 +96,11 @@ class AutoNumberRepositoryTest {
         @DisplayName("自動採番マスタを全件取得できる")
         void selectAll() {
             // 準備
-            String documentTypeCode1 = "01";
-            String documentTypeCode2 = "02";
+            DocumentTypeCode documentTypeCode1 = DocumentTypeCode.受注;
+            DocumentTypeCode documentTypeCode2 = DocumentTypeCode.売上;
             LocalDateTime yearMonth = YearMonth.of(2025, 4).atDay(1).atStartOfDay();
-            AutoNumber autoNumber1 = AutoNumber.of(documentTypeCode1, yearMonth, 1);
-            AutoNumber autoNumber2 = AutoNumber.of(documentTypeCode2, yearMonth, 2);
+            AutoNumber autoNumber1 = AutoNumber.of(documentTypeCode1.getCode(), yearMonth, 1);
+            AutoNumber autoNumber2 = AutoNumber.of(documentTypeCode2.getCode(), yearMonth, 2);
             autoNumberRepository.save(autoNumber1);
             autoNumberRepository.save(autoNumber2);
 
@@ -114,16 +115,16 @@ class AutoNumberRepositoryTest {
         @DisplayName("自動採番マスタを削除できる")
         void delete() {
             // 準備
-            String documentTypeCode = "99";
+            DocumentTypeCode documentTypeCode = DocumentTypeCode.その他;
             LocalDateTime yearMonth = YearMonth.of(2025, 4).atDay(1).atStartOfDay();
-            AutoNumber autoNumber = AutoNumber.of(documentTypeCode, yearMonth, 1);
+            AutoNumber autoNumber = AutoNumber.of(documentTypeCode.getCode(), yearMonth, 1);
             autoNumberRepository.save(autoNumber);
 
             // 実行
             autoNumberRepository.delete(autoNumber);
 
             // 検証
-            Optional<AutoNumber> found = autoNumberRepository.findByDocumentTypeAndYearMonth(documentTypeCode, yearMonth);
+            Optional<AutoNumber> found = autoNumberRepository.findByDocumentTypeAndYearMonth(documentTypeCode.getCode(), yearMonth);
             assertThat(found).isEmpty();
         }
 
@@ -131,13 +132,13 @@ class AutoNumberRepositoryTest {
         @DisplayName("次の伝票番号を取得できる")
         void getNextDocumentNumber() {
             // 準備
-            String documentTypeCode = "99";
+            DocumentTypeCode documentTypeCode = DocumentTypeCode.その他;
             LocalDateTime yearMonth = YearMonth.of(2025, 4).atDay(1).atStartOfDay();
-            AutoNumber autoNumber = AutoNumber.of(documentTypeCode, yearMonth, 1);
+            AutoNumber autoNumber = AutoNumber.of(documentTypeCode.getCode(), yearMonth, 1);
             autoNumberRepository.save(autoNumber);
 
             // 実行
-            Integer nextDocumentNumber = autoNumberRepository.getNextDocumentNumber(documentTypeCode, yearMonth);
+            Integer nextDocumentNumber = autoNumberRepository.getNextDocumentNumber(documentTypeCode.getCode(), yearMonth);
 
             // 検証
             assertThat(nextDocumentNumber).isEqualTo(2);
@@ -147,11 +148,11 @@ class AutoNumberRepositoryTest {
         @DisplayName("存在しない場合は1を返す")
         void getNextDocumentNumberWhenNotExists() {
             // 準備
-            String documentTypeCode = "99";
+            DocumentTypeCode documentTypeCode = DocumentTypeCode.その他;
             LocalDateTime yearMonth = YearMonth.of(2025, 4).atDay(1).atStartOfDay();
 
             // 実行
-            Integer nextDocumentNumber = autoNumberRepository.getNextDocumentNumber(documentTypeCode, yearMonth);
+            Integer nextDocumentNumber = autoNumberRepository.getNextDocumentNumber(documentTypeCode.getCode(), yearMonth);
 
             // 検証
             assertThat(nextDocumentNumber).isEqualTo(1);
@@ -161,17 +162,17 @@ class AutoNumberRepositoryTest {
         @DisplayName("伝票番号を更新できる")
         void incrementDocumentNumber() {
             // 準備
-            String documentTypeCode = "99";
+            DocumentTypeCode documentTypeCode = DocumentTypeCode.その他;
             LocalDateTime yearMonth = YearMonth.of(2025, 4).atDay(1).atStartOfDay();
-            AutoNumber autoNumber = AutoNumber.of(documentTypeCode, yearMonth, 1);
+            AutoNumber autoNumber = AutoNumber.of(documentTypeCode.getCode(), yearMonth, 1);
             autoNumberRepository.save(autoNumber);
 
             // 実行
-            AutoNumber updatedAutoNumber = autoNumberRepository.incrementDocumentNumber(documentTypeCode, yearMonth);
+            AutoNumber updatedAutoNumber = autoNumberRepository.incrementDocumentNumber(documentTypeCode.getCode(), yearMonth);
 
             // 検証
             assertThat(updatedAutoNumber.getLastDocumentNumber()).isEqualTo(2);
-            Optional<AutoNumber> found = autoNumberRepository.findByDocumentTypeAndYearMonth(documentTypeCode, yearMonth);
+            Optional<AutoNumber> found = autoNumberRepository.findByDocumentTypeAndYearMonth(documentTypeCode.getCode(), yearMonth);
             assertThat(found).isPresent();
             assertThat(found.get().getLastDocumentNumber()).isEqualTo(2);
         }
@@ -180,15 +181,15 @@ class AutoNumberRepositoryTest {
         @DisplayName("存在しない場合は新規作成する")
         void incrementDocumentNumberWhenNotExists() {
             // 準備
-            String documentTypeCode = "99";
+            DocumentTypeCode documentTypeCode = DocumentTypeCode.その他;
             LocalDateTime yearMonth = YearMonth.of(2025, 4).atDay(1).atStartOfDay();
 
             // 実行
-            AutoNumber newAutoNumber = autoNumberRepository.incrementDocumentNumber(documentTypeCode, yearMonth);
+            AutoNumber newAutoNumber = autoNumberRepository.incrementDocumentNumber(documentTypeCode.getCode(), yearMonth);
 
             // 検証
             assertThat(newAutoNumber.getLastDocumentNumber()).isEqualTo(1);
-            Optional<AutoNumber> found = autoNumberRepository.findByDocumentTypeAndYearMonth(documentTypeCode, yearMonth);
+            Optional<AutoNumber> found = autoNumberRepository.findByDocumentTypeAndYearMonth(documentTypeCode.getCode(), yearMonth);
             assertThat(found).isPresent();
             assertThat(found.get().getLastDocumentNumber()).isEqualTo(1);
         }

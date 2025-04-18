@@ -13,14 +13,14 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 public class AutoNumber {
-    String documentTypeCode; // 伝票種別コード
+    DocumentTypeCode documentTypeCode; // 伝票種別コード
     LocalDateTime yearMonth; // 年月
     Integer lastDocumentNumber; // 最終伝票番号
 
     /** ファクトリーメソッド */
     public static AutoNumber of(String documentTypeCode, LocalDateTime yearMonth, Integer lastDocumentNumber) {
         return new AutoNumber(
-                documentTypeCode,
+                DocumentTypeCode.fromCode(documentTypeCode),
                 yearMonth,
                 lastDocumentNumber
         );

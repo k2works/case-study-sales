@@ -5,6 +5,8 @@ import com.example.sms.infrastructure.datasource.autogen.model.自動採番マ�
 import com.example.sms.infrastructure.datasource.autogen.model.自動採番マスタKey;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 @Component
 public class AutoNumberEntityMapper {
 
@@ -17,7 +19,7 @@ public class AutoNumberEntityMapper {
         自動採番マスタ autoNumberEntity = new 自動採番マスタ();
 
         // 各プロパティにnullチェックを追加
-        autoNumberEntity.set伝票種別コード(autoNumber.getDocumentTypeCode());
+        autoNumberEntity.set伝票種別コード(Objects.requireNonNull(autoNumber.getDocumentTypeCode()).getCode());
         autoNumberEntity.set年月(autoNumber.getYearMonth());
         autoNumberEntity.set最終伝票番号(autoNumber.getLastDocumentNumber());
 
@@ -26,7 +28,7 @@ public class AutoNumberEntityMapper {
 
     public 自動採番マスタKey mapToKey(AutoNumber autoNumber) {
         自動採番マスタKey key = new 自動採番マスタKey();
-        key.set伝票種別コード(autoNumber.getDocumentTypeCode());
+        key.set伝票種別コード(Objects.requireNonNull(autoNumber.getDocumentTypeCode()).getCode());
         key.set年月(autoNumber.getYearMonth());
         return key;
     }

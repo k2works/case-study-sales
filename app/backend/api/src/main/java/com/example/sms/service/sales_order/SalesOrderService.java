@@ -9,6 +9,7 @@ import com.example.sms.domain.model.sales_order.SalesOrder;
 import com.example.sms.domain.model.sales_order.SalesOrderLine;
 import com.example.sms.domain.model.sales_order.SalesOrderList;
 import com.example.sms.domain.model.system.autonumber.AutoNumber;
+import com.example.sms.domain.model.system.autonumber.DocumentTypeCode;
 import com.example.sms.domain.service.sales_order.SalesOrderDomainService;
 import com.example.sms.domain.model.sales_order.rule.SalesOrderRuleCheckList;
 import com.example.sms.infrastructure.Pattern2ReadCSVUtil;
@@ -177,12 +178,13 @@ public class SalesOrderService {
      * 受注番号生成
      */
     private String generateOrderNumber(SalesOrder salesOrder) {
+        String code = DocumentTypeCode.受注.getCode();
         LocalDateTime orderDate = Objects.requireNonNull(Objects.requireNonNull(salesOrder.getOrderDate()).getValue());
         LocalDateTime yearMonth = YearMonth.of(orderDate.getYear(), orderDate.getMonth()).atDay(1).atStartOfDay();
-        Integer autoNumber = autoNumberService.getNextDocumentNumber("O", yearMonth);
-        String orderNumber = "O" + yearMonth.format(DateTimeFormatter.ofPattern("yyMM")) + String.format("%05d", autoNumber);
-        autoNumberService.save(AutoNumber.of("O", yearMonth, autoNumber));
-        autoNumberService.incrementDocumentNumber("O", yearMonth);
+        Integer autoNumber = autoNumberService.getNextDocumentNumber(code, yearMonth);
+        String orderNumber = code + yearMonth.format(DateTimeFormatter.ofPattern("yyMM")) + String.format("%05d", autoNumber);
+        autoNumberService.save(AutoNumber.of(code, yearMonth, autoNumber));
+        autoNumberService.incrementDocumentNumber(code, yearMonth);
         return orderNumber;
     }
 

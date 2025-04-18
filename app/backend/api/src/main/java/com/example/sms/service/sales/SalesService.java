@@ -7,6 +7,7 @@ import com.example.sms.domain.model.sales.SalesType;
 import com.example.sms.domain.model.shipping.Shipping;
 import com.example.sms.domain.model.shipping.ShippingList;
 import com.example.sms.domain.model.system.autonumber.AutoNumber;
+import com.example.sms.domain.model.system.autonumber.DocumentTypeCode;
 import com.example.sms.service.shipping.ShippingRepository;
 import com.example.sms.service.system.autonumber.AutoNumberService;
 import com.github.pagehelper.PageInfo;
@@ -173,11 +174,12 @@ public class SalesService {
      * 売上番号を生成する
      */
     private String generateSalesNumber(LocalDateTime saleDate) {
+        String code = DocumentTypeCode.売上.getCode();
         LocalDateTime yearMonth = YearMonth.of(saleDate.getYear(), saleDate.getMonth()).atDay(1).atStartOfDay();
-        Integer autoNumber = autoNumberService.getNextDocumentNumber("S", yearMonth);
-        String salesNumber = "S" + yearMonth.format(DateTimeFormatter.ofPattern("yyMM")) + String.format("%05d", autoNumber);
-        autoNumberService.save(AutoNumber.of("S", yearMonth, autoNumber));
-        autoNumberService.incrementDocumentNumber("S", yearMonth);
+        Integer autoNumber = autoNumberService.getNextDocumentNumber(code, yearMonth);
+        String salesNumber = code + yearMonth.format(DateTimeFormatter.ofPattern("yyMM")) + String.format("%05d", autoNumber);
+        autoNumberService.save(AutoNumber.of(code, yearMonth, autoNumber));
+        autoNumberService.incrementDocumentNumber(code, yearMonth);
         return salesNumber;
     }
 
