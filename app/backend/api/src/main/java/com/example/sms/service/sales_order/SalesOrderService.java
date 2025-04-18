@@ -5,6 +5,7 @@ import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.employee.EmployeeCode;
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.sales.Sales;
+import com.example.sms.domain.model.sales_order.OrderNumber;
 import com.example.sms.domain.model.sales_order.SalesOrder;
 import com.example.sms.domain.model.sales_order.SalesOrderLine;
 import com.example.sms.domain.model.sales_order.SalesOrderList;
@@ -182,7 +183,7 @@ public class SalesOrderService {
         LocalDateTime orderDate = Objects.requireNonNull(Objects.requireNonNull(salesOrder.getOrderDate()).getValue());
         LocalDateTime yearMonth = YearMonth.of(orderDate.getYear(), orderDate.getMonth()).atDay(1).atStartOfDay();
         Integer autoNumber = autoNumberService.getNextDocumentNumber(code, yearMonth);
-        String orderNumber = code + yearMonth.format(DateTimeFormatter.ofPattern("yyMM")) + String.format("%05d", autoNumber);
+        String orderNumber = OrderNumber.generate(code, yearMonth, autoNumber);
         autoNumberService.save(AutoNumber.of(code, yearMonth, autoNumber));
         autoNumberService.incrementDocumentNumber(code, yearMonth);
         return orderNumber;

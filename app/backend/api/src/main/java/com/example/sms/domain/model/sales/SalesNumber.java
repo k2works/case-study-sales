@@ -1,7 +1,11 @@
 package com.example.sms.domain.model.sales;
 
+import com.example.sms.domain.model.system.autonumber.DocumentTypeCode;
 import lombok.NoArgsConstructor;
 import lombok.Value;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static org.apache.commons.lang3.Validate.*;
 
@@ -15,12 +19,17 @@ public class SalesNumber {
 
     public SalesNumber(String salesNumber) {
         notNull(salesNumber, "売上番号は必須です");
-        isTrue(salesNumber.startsWith("S"), "売上番号は先頭がSで始まる必要があります");
+        isTrue(salesNumber.startsWith(DocumentTypeCode.売上.getCode()), "売上番号は先頭が" + DocumentTypeCode.売上.getCode() + "で始まる必要があります");
         matchesPattern(salesNumber, "^[A-Za-z][0-9]{9}$", "売上番号は先頭が文字、続いて9桁の数字である必要があります");
         this.value = salesNumber;
     }
 
     public static SalesNumber of(String salesNumber) {
         return new SalesNumber(salesNumber);
+    }
+
+    public static String generate(String code, LocalDateTime yearMonth, Integer autoNumber) {
+        isTrue(code.equals(DocumentTypeCode.売上.getCode()), "売上番号は先頭が" + DocumentTypeCode.売上.getCode() + "で始まる必要があります");
+        return code + yearMonth.format(DateTimeFormatter.ofPattern("yyMM")) + String.format("%05d", autoNumber);
     }
 }

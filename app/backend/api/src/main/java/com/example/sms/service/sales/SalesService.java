@@ -1,9 +1,6 @@
 package com.example.sms.service.sales;
 
-import com.example.sms.domain.model.sales.Sales;
-import com.example.sms.domain.model.sales.SalesLine;
-import com.example.sms.domain.model.sales.SalesList;
-import com.example.sms.domain.model.sales.SalesType;
+import com.example.sms.domain.model.sales.*;
 import com.example.sms.domain.model.shipping.Shipping;
 import com.example.sms.domain.model.shipping.ShippingList;
 import com.example.sms.domain.model.system.autonumber.AutoNumber;
@@ -177,7 +174,7 @@ public class SalesService {
         String code = DocumentTypeCode.売上.getCode();
         LocalDateTime yearMonth = YearMonth.of(saleDate.getYear(), saleDate.getMonth()).atDay(1).atStartOfDay();
         Integer autoNumber = autoNumberService.getNextDocumentNumber(code, yearMonth);
-        String salesNumber = code + yearMonth.format(DateTimeFormatter.ofPattern("yyMM")) + String.format("%05d", autoNumber);
+        String salesNumber = SalesNumber.generate(code, yearMonth, autoNumber);
         autoNumberService.save(AutoNumber.of(code, yearMonth, autoNumber));
         autoNumberService.incrementDocumentNumber(code, yearMonth);
         return salesNumber;
