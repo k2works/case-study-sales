@@ -209,7 +209,6 @@ class SalesServiceTest {
         @Test
         @DisplayName("売上を集計できる")
         void shouldAggregateSales() {
-            String salesNumber = "S000000001";
             Product  product = Product.of(
                             "99999999", // 商品コード
                             "商品1",    // 商品名
@@ -230,7 +229,7 @@ class SalesServiceTest {
 
             List<SalesLine> salesLines = IntStream.range(1, 4)
                     .mapToObj(lineNumber -> SalesLine.of(
-                            salesNumber,
+                            "S210100001",
                             lineNumber,
                             "99999999",
                             "商品1",
@@ -247,7 +246,7 @@ class SalesServiceTest {
                     ))
                     .toList();
             Sales expected = Sales.of(
-                    salesNumber,
+                    "S210100001",
                     "O000000001",
                     LocalDateTime.of(2021, 1, 1, 0, 0),
                     SalesType.現金.getCode(),
@@ -262,11 +261,11 @@ class SalesServiceTest {
             );
 
             salesService.aggregate();
-            Sales actual = salesService.find(salesNumber);
+            SalesList actual = salesService.selectAll();
 
             assertNotNull(actual);
-            assertEquals(3, actual.getSalesLines().size());
-            assertEquals(expected, actual);
+            assertEquals(3, actual.size());
+            assertEquals(expected, actual.asList().getFirst());
         }
 
         @Test

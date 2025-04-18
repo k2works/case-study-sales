@@ -60,6 +60,8 @@ public class SalesService {
             LocalDateTime yearMonth = YearMonth.of(saleDate.getYear(), saleDate.getMonth()).atDay(1).atStartOfDay();
             Integer autoNumber = autoNumberService.getNextDocumentNumber("S", yearMonth);
             String salesNumber = "S" + yearMonth.format(DateTimeFormatter.ofPattern("yyMM")) + String.format("%05d", autoNumber);
+            autoNumberService.save(AutoNumber.of("S", yearMonth, autoNumber));
+            autoNumberService.incrementDocumentNumber("S", yearMonth);
 
             sales = Sales.of(
                     salesNumber,
@@ -75,8 +77,6 @@ public class SalesService {
                     sales.getRemarks(),
                     Objects.requireNonNull(sales.getSalesLines())
             );
-            autoNumberService.save(AutoNumber.of("S", yearMonth, autoNumber));
-            autoNumberService.incrementDocumentNumber("S", yearMonth);
         }
         salesRepository.save(sales);
     }
@@ -129,8 +129,12 @@ public class SalesService {
                     .filter(shipping -> Objects.equals(shipping.getOrderNumber().getValue(), orderNumber))
                     .toList();
 
-            //TODO:売上番号は自動生成するように修正
-            String  salesNumber = "S" + orderNumber.substring(1);
+            LocalDateTime saleDate = Objects.requireNonNull(Objects.requireNonNull(shippingListByOrderNumber.getFirst().getOrderDate()).getValue());
+            LocalDateTime yearMonth = YearMonth.of(saleDate.getYear(), saleDate.getMonth()).atDay(1).atStartOfDay();
+            Integer autoNumber = autoNumberService.getNextDocumentNumber("S", yearMonth);
+            String salesNumber = "S" + yearMonth.format(DateTimeFormatter.ofPattern("yyMM")) + String.format("%05d", autoNumber);
+            autoNumberService.save(AutoNumber.of("S", yearMonth, autoNumber));
+            autoNumberService.incrementDocumentNumber("S", yearMonth);
 
             List<SalesLine> salesLines = shippingListByOrderNumber.stream()
                     .map(shipping -> SalesLine.of(
