@@ -57,11 +57,7 @@ public class SalesService {
     public void register(Sales sales) {
         if (sales.getSalesNumber() == null) {
             LocalDateTime saleDate = Objects.requireNonNull(Objects.requireNonNull(sales.getSalesDate()).getValue());
-            LocalDateTime yearMonth = YearMonth.of(saleDate.getYear(), saleDate.getMonth()).atDay(1).atStartOfDay();
-            Integer autoNumber = autoNumberService.getNextDocumentNumber("S", yearMonth);
-            String salesNumber = "S" + yearMonth.format(DateTimeFormatter.ofPattern("yyMM")) + String.format("%05d", autoNumber);
-            autoNumberService.save(AutoNumber.of("S", yearMonth, autoNumber));
-            autoNumberService.incrementDocumentNumber("S", yearMonth);
+            String salesNumber = generateSalesNumber(saleDate);
 
             sales = Sales.of(
                     salesNumber,
@@ -130,11 +126,7 @@ public class SalesService {
                     .toList();
 
             LocalDateTime saleDate = Objects.requireNonNull(Objects.requireNonNull(shippingListByOrderNumber.getFirst().getOrderDate()).getValue());
-            LocalDateTime yearMonth = YearMonth.of(saleDate.getYear(), saleDate.getMonth()).atDay(1).atStartOfDay();
-            Integer autoNumber = autoNumberService.getNextDocumentNumber("S", yearMonth);
-            String salesNumber = "S" + yearMonth.format(DateTimeFormatter.ofPattern("yyMM")) + String.format("%05d", autoNumber);
-            autoNumberService.save(AutoNumber.of("S", yearMonth, autoNumber));
-            autoNumberService.incrementDocumentNumber("S", yearMonth);
+            String salesNumber = generateSalesNumber(saleDate);
 
             List<SalesLine> salesLines = shippingListByOrderNumber.stream()
                     .map(shipping -> SalesLine.of(
@@ -176,4 +168,17 @@ public class SalesService {
 
         salesList.forEach(salesRepository::save);
     }
+
+    /**
+     * 売上番号を生成する
+     */
+    private String generateSalesNumber(LocalDateTime saleDate) {
+        LocalDateTime yearMonth = YearMonth.of(saleDate.getYear(), saleDate.getMonth()).atDay(1).atStartOfDay();
+        Integer autoNumber = autoNumberService.getNextDocumentNumber("S", yearMonth);
+        String salesNumber = "S" + yearMonth.format(DateTimeFormatter.ofPattern("yyMM")) + String.format("%05d", autoNumber);
+        autoNumberService.save(AutoNumber.of("S", yearMonth, autoNumber));
+        autoNumberService.incrementDocumentNumber("S", yearMonth);
+        return salesNumber;
+    }
+
 }

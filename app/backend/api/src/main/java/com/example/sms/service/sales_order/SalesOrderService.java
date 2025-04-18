@@ -92,13 +92,11 @@ public class SalesOrderService {
      */
     public void register(SalesOrder salesOrder) {
         if (salesOrder.getOrderNumber() == null) {
-            LocalDateTime orderDate = Objects.requireNonNull(Objects.requireNonNull(salesOrder.getOrderDate()).getValue());
-            LocalDateTime yearMonth = YearMonth.of(orderDate.getYear(), orderDate.getMonth()).atDay(1).atStartOfDay();
-            Integer autoNumber = autoNumberService.getNextDocumentNumber("O", yearMonth);
-            String orderNumber = "O" + yearMonth.format(DateTimeFormatter.ofPattern("yyMM")) + String.format("%05d", autoNumber);
+            String orderNumber = generateOrderNumber(salesOrder);
+
             salesOrder = SalesOrder.of(
                     orderNumber,
-                    orderDate,
+                    Objects.requireNonNull(Objects.requireNonNull(salesOrder.getOrderDate()).getValue()),
                     Objects.requireNonNull(salesOrder.getDepartmentCode()).getValue(),
                     salesOrder.getDepartmentStartDate(),
                     Objects.requireNonNull(Objects.requireNonNull(salesOrder.getCustomerCode()).getCode()).getValue(),
@@ -112,8 +110,6 @@ public class SalesOrderService {
                     salesOrder.getRemarks(),
                     Objects.requireNonNull(salesOrder.getSalesOrderLines())
             );
-            autoNumberService.save(AutoNumber.of("O", yearMonth, autoNumber));
-            autoNumberService.incrementDocumentNumber("O", yearMonth);
         }
         salesOrderRepository.save(salesOrder);
     }
@@ -175,6 +171,19 @@ public class SalesOrderService {
         SalesOrderList salesOrderList = convert(dataList);
         salesOrderRepository.save(salesOrderList);
         return errorList;
+    }
+
+    /**
+     * 受注番号生成
+     */
+    private String generateOrderNumber(SalesOrder salesOrder) {
+        LocalDateTime orderDate = Objects.requireNonNull(Objects.requireNonNull(salesOrder.getOrderDate()).getValue());
+        LocalDateTime yearMonth = YearMonth.of(orderDate.getYear(), orderDate.getMonth()).atDay(1).atStartOfDay();
+        Integer autoNumber = autoNumberService.getNextDocumentNumber("O", yearMonth);
+        String orderNumber = "O" + yearMonth.format(DateTimeFormatter.ofPattern("yyMM")) + String.format("%05d", autoNumber);
+        autoNumberService.save(AutoNumber.of("O", yearMonth, autoNumber));
+        autoNumberService.incrementDocumentNumber("O", yearMonth);
+        return orderNumber;
     }
 
     /**
