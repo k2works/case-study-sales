@@ -17,7 +17,7 @@ class SalesOrderResourceDTOMapperTest {
     @DisplayName("受注リソースを受注エンティティに変換する")
     void testConvertToEntity_validResource_shouldReturnSalesOrder() {
         // Arrange
-        String orderNumber = "O123456789";
+        String orderNumber = "OD12345678";
         LocalDateTime orderDate = LocalDateTime.now();
         String departmentCode = "12345";
         LocalDateTime departmentStartDate = LocalDateTime.now().minusDays(30);

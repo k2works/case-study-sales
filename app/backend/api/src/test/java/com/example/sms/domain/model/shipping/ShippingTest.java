@@ -19,7 +19,7 @@ class ShippingTest {
 
     private static @NotNull Shipping getShipping() {
         return Shipping.of(
-                OrderNumber.of("O123456789"),
+                OrderNumber.of("OD12345678"),
                 OrderDate.of(LocalDateTime.now()),
                 DepartmentCode.of("12345"),
                 LocalDateTime.now(),
@@ -57,7 +57,7 @@ class ShippingTest {
         Shipping shipping = getShipping();
 
         assertAll(
-                () -> assertEquals("O123456789", shipping.getOrderNumber().getValue()),
+                () -> assertEquals("OD12345678", shipping.getOrderNumber().getValue()),
                 () -> assertEquals("12345", shipping.getDepartmentCode().getValue()),
                 () -> assertEquals("001", shipping.getCustomerCode().getCode().getValue()),
                 () -> assertEquals(1, shipping.getCustomerCode().getBranchNumber()),
@@ -89,7 +89,7 @@ class ShippingTest {
         @Test
         @DisplayName("注文番号は10桁の数字で作成できる")
         void shouldCreateOrderNumber() {
-            assertDoesNotThrow(() -> OrderNumber.of("O123456789"));
+            assertDoesNotThrow(() -> OrderNumber.of("OD12345678"));
             assertThrows(IllegalArgumentException.class, () -> OrderNumber.of("ORD1234567"));
             assertThrows(IllegalArgumentException.class, () -> OrderNumber.of("0123456789"));
             assertThrows(IllegalArgumentException.class, () -> OrderNumber.of("12345678901"));

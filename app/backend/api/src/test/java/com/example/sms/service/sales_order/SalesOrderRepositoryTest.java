@@ -62,7 +62,7 @@ class SalesOrderRepositoryTest {
         @DisplayName("受注一覧を取得できる")
         void shouldRetrieveAllSalesOrders() {
             IntStream.range(0, 10).forEach(i -> {
-                SalesOrder order = getSalesOrder(String.format("O%09d", i));
+                SalesOrder order = getSalesOrder(String.format("OD%08d", i));
                 repository.save(order);
             });
             assertEquals(10, repository.selectAll().size());
@@ -71,7 +71,7 @@ class SalesOrderRepositoryTest {
         @Test
         @DisplayName("受注を登録できる")
         void shouldRegisterSalesOrder() {
-            SalesOrder order = getSalesOrder("O000000001");
+            SalesOrder order = getSalesOrder("OD00000001");
             repository.save(order);
             SalesOrder actual = repository.findById(order.getOrderNumber().getValue()).get();
             assertEquals(order, actual);
@@ -80,7 +80,7 @@ class SalesOrderRepositoryTest {
         @Test
         @DisplayName("受注を更新できる")
         void shouldUpdateSalesOrder() {
-            SalesOrder order = getSalesOrder("O000000001");
+            SalesOrder order = getSalesOrder("OD00000001");
             repository.save(order);
             order = repository.findById(order.getOrderNumber().getValue()).get();
             SalesOrder updatedOrder = SalesOrder.of(
@@ -106,7 +106,7 @@ class SalesOrderRepositoryTest {
         @Test
         @DisplayName("受注を削除できる")
         void shouldDeleteSalesOrder() {
-            SalesOrder order = getSalesOrder("O000000001");
+            SalesOrder order = getSalesOrder("OD00000001");
             repository.save(order);
             repository.delete(order);
             assertEquals(0, repository.selectAll().size());
@@ -119,7 +119,7 @@ class SalesOrderRepositoryTest {
         @Test
         @DisplayName("受注明細一覧を取得できる")
         void shouldRetrieveAllSalesOrderLines() {
-            SalesOrder order = getSalesOrder("O000000001");
+            SalesOrder order = getSalesOrder("OD00000001");
             List<SalesOrderLine> lines = IntStream.range(1, 11)
                     .mapToObj(i -> getSalesOrderLine(order.getOrderNumber().getValue(), i))
                     .toList();
@@ -146,7 +146,7 @@ class SalesOrderRepositoryTest {
         @Test
         @DisplayName("受注明細を登録できる")
         void shouldRegisterSalesOrderLine() {
-            SalesOrder order = getSalesOrder("O000000001");
+            SalesOrder order = getSalesOrder("OD00000001");
             SalesOrderLine line = getSalesOrderLine(order.getOrderNumber().getValue(), 1);
             SalesOrder newOrder = SalesOrder.of(
                     order.getOrderNumber().getValue(),
@@ -172,7 +172,7 @@ class SalesOrderRepositoryTest {
         @Test
         @DisplayName("受注明細を更新できる")
         void shouldUpdateSalesOrderLine() {
-            SalesOrder order = getSalesOrder("O000000001");
+            SalesOrder order = getSalesOrder("OD00000001");
             SalesOrderLine line = getSalesOrderLine(order.getOrderNumber().getValue(), 1);
             SalesOrder newOrder = SalesOrder.of(
                     order.getOrderNumber().getValue(),
@@ -220,7 +220,7 @@ class SalesOrderRepositoryTest {
         @Test
         @DisplayName("受注明細を削除できる")
         void shouldDeleteSalesOrderLine() {
-            SalesOrder order = getSalesOrder("O000000001");
+            SalesOrder order = getSalesOrder("OD00000001");
             SalesOrderLine line = getSalesOrderLine(order.getOrderNumber().getValue(), 1);
             SalesOrder newOrder = SalesOrder.of(
                     order.getOrderNumber().getValue(),

@@ -284,7 +284,7 @@ public class UC017StepDefs extends SpringAcceptanceTest {
     private static @NotNull SalesResource getSalesResource(String salesNumber, String salesDate, String departmentCode, String customerCode, String employeeCode, String totalAmount) {
         SalesResource salesResource = new SalesResource();
         salesResource.setSalesNumber(salesNumber);
-        salesResource.setOrderNumber("O" + salesNumber.substring(1));
+        salesResource.setOrderNumber("OD" + salesNumber.substring(2));
         salesResource.setSalesDate(OffsetDateTime.parse(salesDate).toLocalDateTime());
         salesResource.setSalesType(SalesType.現金.getCode());
         salesResource.setDepartmentCode(departmentCode);

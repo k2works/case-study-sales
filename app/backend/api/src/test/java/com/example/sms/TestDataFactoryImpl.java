@@ -165,17 +165,17 @@ public class TestDataFactoryImpl implements TestDataFactory {
         partnerRepository.save(Partner.ofWithVendors(getPartner("002"), List.of(getVendor("002", 1), getVendor("002", 2), getVendor("002", 3))));
 
         salesOrderRepository.deleteAll();
-        SalesOrder order1 = getSalesOrder("O000000001");
+        SalesOrder order1 = getSalesOrder("OD00000001");
         IntStream.rangeClosed(1, 3).forEach(i -> {
             SalesOrderLine line = getSalesOrderLine(order1.getOrderNumber().getValue(), i);
             salesOrderRepository.save(SalesOrder.of(order1, List.of(line)));
         });
-        SalesOrder order2 = getSalesOrder("O000000002");
+        SalesOrder order2 = getSalesOrder("OD00000002");
         IntStream.rangeClosed(1, 3).forEach(i -> {
             SalesOrderLine line = getSalesOrderLine(order2.getOrderNumber().getValue(), i);
             salesOrderRepository.save(SalesOrder.of(order2, List.of(line)));
         });
-        SalesOrder order3 = getSalesOrder("O000000003");
+        SalesOrder order3 = getSalesOrder("OD00000003");
         IntStream.rangeClosed(1, 3).forEach(i -> {
             SalesOrderLine line = getSalesOrderLine(order3.getOrderNumber().getValue(), i);
             salesOrderRepository.save(SalesOrder.of(order3, List.of(line)));
@@ -290,7 +290,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
         salesOrderRepository.deleteAll();
 
         IntStream.rangeClosed(1, 3).forEach(i -> {
-            String orderNumber = String.format("O%09d", i);
+            String orderNumber = String.format("OD%08d", i);
             SalesOrder order = getSalesOrder(orderNumber);
             List<SalesOrderLine> lines = IntStream.range(1, 4)
                     .mapToObj(lineNumber -> getSalesOrderLine(order.getOrderNumber().getValue(), lineNumber))
@@ -423,7 +423,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
         // 売上データの準備
         IntStream.rangeClosed(1, 3).forEach(i -> {
             // 売上番号をフォーマット
-            String salesNumber = String.format("S%09d", i);
+            String salesNumber = String.format("SA%08d", i);
 
             // 売上明細の準備
             List<SalesLine> salesLines = IntStream.range(1, 4)
@@ -448,7 +448,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
             // 売上エンティティの作成
             Sales newSales = Sales.of(
                     salesNumber,
-                    salesNumber.replace("S", "O"), // 仮登録用の受注番号
+                    salesNumber.replace("SA", "OD"), // 仮登録用の受注番号
                     LocalDateTime.now(), // 売上日
                     1, // 売上区分
                     department.getDepartmentId().getDeptCode().getValue(), // 部門コード
@@ -697,7 +697,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
     public static Sales getSales(String salesNumber) {
         return Sales.of(
                 salesNumber,
-                "O000000009",
+                "OD00000009",
                 LocalDateTime.of(2023, 10, 1, 0, 0),
                 1,
                 "10000",

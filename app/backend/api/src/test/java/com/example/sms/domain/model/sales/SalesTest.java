@@ -14,9 +14,39 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("売上")
 class SalesTest {
-    // デフォルト値を持つビルダークラス
-    private static class SalesLineBuilder {
-        private String salesNumber = "S123456789";
+    private SalesLine defaultSalesLine;
+    private Product defaultProduct;
+
+    @BeforeEach
+    void setUp() {
+        // テスト共通のデフォルト商品を作成
+        defaultProduct = Product.of(
+                "P12345",         // 商品コード
+                "テスト商品",      // 商品名
+                "商品1",          // 商品略称
+                "ショウヒンイチ",  // 商品名カナ
+                ProductType.その他, // 商品種別
+                900,            // 商品標準価格
+                810,            // 売上単価
+                90,             // 利益額
+                TaxType.外税,     // 税種別
+                "カテゴリ9",      // カテゴリ
+                MiscellaneousType.適用外, // 雑費区分
+                StockManagementTargetType.対象, // 在庫管理対象
+                StockAllocationType.引当済, // 在庫引当区分
+                "009",           // 倉庫コード
+                9                // 入荷リードタイム
+        );
+
+        // テスト共通のデフォルト売上明細を作成
+        defaultSalesLine = new SalesLineBuilder()
+                .withProduct(defaultProduct)
+                .build();
+    }
+
+    // ビルダークラスを静的内部クラスとして定義
+    static class SalesLineBuilder {
+        private String salesNumber = "SA12345678";
         private int salesLineNumber = 1;
         private String productCode = "P12345";
         private String productName = "テスト商品";
@@ -28,24 +58,29 @@ class SalesTest {
         private String billingNumber = "B12345";
         private int billingDelayType = 1;
         private LocalDateTime createdAt = LocalDateTime.now();
-        private Product product = Product.of(
-                productCode, // 商品コード
-                productName,    // 商品名
-                "商品1",    // 商品名カナ
-                "ショウヒンイチ", // 商品英語名
-                ProductType.その他, // 商品種別
-                900, // 商品標準価格
-                810, // 売上単価
-                90,  // 利益額
-                TaxType.外税, // 税種別
-                "カテゴリ9", // カテゴリ
-                MiscellaneousType.適用外, // 雑費区分
-                StockManagementTargetType.対象, // 在庫管理対象
-                StockAllocationType.引当済, // 在庫引当区分
-                "009", // 倉庫コード
-                9    // 入荷リードタイム
-        );
+        private Product product;
         private TaxRateType taxRate = TaxRateType.標準税率;
+
+        public SalesLineBuilder() {
+            // デフォルト商品の初期化
+            this.product = Product.of(
+                    productCode,
+                    productName,
+                    "商品1",
+                    "ショウヒンイチ",
+                    ProductType.その他,
+                    900,
+                    810,
+                    90,
+                    TaxType.外税,
+                    "カテゴリ9",
+                    MiscellaneousType.適用外,
+                    StockManagementTargetType.対象,
+                    StockAllocationType.引当済,
+                    "009",
+                    9
+            );
+        }
 
         public SalesLineBuilder withSalesNumber(String salesNumber) {
             this.salesNumber = salesNumber;
@@ -89,6 +124,13 @@ class SalesTest {
 
         public SalesLineBuilder withProduct(Product product) {
             this.product = product;
+            this.productCode = product.getProductCode().getValue();
+            this.productName = product.getProductName().getProductFormalName();
+            return this;
+        }
+
+        public SalesLineBuilder withTaxRate(TaxRateType taxRate) {
+            this.taxRate = taxRate;
             return this;
         }
 
@@ -112,9 +154,9 @@ class SalesTest {
         }
     }
 
-    private static class SalesBuilder {
-        private String salesNumber = "S123456789";
-        private String orderNumber = "O123456789";
+    static class SalesBuilder {
+        private String salesNumber = "SA12345678";
+        private String orderNumber = "OD12345678";
         private LocalDateTime salesDate = LocalDateTime.now();
         private int salesType = 1;
         private String departmentId = "12345";
@@ -131,13 +173,23 @@ class SalesTest {
             return this;
         }
 
+        public SalesBuilder withOrderNumber(String orderNumber) {
+            this.orderNumber = orderNumber;
+            return this;
+        }
+
         public SalesBuilder withSalesLines(List<SalesLine> salesLines) {
-            this.salesLines = salesLines;
+            this.salesLines = new ArrayList<>(salesLines);
             return this;
         }
 
         public SalesBuilder withSalesLine(SalesLine salesLine) {
             this.salesLines.add(salesLine);
+            return this;
+        }
+
+        public SalesBuilder withRemarks(String remarks) {
+            this.remarks = remarks;
             return this;
         }
 
@@ -162,13 +214,14 @@ class SalesTest {
     @Test
     @DisplayName("売上を作成できる")
     void shouldCreateSales() {
-        // ビルダーパターンを使用して可読性向上
-        SalesLine salesLine = new SalesLineBuilder().build();
-        Sales sales = new SalesBuilder().withSalesLine(salesLine).build();
+        // 共通のフィクスチャを利用
+        Sales sales = new SalesBuilder()
+                .withSalesLine(defaultSalesLine)
+                .build();
 
         assertAll(
-                () -> assertEquals("S123456789", sales.getSalesNumber().getValue()),
-                () -> assertEquals("O123456789", sales.getOrderNumber().getValue()),
+                () -> assertEquals("SA12345678", sales.getSalesNumber().getValue()),
+                () -> assertEquals("OD12345678", sales.getOrderNumber().getValue()),
                 () -> assertEquals("12345", sales.getDepartmentId().getDeptCode().getValue()),
                 () -> assertEquals("001", sales.getCustomerCode().getValue()),
                 () -> assertEquals("EMP001", sales.getEmployeeCode().getValue()),
@@ -183,8 +236,8 @@ class SalesTest {
     }
 
     @Nested
-    @DisplayName("売上明細")
-    class SalesLineTest {
+    @DisplayName("売上明細のテスト")
+    class SalesLineTests {
         @Test
         @DisplayName("売上明細を作成できる")
         void shouldCreateSalesLine() {
@@ -196,7 +249,7 @@ class SalesTest {
                     .build();
 
             assertAll(
-                    () -> assertEquals("S123456789", line.getSalesNumber().getValue()),
+                    () -> assertEquals("SA12345678", line.getSalesNumber().getValue()),
                     () -> assertEquals(1, line.getSalesLineNumber()),
                     () -> assertEquals("P12345", line.getProductCode().getValue()),
                     () -> assertEquals("テスト商品", line.getProductName()),
@@ -252,24 +305,22 @@ class SalesTest {
     }
 
     @Nested
-    @DisplayName("売上金額合計")
-    class TestTotalSalesAmount {
+    @DisplayName("売上金額合計のテスト")
+    class TotalSalesAmountTests {
         @Test
-        @DisplayName("売上金額合計を作成できる")
-        void shouldCreateTotalSalesAmount() {
-            SalesLine salesLine = new SalesLineBuilder().build();
-            Sales sales = new SalesBuilder().withSalesLine(salesLine).build();
+        @DisplayName("単一明細の売上金額合計を計算できる")
+        void shouldCalculateTotalSalesAmountForSingleLine() {
+            Sales sales = new SalesBuilder()
+                    .withSalesLine(defaultSalesLine)
+                    .build();
 
             assertEquals(2000, sales.getTotalSalesAmount().getAmount());
         }
 
         @Test
-        @DisplayName("複数明細の売上金額合計を作成できる")
-        void shouldCreateTotalSalesAmountWithMultipleLines() {
-            SalesLine salesLine1 = new SalesLineBuilder()
-                    .withSalesLineNumber(1)
-                    .withProductName("テスト商品1")
-                    .build();
+        @DisplayName("複数明細の売上金額合計を計算できる")
+        void shouldCalculateTotalSalesAmountForMultipleLines() {
+            SalesLine salesLine1 = defaultSalesLine;
 
             SalesLine salesLine2 = new SalesLineBuilder()
                     .withSalesLineNumber(2)

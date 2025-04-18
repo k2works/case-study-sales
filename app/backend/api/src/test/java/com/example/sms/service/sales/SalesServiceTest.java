@@ -53,7 +53,7 @@ class SalesServiceTest {
         @DisplayName("売上を新規登録できる")
         void shouldRegisterNewSales() {
             SalesLine salesLine = SalesLine.of(
-                    "S000000009",
+                    "SA00000009",
                     1,
                     "P001",
                     "Product 1",
@@ -70,8 +70,8 @@ class SalesServiceTest {
             );
 
             Sales newSales = Sales.of(
-                    "S000000009",
-                    "O000000001",
+                    "SA00000009",
+                    "OD00000001",
                     LocalDateTime.now(),
                     1,
                     "10000",
@@ -115,7 +115,7 @@ class SalesServiceTest {
 
             Sales newSales = Sales.of(
                     null,
-                    "O000000001",
+                    "OD00000001",
                     LocalDateTime.now(),
                     1,
                     "10000",
@@ -137,7 +137,7 @@ class SalesServiceTest {
         @Test
         @DisplayName("売上情報を編集できる")
         void shouldEditSalesDetails() {
-            Sales sales = TestDataFactoryImpl.getSales("S000000010");
+            Sales sales = TestDataFactoryImpl.getSales("SA00000010");
             salesService.register(sales);
 
             Sales updatedSales = Sales.of(
@@ -165,7 +165,7 @@ class SalesServiceTest {
         @Test
         @DisplayName("売上を削除できる")
         void shouldDeleteSales() {
-            Sales sales = TestDataFactoryImpl.getSales("S000000010");
+            Sales sales = TestDataFactoryImpl.getSales("SA00000010");
             salesService.register(sales);
 
             salesService.delete(sales);
@@ -178,7 +178,7 @@ class SalesServiceTest {
         @DisplayName("条件付きで売上を検索できる (ページング)")
         void shouldSearchSalesWithPaging() {
             String departmentCode = "90000";
-            Sales sales = TestDataFactoryImpl.getSales("S000000010");
+            Sales sales = TestDataFactoryImpl.getSales("SA00000010");
             Sales newSales = Sales.of(
                     sales.getSalesNumber().getValue(),
                     sales.getOrderNumber().getValue(),
@@ -229,7 +229,7 @@ class SalesServiceTest {
 
             List<SalesLine> salesLines = IntStream.range(1, 4)
                     .mapToObj(lineNumber -> SalesLine.of(
-                            "S210100001",
+                            "SA21010001",
                             lineNumber,
                             "99999999",
                             "商品1",
@@ -246,8 +246,8 @@ class SalesServiceTest {
                     ))
                     .toList();
             Sales expected = Sales.of(
-                    "S210100001",
-                    "O000000001",
+                    "SA21010001",
+                    "OD00000001",
                     LocalDateTime.of(2021, 1, 1, 0, 0),
                     SalesType.現金.getCode(),
                     "10000",

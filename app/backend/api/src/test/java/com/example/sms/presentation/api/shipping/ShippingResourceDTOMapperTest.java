@@ -17,7 +17,7 @@ class ShippingResourceDTOMapperTest {
     @DisplayName("出荷リソースを出荷エンティティに変換する")
     void testConvertToEntity_validResource_shouldReturnShipping() {
         // Arrange
-        String orderNumber = "O000000001";
+        String orderNumber = "OD00000001";
         LocalDateTime orderDate = LocalDateTime.now();
         String departmentCode = "10000";
         LocalDateTime departmentStartDate = LocalDateTime.now().minusDays(30);

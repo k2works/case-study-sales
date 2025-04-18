@@ -102,7 +102,7 @@ class ShippingRepositoryTest {
         @DisplayName("出荷一覧を取得できる")
         void shouldRetrieveAllShippings() {
             IntStream.range(0, 10).forEach(i -> {
-                SalesOrder order = getSalesOrder(String.format("O%09d", i));
+                SalesOrder order = getSalesOrder(String.format("OD%08d", i));
                 List<SalesOrderLine> lines = IntStream.range(0, 3)
                         .mapToObj(j -> getSalesOrderLine(order.getOrderNumber().getValue(), j))
                         .toList();
@@ -130,7 +130,7 @@ class ShippingRepositoryTest {
         @Test
         @DisplayName("出荷を登録できる")
         void shouldRegisterShipping() {
-            SalesOrder order = getSalesOrder(String.format("O%09d", 1));
+            SalesOrder order = getSalesOrder(String.format("OD%08d", 1));
             List<SalesOrderLine> lines = IntStream.range(0, 3)
                     .mapToObj(j -> getSalesOrderLine(order.getOrderNumber().getValue(), j))
                     .toList();
@@ -160,7 +160,7 @@ class ShippingRepositoryTest {
         @Test
         @DisplayName("出荷を更新できる")
         void shouldUpdateShipping() {
-            SalesOrder order = getSalesOrder(String.format("O%09d", 1));
+            SalesOrder order = getSalesOrder(String.format("OD%08d", 1));
             List<SalesOrderLine> lines = IntStream.range(0, 3)
                     .mapToObj(j -> getSalesOrderLine(order.getOrderNumber().getValue(), j))
                     .toList();

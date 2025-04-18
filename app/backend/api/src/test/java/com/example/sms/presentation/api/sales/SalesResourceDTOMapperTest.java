@@ -17,8 +17,8 @@ class SalesResourceDTOMapperTest {
     @DisplayName("売上リソースを売上エンティティに変換する")
     void testConvertToEntity_validResource_shouldReturnSales() {
         // Arrange
-        String salesNumber = "S123456789";
-        String orderNumber = "O123456789";
+        String salesNumber = "SA12345678";
+        String orderNumber = "OD12345678";
         LocalDateTime salesDate = LocalDateTime.now();
         Integer salesCategory = 1;
         String departmentCode = "10000";
@@ -87,8 +87,8 @@ class SalesResourceDTOMapperTest {
     @DisplayName("売上検索条件リソースを売上検索条件に変換する")
     void testConvertToCriteria_validResource_shouldReturnSalesCriteria() {
         // Arrange
-        String salesNumber = "S123456789";
-        String orderNumber = "ORD001";
+        String salesNumber = "SA12345678";
+        String orderNumber = "OD12345678";
         String salesDate = "2023-10-01";
         String departmentCode = "DPT001";
         String remarks = "テスト条件";

@@ -57,7 +57,7 @@ class SalesOrderServiceTest {
         @Test
         @DisplayName("受注を新規登録できる")
         void shouldRegisterNewSalesOrder() {
-            SalesOrder newSalesOrder = TestDataFactoryImpl.getSalesOrder("O000000009");
+            SalesOrder newSalesOrder = TestDataFactoryImpl.getSalesOrder("OD00000009");
 
             salesOrderService.register(newSalesOrder);
 
@@ -82,7 +82,7 @@ class SalesOrderServiceTest {
         @Test
         @DisplayName("受注の登録情報を編集できる")
         void shouldEditSalesOrderDetails() {
-            SalesOrder salesOrder = TestDataFactoryImpl.getSalesOrder("O000000009");
+            SalesOrder salesOrder = TestDataFactoryImpl.getSalesOrder("OD00000009");
             salesOrderService.register(salesOrder);
 
             SalesOrder updatedSalesOrder = SalesOrder.of(
@@ -114,7 +114,7 @@ class SalesOrderServiceTest {
         @Test
         @DisplayName("受注を削除できる")
         void shouldDeleteSalesOrder() {
-            SalesOrder salesOrder = TestDataFactoryImpl.getSalesOrder("O000000009");
+            SalesOrder salesOrder = TestDataFactoryImpl.getSalesOrder("OD00000009");
             salesOrderService.register(salesOrder);
 
             salesOrderService.delete(salesOrder);
@@ -128,7 +128,7 @@ class SalesOrderServiceTest {
         void shouldSearchSalesOrdersWithPaging() {
             String customerCode = "001";
             String warehouseCode = "002";
-            SalesOrder salesOrder = TestDataFactoryImpl.getSalesOrder("O000000009");
+            SalesOrder salesOrder = TestDataFactoryImpl.getSalesOrder("OD00000009");
             SalesOrder searchOrder = SalesOrder.of(
                     salesOrder.getOrderNumber().getValue(),
                     salesOrder.getOrderDate().getValue(),
@@ -188,11 +188,11 @@ class SalesOrderServiceTest {
 
                 // Act
                 salesOrderService.uploadCsvFile(multipartFile);
-                SalesOrder result = salesOrderService.find("O000000001");
+                SalesOrder result = salesOrderService.find("OD00000001");
 
                 // Assert
                 assertNotNull(result);
-                assertEquals("O000000001", result.getOrderNumber().getValue());
+                assertEquals("OD00000001", result.getOrderNumber().getValue());
                 assertEquals(LocalDateTime.parse("2025-02-19T00:00"), result.getOrderDate().getValue());
                 assertEquals("10000", result.getDepartmentCode().getValue());
                 assertEquals(20454, result.getTotalOrderAmount().getAmount());
@@ -233,11 +233,11 @@ class SalesOrderServiceTest {
                 // Act
                 salesOrderService.uploadCsvFile(multipartFile);
                 salesOrderService.uploadCsvFile(multipartFile);
-                SalesOrder result = salesOrderService.find("O000000001");
+                SalesOrder result = salesOrderService.find("OD00000001");
 
                 // Assert
                 assertNotNull(result);
-                assertEquals("O000000001", result.getOrderNumber().getValue());
+                assertEquals("OD00000001", result.getOrderNumber().getValue());
                 assertEquals(LocalDateTime.parse("2025-02-19T00:00"), result.getOrderDate().getValue());
                 assertEquals("10000", result.getDepartmentCode().getValue());
                 assertEquals(20454, result.getTotalOrderAmount().getAmount());
@@ -285,12 +285,12 @@ class SalesOrderServiceTest {
                 assertEquals(2, result.size());
 
                 SalesOrder order1 = result.asList().get(0);
-                assertEquals("O000000001", order1.getOrderNumber().getValue());
+                assertEquals("OD00000001", order1.getOrderNumber().getValue());
                 assertEquals(21000, order1.getTotalOrderAmount().getAmount());
                 assertEquals(2, order1.getSalesOrderLines().size());
 
                 SalesOrder order2 = result.asList().get(1);
-                assertEquals("O000000002", order2.getOrderNumber().getValue());
+                assertEquals("OD00000002", order2.getOrderNumber().getValue());
                 assertEquals(54540, order2.getTotalOrderAmount().getAmount());
                 assertEquals(2, order2.getSalesOrderLines().size());
             }
@@ -317,12 +317,12 @@ class SalesOrderServiceTest {
                 assertEquals(2, result.size());
 
                 SalesOrder order1 = result.asList().getFirst();
-                assertEquals("O000000001", order1.getOrderNumber().getValue());
+                assertEquals("OD00000001", order1.getOrderNumber().getValue());
                 assertEquals(21000, order1.getTotalOrderAmount().getAmount());
                 assertEquals(2, order1.getSalesOrderLines().size());
 
                 SalesOrder order2 = result.asList().get(1);
-                assertEquals("O000000002", order2.getOrderNumber().getValue());
+                assertEquals("OD00000002", order2.getOrderNumber().getValue());
                 assertEquals(54540, order2.getTotalOrderAmount().getAmount());
                 assertEquals(2, order2.getSalesOrderLines().size());
             }
@@ -430,8 +430,8 @@ class SalesOrderServiceTest {
         @Test
         @DisplayName("受注金額が100万円以上の場合")
         void shouldThrowExceptionWhenTotalOrderAmountIsOver1000000() {
-            SalesOrder salesOrder = TestDataFactoryImpl.getSalesOrder("O000000009");
-            SalesOrderLine salesOrderLine = TestDataFactoryImpl.getSalesOrderLine("O000000009", 1);
+            SalesOrder salesOrder = TestDataFactoryImpl.getSalesOrder("OD00000009");
+            SalesOrderLine salesOrderLine = TestDataFactoryImpl.getSalesOrderLine("OD00000009", 1);
             SalesOrderLine newSalesOrderLine = SalesOrderLine.of(
                     salesOrderLine.getOrderNumber().getValue(),
                     salesOrderLine.getOrderLineNumber(),
@@ -473,8 +473,8 @@ class SalesOrderServiceTest {
         @Test
         @DisplayName("納期が受注日より前の場合")
         void shouldThrowExceptionWhenDeliveryDateIsBeforeOrderDate() {
-            SalesOrder salesOrder = TestDataFactoryImpl.getSalesOrder("O000000009");
-            SalesOrderLine salesOrderLine = TestDataFactoryImpl.getSalesOrderLine("O000000009", 1);
+            SalesOrder salesOrder = TestDataFactoryImpl.getSalesOrder("OD00000009");
+            SalesOrderLine salesOrderLine = TestDataFactoryImpl.getSalesOrderLine("OD00000009", 1);
             SalesOrderLine newSalesOrderLine = SalesOrderLine.of(
                     salesOrderLine.getOrderNumber().getValue(),
                     salesOrderLine.getOrderLineNumber(),
@@ -516,8 +516,8 @@ class SalesOrderServiceTest {
         @Test
         @DisplayName("納期を超過している場合")
         void shouldThrowExceptionWhenDeliveryDateIsExceeded() {
-            SalesOrder salesOrder = TestDataFactoryImpl.getSalesOrder("O000000009");
-            SalesOrderLine salesOrderLine = TestDataFactoryImpl.getSalesOrderLine("O000000009", 1);
+            SalesOrder salesOrder = TestDataFactoryImpl.getSalesOrder("OD00000009");
+            SalesOrderLine salesOrderLine = TestDataFactoryImpl.getSalesOrderLine("OD00000009", 1);
             SalesOrderLine newSalesOrderLine = SalesOrderLine.of(
                     salesOrderLine.getOrderNumber().getValue(),
                     salesOrderLine.getOrderLineNumber(),
@@ -559,8 +559,8 @@ class SalesOrderServiceTest {
         @Test
         @DisplayName("完了済みの受注の場合")
         void shouldNotThrowExceptionWhenSalesOrderIsCompleted() {
-            SalesOrder salesOrder = TestDataFactoryImpl.getSalesOrder("O000000009");
-            SalesOrderLine salesOrderLine = TestDataFactoryImpl.getSalesOrderLine("O000000009", 1);
+            SalesOrder salesOrder = TestDataFactoryImpl.getSalesOrder("OD00000009");
+            SalesOrderLine salesOrderLine = TestDataFactoryImpl.getSalesOrderLine("OD00000009", 1);
             SalesOrderLine newSalesOrderLine = SalesOrderLine.of(
                     salesOrderLine.getOrderNumber().getValue(),
                     salesOrderLine.getOrderLineNumber(),
