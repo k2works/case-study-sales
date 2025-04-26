@@ -2,6 +2,7 @@ package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
 import com.example.sms.domain.model.sales.SalesType;
+import com.example.sms.domain.model.sales_order.TaxRateType;
 import com.example.sms.presentation.api.sales.SalesCriteriaResource;
 import com.example.sms.presentation.api.sales.SalesLineResource;
 import com.example.sms.presentation.api.sales.SalesResource;
@@ -181,7 +182,7 @@ public class UC017StepDefs extends SpringAcceptanceTest {
                 .billingNumber(null)
                 .billingDelayCategory(0)
                 .autoJournalDate(null)
-                .taxRate(10)
+                .taxRate(TaxRateType.標準税率)
                 .build();
         sales.setSalesLines(List.of(salesLine));
 
@@ -286,7 +287,7 @@ public class UC017StepDefs extends SpringAcceptanceTest {
         salesResource.setSalesNumber(salesNumber);
         salesResource.setOrderNumber("OD" + salesNumber.substring(2));
         salesResource.setSalesDate(OffsetDateTime.parse(salesDate).toLocalDateTime());
-        salesResource.setSalesType(SalesType.現金.getCode());
+        salesResource.setSalesType(SalesType.現金);
         salesResource.setDepartmentCode(departmentCode);
         salesResource.setDepartmentStartDate(OffsetDateTime.parse(salesDate).toLocalDateTime());
         salesResource.setCustomerCode(customerCode);
@@ -307,7 +308,7 @@ public class UC017StepDefs extends SpringAcceptanceTest {
                 .salesUnitPrice(Integer.parseInt(entry.get("売上単価")))
                 .salesQuantity(Integer.parseInt(entry.get("売上数量")))
                 .discountAmount(Integer.parseInt(entry.get("割引額")))
-                .taxRate(10)
+                .taxRate(TaxRateType.標準税率)
                 .build();
     }
 }

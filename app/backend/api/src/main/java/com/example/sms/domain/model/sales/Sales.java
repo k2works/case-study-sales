@@ -49,11 +49,13 @@ public class Sales {
 
         SalesNumber salesNumberValueObject = salesNumber == null ? null : SalesNumber.of(salesNumber);
 
+        SalesType salesTypeValueObject = salesType == null ? SalesType.現金 : SalesType.fromCode(salesType);
+
         return new Sales(
                 salesNumberValueObject,
                 OrderNumber.of(orderNumber),
                 SalesDate.of(salesDate),
-                SalesType.fromCode(salesType),
+                salesTypeValueObject,
                 DepartmentId.of(departmentCode, departmentStartDate),
                 PartnerCode.of(customerCode),
                 EmployeeCode.of(employeeCode),

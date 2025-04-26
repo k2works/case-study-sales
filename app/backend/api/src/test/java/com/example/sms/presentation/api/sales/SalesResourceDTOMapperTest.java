@@ -1,6 +1,8 @@
 package com.example.sms.presentation.api.sales;
 
 import com.example.sms.domain.model.sales.Sales;
+import com.example.sms.domain.model.sales.SalesType;
+import com.example.sms.domain.model.sales_order.TaxRateType;
 import com.example.sms.service.sales.SalesCriteria;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +22,7 @@ class SalesResourceDTOMapperTest {
         String salesNumber = "SA12345678";
         String orderNumber = "OD12345678";
         LocalDateTime salesDate = LocalDateTime.now();
-        Integer salesCategory = 1;
+        SalesType salesCategory = SalesType.現金;
         String departmentCode = "10000";
         LocalDateTime departmentStartDate = LocalDateTime.now().minusDays(30);
         String customerCode = "001";
@@ -44,7 +46,7 @@ class SalesResourceDTOMapperTest {
                 .billingNumber("BILL123")
                 .billingDelayCategory(0)
                 .autoJournalDate(salesDate.plusDays(1))
-                .taxRate(10)
+                .taxRate(TaxRateType.標準税率)
                 .build();
 
         SalesResource resource = new SalesResource();
@@ -71,7 +73,7 @@ class SalesResourceDTOMapperTest {
         assertEquals(salesNumber, sales.getSalesNumber().getValue());
         assertEquals(orderNumber, sales.getOrderNumber().getValue());
         assertEquals(salesDate, sales.getSalesDate().getValue());
-        assertEquals(salesCategory, sales.getSalesType().getCode());
+        assertEquals(salesCategory, sales.getSalesType());
         assertEquals(departmentCode, sales.getDepartmentId().getDeptCode().getValue());
         assertEquals(departmentStartDate, sales.getDepartmentId().getDepartmentStartDate().getValue());
         assertEquals(customerCode, sales.getCustomerCode().getValue());

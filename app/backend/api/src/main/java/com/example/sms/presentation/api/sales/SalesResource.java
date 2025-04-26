@@ -1,6 +1,7 @@
 package com.example.sms.presentation.api.sales;
 
 import com.example.sms.domain.model.sales.Sales;
+import com.example.sms.domain.model.sales.SalesType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,7 +24,7 @@ public class SalesResource {
     LocalDateTime salesDate;
 
     @Schema(description = "売上区分")
-    Integer salesType;
+    SalesType salesType;
 
     @Schema(description = "部門コード")
     String departmentCode;
@@ -63,7 +64,7 @@ public class SalesResource {
         resource.setSalesNumber(sales.getSalesNumber().getValue());
         resource.setOrderNumber(sales.getOrderNumber().getValue());
         resource.setSalesDate(sales.getSalesDate().getValue());
-        resource.setSalesType(sales.getSalesType().getCode());
+        resource.setSalesType(sales.getSalesType());
         resource.setDepartmentCode(sales.getDepartmentId().getDeptCode().getValue());
         resource.setDepartmentStartDate(sales.getDepartmentId().getDepartmentStartDate().getValue());
         resource.setCustomerCode(sales.getCustomerCode().getValue());

@@ -2,7 +2,6 @@ package com.example.sms.presentation.api.sales;
 
 import com.example.sms.domain.model.sales.Sales;
 import com.example.sms.domain.model.sales.SalesLine;
-import com.example.sms.domain.model.sales_order.TaxRateType;
 import com.example.sms.service.sales.SalesCriteria;
 
 import java.time.LocalDate;
@@ -37,7 +36,7 @@ public class SalesResourceDTOMapper {
                                 line.getBillingDelayCategory(),
                                 line.getAutoJournalDate(),
                         null,
-                        TaxRateType.of(line.getTaxRate())
+                        line.getTaxRate()
                         )
                                 : null
                 )
@@ -46,10 +45,10 @@ public class SalesResourceDTOMapper {
                 : null; // getSalesLinesがnullの場合
 
         return Sales.of(
-                resource.getSalesNumber(),
+                Objects.equals(resource.getSalesNumber(), "") ? null : resource.getSalesNumber(),
                 resource.getOrderNumber(),
                 resource.getSalesDate(),
-                resource.getSalesType(),
+                resource.getSalesType() == null ? null : resource.getSalesType().getCode(),
                 resource.getDepartmentCode(),
                 resource.getDepartmentStartDate(),
                 resource.getCustomerCode(),
@@ -69,7 +68,7 @@ public class SalesResourceDTOMapper {
         resource.setSalesNumber(sales.getSalesNumber().getValue());
         resource.setOrderNumber(sales.getOrderNumber().getValue());
         resource.setSalesDate(sales.getSalesDate().getValue());
-        resource.setSalesType(sales.getSalesType().getCode());
+        resource.setSalesType(sales.getSalesType());
         resource.setDepartmentCode(sales.getDepartmentId().getDeptCode().getValue());
         resource.setDepartmentStartDate(sales.getDepartmentId().getDepartmentStartDate().getValue());
         resource.setCustomerCode(sales.getCustomerCode().getValue());

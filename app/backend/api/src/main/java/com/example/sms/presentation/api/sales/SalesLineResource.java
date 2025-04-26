@@ -1,6 +1,7 @@
 package com.example.sms.presentation.api.sales;
 
 import com.example.sms.domain.model.sales.*;
+import com.example.sms.domain.model.sales_order.TaxRateType;
 import lombok.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -52,7 +53,7 @@ public class SalesLineResource {
     private LocalDateTime autoJournalDate;
 
     @Schema(description = "消費税率")
-    private Integer taxRate;
+    private TaxRateType taxRate;
 
     /**
      * SalesLine エンティティを SalesLineResource に変換するメソッド
@@ -84,6 +85,7 @@ public class SalesLineResource {
                         .map(SalesLine::getAutoJournalDate)
                         .map(AutoJournalDate::getValue)
                         .orElse(null))
+                .taxRate(salesLine.getTaxRate())
                 .build();
     }
 
