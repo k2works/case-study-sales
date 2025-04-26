@@ -130,7 +130,9 @@ public class ShippingDataSource implements ShippingRepository {
         for (SalesOrderCustomEntity salesOrderCustomEntity : salesOrderCustomEntities) {
             List<SalesOrderLineCustomEntity> salesOrderLineCustomEntities = salesOrderLineCustomMapper.selectBySalesOrderNumber(salesOrderCustomEntity.get受注番号());
             for (SalesOrderLineCustomEntity salesOrderLineCustomEntity : salesOrderLineCustomEntities) {
-                shippings.add(shippingEntityMapper.mapToDomainModel(salesOrderCustomEntity, salesOrderLineCustomEntity));
+                if (salesOrderLineCustomEntity.get完了フラグ() == CompletionFlag.完了.getValue()) {
+                    shippings.add(shippingEntityMapper.mapToDomainModel(salesOrderCustomEntity, salesOrderLineCustomEntity));
+                }
             }
         }
 
