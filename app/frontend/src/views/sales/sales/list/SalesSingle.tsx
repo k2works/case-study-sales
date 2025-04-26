@@ -1,8 +1,10 @@
-import React, { Dispatch, SetStateAction } from 'react';
-import { Message } from "../../../../components/application/Message.tsx";
-import { SalesLineType, SalesType } from "../../../../models/sales/sales";
-import { convertToDateInputFormat } from "../../../../components/application/utils.ts";
-import { FormInput, SingleViewHeaderActions, SingleViewHeaderItem } from "../../../Common.tsx";
+import React, {Dispatch, SetStateAction} from 'react';
+import {Message} from "../../../../components/application/Message.tsx";
+import {SalesLineType, SalesType, SalesTypeEnumType} from "../../../../models/sales/sales";
+import {convertToDateInputFormat} from "../../../../components/application/utils.ts";
+import {FormInput, FormSelect, SingleViewHeaderActions, SingleViewHeaderItem} from "../../../Common.tsx";
+import "./Sales.css";
+import {TaxRateEnumType} from "../../../../models/sales/sales_order.ts";
 
 interface HeaderProps {
     title: string;
@@ -105,7 +107,8 @@ const Form = ({
             billingDate: '',
             billingNumber: '',
             billingDelayCategory: 0,
-            autoJournalDate: ''
+            autoJournalDate: '',
+            taxRate: TaxRateEnumType.標準税率
         };
         setNewSales({
             ...newSales,
@@ -154,16 +157,17 @@ const Form = ({
                     salesDate: e.target.value
                 })}
             />
-            <FormInput
+            <FormSelect
+                id="salesType"
                 label="売上区分"
-                id="salesCategory"
-                type="number"
-                className="single-view-content-item-form-item-input"
-                value={newSales.salesCategory}
-                onChange={(e) => setNewSales({
-                    ...newSales,
-                    salesCategory: Number(e.target.value)
-                })}
+                value={newSales.salesType}
+                options={SalesTypeEnumType}
+                onChange={(e) => {
+                    setNewSales({
+                        ...newSales,
+                        salesType: e,
+                    });
+                }}
             />
             <FormInput
                 label="部門コード"
@@ -279,6 +283,7 @@ const Form = ({
                                 <th>商品コード</th>
                                 <th>商品名</th>
                                 <th>販売単価</th>
+                                <th>消費税率</th>
                                 <th>売上数量</th>
                                 <th>出荷済数量</th>
                                 <th>値引金額</th>
@@ -305,14 +310,8 @@ const Form = ({
                                                 className="table-input"
                                                 style={{ marginRight: '4px' }}
                                                 onChange={(e) => handleUpdateLine(index, { ...line, productCode: e.target.value })}
-                                            />
-                                            <button
                                                 onClick={() => handleProductSelectEvent(index)}
-                                                className="select-button"
-                                                type="button"
-                                            >
-                                                選択
-                                            </button>
+                                            />
                                         </div>
                                     </td>
                                     <td className="table-cell">
@@ -330,6 +329,17 @@ const Form = ({
                                             onChange={(e) => handleUpdateLine(index, { ...line, salesUnitPrice: Number(e.target.value) })}
                                             className="table-input"
                                         />
+                                    </td>
+                                    <td className="table-cell">
+                                        <select
+                                            value={line.taxRate}
+                                            onChange={(e) => handleUpdateLine(index, { ...line, taxRate: e.target.value as TaxRateEnumType })}
+                                            className="table-input"
+                                        >
+                                            <option value={TaxRateEnumType.標準税率}>標準</option>
+                                            <option value={TaxRateEnumType.軽減税率}>軽減</option>
+                                            <option value={TaxRateEnumType.その他}>非課税</option>
+                                        </select>
                                     </td>
                                     <td className="table-cell">
                                         <input
@@ -433,7 +443,7 @@ interface SalesSingleViewProps {
     handleCloseModal: () => void;
     handleDepartmentSelect: () => void;
     handleEmployeeSelect: () => void;
-    handleCustomerSelect: () => void;
+    handlePartnerSelect: () => void;
     handleProductSelect: () => void;
 }
 
@@ -446,7 +456,7 @@ export const SalesSingleView: React.FC<SalesSingleViewProps> = ({
     setSelectedLineIndex,
     handleCreateOrUpdateSales,
     handleCloseModal,
-    handleCustomerSelect,
+    handlePartnerSelect,
     handleDepartmentSelect,
     handleEmployeeSelect,
     handleProductSelect,
@@ -473,7 +483,7 @@ export const SalesSingleView: React.FC<SalesSingleViewProps> = ({
                             setSelectedLineIndex={setSelectedLineIndex}
                             handleDepartmentSelect={handleDepartmentSelect}
                             handleEmployeeSelect={handleEmployeeSelect}
-                            handleCustomerSelect={handleCustomerSelect}
+                            handleCustomerSelect={handlePartnerSelect}
                             handleProductSelect={handleProductSelect}
                         />
                     </div>

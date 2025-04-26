@@ -5,8 +5,8 @@ import { SalesProvider, useSalesContext } from "../../../../providers/sales/Sale
 import { SalesCollection } from "./SalesCollection.tsx";
 import { DepartmentProvider, useDepartmentContext } from "../../../../providers/master/Department.tsx";
 import { EmployeeProvider, useEmployeeContext } from "../../../../providers/master/Employee.tsx";
-import { CustomerProvider, useCustomerContext } from "../../../../providers/master/partner/Customer.tsx";
 import { ProductItemProvider, useProductItemContext } from "../../../../providers/master/product/ProductItem.tsx";
+import {PartnerListProvider, usePartnerListContext} from "../../../../providers/master/partner/PartnerList.tsx";
 
 export const SalesContainer: React.FC = () => {
     const Content: React.FC = () => {
@@ -25,8 +25,8 @@ export const SalesContainer: React.FC = () => {
         } = useEmployeeContext();
 
         const {
-            fetchCustomers,
-        } = useCustomerContext();
+            fetchPartners,
+        } = usePartnerListContext();
 
         const {
             fetchProducts,
@@ -39,7 +39,7 @@ export const SalesContainer: React.FC = () => {
                         await fetchSales.load(),
                         fetchDepartments.load(),
                         fetchEmployees.load(),
-                        fetchCustomers.load(),
+                        fetchPartners.load(),
                         fetchProducts.load(),
                     ]);
                 } catch (error: unknown) {
@@ -64,11 +64,11 @@ export const SalesContainer: React.FC = () => {
         <SalesProvider>
             <DepartmentProvider>
                 <EmployeeProvider>
-                    <CustomerProvider>
+                    <PartnerListProvider>
                         <ProductItemProvider>
                             <Content />
                         </ProductItemProvider>
-                    </CustomerProvider>
+                    </PartnerListProvider>
                 </EmployeeProvider>
             </DepartmentProvider>
         </SalesProvider>

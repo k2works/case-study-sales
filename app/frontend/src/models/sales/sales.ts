@@ -1,4 +1,18 @@
-import { PageNationType } from "../../views/application/PageNation";
+import {PageNationType} from "../../views/application/PageNation";
+import {TaxRateEnumType} from "./sales_order.ts";
+import {toISOStringLocal} from "../../components/application/utils.ts";
+
+export enum SalesTypeEnumType {
+    現金 = "現金",
+    掛 = "掛",
+    その他 = "その他"
+}
+
+export const SalesTypeValues = {
+    [SalesTypeEnumType.現金]: 0,
+    [SalesTypeEnumType.掛]: 1,
+    [SalesTypeEnumType.その他]: 2
+};
 
 // 売上明細情報
 export interface SalesLineType {
@@ -14,6 +28,7 @@ export interface SalesLineType {
     billingNumber: string;
     billingDelayCategory: number;
     autoJournalDate: string;
+    taxRate: TaxRateEnumType;
     checked?: boolean;
 }
 
@@ -22,7 +37,7 @@ export interface SalesType {
     salesNumber: string;
     orderNumber: string;
     salesDate: string;
-    salesCategory: number;
+    salesType: SalesTypeEnumType;
     departmentCode: string;
     departmentStartDate: string;
     customerCode: string;
@@ -50,10 +65,10 @@ export const mapToSalesResource = (sales: SalesType) => {
     return {
         salesNumber: sales.salesNumber,
         orderNumber: sales.orderNumber,
-        salesDate: sales.salesDate,
-        salesCategory: sales.salesCategory,
+        salesDate: toISOStringLocal(new Date(sales.salesDate)),
+        salesType: sales.salesType ? SalesTypeValues[sales.salesType] : null,
         departmentCode: sales.departmentCode,
-        departmentStartDate: sales.departmentStartDate,
+        departmentStartDate: toISOStringLocal(new Date(sales.departmentStartDate)),
         customerCode: sales.customerCode,
         employeeCode: sales.employeeCode,
         totalSalesAmount: sales.totalSalesAmount,
@@ -70,10 +85,11 @@ export const mapToSalesResource = (sales: SalesType) => {
             salesQuantity: line.salesQuantity,
             shippedQuantity: line.shippedQuantity,
             discountAmount: line.discountAmount,
-            billingDate: line.billingDate,
+            billingDate: line.billingDate ? toISOStringLocal(new Date(line.billingDate)) : null,
             billingNumber: line.billingNumber,
             billingDelayCategory: line.billingDelayCategory,
-            autoJournalDate: line.autoJournalDate
+            autoJournalDate: line.autoJournalDate ? toISOStringLocal(new Date(line.autoJournalDate)) : null,
+            taxRate: line.taxRate,
         }))
     };
 };
@@ -81,11 +97,11 @@ export const mapToSalesResource = (sales: SalesType) => {
 // 検索条件をAPIリクエスト用に変換
 export const mapToSalesCriteriaResource = (criteria: SalesCriteriaType) => {
     return {
-        salesNumber: criteria.salesNumber || null,
-        orderNumber: criteria.orderNumber || null,
-        salesDate: criteria.salesDate || null,
-        departmentCode: criteria.departmentCode || null,
-        remarks: criteria.remarks || null
+        salesNumber: criteria.salesNumber ?? null,
+        orderNumber: criteria.orderNumber ?? null,
+        salesDate: criteria.salesDate ?? null,
+        departmentCode: criteria.departmentCode ?? null,
+        remarks: criteria.remarks ?? null
     };
 };
 
@@ -116,7 +132,7 @@ export const initialSales: SalesType = {
     salesNumber: "",
     orderNumber: "",
     salesDate: new Date().toISOString().split('T')[0],
-    salesCategory: 0,
+    salesType: SalesTypeEnumType.現金,
     departmentCode: "",
     departmentStartDate: "",
     customerCode: "",
@@ -143,6 +159,7 @@ export const initialSalesLine: SalesLineType = {
     billingNumber: "",
     billingDelayCategory: 0,
     autoJournalDate: "",
+    taxRate: TaxRateEnumType.標準税率,
     checked: false
 };
 
