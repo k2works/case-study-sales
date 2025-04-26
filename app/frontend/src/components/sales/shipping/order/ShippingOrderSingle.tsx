@@ -18,8 +18,9 @@ export const ShippingOrderSingle: React.FC = () => {
         setEditId,
         newShipping,
         setNewShipping,
-        fetchShippings,
+        setShippings,
         shippingService,
+        searchShippingCriteria,
     } = useShippingContext();
 
     const {
@@ -52,7 +53,8 @@ export const ShippingOrderSingle: React.FC = () => {
                 await shippingService.save(newShipping);
                 setMessage("出荷を作成しました。");
             }
-            await fetchShippings.load();
+            const result = await shippingService.search(searchShippingCriteria);
+            setShippings(result ? result.list : []);
             handleCloseModal();
         } catch (error: any) {
             showErrorMessage(`出荷の更新に失敗しました: ${error?.message}`, setError);

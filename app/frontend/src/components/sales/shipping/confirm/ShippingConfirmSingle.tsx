@@ -18,8 +18,9 @@ export const ShippingConfirmSingle: React.FC = () => {
         setEditId,
         newShipping,
         setNewShipping,
-        fetchShippings,
+        setShippings,
         shippingService,
+        searchShippingCriteria,
     } = useShippingContext();
 
     const {
@@ -52,11 +53,11 @@ export const ShippingConfirmSingle: React.FC = () => {
                 await shippingService.save(newShipping);
                 setMessage("出荷を作成しました。");
             }
-            await fetchShippings.load();
+            const result = await shippingService.search(searchShippingCriteria);
+            setShippings(result ? result.list : []);
             handleCloseModal();
-        } catch (error: unknown) {
-            const errorMessage = error instanceof Error ? error.message : '不明なエラーが発生しました';
-            showErrorMessage(`出荷の更新に失敗しました: ${errorMessage}`, setError);
+        } catch (error: any) {
+            showErrorMessage(`出荷の更新に失敗しました: ${error?.message}`, setError);
         }
     };
 
