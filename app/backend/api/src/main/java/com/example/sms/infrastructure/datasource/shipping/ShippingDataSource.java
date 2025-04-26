@@ -24,6 +24,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Repository
@@ -186,7 +187,9 @@ public class ShippingDataSource implements ShippingRepository {
         for (SalesOrderCustomEntity salesOrderCustomEntity : salesOrderCustomEntities) {
             List<SalesOrderLineCustomEntity> salesOrderLineCustomEntities = salesOrderLineCustomMapper.selectBySalesOrderNumber(salesOrderCustomEntity.get受注番号());
             for (SalesOrderLineCustomEntity salesOrderLineCustomEntity : salesOrderLineCustomEntities) {
-                shippings.add(shippingEntityMapper.mapToDomainModel(salesOrderCustomEntity, salesOrderLineCustomEntity));
+                if (salesOrderLineCustomEntity.get完了フラグ() == CompletionFlag.完了.getValue()) {
+                    shippings.add(shippingEntityMapper.mapToDomainModel(salesOrderCustomEntity, salesOrderLineCustomEntity));
+                }
             }
         }
 
@@ -276,10 +279,9 @@ public class ShippingDataSource implements ShippingRepository {
                                 key.set受注番号(shipping.getOrderNumber().getValue());
                                 key.set受注行番号(shipping.getOrderLineNumber());
                                 受注データ明細 salesOrderLineData = shippingEntityMapper.mapToEntity(key, shipping);
-                                if (shipping.getOrderQuantity().getAmount() == shipping.getShipmentInstructionQuantity().getAmount() &&
-                                        shipping.getShipmentInstructionQuantity().getAmount() == shipping.getShippedQuantity().getAmount()) {
-                                    salesOrderLineData.set完了フラグ(CompletionFlag.完了.getValue());
-                                }
+
+                                salesOrderLineData.set出荷指示数量(Objects.requireNonNull(shipping.getShipmentInstructionQuantity()).getAmount());
+                                salesOrderLineData.set出荷済数量(Objects.requireNonNull(shipping.getShippedQuantity()).getAmount());
                                 salesOrderLineData.set作成日時(salesOrderLineEntity.get作成日時());
                                 salesOrderLineData.set作成者名(salesOrderLineEntity.get作成者名());
                                 salesOrderLineData.set更新日時(LocalDateTime.now());
