@@ -1,5 +1,5 @@
 import {PageNationType} from "../../views/application/PageNation";
-import {TaxRateEnumType} from "./sales_order.ts";
+import {TaxRateEnumType} from "./order.ts";
 import {toISOStringLocal} from "../../components/application/utils.ts";
 
 export enum SalesTypeEnumType {

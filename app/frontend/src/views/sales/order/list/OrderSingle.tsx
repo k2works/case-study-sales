@@ -1,16 +1,21 @@
 import React, {Dispatch, SetStateAction} from 'react';
 import {Message} from "../../../../components/application/Message.tsx";
-import {SalesLineType, SalesType, SalesTypeEnumType} from "../../../../models/sales/sales";
+import {
+    CompletionFlagEnumType,
+    SalesOrderLineType,
+    SalesOrderType,
+    TaxRateEnumType,
+    TaxRateValues
+} from "../../../../models/sales/order.ts";
 import {convertToDateInputFormat} from "../../../../components/application/utils.ts";
-import {FormInput, FormSelect, SingleViewHeaderActions, SingleViewHeaderItem} from "../../../Common.tsx";
-import "./Sales.css";
-import {TaxRateEnumType} from "../../../../models/sales/order.ts";
+import {FormInput, SingleViewHeaderActions, SingleViewHeaderItem} from "../../../Common.tsx";
+import "./Order.css";
 
 interface HeaderProps {
     title: string;
     subtitle: string;
     isEditing: boolean;
-    handleCreateOrUpdateSales: () => void;
+    handleCreateOrUpdateSalesOrder: () => void;
     handleCloseModal: () => void;
 }
 
@@ -18,23 +23,24 @@ const Header = ({
     title,
     subtitle,
     isEditing,
-    handleCreateOrUpdateSales,
+    handleCreateOrUpdateSalesOrder,
     handleCloseModal
 }: HeaderProps) => (
     <div>
         <SingleViewHeaderItem title={title} subtitle={subtitle}/>
         <SingleViewHeaderActions
             isEditing={isEditing}
-            handleCreateOrUpdateUser={handleCreateOrUpdateSales}
+            handleCreateOrUpdateUser={handleCreateOrUpdateSalesOrder}
             handleCloseModal={handleCloseModal}
         />
     </div>
 );
 
+
 interface FormProps {
     isEditing: boolean;
-    newSales: SalesType;
-    setNewSales: React.Dispatch<React.SetStateAction<SalesType>>;
+    newSalesOrder: SalesOrderType;
+    setNewSalesOrder: React.Dispatch<React.SetStateAction<SalesOrderType>>;
     setSelectedLineIndex: Dispatch<SetStateAction<number | null>>;
     handleDepartmentSelect: () => void;
     handleEmployeeSelect: () => void;
@@ -42,81 +48,81 @@ interface FormProps {
     handleProductSelect: () => void;
 }
 
-const calculateLineAmount = (line: SalesLineType): number => {
-    return line.salesQuantity * line.salesUnitPrice - (line.discountAmount || 0);
+const calculateLineAmount = (line: SalesOrderLineType): number => {
+    return line.orderQuantity * line.salesUnitPrice - line.discountAmount;
 };
 
-const calculateTotalAmount = (lines: SalesLineType[]): number => {
-    return lines.reduce((sum, line) => sum + calculateLineAmount(line), 0);
+const calculateLineTax = (line: SalesOrderLineType): number => {
+    const amount = calculateLineAmount(line);
+    const taxRate = line.taxRate === TaxRateEnumType.標準税率 ? TaxRateValues[TaxRateEnumType.標準税率] : line.taxRate === TaxRateEnumType.軽減税率 ? TaxRateValues[TaxRateEnumType.軽減税率] : 0;
+    return line.taxRate === TaxRateEnumType.その他 ? 0 : Math.floor(amount * taxRate);
 };
 
-const Form = ({
-    isEditing, 
-    newSales, 
-    setNewSales, 
-    setSelectedLineIndex, 
-    handleDepartmentSelect, 
-    handleEmployeeSelect, 
-    handleCustomerSelect, 
-    handleProductSelect
-}: FormProps) => {
-    const handleUpdateLine = (index: number, line: SalesLineType) => {
-        const newLines = [...newSales.salesLines];
+const calculateTotalAmount = (lines: SalesOrderLineType[]): number => {
+    return lines.reduce((sum, line) => sum + calculateLineAmount(line) + calculateLineTax(line), 0);
+};
+
+const calculateTotalTax = (lines: SalesOrderLineType[]): number => {
+    return lines.reduce((sum, line) => sum + calculateLineTax(line), 0);
+};
+
+const Form = ({isEditing, newSalesOrder, setNewSalesOrder, setSelectedLineIndex, handleDepartmentSelect, handleEmployeeSelect, handleCustomerSelect, handleProductSelect}: FormProps) => {
+    const handleUpdateLine = (index: number, line: SalesOrderLineType) => {
+        const newLines = [...newSalesOrder.salesOrderLines];
         newLines[index] = {
             ...line,
-            salesNumber: newSales.salesNumber
+            orderNumber: newSalesOrder.orderNumber
         };
 
         const totalAmount = calculateTotalAmount(newLines);
-        // 消費税率10%と仮定
-        const totalTax = Math.floor(totalAmount * 0.1);
+        const totalTax = calculateTotalTax(newLines);
 
-        setNewSales({
-            ...newSales,
-            salesLines: newLines,
-            totalSalesAmount: totalAmount + totalTax,
+        setNewSalesOrder({
+            ...newSalesOrder,
+            salesOrderLines: newLines,
+            totalOrderAmount: totalAmount,
             totalConsumptionTax: totalTax
         });
     };
 
     const handleDeleteLine = (index: number) => {
-        const newLines = newSales.salesLines.filter((_, i) => i !== index)
-            .map((line, i) => ({ ...line, salesLineNumber: i + 1 }));
+        const newLines = newSalesOrder.salesOrderLines.filter((_, i) => i !== index)
+            .map((line, i) => ({ ...line, orderLineNumber: i + 1 }));
 
         const totalAmount = calculateTotalAmount(newLines);
-        const totalTax = Math.floor(totalAmount * 0.1);
+        const totalTax = calculateTotalTax(newLines);
 
-        setNewSales({
-            ...newSales,
-            salesLines: newLines,
-            totalSalesAmount: totalAmount + totalTax,
+        setNewSalesOrder({
+            ...newSalesOrder,
+            salesOrderLines: newLines,
+            totalOrderAmount: totalAmount,
             totalConsumptionTax: totalTax
         });
     };
 
     const handleAddLine = () => {
-        const newLine: SalesLineType = {
-            salesNumber: newSales.salesNumber,
-            salesLineNumber: newSales.salesLines.length + 1,
+        const newLine: SalesOrderLineType = {
+            orderNumber: newSalesOrder.orderNumber,
+            orderLineNumber: newSalesOrder.salesOrderLines.length + 1,
             productCode: '',
             productName: '',
             salesUnitPrice: 0,
-            salesQuantity: 0,
+            orderQuantity: 0,
+            taxRate: TaxRateEnumType.標準税率,
+            allocationQuantity: 0,
+            shipmentInstructionQuantity: 0,
             shippedQuantity: 0,
+            completionFlag: CompletionFlagEnumType.未完了,
             discountAmount: 0,
-            billingDate: '',
-            billingNumber: '',
-            billingDelayCategory: 0,
-            autoJournalDate: '',
-            taxRate: TaxRateEnumType.標準税率
+            deliveryDate: new Date().toISOString().slice(0, 16)
         };
-        setNewSales({
-            ...newSales,
-            salesLines: [...newSales.salesLines, newLine]
+        setNewSalesOrder({
+            ...newSalesOrder,
+            salesOrderLines: [...newSalesOrder.salesOrderLines, newLine]
         });
     };
 
-    const handleProductSelectEvent = (index: number | null) => {
+    const handleProductSelectEvent = (index: number|null) => {
         setSelectedLineIndex(index);
         handleProductSelect();
     }
@@ -124,59 +130,36 @@ const Form = ({
     return (
         <div className="single-view-content-item-form">
             <FormInput
-                label="売上番号"
-                id="salesNumber"
-                type="text"
-                className="single-view-content-item-form-item-input"
-                value={newSales.salesNumber}
-                onChange={(e) => setNewSales({
-                    ...newSales,
-                    salesNumber: e.target.value
-                })}
-                disabled={isEditing}
-            />
-            <FormInput
                 label="受注番号"
                 id="orderNumber"
                 type="text"
                 className="single-view-content-item-form-item-input"
-                value={newSales.orderNumber}
-                onChange={(e) => setNewSales({
-                    ...newSales,
+                value={newSalesOrder.orderNumber}
+                onChange={(e) => setNewSalesOrder({
+                    ...newSalesOrder,
                     orderNumber: e.target.value
                 })}
+                disabled={isEditing}
             />
             <FormInput
-                label="売上日"
-                id="salesDate"
+                label="受注日"
+                id="orderDate"
                 type="date"
                 className="single-view-content-item-form-item-input"
-                value={convertToDateInputFormat(newSales.salesDate)}
-                onChange={(e) => setNewSales({
-                    ...newSales,
-                    salesDate: e.target.value
+                value={convertToDateInputFormat(newSalesOrder.orderDate)}
+                onChange={(e) => setNewSalesOrder({
+                    ...newSalesOrder,
+                    orderDate: e.target.value
                 })}
-            />
-            <FormSelect
-                id="salesType"
-                label="売上区分"
-                value={newSales.salesType}
-                options={SalesTypeEnumType}
-                onChange={(e) => {
-                    setNewSales({
-                        ...newSales,
-                        salesType: e,
-                    });
-                }}
             />
             <FormInput
                 label="部門コード"
                 id="departmentCode"
                 type="text"
                 className="single-view-content-item-form-item-input"
-                value={newSales.departmentCode}
-                onChange={(e) => setNewSales({
-                    ...newSales,
+                value={newSalesOrder.departmentCode}
+                onChange={(e) => setNewSalesOrder({
+                    ...newSalesOrder,
                     departmentCode: e.target.value
                 })}
                 onClick={handleDepartmentSelect}
@@ -186,9 +169,9 @@ const Form = ({
                 id="departmentStartDate"
                 type="date"
                 className="single-view-content-item-form-item-input"
-                value={convertToDateInputFormat(newSales.departmentStartDate)}
-                onChange={(e) => setNewSales({
-                    ...newSales,
+                value={convertToDateInputFormat(newSalesOrder.departmentStartDate)}
+                onChange={(e) => setNewSalesOrder({
+                    ...newSalesOrder,
                     departmentStartDate: e.target.value
                 })}
                 disabled={true}
@@ -198,107 +181,130 @@ const Form = ({
                 id="customerCode"
                 type="text"
                 className="single-view-content-item-form-item-input"
-                value={newSales.customerCode}
-                onChange={(e) => setNewSales({
-                    ...newSales,
+                value={newSalesOrder.customerCode}
+                onChange={(e) => setNewSalesOrder({
+                    ...newSalesOrder,
                     customerCode: e.target.value
                 })}
                 onClick={handleCustomerSelect}
+            />
+            <FormInput
+                label="顧客枝番"
+                id="customerBranchNumber"
+                type="number"
+                className="single-view-content-item-form-item-input"
+                value={newSalesOrder.customerBranchNumber}
+                onChange={(e) => setNewSalesOrder({
+                    ...newSalesOrder,
+                    customerBranchNumber: Number(e.target.value)
+                })}
+                disabled={true}
             />
             <FormInput
                 label="社員コード"
                 id="employeeCode"
                 type="text"
                 className="single-view-content-item-form-item-input"
-                value={newSales.employeeCode}
-                onChange={(e) => setNewSales({
-                    ...newSales,
+                value={newSalesOrder.employeeCode}
+                onChange={(e) => setNewSalesOrder({
+                    ...newSalesOrder,
                     employeeCode: e.target.value
                 })}
                 onClick={handleEmployeeSelect}
             />
             <FormInput
-                label="売上金額合計"
-                id="totalSalesAmount"
+                label="希望納期"
+                id="desiredDeliveryDate"
+                type="date"
+                className="single-view-content-item-form-item-input"
+                value={convertToDateInputFormat(newSalesOrder.desiredDeliveryDate)}
+                onChange={(e) => setNewSalesOrder({
+                    ...newSalesOrder,
+                    desiredDeliveryDate: e.target.value
+                })}
+            />
+            <FormInput
+                label="客先注文番号"
+                id="customerOrderNumber"
+                type="text"
+                className="single-view-content-item-form-item-input"
+                value={newSalesOrder.customerOrderNumber}
+                onChange={(e) => setNewSalesOrder({
+                    ...newSalesOrder,
+                    customerOrderNumber: e.target.value
+                })}
+            />
+            <FormInput
+                label="倉庫コード"
+                id="warehouseCode"
+                type="text"
+                className="single-view-content-item-form-item-input"
+                value={newSalesOrder.warehouseCode}
+                onChange={(e) => setNewSalesOrder({
+                    ...newSalesOrder,
+                    warehouseCode: e.target.value
+                })}
+            />
+            <FormInput
+                label="受注金額合計"
+                id="totalOrderAmount"
                 type="number"
                 className="single-view-content-item-form-item-input"
-                value={newSales.totalSalesAmount}
+                value={newSalesOrder.totalOrderAmount}
                 disabled={true}
-                onChange={() => {}}
+                onChange={() =>{}}
             />
             <FormInput
                 label="消費税合計"
                 id="totalConsumptionTax"
                 type="number"
                 className="single-view-content-item-form-item-input"
-                value={newSales.totalConsumptionTax}
+                value={newSalesOrder.totalConsumptionTax}
                 disabled={true}
-                onChange={() => {}}
+                onChange={() =>{}}
             />
             <FormInput
                 label="備考"
                 id="remarks"
                 type="text"
                 className="single-view-content-item-form-item-input"
-                value={newSales.remarks}
-                onChange={(e) => setNewSales({
-                    ...newSales,
+                value={newSalesOrder.remarks}
+                onChange={(e) => setNewSalesOrder({
+                    ...newSalesOrder,
                     remarks: e.target.value
                 })}
             />
-            <FormInput
-                label="伝票番号"
-                id="voucherNumber"
-                type="number"
-                className="single-view-content-item-form-item-input"
-                value={newSales.voucherNumber}
-                onChange={(e) => setNewSales({
-                    ...newSales,
-                    voucherNumber: Number(e.target.value)
-                })}
-            />
-            <FormInput
-                label="原伝票番号"
-                id="originalVoucherNumber"
-                type="text"
-                className="single-view-content-item-form-item-input"
-                value={newSales.originalVoucherNumber}
-                onChange={(e) => setNewSales({
-                    ...newSales,
-                    originalVoucherNumber: e.target.value
-                })}
-            />
 
-            <div className="single-view-content-item-form-lines sales-detail">
+            <div className="single-view-content-item-form-lines order-detail">
                 <h3>
-                    売上明細
+                    受注明細
                     <button className="add-line-button" onClick={handleAddLine}>
                         <span>＋</span> 明細追加
                     </button>
                 </h3>
                 <div className="table-container">
-                    <table className="sales-lines-table">
+                    <table className="order-lines-table">
                         <thead>
                             <tr>
                                 <th>商品コード</th>
                                 <th>商品名</th>
                                 <th>販売単価</th>
+                                <th>受注数量</th>
                                 <th>消費税率</th>
-                                <th>売上数量</th>
+                                <th>引当数量</th>
+                                <th>出荷指示数量</th>
                                 <th>出荷済数量</th>
+                                <th>完了フラグ</th>
                                 <th>値引金額</th>
-                                <th>請求日</th>
-                                <th>請求番号</th>
-                                <th>請求遅延区分</th>
-                                <th>自動仕訳日</th>
+                                <th>納期</th>
                                 <th>操作</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {newSales.salesLines.map((line, index) => (
+                            {newSalesOrder.salesOrderLines.map((line, index) => (
                                 <tr 
                                     key={index} 
-                                    className="sales-line-row"
+                                    className="order-line-row"
                                     style={{
                                         backgroundColor: index % 2 === 0 ? '#ffffff' : '#f9f9f9'
                                     }}>
@@ -337,6 +343,14 @@ const Form = ({
                                         />
                                     </td>
                                     <td className="table-cell">
+                                        <input
+                                            type="number"
+                                            value={line.orderQuantity}
+                                            onChange={(e) => handleUpdateLine(index, { ...line, orderQuantity: Number(e.target.value) })}
+                                            className="table-input"
+                                        />
+                                    </td>
+                                    <td className="table-cell">
                                         <select
                                             value={line.taxRate}
                                             onChange={(e) => handleUpdateLine(index, { ...line, taxRate: e.target.value as TaxRateEnumType })}
@@ -350,8 +364,16 @@ const Form = ({
                                     <td className="table-cell">
                                         <input
                                             type="number"
-                                            value={line.salesQuantity}
-                                            onChange={(e) => handleUpdateLine(index, { ...line, salesQuantity: Number(e.target.value) })}
+                                            value={line.allocationQuantity}
+                                            onChange={(e) => handleUpdateLine(index, { ...line, allocationQuantity: Number(e.target.value) })}
+                                            className="table-input"
+                                        />
+                                    </td>
+                                    <td className="table-cell">
+                                        <input
+                                            type="number"
+                                            value={line.shipmentInstructionQuantity}
+                                            onChange={(e) => handleUpdateLine(index, { ...line, shipmentInstructionQuantity: Number(e.target.value) })}
                                             className="table-input"
                                         />
                                     </td>
@@ -364,6 +386,16 @@ const Form = ({
                                         />
                                     </td>
                                     <td className="table-cell">
+                                        <select
+                                            value={line.completionFlag}
+                                            onChange={(e) => handleUpdateLine(index, { ...line, completionFlag: e.target.value as CompletionFlagEnumType })}
+                                            className="table-input"
+                                        >
+                                            <option value={CompletionFlagEnumType.完了}>完了</option>
+                                            <option value={CompletionFlagEnumType.未完了}>未完了</option>
+                                        </select>
+                                    </td>
+                                    <td className="table-cell">
                                         <input
                                             type="number"
                                             value={line.discountAmount}
@@ -373,33 +405,9 @@ const Form = ({
                                     </td>
                                     <td className="table-cell">
                                         <input
-                                            type="date"
-                                            value={convertToDateInputFormat(line.billingDate)}
-                                            onChange={(e) => handleUpdateLine(index, { ...line, billingDate: e.target.value })}
-                                            className="table-input"
-                                        />
-                                    </td>
-                                    <td className="table-cell">
-                                        <input
-                                            type="text"
-                                            value={line.billingNumber}
-                                            onChange={(e) => handleUpdateLine(index, { ...line, billingNumber: e.target.value })}
-                                            className="table-input"
-                                        />
-                                    </td>
-                                    <td className="table-cell">
-                                        <input
-                                            type="number"
-                                            value={line.billingDelayCategory}
-                                            onChange={(e) => handleUpdateLine(index, { ...line, billingDelayCategory: Number(e.target.value) })}
-                                            className="table-input"
-                                        />
-                                    </td>
-                                    <td className="table-cell">
-                                        <input
-                                            type="date"
-                                            value={convertToDateInputFormat(line.autoJournalDate)}
-                                            onChange={(e) => handleUpdateLine(index, { ...line, autoJournalDate: e.target.value })}
+                                            type="datetime-local"
+                                            value={line.deliveryDate}
+                                            onChange={(e) => handleUpdateLine(index, { ...line, deliveryDate: e.target.value })}
                                             className="table-input"
                                         />
                                     </td>
@@ -416,19 +424,19 @@ const Form = ({
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colSpan={9} className="total-label">小計</td>
-                                <td className="total-amount">{(newSales.totalSalesAmount - newSales.totalConsumptionTax).toLocaleString()}</td>
-                                <td colSpan={1}></td>
+                                <td colSpan={10} className="total-label">小計</td>
+                                <td className="total-amount">{(newSalesOrder.totalOrderAmount - newSalesOrder.totalConsumptionTax).toLocaleString()}</td>
+                                <td colSpan={2}></td>
                             </tr>
                             <tr>
-                                <td colSpan={9} className="total-label">消費税</td>
-                                <td className="total-amount">{newSales.totalConsumptionTax.toLocaleString()}</td>
-                                <td colSpan={1}></td>
+                                <td colSpan={10} className="total-label">消費税</td>
+                                <td className="total-amount">{newSalesOrder.totalConsumptionTax.toLocaleString()}</td>
+                                <td colSpan={2}></td>
                             </tr>
                             <tr>
-                                <td colSpan={9} className="total-label">合計金額</td>
-                                <td className="total-amount">{newSales.totalSalesAmount.toLocaleString()}</td>
-                                <td colSpan={1}></td>
+                                <td colSpan={10} className="total-label">合計金額</td>
+                                <td className="total-amount">{newSalesOrder.totalOrderAmount.toLocaleString()}</td>
+                                <td colSpan={2}></td>
                             </tr>
                         </tfoot>
                     </table>
@@ -438,31 +446,32 @@ const Form = ({
     );
 };
 
-interface SalesSingleViewProps {
+
+interface SalesOrderSingleViewProps {
     error: string | null;
     message: string | null;
     isEditing: boolean;
-    newSales: SalesType;
-    setNewSales: React.Dispatch<React.SetStateAction<SalesType>>;
+    newSalesOrder: SalesOrderType;
+    setNewSalesOrder: React.Dispatch<React.SetStateAction<SalesOrderType>>;
     setSelectedLineIndex: Dispatch<SetStateAction<number | null>>;
-    handleCreateOrUpdateSales: () => void;
+    handleCreateOrUpdateSalesOrder: () => void;
     handleCloseModal: () => void;
     handleDepartmentSelect: () => void;
     handleEmployeeSelect: () => void;
-    handlePartnerSelect: () => void;
+    handleCustomerSelect: () => void;
     handleProductSelect: () => void;
 }
 
-export const SalesSingleView: React.FC<SalesSingleViewProps> = ({
+export const SalesOrderSingleView: React.FC<SalesOrderSingleViewProps> = ({
     error,
     message,
     isEditing,
-    newSales,
-    setNewSales,
+    newSalesOrder,
+    setNewSalesOrder,
     setSelectedLineIndex,
-    handleCreateOrUpdateSales,
+    handleCreateOrUpdateSalesOrder,
     handleCloseModal,
-    handlePartnerSelect,
+    handleCustomerSelect,
     handleDepartmentSelect,
     handleEmployeeSelect,
     handleProductSelect,
@@ -472,10 +481,10 @@ export const SalesSingleView: React.FC<SalesSingleViewProps> = ({
             <Message error={error} message={message}/>
             <div className="single-view-header">
                 <Header
-                    title="売上"
+                    title="受注"
                     subtitle={isEditing ? "編集" : "新規作成"}
                     isEditing={isEditing}
-                    handleCreateOrUpdateSales={handleCreateOrUpdateSales}
+                    handleCreateOrUpdateSalesOrder={handleCreateOrUpdateSalesOrder}
                     handleCloseModal={handleCloseModal}
                 />
             </div>
@@ -484,12 +493,12 @@ export const SalesSingleView: React.FC<SalesSingleViewProps> = ({
                     <div className="single-view-content-item">
                         <Form
                             isEditing={isEditing}
-                            newSales={newSales}
-                            setNewSales={setNewSales}
+                            newSalesOrder={newSalesOrder}
+                            setNewSalesOrder={setNewSalesOrder}
                             setSelectedLineIndex={setSelectedLineIndex}
                             handleDepartmentSelect={handleDepartmentSelect}
                             handleEmployeeSelect={handleEmployeeSelect}
-                            handleCustomerSelect={handlePartnerSelect}
+                            handleCustomerSelect={handleCustomerSelect}
                             handleProductSelect={handleProductSelect}
                         />
                     </div>

@@ -22,10 +22,10 @@ import {CustomerContainer} from "../master/partner/customer/CustomerContainer.ts
 import {VendorContainer} from "../master/partner/vendor/VendorContainer.tsx";
 import {AuditContainer} from "../system/audit/AuditContainer.tsx";
 import {UserContainer} from "../system/user/UserContainer.tsx";
-import {SalesOrderTabContainer} from "../sales/sales_order/SalesOrderTabContainer.tsx";
-import {SalesOrderContainer} from "../sales/sales_order/list/SalesOrderContainer.tsx";
-import {SalesOrderUploadContainer} from "../sales/sales_order/upload/SalesOrderUploadContainer.tsx";
-import {SalesOrderRuleContainer} from "../sales/sales_order/rule/SalesOrderRuleContainer.tsx";
+import {OrderTabContainer} from "../sales/order/OrderTabContainer.tsx";
+import {OrderContainer} from "../sales/order/list/OrderContainer.tsx";
+import {OrderUploadContainer} from "../sales/order/upload/OrderUploadContainer.tsx";
+import {OrderRuleContainer} from "../sales/order/rule/OrderRuleContainer.tsx";
 import {SalesTabContainer} from "../sales/sales/SalesTabContainer.tsx";
 import {SalesContainer} from "../sales/sales/list/SalesContainer.tsx";
 import {SalesAggregateContainer} from "../sales/sales/aggregate/SalesAggregateContainer.tsx";
@@ -103,7 +103,7 @@ export const RouteConfig: React.FC = () => {
     const SalesOrderPage = () => {
         return (
             <SiteLayout>
-                <SalesOrderContainer/>
+                <OrderContainer/>
             </SiteLayout>
         )
     }
@@ -111,7 +111,7 @@ export const RouteConfig: React.FC = () => {
     const SalesOrderUploadPage = () => {
         return (
             <SiteLayout>
-                <SalesOrderUploadContainer/>
+                <OrderUploadContainer/>
             </SiteLayout>
         )
     }
@@ -119,7 +119,7 @@ export const RouteConfig: React.FC = () => {
     const SalesOrderRulePage = () => {
         return (
             <SiteLayout>
-                <SalesOrderRuleContainer/>
+                <OrderRuleContainer/>
             </SiteLayout>
         )
     }
@@ -182,13 +182,13 @@ export const RouteConfig: React.FC = () => {
                                                                             allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/download" element={<RouteAuthGuard component={<DownloadContainer/>} redirectPath="/"
                                                                  allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
-                <Route path="/sales-order" element={<RouteAuthGuard component={<SalesOrderTabContainer/>} redirectPath="/"
+                <Route path="/order" element={<RouteAuthGuard component={<OrderTabContainer/>} redirectPath="/"
                                                                     allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
-                <Route path="/sales-order-list" element={<RouteAuthGuard component={<SalesOrderPage/>} redirectPath="/"
+                <Route path="/order-list" element={<RouteAuthGuard component={<SalesOrderPage/>} redirectPath="/"
                                                                          allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
-                <Route path="/sales-order-upload" element={<RouteAuthGuard component={<SalesOrderUploadPage/>} redirectPath="/"
+                <Route path="/order-upload" element={<RouteAuthGuard component={<SalesOrderUploadPage/>} redirectPath="/"
                                                                          allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
-                <Route path="/sales-order-rule" element={<RouteAuthGuard component={<SalesOrderRulePage/>} redirectPath="/"
+                <Route path="/order-rule" element={<RouteAuthGuard component={<SalesOrderRulePage/>} redirectPath="/"
                                                                            allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/sales" element={<RouteAuthGuard component={<SalesTabContainer/>} redirectPath="/"
                                                                     allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
