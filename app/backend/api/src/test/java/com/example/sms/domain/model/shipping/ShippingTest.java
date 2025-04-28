@@ -4,7 +4,7 @@ import com.example.sms.domain.model.master.department.DepartmentCode;
 import com.example.sms.domain.model.master.employee.EmployeeCode;
 import com.example.sms.domain.model.master.partner.customer.CustomerCode;
 import com.example.sms.domain.model.master.product.ProductCode;
-import com.example.sms.domain.model.sales_order.*;
+import com.example.sms.domain.model.order.*;
 import com.example.sms.domain.type.money.Money;
 import com.example.sms.domain.type.quantity.Quantity;
 import org.jetbrains.annotations.NotNull;

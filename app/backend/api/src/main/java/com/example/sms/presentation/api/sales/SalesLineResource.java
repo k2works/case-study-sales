@@ -1,7 +1,7 @@
 package com.example.sms.presentation.api.sales;
 
 import com.example.sms.domain.model.sales.*;
-import com.example.sms.domain.model.sales_order.TaxRateType;
+import com.example.sms.domain.model.order.TaxRateType;
 import lombok.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 

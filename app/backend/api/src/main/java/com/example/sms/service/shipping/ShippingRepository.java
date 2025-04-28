@@ -2,7 +2,7 @@ package com.example.sms.service.shipping;
 
 import com.example.sms.domain.model.shipping.Shipping;
 import com.example.sms.domain.model.shipping.ShippingList;
-import com.example.sms.service.sales_order.SalesOrderCriteria;
+import com.example.sms.service.order.SalesOrderCriteria;
 import com.github.pagehelper.PageInfo;
 
 import java.util.Optional;

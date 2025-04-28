@@ -1,10 +1,11 @@
 package com.example.sms.service.shipping;
 
 import com.example.sms.TestDataFactoryImpl;
-import com.example.sms.domain.model.sales_order.*;
+import com.example.sms.domain.model.order.*;
+import com.example.sms.domain.model.order.Order;
 import com.example.sms.domain.model.shipping.Shipping;
 import com.example.sms.domain.type.money.Money;
-import com.example.sms.service.sales_order.SalesOrderRepository;
+import com.example.sms.service.order.SalesOrderRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -49,49 +50,49 @@ class ShippingRepositoryTest {
         salesOrderRepository.deleteAll();
     }
 
-    private SalesOrder getSalesOrder(String orderNumber) {
+    private Order getSalesOrder(String orderNumber) {
         return TestDataFactoryImpl.getSalesOrder(orderNumber);
     }
 
-    private SalesOrderLine getSalesOrderLine(String orderNumber, int lineNumber) {
+    private OrderLine getSalesOrderLine(String orderNumber, int lineNumber) {
         return TestDataFactoryImpl.getSalesOrderLine(orderNumber, lineNumber);
     }
 
-    private Shipping convertToShipping(SalesOrder salesOrder, SalesOrderLine salesOrderLine) {
-        Money salesUnitPrice = salesOrderLine.getSalesUnitPrice();
-        SalesAmount salesAmount = SalesAmount.of(salesUnitPrice, salesOrderLine.getOrderQuantity());
-        ConsumptionTaxAmount consumptionTaxAmount = ConsumptionTaxAmount.of(salesAmount, salesOrderLine.getTaxRate());
+    private Shipping convertToShipping(Order order, OrderLine orderLine) {
+        Money salesUnitPrice = orderLine.getSalesUnitPrice();
+        SalesAmount salesAmount = SalesAmount.of(salesUnitPrice, orderLine.getOrderQuantity());
+        ConsumptionTaxAmount consumptionTaxAmount = ConsumptionTaxAmount.of(salesAmount, orderLine.getTaxRate());
 
         return Shipping.of(
-                salesOrder.getOrderNumber(),
-                salesOrder.getOrderDate(),
-                salesOrder.getDepartmentCode(),
-                salesOrder.getDepartmentStartDate(),
-                salesOrder.getCustomerCode(),
-                salesOrder.getEmployeeCode(),
-                salesOrder.getDesiredDeliveryDate(),
-                salesOrder.getCustomerOrderNumber(),
-                salesOrder.getWarehouseCode(),
-                salesOrder.getTotalOrderAmount(),
-                salesOrder.getTotalConsumptionTax(),
-                salesOrder.getRemarks(),
-                salesOrderLine.getOrderLineNumber(),
-                salesOrderLine.getProductCode(),
-                salesOrderLine.getProductName(),
-                salesOrderLine.getSalesUnitPrice(),
-                salesOrderLine.getOrderQuantity(),
-                salesOrderLine.getTaxRate(),
-                salesOrderLine.getAllocationQuantity(),
-                salesOrderLine.getShipmentInstructionQuantity(),
-                salesOrderLine.getShippedQuantity(),
-                salesOrderLine.getDiscountAmount(),
-                salesOrderLine.getDeliveryDate(),
-                salesOrderLine.getProduct(),
+                order.getOrderNumber(),
+                order.getOrderDate(),
+                order.getDepartmentCode(),
+                order.getDepartmentStartDate(),
+                order.getCustomerCode(),
+                order.getEmployeeCode(),
+                order.getDesiredDeliveryDate(),
+                order.getCustomerOrderNumber(),
+                order.getWarehouseCode(),
+                order.getTotalOrderAmount(),
+                order.getTotalConsumptionTax(),
+                order.getRemarks(),
+                orderLine.getOrderLineNumber(),
+                orderLine.getProductCode(),
+                orderLine.getProductName(),
+                orderLine.getSalesUnitPrice(),
+                orderLine.getOrderQuantity(),
+                orderLine.getTaxRate(),
+                orderLine.getAllocationQuantity(),
+                orderLine.getShipmentInstructionQuantity(),
+                orderLine.getShippedQuantity(),
+                orderLine.getDiscountAmount(),
+                orderLine.getDeliveryDate(),
+                orderLine.getProduct(),
                 salesAmount,
                 consumptionTaxAmount,
-                salesOrder.getDepartment(),
-                salesOrder.getCustomer(),
-                salesOrder.getEmployee()
+                order.getDepartment(),
+                order.getCustomer(),
+                order.getEmployee()
         );
     }
 
@@ -102,11 +103,11 @@ class ShippingRepositoryTest {
         @DisplayName("出荷一覧を取得できる")
         void shouldRetrieveAllShippings() {
             IntStream.range(0, 10).forEach(i -> {
-                SalesOrder order = getSalesOrder(String.format("OD%08d", i));
-                List<SalesOrderLine> lines = IntStream.range(0, 3)
+                Order order = getSalesOrder(String.format("OD%08d", i));
+                List<OrderLine> lines = IntStream.range(0, 3)
                         .mapToObj(j -> getSalesOrderLine(order.getOrderNumber().getValue(), j))
                         .toList();
-                SalesOrder newOrder = SalesOrder.of(
+                Order newOrder = Order.of(
                         order.getOrderNumber().getValue(),
                         order.getOrderDate().getValue(),
                         order.getDepartmentCode().getValue(),
@@ -130,11 +131,11 @@ class ShippingRepositoryTest {
         @Test
         @DisplayName("出荷を登録できる")
         void shouldRegisterShipping() {
-            SalesOrder order = getSalesOrder(String.format("OD%08d", 1));
-            List<SalesOrderLine> lines = IntStream.range(0, 3)
+            Order order = getSalesOrder(String.format("OD%08d", 1));
+            List<OrderLine> lines = IntStream.range(0, 3)
                     .mapToObj(j -> getSalesOrderLine(order.getOrderNumber().getValue(), j))
                     .toList();
-            SalesOrder newOrder = SalesOrder.of(
+            Order newOrder = Order.of(
                     order.getOrderNumber().getValue(),
                     order.getOrderDate().getValue(),
                     order.getDepartmentCode().getValue(),
@@ -160,11 +161,11 @@ class ShippingRepositoryTest {
         @Test
         @DisplayName("出荷を更新できる")
         void shouldUpdateShipping() {
-            SalesOrder order = getSalesOrder(String.format("OD%08d", 1));
-            List<SalesOrderLine> lines = IntStream.range(0, 3)
+            Order order = getSalesOrder(String.format("OD%08d", 1));
+            List<OrderLine> lines = IntStream.range(0, 3)
                     .mapToObj(j -> getSalesOrderLine(order.getOrderNumber().getValue(), j))
                     .toList();
-            SalesOrder newOrder = SalesOrder.of(
+            Order newOrder = Order.of(
                     order.getOrderNumber().getValue(),
                     order.getOrderDate().getValue(),
                     order.getDepartmentCode().getValue(),

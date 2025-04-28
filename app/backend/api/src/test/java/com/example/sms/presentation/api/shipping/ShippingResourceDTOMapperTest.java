@@ -1,6 +1,6 @@
 package com.example.sms.presentation.api.shipping;
 
-import com.example.sms.domain.model.sales_order.CompletionFlag;
+import com.example.sms.domain.model.order.CompletionFlag;
 import com.example.sms.domain.model.shipping.Shipping;
 import com.example.sms.service.shipping.ShippingCriteria;
 import org.junit.jupiter.api.DisplayName;

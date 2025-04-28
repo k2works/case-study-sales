@@ -20,7 +20,7 @@ public class UC015StepDefs extends SpringAcceptanceTest {
 
     private static final String PORT = "8079";
     private static final String HOST = "http://localhost:" + PORT;
-    private static final String SALES_ORDER_API_URL = HOST + "/api/sales-orders";
+    private static final String SALES_ORDER_API_URL = HOST + "/api/orders";
     @Autowired
     TestDataFactory testDataFactory;
 

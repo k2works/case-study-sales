@@ -3,7 +3,7 @@ package com.example.sms.domain.model.sales;
 import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.employee.EmployeeCode;
 import com.example.sms.domain.model.master.partner.PartnerCode;
-import com.example.sms.domain.model.sales_order.OrderNumber;
+import com.example.sms.domain.model.order.OrderNumber;
 import com.example.sms.domain.type.money.Money;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

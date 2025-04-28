@@ -1,10 +1,10 @@
 package com.example.sms.infrastructure.datasource.system.download;
 
-import com.example.sms.domain.model.sales_order.SalesOrderList;
+import com.example.sms.domain.model.order.OrderList;
 import com.example.sms.domain.model.system.download.DownloadCriteria;
-import com.example.sms.infrastructure.datasource.sales_order.SalesOrderCustomEntity;
-import com.example.sms.infrastructure.datasource.sales_order.SalesOrderCustomMapper;
-import com.example.sms.infrastructure.datasource.sales_order.SalesOrderEntityMapper;
+import com.example.sms.infrastructure.datasource.order.OrderCustomEntity;
+import com.example.sms.infrastructure.datasource.order.OrderCustomMapper;
+import com.example.sms.infrastructure.datasource.order.OrderEntityMapper;
 import com.example.sms.service.system.download.SalesOrderCSVRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,22 +12,22 @@ import java.util.List;
 
 @Repository
 public class SalesOrderCSVDataSource implements SalesOrderCSVRepository {
-    private final SalesOrderCustomMapper salesOrderCustomMapper;
-    private final SalesOrderEntityMapper salesOrderEntityMapper;
+    private final OrderCustomMapper orderCustomMapper;
+    private final OrderEntityMapper orderEntityMapper;
 
     // コンストラクタ
-    public SalesOrderCSVDataSource(SalesOrderCustomMapper salesOrderCustomMapper, SalesOrderEntityMapper salesOrderEntityMapper) {
-        this.salesOrderCustomMapper = salesOrderCustomMapper;
-        this.salesOrderEntityMapper = salesOrderEntityMapper;
+    public SalesOrderCSVDataSource(OrderCustomMapper orderCustomMapper, OrderEntityMapper orderEntityMapper) {
+        this.orderCustomMapper = orderCustomMapper;
+        this.orderEntityMapper = orderEntityMapper;
     }
 
     @Override
-    public List<SalesOrderDownloadCSV> convert(SalesOrderList salesOrderList) {
-        if (salesOrderList != null) {
-            return salesOrderList.asList().stream()
+    public List<SalesOrderDownloadCSV> convert(OrderList orderList) {
+        if (orderList != null) {
+            return orderList.asList().stream()
                     .flatMap(salesOrder ->
-                            salesOrder.getSalesOrderLines().stream()
-                                    .map(salesOrderLine -> salesOrderEntityMapper.mapToCsvModel(salesOrder, salesOrderLine))
+                            salesOrder.getOrderLines().stream()
+                                    .map(salesOrderLine -> orderEntityMapper.mapToCsvModel(salesOrder, salesOrderLine))
                     ).toList();
         }
         return List.of();
@@ -35,15 +35,15 @@ public class SalesOrderCSVDataSource implements SalesOrderCSVRepository {
 
     @Override
     public int countBy(DownloadCriteria condition) {
-        List<SalesOrderCustomEntity> salesOrderEntities = salesOrderCustomMapper.selectAll();
+        List<OrderCustomEntity> salesOrderEntities = orderCustomMapper.selectAll();
         return salesOrderEntities.size();
     }
 
     @Override
-    public SalesOrderList selectBy(DownloadCriteria condition) {
-        List<SalesOrderCustomEntity> salesOrderEntities = salesOrderCustomMapper.selectAll();
-        return new SalesOrderList(salesOrderEntities.stream()
-                .map(salesOrderEntityMapper::mapToDomainModel)
+    public OrderList selectBy(DownloadCriteria condition) {
+        List<OrderCustomEntity> salesOrderEntities = orderCustomMapper.selectAll();
+        return new OrderList(salesOrderEntities.stream()
+                .map(orderEntityMapper::mapToDomainModel)
                 .toList());
     }
 }

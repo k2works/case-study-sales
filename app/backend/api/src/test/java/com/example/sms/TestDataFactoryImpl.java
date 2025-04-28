@@ -13,7 +13,7 @@ import com.example.sms.domain.model.master.partner.Partner;
 import com.example.sms.domain.model.master.product.*;
 import com.example.sms.domain.model.sales.Sales;
 import com.example.sms.domain.model.sales.SalesLine;
-import com.example.sms.domain.model.sales_order.*;
+import com.example.sms.domain.model.order.*;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
@@ -28,7 +28,7 @@ import com.example.sms.service.master.partner.PartnerRepository;
 import com.example.sms.service.master.product.ProductCategoryRepository;
 import com.example.sms.service.master.product.ProductRepository;
 import com.example.sms.service.sales.SalesRepository;
-import com.example.sms.service.sales_order.SalesOrderRepository;
+import com.example.sms.service.order.SalesOrderRepository;
 import com.example.sms.service.system.audit.AuditRepository;
 import com.example.sms.service.system.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -165,20 +165,20 @@ public class TestDataFactoryImpl implements TestDataFactory {
         partnerRepository.save(Partner.ofWithVendors(getPartner("002"), List.of(getVendor("002", 1), getVendor("002", 2), getVendor("002", 3))));
 
         salesOrderRepository.deleteAll();
-        SalesOrder order1 = getSalesOrder("OD00000001");
+        Order order1 = getSalesOrder("OD00000001");
         IntStream.rangeClosed(1, 3).forEach(i -> {
-            SalesOrderLine line = getSalesOrderLine(order1.getOrderNumber().getValue(), i);
-            salesOrderRepository.save(SalesOrder.of(order1, List.of(line)));
+            OrderLine line = getSalesOrderLine(order1.getOrderNumber().getValue(), i);
+            salesOrderRepository.save(Order.of(order1, List.of(line)));
         });
-        SalesOrder order2 = getSalesOrder("OD00000002");
+        Order order2 = getSalesOrder("OD00000002");
         IntStream.rangeClosed(1, 3).forEach(i -> {
-            SalesOrderLine line = getSalesOrderLine(order2.getOrderNumber().getValue(), i);
-            salesOrderRepository.save(SalesOrder.of(order2, List.of(line)));
+            OrderLine line = getSalesOrderLine(order2.getOrderNumber().getValue(), i);
+            salesOrderRepository.save(Order.of(order2, List.of(line)));
         });
-        SalesOrder order3 = getSalesOrder("OD00000003");
+        Order order3 = getSalesOrder("OD00000003");
         IntStream.rangeClosed(1, 3).forEach(i -> {
-            SalesOrderLine line = getSalesOrderLine(order3.getOrderNumber().getValue(), i);
-            salesOrderRepository.save(SalesOrder.of(order3, List.of(line)));
+            OrderLine line = getSalesOrderLine(order3.getOrderNumber().getValue(), i);
+            salesOrderRepository.save(Order.of(order3, List.of(line)));
         });
     }
 
@@ -291,11 +291,11 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
         IntStream.rangeClosed(1, 3).forEach(i -> {
             String orderNumber = String.format("OD%08d", i);
-            SalesOrder order = getSalesOrder(orderNumber);
-            List<SalesOrderLine> lines = IntStream.range(1, 4)
+            Order order = getSalesOrder(orderNumber);
+            List<OrderLine> lines = IntStream.range(1, 4)
                     .mapToObj(lineNumber -> getSalesOrderLine(order.getOrderNumber().getValue(), lineNumber))
                     .toList();
-            SalesOrder newOrder = SalesOrder.of(
+            Order newOrder = Order.of(
                     order.getOrderNumber().getValue(),
                     order.getOrderDate().getValue(),
                     department.getDepartmentId().getDeptCode().getValue(),
@@ -336,16 +336,16 @@ public class TestDataFactoryImpl implements TestDataFactory {
     public void setUpForShippingService() {
         setUpForSalesOrderService();
 
-        SalesOrderList  salesOrderList = salesOrderRepository.selectAll();
+        OrderList orderList = salesOrderRepository.selectAll();
 
         salesOrderRepository.deleteAll();
 
-        salesOrderList.asList().forEach(
+        orderList.asList().forEach(
                 salesOrder -> {
-                    List<SalesOrderLine> lines = salesOrder.getSalesOrderLines();
-                    List<SalesOrderLine> newLines = new ArrayList<>();
-                    for (SalesOrderLine line : lines) {
-                        SalesOrderLine newLine = SalesOrderLine.of(
+                    List<OrderLine> lines = salesOrder.getOrderLines();
+                    List<OrderLine> newLines = new ArrayList<>();
+                    for (OrderLine line : lines) {
+                        OrderLine newLine = OrderLine.of(
                                 line.getOrderNumber().getValue(),  // orderNumber（受注番号）
                                 line.getOrderLineNumber(),  // orderLineNumber（受注行番号）
                                 "99999999",  // productCode（商品コード）
@@ -362,8 +362,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
                         );
                         newLines.add(newLine);
                     }
-                    SalesOrder newSalesOrder = SalesOrder.of(salesOrder, newLines);
-                    salesOrderRepository.save(newSalesOrder);
+                    Order newOrder = Order.of(salesOrder, newLines);
+                    salesOrderRepository.save(newOrder);
                 }
         );
     }
@@ -468,11 +468,11 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
     @Override
     public MultipartFile createSalesOrderFile() {
-        InputStream is = getClass().getResourceAsStream("/csv/sales_order/sales_order_multiple.csv");
+        InputStream is = getClass().getResourceAsStream("/csv/order/order_multiple.csv");
         try {
             return new MockMultipartFile(
-                    "sales_order_multiple.csv",
-                    "sales_order_multiple.csv",
+                    "order_multiple.csv",
+                    "order_multiple.csv",
                     "text/csv",
                     is
             );
@@ -483,11 +483,11 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
     @Override
     public MultipartFile createSalesOrderInvalidFile() {
-        InputStream is = getClass().getResourceAsStream("/csv/sales_order/sales_order_unregistered_code.csv");
+        InputStream is = getClass().getResourceAsStream("/csv/order/order_unregistered_code.csv");
         try {
             return new MockMultipartFile(
-                    "sales_order_multiple.csv",
-                    "sales_order_multiple.csv",
+                    "order_multiple.csv",
+                    "order_multiple.csv",
                     "text/csv",
                     is
             );
@@ -498,11 +498,11 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
     @Override
     public MultipartFile createSalesOrderCheckRuleFile() {
-        InputStream is = getClass().getResourceAsStream("/csv/sales_order/sales_order_check_rule.csv");
+        InputStream is = getClass().getResourceAsStream("/csv/order/order_check_rule.csv");
         try {
             return new MockMultipartFile(
-                    "sales_order_multiple.csv",
-                    "sales_order_multiple.csv",
+                    "order_multiple.csv",
+                    "order_multiple.csv",
                     "text/csv",
                     is
             );
@@ -657,8 +657,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
         );
     }
 
-    public static SalesOrder getSalesOrder(String orderNumber) {
-        return SalesOrder.of(
+    public static Order getSalesOrder(String orderNumber) {
+        return Order.of(
                 orderNumber,  // orderNumber（受注番号）
                 LocalDateTime.of(2021, 1, 1, 0, 0),  // orderDate（受注日）
                 "10009",  // departmentCode（部門コード）
@@ -676,8 +676,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
         );
     }
 
-    public static SalesOrderLine getSalesOrderLine(String orderNumber, int lineNumber) {
-        return SalesOrderLine.of(
+    public static OrderLine getSalesOrderLine(String orderNumber, int lineNumber) {
+        return OrderLine.of(
                 orderNumber,  // orderNumber（受注番号）
                 lineNumber,  // orderLineNumber（受注行番号）
                 "99999999",  // productCode（商品コード）

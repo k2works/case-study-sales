@@ -1,7 +1,7 @@
 package com.example.sms.infrastructure.datasource.sales;
 
 import com.example.sms.domain.model.sales.*;
-import com.example.sms.domain.model.sales_order.TaxRateType;
+import com.example.sms.domain.model.order.TaxRateType;
 import com.example.sms.infrastructure.datasource.autogen.model.売上データ;
 import com.example.sms.infrastructure.datasource.autogen.model.売上データ明細;
 import com.example.sms.infrastructure.datasource.autogen.model.売上データ明細Key;

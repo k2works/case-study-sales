@@ -8,7 +8,7 @@ import com.example.sms.domain.model.master.partner.customer.Customer;
 import com.example.sms.domain.model.master.partner.customer.CustomerCode;
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.ProductCode;
-import com.example.sms.domain.model.sales_order.*;
+import com.example.sms.domain.model.order.*;
 import com.example.sms.domain.type.money.Money;
 import com.example.sms.domain.type.quantity.Quantity;
 import lombok.AllArgsConstructor;
@@ -16,7 +16,6 @@ import lombok.NoArgsConstructor;
 import lombok.Value;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static org.apache.commons.lang3.Validate.isTrue;
 

@@ -2,7 +2,7 @@ package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
 import com.example.sms.domain.model.sales.SalesType;
-import com.example.sms.domain.model.sales_order.TaxRateType;
+import com.example.sms.domain.model.order.TaxRateType;
 import com.example.sms.presentation.api.sales.SalesCriteriaResource;
 import com.example.sms.presentation.api.sales.SalesLineResource;
 import com.example.sms.presentation.api.sales.SalesResource;

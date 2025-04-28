@@ -1,11 +1,11 @@
 package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
-import com.example.sms.domain.model.sales_order.CompletionFlag;
-import com.example.sms.domain.model.sales_order.TaxRateType;
-import com.example.sms.presentation.api.sales_order.SalesOrderCriteriaResource;
-import com.example.sms.presentation.api.sales_order.SalesOrderLineResource;
-import com.example.sms.presentation.api.sales_order.SalesOrderResource;
+import com.example.sms.domain.model.order.CompletionFlag;
+import com.example.sms.domain.model.order.TaxRateType;
+import com.example.sms.presentation.api.order.OrderCriteriaResource;
+import com.example.sms.presentation.api.order.OrderLineResource;
+import com.example.sms.presentation.api.order.OrderResource;
 import com.example.sms.stepdefinitions.utils.ListResponse;
 import com.example.sms.stepdefinitions.utils.MessageResponse;
 import com.example.sms.stepdefinitions.utils.SpringAcceptanceTest;
@@ -33,7 +33,7 @@ public class UC014StepDefs extends SpringAcceptanceTest {
 
     private static final String PORT = "8079";
     private static final String HOST = "http://localhost:" + PORT;
-    private static final String SALES_ORDER_API_URL = HOST + "/api/sales-orders";
+    private static final String SALES_ORDER_API_URL = HOST + "/api/orders";
     @Autowired
     TestDataFactory testDataFactory;
 
@@ -77,9 +77,9 @@ public class UC014StepDefs extends SpringAcceptanceTest {
         objectMapper.registerModule(new JavaTimeModule());
         if (list.equals("受注一覧")) {
             String result = latestResponse.getBody();
-            ListResponse<SalesOrderResource> response = objectMapper.readValue(result, new TypeReference<>() {
+            ListResponse<OrderResource> response = objectMapper.readValue(result, new TypeReference<>() {
             });
-            List<SalesOrderResource> actual = response.getList();
+            List<OrderResource> actual = response.getList();
             assertEquals(3, actual.size());
         }
     }
@@ -87,7 +87,7 @@ public class UC014StepDefs extends SpringAcceptanceTest {
     @もし(":UC014 受注番号 {string} 受注日 {string} 部門コード {string} 顧客コード {string} 社員コード {string} 希望納期 {string} で新規登録する")
     public void registerSalesOrder(String orderNumber, String orderDate, String departmentCode, 
                                    String customerCode, String employeeCode, String desiredDeliveryDate) throws IOException {
-        SalesOrderResource salesOrder = getSalesOrderResource(orderNumber, orderDate, departmentCode, customerCode, employeeCode, desiredDeliveryDate);
+        OrderResource salesOrder = getSalesOrderResource(orderNumber, orderDate, departmentCode, customerCode, employeeCode, desiredDeliveryDate);
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
@@ -116,7 +116,7 @@ public class UC014StepDefs extends SpringAcceptanceTest {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         
-        SalesOrderResource salesOrder = objectMapper.readValue(result, SalesOrderResource.class);
+        OrderResource salesOrder = objectMapper.readValue(result, OrderResource.class);
         assertEquals(orderNumber, salesOrder.getOrderNumber());
     }
 
@@ -124,7 +124,7 @@ public class UC014StepDefs extends SpringAcceptanceTest {
     public void updateSalesOrder(String orderNumber, String desiredDeliveryDate) throws IOException {
         String url = SALES_ORDER_API_URL + "/" + orderNumber;
 
-        SalesOrderResource salesOrder = getSalesOrderResource(orderNumber, "2024-11-01T00:00:00+09:00", "10000", "009", "EMP001", desiredDeliveryDate);
+        OrderResource salesOrder = getSalesOrderResource(orderNumber, "2024-11-01T00:00:00+09:00", "10000", "009", "EMP001", desiredDeliveryDate);
         salesOrder.setDesiredDeliveryDate(OffsetDateTime.parse(desiredDeliveryDate).toLocalDateTime());
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -140,8 +140,8 @@ public class UC014StepDefs extends SpringAcceptanceTest {
     }
 
     @もし(":UC014 受注番号 {string} をもとに以下の受注明細を登録する")
-    public void addSalesOrderLine(String orderNumber, List<SalesOrderLineResource> lines) throws IOException {
-        SalesOrderResource salesOrder = getSalesOrderResource(orderNumber, "2024-11-01T00:00:00+09:00", "10000", "009", "EMP001", "2024-11-10T00:00:00+09:00");
+    public void addSalesOrderLine(String orderNumber, List<OrderLineResource> lines) throws IOException {
+        OrderResource salesOrder = getSalesOrderResource(orderNumber, "2024-11-01T00:00:00+09:00", "10000", "009", "EMP001", "2024-11-10T00:00:00+09:00");
         salesOrder.setSalesOrderLines(lines);
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -152,8 +152,8 @@ public class UC014StepDefs extends SpringAcceptanceTest {
 
     @かつ(":UC014 受注番号 {string} の受注明細を更新する \\(数量 {string})")
     public void updateSalesOrderLine(String orderNumber, String orderQuantity) throws IOException {
-        SalesOrderResource salesOrder = getSalesOrderResource(orderNumber, "2024-11-01T00:00:00+09:00", "10000", "009", "EMP001", "2024-11-10T00:00:00+09:00");
-        SalesOrderLineResource line = SalesOrderLineResource.builder()
+        OrderResource salesOrder = getSalesOrderResource(orderNumber, "2024-11-01T00:00:00+09:00", "10000", "009", "EMP001", "2024-11-10T00:00:00+09:00");
+        OrderLineResource line = OrderLineResource.builder()
                 .orderNumber(orderNumber)
                 .orderLineNumber(1)
                 .productCode("10101001")
@@ -180,7 +180,7 @@ public class UC014StepDefs extends SpringAcceptanceTest {
 
     @かつ(":UC014 受注番号 {string} 商品コード {string} の受注明細を削除する")
     public void deleteSalesOrderLine(String orderNumber, String productCode) throws IOException {
-        SalesOrderResource salesOrder = getSalesOrderResource(orderNumber, "2024-11-01T00:00:00+09:00", "10000", "009", "EMP001", "2024-11-10T00:00:00+09:00");
+        OrderResource salesOrder = getSalesOrderResource(orderNumber, "2024-11-01T00:00:00+09:00", "10000", "009", "EMP001", "2024-11-10T00:00:00+09:00");
         salesOrder.setSalesOrderLines(List.of());
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -194,7 +194,7 @@ public class UC014StepDefs extends SpringAcceptanceTest {
     @もし(":UC014 顧客コード {string} で受注を検索する")
     public void searchByCustomerCode(String customerCode) throws IOException {
         String url = SALES_ORDER_API_URL + "/search";
-        SalesOrderCriteriaResource criteria = new SalesOrderCriteriaResource();
+        OrderCriteriaResource criteria = new OrderCriteriaResource();
         criteria.setOrderNumber(null);
         criteria.setOrderDate(null);
         criteria.setDepartmentCode(null);
@@ -217,9 +217,9 @@ public class UC014StepDefs extends SpringAcceptanceTest {
         objectMapper.registerModule(new JavaTimeModule());
 
         String result = latestResponse.getBody();
-        ListResponse<SalesOrderResource> response = objectMapper.readValue(result, new TypeReference<>() {
+        ListResponse<OrderResource> response = objectMapper.readValue(result, new TypeReference<>() {
         });
-        List<SalesOrderResource> actual = response.getList();
+        List<OrderResource> actual = response.getList();
         assertEquals(3, actual.size());
     }
 
@@ -229,7 +229,7 @@ public class UC014StepDefs extends SpringAcceptanceTest {
         objectMapper.registerModule(new JavaTimeModule());
 
         String result = latestResponse.getBody();
-        SalesOrderResource salesOrder = objectMapper.readValue(result, SalesOrderResource.class);
+        OrderResource salesOrder = objectMapper.readValue(result, OrderResource.class);
         Assertions.assertEquals(day, salesOrder.getDesiredDeliveryDate().toString());
     }
 
@@ -239,7 +239,7 @@ public class UC014StepDefs extends SpringAcceptanceTest {
         objectMapper.registerModule(new JavaTimeModule());
 
         String result = latestResponse.getBody();
-        SalesOrderResource salesOrder = objectMapper.readValue(result, SalesOrderResource.class);
+        OrderResource salesOrder = objectMapper.readValue(result, OrderResource.class);
         Assertions.assertEquals(code, salesOrder.getSalesOrderLines().getFirst().getProductCode());
     }
 
@@ -249,13 +249,13 @@ public class UC014StepDefs extends SpringAcceptanceTest {
         objectMapper.registerModule(new JavaTimeModule());
 
         String result = latestResponse.getBody();
-        SalesOrderResource salesOrder = objectMapper.readValue(result, SalesOrderResource.class);
+        OrderResource salesOrder = objectMapper.readValue(result, OrderResource.class);
         Assertions.assertEquals(code, salesOrder.getSalesOrderLines().getFirst().getProductCode());
         Assertions.assertEquals(Integer.parseInt(amount), salesOrder.getSalesOrderLines().getFirst().getOrderQuantity());
     }
 
-    private static @NotNull SalesOrderResource getSalesOrderResource(String orderNumber, String orderDate, String departmentCode, String customerCode, String employeeCode, String desiredDeliveryDate) {
-        SalesOrderResource salesOrder = new SalesOrderResource();
+    private static @NotNull OrderResource getSalesOrderResource(String orderNumber, String orderDate, String departmentCode, String customerCode, String employeeCode, String desiredDeliveryDate) {
+        OrderResource salesOrder = new OrderResource();
         salesOrder.setOrderNumber(orderNumber);
         salesOrder.setOrderDate(OffsetDateTime.parse(orderDate).toLocalDateTime());
         salesOrder.setDepartmentCode(departmentCode);
@@ -274,8 +274,8 @@ public class UC014StepDefs extends SpringAcceptanceTest {
     }
 
     @DataTableType
-    public SalesOrderLineResource defineSalesOrderLineResource(Map<String, String> row) {
-        return SalesOrderLineResource.builder()
+    public OrderLineResource defineSalesOrderLineResource(Map<String, String> row) {
+        return OrderLineResource.builder()
                 .orderNumber(row.get("受注番号"))
                 .orderLineNumber(Integer.parseInt(row.get("枝番")))
                 .productCode(row.get("商品コード"))

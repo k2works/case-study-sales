@@ -3,14 +3,14 @@ package com.example.sms.service.shipping;
 import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactory;
 import com.example.sms.TestDataFactoryImpl;
-import com.example.sms.domain.model.sales_order.CompletionFlag;
-import com.example.sms.domain.model.sales_order.SalesOrder;
-import com.example.sms.domain.model.sales_order.SalesOrderLine;
-import com.example.sms.domain.model.sales_order.SalesOrderList;
+import com.example.sms.domain.model.order.CompletionFlag;
+import com.example.sms.domain.model.order.Order;
+import com.example.sms.domain.model.order.OrderLine;
+import com.example.sms.domain.model.order.OrderList;
 import com.example.sms.domain.model.shipping.Shipping;
 import com.example.sms.domain.model.shipping.ShippingList;
 import com.example.sms.domain.model.shipping.rule.ShippingRuleCheckList;
-import com.example.sms.service.sales_order.SalesOrderService;
+import com.example.sms.service.order.SalesOrderService;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -134,14 +134,14 @@ class ShippingServiceTest {
                     shippingService.orderShipping(allShippings);
 
                     Shipping orderedShipping = shippingService.findById(shipping.getOrderNumber().getValue(), shipping.getCustomerOrderNumber()).orElse(null);
-                    SalesOrderList salesOrderList = salesOrderService.selectAll();
+                    OrderList orderList = salesOrderService.selectAll();
 
                     assertNotNull(orderedShipping);
                     assertEquals(CompletionFlag.完了, orderedShipping.getCompletionFlag());
-                    for (SalesOrder salesOrder : salesOrderList.asList()) {
-                        for (SalesOrderLine salesOrderLine : salesOrder.getSalesOrderLines()) {
-                            if (salesOrderLine.getProductCode().getValue().equals(shipping.getProductCode().getValue())) {
-                                assertEquals(CompletionFlag.完了, salesOrderLine.getCompletionFlag());
+                    for (Order order : orderList.asList()) {
+                        for (OrderLine orderLine : order.getOrderLines()) {
+                            if (orderLine.getProductCode().getValue().equals(shipping.getProductCode().getValue())) {
+                                assertEquals(CompletionFlag.完了, orderLine.getCompletionFlag());
                             }
                         }
                     }
@@ -155,9 +155,9 @@ class ShippingServiceTest {
                     Shipping shipping = allShippings.asList().getFirst();
                     shippingService.orderShipping(allShippings);
 
-                    SalesOrder salesOrder = salesOrderService.find(shipping.getOrderNumber().getValue());
-                    assertNotNull(salesOrder);
-                    assertEquals(allShippings.asList().stream().filter(s -> s.getOrderNumber().getValue().equals(shipping.getOrderNumber().getValue())).count(), salesOrder.getSalesOrderLines().size());
+                    Order order = salesOrderService.find(shipping.getOrderNumber().getValue());
+                    assertNotNull(order);
+                    assertEquals(allShippings.asList().stream().filter(s -> s.getOrderNumber().getValue().equals(shipping.getOrderNumber().getValue())).count(), order.getOrderLines().size());
                 }
             }
         }
@@ -175,40 +175,40 @@ class ShippingServiceTest {
         @Test
         @DisplayName("納期を超過している場合")
         void shouldCheckShippingOverdue() {
-            SalesOrder salesOrder = TestDataFactoryImpl.getSalesOrder("OD00000009");
-            SalesOrderLine salesOrderLine = TestDataFactoryImpl.getSalesOrderLine("OD00000009", 1);
-            SalesOrderLine newSalesOrderLine = SalesOrderLine.of(
-                    salesOrderLine.getOrderNumber().getValue(),
-                    salesOrderLine.getOrderLineNumber(),
-                    salesOrderLine.getProductCode().getValue(),
-                    salesOrderLine.getProductName(),
-                    salesOrderLine.getSalesUnitPrice().getAmount(),
-                    salesOrderLine.getOrderQuantity().getAmount(),
-                    salesOrderLine.getTaxRate().getRate(),
-                    salesOrderLine.getAllocationQuantity().getAmount(),
-                    salesOrderLine.getShipmentInstructionQuantity().getAmount(),
-                    salesOrderLine.getShippedQuantity().getAmount(),
+            Order order = TestDataFactoryImpl.getSalesOrder("OD00000009");
+            OrderLine orderLine = TestDataFactoryImpl.getSalesOrderLine("OD00000009", 1);
+            OrderLine newOrderLine = OrderLine.of(
+                    orderLine.getOrderNumber().getValue(),
+                    orderLine.getOrderLineNumber(),
+                    orderLine.getProductCode().getValue(),
+                    orderLine.getProductName(),
+                    orderLine.getSalesUnitPrice().getAmount(),
+                    orderLine.getOrderQuantity().getAmount(),
+                    orderLine.getTaxRate().getRate(),
+                    orderLine.getAllocationQuantity().getAmount(),
+                    orderLine.getShipmentInstructionQuantity().getAmount(),
+                    orderLine.getShippedQuantity().getAmount(),
                     CompletionFlag.未完了.getValue(),
-                    salesOrderLine.getDiscountAmount().getAmount(),
+                    orderLine.getDiscountAmount().getAmount(),
                     LocalDateTime.now().minus(10, ChronoUnit.DAYS)
             );
-            SalesOrder newSalesOrder = SalesOrder.of(
-                    salesOrder.getOrderNumber().getValue(),
-                    salesOrder.getOrderDate().getValue(),
-                    salesOrder.getDepartmentCode().getValue(),
-                    salesOrder.getDepartmentStartDate(),
-                    salesOrder.getCustomerCode().getCode().getValue(),
-                    salesOrder.getCustomerCode().getBranchNumber(),
-                    salesOrder.getEmployeeCode().getValue(),
-                    salesOrder.getDesiredDeliveryDate().getValue(),
-                    salesOrder.getCustomerOrderNumber(),
-                    salesOrder.getWarehouseCode(),
-                    salesOrder.getTotalOrderAmount().getAmount(),
-                    salesOrder.getTotalConsumptionTax().getAmount(),
-                    salesOrder.getRemarks(),
-                    List.of(newSalesOrderLine)
+            Order newOrder = Order.of(
+                    order.getOrderNumber().getValue(),
+                    order.getOrderDate().getValue(),
+                    order.getDepartmentCode().getValue(),
+                    order.getDepartmentStartDate(),
+                    order.getCustomerCode().getCode().getValue(),
+                    order.getCustomerCode().getBranchNumber(),
+                    order.getEmployeeCode().getValue(),
+                    order.getDesiredDeliveryDate().getValue(),
+                    order.getCustomerOrderNumber(),
+                    order.getWarehouseCode(),
+                    order.getTotalOrderAmount().getAmount(),
+                    order.getTotalConsumptionTax().getAmount(),
+                    order.getRemarks(),
+                    List.of(newOrderLine)
             );
-            salesOrderService.save(newSalesOrder);
+            salesOrderService.save(newOrder);
 
             ShippingRuleCheckList checkList = shippingService.checkRule();
             assertNotNull(checkList);

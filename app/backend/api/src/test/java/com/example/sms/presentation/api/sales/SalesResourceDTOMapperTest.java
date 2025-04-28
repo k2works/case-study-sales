@@ -2,7 +2,7 @@ package com.example.sms.presentation.api.sales;
 
 import com.example.sms.domain.model.sales.Sales;
 import com.example.sms.domain.model.sales.SalesType;
-import com.example.sms.domain.model.sales_order.TaxRateType;
+import com.example.sms.domain.model.order.TaxRateType;
 import com.example.sms.service.sales.SalesCriteria;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

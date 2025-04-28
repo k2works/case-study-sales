@@ -5,7 +5,7 @@ import com.example.sms.TestDataFactory;
 import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.master.product.*;
 import com.example.sms.domain.model.sales.*;
-import com.example.sms.domain.model.sales_order.TaxRateType;
+import com.example.sms.domain.model.order.TaxRateType;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

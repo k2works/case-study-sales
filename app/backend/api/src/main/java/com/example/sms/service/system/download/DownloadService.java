@@ -8,7 +8,7 @@ import com.example.sms.domain.model.master.partner.customer.CustomerList;
 import com.example.sms.domain.model.master.partner.vendor.VendorList;
 import com.example.sms.domain.model.master.product.ProductCategoryList;
 import com.example.sms.domain.model.master.product.ProductList;
-import com.example.sms.domain.model.sales_order.SalesOrderList;
+import com.example.sms.domain.model.order.OrderList;
 import com.example.sms.domain.model.system.download.DownloadCriteria;
 import com.example.sms.infrastructure.datasource.system.download.*;
 import org.springframework.stereotype.Service;
@@ -254,7 +254,7 @@ public class DownloadService {
      * 受注CSV変換
      */
     private List<SalesOrderDownloadCSV> convertSalesOrder(DownloadCriteria condition) {
-        SalesOrderList salesOrderList = salesOrderCSVRepository.selectBy(condition);
-        return salesOrderCSVRepository.convert(salesOrderList);
+        OrderList orderList = salesOrderCSVRepository.selectBy(condition);
+        return salesOrderCSVRepository.convert(orderList);
     }
 }

@@ -5,7 +5,7 @@ import com.example.sms.domain.model.shipping.ShippingList;
 import com.example.sms.domain.model.shipping.rule.ShippingRuleCheckList;
 import com.example.sms.domain.service.shipping.ShippingDomainService;
 import com.example.sms.domain.type.quantity.Quantity;
-import com.example.sms.service.sales_order.SalesOrderCriteria;
+import com.example.sms.service.order.SalesOrderCriteria;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,6 +1,6 @@
 package com.example.sms.service.shipping;
 
-import com.example.sms.service.sales_order.SalesOrderCriteria;
+import com.example.sms.service.order.SalesOrderCriteria;
 import lombok.Builder;
 import lombok.Value;
 

@@ -9,7 +9,7 @@ import com.example.sms.domain.model.master.partner.customer.*;
 import com.example.sms.domain.model.master.partner.invoice.ClosingInvoice;
 import com.example.sms.domain.model.master.partner.invoice.Invoice;
 import com.example.sms.domain.model.master.product.*;
-import com.example.sms.domain.model.sales_order.*;
+import com.example.sms.domain.model.order.*;
 import com.example.sms.domain.model.shipping.Shipping;
 import com.example.sms.domain.model.shipping.ShippingList;
 import com.example.sms.domain.type.address.Address;
@@ -23,8 +23,8 @@ import com.example.sms.infrastructure.datasource.master.department.DepartmentCus
 import com.example.sms.infrastructure.datasource.master.employee.EmployeeCustomEntity;
 import com.example.sms.infrastructure.datasource.master.partner.customer.CustomerCustomEntity;
 import com.example.sms.infrastructure.datasource.master.product.ProductCustomEntity;
-import com.example.sms.infrastructure.datasource.sales_order.SalesOrderCustomEntity;
-import com.example.sms.infrastructure.datasource.sales_order.sales_order_line.SalesOrderLineCustomEntity;
+import com.example.sms.infrastructure.datasource.order.OrderCustomEntity;
+import com.example.sms.infrastructure.datasource.order.order_line.OrderLineCustomEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -73,7 +73,7 @@ public class ShippingEntityMapper {
         return salesOrderLineEntity;
     }
 
-    public Shipping mapToDomainModel(SalesOrderCustomEntity salesOrderCustomEntity, SalesOrderLineCustomEntity salesOrderLineCustomEntity) {
+    public Shipping mapToDomainModel(OrderCustomEntity orderCustomEntity, OrderLineCustomEntity orderLineCustomEntity) {
         Function<代替商品, SubstituteProduct> mapToSubstituteProduct = s -> (
                 SubstituteProduct.of(
                         s.get商品コード(),
@@ -177,59 +177,59 @@ public class ShippingEntityMapper {
         );
 
         // Calculate SalesAmount and ConsumptionTaxAmount
-        Money salesUnitPrice = Money.of(salesOrderLineCustomEntity.get販売単価());
-        Quantity orderQuantity = Quantity.of(salesOrderLineCustomEntity.get受注数量());
-        Money discountAmount = Money.of(Objects.isNull(salesOrderLineCustomEntity.get値引金額()) ? 0 : salesOrderLineCustomEntity.get値引金額());
-        TaxRateType taxRate = TaxRateType.of(salesOrderLineCustomEntity.get消費税率());
+        Money salesUnitPrice = Money.of(orderLineCustomEntity.get販売単価());
+        Quantity orderQuantity = Quantity.of(orderLineCustomEntity.get受注数量());
+        Money discountAmount = Money.of(Objects.isNull(orderLineCustomEntity.get値引金額()) ? 0 : orderLineCustomEntity.get値引金額());
+        TaxRateType taxRate = TaxRateType.of(orderLineCustomEntity.get消費税率());
         
         SalesAmount salesAmount = SalesAmount.of(salesUnitPrice, orderQuantity);
         ConsumptionTaxAmount consumptionTaxAmount = ConsumptionTaxAmount.of(salesAmount, taxRate);
 
         return Shipping.of(
-                OrderNumber.of(salesOrderCustomEntity.get受注番号()),
-                OrderDate.of(salesOrderCustomEntity.get受注日()),
-                DepartmentCode.of(salesOrderCustomEntity.get部門コード()),
-                salesOrderCustomEntity.get部門開始日(),
-                CustomerCode.of(salesOrderCustomEntity.get顧客コード(), salesOrderCustomEntity.get顧客枝番()),
-                EmployeeCode.of(salesOrderCustomEntity.get社員コード()),
-                DesiredDeliveryDate.of(salesOrderCustomEntity.get希望納期()),
-                salesOrderCustomEntity.get客先注文番号(),
-                salesOrderCustomEntity.get倉庫コード(),
-                Money.of(salesOrderCustomEntity.get受注金額合計()),
-                Money.of(salesOrderCustomEntity.get消費税合計()),
-                salesOrderCustomEntity.get備考(),
-                salesOrderLineCustomEntity.get受注行番号(),
-                ProductCode.of(salesOrderLineCustomEntity.get商品コード()),
-                salesOrderLineCustomEntity.get商品名(),
+                OrderNumber.of(orderCustomEntity.get受注番号()),
+                OrderDate.of(orderCustomEntity.get受注日()),
+                DepartmentCode.of(orderCustomEntity.get部門コード()),
+                orderCustomEntity.get部門開始日(),
+                CustomerCode.of(orderCustomEntity.get顧客コード(), orderCustomEntity.get顧客枝番()),
+                EmployeeCode.of(orderCustomEntity.get社員コード()),
+                DesiredDeliveryDate.of(orderCustomEntity.get希望納期()),
+                orderCustomEntity.get客先注文番号(),
+                orderCustomEntity.get倉庫コード(),
+                Money.of(orderCustomEntity.get受注金額合計()),
+                Money.of(orderCustomEntity.get消費税合計()),
+                orderCustomEntity.get備考(),
+                orderLineCustomEntity.get受注行番号(),
+                ProductCode.of(orderLineCustomEntity.get商品コード()),
+                orderLineCustomEntity.get商品名(),
                 salesUnitPrice,
                 orderQuantity,
                 taxRate,
-                Quantity.of(salesOrderLineCustomEntity.get引当数量()),
-                Quantity.of(salesOrderLineCustomEntity.get出荷指示数量()),
-                Quantity.of(salesOrderLineCustomEntity.get出荷済数量()),
+                Quantity.of(orderLineCustomEntity.get引当数量()),
+                Quantity.of(orderLineCustomEntity.get出荷指示数量()),
+                Quantity.of(orderLineCustomEntity.get出荷済数量()),
                 discountAmount,
-                DeliveryDate.of(salesOrderLineCustomEntity.get納期()),
-                Objects.nonNull(salesOrderLineCustomEntity.get商品マスタ()) ? mapToProduct.apply(salesOrderLineCustomEntity.get商品マスタ()) : null,
+                DeliveryDate.of(orderLineCustomEntity.get納期()),
+                Objects.nonNull(orderLineCustomEntity.get商品マスタ()) ? mapToProduct.apply(orderLineCustomEntity.get商品マスタ()) : null,
                 salesAmount,
                 consumptionTaxAmount,
-                Optional.ofNullable(salesOrderCustomEntity.get部門マスタ())
+                Optional.ofNullable(orderCustomEntity.get部門マスタ())
                         .map(mapToDepartment)
                         .orElse(null),
-                Optional.ofNullable(salesOrderCustomEntity.get顧客マスタ())
+                Optional.ofNullable(orderCustomEntity.get顧客マスタ())
                         .map(mapToCustomer)
                         .orElse(null),
-                Optional.ofNullable(salesOrderCustomEntity.get社員マスタ())
+                Optional.ofNullable(orderCustomEntity.get社員マスタ())
                         .map(mapToEmployee)
                         .orElse(null)
         );
     }
 
-    public List<Shipping> mapToDomainModelList(List<SalesOrderCustomEntity> salesOrderCustomEntities) {
+    public List<Shipping> mapToDomainModelList(List<OrderCustomEntity> salesOrderCustomEntities) {
         List<Shipping> shippingList = new ArrayList<>();
         
-        for (SalesOrderCustomEntity salesOrderCustomEntity : salesOrderCustomEntities) {
-            for (SalesOrderLineCustomEntity salesOrderLineCustomEntity : salesOrderCustomEntity.get受注データ明細()) {
-                shippingList.add(mapToDomainModel(salesOrderCustomEntity, salesOrderLineCustomEntity));
+        for (OrderCustomEntity orderCustomEntity : salesOrderCustomEntities) {
+            for (OrderLineCustomEntity orderLineCustomEntity : orderCustomEntity.get受注データ明細()) {
+                shippingList.add(mapToDomainModel(orderCustomEntity, orderLineCustomEntity));
             }
         }
         

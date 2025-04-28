@@ -303,7 +303,7 @@ class DownloadServiceTest {
     @Nested
     @DisplayName("受注データ")
     @WithMockUser(username = "XXXXX", roles = "ADMIN")
-    class SalesOrderDownload {
+    class OrderDownload {
 
         @Test
         @DisplayName("件数取得")
