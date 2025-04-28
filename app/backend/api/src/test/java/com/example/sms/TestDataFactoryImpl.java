@@ -353,7 +353,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
     }
 
     @Override
-    public void setUpForSalesOrderService() {
+    public void setUpForOrderService() {
         Department department = getDepartment("10000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門1");
         departmentRepository.save(department);
         Employee employee = getEmployee("EMP001", "10000", LocalDateTime.of(2021, 1, 1, 0, 0));
@@ -394,7 +394,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
     }
 
     @Override
-    public void setUpForSalesOrderUploadService() {
+    public void setUpForOrderUploadService() {
         salesOrderRepository.deleteAll();
         setUpForDepartmentService();
         setUpForProductService();
@@ -403,7 +403,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
     }
 
     @Override
-    public void setUpForSalesOrderRuleCheckService() {
+    public void setUpForOrderRuleCheckService() {
         salesOrderRepository.deleteAll();
         setUpForDepartmentService();
         setUpForProductService();
@@ -413,7 +413,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
     @Override
     public void setUpForShippingService() {
-        setUpForSalesOrderService();
+        setUpForOrderService();
 
         OrderList orderList = salesOrderRepository.selectAll();
 
@@ -546,7 +546,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
     }
 
     @Override
-    public MultipartFile createSalesOrderFile() {
+    public MultipartFile createOrderFile() {
         InputStream is = getClass().getResourceAsStream("/csv/order/order_multiple.csv");
         try {
             return new MockMultipartFile(
@@ -561,7 +561,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
     }
 
     @Override
-    public MultipartFile createSalesOrderInvalidFile() {
+    public MultipartFile createOrderInvalidFile() {
         InputStream is = getClass().getResourceAsStream("/csv/order/order_unregistered_code.csv");
         try {
             return new MockMultipartFile(
@@ -576,7 +576,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
     }
 
     @Override
-    public MultipartFile createSalesOrderCheckRuleFile() {
+    public MultipartFile createOrderCheckRuleFile() {
         InputStream is = getClass().getResourceAsStream("/csv/order/order_check_rule.csv");
         try {
             return new MockMultipartFile(

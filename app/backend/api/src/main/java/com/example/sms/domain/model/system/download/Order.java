@@ -10,11 +10,11 @@ import lombok.Value;
 @Value
 @RequiredArgsConstructor
 @NoArgsConstructor(force = true)
-public class SalesOrder  implements DownloadCriteria {
+public class Order implements DownloadCriteria {
     DownloadTarget target;
     String fileName;
 
-    public static SalesOrder of() {
-        return new SalesOrder(DownloadTarget.受注,"");
+    public static Order of() {
+        return new Order(DownloadTarget.受注,"");
     }
 }

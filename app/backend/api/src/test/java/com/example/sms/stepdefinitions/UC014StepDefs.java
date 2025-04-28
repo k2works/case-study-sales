@@ -57,7 +57,7 @@ public class UC014StepDefs extends SpringAcceptanceTest {
                 testDataFactory.setUpForCustomerService();
                 break;
             case "受注データ":
-                testDataFactory.setUpForSalesOrderService();
+                testDataFactory.setUpForOrderService();
                 break;
             default:
                 break;

@@ -316,7 +316,7 @@ class DownloadServiceTest {
         @Test
         @DisplayName("件数取得")
         void testCount() {
-            DownloadCriteria condition = SalesOrder.of();
+            DownloadCriteria condition = Order.of();
             int result = downloadService.count(condition);
             assertEquals(3, result);
         }
@@ -324,7 +324,7 @@ class DownloadServiceTest {
         @Test
         @DisplayName("データダウンロード変換")
         void testDownload() {
-            DownloadCriteria condition = SalesOrder.of();
+            DownloadCriteria condition = Order.of();
             List<?> rawResult = downloadService.convert(condition);
             List<OrderDownloadCSV> result = rawResult.stream()
                     .filter(OrderDownloadCSV.class::isInstance)

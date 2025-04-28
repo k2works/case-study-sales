@@ -38,7 +38,7 @@ class OrderServiceTest {
     class OrderTest {
         @BeforeEach
         void setUp() {
-            testDataFactory.setUpForSalesOrderService();
+            testDataFactory.setUpForOrderService();
         }
 
         @Test
@@ -168,7 +168,7 @@ class OrderServiceTest {
     class OrderUploadTest {
         @BeforeEach
         void setUp() {
-            testDataFactory.setUpForSalesOrderUploadService();
+            testDataFactory.setUpForOrderUploadService();
         }
 
         @Nested
@@ -424,7 +424,7 @@ class OrderServiceTest {
     class OrderRuleTest {
         @BeforeEach
         void setUp() {
-            testDataFactory.setUpForSalesOrderRuleCheckService();
+            testDataFactory.setUpForOrderRuleCheckService();
         }
 
         @Test

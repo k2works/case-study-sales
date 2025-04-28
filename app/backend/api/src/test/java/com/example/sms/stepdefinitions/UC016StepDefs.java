@@ -64,7 +64,7 @@ public class UC016StepDefs extends SpringAcceptanceTest {
                 testDataFactory.setUpForCustomerService();
                 break;
             case "受注データ":
-                testDataFactory.setUpForSalesOrderService();
+                testDataFactory.setUpForOrderService();
                 break;
             default:
                 break;
@@ -75,7 +75,7 @@ public class UC016StepDefs extends SpringAcceptanceTest {
     public void upload(String data) {
         if (data.equals("受注データ")) {
             try {
-                MultipartFile file = testDataFactory.createSalesOrderFile();
+                MultipartFile file = testDataFactory.createOrderFile();
                 uploadFile(SALES_ORDER_API_URL + "/upload", file);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -87,7 +87,7 @@ public class UC016StepDefs extends SpringAcceptanceTest {
     public void uploadInvalid(String data) {
         if (data.equals("受注データ")) {
             try {
-                MultipartFile file = testDataFactory.createSalesOrderCheckRuleFile();
+                MultipartFile file = testDataFactory.createOrderCheckRuleFile();
                 uploadFile(SALES_ORDER_API_URL + "/upload", file);
             } catch (IOException e) {
                 e.printStackTrace();

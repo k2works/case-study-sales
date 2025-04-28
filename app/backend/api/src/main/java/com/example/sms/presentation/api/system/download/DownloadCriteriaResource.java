@@ -25,7 +25,7 @@ public class DownloadCriteriaResource {
             case 取引先 -> Partner.of();
             case 顧客 -> Customer.of();
             case 仕入先 -> Vendor.of();
-            case 受注 -> SalesOrder.of();
+            case 受注 -> Order.of();
             case 出荷 -> Shipment.of();
             case 売上 -> Sales.of();
         };
