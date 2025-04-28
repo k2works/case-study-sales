@@ -15,7 +15,7 @@ public enum DownloadTarget {
     取引先("partner"),
     顧客("customer"),
     仕入先("vendor"),
-    受注("sales_order");
+    受注("order");
 
     private final String value;
 

@@ -5,24 +5,24 @@ import com.example.sms.domain.model.system.download.DownloadCriteria;
 import com.example.sms.infrastructure.datasource.order.OrderCustomEntity;
 import com.example.sms.infrastructure.datasource.order.OrderCustomMapper;
 import com.example.sms.infrastructure.datasource.order.OrderEntityMapper;
-import com.example.sms.service.system.download.SalesOrderCSVRepository;
+import com.example.sms.service.system.download.OrderCSVRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public class SalesOrderCSVDataSource implements SalesOrderCSVRepository {
+public class OrderCSVDataSource implements OrderCSVRepository {
     private final OrderCustomMapper orderCustomMapper;
     private final OrderEntityMapper orderEntityMapper;
 
     // コンストラクタ
-    public SalesOrderCSVDataSource(OrderCustomMapper orderCustomMapper, OrderEntityMapper orderEntityMapper) {
+    public OrderCSVDataSource(OrderCustomMapper orderCustomMapper, OrderEntityMapper orderEntityMapper) {
         this.orderCustomMapper = orderCustomMapper;
         this.orderEntityMapper = orderEntityMapper;
     }
 
     @Override
-    public List<SalesOrderDownloadCSV> convert(OrderList orderList) {
+    public List<OrderDownloadCSV> convert(OrderList orderList) {
         if (orderList != null) {
             return orderList.asList().stream()
                     .flatMap(salesOrder ->

@@ -25,6 +25,7 @@ import com.example.sms.infrastructure.datasource.master.partner.customer.Custome
 import com.example.sms.infrastructure.datasource.master.product.ProductCustomEntity;
 import com.example.sms.infrastructure.datasource.order.OrderCustomEntity;
 import com.example.sms.infrastructure.datasource.order.order_line.OrderLineCustomEntity;
+import com.example.sms.infrastructure.datasource.system.download.ShippingDownloadCSV;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -97,7 +98,7 @@ public class ShippingEntityMapper {
                         c.get販売単価()
                 )
         );
-        
+
         Function<ProductCustomEntity, Product> mapToProduct = e -> Product.of(
                 Product.of(
                         e.get商品コード(),
@@ -181,7 +182,7 @@ public class ShippingEntityMapper {
         Quantity orderQuantity = Quantity.of(orderLineCustomEntity.get受注数量());
         Money discountAmount = Money.of(Objects.isNull(orderLineCustomEntity.get値引金額()) ? 0 : orderLineCustomEntity.get値引金額());
         TaxRateType taxRate = TaxRateType.of(orderLineCustomEntity.get消費税率());
-        
+
         SalesAmount salesAmount = SalesAmount.of(salesUnitPrice, orderQuantity);
         ConsumptionTaxAmount consumptionTaxAmount = ConsumptionTaxAmount.of(salesAmount, taxRate);
 
@@ -226,17 +227,46 @@ public class ShippingEntityMapper {
 
     public List<Shipping> mapToDomainModelList(List<OrderCustomEntity> salesOrderCustomEntities) {
         List<Shipping> shippingList = new ArrayList<>();
-        
+
         for (OrderCustomEntity orderCustomEntity : salesOrderCustomEntities) {
             for (OrderLineCustomEntity orderLineCustomEntity : orderCustomEntity.get受注データ明細()) {
                 shippingList.add(mapToDomainModel(orderCustomEntity, orderLineCustomEntity));
             }
         }
-        
+
         return shippingList;
     }
-    
+
     public ShippingList mapToShippingList(List<Shipping> shippings) {
         return new ShippingList(shippings);
+    }
+
+    public ShippingDownloadCSV mapToCsvModel(Shipping shipping) {
+        return new ShippingDownloadCSV(
+                shipping.getOrderNumber().getValue(),
+                shipping.getOrderDate().getValue(),
+                shipping.getDepartmentCode().getValue(),
+                shipping.getDepartmentStartDate(),
+                shipping.getCustomerCode().getCode().getValue(),
+                shipping.getEmployeeCode().getValue(),
+                shipping.getDesiredDeliveryDate().getValue(),
+                shipping.getCustomerOrderNumber(),
+                shipping.getWarehouseCode(),
+                shipping.getTotalOrderAmount().getAmount(),
+                shipping.getTotalConsumptionTax().getAmount(),
+                shipping.getRemarks(),
+                shipping.getOrderLineNumber(),
+                shipping.getProductCode().getValue(),
+                shipping.getProductName(),
+                shipping.getSalesUnitPrice().getAmount(),
+                shipping.getOrderQuantity().getAmount(),
+                shipping.getTaxRate().getRate(),
+                shipping.getAllocationQuantity().getAmount(),
+                shipping.getShipmentInstructionQuantity().getAmount(),
+                shipping.getShippedQuantity().getAmount(),
+                shipping.getCompletionFlag().getValue(),
+                shipping.getDiscountAmount().getAmount(),
+                shipping.getDeliveryDate().getValue()
+        );
     }
 }

@@ -318,16 +318,16 @@ class DownloadServiceTest {
         void testDownload() {
             DownloadCriteria condition = SalesOrder.of();
             List<?> rawResult = downloadService.convert(condition);
-            List<SalesOrderDownloadCSV> result = rawResult.stream()
-                    .filter(SalesOrderDownloadCSV.class::isInstance)
-                    .map(SalesOrderDownloadCSV.class::cast)
+            List<OrderDownloadCSV> result = rawResult.stream()
+                    .filter(OrderDownloadCSV.class::isInstance)
+                    .map(OrderDownloadCSV.class::cast)
                     .toList();
 
             // 結果が空ではないことを確認
             assertFalse(result.isEmpty(), "結果が空です");
 
             // 最初のデータを確認
-            SalesOrderDownloadCSV firstResult = result.getFirst();
+            OrderDownloadCSV firstResult = result.getFirst();
             assertNotNull(firstResult, "最初のデータがnullです");
 
             // フィールドごとのアサーション

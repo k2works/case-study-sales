@@ -19,7 +19,7 @@ import com.example.sms.infrastructure.datasource.master.employee.EmployeeCustomE
 import com.example.sms.infrastructure.datasource.master.partner.customer.CustomerCustomEntity;
 import com.example.sms.infrastructure.datasource.master.product.ProductCustomEntity;
 import com.example.sms.infrastructure.datasource.order.order_line.OrderLineCustomEntity;
-import com.example.sms.infrastructure.datasource.system.download.SalesOrderDownloadCSV;
+import com.example.sms.infrastructure.datasource.system.download.OrderDownloadCSV;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
@@ -236,8 +236,8 @@ public class OrderEntityMapper {
         );
     }
 
-    public SalesOrderDownloadCSV mapToCsvModel(Order order, OrderLine orderLine) {
-        return new SalesOrderDownloadCSV(
+    public OrderDownloadCSV mapToCsvModel(Order order, OrderLine orderLine) {
+        return new OrderDownloadCSV(
                 order.getOrderNumber().getValue(),
                 order.getOrderDate().getValue(),
                 order.getDepartmentCode().getValue(),

@@ -32,9 +32,9 @@ public class DownloadService {
     private final PartnerCSVRepository partnerCSVRepository;
     private final CustomerCSVRepository customerCSVRepository;
     private final VendorCSVRepository vendorCSVRepository;
-    private final SalesOrderCSVRepository salesOrderCSVRepository;
+    private final OrderCSVRepository orderCSVRepository;
 
-    public DownloadService(DepartmentCSVRepository departmentCSVRepository, EmployeeCSVRepository employeeCSVRepository, ProductCategoryCSVRepository productCategoryCSVRepository, ProductCSVRepository productCSVRepository, PartnerGroupCSVRepository partnerGroupCSVRepository, PartnerCSVRepository partnerCSVRepository, CustomerCSVRepository customerCSVRepository, VendorCSVRepository vendorCSVRepository, SalesOrderCSVRepository salesOrderCSVRepository) {
+    public DownloadService(DepartmentCSVRepository departmentCSVRepository, EmployeeCSVRepository employeeCSVRepository, ProductCategoryCSVRepository productCategoryCSVRepository, ProductCSVRepository productCSVRepository, PartnerGroupCSVRepository partnerGroupCSVRepository, PartnerCSVRepository partnerCSVRepository, CustomerCSVRepository customerCSVRepository, VendorCSVRepository vendorCSVRepository, OrderCSVRepository orderCSVRepository) {
         this.departmentCSVRepository = departmentCSVRepository;
         this.employeeCSVRepository = employeeCSVRepository;
         this.productCategoryCSVRepository = productCategoryCSVRepository;
@@ -43,7 +43,7 @@ public class DownloadService {
         this.partnerCSVRepository = partnerCSVRepository;
         this.customerCSVRepository = customerCSVRepository;
         this.vendorCSVRepository = vendorCSVRepository;
-        this.salesOrderCSVRepository = salesOrderCSVRepository;
+        this.orderCSVRepository = orderCSVRepository;
     }
 
     /**
@@ -84,7 +84,7 @@ public class DownloadService {
                 yield countVendor(condition);
             }
             case 受注 -> {
-                yield countSalesOrder(condition);
+                yield countOrder(condition);
             }
         };
     }
@@ -102,7 +102,7 @@ public class DownloadService {
             case 取引先 -> writeCsv(PartnerDownloadCSV.class).accept(streamWriter, convert(condition));
             case 顧客 -> writeCsv(CustomerDownloadCSV.class).accept(streamWriter, convert(condition));
             case 仕入先 -> writeCsv(VendorDownloadCSV.class).accept(streamWriter, convert(condition));
-            case 受注 -> writeCsv(SalesOrderDownloadCSV.class).accept(streamWriter, convert(condition));
+            case 受注 -> writeCsv(OrderDownloadCSV.class).accept(streamWriter, convert(condition));
         }
     }
 
@@ -119,7 +119,7 @@ public class DownloadService {
             case 取引先 -> (List<T>) convertPartner(condition);
             case 顧客 -> (List<T>) convertCustomer(condition);
             case 仕入先 -> (List<T>) convertVendor(condition);
-            case 受注 -> (List<T>) convertSalesOrder(condition);
+            case 受注 -> (List<T>) convertOrder(condition);
         };
     }
 
@@ -182,8 +182,8 @@ public class DownloadService {
     /**
      * 受注ダウンロード件数取得
      */
-    private int countSalesOrder(DownloadCriteria condition) {
-        return salesOrderCSVRepository.countBy(condition);
+    private int countOrder(DownloadCriteria condition) {
+        return orderCSVRepository.countBy(condition);
     }
 
     /**
@@ -253,8 +253,8 @@ public class DownloadService {
     /**
      * 受注CSV変換
      */
-    private List<SalesOrderDownloadCSV> convertSalesOrder(DownloadCriteria condition) {
-        OrderList orderList = salesOrderCSVRepository.selectBy(condition);
-        return salesOrderCSVRepository.convert(orderList);
+    private List<OrderDownloadCSV> convertOrder(DownloadCriteria condition) {
+        OrderList orderList = orderCSVRepository.selectBy(condition);
+        return orderCSVRepository.convert(orderList);
     }
 }

@@ -8,7 +8,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.time.LocalDateTime;
 
 @Data
-public class SalesOrderDownloadCSV {
+public class OrderDownloadCSV {
     @CsvBindByPosition(position = 0)
     @CsvBindByName(column = "受注番号", required = true)
     private String orderNumber;
@@ -111,12 +111,12 @@ public class SalesOrderDownloadCSV {
     private LocalDateTime deliveryDate;
 
     // コンストラクター
-    public SalesOrderDownloadCSV(String orderNumber, LocalDateTime orderDate, String departmentCode, LocalDateTime departmentStartDate,
-            String customerCode, Integer customerBranchNumber, String employeeCode, LocalDateTime desiredDeliveryDate,
-            String customerOrderNumber, String warehouseCode, Integer totalOrderAmount, Integer totalConsumptionTax, 
-            String remarks, Integer orderLineNumber, String productCode, String productName, Integer salesUnitPrice, 
-            Integer orderQuantity, Integer taxRate, Integer allocationQuantity, Integer shipmentInstructionQuantity, 
-            Integer shippedQuantity, Integer completionFlag, Integer discountAmount, LocalDateTime deliveryDate) {
+    public OrderDownloadCSV(String orderNumber, LocalDateTime orderDate, String departmentCode, LocalDateTime departmentStartDate,
+                            String customerCode, Integer customerBranchNumber, String employeeCode, LocalDateTime desiredDeliveryDate,
+                            String customerOrderNumber, String warehouseCode, Integer totalOrderAmount, Integer totalConsumptionTax,
+                            String remarks, Integer orderLineNumber, String productCode, String productName, Integer salesUnitPrice,
+                            Integer orderQuantity, Integer taxRate, Integer allocationQuantity, Integer shipmentInstructionQuantity,
+                            Integer shippedQuantity, Integer completionFlag, Integer discountAmount, LocalDateTime deliveryDate) {
         this.orderNumber = orderNumber;
         this.orderDate = orderDate;
         this.departmentCode = departmentCode;
