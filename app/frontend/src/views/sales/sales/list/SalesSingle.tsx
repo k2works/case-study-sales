@@ -310,8 +310,14 @@ const Form = ({
                                                 className="table-input"
                                                 style={{ marginRight: '4px' }}
                                                 onChange={(e) => handleUpdateLine(index, { ...line, productCode: e.target.value })}
-                                                onClick={() => handleProductSelectEvent(index)}
                                             />
+                                            <button
+                                                onClick={() => handleProductSelectEvent(index)}
+                                                className="select-button"
+                                                type="button"
+                                            >
+                                                選択
+                                            </button>
                                         </div>
                                     </td>
                                     <td className="table-cell">
