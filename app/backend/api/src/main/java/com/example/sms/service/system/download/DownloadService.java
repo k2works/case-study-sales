@@ -9,6 +9,7 @@ import com.example.sms.domain.model.master.partner.vendor.VendorList;
 import com.example.sms.domain.model.master.product.ProductCategoryList;
 import com.example.sms.domain.model.master.product.ProductList;
 import com.example.sms.domain.model.order.OrderList;
+import com.example.sms.domain.model.sales.SalesList;
 import com.example.sms.domain.model.shipping.ShippingList;
 import com.example.sms.domain.model.system.download.DownloadCriteria;
 import com.example.sms.infrastructure.datasource.system.download.*;
@@ -35,8 +36,9 @@ public class DownloadService {
     private final VendorCSVRepository vendorCSVRepository;
     private final OrderCSVRepository orderCSVRepository;
     private final ShippingCSVRepository shippingCSVRepository;
+    private final SalesCSVRepository salesCSVRepository;
 
-    public DownloadService(DepartmentCSVRepository departmentCSVRepository, EmployeeCSVRepository employeeCSVRepository, ProductCategoryCSVRepository productCategoryCSVRepository, ProductCSVRepository productCSVRepository, PartnerGroupCSVRepository partnerGroupCSVRepository, PartnerCSVRepository partnerCSVRepository, CustomerCSVRepository customerCSVRepository, VendorCSVRepository vendorCSVRepository, OrderCSVRepository orderCSVRepository, ShippingCSVRepository shippingCSVRepository) {
+    public DownloadService(DepartmentCSVRepository departmentCSVRepository, EmployeeCSVRepository employeeCSVRepository, ProductCategoryCSVRepository productCategoryCSVRepository, ProductCSVRepository productCSVRepository, PartnerGroupCSVRepository partnerGroupCSVRepository, PartnerCSVRepository partnerCSVRepository, CustomerCSVRepository customerCSVRepository, VendorCSVRepository vendorCSVRepository, OrderCSVRepository orderCSVRepository, ShippingCSVRepository shippingCSVRepository, SalesCSVRepository salesCSVRepository) {
         this.departmentCSVRepository = departmentCSVRepository;
         this.employeeCSVRepository = employeeCSVRepository;
         this.productCategoryCSVRepository = productCategoryCSVRepository;
@@ -47,6 +49,7 @@ public class DownloadService {
         this.vendorCSVRepository = vendorCSVRepository;
         this.orderCSVRepository = orderCSVRepository;
         this.shippingCSVRepository = shippingCSVRepository;
+        this.salesCSVRepository = salesCSVRepository;
     }
 
     /**
@@ -92,6 +95,9 @@ public class DownloadService {
             case 出荷 -> {
                 yield countShipping(condition);
             }
+            case 売上 -> {
+                yield countSales(condition);
+            }
         };
     }
 
@@ -110,6 +116,7 @@ public class DownloadService {
             case 仕入先 -> writeCsv(VendorDownloadCSV.class).accept(streamWriter, convert(condition));
             case 受注 -> writeCsv(OrderDownloadCSV.class).accept(streamWriter, convert(condition));
             case 出荷 -> writeCsv(ShippingDownloadCSV.class).accept(streamWriter, convert(condition));
+            case 売上 -> writeCsv(SalesDownloadCSV.class).accept(streamWriter, convert(condition));
         }
     }
 
@@ -128,6 +135,7 @@ public class DownloadService {
             case 仕入先 -> (List<T>) convertVendor(condition);
             case 受注 -> (List<T>) convertOrder(condition);
             case 出荷 -> (List<T>) convertShipping(condition);
+            case 売上 -> (List<T>) convertSales(condition);
         };
     }
 
@@ -198,6 +206,14 @@ public class DownloadService {
     private int countShipping(DownloadCriteria condition) {
         return shippingCSVRepository.countBy(condition);
     }
+
+    /**
+     * 売上ダウンロード件数取得
+     */
+    private int countSales(DownloadCriteria condition) {
+        return salesCSVRepository.countBy(condition);
+    }
+
     /**
      * 部門CSV変換
      */
@@ -276,5 +292,11 @@ public class DownloadService {
         ShippingList shippingList = shippingCSVRepository.selectBy(condition);
         return shippingCSVRepository.convert(shippingList);
     }
-
+    /**
+     * 売上CSV変換
+     */
+    private List<SalesDownloadCSV> convertSales(DownloadCriteria condition) {
+        SalesList salesList = salesCSVRepository.selectBy(condition);
+        return salesCSVRepository.convert(salesList);
+    }
 }

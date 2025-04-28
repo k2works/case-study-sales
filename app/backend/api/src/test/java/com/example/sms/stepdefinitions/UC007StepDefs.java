@@ -2,10 +2,8 @@ package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
 import com.example.sms.domain.model.system.download.DownloadTarget;
-import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
 import com.example.sms.presentation.api.system.download.DownloadCriteriaResource;
 import com.example.sms.stepdefinitions.utils.SpringAcceptanceTest;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.cucumber.java.ja.ならば;
@@ -16,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class UC007StepDefs extends SpringAcceptanceTest {
     private static final String PORT = "8079";
@@ -82,6 +79,14 @@ public class UC007StepDefs extends SpringAcceptanceTest {
         if (target.equals("受注")) {
             downloadCriteriaResource = new DownloadCriteriaResource();
             downloadCriteriaResource.setTarget(DownloadTarget.受注);
+        }
+        if (target.equals("出荷")) {
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.出荷);
+        }
+        if (target.equals("売上")) {
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.売上);
         }
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(downloadCriteriaResource);

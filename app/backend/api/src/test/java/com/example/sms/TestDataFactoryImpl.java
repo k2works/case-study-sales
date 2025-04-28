@@ -1,5 +1,6 @@
 package com.example.sms;
 
+import com.example.sms.domain.model.master.employee.EmployeeCode;
 import com.example.sms.domain.model.master.partner.customer.Customer;
 import com.example.sms.domain.model.master.partner.customer.Shipping;
 import com.example.sms.domain.model.master.partner.vendor.Vendor;
@@ -179,6 +180,84 @@ public class TestDataFactoryImpl implements TestDataFactory {
         IntStream.rangeClosed(1, 3).forEach(i -> {
             OrderLine line = getSalesOrderLine(order3.getOrderNumber().getValue(), i);
             salesOrderRepository.save(Order.of(order3, List.of(line)));
+        });
+        // 商品データの準備
+        productRepository.save(Product.of(
+                "99999999", // 商品コード
+                "商品1",    // 商品名
+                "商品1",    // 商品名カナ
+                "ショウヒンイチ", // 商品英語名
+                ProductType.その他, // 商品種別
+                900, // 商品標準価格
+                810, // 売上単価
+                90,  // 利益額
+                TaxType.その他, // 税種別
+                "カテゴリ9", // カテゴリ
+                MiscellaneousType.適用外, // 雑費区分
+                StockManagementTargetType.対象, // 在庫管理対象
+                StockAllocationType.引当済, // 在庫引当区分
+                "009", // 倉庫コード
+                9    // 入荷リードタイム
+        ));
+
+        // 部門データの準備
+        Department department = departmentRepository.findById(DepartmentId.of("30000", LocalDateTime.of(2021, 1, 1, 0, 0))).orElseThrow();
+
+        // 取引先データの準備
+        Partner partner = partnerRepository.findById("001").orElseThrow();
+
+        // 社員データの準備
+        Employee employee = employeeRepository.findById(EmployeeCode.of("EMP003")).orElseThrow();
+
+        // 出荷データの準備
+        setUpForShippingService();
+
+        // 売上データの削除
+        salesRepository.deleteAll();
+
+        // 売上データの準備
+        IntStream.rangeClosed(1, 3).forEach(i -> {
+            // 売上番号をフォーマット
+            String salesNumber = String.format("SA%08d", i);
+
+            // 売上明細の準備
+            List<SalesLine> salesLines = IntStream.range(1, 4)
+                    .mapToObj((IntFunction<SalesLine>) lineNumber -> SalesLine.of(
+                            salesNumber,
+                            lineNumber,
+                            "99999999", // 商品コード
+                            "商品1",    // 商品名
+                            800, // 売上単価
+                            10, // 売上数量
+                            10, // 出荷数量
+                            0, // 値引金額
+                            (LocalDateTime.of(2021, 1, 1, 0, 0)), // 請求日
+                            "B001", // 請求番号
+                            0, // 請求遅延区分
+                            (LocalDateTime.of(2021, 1, 1, 0, 0)), // 自動仕訳日,
+                            null,
+                            TaxRateType.標準税率
+                    ))
+                    .toList();
+
+            // 売上エンティティの作成
+            Sales newSales = Sales.of(
+                    salesNumber,
+                    salesNumber.replace("SA", "OD"), // 仮登録用の受注番号
+                    (LocalDateTime.of(2021, 1, 1, 0, 0)), // 売上日
+                    1, // 売上区分
+                    department.getDepartmentId().getDeptCode().getValue(), // 部門コード
+                    department.getDepartmentId().getDepartmentStartDate().getValue(), // 部門開始日
+                    partner.getPartnerCode().getValue(), // 取引先コード
+                    employee.getEmpCode().getValue(), // 社員コード
+                    null, // 赤黒伝票番号
+                    null, // 元伝票番号
+                    "テスト備考", // 備考
+                    salesLines // 売上明細
+            );
+
+            // 作成した売上データを保存
+            salesRepository.save(newSales);
         });
     }
 
