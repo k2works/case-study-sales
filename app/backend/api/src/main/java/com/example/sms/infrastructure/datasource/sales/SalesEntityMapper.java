@@ -7,6 +7,7 @@ import com.example.sms.infrastructure.datasource.autogen.model.売上データ�
 import com.example.sms.infrastructure.datasource.autogen.model.売上データ明細Key;
 import com.example.sms.infrastructure.datasource.master.product.ProductEntityMapper;
 import com.example.sms.infrastructure.datasource.sales.sales_line.SalesLineCustomEntity;
+import com.example.sms.infrastructure.datasource.system.download.SalesDownloadCSV;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
@@ -124,6 +125,36 @@ public class SalesEntityMapper {
                 salesData.get売上データ明細().stream()
                         .map(salesLineMapper)
                         .toList()
+        );
+    }
+
+    public SalesDownloadCSV mapToCsvModel(Sales sales, SalesLine salesLine) {
+        return new SalesDownloadCSV(
+                sales.getSalesNumber().getValue(),
+                sales.getOrderNumber().getValue(),
+                sales.getSalesDate().getValue(),
+                sales.getSalesType().getCode(),
+                sales.getDepartmentId().getDeptCode().getValue(),
+                sales.getDepartmentId().getDepartmentStartDate().getValue(),
+                sales.getCustomerCode().getValue(),
+                sales.getEmployeeCode().getValue(),
+                sales.getTotalSalesAmount().getAmount(),
+                sales.getTotalConsumptionTax().getAmount(),
+                sales.getRemarks(),
+                sales.getVoucherNumber(),
+                sales.getOriginalVoucherNumber(),
+                salesLine.getSalesLineNumber(),
+                salesLine.getProductCode().getValue(),
+                salesLine.getProductName(),
+                salesLine.getSalesUnitPrice().getAmount(),
+                salesLine.getSalesQuantity().getAmount(),
+                salesLine.getShippedQuantity().getAmount(),
+                salesLine.getDiscountAmount().getAmount(),
+                salesLine.getBillingDate() != null ? salesLine.getBillingDate().getValue() : null,
+                salesLine.getBillingNumber() != null ? salesLine.getBillingNumber().getValue() : null,
+                salesLine.getBillingDelayType() != null ? salesLine.getBillingDelayType().getCode() : null,
+                salesLine.getAutoJournalDate() != null ? salesLine.getAutoJournalDate().getValue() : null,
+                salesLine.getTaxRate().getRate()
         );
     }
 }

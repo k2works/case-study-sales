@@ -9,6 +9,7 @@ import com.example.sms.domain.model.master.partner.vendor.VendorList;
 import com.example.sms.domain.model.master.product.ProductCategoryList;
 import com.example.sms.domain.model.master.product.ProductList;
 import com.example.sms.domain.model.order.OrderList;
+import com.example.sms.domain.model.shipping.ShippingList;
 import com.example.sms.domain.model.system.download.DownloadCriteria;
 import com.example.sms.infrastructure.datasource.system.download.*;
 import org.springframework.stereotype.Service;
@@ -33,8 +34,9 @@ public class DownloadService {
     private final CustomerCSVRepository customerCSVRepository;
     private final VendorCSVRepository vendorCSVRepository;
     private final OrderCSVRepository orderCSVRepository;
+    private final ShippingCSVRepository shippingCSVRepository;
 
-    public DownloadService(DepartmentCSVRepository departmentCSVRepository, EmployeeCSVRepository employeeCSVRepository, ProductCategoryCSVRepository productCategoryCSVRepository, ProductCSVRepository productCSVRepository, PartnerGroupCSVRepository partnerGroupCSVRepository, PartnerCSVRepository partnerCSVRepository, CustomerCSVRepository customerCSVRepository, VendorCSVRepository vendorCSVRepository, OrderCSVRepository orderCSVRepository) {
+    public DownloadService(DepartmentCSVRepository departmentCSVRepository, EmployeeCSVRepository employeeCSVRepository, ProductCategoryCSVRepository productCategoryCSVRepository, ProductCSVRepository productCSVRepository, PartnerGroupCSVRepository partnerGroupCSVRepository, PartnerCSVRepository partnerCSVRepository, CustomerCSVRepository customerCSVRepository, VendorCSVRepository vendorCSVRepository, OrderCSVRepository orderCSVRepository, ShippingCSVRepository shippingCSVRepository) {
         this.departmentCSVRepository = departmentCSVRepository;
         this.employeeCSVRepository = employeeCSVRepository;
         this.productCategoryCSVRepository = productCategoryCSVRepository;
@@ -44,6 +46,7 @@ public class DownloadService {
         this.customerCSVRepository = customerCSVRepository;
         this.vendorCSVRepository = vendorCSVRepository;
         this.orderCSVRepository = orderCSVRepository;
+        this.shippingCSVRepository = shippingCSVRepository;
     }
 
     /**
@@ -86,6 +89,9 @@ public class DownloadService {
             case 受注 -> {
                 yield countOrder(condition);
             }
+            case 出荷 -> {
+                yield countShipping(condition);
+            }
         };
     }
 
@@ -103,6 +109,7 @@ public class DownloadService {
             case 顧客 -> writeCsv(CustomerDownloadCSV.class).accept(streamWriter, convert(condition));
             case 仕入先 -> writeCsv(VendorDownloadCSV.class).accept(streamWriter, convert(condition));
             case 受注 -> writeCsv(OrderDownloadCSV.class).accept(streamWriter, convert(condition));
+            case 出荷 -> writeCsv(ShippingDownloadCSV.class).accept(streamWriter, convert(condition));
         }
     }
 
@@ -120,9 +127,9 @@ public class DownloadService {
             case 顧客 -> (List<T>) convertCustomer(condition);
             case 仕入先 -> (List<T>) convertVendor(condition);
             case 受注 -> (List<T>) convertOrder(condition);
+            case 出荷 -> (List<T>) convertShipping(condition);
         };
     }
-
 
     /**
      * 部門ダウンロード件数取得
@@ -185,7 +192,12 @@ public class DownloadService {
     private int countOrder(DownloadCriteria condition) {
         return orderCSVRepository.countBy(condition);
     }
-
+    /**
+     * 出荷ダウンロード件数取得
+     */
+    private int countShipping(DownloadCriteria condition) {
+        return shippingCSVRepository.countBy(condition);
+    }
     /**
      * 部門CSV変換
      */
@@ -257,4 +269,12 @@ public class DownloadService {
         OrderList orderList = orderCSVRepository.selectBy(condition);
         return orderCSVRepository.convert(orderList);
     }
+    /**
+     * 出荷CSV変換
+     */
+    private List<ShippingDownloadCSV> convertShipping(DownloadCriteria condition) {
+        ShippingList shippingList = shippingCSVRepository.selectBy(condition);
+        return shippingCSVRepository.convert(shippingList);
+    }
+
 }
