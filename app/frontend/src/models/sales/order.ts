@@ -5,7 +5,7 @@ import {SalesLineType} from "./sales.ts";
 export enum TaxRateEnumType {
     標準税率 = "標準税率",
     軽減税率 = "軽減税率",
-    その他 = "その他"
+    非課税 = "非課税"
 }
 
 export const TaxRateValues = {

@@ -49,7 +49,7 @@ const calculateLineAmount = (line: SalesLineType): number => {
 const calculateLineTax = (line: SalesLineType) => {
     const amount = calculateLineAmount(line);
     const taxRate = getTaxRate(line);
-    return line.taxRate === TaxRateEnumType.その他 ? 0 : Math.floor(amount * taxRate);
+    return line.taxRate === TaxRateEnumType.非課税 ? 0 : Math.floor(amount * taxRate);
 };
 
 const calculateTotalAmount = (lines: SalesLineType[]): number => {
@@ -354,7 +354,7 @@ const Form = ({
                                         >
                                             <option value={TaxRateEnumType.標準税率}>標準</option>
                                             <option value={TaxRateEnumType.軽減税率}>軽減</option>
-                                            <option value={TaxRateEnumType.その他}>非課税</option>
+                                            <option value={TaxRateEnumType.非課税}>非課税</option>
                                         </select>
                                     </td>
                                     <td className="table-cell">

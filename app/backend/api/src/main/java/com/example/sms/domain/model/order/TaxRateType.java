@@ -8,7 +8,8 @@ import lombok.Getter;
 @Getter
 public enum TaxRateType {
     標準税率(10, "通常の消費税率"),
-    軽減税率(8, "軽減税率（食品など）");
+    軽減税率(8, "軽減税率（食品など）"),
+    非課税(0, "非課税（消費税がかからない）");
 
     private final Integer rate;
     private final String description;
