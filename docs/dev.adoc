@@ -345,6 +345,60 @@ user --> 受注ルール確認
 @enduml
 ----
 
+#### 出荷/売上
+
+[plantuml]
+----
+@startuml
+left to right direction
+actor "利用者" as member
+actor "管理者" as admin
+rectangle 出荷管理 {
+    usecase UC1 as "出荷一覧"
+    usecase UC2 as "出荷詳細"
+    usecase UC3 as "出荷検索"
+    usecase UC5 as "出荷編集"
+    usecase UC7 as "出荷指示"
+    usecase UC6 as "出荷ルール確認"
+}
+rectangle 売上管理 {
+    usecase UC8 as "売上一覧"
+    usecase UC9 as "売上詳細"
+    usecase UC10 as "売上検索"
+    usecase UC11 as "売上登録"
+    usecase UC12 as "売上編集"
+    usecase UC13 as "売上削除"
+    usecase UC14 as "売上集計"
+}
+admin --> UC1
+admin --> UC2
+admin --> UC3
+admin --> UC5
+admin --> UC6
+admin --> UC7
+admin --> UC8
+admin --> UC9
+admin --> UC10
+admin --> UC11
+admin --> UC12
+admin --> UC13
+admin --> UC14
+member --> UC1
+member --> UC2
+member --> UC3
+member --> UC5
+member --> UC6
+member --> UC7
+member --> UC8
+member --> UC9
+member --> UC10
+member --> UC11
+member --> UC12
+member --> UC13
+member --> UC14
+@endum
+----
+
 ## 仕様
 
 ### 認証
@@ -438,17 +492,34 @@ include::./assets/system/Download.feature[]
 
 [source,yml]
 ----
-include::./assets/sales_order/SalesOrder.feature[]
+include::./assets/sales/order/Order.feature[]
 ----
 
 [source,yml]
 ----
-include::./assets/sales_order/SalesOrderRule.feature[]
+include::./assets/sales/order/OrderRule.feature[]
 ----
 
 [source,yml]
 ----
-include::./assets/sales_order/SalesOrderUpload.feature[]
+include::./assets/sales/order/OrderUpload.feature[]
+----
+
+#### 出荷/売上
+
+[source,yml]
+----
+include::./assets/sales/shipping/Shipping.feature[]
+----
+
+[source,yml]
+----
+include::./assets/sales/shipping/ShippingRule.feature[]
+----
+
+[source,yml]
+----
+include::./assets/sales/sales/Sales.feature[]
 ----
 
 ## アーキテクチャ
@@ -652,6 +723,31 @@ class 受注明細
 受注 *- 受注明細
 受注ルール -> 受注
 
+@enduml
+----
+
+### 出荷/売上
+
+[plantuml]
+----
+@startuml
+class 出荷一覧
+class 出荷
+class 出荷ルール
+class 受注
+class 受注明細
+class 売上一覧
+class 売上
+class 商品
+
+受注 *-- 受注明細
+受注明細 <-- 出荷
+出荷一覧 *-- 出荷
+出荷ルール -> 出荷
+受注明細 *- 商品
+売上一覧 *-- 売上
+売上 *-- 売上明細
+売上明細 *-- 商品
 @enduml
 ----
 
@@ -1534,6 +1630,184 @@ class 社員
 @endsalt
 ----
 
+##### 出荷/売上
+
+[plantuml]
+----
+@startsalt
+{+
+  出荷一覧画面（コレクション）
+  {+
+     {
+      ホーム
+      ユーザー
+      マスタ
+      受注
+      ログアウト
+      } |
+      {
+        {
+          {/ <b>一覧 | ルール | 出荷指示 | 出荷確認 }
+          [ 検索 ]
+        }
+      {+
+        ---------------------
+        {
+          1xxxxxx | 商品1    | [  編集  ]
+          1xxxxxx | 商品2    | [  編集  ]
+          1xxxxxx | 商品3    | [  編集  ]
+        }
+      }
+     }
+  }
+  ----------------
+  出荷画面（シングル）
+  {+
+      {
+        [  保存   ]
+        ---------------------
+        受注番号    | "1xxxxxx"   "
+        商品名        | "商品1    "
+        数量        | "1"
+        出荷指示数  | "1"
+        出荷済数    | "0"
+      }
+  }
+  ----------------
+  出荷ルール画面（コレクション）
+  {+
+     {
+      ホーム
+      ユーザー
+      マスタ
+      受注
+      ログアウト
+      } |
+      {
+        {
+          {/ 一覧 | <b>ルール | 出荷指示 | 出荷確認 }
+          [ 確認 ]
+        }
+      {+
+        ---------------------
+        {
+          出荷ルール | [削除]
+          出荷ルール | [削除]
+          出荷ール | [削除]
+        }
+      }
+     }
+  }
+  ----------------
+  出荷指示画面（コレクション）
+  {+
+     {
+      ホーム
+      ユーザー
+      マスタ
+      受注
+      ログアウト
+      } |
+      {
+        {
+          {/ 一覧 | ルール | <b>出荷指示 | 出荷確認 }
+          [ 検索 ] | [  出荷指示  ]
+        }
+      {+
+        ---------------------
+        {
+          1xxxxxx | 商品1    | 1 | 0 | 0
+          1xxxxxx | 商品2    | 2 | 1 | 0
+          1xxxxxx | 商品3    | 3 | 2 | 0
+        }
+      }
+     }
+  }
+  ----------------
+  出荷確認画面（コレクション）
+  {+
+     {
+      ホーム
+      ユーザー
+      マスタ
+      受注
+      ログアウト
+      } |
+      {
+        {
+          {/ 一覧 | ルール | 出荷指示 | <b>出荷確認 }
+          [ 検索 ] | [  出荷確認  ]
+        }
+      {+
+        ---------------------
+        {
+          1xxxxxx | 商品1    | 1 | 0 | 0
+          1xxxxxx | 商品2    | 2 | 1 | 1
+          1xxxxxx | 商品3    | 3 | 2 | 2
+        }
+      }
+     }
+  }
+  ----------------
+  売上一覧画面（コレクション）
+  {+
+     {
+      ホーム
+      ユーザー
+      マスタ
+      受注
+      ログアウト
+      } |
+      {
+        {
+          {/ <b>一覧 | 売上集計 }
+          [ 検索 ] | [  新規登録  ]
+        }
+      {+
+        ---------------------
+        {
+          1xxxxxx | 商品1    | [  編集  ] | [  削除  ]
+          1xxxxxx | 商品2    | [  編集  ] | [  削除  ]
+          1xxxxxx | 商品3    | [  編集  ] | [  削除  ]
+        }
+      }
+     }
+  }
+    ----------------
+    売上画面（シングル）
+    {+
+        [保存]
+        ---------------------
+        {
+          売上番号    | "1xxxxxx"   "
+          商品名        | "商品1    "
+          数量        | "1"
+          売上金額    | "1000"
+        }
+    }
+    ----------------
+  売上集計画面（コレクション）
+  {+
+     {
+      ホーム
+      ユーザー
+      マスタ
+      受注
+      ログアウト
+      } |
+      {
+        {
+          {/ 一覧 | <b>売上集計 }
+          [ 集計 ]
+        }
+      {+
+      }
+     }
+  }
+}
+@endsalt
+----
+
 
 ### モデル
 
@@ -1971,6 +2245,63 @@ class 社員
 @enduml
 ----
 
+##### 出荷/売上
+
+[plantuml]
+----
+@startuml
+    class 出荷一覧 {
+        検索()
+        編集()
+    }
+    class 出荷 {
+        保存()
+    }
+    class 出荷指示 {
+        検索()
+        出荷指示()
+    }
+    class 出荷確認 {
+        検索()
+        出荷確認()
+    }
+    class 出荷ルール {
+        削除()
+    }
+    class 売上一覧 {
+        検索()
+        新規登録()
+        編集()
+        削除()
+    }
+    class 売上 {
+        保存()
+    }
+    class 売上集計 {
+        集計()
+    }
+  class ナビゲーション {
+    ホーム()
+    マスタ()
+    ユーザー()
+    出荷()
+    売上()
+    ログアウト()
+  }
+
+    ナビゲーション --* 出荷一覧
+    出荷一覧 *-- 出荷
+    ナビゲーション --* 出荷ルール
+    ナビゲーション --* 出荷指示
+    出荷指示 *-- 出荷
+    ナビゲーション --* 出荷確認
+    出荷確認 *-- 出荷
+    ナビゲーション --* 売上一覧
+    売上一覧 *-- 売上
+    ナビゲーション --* 売上集計
+@enduml
+----
+
 ### インタラクション
 
 #### 認証
@@ -2139,6 +2470,27 @@ class 社員
     受注_コレクション --> 受注ルール_コレクション
   ログイン_シングル <-- 受注_コレクション
 
+@enduml
+----
+
+##### 出荷/売上
+
+[plantuml]
+----
+@startuml
+    ログイン_シングル --> 出荷一覧_コレクション
+    出荷一覧_コレクション --> 出荷_シングル
+    出荷_シングル --> 出荷一覧_コレクション
+    ログイン_シングル --> 出荷指示_コレクション
+    出荷指示_コレクション --> 出荷ルール_シングル
+    出荷ルール_シングル --> 出荷指示_コレクション
+    ログイン_シングル --> 出荷確認_コレクション
+    出荷確認_コレクション --> 出荷_シングル
+    出荷_シングル --> 出荷確認_コレクション
+    ログイン_シングル --> 売上一覧_コレクション
+    売上一覧_コレクション --> 売上_シングル
+    売上_シングル --> 売上一覧_コレクション
+    ログイン_シングル --> 売上集計_コレクション
 @enduml
 ----
 
