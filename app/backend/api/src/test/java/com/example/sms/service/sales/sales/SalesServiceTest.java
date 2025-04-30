@@ -1,4 +1,4 @@
-package com.example.sms.service.sales;
+package com.example.sms.service.sales.sales;
 
 import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactory;
@@ -9,8 +9,6 @@ import com.example.sms.domain.model.sales.sales.Sales;
 import com.example.sms.domain.model.sales.sales.SalesLine;
 import com.example.sms.domain.model.sales.sales.SalesList;
 import com.example.sms.domain.model.sales.sales.SalesType;
-import com.example.sms.service.sales.sales.SalesCriteria;
-import com.example.sms.service.sales.sales.SalesService;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

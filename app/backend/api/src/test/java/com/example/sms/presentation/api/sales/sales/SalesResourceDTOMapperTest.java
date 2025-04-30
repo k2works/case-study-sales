@@ -1,12 +1,8 @@
-package com.example.sms.presentation.api.sales;
+package com.example.sms.presentation.api.sales.sales;
 
 import com.example.sms.domain.model.sales.sales.Sales;
 import com.example.sms.domain.model.sales.sales.SalesType;
 import com.example.sms.domain.model.sales.order.TaxRateType;
-import com.example.sms.presentation.api.sales.sales.SalesCriteriaResource;
-import com.example.sms.presentation.api.sales.sales.SalesLineResource;
-import com.example.sms.presentation.api.sales.sales.SalesResource;
-import com.example.sms.presentation.api.sales.sales.SalesResourceDTOMapper;
 import com.example.sms.service.sales.sales.SalesCriteria;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

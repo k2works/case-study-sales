@@ -1,4 +1,4 @@
-package com.example.sms.service.order;
+package com.example.sms.service.sales.order;
 
 import com.example.sms.FeatureToggleProperties;
 import com.example.sms.domain.service.sales.order.OrderDomainService;

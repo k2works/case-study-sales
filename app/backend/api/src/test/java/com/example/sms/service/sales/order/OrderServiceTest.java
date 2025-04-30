@@ -1,4 +1,4 @@
-package com.example.sms.service.order;
+package com.example.sms.service.sales.order;
 
 import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactory;

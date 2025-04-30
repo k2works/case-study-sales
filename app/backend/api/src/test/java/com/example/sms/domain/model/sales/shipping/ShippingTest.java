@@ -1,4 +1,4 @@
-package com.example.sms.domain.model.shipping;
+package com.example.sms.domain.model.sales.shipping;
 
 import com.example.sms.domain.model.master.department.DepartmentCode;
 import com.example.sms.domain.model.master.employee.EmployeeCode;

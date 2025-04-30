@@ -1,4 +1,4 @@
-package com.example.sms.domain.model.order;
+package com.example.sms.domain.model.sales.order;
 
 import com.example.sms.domain.model.sales.order.SalesAmount;
 import com.example.sms.domain.type.money.Money;

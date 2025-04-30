@@ -1,4 +1,4 @@
-package com.example.sms.presentation.api.shipping;
+package com.example.sms.presentation.api.sales.shipping;
 
 import com.example.sms.domain.model.sales.order.CompletionFlag;
 import com.example.sms.domain.model.sales.shipping.Shipping;

@@ -1,9 +1,7 @@
-package com.example.sms.domain.model.sales;
+package com.example.sms.domain.model.sales.sales;
 
 import com.example.sms.domain.model.master.product.*;
 import com.example.sms.domain.model.sales.order.TaxRateType;
-import com.example.sms.domain.model.sales.sales.Sales;
-import com.example.sms.domain.model.sales.sales.SalesLine;
 import com.example.sms.domain.type.money.Money;
 import org.junit.jupiter.api.*;
 

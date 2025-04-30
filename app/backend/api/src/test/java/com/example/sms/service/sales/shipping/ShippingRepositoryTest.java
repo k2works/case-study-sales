@@ -1,4 +1,4 @@
-package com.example.sms.service.shipping;
+package com.example.sms.service.sales.shipping;
 
 import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.sales.order.ConsumptionTaxAmount;
