@@ -8,6 +8,7 @@ import com.example.sms.domain.model.sales.order.Order;
 import com.example.sms.domain.model.sales.order.OrderNumber;
 import com.example.sms.domain.model.sales.order.OrderLine;
 import com.example.sms.domain.model.sales.order.OrderList;
+import com.example.sms.domain.model.sales.sales.SalesNumber;
 import com.example.sms.domain.model.system.autonumber.AutoNumber;
 import com.example.sms.domain.model.system.autonumber.DocumentTypeCode;
 import com.example.sms.domain.service.sales.order.OrderDomainService;
@@ -188,6 +189,19 @@ public class SalesOrderService {
     }
 
     /**
+     * 受注番号生成
+     */
+    private String generateOrderNumber(LocalDateTime orderDate) {
+        String code = DocumentTypeCode.受注.getCode();
+        LocalDateTime yearMonth = YearMonth.of(orderDate.getYear(), orderDate.getMonth()).atDay(1).atStartOfDay();
+        Integer autoNumber = autoNumberService.getNextDocumentNumber(code, yearMonth);
+        String orderNumber = OrderNumber.generate(code, yearMonth, autoNumber);
+        autoNumberService.save(AutoNumber.of(code, yearMonth, autoNumber));
+        autoNumberService.incrementDocumentNumber(code, yearMonth);
+        return orderNumber;
+    }
+
+    /**
      * CSVファイルアップロードバリデーション
      */
     private SalesOrderUploadErrorList validateErrors(List<OrderUploadCSV> dataList) {
@@ -253,9 +267,9 @@ public class SalesOrderService {
                     .map(num -> num.replaceAll("\\s", ""))
                     .orElse(null);
 
-            if (orderNumber == null) {
-                // OrderNumberがnullであればスキップ
-                continue;
+            if (orderNumber == null || orderNumber.isEmpty()) {
+                // 受注番号が空の場合は自動採番
+                orderNumber = generateOrderNumber(csv.getOrderDate());
             }
 
             // `computeIfAbsent`を使って、存在しなければ新しいSalesOrderを作成
