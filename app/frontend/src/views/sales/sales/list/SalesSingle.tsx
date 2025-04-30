@@ -416,17 +416,17 @@ const Form = ({
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colSpan={9} className="total-label">小計</td>
+                                <td colSpan={1} className="total-label">小計</td>
                                 <td className="total-amount">{(newSales.totalSalesAmount - newSales.totalConsumptionTax).toLocaleString()}</td>
                                 <td colSpan={1}></td>
                             </tr>
                             <tr>
-                                <td colSpan={9} className="total-label">消費税</td>
+                                <td colSpan={1} className="total-label">消費税</td>
                                 <td className="total-amount">{newSales.totalConsumptionTax.toLocaleString()}</td>
                                 <td colSpan={1}></td>
                             </tr>
                             <tr>
-                                <td colSpan={9} className="total-label">合計金額</td>
+                                <td colSpan={1} className="total-label">合計金額</td>
                                 <td className="total-amount">{newSales.totalSalesAmount.toLocaleString()}</td>
                                 <td colSpan={1}></td>
                             </tr>

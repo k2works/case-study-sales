@@ -424,19 +424,19 @@ const Form = ({isEditing, newSalesOrder, setNewSalesOrder, setSelectedLineIndex,
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colSpan={10} className="total-label">小計</td>
+                                <td colSpan={1} className="total-label">小計</td>
                                 <td className="total-amount">{(newSalesOrder.totalOrderAmount - newSalesOrder.totalConsumptionTax).toLocaleString()}</td>
-                                <td colSpan={2}></td>
+                                <td colSpan={1}></td>
                             </tr>
                             <tr>
-                                <td colSpan={10} className="total-label">消費税</td>
+                                <td colSpan={1} className="total-label">消費税</td>
                                 <td className="total-amount">{newSalesOrder.totalConsumptionTax.toLocaleString()}</td>
-                                <td colSpan={2}></td>
+                                <td colSpan={1}></td>
                             </tr>
                             <tr>
-                                <td colSpan={10} className="total-label">合計金額</td>
+                                <td colSpan={1} className="total-label">合計金額</td>
                                 <td className="total-amount">{newSalesOrder.totalOrderAmount.toLocaleString()}</td>
-                                <td colSpan={2}></td>
+                                <td colSpan={1}></td>
                             </tr>
                         </tfoot>
                     </table>
