@@ -4,7 +4,7 @@ import {SalesLineType, SalesType, SalesTypeEnumType} from "../../../../models/sa
 import {convertToDateInputFormat} from "../../../../components/application/utils.ts";
 import {FormInput, FormSelect, SingleViewHeaderActions, SingleViewHeaderItem} from "../../../Common.tsx";
 import "./Sales.css";
-import {TaxRateEnumType} from "../../../../models/sales/order.ts";
+import {getTaxRate, TaxRateEnumType} from "../../../../models/sales/order.ts";
 
 interface HeaderProps {
     title: string;
@@ -46,9 +46,20 @@ const calculateLineAmount = (line: SalesLineType): number => {
     return line.salesQuantity * line.salesUnitPrice - (line.discountAmount || 0);
 };
 
+const calculateLineTax = (line: SalesLineType) => {
+    const amount = calculateLineAmount(line);
+    const taxRate = getTaxRate(line);
+    return line.taxRate === TaxRateEnumType.その他 ? 0 : Math.floor(amount * taxRate);
+};
+
 const calculateTotalAmount = (lines: SalesLineType[]): number => {
     return lines.reduce((sum, line) => sum + calculateLineAmount(line), 0);
 };
+
+const calculateTotalTax = (lines : SalesLineType[]): number => {
+    return lines.reduce((sum, line) => sum + calculateLineTax(line), 0);
+
+}
 
 const Form = ({
     isEditing, 
@@ -68,13 +79,12 @@ const Form = ({
         };
 
         const totalAmount = calculateTotalAmount(newLines);
-        // 消費税率10%と仮定
-        const totalTax = Math.floor(totalAmount * 0.1);
+        const totalTax = calculateTotalTax(newLines);
 
         setNewSales({
             ...newSales,
             salesLines: newLines,
-            totalSalesAmount: totalAmount + totalTax,
+            totalSalesAmount: totalAmount,
             totalConsumptionTax: totalTax
         });
     };
@@ -417,7 +427,7 @@ const Form = ({
                         <tfoot>
                             <tr>
                                 <td colSpan={1} className="total-label">小計</td>
-                                <td className="total-amount">{(newSales.totalSalesAmount - newSales.totalConsumptionTax).toLocaleString()}</td>
+                                <td className="total-amount">{(newSales.totalSalesAmount).toLocaleString()}</td>
                                 <td colSpan={1}></td>
                             </tr>
                             <tr>
@@ -427,7 +437,7 @@ const Form = ({
                             </tr>
                             <tr>
                                 <td colSpan={1} className="total-label">合計金額</td>
-                                <td className="total-amount">{newSales.totalSalesAmount.toLocaleString()}</td>
+                                <td className="total-amount">{(newSales.totalSalesAmount + newSales.totalConsumptionTax).toLocaleString()}</td>
                                 <td colSpan={1}></td>
                             </tr>
                         </tfoot>

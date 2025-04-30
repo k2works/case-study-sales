@@ -1,5 +1,6 @@
 import { PageNationType } from "../../views/application/PageNation.tsx";
 import {toISOStringLocal } from "../../components/application/utils.ts";
+import {SalesLineType} from "./sales.ts";
 
 export enum TaxRateEnumType {
     標準税率 = "標準税率",
@@ -104,3 +105,7 @@ export const mapToSalesOrderCriteriaResource = (criteria: SalesOrderCriteriaType
         ...(isEmpty(criteria.remarks) ? {} : { remarks: criteria.remarks })
     };
 };
+
+export const getTaxRate = (line: SalesOrderLineType | SalesLineType) => {
+    return line.taxRate === TaxRateEnumType.標準税率 ? TaxRateValues[TaxRateEnumType.標準税率] : line.taxRate === TaxRateEnumType.軽減税率 ? TaxRateValues[TaxRateEnumType.軽減税率] : 0;
+}
