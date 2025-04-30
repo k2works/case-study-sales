@@ -245,27 +245,12 @@ public class ShippingEntityMapper {
         return new ShippingDownloadCSV(
                 shipping.getOrderNumber().getValue(),
                 shipping.getOrderDate().getValue(),
-                shipping.getDepartmentCode().getValue(),
-                shipping.getDepartmentStartDate(),
-                shipping.getCustomerCode().getCode().getValue(),
-                shipping.getEmployeeCode().getValue(),
-                shipping.getDesiredDeliveryDate().getValue(),
-                shipping.getCustomerOrderNumber(),
-                shipping.getWarehouseCode(),
-                shipping.getTotalOrderAmount().getAmount(),
-                shipping.getTotalConsumptionTax().getAmount(),
-                shipping.getRemarks(),
-                shipping.getOrderLineNumber(),
                 shipping.getProductCode().getValue(),
                 shipping.getProductName(),
-                shipping.getSalesUnitPrice().getAmount(),
                 shipping.getOrderQuantity().getAmount(),
-                shipping.getTaxRate().getRate(),
-                shipping.getAllocationQuantity().getAmount(),
                 shipping.getShipmentInstructionQuantity().getAmount(),
                 shipping.getShippedQuantity().getAmount(),
                 shipping.getCompletionFlag().getValue(),
-                shipping.getDiscountAmount().getAmount(),
                 shipping.getDeliveryDate().getValue()
         );
     }
