@@ -145,8 +145,9 @@ class ShippingTest {
         void shouldCreateTaxRateType() {
             assertNotNull(TaxRateType.of(8));
             assertNotNull(TaxRateType.of(10));
-            assertThrows(IllegalArgumentException.class, () -> TaxRateType.of(0));
+            assertNotNull(TaxRateType.of(0));
             assertThrows(IllegalArgumentException.class, () -> TaxRateType.of(100));
+            assertThrows(IllegalArgumentException.class, () -> TaxRateType.of(-100));
         }
     }
 
