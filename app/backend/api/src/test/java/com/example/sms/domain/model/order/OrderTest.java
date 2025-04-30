@@ -1,5 +1,7 @@
 package com.example.sms.domain.model.order;
 
+import com.example.sms.domain.model.sales.order.*;
+import com.example.sms.domain.model.sales.order.Order;
 import com.example.sms.domain.type.money.Money;
 import org.junit.jupiter.api.*;
 
@@ -204,8 +206,8 @@ class OrderTest {
             return this;
         }
 
-        public Order build() {
-            return Order.of(
+        public com.example.sms.domain.model.sales.order.Order build() {
+            return com.example.sms.domain.model.sales.order.Order.of(
                     orderNumber,
                     orderDate,
                     departmentCode,
@@ -232,7 +234,7 @@ class OrderTest {
                 .withOrderQuantity(2)
                 .build();
 
-        Order order = new SalesOrderBuilder()
+        com.example.sms.domain.model.sales.order.Order order = new SalesOrderBuilder()
                 .withTotalOrderAmount(2000)
                 .withTotalConsumptionTax(200)
                 .addSalesOrderLine(orderLine)
@@ -445,7 +447,7 @@ class OrderTest {
         void shouldCalculateTotalOrderAmountWithSingleLine() {
             OrderLine orderLine = new SalesOrderLineBuilder().build();
 
-            Order order = new SalesOrderBuilder()
+            com.example.sms.domain.model.sales.order.Order order = new SalesOrderBuilder()
                     .addSalesOrderLine(orderLine)
                     .build();
 
@@ -462,7 +464,7 @@ class OrderTest {
                     .withOrderQuantity(3)
                     .build();
 
-            Order order = new SalesOrderBuilder()
+            com.example.sms.domain.model.sales.order.Order order = new SalesOrderBuilder()
                     .addSalesOrderLine(orderLine1)
                     .addSalesOrderLine(orderLine2)
                     .build();
@@ -481,7 +483,7 @@ class OrderTest {
                     .withTaxRate(TaxRateType.標準税率.getRate())
                     .build();
 
-            Order order = new SalesOrderBuilder()
+            com.example.sms.domain.model.sales.order.Order order = new SalesOrderBuilder()
                     .addSalesOrderLine(orderLine)
                     .build();
 

@@ -1,10 +1,10 @@
 package com.example.sms.infrastructure.datasource.system.download;
 
-import com.example.sms.domain.model.order.OrderList;
+import com.example.sms.domain.model.sales.order.OrderList;
 import com.example.sms.domain.model.system.download.DownloadCriteria;
-import com.example.sms.infrastructure.datasource.order.OrderCustomEntity;
-import com.example.sms.infrastructure.datasource.order.OrderCustomMapper;
-import com.example.sms.infrastructure.datasource.order.OrderEntityMapper;
+import com.example.sms.infrastructure.datasource.sales.order.OrderCustomEntity;
+import com.example.sms.infrastructure.datasource.sales.order.OrderCustomMapper;
+import com.example.sms.infrastructure.datasource.sales.order.OrderEntityMapper;
 import com.example.sms.service.system.download.OrderCSVRepository;
 import org.springframework.stereotype.Repository;
 

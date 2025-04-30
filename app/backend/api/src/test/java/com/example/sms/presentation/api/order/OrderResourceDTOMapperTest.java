@@ -1,7 +1,14 @@
 package com.example.sms.presentation.api.order;
 
-import com.example.sms.domain.model.order.*;
-import com.example.sms.service.order.SalesOrderCriteria;
+import com.example.sms.domain.model.sales.order.CompletionFlag;
+import com.example.sms.domain.model.sales.order.Order;
+import com.example.sms.domain.model.sales.order.OrderLine;
+import com.example.sms.domain.model.sales.order.TaxRateType;
+import com.example.sms.presentation.api.sales.order.OrderCriteriaResource;
+import com.example.sms.presentation.api.sales.order.OrderLineResource;
+import com.example.sms.presentation.api.sales.order.OrderResource;
+import com.example.sms.presentation.api.sales.order.OrderResourceDTOMapper;
+import com.example.sms.service.sales.order.SalesOrderCriteria;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

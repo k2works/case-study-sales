@@ -1,11 +1,11 @@
 package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
-import com.example.sms.domain.model.order.CompletionFlag;
-import com.example.sms.domain.model.order.TaxRateType;
-import com.example.sms.presentation.api.order.OrderCriteriaResource;
-import com.example.sms.presentation.api.order.OrderLineResource;
-import com.example.sms.presentation.api.order.OrderResource;
+import com.example.sms.domain.model.sales.order.CompletionFlag;
+import com.example.sms.domain.model.sales.order.TaxRateType;
+import com.example.sms.presentation.api.sales.order.OrderCriteriaResource;
+import com.example.sms.presentation.api.sales.order.OrderLineResource;
+import com.example.sms.presentation.api.sales.order.OrderResource;
 import com.example.sms.stepdefinitions.utils.ListResponse;
 import com.example.sms.stepdefinitions.utils.MessageResponse;
 import com.example.sms.stepdefinitions.utils.SpringAcceptanceTest;

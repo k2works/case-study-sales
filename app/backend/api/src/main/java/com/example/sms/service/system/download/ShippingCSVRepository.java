@@ -1,6 +1,6 @@
 package com.example.sms.service.system.download;
 
-import com.example.sms.domain.model.shipping.ShippingList;
+import com.example.sms.domain.model.sales.shipping.ShippingList;
 import com.example.sms.domain.model.system.download.DownloadCriteria;
 import com.example.sms.infrastructure.datasource.system.download.ShippingDownloadCSV;
 import java.util.List;

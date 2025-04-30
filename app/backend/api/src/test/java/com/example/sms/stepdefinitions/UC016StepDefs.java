@@ -1,10 +1,10 @@
 package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
-import com.example.sms.domain.model.order.Order;
-import com.example.sms.domain.model.order.OrderLine;
-import com.example.sms.domain.model.order.OrderList;
-import com.example.sms.service.order.SalesOrderRepository;
+import com.example.sms.domain.model.sales.order.Order;
+import com.example.sms.domain.model.sales.order.OrderLine;
+import com.example.sms.domain.model.sales.order.OrderList;
+import com.example.sms.service.sales.order.SalesOrderRepository;
 import com.example.sms.stepdefinitions.utils.MessageResponseWithDetail;
 import com.example.sms.stepdefinitions.utils.SpringAcceptanceTest;
 import com.fasterxml.jackson.core.JsonProcessingException;

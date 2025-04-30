@@ -1,9 +1,10 @@
 package com.example.sms.service.sales;
 
 import com.example.sms.TestDataFactoryImpl;
-import com.example.sms.domain.model.sales.Sales;
-import com.example.sms.domain.model.sales.SalesLine;
-import com.example.sms.domain.model.sales.SalesList;
+import com.example.sms.domain.model.sales.sales.Sales;
+import com.example.sms.domain.model.sales.sales.SalesLine;
+import com.example.sms.domain.model.sales.sales.SalesList;
+import com.example.sms.service.sales.sales.SalesRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

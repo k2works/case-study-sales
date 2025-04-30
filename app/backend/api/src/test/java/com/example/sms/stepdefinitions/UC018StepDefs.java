@@ -1,8 +1,8 @@
 package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
-import com.example.sms.presentation.api.shipping.ShippingCriteriaResource;
-import com.example.sms.presentation.api.shipping.ShippingResource;
+import com.example.sms.presentation.api.sales.shipping.ShippingCriteriaResource;
+import com.example.sms.presentation.api.sales.shipping.ShippingResource;
 import com.example.sms.stepdefinitions.utils.MessageResponse;
 import com.example.sms.stepdefinitions.utils.SpringAcceptanceTest;
 import com.fasterxml.jackson.core.JsonProcessingException;

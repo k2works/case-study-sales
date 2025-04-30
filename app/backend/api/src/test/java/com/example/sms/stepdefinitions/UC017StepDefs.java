@@ -1,13 +1,13 @@
 package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
-import com.example.sms.domain.model.sales.SalesType;
-import com.example.sms.domain.model.order.TaxRateType;
-import com.example.sms.presentation.api.sales.SalesCriteriaResource;
-import com.example.sms.presentation.api.sales.SalesLineResource;
-import com.example.sms.presentation.api.sales.SalesResource;
+import com.example.sms.domain.model.sales.sales.SalesType;
+import com.example.sms.domain.model.sales.order.TaxRateType;
+import com.example.sms.presentation.api.sales.sales.SalesCriteriaResource;
+import com.example.sms.presentation.api.sales.sales.SalesLineResource;
+import com.example.sms.presentation.api.sales.sales.SalesResource;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
-import com.example.sms.service.sales.SalesRepository;
+import com.example.sms.service.sales.sales.SalesRepository;
 import com.example.sms.stepdefinitions.utils.ListResponse;
 import com.example.sms.stepdefinitions.utils.SpringAcceptanceTest;
 import com.fasterxml.jackson.core.JsonProcessingException;

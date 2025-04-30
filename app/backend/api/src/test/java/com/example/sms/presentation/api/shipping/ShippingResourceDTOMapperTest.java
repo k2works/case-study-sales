@@ -1,8 +1,11 @@
 package com.example.sms.presentation.api.shipping;
 
-import com.example.sms.domain.model.order.CompletionFlag;
-import com.example.sms.domain.model.shipping.Shipping;
-import com.example.sms.service.shipping.ShippingCriteria;
+import com.example.sms.domain.model.sales.order.CompletionFlag;
+import com.example.sms.domain.model.sales.shipping.Shipping;
+import com.example.sms.presentation.api.sales.shipping.ShippingCriteriaResource;
+import com.example.sms.presentation.api.sales.shipping.ShippingResource;
+import com.example.sms.presentation.api.sales.shipping.ShippingResourceDTOMapper;
+import com.example.sms.service.sales.shipping.ShippingCriteria;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

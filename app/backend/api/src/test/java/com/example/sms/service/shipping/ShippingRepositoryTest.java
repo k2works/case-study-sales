@@ -1,11 +1,14 @@
 package com.example.sms.service.shipping;
 
 import com.example.sms.TestDataFactoryImpl;
-import com.example.sms.domain.model.order.*;
-import com.example.sms.domain.model.order.Order;
-import com.example.sms.domain.model.shipping.Shipping;
+import com.example.sms.domain.model.sales.order.ConsumptionTaxAmount;
+import com.example.sms.domain.model.sales.order.Order;
+import com.example.sms.domain.model.sales.order.OrderLine;
+import com.example.sms.domain.model.sales.order.SalesAmount;
+import com.example.sms.domain.model.sales.shipping.Shipping;
 import com.example.sms.domain.type.money.Money;
-import com.example.sms.service.order.SalesOrderRepository;
+import com.example.sms.service.sales.order.SalesOrderRepository;
+import com.example.sms.service.sales.shipping.ShippingRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

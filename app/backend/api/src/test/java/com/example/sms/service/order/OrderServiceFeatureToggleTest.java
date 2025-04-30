@@ -1,11 +1,13 @@
 package com.example.sms.service.order;
 
 import com.example.sms.FeatureToggleProperties;
-import com.example.sms.domain.service.order.OrderDomainService;
+import com.example.sms.domain.service.sales.order.OrderDomainService;
 import com.example.sms.service.master.department.DepartmentRepository;
 import com.example.sms.service.master.employee.EmployeeRepository;
 import com.example.sms.service.master.partner.PartnerRepository;
 import com.example.sms.service.master.product.ProductRepository;
+import com.example.sms.service.sales.order.SalesOrderRepository;
+import com.example.sms.service.sales.order.SalesOrderService;
 import nl.altindag.log.LogCaptor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
