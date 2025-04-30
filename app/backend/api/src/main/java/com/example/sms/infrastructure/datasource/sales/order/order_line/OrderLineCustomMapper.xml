@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.sms.infrastructure.datasource.sales.order.order_line.OrderLineCustomMapper">
+    <resultMap
+            id="BaseResultMap"
+            type="com.example.sms.infrastructure.datasource.sales.order.order_line.OrderLineCustomEntity"
+            extends="com.example.sms.infrastructure.datasource.autogen.mapper.受注データ明細Mapper.BaseResultMap">
+        <association property="商品マスタ"
+                     javaType="com.example.sms.infrastructure.datasource.master.product.ProductCustomMapper"
+                     column="商品コード"
+                     select="com.example.sms.infrastructure.datasource.master.product.ProductCustomMapper.selectByPrimaryKey"
+                     fetchType="eager"
+        />
+    </resultMap>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.受注データ明細Mapper.Base_Column_List"/>
+        from public.受注データ明細
+    </select>
+
+    <select id="selectBySalesOrderNumber" resultMap="BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.受注データ明細Mapper.Base_Column_List"/>
+        from public.受注データ明細
+        where 受注番号 = #{salesOrderNumber}
+    </select>
+
+    <select id="selectBySalesOrderNumberAndLineNumber" resultMap="BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.受注データ明細Mapper.Base_Column_List"/>
+        from public.受注データ明細
+        where 受注番号 = #{salesOrderNumber}
+        and 受注行番号 = #{lineNumber}
+    </select>
+
+    <delete id="deleteBySalesOrderNumber" parameterType="java.lang.String">
+        delete from public.受注データ明細
+        where 受注番号 = #{salesOrderNumber}
+    </delete>
+
+    <delete id="deleteBySalesOrderNumberAndLineNumber">
+        delete from public.受注データ明細
+        where 受注番号 = #{salesOrderNumber}
+        and 受注行番号 = #{lineNumber}
+    </delete>
+</mapper>

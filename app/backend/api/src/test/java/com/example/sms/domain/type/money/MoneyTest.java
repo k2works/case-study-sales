@@ -1,5 +1,6 @@
 package com.example.sms.domain.type.money;
 
+import com.example.sms.domain.type.quantity.Quantity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -189,6 +190,36 @@ public class MoneyTest {
             Expression sum = new Sum(fiveBucks, oneHundredFiftyYens).times(2);
             Money result = exchange.reduce(sum, CurrencyType.USD);
             assertEquals(Money.dollar(12), result);
+        }
+
+        @Test
+        @DisplayName("金額の加算をテストする")
+        void testAddition() {
+            Money money1 = new Money(100, CurrencyType.JPY);
+            Money money2 = new Money(200, CurrencyType.JPY);
+            Money result = money1.plusMoney(money2);
+            Assertions.assertEquals(300, result.amount);
+            Assertions.assertEquals(money1.currency, result.currency);
+        }
+
+        @Test
+        @DisplayName("金額の減算をテストする")
+        void testSubtraction() {
+            Money money1 = new Money(200, CurrencyType.JPY);
+            Money money2 = new Money(100, CurrencyType.JPY);
+            Money result = money1.subtract(money2);
+            Assertions.assertEquals(100, result.amount);
+            Assertions.assertEquals(money1.currency, result.currency);
+        }
+
+        @Test
+        @DisplayName("数量で割ることをテストする")
+        void testDivision() {
+            Money money = new Money(100, CurrencyType.JPY);
+            Quantity quantity = Quantity.of(2);
+            Money result = money.divide(quantity);
+            Assertions.assertEquals(50, result.amount);
+            Assertions.assertEquals(money.currency, result.currency);
         }
     }
 

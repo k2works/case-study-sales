@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
 /**
- * 仕入先ダウンロード条件<
+ * 仕入先ダウンロード条件
  */
 @Value
 @RequiredArgsConstructor

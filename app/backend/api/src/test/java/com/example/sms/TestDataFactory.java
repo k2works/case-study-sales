@@ -29,15 +29,21 @@ public interface TestDataFactory {
 
     void setUpForVendorService();
 
-    void setUpForSalesOrderService();
+    void setUpForOrderService();
 
-    void setUpForSalesOrderUploadService();
+    void setUpForOrderUploadService();
 
-    void setUpForSalesOrderRuleCheckService();
+    void setUpForOrderRuleCheckService();
 
-    MultipartFile createSalesOrderFile();
+    void setUpForShippingService();
 
-    MultipartFile createSalesOrderInvalidFile();
+    void setUpForShippingRuleCheckService();
 
-    MultipartFile createSalesOrderCheckRuleFile();
+    void setUpForSalesService();
+
+    MultipartFile createOrderFile();
+
+    MultipartFile createOrderInvalidFile();
+
+    MultipartFile createOrderCheckRuleFile();
 }

@@ -20,7 +20,7 @@ public class UC015StepDefs extends SpringAcceptanceTest {
 
     private static final String PORT = "8079";
     private static final String HOST = "http://localhost:" + PORT;
-    private static final String SALES_ORDER_API_URL = HOST + "/api/sales-orders";
+    private static final String SALES_ORDER_API_URL = HOST + "/api/orders";
     @Autowired
     TestDataFactory testDataFactory;
 
@@ -53,7 +53,7 @@ public class UC015StepDefs extends SpringAcceptanceTest {
                 testDataFactory.setUpForCustomerService();
                 break;
             case "受注データ":
-                testDataFactory.setUpForSalesOrderService();
+                testDataFactory.setUpForOrderService();
                 break;
             default:
                 break;
@@ -64,7 +64,7 @@ public class UC015StepDefs extends SpringAcceptanceTest {
     public void upload(String data) {
         if (data.equals("受注データ")) {
             try {
-                MultipartFile file = testDataFactory.createSalesOrderFile();
+                MultipartFile file = testDataFactory.createOrderFile();
                 uploadFile(SALES_ORDER_API_URL + "/upload", file);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -76,7 +76,7 @@ public class UC015StepDefs extends SpringAcceptanceTest {
     public void uploadInvalid(String data) {
         if (data.equals("受注データ")) {
             try {
-                MultipartFile file = testDataFactory.createSalesOrderInvalidFile();
+                MultipartFile file = testDataFactory.createOrderInvalidFile();
                 uploadFile(SALES_ORDER_API_URL + "/upload", file);
             } catch (IOException e) {
                 e.printStackTrace();

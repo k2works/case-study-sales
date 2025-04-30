@@ -1,5 +1,6 @@
 package com.example.sms;
 
+import com.example.sms.domain.model.master.employee.EmployeeCode;
 import com.example.sms.domain.model.master.partner.customer.Customer;
 import com.example.sms.domain.model.master.partner.customer.Shipping;
 import com.example.sms.domain.model.master.partner.vendor.Vendor;
@@ -11,8 +12,12 @@ import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.master.partner.*;
 import com.example.sms.domain.model.master.partner.Partner;
 import com.example.sms.domain.model.master.product.*;
-import com.example.sms.domain.model.sales_order.SalesOrder;
-import com.example.sms.domain.model.sales_order.SalesOrderLine;
+import com.example.sms.domain.model.sales.order.Order;
+import com.example.sms.domain.model.sales.order.OrderLine;
+import com.example.sms.domain.model.sales.order.OrderList;
+import com.example.sms.domain.model.sales.order.TaxRateType;
+import com.example.sms.domain.model.sales.sales.Sales;
+import com.example.sms.domain.model.sales.sales.SalesLine;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
@@ -26,7 +31,8 @@ import com.example.sms.service.master.partner.PartnerGroupRepository;
 import com.example.sms.service.master.partner.PartnerRepository;
 import com.example.sms.service.master.product.ProductCategoryRepository;
 import com.example.sms.service.master.product.ProductRepository;
-import com.example.sms.service.sales_order.SalesOrderRepository;
+import com.example.sms.service.sales.sales.SalesRepository;
+import com.example.sms.service.sales.order.SalesOrderRepository;
 import com.example.sms.service.system.audit.AuditRepository;
 import com.example.sms.service.system.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +43,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.IntFunction;
 import java.util.stream.IntStream;
 
 @Component
@@ -64,6 +72,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
     PartnerRepository partnerRepository;
     @Autowired
     SalesOrderRepository salesOrderRepository;
+    @Autowired
+    SalesRepository salesRepository;
 
     @Override
     public void setUpForAuthApiService() {
@@ -142,9 +152,9 @@ public class TestDataFactoryImpl implements TestDataFactory {
         productCategoryRepository.save(ProductCategory.of("00000002", "カテゴリ4", 1, "2", 3));
         productCategoryRepository.save(ProductCategory.of("00000003", "カテゴリ5", 1, "2", 3));
         productRepository.deleteAll();
-        productRepository.save(Product.of("99999999", "商品1", "商品1", "ショウヒンイチ", ProductType.その他, 900, 810, 90, TaxType.その他, "カテゴリ9", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "009", 9));
-        productRepository.save(Product.of("99999998", "商品2", "商品2", "ショウヒン二", ProductType.その他, 800, 720, 80, TaxType.その他, "カテゴリ8", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "008", 8));
-        productRepository.save(Product.of("99999997", "商品3", "商品3", "ショウヒンサン", ProductType.その他, 700, 630, 70, TaxType.その他, "カテゴリ7", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "007", 7));
+        productRepository.save(Product.of("99999999", "商品1", "商品1", "ショウヒンイチ", ProductType.その他, 900, 810, 90, TaxType.外税, "カテゴリ9", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "009", 9));
+        productRepository.save(Product.of("99999998", "商品2", "商品2", "ショウヒン二", ProductType.その他, 800, 720, 80, TaxType.外税, "カテゴリ8", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "008", 8));
+        productRepository.save(Product.of("99999997", "商品3", "商品3", "ショウヒンサン", ProductType.その他, 700, 630, 70, TaxType.外税, "カテゴリ7", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "007", 7));
 
         partnerGroupRepository.deleteAll();
         partnerGroupRepository.save(PartnerGroup.of("0001", "取引先グループ1"));
@@ -159,20 +169,98 @@ public class TestDataFactoryImpl implements TestDataFactory {
         partnerRepository.save(Partner.ofWithVendors(getPartner("002"), List.of(getVendor("002", 1), getVendor("002", 2), getVendor("002", 3))));
 
         salesOrderRepository.deleteAll();
-        SalesOrder order1 = getSalesOrder("1000000001");
+        Order order1 = getSalesOrder("OD00000001");
         IntStream.rangeClosed(1, 3).forEach(i -> {
-            SalesOrderLine line = getSalesOrderLine(order1.getOrderNumber().getValue(), i);
-            salesOrderRepository.save(SalesOrder.of(order1, List.of(line)));
+            OrderLine line = getSalesOrderLine(order1.getOrderNumber().getValue(), i);
+            salesOrderRepository.save(Order.of(order1, List.of(line)));
         });
-        SalesOrder order2 = getSalesOrder("1000000002");
+        Order order2 = getSalesOrder("OD00000002");
         IntStream.rangeClosed(1, 3).forEach(i -> {
-            SalesOrderLine line = getSalesOrderLine(order2.getOrderNumber().getValue(), i);
-            salesOrderRepository.save(SalesOrder.of(order2, List.of(line)));
+            OrderLine line = getSalesOrderLine(order2.getOrderNumber().getValue(), i);
+            salesOrderRepository.save(Order.of(order2, List.of(line)));
         });
-        SalesOrder order3 = getSalesOrder("1000000003");
+        Order order3 = getSalesOrder("OD00000003");
         IntStream.rangeClosed(1, 3).forEach(i -> {
-            SalesOrderLine line = getSalesOrderLine(order3.getOrderNumber().getValue(), i);
-            salesOrderRepository.save(SalesOrder.of(order3, List.of(line)));
+            OrderLine line = getSalesOrderLine(order3.getOrderNumber().getValue(), i);
+            salesOrderRepository.save(Order.of(order3, List.of(line)));
+        });
+        // 商品データの準備
+        productRepository.save(Product.of(
+                "99999999", // 商品コード
+                "商品1",    // 商品名
+                "商品1",    // 商品名カナ
+                "ショウヒンイチ", // 商品英語名
+                ProductType.その他, // 商品種別
+                900, // 商品標準価格
+                810, // 売上単価
+                90,  // 利益額
+                TaxType.その他, // 税種別
+                "カテゴリ9", // カテゴリ
+                MiscellaneousType.適用外, // 雑費区分
+                StockManagementTargetType.対象, // 在庫管理対象
+                StockAllocationType.引当済, // 在庫引当区分
+                "009", // 倉庫コード
+                9    // 入荷リードタイム
+        ));
+
+        // 部門データの準備
+        Department department = departmentRepository.findById(DepartmentId.of("30000", LocalDateTime.of(2021, 1, 1, 0, 0))).orElseThrow();
+
+        // 取引先データの準備
+        Partner partner = partnerRepository.findById("001").orElseThrow();
+
+        // 社員データの準備
+        Employee employee = employeeRepository.findById(EmployeeCode.of("EMP003")).orElseThrow();
+
+        // 出荷データの準備
+        setUpForShippingService();
+
+        // 売上データの削除
+        salesRepository.deleteAll();
+
+        // 売上データの準備
+        IntStream.rangeClosed(1, 3).forEach(i -> {
+            // 売上番号をフォーマット
+            String salesNumber = String.format("SA%08d", i);
+
+            // 売上明細の準備
+            List<SalesLine> salesLines = IntStream.range(1, 4)
+                    .mapToObj((IntFunction<SalesLine>) lineNumber -> SalesLine.of(
+                            salesNumber,
+                            lineNumber,
+                            "99999999", // 商品コード
+                            "商品1",    // 商品名
+                            800, // 売上単価
+                            10, // 売上数量
+                            10, // 出荷数量
+                            0, // 値引金額
+                            (LocalDateTime.of(2021, 1, 1, 0, 0)), // 請求日
+                            "B001", // 請求番号
+                            0, // 請求遅延区分
+                            (LocalDateTime.of(2021, 1, 1, 0, 0)), // 自動仕訳日,
+                            null,
+                            TaxRateType.標準税率
+                    ))
+                    .toList();
+
+            // 売上エンティティの作成
+            Sales newSales = Sales.of(
+                    salesNumber,
+                    salesNumber.replace("SA", "OD"), // 仮登録用の受注番号
+                    (LocalDateTime.of(2021, 1, 1, 0, 0)), // 売上日
+                    1, // 売上区分
+                    department.getDepartmentId().getDeptCode().getValue(), // 部門コード
+                    department.getDepartmentId().getDepartmentStartDate().getValue(), // 部門開始日
+                    partner.getPartnerCode().getValue(), // 取引先コード
+                    employee.getEmpCode().getValue(), // 社員コード
+                    null, // 赤黒伝票番号
+                    null, // 元伝票番号
+                    "テスト備考", // 備考
+                    salesLines // 売上明細
+            );
+
+            // 作成した売上データを保存
+            salesRepository.save(newSales);
         });
     }
 
@@ -268,7 +356,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
     }
 
     @Override
-    public void setUpForSalesOrderService() {
+    public void setUpForOrderService() {
         Department department = getDepartment("10000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門1");
         departmentRepository.save(department);
         Employee employee = getEmployee("EMP001", "10000", LocalDateTime.of(2021, 1, 1, 0, 0));
@@ -279,17 +367,17 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 .mapToObj(i -> getShipping(partner.getPartnerCode().getValue(), i, customer.getCustomerCode().getBranchNumber()))
                 .toList();
         partnerRepository.save(Partner.ofWithCustomers(partner, List.of(Customer.of(customer, shippingList))));
-        productRepository.save(Product.of("99999999", "商品1", "商品1", "ショウヒンイチ", ProductType.その他, 900, 810, 90, TaxType.その他, "カテゴリ9", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "009", 9));
+        productRepository.save(Product.of("99999999", "商品1", "商品1", "ショウヒンイチ", ProductType.その他, 900, 810, 90, TaxType.外税, "カテゴリ9", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "009", 9));
 
         salesOrderRepository.deleteAll();
 
         IntStream.rangeClosed(1, 3).forEach(i -> {
-            String orderNumber = String.format("1%09d", i);
-            SalesOrder order = getSalesOrder(orderNumber);
-            List<SalesOrderLine> lines = IntStream.range(1, 4)
+            String orderNumber = String.format("OD%08d", i);
+            Order order = getSalesOrder(orderNumber);
+            List<OrderLine> lines = IntStream.range(1, 4)
                     .mapToObj(lineNumber -> getSalesOrderLine(order.getOrderNumber().getValue(), lineNumber))
                     .toList();
-            SalesOrder newOrder = SalesOrder.of(
+            Order newOrder = Order.of(
                     order.getOrderNumber().getValue(),
                     order.getOrderDate().getValue(),
                     department.getDepartmentId().getDeptCode().getValue(),
@@ -309,7 +397,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
     }
 
     @Override
-    public void setUpForSalesOrderUploadService() {
+    public void setUpForOrderUploadService() {
         salesOrderRepository.deleteAll();
         setUpForDepartmentService();
         setUpForProductService();
@@ -318,7 +406,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
     }
 
     @Override
-    public void setUpForSalesOrderRuleCheckService() {
+    public void setUpForOrderRuleCheckService() {
         salesOrderRepository.deleteAll();
         setUpForDepartmentService();
         setUpForProductService();
@@ -327,12 +415,146 @@ public class TestDataFactoryImpl implements TestDataFactory {
     }
 
     @Override
-    public MultipartFile createSalesOrderFile() {
-        InputStream is = getClass().getResourceAsStream("/csv/sales_order/sales_order_multiple.csv");
+    public void setUpForShippingService() {
+        setUpForOrderService();
+
+        OrderList orderList = salesOrderRepository.selectAll();
+
+        salesOrderRepository.deleteAll();
+
+        orderList.asList().forEach(
+                salesOrder -> {
+                    List<OrderLine> lines = salesOrder.getOrderLines();
+                    List<OrderLine> newLines = new ArrayList<>();
+                    for (OrderLine line : lines) {
+                        OrderLine newLine = OrderLine.of(
+                                line.getOrderNumber().getValue(),  // orderNumber（受注番号）
+                                line.getOrderLineNumber(),  // orderLineNumber（受注行番号）
+                                "99999999",  // productCode（商品コード）
+                                "商品1",  // productName（商品名）
+                                1000,  // salesUnitPrice（販売単価）
+                                10,  // orderQuantity（受注数量）
+                                10,  // taxRate（消費税率）
+                                10,  // allocationQuantity（引当数量）
+                                10,  // shipmentInstructionQuantity（出荷指示数量）
+                                10,  // shippedQuantity（出荷済数量）
+                                1,  // completionFlag（完了フラグ）
+                                10,  // discountAmount（値引金額）
+                                LocalDateTime.of(2021, 1, 1, 0, 0)  // deliveryDate（納期）
+                        );
+                        newLines.add(newLine);
+                    }
+                    Order newOrder = Order.of(salesOrder, newLines);
+                    salesOrderRepository.save(newOrder);
+                }
+        );
+    }
+
+    @Override
+    public void setUpForShippingRuleCheckService() {
+        salesOrderRepository.deleteAll();
+        setUpForDepartmentService();
+        setUpForProductService();
+        setUpForPartnerService();
+        setUpForEmployeeService();
+    }
+
+    @Override
+    public void setUpForSalesService() {
+        // 部門データの準備
+        Department department = getDepartment("10000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門1");
+        departmentRepository.save(department);
+
+        // 社員データの準備
+        Employee employee = getEmployee("EMP001", "10000", LocalDateTime.of(2021, 1, 1, 0, 0));
+        employeeRepository.save(employee);
+
+        // 取引先・顧客データの準備
+        Partner partner = getPartner("001");
+        Customer customer = getCustomer(partner.getPartnerCode().getValue(), 1);
+        List<Shipping> shippingList = IntStream.rangeClosed(1, 3)
+                .mapToObj(i -> getShipping(partner.getPartnerCode().getValue(), i, customer.getCustomerCode().getBranchNumber()))
+                .toList();
+        partnerRepository.save(Partner.ofWithCustomers(partner, List.of(Customer.of(customer, shippingList))));
+
+        // 商品データの準備
+        productRepository.save(Product.of(
+                "99999999", // 商品コード
+                "商品1",    // 商品名
+                "商品1",    // 商品名カナ
+                "ショウヒンイチ", // 商品英語名
+                ProductType.その他, // 商品種別
+                900, // 商品標準価格
+                810, // 売上単価
+                90,  // 利益額
+                TaxType.その他, // 税種別
+                "カテゴリ9", // カテゴリ
+                MiscellaneousType.適用外, // 雑費区分
+                StockManagementTargetType.対象, // 在庫管理対象
+                StockAllocationType.引当済, // 在庫引当区分
+                "009", // 倉庫コード
+                9    // 入荷リードタイム
+        ));
+
+        // 出荷データの準備
+        setUpForShippingService();
+
+        // 売上データの削除
+        salesRepository.deleteAll();
+
+        // 売上データの準備
+        IntStream.rangeClosed(1, 3).forEach(i -> {
+            // 売上番号をフォーマット
+            String salesNumber = String.format("SA%08d", i);
+
+            // 売上明細の準備
+            List<SalesLine> salesLines = IntStream.range(1, 4)
+                    .mapToObj((IntFunction<SalesLine>) lineNumber -> SalesLine.of(
+                            salesNumber,
+                            lineNumber,
+                            "99999999", // 商品コード
+                            "商品1",    // 商品名
+                            800, // 売上単価
+                            10, // 売上数量
+                            10, // 出荷数量
+                            0, // 値引金額
+                            LocalDateTime.now(), // 請求日
+                            "B001", // 請求番号
+                            0, // 請求遅延区分
+                            LocalDateTime.now(), // 自動仕訳日,
+                            null,
+                            TaxRateType.標準税率
+                    ))
+                    .toList();
+
+            // 売上エンティティの作成
+            Sales newSales = Sales.of(
+                    salesNumber,
+                    salesNumber.replace("SA", "OD"), // 仮登録用の受注番号
+                    LocalDateTime.now(), // 売上日
+                    1, // 売上区分
+                    department.getDepartmentId().getDeptCode().getValue(), // 部門コード
+                    department.getDepartmentId().getDepartmentStartDate().getValue(), // 部門開始日
+                    customer.getCustomerCode().getCode().getValue(), // 取引先コード
+                    employee.getEmpCode().getValue(), // 社員コード
+                    null, // 赤黒伝票番号
+                    null, // 元伝票番号
+                    "テスト備考", // 備考
+                    salesLines // 売上明細
+            );
+
+            // 作成した売上データを保存
+            salesRepository.save(newSales);
+        });
+    }
+
+    @Override
+    public MultipartFile createOrderFile() {
+        InputStream is = getClass().getResourceAsStream("/csv/order/order_multiple.csv");
         try {
             return new MockMultipartFile(
-                    "sales_order_multiple.csv",
-                    "sales_order_multiple.csv",
+                    "order_multiple.csv",
+                    "order_multiple.csv",
                     "text/csv",
                     is
             );
@@ -342,12 +564,12 @@ public class TestDataFactoryImpl implements TestDataFactory {
     }
 
     @Override
-    public MultipartFile createSalesOrderInvalidFile() {
-        InputStream is = getClass().getResourceAsStream("/csv/sales_order/sales_order_unregistered_code.csv");
+    public MultipartFile createOrderInvalidFile() {
+        InputStream is = getClass().getResourceAsStream("/csv/order/order_unregistered_code.csv");
         try {
             return new MockMultipartFile(
-                    "sales_order_multiple.csv",
-                    "sales_order_multiple.csv",
+                    "order_multiple.csv",
+                    "order_multiple.csv",
                     "text/csv",
                     is
             );
@@ -357,12 +579,12 @@ public class TestDataFactoryImpl implements TestDataFactory {
     }
 
     @Override
-    public MultipartFile createSalesOrderCheckRuleFile() {
-        InputStream is = getClass().getResourceAsStream("/csv/sales_order/sales_order_check_rule.csv");
+    public MultipartFile createOrderCheckRuleFile() {
+        InputStream is = getClass().getResourceAsStream("/csv/order/order_check_rule.csv");
         try {
             return new MockMultipartFile(
-                    "sales_order_multiple.csv",
-                    "sales_order_multiple.csv",
+                    "order_multiple.csv",
+                    "order_multiple.csv",
                     "text/csv",
                     is
             );
@@ -517,8 +739,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
         );
     }
 
-    public static SalesOrder getSalesOrder(String orderNumber) {
-        return SalesOrder.of(
+    public static Order getSalesOrder(String orderNumber) {
+        return Order.of(
                 orderNumber,  // orderNumber（受注番号）
                 LocalDateTime.of(2021, 1, 1, 0, 0),  // orderDate（受注日）
                 "10009",  // departmentCode（部門コード）
@@ -536,8 +758,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
         );
     }
 
-    public static SalesOrderLine getSalesOrderLine(String orderNumber, int lineNumber) {
-        return SalesOrderLine.of(
+    public static OrderLine getSalesOrderLine(String orderNumber, int lineNumber) {
+        return OrderLine.of(
                 orderNumber,  // orderNumber（受注番号）
                 lineNumber,  // orderLineNumber（受注行番号）
                 "99999999",  // productCode（商品コード）
@@ -551,6 +773,42 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 0,  // completionFlag（完了フラグ）
                 10,  // discountAmount（値引金額）
                 LocalDateTime.of(2021, 1, 1, 0, 0)  // deliveryDate（納期）
+        );
+    }
+
+    public static Sales getSales(String salesNumber) {
+        return Sales.of(
+                salesNumber,
+                "OD00000009",
+                LocalDateTime.of(2023, 10, 1, 0, 0),
+                1,
+                "10000",
+                LocalDateTime.of(2023, 10, 1, 0, 0),
+                "001",
+                "EMP001",
+                1,
+                "V001",
+                "テスト備考",
+                List.of()
+        );
+    }
+
+    public static SalesLine getSalesLine(String salesNumber, int lineNumber) {
+        return SalesLine.of(
+                salesNumber,
+                lineNumber,
+                "99999999",
+                "商品名",
+                1000,
+                10,
+                10,
+                10,
+                LocalDateTime.of(2023, 10, 1, 0, 0),
+                "001",
+                0,
+                LocalDateTime.of(2023, 10, 1, 0, 0),
+                null,
+                TaxRateType.標準税率
         );
     }
 

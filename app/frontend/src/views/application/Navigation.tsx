@@ -47,12 +47,28 @@ const NaveItems: React.FC = () => {
                     <li className="nav-item">
                         販売
                         <ul className="nav-sub-list">
-                            <SubNavItem id="side-nav-sales-order-nav" to="/sales-order">受注</SubNavItem>
+                            <SubNavItem id="side-nav-order-nav" to="/order">受注</SubNavItem>
                             {!Env.isProduction() && (
                                 <ul className="nav-sub-list">
-                                    <SubNavItem id="side-nav-product-nav" to="/sales-order-list">一覧</SubNavItem>
-                                    <SubNavItem id="side-nav-product-nav" to="/sales-order-upload">一括登録</SubNavItem>
-                                    <SubNavItem id="side-nav-product-nav" to="/sales-order-rule">ルール</SubNavItem>
+                                    <SubNavItem id="side-nav-product-nav" to="/order-list">一覧</SubNavItem>
+                                    <SubNavItem id="side-nav-product-nav" to="/order-upload">一括登録</SubNavItem>
+                                    <SubNavItem id="side-nav-product-nav" to="/order-rule">ルール</SubNavItem>
+                                </ul>
+                            )}
+                            <SubNavItem id="side-nav-shipping-nav" to="/shipping">出荷</SubNavItem>
+                            {!Env.isProduction() && (
+                                <ul className="nav-sub-list">
+                                    <SubNavItem id="side-nav-shipping-nav" to="/shipping-list">一覧</SubNavItem>
+                                    <SubNavItem id="side-nav-shipping-nav" to="/shipping-rule">ルール</SubNavItem>
+                                    <SubNavItem id="side-nav-shipping-nav" to="/shipping-order">指示</SubNavItem>
+                                    <SubNavItem id="side-nav-shipping-nav" to="/shipping-confirm">確認</SubNavItem>
+                                </ul>
+                            )}
+                            <SubNavItem id="side-nav-sales-nav" to="/sales">売上</SubNavItem>
+                            {!Env.isProduction() && (
+                                <ul className="nav-sub-list">
+                                    <SubNavItem id="side-nav-sales-nav" to="/sales-list">一覧</SubNavItem>
+                                    <SubNavItem id="side-nav-sales-nav" to="/sales-summary">集計</SubNavItem>
                                 </ul>
                             )}
                         </ul>
@@ -98,12 +114,28 @@ const NaveItems: React.FC = () => {
                     <li className="nav-item">
                         販売
                         <ul className="nav-sub-list">
-                            <SubNavItem id="side-nav-sales-order-nav" to="/sales-order">受注</SubNavItem>
+                            <SubNavItem id="side-nav-order-nav" to="/order">受注</SubNavItem>
                             {!Env.isProduction() && (
                                 <ul className="nav-sub-list">
-                                    <SubNavItem id="side-nav-product-nav" to="/sales-order-list">一覧</SubNavItem>
-                                    <SubNavItem id="side-nav-product-nav" to="/sales-order-upload">一括登録</SubNavItem>
-                                    <SubNavItem id="side-nav-product-nav" to="/sales-order-rule">ルール</SubNavItem>
+                                    <SubNavItem id="side-nav-product-nav" to="/order-list">一覧</SubNavItem>
+                                    <SubNavItem id="side-nav-product-nav" to="/order-upload">一括登録</SubNavItem>
+                                    <SubNavItem id="side-nav-product-nav" to="/order-rule">ルール</SubNavItem>
+                                </ul>
+                            )}
+                            <SubNavItem id="side-nav-shipping-nav" to="/shipping">出荷</SubNavItem>
+                            {!Env.isProduction() && (
+                                <ul className="nav-sub-list">
+                                    <SubNavItem id="side-nav-shipping-nav" to="/shipping-list">一覧</SubNavItem>
+                                    <SubNavItem id="side-nav-shipping-nav" to="/shipping-rule">ルール</SubNavItem>
+                                    <SubNavItem id="side-nav-shipping-nav" to="/shipping-order">指示</SubNavItem>
+                                    <SubNavItem id="side-nav-shipping-nav" to="/shipping-confirm">確認</SubNavItem>
+                                </ul>
+                            )}
+                            <SubNavItem id="side-nav-sales-nav" to="/sales">売上</SubNavItem>
+                            {!Env.isProduction() && (
+                                <ul className="nav-sub-list">
+                                    <SubNavItem id="side-nav-sales-nav" to="/sales-list">一覧</SubNavItem>
+                                    <SubNavItem id="side-nav-sales-nav" to="/sales-summary">集計</SubNavItem>
                                 </ul>
                             )}
                         </ul>

@@ -48,6 +48,20 @@ public class Money implements Expression {
         return new Money(this.amount + other.amount, this.currency);
     }
 
+    public Money subtract(Money value) {
+        notNull(value, "減算対象の金額は必須です。");
+        isTrue(this.currency.equals(value.currency), "異なる通貨の減算はできません。");
+
+        return new Money(this.amount - value.amount, this.currency);
+    }
+
+    public Money divide(Quantity orderQuantity) {
+        notNull(orderQuantity, "数量は必須です。");
+        isTrue(orderQuantity.getAmount() > 0, "数量は0より大きい必要があります。");
+
+        return new Money(amount / orderQuantity.getAmount(), currency);
+    }
+
     static Money dollar(int amount) {
         return new Money(amount, CurrencyType.USD);
     }

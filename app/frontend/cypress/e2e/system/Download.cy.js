@@ -75,6 +75,20 @@ describe('アプリケーションデータダウンロード', () => {
             cy.get('#download').click();
             cy.get('#message').contains('受注 データをダウンロードしました。');
         });
+
+        it('出荷データダウンロード', () => {
+            userPage();
+            cy.get('#downloadTarget').select('出荷');
+            cy.get('#download').click();
+            cy.get('#message').contains('出荷 データをダウンロードしました。');
+        });
+
+        it('売上データダウンロード', () => {
+            userPage();
+            cy.get('#downloadTarget').select('売上');
+            cy.get('#download').click();
+            cy.get('#message').contains('売上 データをダウンロードしました。');
+        });
     });
 
     describe('利用者', () => {
@@ -152,6 +166,20 @@ describe('アプリケーションデータダウンロード', () => {
             cy.get('#downloadTarget').select('受注');
             cy.get('#download').click();
             cy.get('#message').contains('受注 データをダウンロードしました。');
+        });
+
+        it('出荷データダウンロード', () => {
+            userPage();
+            cy.get('#downloadTarget').select('出荷');
+            cy.get('#download').click();
+            cy.get('#message').contains('出荷 データをダウンロードしました。');
+        });
+
+        it('売上データダウンロード', () => {
+            userPage();
+            cy.get('#downloadTarget').select('売上');
+            cy.get('#download').click();
+            cy.get('#message').contains('売上 データをダウンロードしました。');
         });
     });
 });

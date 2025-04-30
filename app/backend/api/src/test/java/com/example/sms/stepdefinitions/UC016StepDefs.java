@@ -1,10 +1,10 @@
 package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
-import com.example.sms.domain.model.sales_order.SalesOrder;
-import com.example.sms.domain.model.sales_order.SalesOrderLine;
-import com.example.sms.domain.model.sales_order.SalesOrderList;
-import com.example.sms.service.sales_order.SalesOrderRepository;
+import com.example.sms.domain.model.sales.order.Order;
+import com.example.sms.domain.model.sales.order.OrderLine;
+import com.example.sms.domain.model.sales.order.OrderList;
+import com.example.sms.service.sales.order.SalesOrderRepository;
 import com.example.sms.stepdefinitions.utils.MessageResponseWithDetail;
 import com.example.sms.stepdefinitions.utils.SpringAcceptanceTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -27,7 +27,7 @@ public class UC016StepDefs extends SpringAcceptanceTest {
 
     private static final String PORT = "8079";
     private static final String HOST = "http://localhost:" + PORT;
-    private static final String SALES_ORDER_API_URL = HOST + "/api/sales-orders";
+    private static final String SALES_ORDER_API_URL = HOST + "/api/orders";
     @Autowired
     TestDataFactory testDataFactory;
     @Autowired
@@ -64,7 +64,7 @@ public class UC016StepDefs extends SpringAcceptanceTest {
                 testDataFactory.setUpForCustomerService();
                 break;
             case "受注データ":
-                testDataFactory.setUpForSalesOrderService();
+                testDataFactory.setUpForOrderService();
                 break;
             default:
                 break;
@@ -75,7 +75,7 @@ public class UC016StepDefs extends SpringAcceptanceTest {
     public void upload(String data) {
         if (data.equals("受注データ")) {
             try {
-                MultipartFile file = testDataFactory.createSalesOrderFile();
+                MultipartFile file = testDataFactory.createOrderFile();
                 uploadFile(SALES_ORDER_API_URL + "/upload", file);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -87,7 +87,7 @@ public class UC016StepDefs extends SpringAcceptanceTest {
     public void uploadInvalid(String data) {
         if (data.equals("受注データ")) {
             try {
-                MultipartFile file = testDataFactory.createSalesOrderCheckRuleFile();
+                MultipartFile file = testDataFactory.createOrderCheckRuleFile();
                 uploadFile(SALES_ORDER_API_URL + "/upload", file);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -104,11 +104,11 @@ public class UC016StepDefs extends SpringAcceptanceTest {
 
     @もし(":UC016 {string} を確認する\\(確認項目なし)")
     public void checkNo(String rule) throws JsonProcessingException {
-        SalesOrderList salesOrderList = salesOrderRepository.selectAllNotComplete();
-        salesOrderList.asList().forEach(salesOrder -> {
-            List<SalesOrderLine> salesOrderLines = new ArrayList<>();
-            salesOrder.getSalesOrderLines().forEach(salesOrderLine -> {
-                SalesOrderLine line = SalesOrderLine.of(
+        OrderList orderList = salesOrderRepository.selectAllNotComplete();
+        orderList.asList().forEach(salesOrder -> {
+            List<OrderLine> orderLines = new ArrayList<>();
+            salesOrder.getOrderLines().forEach(salesOrderLine -> {
+                OrderLine line = OrderLine.of(
                         salesOrderLine.getOrderNumber().getValue(),
                         salesOrderLine.getOrderLineNumber(),
                         salesOrderLine.getProductCode().getValue(),
@@ -123,12 +123,12 @@ public class UC016StepDefs extends SpringAcceptanceTest {
                         salesOrderLine.getDiscountAmount().getAmount(),
                         LocalDateTime.now().plusDays(1)
                 );
-                salesOrderLines.add(line);
+                orderLines.add(line);
             });
             salesOrderRepository.save(
-                    SalesOrder.of(
+                    Order.of(
                             salesOrder,
-                            salesOrderLines
+                            orderLines
                     )
             );
         });

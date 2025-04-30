@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 
-export type PageNationType = {
+export type PageNationType<T = unknown> = {
     endRow: number;
     hasNextPage: boolean;
     hasPreviousPage: boolean;
@@ -18,10 +18,11 @@ export type PageNationType = {
     size: number;
     startRow: number;
     total: number;
+    list: T[];
 };
 
-export const usePageNation = <T = never>() => {
-    const [pageNation, setPageNation] = useState<PageNationType | null>(null);
+export const usePageNation = <T = never, U = unknown>() => {
+    const [pageNation, setPageNation] = useState<PageNationType<U> | null>(null);
     const [criteria, setCriteria] = useState<T | null>(null);
 
     return {
@@ -32,13 +33,13 @@ export const usePageNation = <T = never>() => {
     }
 }
 
-interface PageNationComponentProps<T = never> {
-    pageNation: PageNationType | null;
+interface PageNationComponentProps<T = never, U = unknown> {
+    pageNation: PageNationType<U> | null;
     callBack: (page: number, criteria?: T) => void;
     criteria?: T;
 }
 
-export const PageNation = <T = never>({pageNation, callBack, criteria} : PageNationComponentProps<T>) => {
+export const PageNation = <T = never, U = unknown>({pageNation, callBack, criteria} : PageNationComponentProps<T, U>) => {
     const handlePageClick = (page: number) => (event: React.MouseEvent<HTMLAnchorElement>) => {
         event.preventDefault();
         callBack(page, criteria ?? undefined);

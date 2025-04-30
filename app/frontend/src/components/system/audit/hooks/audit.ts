@@ -67,13 +67,14 @@ export const useFetchAudits = (
                 return criteria ? service.search(criteria, page) : service.select(page);
             };
 
-            const { list, ...pagination } = await fetchAudits(criteria, page);
+            const result = await fetchAudits(criteria, page);
 
-            setList(list);
-            setPageNation(pagination);
+            setList(result.list);
+            setPageNation(result);
             setError("");
-        } catch (error: any) {
-            showErrorMessage(`${ERROR_MESSAGE} ${error?.message}`, setError);
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : '不明なエラーが発生しました';
+            showErrorMessage(`${ERROR_MESSAGE} ${errorMessage}`, setError);
         } finally {
             setLoading(false);
         }

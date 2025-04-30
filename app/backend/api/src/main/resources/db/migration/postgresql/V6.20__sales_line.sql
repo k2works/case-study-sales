@@ -1,0 +1,2 @@
+ALTER TABLE "売上データ明細"
+    ADD COLUMN "消費税率" INT DEFAULT 0;

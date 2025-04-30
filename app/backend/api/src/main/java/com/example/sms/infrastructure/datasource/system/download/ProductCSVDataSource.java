@@ -39,7 +39,7 @@ public class ProductCSVDataSource implements ProductCSVRepository {
     public ProductList selectBy(DownloadCriteria condition) {
         List<ProductCustomEntity> productEntities = productCustomMapper.selectAll();
         return new ProductList(productEntities.stream()
-                .map(productEntityMapper::mapToDomainModel)
+                .map(ProductEntityMapper::mapToDomainModel)
                 .toList());
     }
 }
