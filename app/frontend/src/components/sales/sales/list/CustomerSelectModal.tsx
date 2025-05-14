@@ -1,15 +1,15 @@
 import React from "react";
 import Modal from "react-modal";
+import { CustomerCollectionSelectView } from "../../../../views/master/partner/customer/CustomerSelect.tsx";
+import { useCustomerContext } from "../../../../providers/master/partner/Customer.tsx";
+import { CustomerType } from "../../../../models/master/partner";
 import {useSalesContext} from "../../../../providers/sales/Sales.tsx";
-import {PartnerCollectionSelectView} from "../../../../views/master/partner/PartnerSelect.tsx";
-import {PartnerType} from "../../../../models/master/partner";
-import {usePartnerListContext} from "../../../../providers/master/partner/PartnerList.tsx";
 
 type CustomerSelectModalProps = {
     type: "edit" | "search";
 };
 
-export const PartnerSelectModal: React.FC<CustomerSelectModalProps> = ({ type }) => {
+export const CustomerSelectModal: React.FC<CustomerSelectModalProps> = ({ type }) => {
     const {
         newSales,
         setNewSales,
@@ -18,14 +18,14 @@ export const PartnerSelectModal: React.FC<CustomerSelectModalProps> = ({ type })
     } = useSalesContext();
 
     const {
-        pageNation: partnerPageNation,
-        modalIsOpen: partnerModalIsOpen,
+        pageNation: customerPageNation,
+        modalIsOpen: customerModalIsOpen,
         setModalIsOpen: setCustomerModalIsOpen,
-        searchModalIsOpen: partnerSearchModalIsOpen,
+        searchModalIsOpen: customerSearchModalIsOpen,
         setSearchModalIsOpen: setCustomerSearchModalIsOpen,
-        partners,
-        fetchPartners,
-    } = usePartnerListContext();
+        customers,
+        fetchCustomers,
+    } = useCustomerContext();
 
     // 編集モーダルを閉じる
     const handleCloseEditModal = () => {
@@ -38,60 +38,62 @@ export const PartnerSelectModal: React.FC<CustomerSelectModalProps> = ({ type })
     };
 
     // 編集モード用モーダルビュー
-    const partnerEditModalView = () => (
+    const customerEditModalView = () => (
         <Modal
-            isOpen={partnerModalIsOpen}
+            isOpen={customerModalIsOpen}
             onRequestClose={handleCloseEditModal}
-            contentLabel="取引先情報を入力"
+            contentLabel="顧客情報を入力"
             className="modal"
             overlayClassName="modal-overlay"
             bodyOpenClassName="modal-open"
         >
-            <PartnerCollectionSelectView
-                partners={partners}
-                handleSelect={(partner: PartnerType) => {
+            <CustomerCollectionSelectView
+                customers={customers}
+                handleSelect={(customer: CustomerType) => {
                     setNewSales({
                         ...newSales,
-                        customerCode: partner.partnerCode,
+                        customerCode: customer.customerCode,
+                        customerBranchNumber: customer.customerBranchNumber,
                     });
                     setCustomerModalIsOpen(false);
                 }}
                 handleClose={handleCloseEditModal}
-                pageNation={partnerPageNation}
-                fetchPartners={fetchPartners.load}
+                pageNation={customerPageNation}
+                fetchCustomers={fetchCustomers.load}
             />
         </Modal>
     );
 
     // 検索モード用モーダルビュー
-    const partnerSearchModalView = () => (
+    const customerSearchModalView = () => (
         <Modal
-            isOpen={partnerSearchModalIsOpen}
+            isOpen={customerSearchModalIsOpen}
             onRequestClose={handleCloseSearchModal}
-            contentLabel="取引先情報を検索"
+            contentLabel="顧客情報を検索"
             className="modal"
             overlayClassName="modal-overlay"
             bodyOpenClassName="modal-open"
         >
-            <PartnerCollectionSelectView
-                partners={partners}
-                handleSelect={() => {
+            <CustomerCollectionSelectView
+                customers={customers}
+                handleSelect={(customer: CustomerType) => {
                     setSearchSalesCriteria({
                         ...searchSalesCriteria,
+                        customerCode: customer.customerCode,
                     });
                     setCustomerSearchModalIsOpen(false);
                 }}
                 handleClose={handleCloseSearchModal}
-                pageNation={partnerPageNation}
-                fetchPartners={fetchPartners.load}
+                pageNation={customerPageNation}
+                fetchCustomers={fetchCustomers.load}
             />
         </Modal>
     );
 
     return (
         <>
-            {type === "edit" ? partnerEditModalView() : null}
-            {type === "search" ? partnerSearchModalView() : null}
+            {type === "edit" ? customerEditModalView() : null}
+            {type === "search" ? customerSearchModalView() : null}
         </>
     );
 };

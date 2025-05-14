@@ -30,7 +30,7 @@ describe('売上管理', () => {
                 cy.get('#departmentCode').type('10000');
                 cy.get('.collection-object-container-modal > .collection-object-list > :nth-child(1) > .collection-object-item-actions > .action-button').click();
                 cy.get('#customerCode').type('001');
-                cy.get(':nth-child(1) > .collection-object-item-actions > #select-partner').click();
+                cy.get(':nth-child(1) > .collection-object-item-actions > #select-customer').click();
                 cy.get('#employeeCode').type('EMP001');
                 cy.get(':nth-child(1) > .collection-object-item-actions > #select-employee').click();
                 cy.get('#remarks').type('テスト売上');
@@ -155,7 +155,7 @@ describe('売上管理', () => {
                 cy.get('#departmentCode').type('10000');
                 cy.get('.collection-object-container-modal > .collection-object-list > :nth-child(1) > .collection-object-item-actions > .action-button').click();
                 cy.get('#customerCode').type('001');
-                cy.get(':nth-child(1) > .collection-object-item-actions > #select-partner').click();
+                cy.get(':nth-child(1) > .collection-object-item-actions > #select-customer').click();
                 cy.get('#employeeCode').type('EMP001');
                 cy.get(':nth-child(1) > .collection-object-item-actions > #select-employee').click();
                 cy.get('#remarks').type('テスト売上');

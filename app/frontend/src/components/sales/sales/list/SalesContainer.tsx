@@ -6,7 +6,7 @@ import { SalesCollection } from "./SalesCollection.tsx";
 import { DepartmentProvider, useDepartmentContext } from "../../../../providers/master/Department.tsx";
 import { EmployeeProvider, useEmployeeContext } from "../../../../providers/master/Employee.tsx";
 import { ProductItemProvider, useProductItemContext } from "../../../../providers/master/product/ProductItem.tsx";
-import {PartnerListProvider, usePartnerListContext} from "../../../../providers/master/partner/PartnerList.tsx";
+import {CustomerProvider, useCustomerContext} from "../../../../providers/master/partner/Customer.tsx";
 
 export const SalesContainer: React.FC = () => {
     const Content: React.FC = () => {
@@ -25,8 +25,8 @@ export const SalesContainer: React.FC = () => {
         } = useEmployeeContext();
 
         const {
-            fetchPartners,
-        } = usePartnerListContext();
+            fetchCustomers,
+        } = useCustomerContext();
 
         const {
             fetchProducts,
@@ -39,7 +39,7 @@ export const SalesContainer: React.FC = () => {
                         await fetchSales.load(),
                         fetchDepartments.load(),
                         fetchEmployees.load(),
-                        fetchPartners.load(),
+                        fetchCustomers.load(),
                         fetchProducts.load(),
                     ]);
                 } catch (error: unknown) {
@@ -64,11 +64,11 @@ export const SalesContainer: React.FC = () => {
         <SalesProvider>
             <DepartmentProvider>
                 <EmployeeProvider>
-                    <PartnerListProvider>
+                    <CustomerProvider>
                         <ProductItemProvider>
                             <Content />
                         </ProductItemProvider>
-                    </PartnerListProvider>
+                    </CustomerProvider>
                 </EmployeeProvider>
             </DepartmentProvider>
         </SalesProvider>

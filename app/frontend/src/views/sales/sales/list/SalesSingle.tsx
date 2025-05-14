@@ -211,9 +211,22 @@ const Form = ({
                 value={newSales.customerCode}
                 onChange={(e) => setNewSales({
                     ...newSales,
+                    partnerCode: e.target.value,
                     customerCode: e.target.value
                 })}
                 onClick={handleCustomerSelect}
+            />
+            <FormInput
+                label="顧客枝番"
+                id="customerBranchNumber"
+                type="number"
+                className="single-view-content-item-form-item-input"
+                value={newSales.customerBranchNumber}
+                onChange={(e) => setNewSales({
+                    ...newSales,
+                    customerBranchNumber: Number(e.target.value)
+                })}
+                disabled={true}
             />
             <FormInput
                 label="社員コード"
@@ -459,7 +472,7 @@ interface SalesSingleViewProps {
     handleCloseModal: () => void;
     handleDepartmentSelect: () => void;
     handleEmployeeSelect: () => void;
-    handlePartnerSelect: () => void;
+    handleCustomerSelect: () => void;
     handleProductSelect: () => void;
 }
 
@@ -472,7 +485,7 @@ export const SalesSingleView: React.FC<SalesSingleViewProps> = ({
     setSelectedLineIndex,
     handleCreateOrUpdateSales,
     handleCloseModal,
-    handlePartnerSelect,
+    handleCustomerSelect,
     handleDepartmentSelect,
     handleEmployeeSelect,
     handleProductSelect,
@@ -499,7 +512,7 @@ export const SalesSingleView: React.FC<SalesSingleViewProps> = ({
                             setSelectedLineIndex={setSelectedLineIndex}
                             handleDepartmentSelect={handleDepartmentSelect}
                             handleEmployeeSelect={handleEmployeeSelect}
-                            handleCustomerSelect={handlePartnerSelect}
+                            handleCustomerSelect={handleCustomerSelect}
                             handleProductSelect={handleProductSelect}
                         />
                     </div>

@@ -40,7 +40,9 @@ export interface SalesType {
     salesType: SalesTypeEnumType;
     departmentCode: string;
     departmentStartDate: string;
+    partnerCode: string;
     customerCode: string;
+    customerBranchNumber: number;
     employeeCode: string;
     totalSalesAmount: number;
     totalConsumptionTax: number;
@@ -56,6 +58,7 @@ export interface SalesCriteriaType {
     salesNumber?: string;
     orderNumber?: string;
     salesDate?: string;
+    customerCode?: string;
     departmentCode?: string;
     remarks?: string;
 }
@@ -69,7 +72,9 @@ export const mapToSalesResource = (sales: SalesType) => {
         salesType: sales.salesType ? SalesTypeValues[sales.salesType] : null,
         departmentCode: sales.departmentCode,
         departmentStartDate: toISOStringLocal(new Date(sales.departmentStartDate)),
+        partnerCode: sales.partnerCode,
         customerCode: sales.customerCode,
+        customerBranchNumber: sales.customerBranchNumber,
         employeeCode: sales.employeeCode,
         totalSalesAmount: sales.totalSalesAmount,
         totalConsumptionTax: sales.totalConsumptionTax,
@@ -135,7 +140,9 @@ export const initialSales: SalesType = {
     salesType: SalesTypeEnumType.現金,
     departmentCode: "",
     departmentStartDate: "",
+    partnerCode: "",
     customerCode: "",
+    customerBranchNumber: 0,
     employeeCode: "",
     totalSalesAmount: 0,
     totalConsumptionTax: 0,
