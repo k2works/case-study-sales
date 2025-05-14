@@ -2,6 +2,7 @@ package com.example.sms;
 
 import com.example.sms.domain.model.master.employee.EmployeeCode;
 import com.example.sms.domain.model.master.partner.customer.Customer;
+import com.example.sms.domain.model.master.partner.customer.CustomerCode;
 import com.example.sms.domain.model.master.partner.customer.Shipping;
 import com.example.sms.domain.model.master.partner.vendor.Vendor;
 import com.example.sms.domain.model.master.product.MiscellaneousType;
@@ -207,7 +208,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
         Department department = departmentRepository.findById(DepartmentId.of("30000", LocalDateTime.of(2021, 1, 1, 0, 0))).orElseThrow();
 
         // 取引先データの準備
-        Partner partner = partnerRepository.findById("001").orElseThrow();
+        Customer customer = partnerRepository.findCustomerById(CustomerCode.of("001", 1)).orElseThrow();
 
         // 社員データの準備
         Employee employee = employeeRepository.findById(EmployeeCode.of("EMP003")).orElseThrow();
@@ -251,7 +252,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
                     1, // 売上区分
                     department.getDepartmentId().getDeptCode().getValue(), // 部門コード
                     department.getDepartmentId().getDepartmentStartDate().getValue(), // 部門開始日
-                    partner.getPartnerCode().getValue(), // 取引先コード
+                    customer.getCustomerCode().getCode().getValue(), // 取引先コード
+                    customer.getCustomerCode().getBranchNumber(),
                     employee.getEmpCode().getValue(), // 社員コード
                     null, // 赤黒伝票番号
                     null, // 元伝票番号
@@ -536,6 +538,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
                     department.getDepartmentId().getDeptCode().getValue(), // 部門コード
                     department.getDepartmentId().getDepartmentStartDate().getValue(), // 部門開始日
                     customer.getCustomerCode().getCode().getValue(), // 取引先コード
+                    customer.getCustomerCode().getBranchNumber(),
                     employee.getEmpCode().getValue(), // 社員コード
                     null, // 赤黒伝票番号
                     null, // 元伝票番号
@@ -785,6 +788,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 "10000",
                 LocalDateTime.of(2023, 10, 1, 0, 0),
                 "001",
+                1,
                 "EMP001",
                 1,
                 "V001",

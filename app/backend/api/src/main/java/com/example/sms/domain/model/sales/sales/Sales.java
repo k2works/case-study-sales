@@ -3,6 +3,7 @@ package com.example.sms.domain.model.sales.sales;
 import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.employee.EmployeeCode;
 import com.example.sms.domain.model.master.partner.PartnerCode;
+import com.example.sms.domain.model.master.partner.customer.CustomerCode;
 import com.example.sms.domain.model.sales.order.OrderNumber;
 import com.example.sms.domain.type.money.Money;
 import lombok.AllArgsConstructor;
@@ -24,7 +25,8 @@ public class Sales {
     SalesDate salesDate; // 売上日
     SalesType salesType; // 売上区分
     DepartmentId departmentId; // 部門ID
-    PartnerCode customerCode; // 取引先コード
+    PartnerCode partnerCode; // 取引先コード
+    CustomerCode customerCode; // 顧客コード
     EmployeeCode employeeCode; // 社員コード
     Money totalSalesAmount; // 売上金額合計
     Money totalConsumptionTax; // 消費税合計
@@ -38,7 +40,7 @@ public class Sales {
      * ファクトリーメソッド
      */
     public static Sales of(String salesNumber, String orderNumber, LocalDateTime salesDate, Integer salesType, String departmentCode, LocalDateTime departmentStartDate,
-                           String customerCode, String employeeCode, Integer voucherNumber, String originalVoucherNumber,
+                           String customerCode, Integer customerBranchNumber, String employeeCode, Integer voucherNumber, String originalVoucherNumber,
                            String remarks, List<SalesLine> salesLines) {
         Money calcTotalSalesAmount = salesLines.stream()
                 .map(SalesLine::calcSalesAmount)
@@ -58,6 +60,7 @@ public class Sales {
                 salesTypeValueObject,
                 DepartmentId.of(departmentCode, departmentStartDate),
                 PartnerCode.of(customerCode),
+                CustomerCode.of(customerCode, customerBranchNumber),
                 EmployeeCode.of(employeeCode),
                 calcTotalSalesAmount,
                 calcTotalConsumptionTax,

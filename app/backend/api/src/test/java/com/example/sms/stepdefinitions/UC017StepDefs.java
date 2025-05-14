@@ -291,6 +291,7 @@ public class UC017StepDefs extends SpringAcceptanceTest {
         salesResource.setDepartmentCode(departmentCode);
         salesResource.setDepartmentStartDate(OffsetDateTime.parse(salesDate).toLocalDateTime());
         salesResource.setCustomerCode(customerCode);
+        salesResource.setCustomerBranchNumber(1);
         salesResource.setEmployeeCode(employeeCode);
         salesResource.setTotalSalesAmount(Integer.parseInt(totalAmount));
         salesResource.setRemarks("備考");

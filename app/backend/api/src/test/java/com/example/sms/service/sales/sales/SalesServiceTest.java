@@ -47,7 +47,7 @@ class SalesServiceTest {
             SalesList result = salesService.selectAll();
             assertEquals(3, result.asList().size());
             Sales firstSales = result.asList().get(0);
-            assertNotNull(firstSales.getCustomerCode());
+            assertNotNull(firstSales.getPartnerCode());
             assertNotNull(firstSales.getSalesLines());
             assertNotNull(firstSales.getSalesLines().get(0).getProductCode());
         }
@@ -80,6 +80,7 @@ class SalesServiceTest {
                     "10000",
                     LocalDateTime.now(),
                     "001",
+                    1,
                     "EMP001",
                     123,
                     "V001",
@@ -124,6 +125,7 @@ class SalesServiceTest {
                     "10000",
                     LocalDateTime.now(),
                     "001",
+                    1,
                     "EMP001",
                     123,
                     "V001",
@@ -150,7 +152,8 @@ class SalesServiceTest {
                     sales.getSalesType().getCode(),
                     sales.getDepartmentId().getDeptCode().getValue(),
                     sales.getDepartmentId().getDepartmentStartDate().getValue(),
-                    sales.getCustomerCode().getValue(),
+                    sales.getCustomerCode().getCode().getValue(),
+                    sales.getCustomerCode().getBranchNumber(),
                     sales.getEmployeeCode().getValue(),
                     sales.getVoucherNumber(),
                     sales.getOriginalVoucherNumber(),
@@ -189,7 +192,8 @@ class SalesServiceTest {
                     sales.getSalesType().getCode(),
                     departmentCode, // 部門コードを条件に設定
                     sales.getDepartmentId().getDepartmentStartDate().getValue(),
-                    sales.getCustomerCode().getValue(),
+                    sales.getCustomerCode().getCode().getValue(),
+                    sales.getCustomerCode().getBranchNumber(),
                     sales.getEmployeeCode().getValue(),
                     sales.getVoucherNumber(),
                     sales.getOriginalVoucherNumber(),
@@ -256,6 +260,7 @@ class SalesServiceTest {
                     "10000",
                     LocalDateTime.of(2021, 1, 1, 0, 0),
                     "001",
+                    1,
                     "EMP001",
                     null,
                     null,

@@ -162,6 +162,7 @@ class SalesTest {
         private String departmentId = "12345";
         private LocalDateTime shippingDate = LocalDateTime.now();
         private String customerCode = "001";
+        private int branchNumber = 1;
         private String employeeCode = "EMP001";
         private int voucherNumber = 1;
         private String originalVoucherNumber = "ORG12345";
@@ -202,6 +203,7 @@ class SalesTest {
                     departmentId,
                     shippingDate,
                     customerCode,
+                    branchNumber,
                     employeeCode,
                     voucherNumber,
                     originalVoucherNumber,
@@ -223,7 +225,7 @@ class SalesTest {
                 () -> assertEquals("SA12345678", sales.getSalesNumber().getValue()),
                 () -> assertEquals("OD12345678", sales.getOrderNumber().getValue()),
                 () -> assertEquals("12345", sales.getDepartmentId().getDeptCode().getValue()),
-                () -> assertEquals("001", sales.getCustomerCode().getValue()),
+                () -> assertEquals("001", sales.getPartnerCode().getValue()),
                 () -> assertEquals("EMP001", sales.getEmployeeCode().getValue()),
                 () -> assertEquals(1, sales.getSalesType().getCode()),
                 () -> assertEquals(1, sales.getVoucherNumber()),

@@ -42,15 +42,48 @@
 
     <!-- insertForOptimisticLock -->
     <insert id="insertForOptimisticLock" parameterType="com.example.sms.infrastructure.datasource.autogen.model.売上データ">
-        insert into public.売上データ (売上番号, 受注番号, 売上日, 売上区分, 部門コード, 部門開始日, 
-                                     取引先コード, 社員コード, 売上金額合計, 消費税合計, 備考, 赤黒伝票番号, 元伝票番号, 
-                                     作成日時, 作成者名, 更新日時, 更新者名)
-        values (#{売上番号,jdbcType=VARCHAR}, #{受注番号,jdbcType=VARCHAR}, #{売上日,jdbcType=TIMESTAMP}, #{売上区分,jdbcType=INTEGER}, 
-                #{部門コード,jdbcType=VARCHAR}, #{部門開始日,jdbcType=TIMESTAMP}, #{取引先コード,jdbcType=VARCHAR}, 
-                #{社員コード,jdbcType=VARCHAR}, #{売上金額合計,jdbcType=INTEGER}, #{消費税合計,jdbcType=INTEGER}, 
-                #{備考,jdbcType=VARCHAR}, #{赤黒伝票番号,jdbcType=INTEGER}, #{元伝票番号,jdbcType=VARCHAR}, 
-                #{作成日時,jdbcType=TIMESTAMP}, #{作成者名,jdbcType=VARCHAR}, #{更新日時,jdbcType=TIMESTAMP}, 
-                #{更新者名,jdbcType=VARCHAR})
+        insert into public.売上データ (
+            売上番号,
+            受注番号,
+            売上日,
+            売上区分,
+            部門コード,
+            部門開始日,
+            取引先コード,
+            社員コード,
+            売上金額合計,
+            消費税合計,
+            備考,
+            赤黒伝票番号,
+            元伝票番号,
+            作成日時,
+            作成者名,
+            更新日時,
+            更新者名,
+            顧客コード,
+            顧客枝番
+        )
+        values (
+                #{売上番号,jdbcType=VARCHAR},
+                #{受注番号,jdbcType=VARCHAR},
+                #{売上日,jdbcType=TIMESTAMP},
+                #{売上区分,jdbcType=INTEGER},
+                #{部門コード,jdbcType=VARCHAR},
+                #{部門開始日,jdbcType=TIMESTAMP},
+                #{取引先コード,jdbcType=VARCHAR},
+                #{社員コード,jdbcType=VARCHAR},
+                #{売上金額合計,jdbcType=INTEGER},
+                #{消費税合計,jdbcType=INTEGER},
+                #{備考,jdbcType=VARCHAR},
+                #{赤黒伝票番号,jdbcType=INTEGER},
+                #{元伝票番号,jdbcType=VARCHAR},
+                #{作成日時,jdbcType=TIMESTAMP},
+                #{作成者名,jdbcType=VARCHAR},
+                #{更新日時,jdbcType=TIMESTAMP},
+                #{更新者名,jdbcType=VARCHAR},
+                #{顧客コード,jdbcType=VARCHAR},
+                #{顧客枝番,jdbcType=INTEGER}
+               )
     </insert>
 
     <!-- updateByPrimaryKeyForOptimisticLock -->
@@ -72,6 +105,8 @@
             作成者名 = #{作成者名,jdbcType=VARCHAR},
             更新日時 = #{更新日時,jdbcType=TIMESTAMP},
             更新者名 = #{更新者名,jdbcType=VARCHAR},
+            顧客コード = #{顧客コード,jdbcType=VARCHAR},
+            顧客枝番 = #{顧客枝番,jdbcType=INTEGER},
             version = #{version,jdbcType=INTEGER} + 1
         where 売上番号 = #{売上番号,jdbcType=VARCHAR}
         and version = #{version,jdbcType=INTEGER}

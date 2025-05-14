@@ -1,5 +1,6 @@
 package com.example.sms.infrastructure.datasource.sales.sales;
 
+import com.example.sms.domain.model.master.partner.customer.CustomerCode;
 import com.example.sms.domain.model.sales.order.TaxRateType;
 import com.example.sms.domain.model.sales.sales.*;
 import com.example.sms.infrastructure.datasource.autogen.model.売上データ;
@@ -32,7 +33,9 @@ public class SalesEntityMapper {
         salesEntity.set売上区分(sales.getSalesType().getCode());
         salesEntity.set部門コード(sales.getDepartmentId().getDeptCode().getValue());
         salesEntity.set部門開始日(sales.getDepartmentId().getDepartmentStartDate().getValue());
-        salesEntity.set取引先コード(sales.getCustomerCode().getValue());
+        salesEntity.set取引先コード(sales.getPartnerCode().getValue());
+        salesEntity.set顧客コード(sales.getCustomerCode() != null ? sales.getCustomerCode().getCode().getValue() : null);
+        salesEntity.set顧客枝番(sales.getCustomerCode() != null ? sales.getCustomerCode().getBranchNumber() : null);
         salesEntity.set社員コード(sales.getEmployeeCode().getValue());
         salesEntity.set売上金額合計(
                 sales.getTotalSalesAmount() != null ? sales.getTotalSalesAmount().getAmount() : 0
@@ -110,14 +113,15 @@ public class SalesEntityMapper {
         };
 
 
-        return Sales.of(
+        Sales sales = Sales.of(
                 salesData.get売上番号(),
                 salesData.get受注番号(),
                 salesData.get売上日(),
                 salesData.get売上区分(),
                 salesData.get部門コード(),
                 salesData.get部門開始日(),
-                salesData.get取引先コード(),
+                salesData.get顧客コード(),
+                salesData.get顧客枝番(),
                 salesData.get社員コード(),
                 salesData.get赤黒伝票番号(),
                 salesData.get元伝票番号(),
@@ -125,6 +129,24 @@ public class SalesEntityMapper {
                 salesData.get売上データ明細().stream()
                         .map(salesLineMapper)
                         .toList()
+        );
+
+        // 顧客コード、顧客枝番を設定
+        return new Sales(
+                sales.getSalesNumber(),
+                sales.getOrderNumber(),
+                sales.getSalesDate(),
+                sales.getSalesType(),
+                sales.getDepartmentId(),
+                sales.getPartnerCode(),
+                salesData.get顧客コード() != null ? CustomerCode.of(salesData.get顧客コード(), salesData.get顧客枝番()) : null,
+                sales.getEmployeeCode(),
+                sales.getTotalSalesAmount(),
+                sales.getTotalConsumptionTax(),
+                sales.getRemarks(),
+                sales.getVoucherNumber(),
+                sales.getOriginalVoucherNumber(),
+                sales.getSalesLines()
         );
     }
 
@@ -136,8 +158,10 @@ public class SalesEntityMapper {
                 sales.getSalesType().getCode(),
                 sales.getDepartmentId().getDeptCode().getValue(),
                 sales.getDepartmentId().getDepartmentStartDate().getValue(),
-                sales.getCustomerCode().getValue(),
+                sales.getPartnerCode().getValue(),
                 sales.getEmployeeCode().getValue(),
+                sales.getCustomerCode() != null ? sales.getCustomerCode().getCode().getValue() : null,
+                sales.getCustomerCode() != null ? sales.getCustomerCode().getBranchNumber() : null,
                 sales.getTotalSalesAmount().getAmount(),
                 sales.getTotalConsumptionTax().getAmount(),
                 sales.getRemarks(),

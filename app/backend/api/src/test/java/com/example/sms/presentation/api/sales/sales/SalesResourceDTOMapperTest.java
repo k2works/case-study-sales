@@ -26,6 +26,7 @@ class SalesResourceDTOMapperTest {
         String departmentCode = "10000";
         LocalDateTime departmentStartDate = LocalDateTime.now().minusDays(30);
         String customerCode = "001";
+        Integer customerBranchNumber = 1;
         String employeeCode = "EMP001";
         Integer totalSalesAmount = 100000;
         Integer totalConsumptionTax = 10000;
@@ -57,6 +58,7 @@ class SalesResourceDTOMapperTest {
         resource.setDepartmentCode(departmentCode);
         resource.setDepartmentStartDate(departmentStartDate);
         resource.setCustomerCode(customerCode);
+        resource.setCustomerBranchNumber(customerBranchNumber);
         resource.setEmployeeCode(employeeCode);
         resource.setTotalSalesAmount(totalSalesAmount);
         resource.setTotalConsumptionTax(totalConsumptionTax);
@@ -76,7 +78,7 @@ class SalesResourceDTOMapperTest {
         assertEquals(salesCategory, sales.getSalesType());
         assertEquals(departmentCode, sales.getDepartmentId().getDeptCode().getValue());
         assertEquals(departmentStartDate, sales.getDepartmentId().getDepartmentStartDate().getValue());
-        assertEquals(customerCode, sales.getCustomerCode().getValue());
+        assertEquals(customerCode, sales.getPartnerCode().getValue());
         assertEquals(employeeCode, sales.getEmployeeCode().getValue());
         assertEquals(totalSalesAmount, sales.getTotalSalesAmount().getAmount());
         assertEquals(totalConsumptionTax, sales.getTotalConsumptionTax().getAmount());
