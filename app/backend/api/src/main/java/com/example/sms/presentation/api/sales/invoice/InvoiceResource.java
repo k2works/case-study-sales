@@ -1,6 +1,9 @@
 package com.example.sms.presentation.api.sales.invoice;
 
+import com.example.sms.domain.model.master.partner.PartnerCode;
 import com.example.sms.domain.model.sales.invoice.Invoice;
+import com.example.sms.domain.model.sales.invoice.InvoiceNumber;
+import com.example.sms.domain.type.money.Money;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Setter
 @Getter
@@ -53,19 +57,55 @@ public class InvoiceResource {
      * Invoice エンティティをリソースにマッピングするメソッド
      */
     public static InvoiceResource from(Invoice invoice) {
-        InvoiceResource resource = new InvoiceResource();
-        resource.setInvoiceNumber(invoice.getInvoiceNumber().getValue());
-        resource.setInvoiceDate(invoice.getInvoiceDate());
-        resource.setPartnerCode(invoice.getPartnerCode());
-        resource.setCustomerCode(invoice.getCustomerCode().getCode().getValue());
-        resource.setCustomerBranchNumber(invoice.getCustomerCode().getBranchNumber());
-        resource.setPreviousPaymentAmount(invoice.getPreviousPaymentAmount().getAmount());
-        resource.setCurrentMonthSalesAmount(invoice.getCurrentMonthSalesAmount().getAmount());
-        resource.setCurrentMonthPaymentAmount(invoice.getCurrentMonthPaymentAmount().getAmount());
-        resource.setCurrentMonthInvoiceAmount(invoice.getCurrentMonthInvoiceAmount().getAmount());
-        resource.setConsumptionTaxAmount(invoice.getConsumptionTaxAmount().getAmount());
-        resource.setInvoiceReconciliationAmount(invoice.getInvoiceReconciliationAmount().getAmount());
-        resource.setInvoiceLines(InvoiceLineResource.from(invoice.getInvoiceLines()));
-        return resource;
+        return Optional.ofNullable(invoice)
+                .map(inv -> {
+                    InvoiceResource resource = new InvoiceResource();
+
+                    Optional.ofNullable(inv.getInvoiceNumber())
+                            .map(InvoiceNumber::getValue)
+                            .ifPresent(resource::setInvoiceNumber);
+
+                    resource.setInvoiceDate(inv.getInvoiceDate());
+                    resource.setPartnerCode(inv.getPartnerCode());
+
+                    Optional.ofNullable(inv.getCustomerCode())
+                            .ifPresent(customerCode -> {
+                                Optional.ofNullable(customerCode.getCode())
+                                        .map(PartnerCode::getValue)
+                                        .ifPresent(resource::setCustomerCode);
+                                resource.setCustomerBranchNumber(customerCode.getBranchNumber());
+                            });
+
+                    Optional.ofNullable(inv.getPreviousPaymentAmount())
+                            .map(Money::getAmount)
+                            .ifPresent(resource::setPreviousPaymentAmount);
+
+                    Optional.ofNullable(inv.getCurrentMonthSalesAmount())
+                            .map(Money::getAmount)
+                            .ifPresent(resource::setCurrentMonthSalesAmount);
+
+                    Optional.ofNullable(inv.getCurrentMonthPaymentAmount())
+                            .map(Money::getAmount)
+                            .ifPresent(resource::setCurrentMonthPaymentAmount);
+
+                    Optional.ofNullable(inv.getCurrentMonthInvoiceAmount())
+                            .map(Money::getAmount)
+                            .ifPresent(resource::setCurrentMonthInvoiceAmount);
+
+                    Optional.ofNullable(inv.getConsumptionTaxAmount())
+                            .map(Money::getAmount)
+                            .ifPresent(resource::setConsumptionTaxAmount);
+
+                    Optional.ofNullable(inv.getInvoiceReconciliationAmount())
+                            .map(Money::getAmount)
+                            .ifPresent(resource::setInvoiceReconciliationAmount);
+
+                    Optional.ofNullable(inv.getInvoiceLines())
+                            .map(InvoiceLineResource::from)
+                            .ifPresent(resource::setInvoiceLines);
+
+                    return resource;
+                })
+                .orElse(null);
     }
 }
