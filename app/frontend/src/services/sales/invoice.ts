@@ -8,6 +8,12 @@ import {
     mapToInvoiceResource
 } from "../../models/sales/invoice";
 
+// 請求書集計結果の型定義
+export interface InvoiceAggregateResponse {
+    message: string;
+    details: string[];
+}
+
 export interface InvoiceServiceType {
     select: (page?: number, pageSize?: number) => Promise<InvoicePageInfoType>;
     find: (invoiceNumber: string) => Promise<InvoiceType>;
@@ -15,6 +21,7 @@ export interface InvoiceServiceType {
     update: (invoice: InvoiceType) => Promise<void>;
     destroy: (invoiceNumber: string) => Promise<void>;
     search: (criteria: InvoiceCriteriaType, page?: number, pageSize?: number) => Promise<InvoicePageInfoType>;
+    aggregate: () => Promise<InvoiceAggregateResponse>;
 }
 
 export const InvoiceService = () => {
@@ -51,12 +58,18 @@ export const InvoiceService = () => {
         await apiUtils.fetchDelete<void>(url);
     };
 
+    const aggregate = async (): Promise<InvoiceAggregateResponse> => {
+        const url = `${endPoint}/aggregate`;
+        return await apiUtils.fetchPost<InvoiceAggregateResponse>(url, {});
+    };
+
     return {
         select,
         find,
         create,
         update,
         destroy,
-        search
+        search,
+        aggregate
     };
 }

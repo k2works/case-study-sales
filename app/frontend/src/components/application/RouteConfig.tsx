@@ -36,6 +36,7 @@ import {ShippingOrderContainer} from "../sales/shipping/order/ShippingOrderConta
 import {ShippingConfirmContainer} from "../sales/shipping/confirm/ShippingConfirmContainer.tsx";
 import {InvoiceContainer} from "../sales/invoice/list/InvoiceContainer.tsx";
 import {InvoiceTabContainer} from "../sales/invoice/InvoceTabContainer.tsx";
+import {InvoiceAggregateContainer} from "../sales/invoice/aggregate/InvoiceAggregateContainer.tsx";
 
 export const RouteConfig: React.FC = () => {
     const ProductCategoryPage = () => {
@@ -182,6 +183,14 @@ export const RouteConfig: React.FC = () => {
         )
     }
 
+    const InvoiceSummrayyPage = () => {
+        return (
+            <SiteLayout>
+                <InvoiceAggregateContainer/>
+            </SiteLayout>
+        )
+    }
+
 
     return (
             <Routes>
@@ -220,6 +229,8 @@ export const RouteConfig: React.FC = () => {
                                                                      allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/invoice-list" element={<RouteAuthGuard component={<InvoicePage/>} redirectPath="/"
                                                                    allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/invoice-summary" element={<RouteAuthGuard component={<InvoiceSummrayyPage/>} redirectPath="/"
+                                                                     allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/department" element={<RouteAuthGuard component={<DepartmentContainer/>} redirectPath="/"
                                                                    allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/employee" element={<RouteAuthGuard component={<EmployeeContainer/>} redirectPath="/"
