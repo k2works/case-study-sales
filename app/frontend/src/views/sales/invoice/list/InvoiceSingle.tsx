@@ -46,22 +46,6 @@ const Form = ({
     handleCustomerSelect,
     selectedLineIndex
 }: FormProps) => {
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setNewInvoice({
-            ...newInvoice,
-            [name]: value
-        });
-    };
-
-    const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setNewInvoice({
-            ...newInvoice,
-            [name]: value === "" ? 0 : parseInt(value, 10)
-        });
-    };
-
     const handleLineChange = (index: number, field: string, value: string | number) => {
         const updatedLines = [...newInvoice.invoiceLines];
         updatedLines[index] = {
@@ -108,7 +92,10 @@ const Form = ({
                 type="text"
                 className="single-view-content-item-form-item-input"
                 value={newInvoice.invoiceNumber}
-                onChange={handleChange}
+                onChange={(e) => setNewInvoice({
+                    ...newInvoice,
+                    invoiceNumber: e.target.value
+                })}
                 disabled={isEditing}
             />
             <FormInput
@@ -117,7 +104,10 @@ const Form = ({
                 type="date"
                 className="single-view-content-item-form-item-input"
                 value={convertToDateInputFormat(newInvoice.invoiceDate)}
-                onChange={handleChange}
+                onChange={(e) => setNewInvoice({
+                    ...newInvoice,
+                    invoiceDate: e.target.value
+                })}
             />
             <FormInput
                 label="顧客コード"
@@ -150,7 +140,10 @@ const Form = ({
                 type="number"
                 className="single-view-content-item-form-item-input"
                 value={newInvoice.previousPaymentAmount}
-                onChange={handleNumberChange}
+                onChange={(e) => setNewInvoice({
+                    ...newInvoice,
+                    previousPaymentAmount: Number(e.target.value)
+                })}
             />
             <FormInput
                 label="当月売上額"
@@ -158,7 +151,10 @@ const Form = ({
                 type="number"
                 className="single-view-content-item-form-item-input"
                 value={newInvoice.currentMonthSalesAmount}
-                onChange={handleNumberChange}
+                onChange={(e) => setNewInvoice({
+                    ...newInvoice,
+                    currentMonthSalesAmount: Number(e.target.value)
+                })}
             />
             <FormInput
                 label="当月入金額"
@@ -166,7 +162,10 @@ const Form = ({
                 type="number"
                 className="single-view-content-item-form-item-input"
                 value={newInvoice.currentMonthPaymentAmount}
-                onChange={handleNumberChange}
+                onChange={(e) => setNewInvoice({
+                    ...newInvoice,
+                    currentMonthPaymentAmount: Number(e.target.value)
+                })}
             />
             <FormInput
                 label="当月請求額"
@@ -174,7 +173,10 @@ const Form = ({
                 type="number"
                 className="single-view-content-item-form-item-input"
                 value={newInvoice.currentMonthInvoiceAmount}
-                onChange={handleNumberChange}
+                onChange={(e) => setNewInvoice({
+                    ...newInvoice,
+                    currentMonthInvoiceAmount: Number(e.target.value)
+                })}
             />
             <FormInput
                 label="消費税金額"
@@ -182,7 +184,10 @@ const Form = ({
                 type="number"
                 className="single-view-content-item-form-item-input"
                 value={newInvoice.consumptionTaxAmount}
-                onChange={handleNumberChange}
+                onChange={(e) => setNewInvoice({
+                    ...newInvoice,
+                    consumptionTaxAmount: Number(e.target.value)
+                })}
             />
             <FormInput
                 label="請求消込金額"
@@ -190,7 +195,10 @@ const Form = ({
                 type="number"
                 className="single-view-content-item-form-item-input"
                 value={newInvoice.invoiceReconciliationAmount}
-                onChange={handleNumberChange}
+                onChange={(e) => setNewInvoice({
+                    ...newInvoice,
+                    invoiceReconciliationAmount: Number(e.target.value)
+                })}
             />
 
             <div className="single-view-content-item-form-lines sales-detail">
