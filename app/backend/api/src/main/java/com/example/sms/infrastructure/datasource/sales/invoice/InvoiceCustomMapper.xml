@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.sms.infrastructure.datasource.sales.invoice.InvoiceCustomMapper">
+    
+    <!-- BaseResultMap -->
+    <resultMap
+            id="BaseResultMap"
+            type="com.example.sms.infrastructure.datasource.sales.invoice.InvoiceCustomEntity"
+            extends="com.example.sms.infrastructure.datasource.autogen.mapper.請求データMapper.BaseResultMap">
+        <association property="取引先マスタ"
+                     javaType="com.example.sms.infrastructure.datasource.master.partner.PartnerCustomEntity"
+                     column="取引先コード"
+                     select="com.example.sms.infrastructure.datasource.master.partner.PartnerCustomMapper.selectByPrimaryKey"
+                     fetchType="eager" />
+        <collection property="請求データ明細"
+                    javaType="ArrayList"
+                    column="請求番号"
+                    select="com.example.sms.infrastructure.datasource.sales.invoice.invoice_line.InvoiceLineCustomMapper.selectByInvoiceNumber"
+                    fetchType="eager"
+        />
+    </resultMap>
+
+    <!-- selectByPrimaryKey -->
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select 
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.請求データMapper.Base_Column_List" />
+        from public.請求データ
+        where 請求番号 = #{請求番号,jdbcType=VARCHAR}
+    </select>
+
+    <!-- selectAll -->
+    <select id="selectAll" resultMap="BaseResultMap">
+        select 
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.請求データMapper.Base_Column_List" />
+        from public.請求データ
+    </select>
+
+    <!-- insertForOptimisticLock -->
+    <insert id="insertForOptimisticLock" parameterType="com.example.sms.infrastructure.datasource.autogen.model.請求データ">
+        insert into public.請求データ (
+            請求番号,
+            請求日,
+            取引先コード,
+            顧客枝番,
+            前回入金額,
+            当月売上額,
+            当月入金額,
+            当月請求額,
+            消費税金額,
+            請求消込金額,
+            作成日時,
+            作成者名,
+            更新日時,
+            更新者名
+        )
+        values (
+                #{請求番号,jdbcType=VARCHAR},
+                #{請求日,jdbcType=TIMESTAMP},
+                #{取引先コード,jdbcType=VARCHAR},
+                #{顧客枝番,jdbcType=INTEGER},
+                #{前回入金額,jdbcType=INTEGER},
+                #{当月売上額,jdbcType=INTEGER},
+                #{当月入金額,jdbcType=INTEGER},
+                #{当月請求額,jdbcType=INTEGER},
+                #{消費税金額,jdbcType=INTEGER},
+                #{請求消込金額,jdbcType=INTEGER},
+                #{作成日時,jdbcType=TIMESTAMP},
+                #{作成者名,jdbcType=VARCHAR},
+                #{更新日時,jdbcType=TIMESTAMP},
+                #{更新者名,jdbcType=VARCHAR}
+               )
+    </insert>
+
+    <!-- updateByPrimaryKeyForOptimisticLock -->
+    <update id="updateByPrimaryKeyForOptimisticLock" parameterType="com.example.sms.infrastructure.datasource.autogen.model.請求データ">
+        update public.請求データ
+        set 請求日 = #{請求日,jdbcType=TIMESTAMP},
+            取引先コード = #{取引先コード,jdbcType=VARCHAR},
+            顧客枝番 = #{顧客枝番,jdbcType=INTEGER},
+            前回入金額 = #{前回入金額,jdbcType=INTEGER},
+            当月売上額 = #{当月売上額,jdbcType=INTEGER},
+            当月入金額 = #{当月入金額,jdbcType=INTEGER},
+            当月請求額 = #{当月請求額,jdbcType=INTEGER},
+            消費税金額 = #{消費税金額,jdbcType=INTEGER},
+            請求消込金額 = #{請求消込金額,jdbcType=INTEGER},
+            作成日時 = #{作成日時,jdbcType=TIMESTAMP},
+            作成者名 = #{作成者名,jdbcType=VARCHAR},
+            更新日時 = #{更新日時,jdbcType=TIMESTAMP},
+            更新者名 = #{更新者名,jdbcType=VARCHAR}
+        where 請求番号 = #{請求番号,jdbcType=VARCHAR}
+    </update>
+
+    <!-- selectByCriteria -->
+    <select id="selectByCriteria" resultMap="BaseResultMap">
+        select 
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.請求データMapper.Base_Column_List" />
+        from public.請求データ
+        <where>
+            <if test="invoiceNumber != null">
+                請求番号 = #{invoiceNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="invoiceDate != null">
+                and 請求日 = #{invoiceDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="partnerCode != null">
+                and 取引先コード = #{partnerCode,jdbcType=VARCHAR}
+            </if>
+            <if test="customerCode != null">
+                and 取引先コード = #{customerCode,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+</mapper>
