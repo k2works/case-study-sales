@@ -101,12 +101,13 @@ export const mapToSalesResource = (sales: SalesType) => {
 
 // 検索条件をAPIリクエスト用に変換
 export const mapToSalesCriteriaResource = (criteria: SalesCriteriaType) => {
+    const isEmpty = (value: unknown) => value === "" || value === null || value === undefined;
     return {
-        salesNumber: criteria.salesNumber ?? null,
-        orderNumber: criteria.orderNumber ?? null,
-        salesDate: criteria.salesDate ?? null,
-        departmentCode: criteria.departmentCode ?? null,
-        remarks: criteria.remarks ?? null
+        ...(isEmpty(criteria.salesNumber) ? {} : { salesNumber: criteria.salesNumber }),
+        ...(isEmpty(criteria.orderNumber) ? {} : { orderNumber: criteria.orderNumber }),
+        ...(isEmpty(criteria.salesDate) ? {} : { salesDate: criteria.salesDate }),
+        ...(isEmpty(criteria.departmentCode) ? {} : { departmentCode: criteria.departmentCode }),
+        ...(isEmpty(criteria.remarks) ? {} : { remarks: criteria.remarks })
     };
 };
 
