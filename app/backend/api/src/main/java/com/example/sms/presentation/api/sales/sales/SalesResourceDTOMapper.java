@@ -89,7 +89,7 @@ public class SalesResourceDTOMapper {
         return SalesCriteria.builder()
                 .salesNumber(resource.getSalesNumber())
                 .orderNumber(resource.getOrderNumber())
-                .salesDate(salesDate != null ? salesDate.toString() : null) // SalesCriteria では String
+                .salesDate(salesDate)
                 .departmentCode(resource.getDepartmentCode())
                 .remarks(resource.getRemarks())
                 .build();

@@ -7,6 +7,7 @@ import com.example.sms.service.sales.sales.SalesCriteria;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -111,7 +112,7 @@ class SalesResourceDTOMapperTest {
         assertNotNull(criteria);
         assertEquals(salesNumber, criteria.getSalesNumber());
         assertEquals(orderNumber, criteria.getOrderNumber());
-        assertEquals(salesDate, criteria.getSalesDate());
+        assertEquals(LocalDate.of(2023, 10, 1), criteria.getSalesDate());
         assertEquals(departmentCode, criteria.getDepartmentCode());
         assertEquals(remarks, criteria.getRemarks());
     }
