@@ -32,6 +32,7 @@ import com.example.sms.service.master.partner.PartnerGroupRepository;
 import com.example.sms.service.master.partner.PartnerRepository;
 import com.example.sms.service.master.product.ProductCategoryRepository;
 import com.example.sms.service.master.product.ProductRepository;
+import com.example.sms.service.sales.invoice.InvoiceRepository;
 import com.example.sms.service.sales.sales.SalesRepository;
 import com.example.sms.service.sales.order.SalesOrderRepository;
 import com.example.sms.service.system.audit.AuditRepository;
@@ -75,6 +76,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
     SalesOrderRepository salesOrderRepository;
     @Autowired
     SalesRepository salesRepository;
+    @Autowired
+    InvoiceRepository invoiceRepository;
 
     @Override
     public void setUpForAuthApiService() {
@@ -215,6 +218,9 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
         // 出荷データの準備
         setUpForShippingService();
+
+        // 請求データの準備
+        invoiceRepository.deleteAll();
 
         // 売上データの削除
         salesRepository.deleteAll();
@@ -500,6 +506,9 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
         // 出荷データの準備
         setUpForShippingService();
+
+        // 請求データの準備
+        invoiceRepository.deleteAll();
 
         // 売上データの削除
         salesRepository.deleteAll();
