@@ -48,6 +48,8 @@ class SalesTest {
     static class SalesLineBuilder {
         private String salesNumber = "SA12345678";
         private int salesLineNumber = 1;
+        private String orderNumber = "OD12345678";
+        private int orderLineNumber = 1;
         private String productCode = "P12345";
         private String productName = "テスト商品";
         private int salesUnitPrice = 1000;
@@ -138,6 +140,8 @@ class SalesTest {
             return SalesLine.of(
                     salesNumber,
                     salesLineNumber,
+                    orderNumber,
+                    orderLineNumber,
                     productCode,
                     productName,
                     salesUnitPrice,

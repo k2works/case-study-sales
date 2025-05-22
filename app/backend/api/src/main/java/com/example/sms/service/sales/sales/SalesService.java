@@ -16,6 +16,7 @@ import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 売上サービス
@@ -126,9 +127,12 @@ public class SalesService {
             LocalDateTime saleDate = Objects.requireNonNull(Objects.requireNonNull(shippingListByOrderNumber.getFirst().getOrderDate()).getValue());
             String salesNumber = generateSalesNumber(saleDate);
 
+            AtomicInteger lineNumber = new AtomicInteger(1);
             List<SalesLine> salesLines = shippingListByOrderNumber.stream()
                     .map(shipping -> SalesLine.of(
                             salesNumber,
+                            lineNumber.getAndIncrement(),
+                            shipping.getOrderNumber().getValue(),
                             shipping.getOrderLineNumber(),
                             shipping.getProductCode().getValue(),
                             shipping.getProductName(),

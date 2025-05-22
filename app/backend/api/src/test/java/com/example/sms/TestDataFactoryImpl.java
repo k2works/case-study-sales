@@ -229,11 +229,15 @@ public class TestDataFactoryImpl implements TestDataFactory {
         IntStream.rangeClosed(1, 3).forEach(i -> {
             // 売上番号をフォーマット
             String salesNumber = String.format("SA%08d", i);
+            // 受注番号をフォーマット
+            String orderNumber = salesNumber.replace("SA", "OD");
 
             // 売上明細の準備
             List<SalesLine> salesLines = IntStream.range(1, 4)
                     .mapToObj((IntFunction<SalesLine>) lineNumber -> SalesLine.of(
                             salesNumber,
+                            lineNumber,
+                            orderNumber,
                             lineNumber,
                             "99999999", // 商品コード
                             "商品1",    // 商品名
@@ -517,11 +521,15 @@ public class TestDataFactoryImpl implements TestDataFactory {
         IntStream.rangeClosed(1, 3).forEach(i -> {
             // 売上番号をフォーマット
             String salesNumber = String.format("SA%08d", i);
+            // 受注番号をフォーマット
+            String orderNumber = salesNumber.replace("SA", "OD");
 
             // 売上明細の準備
             List<SalesLine> salesLines = IntStream.range(1, 4)
                     .mapToObj((IntFunction<SalesLine>) lineNumber -> SalesLine.of(
                             salesNumber,
+                            lineNumber,
+                            orderNumber,
                             lineNumber,
                             "99999999", // 商品コード
                             "商品1",    // 商品名
@@ -809,6 +817,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
     public static SalesLine getSalesLine(String salesNumber, int lineNumber) {
         return SalesLine.of(
                 salesNumber,
+                lineNumber,
+                salesNumber.replace("SA", "OD"),
                 lineNumber,
                 "99999999",
                 "商品名",

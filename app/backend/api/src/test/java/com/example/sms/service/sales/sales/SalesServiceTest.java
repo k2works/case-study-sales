@@ -58,6 +58,8 @@ class SalesServiceTest {
             SalesLine salesLine = SalesLine.of(
                     "SA00000009",
                     1,
+                    "OD00000001",
+                    1,
                     "P001",
                     "Product 1",
                     1000,
@@ -102,6 +104,8 @@ class SalesServiceTest {
         void shouldRegisterNewSalesNullSalesNumber() {
             SalesLine salesLine = SalesLine.of(
                     null,
+                    1,
+                    "OD00000001",
                     1,
                     "P001",
                     "Product 1",
@@ -237,6 +241,8 @@ class SalesServiceTest {
             List<SalesLine> salesLines = IntStream.range(1, 4)
                     .mapToObj(lineNumber -> SalesLine.of(
                             "SA21010001",
+                            lineNumber,
+                            "OD00000001",
                             lineNumber,
                             "99999999",
                             "商品1",

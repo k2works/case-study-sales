@@ -172,6 +172,8 @@ public class UC017StepDefs extends SpringAcceptanceTest {
         SalesLineResource salesLine = SalesLineResource.builder()
                 .salesNumber(salesNumber)
                 .salesLineNumber(1)
+                .orderNumber("OD" + salesNumber.substring(2))
+                .orderLineNumber(1)
                 .productCode(productCode)
                 .productName(productName)
                 .salesUnitPrice(1000)

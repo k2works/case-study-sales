@@ -1,6 +1,7 @@
 package com.example.sms.infrastructure.datasource.sales.sales;
 
 import com.example.sms.domain.model.master.partner.customer.CustomerCode;
+import com.example.sms.domain.model.sales.order.OrderNumber;
 import com.example.sms.domain.model.sales.order.TaxRateType;
 import com.example.sms.domain.model.sales.sales.*;
 import com.example.sms.infrastructure.datasource.autogen.model.売上データ;
@@ -54,6 +55,10 @@ public class SalesEntityMapper {
         売上データ明細 salesEntity = new 売上データ明細();
         salesEntity.set売上番号(key.get売上番号());
         salesEntity.set売上行番号(key.get売上行番号());
+        salesEntity.set受注番号(Optional.ofNullable(salesLine.getOrderNumber())
+                .map(OrderNumber::getValue)
+                .orElse(null));
+        salesEntity.set受注行番号(salesLine.getOrderLineNumber());
         salesEntity.set商品コード(Objects.requireNonNull(salesLine.getProductCode()).getValue());
         salesEntity.set商品名(salesLine.getProductName());
         salesEntity.set販売単価(Objects.requireNonNull(salesLine.getSalesUnitPrice()).getAmount());
@@ -91,12 +96,14 @@ public class SalesEntityMapper {
 
         Function<SalesLineCustomEntity, SalesLine> salesLineMapper = e -> {
             if (Objects.isNull(e)) {
-                return SalesLine.of(null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+                return SalesLine.of(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
             }
 
             return SalesLine.of(
                     e.get売上番号(),
                     e.get売上行番号(),
+                    e.get受注番号(),
+                    e.get受注行番号(),
                     e.get商品コード(),
                     e.get商品名(),
                     e.get販売単価(),

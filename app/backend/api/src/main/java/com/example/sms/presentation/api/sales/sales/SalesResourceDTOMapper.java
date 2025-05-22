@@ -25,6 +25,8 @@ public class SalesResourceDTOMapper {
                                 ? SalesLine.of(
                                 line.getSalesNumber(),
                                 line.getSalesLineNumber(),
+                                line.getOrderNumber(),
+                                line.getOrderLineNumber(),
                                 line.getProductCode(),
                                 line.getProductName(),
                                 Optional.ofNullable(line.getSalesUnitPrice()).orElse(0),
