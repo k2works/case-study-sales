@@ -4,11 +4,20 @@ import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactory;
 import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.master.product.*;
+import com.example.sms.domain.model.sales.invoice.Invoice;
+import com.example.sms.domain.model.sales.invoice.InvoiceLine;
+import com.example.sms.domain.model.sales.order.CompletionFlag;
+import com.example.sms.domain.model.sales.order.Order;
+import com.example.sms.domain.model.sales.order.OrderLine;
 import com.example.sms.domain.model.sales.order.TaxRateType;
 import com.example.sms.domain.model.sales.sales.Sales;
 import com.example.sms.domain.model.sales.sales.SalesLine;
 import com.example.sms.domain.model.sales.sales.SalesList;
 import com.example.sms.domain.model.sales.sales.SalesType;
+import com.example.sms.domain.type.money.Money;
+import com.example.sms.domain.type.quantity.Quantity;
+import com.example.sms.service.sales.invoice.InvoiceRepository;
+import com.example.sms.service.sales.order.SalesOrderRepository;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -28,6 +37,12 @@ class SalesServiceTest {
 
     @Autowired
     private SalesService salesService;
+
+    @Autowired
+    private SalesOrderRepository orderRepository;
+
+    @Autowired
+    private InvoiceRepository invoiceRepository;
 
     @Autowired
     private TestDataFactory testDataFactory;
@@ -290,6 +305,215 @@ class SalesServiceTest {
 
             SalesList result = salesService.selectAll();
             assertEquals(3, result.asList().size());
+        }
+
+        @Nested
+        @DisplayName("売上を集計できる")
+        class AggregateSales {
+
+            @BeforeEach
+            void setUp() {
+                testDataFactory.setUpForSalesService();
+                testDataFactory.setUpForSalesServiceForAggregate();
+            }
+
+            @Test
+            @DisplayName("売上を集計できる")
+            void case1() {
+                Order newOrder = TestDataFactoryImpl.getSalesOrder("OD00000009");
+                List<OrderLine> orderLines = IntStream.range(1, 4)
+                        .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000009", i).toBuilder()
+                                .salesUnitPrice(Money.of(100))
+                                .orderQuantity(Quantity.of(1))
+                                .shipmentInstructionQuantity(Quantity.of(1))
+                                .shippedQuantity(Quantity.of(1))
+                                .completionFlag(CompletionFlag.完了)
+                                .build())
+                        .toList();
+               orderRepository.save(Order.of(newOrder, orderLines));
+
+                salesService.aggregate();
+
+                SalesList result = salesService.selectAll();
+
+                assertNotNull(result);
+                assertEquals(1, result.size());
+                assertEquals(3, result.asList().getFirst().getSalesLines().size());
+                assertEquals(Money.of(300), result.asList().getFirst().getTotalSalesAmount());
+            }
+
+            @Test
+            @DisplayName("売上を集計できる")
+            void case2() {
+                Order newOrder = TestDataFactoryImpl.getSalesOrder("OD00000010");
+                OrderLine orderLine1 = TestDataFactoryImpl.getSalesOrderLine("OD00000010", 1).toBuilder().
+                        salesUnitPrice(Money.of(100))
+                        .orderQuantity(Quantity.of(1))
+                        .shipmentInstructionQuantity(Quantity.of(1))
+                        .shippedQuantity(Quantity.of(1))
+                        .completionFlag(CompletionFlag.完了)
+                        .build();
+                OrderLine orderLine2 = TestDataFactoryImpl.getSalesOrderLine("OD00000010", 2).toBuilder()
+                        .salesUnitPrice(Money.of(200))
+                        .orderQuantity(Quantity.of(1))
+                        .shipmentInstructionQuantity(Quantity.of(1))
+                        .shippedQuantity(Quantity.of(1))
+                        .completionFlag(CompletionFlag.未完了)
+                        .build();
+                OrderLine orderLine3 = TestDataFactoryImpl.getSalesOrderLine("OD00000010", 3).toBuilder()
+                        .salesUnitPrice(Money.of(300))
+                        .orderQuantity(Quantity.of(1))
+                        .shipmentInstructionQuantity(Quantity.of(1))
+                        .shippedQuantity(Quantity.of(1))
+                        .completionFlag(CompletionFlag.未完了)
+                        .build();
+                orderRepository.save(Order.of(newOrder, List.of(orderLine1, orderLine2, orderLine3)));
+
+                salesService.aggregate();
+
+                SalesList result = salesService.selectAll();
+
+                assertNotNull(result);
+                assertEquals(1, result.size());
+                assertEquals(1, result.asList().getFirst().getSalesLines().size());
+                assertEquals(Money.of(100), result.asList().getFirst().getTotalSalesAmount());
+            }
+
+            @Test
+            @DisplayName("売上を集計できる")
+            void case3() {
+                Order newOrder = TestDataFactoryImpl.getSalesOrder("OD00000010");
+                OrderLine orderLine1 = TestDataFactoryImpl.getSalesOrderLine("OD00000010", 1).toBuilder().
+                        salesUnitPrice(Money.of(100))
+                        .orderQuantity(Quantity.of(1))
+                        .shipmentInstructionQuantity(Quantity.of(1))
+                        .shippedQuantity(Quantity.of(1))
+                        .completionFlag(CompletionFlag.完了)
+                        .build();
+                OrderLine orderLine2 = TestDataFactoryImpl.getSalesOrderLine("OD00000010", 2).toBuilder()
+                        .salesUnitPrice(Money.of(200))
+                        .orderQuantity(Quantity.of(1))
+                        .shipmentInstructionQuantity(Quantity.of(1))
+                        .shippedQuantity(Quantity.of(1))
+                        .completionFlag(CompletionFlag.未完了)
+                        .build();
+                OrderLine orderLine3 = TestDataFactoryImpl.getSalesOrderLine("OD00000010", 3).toBuilder()
+                        .salesUnitPrice(Money.of(300))
+                        .orderQuantity(Quantity.of(1))
+                        .shipmentInstructionQuantity(Quantity.of(1))
+                        .shippedQuantity(Quantity.of(1))
+                        .completionFlag(CompletionFlag.完了)
+                        .build();
+                orderRepository.save(Order.of(newOrder, List.of(orderLine1, orderLine2, orderLine3)));
+
+                salesService.aggregate();
+
+                SalesList result = salesService.selectAll();
+
+                assertNotNull(result);
+                assertEquals(1, result.size());
+                assertEquals(2, result.asList().getFirst().getSalesLines().size());
+                assertEquals(Money.of(400), result.asList().getFirst().getTotalSalesAmount());
+            }
+
+            @Test
+            @DisplayName("売上を集計できる")
+            void case4() {
+                Order newOrder = TestDataFactoryImpl.getSalesOrder("OD00000010");
+                OrderLine orderLine1 = TestDataFactoryImpl.getSalesOrderLine("OD00000010", 1).toBuilder().
+                        salesUnitPrice(Money.of(100))
+                        .orderQuantity(Quantity.of(1))
+                        .shipmentInstructionQuantity(Quantity.of(1))
+                        .shippedQuantity(Quantity.of(1))
+                        .completionFlag(CompletionFlag.完了)
+                        .build();
+                OrderLine orderLine2 = TestDataFactoryImpl.getSalesOrderLine("OD00000010", 2).toBuilder()
+                        .salesUnitPrice(Money.of(200))
+                        .orderQuantity(Quantity.of(1))
+                        .shipmentInstructionQuantity(Quantity.of(1))
+                        .shippedQuantity(Quantity.of(1))
+                        .completionFlag(CompletionFlag.未完了)
+                        .build();
+                OrderLine orderLine3 = TestDataFactoryImpl.getSalesOrderLine("OD00000010", 3).toBuilder()
+                        .salesUnitPrice(Money.of(300))
+                        .orderQuantity(Quantity.of(1))
+                        .shipmentInstructionQuantity(Quantity.of(1))
+                        .shippedQuantity(Quantity.of(1))
+                        .completionFlag(CompletionFlag.未完了)
+                        .build();
+                orderRepository.save(Order.of(newOrder, List.of(orderLine1, orderLine2, orderLine3)));
+
+                salesService.aggregate();
+
+                SalesList result = salesService.selectAll();
+
+                assertNotNull(result);
+                assertEquals(1, result.size());
+                assertEquals(1, result.asList().getFirst().getSalesLines().size());
+                assertEquals(Money.of(100), result.asList().getFirst().getTotalSalesAmount());
+
+                orderLine2 = orderLine2.toBuilder().completionFlag(CompletionFlag.完了).build();
+                orderRepository.save(Order.of(newOrder, List.of(orderLine1, orderLine2, orderLine3)));
+                salesService.aggregate();
+
+                result = salesService.selectAll();
+
+                assertNotNull(result);
+                assertEquals(1, result.size());
+                assertEquals(2, result.asList().getFirst().getSalesLines().size());
+                assertEquals(Money.of(300), result.asList().getFirst().getTotalSalesAmount());
+
+                orderLine3 = orderLine3.toBuilder().completionFlag(CompletionFlag.完了).build();
+                orderRepository.save(Order.of(newOrder, List.of(orderLine1, orderLine2, orderLine3)));
+                salesService.aggregate();
+
+                result = salesService.selectAll();
+
+                assertNotNull(result);
+                assertEquals(1, result.size());
+                assertEquals(3, result.asList().getFirst().getSalesLines().size());
+                assertEquals(Money.of(600), result.asList().getFirst().getTotalSalesAmount());
+            }
+        }
+
+        @Test
+        @DisplayName("売上を集計できる")
+        void case5() {
+            Order newOrder = TestDataFactoryImpl.getSalesOrder("OD00000010");
+            OrderLine orderLine1 = TestDataFactoryImpl.getSalesOrderLine("OD00000010", 1).toBuilder().
+                    salesUnitPrice(Money.of(100))
+                    .orderQuantity(Quantity.of(1))
+                    .shipmentInstructionQuantity(Quantity.of(1))
+                    .shippedQuantity(Quantity.of(1))
+                    .completionFlag(CompletionFlag.完了)
+                    .build();
+            OrderLine orderLine2 = TestDataFactoryImpl.getSalesOrderLine("OD00000010", 2).toBuilder()
+                    .salesUnitPrice(Money.of(200))
+                    .orderQuantity(Quantity.of(1))
+                    .shipmentInstructionQuantity(Quantity.of(1))
+                    .shippedQuantity(Quantity.of(1))
+                    .completionFlag(CompletionFlag.未完了)
+                    .build();
+            OrderLine orderLine3 = TestDataFactoryImpl.getSalesOrderLine("OD00000010", 3).toBuilder()
+                    .salesUnitPrice(Money.of(300))
+                    .orderQuantity(Quantity.of(1))
+                    .shipmentInstructionQuantity(Quantity.of(1))
+                    .shippedQuantity(Quantity.of(1))
+                    .completionFlag(CompletionFlag.未完了)
+                    .build();
+            orderRepository.save(Order.of(newOrder, List.of(orderLine1, orderLine2, orderLine3)));
+            salesService.aggregate();
+            SalesList result = salesService.selectAll();
+            InvoiceLine invoiceLine = TestDataFactoryImpl.getInvoiceLine("IV00000001",result.asList().getFirst().getSalesNumber().getValue(), 1);
+            Invoice invoice = TestDataFactoryImpl.getInvoice("IV00000001").toBuilder().invoiceLines(List.of(invoiceLine)).build();
+            invoiceRepository.save(invoice);
+
+            salesService.aggregate();
+            result = salesService.selectAll();
+
+            assertNotNull(result);
+            assertEquals(1, result.size());
+            assertEquals(Money.of(100), result.asList().getFirst().getTotalSalesAmount());
         }
     }
 }

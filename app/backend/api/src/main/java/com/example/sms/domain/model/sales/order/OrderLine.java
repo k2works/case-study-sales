@@ -5,6 +5,7 @@ import com.example.sms.domain.model.master.product.ProductCode;
 import com.example.sms.domain.type.money.Money;
 import com.example.sms.domain.type.quantity.Quantity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
@@ -17,6 +18,7 @@ import java.util.Objects;
 @Value
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
+@Builder(toBuilder = true)
 public class OrderLine {
     OrderNumber orderNumber; // 受注番号
     Integer orderLineNumber; // 受注行番号
