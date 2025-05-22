@@ -18,6 +18,8 @@ export const SalesTypeValues = {
 export interface SalesLineType {
     salesNumber: string;
     salesLineNumber: number;
+    orderNumber: string;
+    orderLineNumber: number;
     productCode: string;
     productName: string;
     salesUnitPrice: number;
@@ -84,6 +86,8 @@ export const mapToSalesResource = (sales: SalesType) => {
         salesLines: sales.salesLines.map(line => ({
             salesNumber: line.salesNumber,
             salesLineNumber: line.salesLineNumber,
+            orderNumber: line.orderNumber,
+            orderLineNumber: line.orderLineNumber,
             productCode: line.productCode,
             productName: line.productName,
             salesUnitPrice: line.salesUnitPrice,
@@ -157,6 +161,8 @@ export const initialSales: SalesType = {
 export const initialSalesLine: SalesLineType = {
     salesNumber: "",
     salesLineNumber: 0,
+    orderNumber: "",
+    orderLineNumber: 0,
     productCode: "",
     productName: "",
     salesUnitPrice: 0,

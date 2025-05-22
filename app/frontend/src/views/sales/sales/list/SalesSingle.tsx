@@ -108,6 +108,8 @@ const Form = ({
         const newLine: SalesLineType = {
             salesNumber: newSales.salesNumber,
             salesLineNumber: newSales.salesLines.length + 1,
+            orderNumber: newSales.orderNumber,
+            orderLineNumber: newSales.salesLines.map(line => line.orderLineNumber).reduce((max, current) => Math.max(max, current), 0) + 1,
             productCode: '',
             productName: '',
             salesUnitPrice: 0,
