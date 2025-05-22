@@ -13,6 +13,8 @@ import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.master.partner.*;
 import com.example.sms.domain.model.master.partner.Partner;
 import com.example.sms.domain.model.master.product.*;
+import com.example.sms.domain.model.sales.invoice.Invoice;
+import com.example.sms.domain.model.sales.invoice.InvoiceLine;
 import com.example.sms.domain.model.sales.order.Order;
 import com.example.sms.domain.model.sales.order.OrderLine;
 import com.example.sms.domain.model.sales.order.OrderList;
@@ -569,6 +571,18 @@ public class TestDataFactoryImpl implements TestDataFactory {
     }
 
     @Override
+    public void setUpForSalesServiceForAggregate() {
+        // 請求データの削除
+        invoiceRepository.deleteAll();
+
+        // 売上データの削除
+        salesRepository.deleteAll();
+
+        // 受注データの削除
+        salesOrderRepository.deleteAll();
+    }
+
+    @Override
     public MultipartFile createOrderFile() {
         InputStream is = getClass().getResourceAsStream("/csv/order/order_multiple.csv");
         try {
@@ -832,6 +846,30 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 LocalDateTime.of(2023, 10, 1, 0, 0),
                 null,
                 TaxRateType.標準税率
+        );
+    }
+
+    public static Invoice getInvoice(String invoiceNumber) {
+        return Invoice.of(
+                invoiceNumber,
+                LocalDateTime.now(),
+                "001",
+                1,
+                10000,
+                50000,
+                20000,
+                40000,
+                4000,
+                0,
+                List.of()
+        );
+    }
+
+    public static InvoiceLine getInvoiceLine(String invoiceNumber, String saleNumber, int lineNumber) {
+        return  InvoiceLine.of(
+                invoiceNumber,
+                saleNumber,
+                lineNumber
         );
     }
 

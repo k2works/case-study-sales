@@ -2,6 +2,7 @@ package com.example.sms.service.sales.invoice;
 
 import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactory;
+import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.sales.invoice.Invoice;
 import com.example.sms.domain.model.sales.invoice.InvoiceLine;
 import com.example.sms.domain.model.sales.invoice.InvoiceList;
@@ -73,7 +74,6 @@ class InvoiceServiceTest {
                     "IV00000004",
                     LocalDateTime.now(),
                     "001",
-                    "001",
                     1,
                     10000,
                     50000,
@@ -104,7 +104,6 @@ class InvoiceServiceTest {
                     invoice.getInvoiceNumber().getValue(),
                     invoice.getInvoiceDate(),
                     invoice.getPartnerCode(),
-                    invoice.getCustomerCode().getCode().getValue(),
                     invoice.getCustomerCode().getBranchNumber(),
                     invoice.getPreviousPaymentAmount().getAmount(),
                     invoice.getCurrentMonthSalesAmount().getAmount(),
@@ -154,27 +153,8 @@ class InvoiceServiceTest {
 
         // Helper method to create test invoices
         private Invoice createTestInvoice(String invoiceNumber) {
-            InvoiceLine invoiceLine = InvoiceLine.of(
-                    invoiceNumber,
-                    "SA00000001",
-                    1
-            );
-
-            Invoice invoice = Invoice.of(
-                    invoiceNumber,
-                    LocalDateTime.now(),
-                    "001",
-                    "001",
-                    1,
-                    10000,
-                    50000,
-                    20000,
-                    40000,
-                    4000,
-                    0,
-                    List.of(invoiceLine)
-            );
-            
+            InvoiceLine invoiceLine = TestDataFactoryImpl.getInvoiceLine(invoiceNumber, "SA00000001", 1);
+            Invoice invoice = TestDataFactoryImpl.getInvoice(invoiceNumber).toBuilder().invoiceLines(List.of(invoiceLine)).build();
             invoiceService.save(invoice);
             return invoice;
         }

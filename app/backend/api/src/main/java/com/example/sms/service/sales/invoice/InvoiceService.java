@@ -53,7 +53,6 @@ public class InvoiceService {
                     invoiceNumber,
                     invoiceDate,
                     Objects.requireNonNull(invoice.getPartnerCode()),
-                    Objects.requireNonNull(invoice.getCustomerCode()).getCode().getValue(),
                     Objects.requireNonNull(invoice.getCustomerCode()).getBranchNumber(),
                     Objects.requireNonNull(invoice.getPreviousPaymentAmount()).getAmount(),
                     Objects.requireNonNull(invoice.getCurrentMonthSalesAmount()).getAmount(),

@@ -1,13 +1,9 @@
 package com.example.sms.infrastructure.datasource.sales.invoice;
 
-import com.example.sms.domain.model.master.partner.customer.CustomerCode;
 import com.example.sms.domain.model.sales.invoice.*;
-import com.example.sms.domain.model.sales.sales.SalesNumber;
-import com.example.sms.domain.type.money.Money;
 import com.example.sms.infrastructure.datasource.autogen.model.請求データ;
 import com.example.sms.infrastructure.datasource.autogen.model.請求データ明細;
 import com.example.sms.infrastructure.datasource.autogen.model.請求データ明細Key;
-import com.example.sms.infrastructure.datasource.master.partner.PartnerEntityMapper;
 import com.example.sms.infrastructure.datasource.sales.invoice.invoice_line.InvoiceLineCustomEntity;
 import org.springframework.stereotype.Component;
 
@@ -92,7 +88,6 @@ public class InvoiceEntityMapper {
                 invoiceData.get請求番号(),
                 invoiceData.get請求日(),
                 invoiceData.get取引先コード(),
-                null, // 顧客コードは取引先コードと枝番から作成するため、ここではnullを設定
                 invoiceData.get顧客枝番(),
                 invoiceData.get前回入金額(),
                 invoiceData.get当月売上額(),

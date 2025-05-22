@@ -67,7 +67,6 @@ class InvoiceResourceDTOMapperTest {
                 "IV00000001",
                 LocalDateTime.of(2024, 1, 15, 10, 0),
                 "001",
-                "001",
                 1,
                 10000,
                 20000,

@@ -2,19 +2,20 @@ package com.example.sms.domain.model.sales.invoice;
 
 import com.example.sms.domain.model.master.partner.customer.CustomerCode;
 import com.example.sms.domain.type.money.Money;
-import lombok.Getter;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * 請求データのドメインモデル
  */
-@Getter
+@Value
 @RequiredArgsConstructor
+@Builder(toBuilder = true)
 public class Invoice {
     final InvoiceNumber invoiceNumber; // 請求番号
     final LocalDateTime invoiceDate; // 請求日
@@ -35,7 +36,6 @@ public class Invoice {
             String invoiceNumber,
             LocalDateTime invoiceDate,
             String partnerCode,
-            String customerCode,
             Integer customerBranchNumber,
             Integer previousPaymentAmount,
             Integer currentMonthSalesAmount,
@@ -49,7 +49,7 @@ public class Invoice {
                 new InvoiceNumber(invoiceNumber),
                 invoiceDate,
                 partnerCode,
-                customerCode != null ? CustomerCode.of(customerCode, customerBranchNumber) : null,
+                CustomerCode.of(partnerCode,customerBranchNumber),
                 Money.of(previousPaymentAmount),
                 Money.of(currentMonthSalesAmount),
                 Money.of(currentMonthPaymentAmount),
@@ -79,18 +79,5 @@ public class Invoice {
                 this.invoiceReconciliationAmount,
                 newInvoiceLines
         );
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Invoice invoice = (Invoice) o;
-        return Objects.equals(invoiceNumber, invoice.invoiceNumber);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(invoiceNumber);
     }
 }

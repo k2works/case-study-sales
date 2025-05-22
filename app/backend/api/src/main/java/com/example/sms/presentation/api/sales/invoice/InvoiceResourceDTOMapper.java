@@ -37,7 +37,6 @@ public class InvoiceResourceDTOMapper {
                 Objects.equals(resource.getInvoiceNumber(), "") ? null : resource.getInvoiceNumber(),
                 resource.getInvoiceDate(),
                 resource.getPartnerCode(),
-                resource.getCustomerCode(),
                 resource.getCustomerBranchNumber(),
                 Optional.ofNullable(resource.getPreviousPaymentAmount()).orElse(0),
                 Optional.ofNullable(resource.getCurrentMonthSalesAmount()).orElse(0),
