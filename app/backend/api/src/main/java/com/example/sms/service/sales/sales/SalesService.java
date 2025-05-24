@@ -5,7 +5,6 @@ import com.example.sms.domain.model.sales.shipping.Shipping;
 import com.example.sms.domain.model.sales.shipping.ShippingList;
 import com.example.sms.domain.model.system.autonumber.AutoNumber;
 import com.example.sms.domain.model.system.autonumber.DocumentTypeCode;
-import com.example.sms.service.sales.invoice.InvoiceService;
 import com.example.sms.service.sales.shipping.ShippingRepository;
 import com.example.sms.service.system.autonumber.AutoNumberService;
 import com.github.pagehelper.PageInfo;
@@ -113,7 +112,17 @@ public class SalesService {
 
         ShippingList  shippingList = shippingRepository.selectAllComplete();
 
-        List<String> orderNumberList = shippingList.asList().stream()
+        List<SalesLine> billingSalesLine = salesRepository.selectBillingLines();
+
+        List<Shipping> filteredList = shippingList.asList().stream()
+                .filter(shipping -> billingSalesLine.stream()
+                        .noneMatch(line -> line.getOrderNumber().equals(shipping.getOrderNumber())
+                                && line.getOrderLineNumber().equals(shipping.getOrderLineNumber())))
+                .toList();
+
+        ShippingList filteredShippingList = new ShippingList(filteredList);
+
+        List<String> orderNumberList = filteredShippingList.asList().stream()
                 .map(shipping -> shipping.getOrderNumber().getValue())
                 .distinct()
                 .toList();
@@ -121,7 +130,7 @@ public class SalesService {
         List<Sales> salesList = new ArrayList<>();
 
         orderNumberList.forEach(orderNumber -> {
-            List<Shipping> shippingListByOrderNumber = shippingList.asList().stream()
+            List<Shipping> shippingListByOrderNumber = filteredShippingList.asList().stream()
                     .filter(shipping -> Objects.equals(shipping.getOrderNumber().getValue(), orderNumber))
                     .toList();
 

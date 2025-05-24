@@ -53,8 +53,6 @@ public class UC017StepDefs extends SpringAcceptanceTest {
 
     @前提(":UC017 {string} が登録されている")
     public void init(String data) {
-        salesRepository.deleteAll();
-
         switch (data) {
             case "部門データ":
                 testDataFactory.setUpForDepartmentService();
@@ -306,6 +304,8 @@ public class UC017StepDefs extends SpringAcceptanceTest {
         return SalesLineResource.builder()
                 .salesNumber(entry.get("売上番号"))
                 .salesLineNumber(Integer.parseInt(entry.get("明細番号")))
+                .orderNumber("OD" + entry.get("売上番号").substring(2))
+                .orderLineNumber(Integer.parseInt(entry.get("明細番号")))
                 .productCode(entry.get("製品コード"))
                 .productName(entry.get("製品名"))
                 .salesUnitPrice(Integer.parseInt(entry.get("売上単価")))

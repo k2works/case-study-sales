@@ -7,6 +7,7 @@ import com.example.sms.domain.model.master.partner.customer.CustomerCode;
 import com.example.sms.domain.model.sales.order.OrderNumber;
 import com.example.sms.domain.type.money.Money;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
@@ -19,6 +20,7 @@ import java.util.List;
 @Value
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
+@Builder(toBuilder = true)
 public class Sales {
     SalesNumber salesNumber; // 売上番号
     OrderNumber orderNumber; // 受注番号

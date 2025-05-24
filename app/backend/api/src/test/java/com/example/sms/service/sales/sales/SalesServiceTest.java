@@ -10,10 +10,7 @@ import com.example.sms.domain.model.sales.order.CompletionFlag;
 import com.example.sms.domain.model.sales.order.Order;
 import com.example.sms.domain.model.sales.order.OrderLine;
 import com.example.sms.domain.model.sales.order.TaxRateType;
-import com.example.sms.domain.model.sales.sales.Sales;
-import com.example.sms.domain.model.sales.sales.SalesLine;
-import com.example.sms.domain.model.sales.sales.SalesList;
-import com.example.sms.domain.model.sales.sales.SalesType;
+import com.example.sms.domain.model.sales.sales.*;
 import com.example.sms.domain.type.money.Money;
 import com.example.sms.domain.type.quantity.Quantity;
 import com.example.sms.service.sales.invoice.InvoiceRepository;
@@ -506,6 +503,10 @@ class SalesServiceTest {
             InvoiceLine invoiceLine = TestDataFactoryImpl.getInvoiceLine("IV00000001",result.asList().getFirst().getSalesNumber().getValue(), 1);
             Invoice invoice = TestDataFactoryImpl.getInvoice("IV00000001").toBuilder().invoiceLines(List.of(invoiceLine)).build();
             invoiceRepository.save(invoice);
+            result.asList().forEach(sales -> {
+               List<SalesLine> salesLines = sales.getSalesLines().stream().map(salesLine -> salesLine.toBuilder().billingNumber(BillingNumber.of(invoiceLine.getInvoiceNumber().getValue())).build()).toList();
+               salesService.save(sales.toBuilder().salesLines(salesLines).build());
+            });
 
             salesService.aggregate();
             result = salesService.selectAll();

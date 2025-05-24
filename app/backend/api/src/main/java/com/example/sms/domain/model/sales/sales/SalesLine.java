@@ -10,6 +10,7 @@ import com.example.sms.domain.model.sales.order.TaxRateType;
 import com.example.sms.domain.type.money.Money;
 import com.example.sms.domain.type.quantity.Quantity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
@@ -22,6 +23,7 @@ import java.util.Objects;
 @Value
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
+@Builder(toBuilder = true)
 public class SalesLine {
     SalesNumber salesNumber; // 売上番号
     Integer salesLineNumber; // 売上行番号

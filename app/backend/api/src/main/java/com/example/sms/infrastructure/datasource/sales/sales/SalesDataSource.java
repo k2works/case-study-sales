@@ -3,6 +3,7 @@ package com.example.sms.infrastructure.datasource.sales.sales;
 
 import com.example.sms.domain.model.sales.invoice.InvoiceLine;
 import com.example.sms.domain.model.sales.sales.Sales;
+import com.example.sms.domain.model.sales.sales.SalesLine;
 import com.example.sms.domain.model.sales.sales.SalesList;
 import com.example.sms.infrastructure.PageInfoHelper;
 import com.example.sms.infrastructure.datasource.ObjectOptimisticLockingFailureException;
@@ -84,7 +85,6 @@ public class SalesDataSource implements SalesRepository {
         }
 
         if (sales.getSalesLines() != null) {
-            salesLineCustomMapper.deleteBySalesNumber(sales.getSalesNumber().getValue());
             AtomicInteger index = new AtomicInteger(1);
             sales.getSalesLines().forEach(salesLine -> {
                 売上データ明細Key key = new 売上データ明細Key();
@@ -95,7 +95,7 @@ public class SalesDataSource implements SalesRepository {
                 salesLineData.set作成者名(username);
                 salesLineData.set更新日時(LocalDateTime.now());
                 salesLineData.set更新者名(username);
-                salesLineMapper.insert(salesLineData);
+                salesLineMapper.updateByPrimaryKey(salesLineData);
             });
         }
     }
@@ -192,5 +192,13 @@ public class SalesDataSource implements SalesRepository {
                 salesMapper.deleteByPrimaryKey(salesCustomEntity.get売上番号());
             }
         });
+    }
+
+    @Override
+    public List<SalesLine> selectBillingLines() {
+        List<SalesLineCustomEntity> salesLineCustomEntities = salesLineCustomMapper.selectBillingLines();
+        return salesLineCustomEntities.stream()
+                .map(salesEntityMapper::mapToDomainModel)
+                .toList();
     }
 }

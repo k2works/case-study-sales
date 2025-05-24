@@ -157,6 +157,33 @@ public class SalesEntityMapper {
         );
     }
 
+    public SalesLine mapToDomainModel(SalesLineCustomEntity salesLineData) {
+        if (salesLineData == null) {
+            return SalesLine.of(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        }
+
+        return SalesLine.of(
+                salesLineData.get売上番号(),
+                salesLineData.get売上行番号(),
+                salesLineData.get受注番号(),
+                salesLineData.get受注行番号(),
+                salesLineData.get商品コード(),
+                salesLineData.get商品名(),
+                salesLineData.get販売単価(),
+                salesLineData.get売上数量(),
+                salesLineData.get出荷数量(),
+                salesLineData.get値引金額(),
+                salesLineData.get請求日(),
+                salesLineData.get請求番号(),
+                salesLineData.get請求遅延区分(),
+                salesLineData.get自動仕訳日(),
+                Optional.ofNullable(salesLineData.get商品マスタ())
+                        .map(ProductEntityMapper::mapToDomainModel)
+                        .orElse(null),
+                TaxRateType.of(salesLineData.get消費税率())
+        );
+    }
+
     public SalesDownloadCSV mapToCsvModel(Sales sales, SalesLine salesLine) {
         return new SalesDownloadCSV(
                 sales.getSalesNumber().getValue(),

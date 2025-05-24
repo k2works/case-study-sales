@@ -15,4 +15,6 @@ public interface SalesLineCustomMapper {
     List<SalesLineCustomEntity> selectBySalesNumber(String salesNumber);
 
     void deleteBySalesNumber(String salesNumber);
+
+    List<SalesLineCustomEntity> selectBillingLines();
 }
