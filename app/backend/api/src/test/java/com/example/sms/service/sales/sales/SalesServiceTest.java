@@ -311,15 +311,10 @@ class SalesServiceTest {
         @DisplayName("売上を集計できる")
         class AggregateSales {
 
-            @BeforeEach
-            void setUp() {
-                testDataFactory.setUpForSalesService();
-                testDataFactory.setUpForSalesServiceForAggregate();
-            }
-
             @Test
             @DisplayName("売上を集計できる")
             void case1() {
+                testDataFactory.setUpForSalesServiceForAggregate();
                 Order newOrder = TestDataFactoryImpl.getSalesOrder("OD00000009");
                 List<OrderLine> orderLines = IntStream.range(1, 4)
                         .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000009", i).toBuilder()
@@ -345,6 +340,7 @@ class SalesServiceTest {
             @Test
             @DisplayName("売上を集計できる")
             void case2() {
+                testDataFactory.setUpForSalesServiceForAggregate();
                 Order newOrder = TestDataFactoryImpl.getSalesOrder("OD00000010");
                 OrderLine orderLine1 = TestDataFactoryImpl.getSalesOrderLine("OD00000010", 1).toBuilder().
                         salesUnitPrice(Money.of(100))
@@ -382,6 +378,7 @@ class SalesServiceTest {
             @Test
             @DisplayName("売上を集計できる")
             void case3() {
+                testDataFactory.setUpForSalesServiceForAggregate();
                 Order newOrder = TestDataFactoryImpl.getSalesOrder("OD00000010");
                 OrderLine orderLine1 = TestDataFactoryImpl.getSalesOrderLine("OD00000010", 1).toBuilder().
                         salesUnitPrice(Money.of(100))
@@ -419,6 +416,7 @@ class SalesServiceTest {
             @Test
             @DisplayName("売上を集計できる")
             void case4() {
+                testDataFactory.setUpForSalesServiceForAggregate();
                 Order newOrder = TestDataFactoryImpl.getSalesOrder("OD00000010");
                 OrderLine orderLine1 = TestDataFactoryImpl.getSalesOrderLine("OD00000010", 1).toBuilder().
                         salesUnitPrice(Money.of(100))
@@ -479,6 +477,7 @@ class SalesServiceTest {
         @Test
         @DisplayName("売上を集計できる")
         void case5() {
+            testDataFactory.setUpForSalesServiceForAggregate();
             Order newOrder = TestDataFactoryImpl.getSalesOrder("OD00000010");
             OrderLine orderLine1 = TestDataFactoryImpl.getSalesOrderLine("OD00000010", 1).toBuilder().
                     salesUnitPrice(Money.of(100))

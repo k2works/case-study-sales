@@ -5,6 +5,7 @@ import com.example.sms.domain.model.sales.shipping.Shipping;
 import com.example.sms.domain.model.sales.shipping.ShippingList;
 import com.example.sms.domain.model.system.autonumber.AutoNumber;
 import com.example.sms.domain.model.system.autonumber.DocumentTypeCode;
+import com.example.sms.service.sales.invoice.InvoiceService;
 import com.example.sms.service.sales.shipping.ShippingRepository;
 import com.example.sms.service.system.autonumber.AutoNumberService;
 import com.github.pagehelper.PageInfo;
@@ -108,7 +109,7 @@ public class SalesService {
      * 売上集計
      */
     public void aggregate() {
-        salesRepository.deleteAll();
+       salesRepository.deleteExceptInvoiced();
 
         ShippingList  shippingList = shippingRepository.selectAllComplete();
 

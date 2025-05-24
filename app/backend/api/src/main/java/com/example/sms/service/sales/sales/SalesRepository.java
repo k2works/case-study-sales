@@ -23,5 +23,5 @@ public interface SalesRepository {
 
     void save(SalesList salesList);
 
-    SalesList selectAllNotComplete();
+    void deleteExceptInvoiced();
 }

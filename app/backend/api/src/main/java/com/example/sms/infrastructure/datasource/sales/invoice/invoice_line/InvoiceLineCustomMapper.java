@@ -1,5 +1,6 @@
 package com.example.sms.infrastructure.datasource.sales.invoice.invoice_line;
 
+import com.example.sms.domain.model.sales.invoice.InvoiceLine;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -18,4 +19,6 @@ public interface InvoiceLineCustomMapper {
     List<InvoiceLineCustomEntity> selectByInvoiceNumber(String invoiceNumber);
 
     void deleteByInvoiceNumber(String invoiceNumber);
+
+    List<InvoiceLine> selectBySalesNumberAndLineNumber(String salesNumber, Integer salesLineNumber);
 }
