@@ -10,6 +10,7 @@ import com.example.sms.domain.model.sales.invoice.InvoiceList;
 import com.example.sms.domain.model.sales.order.CompletionFlag;
 import com.example.sms.domain.model.sales.order.Order;
 import com.example.sms.domain.model.sales.order.OrderLine;
+import com.example.sms.domain.model.sales.sales.Sales;
 import com.example.sms.domain.type.money.Money;
 import com.example.sms.domain.type.quantity.Quantity;
 import com.example.sms.service.sales.order.SalesOrderRepository;
@@ -182,7 +183,7 @@ class InvoiceServiceTest {
             }
 
             @Test
-            @DisplayName("請求データを作成できる")
+            @DisplayName("都度請求データを作成できる")
             void shouldCreateInvoiceData() {
                 CustomerCode customerCode = CustomerCode.of("009", 1);
                 Order newOrder = TestDataFactoryImpl.getSalesOrder("OD00000009").toBuilder().customerCode(customerCode).build();
@@ -217,6 +218,71 @@ class InvoiceServiceTest {
                 assertEquals(3, result.getInvoiceLines().size());
                 assertEquals(Money.of(300), result.getCurrentMonthSalesAmount());
                 assertEquals(Money.of(30), result.getConsumptionTaxAmount());
+
+                Sales sales = salesService.selectAll().asList().getFirst();
+                assertEquals(Money.of(300), sales.getTotalSalesAmount());
+                assertEquals(Money.of(30), sales.getTotalConsumptionTax());
+                sales.getSalesLines().forEach(s -> {
+                    assertNotNull(s.getBillingDate());
+                    assertNotNull(s.getBillingNumber());
+                });
+
+            }
+        }
+
+        @Nested
+        @DisplayName("締請求")
+        class ClosingInvoiceTest {
+            @BeforeEach
+            void setUp() {
+                invoiceRepository.deleteAll();
+                testDataFactory.setUpForInvoiceService();
+            }
+
+            @Test
+            @DisplayName("締請求データを作成できる")
+            void shouldCreateClosingInvoiceData() {
+                CustomerCode customerCode = CustomerCode.of("009", 1);
+                Order newOrder = TestDataFactoryImpl.getSalesOrder("OD00000009").toBuilder().customerCode(customerCode).build();
+                List<OrderLine> orderLines = IntStream.range(1, 4)
+                        .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000009", i).toBuilder()
+                                .salesUnitPrice(Money.of(100))
+                                .orderQuantity(Quantity.of(1))
+                                .shipmentInstructionQuantity(Quantity.of(1))
+                                .shippedQuantity(Quantity.of(1))
+                                .completionFlag(CompletionFlag.完了)
+                                .build())
+                        .toList();
+                orderRepository.save(Order.of(newOrder, orderLines));
+                customerCode = CustomerCode.of("010", 1);
+                newOrder = TestDataFactoryImpl.getSalesOrder("OD00000010").toBuilder().customerCode(customerCode).build();
+                orderLines = IntStream.range(1, 4)
+                        .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000010", i).toBuilder()
+                                .salesUnitPrice(Money.of(200))
+                                .orderQuantity(Quantity.of(1))
+                                .shipmentInstructionQuantity(Quantity.of(1))
+                                .shippedQuantity(Quantity.of(1))
+                                .completionFlag(CompletionFlag.完了)
+                                .build())
+                        .toList();
+                orderRepository.save(Order.of(newOrder, orderLines));
+                salesService.aggregate();
+
+                invoiceService.aggregate();
+
+                Invoice result = invoiceService.selectAll().asList().getLast();
+                assertNotNull(result);
+                assertEquals(3, result.getInvoiceLines().size());
+                assertEquals(Money.of(600), result.getCurrentMonthSalesAmount());
+                assertEquals(Money.of(60), result.getConsumptionTaxAmount());
+
+                Sales sales = salesService.selectAll().asList().getLast();
+                assertEquals(Money.of(600), sales.getTotalSalesAmount());
+                assertEquals(Money.of(60), sales.getTotalConsumptionTax());
+                sales.getSalesLines().forEach(s -> {
+                    assertNotNull(s.getBillingDate());
+                    assertNotNull(s.getBillingNumber());
+                });
             }
         }
     }

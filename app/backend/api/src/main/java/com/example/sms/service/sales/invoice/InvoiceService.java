@@ -2,8 +2,7 @@ package com.example.sms.service.sales.invoice;
 
 import com.example.sms.domain.model.master.partner.customer.CustomerBillingCategory;
 import com.example.sms.domain.model.sales.invoice.*;
-import com.example.sms.domain.model.sales.sales.Sales;
-import com.example.sms.domain.model.sales.sales.SalesList;
+import com.example.sms.domain.model.sales.sales.*;
 import com.example.sms.domain.model.system.autonumber.AutoNumber;
 import com.example.sms.domain.model.system.autonumber.DocumentTypeCode;
 import com.example.sms.service.sales.sales.SalesService;
@@ -113,14 +112,22 @@ public class InvoiceService {
      */
     public void aggregate() {
         SalesList salesList = salesService.selectAll();
-        List<Sales> spotBillingLists = salesList.asList().stream()
+        spotBilling(salesList);
+        consolidatedBilling(salesList);
+    }
+
+    /**
+     * 都度請求
+     */
+    private void spotBilling(SalesList salesList) {
+        List<Sales> billingList = salesList.asList().stream()
                 .filter(sales -> sales.getCustomer() != null && Objects.requireNonNull(sales.getCustomer().getInvoice()).getCustomerBillingCategory() == CustomerBillingCategory.都度請求)
                 .toList();
 
         InvoiceDate invoiceDate = InvoiceDate.of(LocalDateTime.now());
         String invoiceNumber = generateInvoiceNumber(LocalDateTime.now());
 
-        spotBillingLists.forEach(sales -> {
+        billingList.forEach(sales -> {
             List<InvoiceLine> invoiceLines = sales.getSalesLines().stream()
                     .map(salesLine -> InvoiceLine.of(
                             invoiceNumber,
@@ -142,8 +149,60 @@ public class InvoiceService {
                     0,
                     invoiceLines
             );
-
             invoiceRepository.save(invoice);
+
+            List<SalesLine> salesLines = sales.getSalesLines().stream()
+                    .map(salesLine -> salesLine.toBuilder()
+                            .billingNumber(BillingNumber.of(invoiceNumber))
+                            .billingDate(BillingDate.of(invoiceDate.getValue()))
+                            .build())
+                    .toList();
+            salesService.save(sales.toBuilder().salesLines(salesLines).build());
+        });
+    }
+
+    /**
+     * 締請求
+     */
+    private void consolidatedBilling(SalesList salesList) {
+        List<Sales> billingList = salesList.asList().stream()
+                .filter(sales -> sales.getCustomer() != null && Objects.requireNonNull(sales.getCustomer().getInvoice()).getCustomerBillingCategory() == CustomerBillingCategory.締請求)
+                .toList();
+
+        InvoiceDate invoiceDate = InvoiceDate.of(LocalDateTime.now());
+        String invoiceNumber = generateInvoiceNumber(LocalDateTime.now());
+
+        billingList.forEach(sales -> {
+            List<InvoiceLine> invoiceLines = sales.getSalesLines().stream()
+                    .map(salesLine -> InvoiceLine.of(
+                            invoiceNumber,
+                            sales.getSalesNumber().getValue(),
+                            salesLine.getSalesLineNumber()
+                    ))
+                    .toList();
+
+            Invoice invoice = Invoice.of(
+                    invoiceNumber,
+                    invoiceDate.getValue(),
+                    sales.getPartnerCode().getValue(),
+                    sales.getCustomerCode().getBranchNumber(),
+                    0,
+                    sales.getTotalSalesAmount().getAmount(),
+                    0,
+                    0,
+                    sales.getTotalConsumptionTax().getAmount(),
+                    0,
+                    invoiceLines
+            );
+            invoiceRepository.save(invoice);
+
+            List<SalesLine> salesLines = sales.getSalesLines().stream()
+                    .map(salesLine -> salesLine.toBuilder()
+                            .billingNumber(BillingNumber.of(invoiceNumber))
+                            .billingDate(BillingDate.of(invoiceDate.getValue()))
+                            .build())
+                    .toList();
+            salesService.save(sales.toBuilder().salesLines(salesLines).build());
         });
     }
 
