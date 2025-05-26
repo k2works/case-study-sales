@@ -284,6 +284,30 @@ class InvoiceServiceTest {
                     assertNotNull(s.getBillingNumber());
                 });
             }
+
+            @Test
+            @DisplayName("10日締め当月10日支払い")
+            void shouldCreateClosingInvoiceWith10thClosing() {
+                CustomerCode customerCode = CustomerCode.of("010", 1);
+                Order newOrder = TestDataFactoryImpl.getSalesOrder("OD00000010").toBuilder().customerCode(customerCode).build();
+                List<OrderLine> orderLines = IntStream.range(1, 4)
+                        .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000010", i).toBuilder()
+                                .salesUnitPrice(Money.of(100))
+                                .orderQuantity(Quantity.of(1))
+                                .shipmentInstructionQuantity(Quantity.of(1))
+                                .shippedQuantity(Quantity.of(1))
+                                .completionFlag(CompletionFlag.完了)
+                                .build())
+                        .toList();
+                orderRepository.save(Order.of(newOrder, orderLines));
+                salesService.aggregate();
+
+                invoiceService.aggregate();
+
+                Invoice result = invoiceService.selectAll().asList().getFirst();
+                assertNotNull(result);
+                assertEquals(10, result.getInvoiceDate().getValue().getDayOfMonth());
+            }
         }
     }
 }

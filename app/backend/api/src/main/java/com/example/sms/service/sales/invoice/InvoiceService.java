@@ -1,6 +1,7 @@
 package com.example.sms.service.sales.invoice;
 
 import com.example.sms.domain.model.master.partner.customer.CustomerBillingCategory;
+import com.example.sms.domain.model.master.partner.invoice.ClosingDate;
 import com.example.sms.domain.model.sales.invoice.*;
 import com.example.sms.domain.model.sales.sales.*;
 import com.example.sms.domain.model.system.autonumber.AutoNumber;
@@ -169,40 +170,55 @@ public class InvoiceService {
                 .filter(sales -> sales.getCustomer() != null && Objects.requireNonNull(sales.getCustomer().getInvoice()).getCustomerBillingCategory() == CustomerBillingCategory.締請求)
                 .toList();
 
-        InvoiceDate invoiceDate = InvoiceDate.of(LocalDateTime.now());
         String invoiceNumber = generateInvoiceNumber(LocalDateTime.now());
 
         billingList.forEach(sales -> {
-            List<InvoiceLine> invoiceLines = sales.getSalesLines().stream()
-                    .map(salesLine -> InvoiceLine.of(
-                            invoiceNumber,
-                            sales.getSalesNumber().getValue(),
-                            salesLine.getSalesLineNumber()
-                    ))
+            SalesDate salesDate = sales.getSalesDate();
+            com.example.sms.domain.model.master.partner.invoice.Invoice customerInvoice = sales.getCustomer().getInvoice();
+            ClosingDate closeDay = customerInvoice.getClosingInvoice1().getClosingDay();
+            LocalDateTime closingDate = LocalDateTime.of(salesDate.getValue().getYear(), salesDate.getValue().getMonth(), closeDay.getValue(), 1, 0, 0);
+            InvoiceDate invoiceDate = InvoiceDate.of(closingDate);
+
+            LocalDateTime from = closingDate.minusMonths(1).withDayOfMonth(closeDay.getValue());
+            LocalDateTime to = closingDate;
+            List<Sales> consolidatedSales = salesList.asList().stream()
+                    .filter(s -> s.getCustomerCode().equals(sales.getCustomerCode()) &&
+                            !s.getSalesDate().getValue().isBefore(from) &&
+                            s.getSalesDate().getValue().isBefore(to))
                     .toList();
 
-            Invoice invoice = Invoice.of(
-                    invoiceNumber,
-                    invoiceDate.getValue(),
-                    sales.getPartnerCode().getValue(),
-                    sales.getCustomerCode().getBranchNumber(),
-                    0,
-                    sales.getTotalSalesAmount().getAmount(),
-                    0,
-                    0,
-                    sales.getTotalConsumptionTax().getAmount(),
-                    0,
-                    invoiceLines
-            );
-            invoiceRepository.save(invoice);
+            consolidatedSales.forEach(s -> {
+                List<InvoiceLine> invoiceLines = s.getSalesLines().stream()
+                        .map(salesLine -> InvoiceLine.of(
+                                invoiceNumber,
+                                s.getSalesNumber().getValue(),
+                                salesLine.getSalesLineNumber()
+                        ))
+                        .toList();
 
-            List<SalesLine> salesLines = sales.getSalesLines().stream()
-                    .map(salesLine -> salesLine.toBuilder()
-                            .billingNumber(BillingNumber.of(invoiceNumber))
-                            .billingDate(BillingDate.of(invoiceDate.getValue()))
-                            .build())
-                    .toList();
-            salesService.save(sales.toBuilder().salesLines(salesLines).build());
+                Invoice invoice = Invoice.of(
+                        invoiceNumber,
+                        invoiceDate.getValue(),
+                        s.getPartnerCode().getValue(),
+                        s.getCustomerCode().getBranchNumber(),
+                        0,
+                        s.getTotalSalesAmount().getAmount(),
+                        0,
+                        0,
+                        s.getTotalConsumptionTax().getAmount(),
+                        0,
+                        invoiceLines
+                );
+                invoiceRepository.save(invoice);
+
+                List<SalesLine> salesLines = s.getSalesLines().stream()
+                        .map(salesLine -> salesLine.toBuilder()
+                                .billingNumber(BillingNumber.of(invoiceNumber))
+                                .billingDate(BillingDate.of(invoiceDate.getValue()))
+                                .build())
+                        .toList();
+                salesService.save(s.toBuilder().salesLines(salesLines).build());
+            });
         });
     }
 

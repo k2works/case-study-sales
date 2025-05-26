@@ -592,8 +592,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
         Partner partner2 = getPartner("010");
         String partnerCode2 = partner2.getPartnerCode().getValue();
         CustomerBillingCategory customerBillingCategory2 = CustomerBillingCategory.締請求;
-        ClosingInvoice closingInvoice2 = ClosingInvoice.of(20, 1, 99, 1);
-        ClosingInvoice closingInvoice3 = ClosingInvoice.of(10, 0, 20, 1);
+        ClosingInvoice closingInvoice2 = ClosingInvoice.of(10, 0, 10, 1);
+        ClosingInvoice closingInvoice3 = ClosingInvoice.of(10, 0, 10, 1);
         com.example.sms.domain.model.master.partner.invoice.Invoice invoice2 = new com.example.sms.domain.model.master.partner.invoice.Invoice(customerBillingCategory2, closingInvoice2, closingInvoice3);
         Customer customer2 = TestDataFactoryImpl.getCustomer("010", 1).toBuilder()
                 .invoice(invoice2)
