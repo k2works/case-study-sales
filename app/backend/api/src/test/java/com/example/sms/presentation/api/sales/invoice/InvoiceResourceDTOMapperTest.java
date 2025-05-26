@@ -46,7 +46,7 @@ class InvoiceResourceDTOMapperTest {
         // Assert
         assertNotNull(invoice);
         assertEquals("IV00000001", invoice.getInvoiceNumber().getValue());
-        assertEquals(LocalDateTime.of(2024, 1, 15, 10, 0), invoice.getInvoiceDate());
+        assertEquals(LocalDateTime.of(2024, 1, 15, 10, 0), invoice.getInvoiceDate().getValue());
         assertEquals("001", invoice.getPartnerCode().getValue());
         assertEquals("001", invoice.getCustomerCode().getCode().getValue());
         assertEquals(1, invoice.getCustomerCode().getBranchNumber());

@@ -132,7 +132,7 @@ class InvoiceRepositoryTest {
     private Invoice updateInvoiceWithPartnerCode(Invoice invoice, String partnerCode) {
         return Invoice.of(
                 invoice.getInvoiceNumber().getValue(),
-                invoice.getInvoiceDate(),
+                invoice.getInvoiceDate().getValue(),
                 partnerCode,
                 1,
                 invoice.getPreviousPaymentAmount().getAmount(),
@@ -149,7 +149,7 @@ class InvoiceRepositoryTest {
     private Invoice createInvoiceWithLines(Invoice invoice, List<InvoiceLine> invoiceLines) {
         return Invoice.of(
                 invoice.getInvoiceNumber().getValue(),
-                invoice.getInvoiceDate(),
+                invoice.getInvoiceDate().getValue(),
                 invoice.getPartnerCode().getValue(),
                 1,
                 invoice.getPreviousPaymentAmount().getAmount(),

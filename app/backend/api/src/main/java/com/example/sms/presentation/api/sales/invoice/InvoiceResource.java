@@ -65,7 +65,7 @@ public class InvoiceResource {
                             .map(InvoiceNumber::getValue)
                             .ifPresent(resource::setInvoiceNumber);
 
-                    resource.setInvoiceDate(inv.getInvoiceDate());
+                    resource.setInvoiceDate(inv.getInvoiceDate().getValue());
                     resource.setPartnerCode(inv.getPartnerCode().getValue());
 
                     Optional.ofNullable(inv.getCustomerCode())

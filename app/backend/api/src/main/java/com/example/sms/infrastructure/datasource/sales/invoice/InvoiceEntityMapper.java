@@ -28,7 +28,7 @@ public class InvoiceEntityMapper {
 
         請求データ invoiceEntity = new 請求データ();
         invoiceEntity.set請求番号(invoice.getInvoiceNumber().getValue());
-        invoiceEntity.set請求日(invoice.getInvoiceDate());
+        invoiceEntity.set請求日(invoice.getInvoiceDate().getValue());
         invoiceEntity.set取引先コード(invoice.getPartnerCode().getValue());
 
         if (invoice.getCustomerCode() != null) {

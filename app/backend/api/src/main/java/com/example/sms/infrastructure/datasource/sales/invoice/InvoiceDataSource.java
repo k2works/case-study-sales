@@ -3,7 +3,6 @@ package com.example.sms.infrastructure.datasource.sales.invoice;
 import com.example.sms.domain.model.sales.invoice.Invoice;
 import com.example.sms.domain.model.sales.invoice.InvoiceList;
 import com.example.sms.infrastructure.PageInfoHelper;
-import com.example.sms.infrastructure.datasource.ObjectOptimisticLockingFailureException;
 import com.example.sms.infrastructure.datasource.autogen.mapper.請求データMapper;
 import com.example.sms.infrastructure.datasource.autogen.mapper.請求データ明細Mapper;
 import com.example.sms.infrastructure.datasource.autogen.model.請求データ;
@@ -21,7 +20,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 請求データリポジトリ実装
@@ -83,7 +81,7 @@ public class InvoiceDataSource implements InvoiceRepository {
                 key.set請求番号(invoice.getInvoiceNumber().getValue());
                 key.set売上番号(invoiceLine.getSalesNumber().getValue());
                 key.set売上行番号(invoiceLine.getSalesLineNumber());
-                請求データ明細 invoiceLineData = invoiceEntityMapper.mapToEntity(key, invoiceLine);
+                請求データ明細 invoiceLineData = invoiceEntityMapper.mapToEntity(key);
                 invoiceLineData.set作成日時(LocalDateTime.now());
                 invoiceLineData.set作成者名(username);
                 invoiceLineData.set更新日時(LocalDateTime.now());
@@ -107,7 +105,7 @@ public class InvoiceDataSource implements InvoiceRepository {
                 key.set請求番号(invoice.getInvoiceNumber().getValue());
                 key.set売上番号(invoiceLine.getSalesNumber().getValue());
                 key.set売上行番号(invoiceLine.getSalesLineNumber());
-                請求データ明細 invoiceLineData = invoiceEntityMapper.mapToEntity(key, invoiceLine);
+                請求データ明細 invoiceLineData = invoiceEntityMapper.mapToEntity(key);
                 invoiceLineData.set作成日時(LocalDateTime.now());
                 invoiceLineData.set作成者名(username);
                 invoiceLineData.set更新日時(LocalDateTime.now());

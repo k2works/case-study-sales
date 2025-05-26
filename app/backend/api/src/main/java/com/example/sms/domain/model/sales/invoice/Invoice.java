@@ -19,7 +19,7 @@ import java.util.List;
 @Builder(toBuilder = true)
 public class Invoice {
     final InvoiceNumber invoiceNumber; // 請求番号
-    final LocalDateTime invoiceDate; // 請求日
+    final InvoiceDate invoiceDate; // 請求日
     final PartnerCode partnerCode; // 取引先コード
     final CustomerCode customerCode; // 顧客コード
     final Money previousPaymentAmount; // 前回入金額
@@ -48,7 +48,7 @@ public class Invoice {
     ) {
         return new Invoice(
                 new InvoiceNumber(invoiceNumber),
-                invoiceDate,
+                InvoiceDate.of(invoiceDate),
                 PartnerCode.of(partnerCode),
                 CustomerCode.of(partnerCode,customerBranchNumber),
                 Money.of(previousPaymentAmount),

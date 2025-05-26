@@ -46,8 +46,8 @@ public class InvoiceService {
      */
     public void register(Invoice invoice) {
         if (invoice.getInvoiceNumber() == null) {
-            LocalDateTime invoiceDate = Objects.requireNonNull(invoice.getInvoiceDate());
-            String invoiceNumber = generateInvoiceNumber(invoiceDate);
+            LocalDateTime invoiceDate = invoice.getInvoiceDate().getValue();
+            String invoiceNumber = generateInvoiceNumber(Objects.requireNonNull(invoiceDate));
 
             invoice = Invoice.of(
                     invoiceNumber,

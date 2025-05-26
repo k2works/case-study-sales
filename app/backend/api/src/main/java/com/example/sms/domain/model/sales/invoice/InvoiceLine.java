@@ -2,11 +2,9 @@ package com.example.sms.domain.model.sales.invoice;
 
 import com.example.sms.domain.model.sales.sales.SalesNumber;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
-import java.util.Objects;
 
 /**
  * 請求明細
@@ -28,8 +26,8 @@ public class InvoiceLine {
             Integer salesLineNumber
     ) {
         return new InvoiceLine(
-                new InvoiceNumber(invoiceNumber),
-                new SalesNumber(salesNumber),
+                InvoiceNumber.of(invoiceNumber),
+                SalesNumber.of(salesNumber),
                 salesLineNumber
         );
     }

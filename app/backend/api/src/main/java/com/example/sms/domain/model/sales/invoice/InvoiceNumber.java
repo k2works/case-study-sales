@@ -1,21 +1,19 @@
 package com.example.sms.domain.model.sales.invoice;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * 請求番号
  */
-@Getter
+@Value
 @RequiredArgsConstructor
-@EqualsAndHashCode
-@ToString
 public class InvoiceNumber {
     private final String value;
 
     public static InvoiceNumber of(String value) {
+        if (value == null || value.isEmpty()) {
+            throw new IllegalArgumentException("請求番号は必須です");
+        }
         return new InvoiceNumber(value);
     }
 }
