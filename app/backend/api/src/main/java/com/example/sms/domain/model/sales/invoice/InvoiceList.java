@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * 請求データ一覧のドメインモデル
+ * 請求一覧
  */
 @Getter
 @RequiredArgsConstructor

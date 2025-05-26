@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 /**
- * 請求番号の値オブジェクト
+ * 請求番号
  */
 @Getter
 @RequiredArgsConstructor

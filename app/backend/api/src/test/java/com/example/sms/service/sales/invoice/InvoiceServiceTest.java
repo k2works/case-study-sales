@@ -103,7 +103,7 @@ class InvoiceServiceTest {
             Invoice updatedInvoice = Invoice.of(
                     invoice.getInvoiceNumber().getValue(),
                     invoice.getInvoiceDate(),
-                    invoice.getPartnerCode(),
+                    invoice.getPartnerCode().getValue(),
                     invoice.getCustomerCode().getBranchNumber(),
                     invoice.getPreviousPaymentAmount().getAmount(),
                     invoice.getCurrentMonthSalesAmount().getAmount(),

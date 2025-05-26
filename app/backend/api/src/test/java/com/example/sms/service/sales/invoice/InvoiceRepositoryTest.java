@@ -150,7 +150,7 @@ class InvoiceRepositoryTest {
         return Invoice.of(
                 invoice.getInvoiceNumber().getValue(),
                 invoice.getInvoiceDate(),
-                invoice.getPartnerCode(),
+                invoice.getPartnerCode().getValue(),
                 1,
                 invoice.getPreviousPaymentAmount().getAmount(),
                 invoice.getCurrentMonthSalesAmount().getAmount(),

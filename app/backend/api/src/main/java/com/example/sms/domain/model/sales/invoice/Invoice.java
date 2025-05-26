@@ -1,5 +1,6 @@
 package com.example.sms.domain.model.sales.invoice;
 
+import com.example.sms.domain.model.master.partner.PartnerCode;
 import com.example.sms.domain.model.master.partner.customer.CustomerCode;
 import com.example.sms.domain.type.money.Money;
 import lombok.Builder;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 請求データのドメインモデル
+ * 請求
  */
 @Value
 @RequiredArgsConstructor
@@ -19,7 +20,7 @@ import java.util.List;
 public class Invoice {
     final InvoiceNumber invoiceNumber; // 請求番号
     final LocalDateTime invoiceDate; // 請求日
-    final String partnerCode; // 取引先コード
+    final PartnerCode partnerCode; // 取引先コード
     final CustomerCode customerCode; // 顧客コード
     final Money previousPaymentAmount; // 前回入金額
     final Money currentMonthSalesAmount; // 当月売上額
@@ -48,7 +49,7 @@ public class Invoice {
         return new Invoice(
                 new InvoiceNumber(invoiceNumber),
                 invoiceDate,
-                partnerCode,
+                PartnerCode.of(partnerCode),
                 CustomerCode.of(partnerCode,customerBranchNumber),
                 Money.of(previousPaymentAmount),
                 Money.of(currentMonthSalesAmount),

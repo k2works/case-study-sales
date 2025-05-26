@@ -52,7 +52,7 @@ public class InvoiceService {
             invoice = Invoice.of(
                     invoiceNumber,
                     invoiceDate,
-                    Objects.requireNonNull(invoice.getPartnerCode()),
+                    Objects.requireNonNull(invoice.getPartnerCode().getValue()),
                     Objects.requireNonNull(invoice.getCustomerCode()).getBranchNumber(),
                     Objects.requireNonNull(invoice.getPreviousPaymentAmount()).getAmount(),
                     Objects.requireNonNull(invoice.getCurrentMonthSalesAmount()).getAmount(),

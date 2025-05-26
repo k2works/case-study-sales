@@ -9,7 +9,7 @@ import lombok.Value;
 import java.util.Objects;
 
 /**
- * 請求データ明細のドメインモデル
+ * 請求明細
  */
 @Value
 @RequiredArgsConstructor

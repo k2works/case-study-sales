@@ -66,7 +66,7 @@ public class InvoiceResource {
                             .ifPresent(resource::setInvoiceNumber);
 
                     resource.setInvoiceDate(inv.getInvoiceDate());
-                    resource.setPartnerCode(inv.getPartnerCode());
+                    resource.setPartnerCode(inv.getPartnerCode().getValue());
 
                     Optional.ofNullable(inv.getCustomerCode())
                             .ifPresent(customerCode -> {

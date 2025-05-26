@@ -3,6 +3,7 @@ package com.example.sms.presentation.api.sales.invoice;
 import com.example.sms.domain.model.sales.invoice.Invoice;
 import com.example.sms.domain.model.sales.invoice.InvoiceLine;
 import com.example.sms.service.sales.invoice.InvoiceCriteria;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -11,9 +12,11 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@DisplayName("請求リソースDTOマッパーテスト")
 class InvoiceResourceDTOMapperTest {
 
     @Test
+    @DisplayName("convertToEntity - 有効なリソースを渡すと請求エンティティを返す")
     void testConvertToEntity_validResource_shouldReturnInvoice() {
         // Arrange
         InvoiceResource resource = new InvoiceResource();
@@ -44,7 +47,7 @@ class InvoiceResourceDTOMapperTest {
         assertNotNull(invoice);
         assertEquals("IV00000001", invoice.getInvoiceNumber().getValue());
         assertEquals(LocalDateTime.of(2024, 1, 15, 10, 0), invoice.getInvoiceDate());
-        assertEquals("001", invoice.getPartnerCode());
+        assertEquals("001", invoice.getPartnerCode().getValue());
         assertEquals("001", invoice.getCustomerCode().getCode().getValue());
         assertEquals(1, invoice.getCustomerCode().getBranchNumber());
         assertEquals(10000, invoice.getPreviousPaymentAmount().getAmount());
@@ -61,6 +64,7 @@ class InvoiceResourceDTOMapperTest {
     }
 
     @Test
+    @DisplayName("convertToResource - 有効なエンティティを渡すと請求リソースを返す")
     void testConvertToResource_validEntity_shouldReturnResource() {
         // Arrange
         Invoice invoice = Invoice.of(
@@ -101,6 +105,7 @@ class InvoiceResourceDTOMapperTest {
     }
 
     @Test
+    @DisplayName("convertToCriteria - 有効なリソースを渡すと請求条件を返す")
     void testConvertToCriteria_validResource_shouldReturnInvoiceCriteria() {
         // Arrange
         InvoiceCriteriaResource resource = new InvoiceCriteriaResource();
@@ -121,6 +126,7 @@ class InvoiceResourceDTOMapperTest {
     }
 
     @Test
+    @DisplayName("convertToEntity - nullリソースを渡すとnullを返す")
     void testConvertToEntity_nullResource_shouldReturnNull() {
         // Act
         Invoice invoice = InvoiceResourceDTOMapper.convertToEntity(null);
@@ -130,6 +136,7 @@ class InvoiceResourceDTOMapperTest {
     }
 
     @Test
+    @DisplayName("convertToResource - nullエンティティを渡すとnullを返す")
     void testConvertToResource_nullEntity_shouldReturnNull() {
         // Act
         InvoiceResource resource = InvoiceResourceDTOMapper.convertToResource(null);
@@ -139,6 +146,7 @@ class InvoiceResourceDTOMapperTest {
     }
 
     @Test
+    @DisplayName("convertToCriteria - nullリソースを渡すとnullを返す")
     void testConvertToCriteria_nullResource_shouldReturnNull() {
         // Act
         InvoiceCriteria criteria = InvoiceResourceDTOMapper.convertToCriteria(null);

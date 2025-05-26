@@ -29,7 +29,7 @@ public class InvoiceEntityMapper {
         請求データ invoiceEntity = new 請求データ();
         invoiceEntity.set請求番号(invoice.getInvoiceNumber().getValue());
         invoiceEntity.set請求日(invoice.getInvoiceDate());
-        invoiceEntity.set取引先コード(invoice.getPartnerCode());
+        invoiceEntity.set取引先コード(invoice.getPartnerCode().getValue());
 
         if (invoice.getCustomerCode() != null) {
             invoiceEntity.set取引先コード(invoice.getCustomerCode().getCode().getValue());
@@ -49,7 +49,7 @@ public class InvoiceEntityMapper {
     /**
      * ドメインモデルからエンティティへの変換（明細）
      */
-    public 請求データ明細 mapToEntity(請求データ明細Key key, InvoiceLine invoiceLine) {
+    public 請求データ明細 mapToEntity(請求データ明細Key key) {
         請求データ明細 invoiceLineEntity = new 請求データ明細();
         invoiceLineEntity.set請求番号(key.get請求番号());
         invoiceLineEntity.set売上番号(key.get売上番号());
