@@ -17,6 +17,12 @@
                      column="社員コード"
                      select="com.example.sms.infrastructure.datasource.master.employee.EmployeeCustomMapper.selectByPrimaryKey"
                      fetchType="eager" />
+        <association property="顧客マスタ"
+                     javaType="com.example.sms.infrastructure.datasource.master.partner.customer.CustomerCustomEntity"
+                     column="{顧客コード=顧客コード, 顧客枝番=顧客枝番}"
+                     select="com.example.sms.infrastructure.datasource.master.partner.customer.CustomerCustomMapper.selectByPrimaryKey"
+                     fetchType="eager"
+        />
         <collection property="売上データ明細"
                     javaType="ArrayList"
                     column="売上番号"

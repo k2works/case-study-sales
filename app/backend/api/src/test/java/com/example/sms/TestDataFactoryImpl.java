@@ -2,8 +2,10 @@ package com.example.sms;
 
 import com.example.sms.domain.model.master.employee.EmployeeCode;
 import com.example.sms.domain.model.master.partner.customer.Customer;
+import com.example.sms.domain.model.master.partner.customer.CustomerBillingCategory;
 import com.example.sms.domain.model.master.partner.customer.CustomerCode;
 import com.example.sms.domain.model.master.partner.customer.Shipping;
+import com.example.sms.domain.model.master.partner.invoice.ClosingInvoice;
 import com.example.sms.domain.model.master.partner.vendor.Vendor;
 import com.example.sms.domain.model.master.product.MiscellaneousType;
 import com.example.sms.domain.model.master.region.Region;
@@ -572,6 +574,36 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
     @Override
     public void setUpForSalesServiceForAggregate() {
+        // 取引先・顧客データの準備
+        Partner partner = getPartner("009");
+        String partnerCode = partner.getPartnerCode().getValue();
+        CustomerBillingCategory customerBillingCategory = CustomerBillingCategory.都度請求;
+        ClosingInvoice closingInvoice = ClosingInvoice.of(20, 1, 99, 1);
+        com.example.sms.domain.model.master.partner.invoice.Invoice invoice = new com.example.sms.domain.model.master.partner.invoice.Invoice(customerBillingCategory, closingInvoice, closingInvoice);
+        Customer customer = TestDataFactoryImpl.getCustomer("009", 1).toBuilder()
+                .invoice(invoice)
+                .build();
+        CustomerCode customerCode = customer.getCustomerCode();
+        List<Shipping> shippingList = IntStream.rangeClosed(1, 3)
+                .mapToObj(i -> getShipping(partnerCode, i, customerCode.getBranchNumber()))
+                .toList();
+        partnerRepository.save(Partner.ofWithCustomers(partner, List.of(Customer.of(customer, shippingList))));
+
+        Partner partner2 = getPartner("009");
+        String partnerCode2 = partner2.getPartnerCode().getValue();
+        CustomerBillingCategory customerBillingCategory2 = CustomerBillingCategory.都度請求;
+        ClosingInvoice closingInvoice2 = ClosingInvoice.of(20, 1, 99, 1);
+        ClosingInvoice closingInvoice3 = ClosingInvoice.of(10, 0, 20, 1);
+        com.example.sms.domain.model.master.partner.invoice.Invoice invoice2 = new com.example.sms.domain.model.master.partner.invoice.Invoice(customerBillingCategory2, closingInvoice2, closingInvoice3);
+        Customer customer2 = TestDataFactoryImpl.getCustomer("009", 1).toBuilder()
+                .invoice(invoice2)
+                .build();
+        CustomerCode customerCode2 = customer.getCustomerCode();
+        List<Shipping> shippingList2 = IntStream.rangeClosed(1, 3)
+                .mapToObj(i -> getShipping(partnerCode2, i, customerCode2.getBranchNumber()))
+                .toList();
+        partnerRepository.save(Partner.ofWithCustomers(partner, List.of(Customer.of(customer2, shippingList2))));
+
         // 請求データの削除
         invoiceRepository.deleteAll();
 
@@ -580,6 +612,11 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
         // 受注データの削除
         salesOrderRepository.deleteAll();
+    }
+
+    @Override
+    public void setUpForInvoiceService() {
+        setUpForSalesServiceForAggregate();
     }
 
     @Override

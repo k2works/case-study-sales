@@ -3,10 +3,17 @@ package com.example.sms.service.sales.invoice;
 import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactory;
 import com.example.sms.TestDataFactoryImpl;
+import com.example.sms.domain.model.master.partner.customer.CustomerCode;
 import com.example.sms.domain.model.sales.invoice.Invoice;
 import com.example.sms.domain.model.sales.invoice.InvoiceLine;
 import com.example.sms.domain.model.sales.invoice.InvoiceList;
+import com.example.sms.domain.model.sales.order.CompletionFlag;
+import com.example.sms.domain.model.sales.order.Order;
+import com.example.sms.domain.model.sales.order.OrderLine;
 import com.example.sms.domain.type.money.Money;
+import com.example.sms.domain.type.quantity.Quantity;
+import com.example.sms.service.sales.order.SalesOrderRepository;
+import com.example.sms.service.sales.sales.SalesService;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,6 +36,12 @@ class InvoiceServiceTest {
 
     @Autowired
     private InvoiceRepository invoiceRepository;
+
+    @Autowired
+    private SalesService salesService;
+
+    @Autowired
+    private SalesOrderRepository orderRepository;
 
     @Autowired
     private TestDataFactory testDataFactory;
@@ -43,6 +57,13 @@ class InvoiceServiceTest {
             
             // Set up sales data which is needed for invoice lines
             testDataFactory.setUpForSalesService();
+        }
+
+        private Invoice createTestInvoice(String invoiceNumber) {
+            InvoiceLine invoiceLine = TestDataFactoryImpl.getInvoiceLine(invoiceNumber, "SA00000001", 1);
+            Invoice invoice = TestDataFactoryImpl.getInvoice(invoiceNumber).toBuilder().invoiceLines(List.of(invoiceLine)).build();
+            invoiceService.save(invoice);
+            return invoice;
         }
 
         @Test
@@ -151,12 +172,52 @@ class InvoiceServiceTest {
             assertEquals(20, result.getTotal());
         }
 
-        // Helper method to create test invoices
-        private Invoice createTestInvoice(String invoiceNumber) {
-            InvoiceLine invoiceLine = TestDataFactoryImpl.getInvoiceLine(invoiceNumber, "SA00000001", 1);
-            Invoice invoice = TestDataFactoryImpl.getInvoice(invoiceNumber).toBuilder().invoiceLines(List.of(invoiceLine)).build();
-            invoiceService.save(invoice);
-            return invoice;
+        @Nested
+        @DisplayName("都度請求")
+        class AllInvoicesTest {
+            @BeforeEach
+            void setUp() {
+                invoiceRepository.deleteAll();
+                testDataFactory.setUpForInvoiceService();
+            }
+
+            @Test
+            @DisplayName("請求データを作成できる")
+            void shouldCreateInvoiceData() {
+                CustomerCode customerCode = CustomerCode.of("009", 1);
+                Order newOrder = TestDataFactoryImpl.getSalesOrder("OD00000009").toBuilder().customerCode(customerCode).build();
+                List<OrderLine> orderLines = IntStream.range(1, 4)
+                        .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000009", i).toBuilder()
+                                .salesUnitPrice(Money.of(100))
+                                .orderQuantity(Quantity.of(1))
+                                .shipmentInstructionQuantity(Quantity.of(1))
+                                .shippedQuantity(Quantity.of(1))
+                                .completionFlag(CompletionFlag.完了)
+                                .build())
+                        .toList();
+                orderRepository.save(Order.of(newOrder, orderLines));
+                customerCode = CustomerCode.of("010", 1);
+                newOrder = TestDataFactoryImpl.getSalesOrder("OD00000010").toBuilder().customerCode(customerCode).build();
+                orderLines = IntStream.range(1, 4)
+                        .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000010", i).toBuilder()
+                                .salesUnitPrice(Money.of(200))
+                                .orderQuantity(Quantity.of(1))
+                                .shipmentInstructionQuantity(Quantity.of(1))
+                                .shippedQuantity(Quantity.of(1))
+                                .completionFlag(CompletionFlag.完了)
+                                .build())
+                        .toList();
+                orderRepository.save(Order.of(newOrder, orderLines));
+                salesService.aggregate();
+
+                invoiceService.aggregate();
+
+                Invoice result = invoiceService.selectAll().asList().getFirst();
+                assertNotNull(result);
+                assertEquals(3, result.getInvoiceLines().size());
+                assertEquals(Money.of(300), result.getCurrentMonthSalesAmount());
+                assertEquals(Money.of(30), result.getConsumptionTaxAmount());
+            }
         }
     }
 }

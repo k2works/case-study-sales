@@ -1,8 +1,10 @@
 package com.example.sms.domain.model.sales.sales;
 
 import com.example.sms.domain.model.master.department.DepartmentId;
+import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.master.employee.EmployeeCode;
 import com.example.sms.domain.model.master.partner.PartnerCode;
+import com.example.sms.domain.model.master.partner.customer.Customer;
 import com.example.sms.domain.model.master.partner.customer.CustomerCode;
 import com.example.sms.domain.model.sales.order.OrderNumber;
 import com.example.sms.domain.type.money.Money;
@@ -38,6 +40,9 @@ public class Sales {
 
     List<SalesLine> salesLines; // 売上明細
 
+    Customer customer;
+    Employee employee;
+
     /**
      * ファクトリーメソッド
      */
@@ -69,7 +74,30 @@ public class Sales {
                 remarks,
                 voucherNumber,
                 originalVoucherNumber,
-                salesLines
+                salesLines,
+                null,
+                null
+        );
+    }
+
+    public static Sales of(Sales sales, Customer customer, Employee employee) {
+        return new Sales(
+                sales.getSalesNumber(),
+                sales.getOrderNumber(),
+                sales.getSalesDate(),
+                sales.getSalesType(),
+                sales.getDepartmentId(),
+                sales.getPartnerCode(),
+                sales.getCustomerCode(),
+                sales.getEmployeeCode(),
+                sales.getTotalSalesAmount(),
+                sales.getTotalConsumptionTax(),
+                sales.getRemarks(),
+                sales.getVoucherNumber(),
+                sales.getOriginalVoucherNumber(),
+                sales.getSalesLines(),
+                customer,
+                employee
         );
     }
 }

@@ -8,6 +8,7 @@ import com.example.sms.domain.model.master.partner.customer.Customer;
 import com.example.sms.domain.model.master.partner.customer.CustomerCode;
 import com.example.sms.domain.type.money.Money;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
@@ -22,6 +23,7 @@ import static org.apache.commons.lang3.Validate.isTrue;
 @Value
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
+@Builder(toBuilder = true)
 public class Order {
     OrderNumber orderNumber; // 受注番号
     OrderDate orderDate; // 受注日

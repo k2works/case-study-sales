@@ -7,6 +7,7 @@ import com.example.sms.domain.type.address.Address;
 import com.example.sms.domain.model.master.partner.invoice.ClosingInvoice;
 import com.example.sms.domain.model.master.partner.invoice.Invoice;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
@@ -21,6 +22,7 @@ import static org.apache.commons.lang3.Validate.notNull;
 @Value
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
+@Builder(toBuilder = true)
 public class Customer {
     CustomerCode customerCode; // 顧客コード
     CustomerType customerType; // 顧客区分

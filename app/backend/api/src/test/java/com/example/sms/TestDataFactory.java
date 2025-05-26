@@ -43,6 +43,8 @@ public interface TestDataFactory {
 
     void setUpForSalesServiceForAggregate();
 
+    void setUpForInvoiceService();
+
     MultipartFile createOrderFile();
 
     MultipartFile createOrderInvalidFile();

@@ -1,12 +1,22 @@
 package com.example.sms.infrastructure.datasource.sales.sales;
 
-import com.example.sms.domain.model.master.partner.customer.CustomerCode;
+import com.example.sms.domain.model.master.employee.Employee;
+import com.example.sms.domain.model.master.partner.customer.*;
+import com.example.sms.domain.model.master.partner.invoice.ClosingInvoice;
+import com.example.sms.domain.model.master.partner.invoice.Invoice;
 import com.example.sms.domain.model.sales.order.OrderNumber;
 import com.example.sms.domain.model.sales.order.TaxRateType;
 import com.example.sms.domain.model.sales.sales.*;
+import com.example.sms.domain.type.address.Address;
+import com.example.sms.domain.type.mail.EmailAddress;
+import com.example.sms.domain.type.phone.FaxNumber;
+import com.example.sms.domain.type.phone.PhoneNumber;
+import com.example.sms.infrastructure.datasource.autogen.model.出荷先マスタ;
 import com.example.sms.infrastructure.datasource.autogen.model.売上データ;
 import com.example.sms.infrastructure.datasource.autogen.model.売上データ明細;
 import com.example.sms.infrastructure.datasource.autogen.model.売上データ明細Key;
+import com.example.sms.infrastructure.datasource.master.employee.EmployeeCustomEntity;
+import com.example.sms.infrastructure.datasource.master.partner.customer.CustomerCustomEntity;
 import com.example.sms.infrastructure.datasource.master.product.ProductEntityMapper;
 import com.example.sms.infrastructure.datasource.sales.sales.sales_line.SalesLineCustomEntity;
 import com.example.sms.infrastructure.datasource.system.download.SalesDownloadCSV;
@@ -93,6 +103,62 @@ public class SalesEntityMapper {
     }
 
     public Sales mapToDomainModel(SalesCustomEntity salesData) {
+        Function<出荷先マスタ, Shipping> mapToShipping = e -> Shipping.of(
+                e.get顧客コード(),
+                e.get出荷先番号(),
+                e.get顧客枝番(),
+                e.get出荷先名(),
+                e.get地域コード(),
+                e.get出荷先郵便番号(),
+                e.get出荷先住所１(),
+                e.get出荷先住所２()
+        );
+
+        Function<CustomerCustomEntity, Customer> mapToCustomer = e -> Customer.of(
+                CustomerCode.of(e.get顧客コード(), e.get顧客枝番()),
+                CustomerType.fromCode(e.get顧客区分()),
+                BillingCode.of(e.get請求先コード(), e.get請求先枝番()),
+                CollectionCode.of(e.get回収先コード(), e.get回収先枝番()),
+                CustomerName.of(e.get顧客名(), e.get顧客名カナ()),
+                e.get自社担当者コード(),
+                e.get顧客担当者名(),
+                e.get顧客部門名(),
+                Address.of(
+                        e.get顧客郵便番号(),
+                        e.get顧客都道府県(),
+                        e.get顧客住所１(),
+                        e.get顧客住所２()
+                ),
+                PhoneNumber.of(e.get顧客電話番号()),
+                FaxNumber.of(e.get顧客ｆａｘ番号()),
+                EmailAddress.of(e.get顧客メールアドレス()),
+                Invoice.of(
+                        CustomerBillingCategory.fromCode(e.get顧客請求区分()),
+                        ClosingInvoice.of(
+                                e.get顧客締日１(),
+                                e.get顧客支払月１(),
+                                e.get顧客支払日１(),
+                                e.get顧客支払方法１()
+                        ),
+                        ClosingInvoice.of(
+                                e.get顧客締日２(),
+                                e.get顧客支払月２(),
+                                e.get顧客支払日２(),
+                                e.get顧客支払方法２()
+                        )
+                ),
+                e.get出荷先マスタ().stream().map(mapToShipping).toList()
+        );
+
+
+        Function<EmployeeCustomEntity, Employee> mapToEmployee = e -> Employee.of(
+                e.get社員コード(),
+                e.get社員名(),
+                e.get社員名カナ(),
+                e.get電話番号(),
+                e.getFax番号(),
+                e.get職種コード()
+        );
 
         Function<SalesLineCustomEntity, SalesLine> salesLineMapper = e -> {
             if (Objects.isNull(e)) {
@@ -139,7 +205,7 @@ public class SalesEntityMapper {
         );
 
         // 顧客コード、顧客枝番を設定
-        return new Sales(
+        sales = new Sales(
                 sales.getSalesNumber(),
                 sales.getOrderNumber(),
                 sales.getSalesDate(),
@@ -153,7 +219,14 @@ public class SalesEntityMapper {
                 sales.getRemarks(),
                 sales.getVoucherNumber(),
                 sales.getOriginalVoucherNumber(),
-                sales.getSalesLines()
+                sales.getSalesLines(),
+                null,
+                null
+        );
+
+        return Sales.of(sales,
+                salesData.get顧客マスタ() != null ? mapToCustomer.apply(salesData.get顧客マスタ()) : null,
+                salesData.get社員マスタ() != null ? mapToEmployee.apply(salesData.get社員マスタ()) : null
         );
     }
 
