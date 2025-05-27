@@ -105,6 +105,12 @@ public class SalesService {
     }
 
     /**
+     * 売上の請求済みを取得
+     */
+    public SalesList selectAllUnbilled() {
+        return salesRepository.selectAllUnbilled();
+    }
+    /**
      * 売上集計
      */
     public void aggregate() {
@@ -194,5 +200,4 @@ public class SalesService {
         autoNumberService.incrementDocumentNumber(code, yearMonth);
         return salesNumber;
     }
-
 }

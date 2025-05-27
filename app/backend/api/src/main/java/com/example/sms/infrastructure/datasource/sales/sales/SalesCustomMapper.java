@@ -24,4 +24,6 @@ public interface SalesCustomMapper {
     int updateByPrimaryKeyForOptimisticLock(売上データ entity);
 
     List<SalesCustomEntity> selectByCriteria(SalesCriteria criteria);
+
+    List<SalesCustomEntity> selectAllUnbilled();
 }

@@ -574,6 +574,18 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
     @Override
     public void setUpForSalesServiceForAggregate() {
+        // 請求データの削除
+        invoiceRepository.deleteAll();
+
+        // 売上データの削除
+        salesRepository.deleteAll();
+
+        // 受注データの削除
+        salesOrderRepository.deleteAll();
+    }
+
+    @Override
+    public void setUpForInvoiceService() {
         // 取引先・顧客データの準備
         Partner partner = getPartner("009");
         String partnerCode = partner.getPartnerCode().getValue();
@@ -592,9 +604,9 @@ public class TestDataFactoryImpl implements TestDataFactory {
         Partner partner2 = getPartner("010");
         String partnerCode2 = partner2.getPartnerCode().getValue();
         CustomerBillingCategory customerBillingCategory2 = CustomerBillingCategory.締請求;
-        ClosingInvoice closingInvoice2 = ClosingInvoice.of(10, 0, 10, 1);
-        ClosingInvoice closingInvoice3 = ClosingInvoice.of(10, 0, 10, 1);
-        com.example.sms.domain.model.master.partner.invoice.Invoice invoice2 = new com.example.sms.domain.model.master.partner.invoice.Invoice(customerBillingCategory2, closingInvoice2, closingInvoice3);
+        ClosingInvoice closingInvoice2_1 = ClosingInvoice.of(10, 0, 10, 1);
+        ClosingInvoice closingInvoice2_2 = ClosingInvoice.of(10, 0, 10, 1);
+        com.example.sms.domain.model.master.partner.invoice.Invoice invoice2 = new com.example.sms.domain.model.master.partner.invoice.Invoice(customerBillingCategory2, closingInvoice2_1, closingInvoice2_2);
         Customer customer2 = TestDataFactoryImpl.getCustomer("010", 1).toBuilder()
                 .invoice(invoice2)
                 .build();
@@ -604,18 +616,36 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 .toList();
         partnerRepository.save(Partner.ofWithCustomers(partner2, List.of(Customer.of(customer2, shippingList2))));
 
-        // 請求データの削除
-        invoiceRepository.deleteAll();
+        Partner partner3 = getPartner("011");
+        String partnerCode3 = partner3.getPartnerCode().getValue();
+        CustomerBillingCategory customerBillingCategory3 = CustomerBillingCategory.締請求;
+        ClosingInvoice closingInvoice3_1 = ClosingInvoice.of(20, 1, 20, 1);
+        ClosingInvoice closingInvoice3_2 = ClosingInvoice.of(20, 1, 20, 1);
+        com.example.sms.domain.model.master.partner.invoice.Invoice invoice3 = new com.example.sms.domain.model.master.partner.invoice.Invoice(customerBillingCategory3, closingInvoice3_1, closingInvoice3_2);
+        Customer customer3 = TestDataFactoryImpl.getCustomer("011", 1).toBuilder()
+                .invoice(invoice3)
+                .build();
+        CustomerCode customerCode3 = customer.getCustomerCode();
+        List<Shipping> shippingList3 = IntStream.rangeClosed(1, 3)
+                .mapToObj(i -> getShipping(partnerCode3, i, customerCode3.getBranchNumber()))
+                .toList();
+        partnerRepository.save(Partner.ofWithCustomers(partner3, List.of(Customer.of(customer3, shippingList3))));
 
-        // 売上データの削除
-        salesRepository.deleteAll();
+        Partner partner4 = getPartner("012");
+        String partnerCode4 = partner4.getPartnerCode().getValue();
+        CustomerBillingCategory customerBillingCategory4 = CustomerBillingCategory.締請求;
+        ClosingInvoice closingInvoice4_1 = ClosingInvoice.of(99, 2, 99, 1);
+        ClosingInvoice closingInvoice4_2 = ClosingInvoice.of(99, 2, 99, 1);
+        com.example.sms.domain.model.master.partner.invoice.Invoice invoice4 = new com.example.sms.domain.model.master.partner.invoice.Invoice(customerBillingCategory4, closingInvoice4_1, closingInvoice4_2);
+        Customer customer4 = TestDataFactoryImpl.getCustomer("012", 1).toBuilder()
+                .invoice(invoice4)
+                .build();
+        CustomerCode customerCode4 = customer.getCustomerCode();
+        List<Shipping> shippingList4 = IntStream.rangeClosed(1, 3)
+                .mapToObj(i -> getShipping(partnerCode4, i, customerCode4.getBranchNumber()))
+                .toList();
+        partnerRepository.save(Partner.ofWithCustomers(partner4, List.of(Customer.of(customer4, shippingList4))));
 
-        // 受注データの削除
-        salesOrderRepository.deleteAll();
-    }
-
-    @Override
-    public void setUpForInvoiceService() {
         setUpForSalesServiceForAggregate();
     }
 

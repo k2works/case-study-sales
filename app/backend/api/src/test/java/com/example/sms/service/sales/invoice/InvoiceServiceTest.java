@@ -324,6 +324,31 @@ class InvoiceServiceTest {
                 assertEquals(today, result.asList().get(1).getInvoiceDate().getValue());
                 assertEquals(today, result.asList().getLast().getInvoiceDate().getValue());
             }
+
+            @Test
+            @DisplayName("請求済みの売上は請求しない")
+            void shouldNotInvoiceAlreadyBilledSales() {
+                CustomerCode customerCode = CustomerCode.of("009", 1);
+                Order newOrder = TestDataFactoryImpl.getSalesOrder("OD00000009").toBuilder().customerCode(customerCode).build();
+                List<OrderLine> orderLines = IntStream.range(1, 4)
+                        .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000009", i).toBuilder()
+                                .salesUnitPrice(Money.of(100))
+                                .orderQuantity(Quantity.of(1))
+                                .shipmentInstructionQuantity(Quantity.of(1))
+                                .shippedQuantity(Quantity.of(1))
+                                .completionFlag(CompletionFlag.完了)
+                                .build())
+                        .toList();
+                orderRepository.save(Order.of(newOrder, orderLines));
+                salesService.aggregate();
+
+                invoiceService.aggregate();
+                invoiceService.aggregate();
+
+                InvoiceList result = invoiceService.selectAll();
+                assertEquals(1, result.asList().size());
+                assertEquals(3, result.asList().getFirst().getInvoiceLines().size());
+            }
         }
 
         @Nested
@@ -517,12 +542,12 @@ class InvoiceServiceTest {
             }
 
             @Test
-            @DisplayName("10日締め当月10日支払い")
-            void shouldCreateClosingInvoiceWith10thClosing() {
+            @DisplayName("請求済みの売上は請求しない")
+            void shouldNotInvoiceAlreadyBilledSales() {
                 CustomerCode customerCode = CustomerCode.of("010", 1);
-                Order newOrder = TestDataFactoryImpl.getSalesOrder("OD00000010").toBuilder().customerCode(customerCode).build();
+                Order newOrder = TestDataFactoryImpl.getSalesOrder("OD00000009").toBuilder().customerCode(customerCode).build();
                 List<OrderLine> orderLines = IntStream.range(1, 4)
-                        .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000010", i).toBuilder()
+                        .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000009", i).toBuilder()
                                 .salesUnitPrice(Money.of(100))
                                 .orderQuantity(Quantity.of(1))
                                 .shipmentInstructionQuantity(Quantity.of(1))
@@ -534,10 +559,113 @@ class InvoiceServiceTest {
                 salesService.aggregate();
 
                 invoiceService.aggregate();
+                invoiceService.aggregate();
 
+                InvoiceList result = invoiceService.selectAll();
+                assertEquals(1, result.asList().size());
+                assertEquals(3, result.asList().getFirst().getInvoiceLines().size());
+            }
+
+            @Test
+            @DisplayName("10日締め当月10日支払い")
+            void shouldCreateClosingInvoiceWith10thClosing() {
+                CustomerCode customerCode = CustomerCode.of("010", 1);
+                Order newOrder1 = TestDataFactoryImpl.getSalesOrder("OD00000010").toBuilder().customerCode(customerCode).build();
+                List<OrderLine> orderLines1 = IntStream.range(1, 4)
+                        .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000010", i).toBuilder()
+                                .completionFlag(CompletionFlag.完了)
+                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2025, 3, 9, 0, 0)))
+                                .build())
+                        .toList();
+                Order newOrder2 = TestDataFactoryImpl.getSalesOrder("OD00000011").toBuilder().customerCode(customerCode).build();
+                List<OrderLine> orderLines2 = IntStream.range(1, 4)
+                        .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000011", i).toBuilder()
+                                .completionFlag(CompletionFlag.完了)
+                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2025, 3, 10, 0, 0)))
+                                .build())
+                        .toList();
+                orderRepository.save(Order.of(newOrder1, orderLines1));
+                orderRepository.save(Order.of(newOrder2, orderLines2));
+                salesService.aggregate();
+
+                invoiceService.aggregate();
+
+                LocalDateTime today = LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), 0, 0, 0);
                 Invoice result = invoiceService.selectAll().asList().getFirst();
                 assertNotNull(result);
+                assertEquals(today.getMonth(), result.getInvoiceDate().getValue().getMonth());
                 assertEquals(10, result.getInvoiceDate().getValue().getDayOfMonth());
+                Sales sales = salesService.selectAll().asList().getFirst();
+                assertNotNull(result.getInvoiceDate());
+                assertEquals(sales.getSalesLines().getFirst().getBillingDate().getValue(), result.getInvoiceDate().getValue());
+            }
+
+            @Test
+            @DisplayName("20日締め翌月20日支払い")
+            void shouldCreateClosingInvoiceWith20thClosing() {
+                CustomerCode customerCode = CustomerCode.of("011", 1);
+                Order newOrder1 = TestDataFactoryImpl.getSalesOrder("OD00000010").toBuilder().customerCode(customerCode).build();
+                List<OrderLine> orderLines1 = IntStream.range(1, 4)
+                        .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000010", i).toBuilder()
+                                .completionFlag(CompletionFlag.完了)
+                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2025, 3, 19, 0, 0)))
+                                .build())
+                        .toList();
+                Order newOrder2 = TestDataFactoryImpl.getSalesOrder("OD00000011").toBuilder().customerCode(customerCode).build();
+                List<OrderLine> orderLines2 = IntStream.range(1, 4)
+                        .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000011", i).toBuilder()
+                                .completionFlag(CompletionFlag.完了)
+                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2025, 3, 20, 0, 0)))
+                                .build())
+                        .toList();
+                orderRepository.save(Order.of(newOrder1, orderLines1));
+                orderRepository.save(Order.of(newOrder2, orderLines2));
+                salesService.aggregate();
+
+                invoiceService.aggregate();
+
+                LocalDateTime today = LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), 0, 0, 0);
+                Invoice result = invoiceService.selectAll().asList().getFirst();
+                assertNotNull(result);
+                assertEquals(today.getMonth(), result.getInvoiceDate().getValue().getMonth());
+                assertEquals(20, result.getInvoiceDate().getValue().getDayOfMonth());
+                Sales sales = salesService.selectAll().asList().getFirst();
+                assertNotNull(result.getInvoiceDate());
+                assertEquals(sales.getSalesLines().getFirst().getBillingDate().getValue(), result.getInvoiceDate().getValue());
+            }
+
+            @Test
+            @DisplayName("月末締め翌々月末日支払い")
+            void shouldCreateClosingInvoiceWithEndOfMonthClosing() {
+                CustomerCode customerCode = CustomerCode.of("012", 1);
+                Order newOrder1 = TestDataFactoryImpl.getSalesOrder("OD00000010").toBuilder().customerCode(customerCode).build();
+                List<OrderLine> orderLines1 = IntStream.range(1, 4)
+                        .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000010", i).toBuilder()
+                                .completionFlag(CompletionFlag.完了)
+                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2025, 3, 31, 0, 0)))
+                                .build())
+                        .toList();
+                Order newOrder2 = TestDataFactoryImpl.getSalesOrder("OD00000011").toBuilder().customerCode(customerCode).build();
+                List<OrderLine> orderLines2 = IntStream.range(1, 4)
+                        .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000011", i).toBuilder()
+                                .completionFlag(CompletionFlag.完了)
+                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2025, 4, 1, 0, 0)))
+                                .build())
+                        .toList();
+                orderRepository.save(Order.of(newOrder1, orderLines1));
+                orderRepository.save(Order.of(newOrder2, orderLines2));
+                salesService.aggregate();
+
+                invoiceService.aggregate();
+
+                LocalDateTime today = LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), 0, 0, 0);
+                Invoice result = invoiceService.selectAll().asList().getFirst();
+                assertNotNull(result);
+                assertEquals(today.getMonthValue(), result.getInvoiceDate().getValue().getMonthValue());
+                assertEquals(31, result.getInvoiceDate().getValue().getDayOfMonth());
+                Sales sales = salesService.selectAll().asList().getFirst();
+                assertNotNull(result.getInvoiceDate());
+                assertEquals(sales.getSalesLines().getFirst().getBillingDate().getValue(), result.getInvoiceDate().getValue());
             }
         }
     }

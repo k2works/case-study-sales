@@ -29,4 +29,6 @@ public interface SalesRepository {
     void deleteExceptInvoiced();
 
     List<SalesLine> selectBillingLines();
+
+    SalesList selectAllUnbilled();
 }

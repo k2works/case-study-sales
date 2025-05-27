@@ -201,4 +201,14 @@ public class SalesDataSource implements SalesRepository {
                 .map(salesEntityMapper::mapToDomainModel)
                 .toList();
     }
+
+    @Override
+    public SalesList selectAllUnbilled() {
+        List<SalesCustomEntity> salesCustomEntities = salesCustomMapper.selectAllUnbilled();
+
+        return new SalesList(salesCustomEntities.stream()
+                .map(salesEntityMapper::mapToDomainModel)
+                .toList()
+        );
+    }
 }

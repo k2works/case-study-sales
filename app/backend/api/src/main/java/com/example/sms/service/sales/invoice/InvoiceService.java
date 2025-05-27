@@ -112,7 +112,7 @@ public class InvoiceService {
      * 請求データを集計
      */
     public void aggregate() {
-        SalesList salesList = salesService.selectAll();
+        SalesList salesList = salesService.selectAllUnbilled();
         spotBilling(salesList);
         consolidatedBilling(salesList);
     }
@@ -175,19 +175,35 @@ public class InvoiceService {
         billingList.forEach(sales -> {
             String invoiceNumber = generateInvoiceNumber(today);
 
-            SalesDate salesDate = sales.getSalesDate();
             com.example.sms.domain.model.master.partner.invoice.Invoice customerInvoice = sales.getCustomer().getInvoice();
             ClosingDate closeDay = customerInvoice.getClosingInvoice1().getClosingDay();
-            LocalDateTime closingDate = LocalDateTime.of(salesDate.getValue().getYear(), salesDate.getValue().getMonth(), closeDay.getValue(), 0, 0, 0);
-            LocalDateTime from = closingDate.minusMonths(1).withDayOfMonth(closeDay.getValue());
+            Integer dayOfMonth;
+            if (closeDay.equals(ClosingDate.末日))
+                dayOfMonth = YearMonth.of(today.getYear(), today.getMonth()).lengthOfMonth();
+            else
+                dayOfMonth = closeDay.getValue();
+            InvoiceDate invoiceDate = InvoiceDate.of(LocalDateTime.of(today.getYear(), today.getMonth(), dayOfMonth, 0, 0, 0));
+
+            SalesDate salesDate = sales.getSalesDate();
+            if (closeDay.equals(ClosingDate.末日))
+                dayOfMonth = YearMonth.of(salesDate.getValue().getYear(), salesDate.getValue().getMonth()).lengthOfMonth();
+            else
+                dayOfMonth = closeDay.getValue();
+            LocalDateTime closingDate = LocalDateTime.of(salesDate.getValue().getYear(), salesDate.getValue().getMonth(), dayOfMonth, 0, 0, 0);
+            LocalDateTime preClosingDate = closingDate.minusMonths(1);
+            LocalDateTime from;
+            if (closeDay.equals(ClosingDate.末日)) {
+                dayOfMonth = YearMonth.of(preClosingDate.getYear(), preClosingDate.getMonth()).lengthOfMonth();
+                from = LocalDateTime.of(preClosingDate.getYear(), preClosingDate.getMonth(), dayOfMonth, 0, 0, 0);
+            } else {
+                from = closingDate.minusMonths(1).withDayOfMonth(closeDay.getValue());
+            }
             LocalDateTime to = closingDate;
             List<Sales> consolidatedSales = salesList.asList().stream()
                     .filter(s -> s.getCustomerCode().equals(sales.getCustomerCode()) &&
                             !s.getSalesDate().getValue().isBefore(from) &&
                             s.getSalesDate().getValue().isBefore(to))
                     .toList();
-
-            InvoiceDate invoiceDate = InvoiceDate.of(LocalDateTime.of(today.getYear(), today.getMonth(), closeDay.getValue(), 0, 0, 0));
 
             consolidatedSales.forEach(s -> {
                 List<InvoiceLine> invoiceLines = s.getSalesLines().stream()
