@@ -668,5 +668,87 @@ class InvoiceServiceTest {
                 assertEquals(sales.getSalesLines().getFirst().getBillingDate().getValue(), result.getInvoiceDate().getValue());
             }
         }
+
+        @Nested
+        @DisplayName("複数締日")
+        class MultipleClosingDate {
+            @BeforeEach
+            void setUp() {
+                invoiceRepository.deleteAll();
+                testDataFactory.setUpForInvoiceService();
+            }
+
+            @Test
+            @DisplayName("10日締め当月10日支払い、20日締め翌月20日支払い")
+            void shouldCreateMultipleClosingInvoices() {
+                CustomerCode customerCode = CustomerCode.of("013", 1);
+                Order newOrder1 = TestDataFactoryImpl.getSalesOrder("OD00000010").toBuilder().customerCode(customerCode).build();
+                List<OrderLine> orderLines1 = IntStream.range(1, 4)
+                        .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000010", i).toBuilder()
+                                .completionFlag(CompletionFlag.完了)
+                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2025, 3, 9, 0, 0)))
+                                .build())
+                        .toList();
+                Order newOrder2 = TestDataFactoryImpl.getSalesOrder("OD00000011").toBuilder().customerCode(customerCode).build();
+                List<OrderLine> orderLines2 = IntStream.range(1, 4)
+                        .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000011", i).toBuilder()
+                                .completionFlag(CompletionFlag.完了)
+                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2025, 3, 19, 0, 0)))
+                                .build())
+                        .toList();
+                orderRepository.save(Order.of(newOrder1, orderLines1));
+                orderRepository.save(Order.of(newOrder2, orderLines2));
+                salesService.aggregate();
+
+                invoiceService.aggregate();
+
+                InvoiceList result = invoiceService.selectAll();
+                assertEquals(2, result.asList().size());
+
+                Invoice firstInvoice = result.asList().getFirst();
+                assertNotNull(firstInvoice);
+                assertEquals(LocalDateTime.of(2025, 5, 10, 0, 0), firstInvoice.getInvoiceDate().getValue());
+
+                Invoice secondInvoice = result.asList().getLast();
+                assertNotNull(secondInvoice);
+                assertEquals(LocalDateTime.of(2025, 5, 20, 0, 0), secondInvoice.getInvoiceDate().getValue());
+            }
+
+            @Test
+            @DisplayName("20日締め翌月20日支払い、月末締め翌々月末日支払い")
+            void shouldCreateMultipleClosingInvoicesWith20thAndEndOfMonth() {
+                CustomerCode customerCode = CustomerCode.of("014", 1);
+                Order newOrder1 = TestDataFactoryImpl.getSalesOrder("OD00000010").toBuilder().customerCode(customerCode).build();
+                List<OrderLine> orderLines1 = IntStream.range(1, 4)
+                        .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000010", i).toBuilder()
+                                .completionFlag(CompletionFlag.完了)
+                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2025, 3, 19, 0, 0)))
+                                .build())
+                        .toList();
+                Order newOrder2 = TestDataFactoryImpl.getSalesOrder("OD00000011").toBuilder().customerCode(customerCode).build();
+                List<OrderLine> orderLines2 = IntStream.range(1, 4)
+                        .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000011", i).toBuilder()
+                                .completionFlag(CompletionFlag.完了)
+                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2025, 3, 31, 0, 0)))
+                                .build())
+                        .toList();
+                orderRepository.save(Order.of(newOrder1, orderLines1));
+                orderRepository.save(Order.of(newOrder2, orderLines2));
+                salesService.aggregate();
+
+                invoiceService.aggregate();
+
+                InvoiceList result = invoiceService.selectAll();
+                assertEquals(2, result.asList().size());
+
+                Invoice firstInvoice = result.asList().getFirst();
+                assertNotNull(firstInvoice);
+                assertEquals(LocalDateTime.of(2025, 5, 20, 0, 0), firstInvoice.getInvoiceDate().getValue());
+
+                Invoice secondInvoice = result.asList().getLast();
+                assertNotNull(secondInvoice);
+                assertEquals(LocalDateTime.of(2025, 5, 31, 0, 0), secondInvoice.getInvoiceDate().getValue());
+            }
+        }
     }
 }

@@ -646,6 +646,36 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 .toList();
         partnerRepository.save(Partner.ofWithCustomers(partner4, List.of(Customer.of(customer4, shippingList4))));
 
+        Partner partner5 = getPartner("013");
+        String partnerCode5 = partner5.getPartnerCode().getValue();
+        CustomerBillingCategory customerBillingCategory5 = CustomerBillingCategory.締請求;
+        ClosingInvoice closingInvoice5_1 = ClosingInvoice.of(10, 0, 10, 1);
+        ClosingInvoice closingInvoice5_2 = ClosingInvoice.of(20, 1, 20, 1);
+        com.example.sms.domain.model.master.partner.invoice.Invoice invoice5 = new com.example.sms.domain.model.master.partner.invoice.Invoice(customerBillingCategory5, closingInvoice5_1, closingInvoice5_2);
+        Customer customer5 = TestDataFactoryImpl.getCustomer("013", 1).toBuilder()
+                .invoice(invoice5)
+                .build();
+        CustomerCode customerCode5 = customer.getCustomerCode();
+        List<Shipping> shippingList5 = IntStream.rangeClosed(1, 3)
+                .mapToObj(i -> getShipping(partnerCode5, i, customerCode5.getBranchNumber()))
+                .toList();
+        partnerRepository.save(Partner.ofWithCustomers(partner5, List.of(Customer.of(customer5, shippingList5))));
+
+        Partner partner6 = getPartner("014");
+        String partnerCode6 = partner6.getPartnerCode().getValue();
+        CustomerBillingCategory customerBillingCategory6 = CustomerBillingCategory.締請求;
+        ClosingInvoice closingInvoice6_1 = ClosingInvoice.of(20, 1, 20, 1);
+        ClosingInvoice closingInvoice6_2 = ClosingInvoice.of(99, 2, 99, 1);
+        com.example.sms.domain.model.master.partner.invoice.Invoice invoice6 = new com.example.sms.domain.model.master.partner.invoice.Invoice(customerBillingCategory6, closingInvoice6_1, closingInvoice6_2);
+        Customer customer6 = TestDataFactoryImpl.getCustomer("014", 1).toBuilder()
+                .invoice(invoice6)
+                .build();
+        CustomerCode customerCode6 = customer.getCustomerCode();
+        List<Shipping> shippingList6 = IntStream.rangeClosed(1, 3)
+                .mapToObj(i -> getShipping(partnerCode6, i, customerCode6.getBranchNumber()))
+                .toList();
+        partnerRepository.save(Partner.ofWithCustomers(partner6, List.of(Customer.of(customer6, shippingList6))));
+
         setUpForSalesServiceForAggregate();
     }
 
