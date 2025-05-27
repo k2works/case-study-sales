@@ -121,14 +121,15 @@ public class InvoiceService {
      * 都度請求
      */
     private void spotBilling(SalesList salesList) {
+        LocalDateTime today = LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), 0, 0, 0);
         List<Sales> billingList = salesList.asList().stream()
                 .filter(sales -> sales.getCustomer() != null && Objects.requireNonNull(sales.getCustomer().getInvoice()).getCustomerBillingCategory() == CustomerBillingCategory.都度請求)
                 .toList();
 
-        InvoiceDate invoiceDate = InvoiceDate.of(LocalDateTime.now());
-        String invoiceNumber = generateInvoiceNumber(LocalDateTime.now());
-
         billingList.forEach(sales -> {
+            String invoiceNumber = generateInvoiceNumber(today);
+            InvoiceDate invoiceDate = InvoiceDate.of(today);
+
             List<InvoiceLine> invoiceLines = sales.getSalesLines().stream()
                     .map(salesLine -> InvoiceLine.of(
                             invoiceNumber,
@@ -166,19 +167,18 @@ public class InvoiceService {
      * 締請求
      */
     private void consolidatedBilling(SalesList salesList) {
+        LocalDateTime today = LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), 0, 0, 0);
         List<Sales> billingList = salesList.asList().stream()
                 .filter(sales -> sales.getCustomer() != null && Objects.requireNonNull(sales.getCustomer().getInvoice()).getCustomerBillingCategory() == CustomerBillingCategory.締請求)
                 .toList();
 
-        String invoiceNumber = generateInvoiceNumber(LocalDateTime.now());
-
         billingList.forEach(sales -> {
+            String invoiceNumber = generateInvoiceNumber(today);
+
             SalesDate salesDate = sales.getSalesDate();
             com.example.sms.domain.model.master.partner.invoice.Invoice customerInvoice = sales.getCustomer().getInvoice();
             ClosingDate closeDay = customerInvoice.getClosingInvoice1().getClosingDay();
-            LocalDateTime closingDate = LocalDateTime.of(salesDate.getValue().getYear(), salesDate.getValue().getMonth(), closeDay.getValue(), 1, 0, 0);
-            InvoiceDate invoiceDate = InvoiceDate.of(closingDate);
-
+            LocalDateTime closingDate = LocalDateTime.of(salesDate.getValue().getYear(), salesDate.getValue().getMonth(), closeDay.getValue(), 0, 0, 0);
             LocalDateTime from = closingDate.minusMonths(1).withDayOfMonth(closeDay.getValue());
             LocalDateTime to = closingDate;
             List<Sales> consolidatedSales = salesList.asList().stream()
@@ -186,6 +186,8 @@ public class InvoiceService {
                             !s.getSalesDate().getValue().isBefore(from) &&
                             s.getSalesDate().getValue().isBefore(to))
                     .toList();
+
+            InvoiceDate invoiceDate = InvoiceDate.of(LocalDateTime.of(today.getYear(), today.getMonth(), closeDay.getValue(), 0, 0, 0));
 
             consolidatedSales.forEach(s -> {
                 List<InvoiceLine> invoiceLines = s.getSalesLines().stream()

@@ -8,6 +8,7 @@ import com.example.sms.domain.model.sales.invoice.Invoice;
 import com.example.sms.domain.model.sales.invoice.InvoiceLine;
 import com.example.sms.domain.model.sales.invoice.InvoiceList;
 import com.example.sms.domain.model.sales.order.CompletionFlag;
+import com.example.sms.domain.model.sales.order.DeliveryDate;
 import com.example.sms.domain.model.sales.order.Order;
 import com.example.sms.domain.model.sales.order.OrderLine;
 import com.example.sms.domain.model.sales.sales.Sales;
@@ -226,7 +227,102 @@ class InvoiceServiceTest {
                     assertNotNull(s.getBillingDate());
                     assertNotNull(s.getBillingNumber());
                 });
+            }
 
+            @Test
+            @DisplayName("年度別に集計を行う")
+            void shouldAggregateByYear() {
+                CustomerCode customerCode = CustomerCode.of("009", 1);
+                Order newOrder1 = TestDataFactoryImpl.getSalesOrder("OD00000009").toBuilder().customerCode(customerCode).build();
+                List<OrderLine> orderLines1 = IntStream.range(1, 4)
+                        .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000009", i).toBuilder()
+                                .salesUnitPrice(Money.of(100))
+                                .orderQuantity(Quantity.of(1))
+                                .shipmentInstructionQuantity(Quantity.of(1))
+                                .shippedQuantity(Quantity.of(1))
+                                .completionFlag(CompletionFlag.完了)
+                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2022, 1, 1, 0, 0)))
+                                .build())
+                        .toList();
+                Order newOrder2 = TestDataFactoryImpl.getSalesOrder("OD00000010").toBuilder().customerCode(customerCode).build();
+                List<OrderLine> orderLines2 = IntStream.range(1, 4)
+                        .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000010", i).toBuilder()
+                                .salesUnitPrice(Money.of(10))
+                                .orderQuantity(Quantity.of(1))
+                                .shipmentInstructionQuantity(Quantity.of(1))
+                                .shippedQuantity(Quantity.of(1))
+                                .completionFlag(CompletionFlag.完了)
+                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2023, 1, 1, 0, 0)))
+                                .build())
+                        .toList();
+                orderRepository.save(Order.of(newOrder1, orderLines1));
+                orderRepository.save(Order.of(newOrder2, orderLines2));
+                salesService.aggregate();
+
+                invoiceService.aggregate();
+
+                LocalDateTime today = LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), 0, 0, 0);
+                InvoiceList result = invoiceService.selectAll();
+                assertEquals(2, result.asList().size());
+                assertEquals(Money.of(300), result.asList().getFirst().getCurrentMonthSalesAmount());
+                assertEquals(Money.of(30), result.asList().getLast().getCurrentMonthSalesAmount());
+                assertEquals(today.getYear(), result.asList().getFirst().getInvoiceDate().getValue().getYear());
+                assertEquals(today.getYear(), result.asList().getLast().getInvoiceDate().getValue().getYear());
+            }
+
+            @Test
+            @DisplayName("月別に集計を行う")
+            void shouldAggregateByMonth() {
+                CustomerCode customerCode = CustomerCode.of("009", 1);
+                Order newOrder1 = TestDataFactoryImpl.getSalesOrder("OD00000009").toBuilder().customerCode(customerCode).build();
+                List<OrderLine> orderLines1 = IntStream.range(1, 4)
+                        .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000009", i).toBuilder()
+                                .salesUnitPrice(Money.of(100))
+                                .orderQuantity(Quantity.of(1))
+                                .shipmentInstructionQuantity(Quantity.of(1))
+                                .shippedQuantity(Quantity.of(1))
+                                .completionFlag(CompletionFlag.完了)
+                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2023, 1, 1, 0, 0)))
+                                .build())
+                        .toList();
+                Order newOrder2 = TestDataFactoryImpl.getSalesOrder("OD00000010").toBuilder().customerCode(customerCode).build();
+                List<OrderLine> orderLines2 = IntStream.range(1, 4)
+                        .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000010", i).toBuilder()
+                                .salesUnitPrice(Money.of(10))
+                                .orderQuantity(Quantity.of(1))
+                                .shipmentInstructionQuantity(Quantity.of(1))
+                                .shippedQuantity(Quantity.of(1))
+                                .completionFlag(CompletionFlag.完了)
+                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2023, 2, 1, 0, 0)))
+                                .build())
+                        .toList();
+                Order newOrder3 = TestDataFactoryImpl.getSalesOrder("OD00000011").toBuilder().customerCode(customerCode).build();
+                List<OrderLine> orderLines3 = IntStream.range(1, 4)
+                        .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000011", i).toBuilder()
+                                .salesUnitPrice(Money.of(1))
+                                .orderQuantity(Quantity.of(1))
+                                .shipmentInstructionQuantity(Quantity.of(1))
+                                .shippedQuantity(Quantity.of(1))
+                                .completionFlag(CompletionFlag.完了)
+                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2023, 3, 1, 0, 0)))
+                                .build())
+                        .toList();
+                orderRepository.save(Order.of(newOrder1, orderLines1));
+                orderRepository.save(Order.of(newOrder2, orderLines2));
+                orderRepository.save(Order.of(newOrder3, orderLines3));
+                salesService.aggregate();
+
+                invoiceService.aggregate();
+
+                LocalDateTime today = LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), 0, 0, 0);
+                InvoiceList result = invoiceService.selectAll();
+                assertEquals(3, result.asList().size());
+                assertEquals(Money.of(300), result.asList().getFirst().getCurrentMonthSalesAmount());
+                assertEquals(Money.of(30), result.asList().get(1).getCurrentMonthSalesAmount());
+                assertEquals(Money.of(3), result.asList().getLast().getCurrentMonthSalesAmount());
+                assertEquals(today, result.asList().getFirst().getInvoiceDate().getValue());
+                assertEquals(today, result.asList().get(1).getInvoiceDate().getValue());
+                assertEquals(today, result.asList().getLast().getInvoiceDate().getValue());
             }
         }
 
@@ -283,6 +379,141 @@ class InvoiceServiceTest {
                     assertNotNull(s.getBillingDate());
                     assertNotNull(s.getBillingNumber());
                 });
+            }
+
+            @Test
+            @DisplayName("顧客別に集計を行う")
+            void shouldAggregateByCustomer() {
+                CustomerCode customerCode1 = CustomerCode.of("009", 1);
+                Order newOrder1 = TestDataFactoryImpl.getSalesOrder("OD00000009").toBuilder().customerCode(customerCode1).build();
+                List<OrderLine> orderLines1 = IntStream.range(1, 4)
+                        .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000009", i).toBuilder()
+                                .salesUnitPrice(Money.of(100))
+                                .orderQuantity(Quantity.of(1))
+                                .shipmentInstructionQuantity(Quantity.of(1))
+                                .shippedQuantity(Quantity.of(1))
+                                .completionFlag(CompletionFlag.完了)
+                                .build())
+                        .toList();
+                orderRepository.save(Order.of(newOrder1, orderLines1));
+
+                CustomerCode customerCode2 = CustomerCode.of("010", 1);
+                Order newOrder2 = TestDataFactoryImpl.getSalesOrder("OD00000010").toBuilder().customerCode(customerCode2).build();
+                List<OrderLine> orderLines2 = IntStream.range(1, 4)
+                        .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000010", i).toBuilder()
+                                .salesUnitPrice(Money.of(200))
+                                .orderQuantity(Quantity.of(1))
+                                .shipmentInstructionQuantity(Quantity.of(1))
+                                .shippedQuantity(Quantity.of(1))
+                                .completionFlag(CompletionFlag.完了)
+                                .build())
+                        .toList();
+                orderRepository.save(Order.of(newOrder2, orderLines2));
+
+                salesService.aggregate();
+
+                invoiceService.aggregate();
+
+                InvoiceList result = invoiceService.selectAll();
+                assertEquals(2, result.asList().size());
+                assertEquals(Money.of(300), result.asList().getFirst().getCurrentMonthSalesAmount());
+                assertEquals(Money.of(600), result.asList().getLast().getCurrentMonthSalesAmount());
+            }
+
+            @Test
+            @DisplayName("年度別に集計を行う")
+            void shouldAggregateByYear() {
+                CustomerCode customerCode = CustomerCode.of("010", 1);
+                Order newOrder1 = TestDataFactoryImpl.getSalesOrder("OD00000009").toBuilder().customerCode(customerCode).build();
+                List<OrderLine> orderLines1 = IntStream.range(1, 4)
+                        .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000009", i).toBuilder()
+                                .salesUnitPrice(Money.of(100))
+                                .orderQuantity(Quantity.of(1))
+                                .shipmentInstructionQuantity(Quantity.of(1))
+                                .shippedQuantity(Quantity.of(1))
+                                .completionFlag(CompletionFlag.完了)
+                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2022, 1, 1, 0, 0)))
+                                .build())
+                        .toList();
+                Order newOrder2 = TestDataFactoryImpl.getSalesOrder("OD00000010").toBuilder().customerCode(customerCode).build();
+                List<OrderLine> orderLines2 = IntStream.range(1, 4)
+                        .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000010", i).toBuilder()
+                                .salesUnitPrice(Money.of(10))
+                                .orderQuantity(Quantity.of(1))
+                                .shipmentInstructionQuantity(Quantity.of(1))
+                                .shippedQuantity(Quantity.of(1))
+                                .completionFlag(CompletionFlag.完了)
+                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2023, 1, 1, 0, 0)))
+                                .build())
+                        .toList();
+                orderRepository.save(Order.of(newOrder1, orderLines1));
+                orderRepository.save(Order.of(newOrder2, orderLines2));
+                salesService.aggregate();
+
+                invoiceService.aggregate();
+
+                LocalDateTime today = LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), 0, 0, 0);
+                InvoiceList result = invoiceService.selectAll();
+                assertEquals(2, result.asList().size());
+                assertEquals(Money.of(300), result.asList().getFirst().getCurrentMonthSalesAmount());
+                assertEquals(Money.of(30), result.asList().getLast().getCurrentMonthSalesAmount());
+                assertEquals(today.getYear(), result.asList().getFirst().getInvoiceDate().getValue().getYear());
+                assertEquals(today.getYear(), result.asList().getLast().getInvoiceDate().getValue().getYear());
+            }
+
+            @Test
+            @DisplayName("月別に集計を行う")
+            void shouldAggregateByMonth() {
+                CustomerCode customerCode = CustomerCode.of("010", 1);
+                Order newOrder1 = TestDataFactoryImpl.getSalesOrder("OD00000009").toBuilder().customerCode(customerCode).build();
+                List<OrderLine> orderLines1 = IntStream.range(1, 4)
+                        .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000009", i).toBuilder()
+                                .salesUnitPrice(Money.of(100))
+                                .orderQuantity(Quantity.of(1))
+                                .shipmentInstructionQuantity(Quantity.of(1))
+                                .shippedQuantity(Quantity.of(1))
+                                .completionFlag(CompletionFlag.完了)
+                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2023, 1, 1, 0, 0)))
+                                .build())
+                        .toList();
+                Order newOrder2 = TestDataFactoryImpl.getSalesOrder("OD00000010").toBuilder().customerCode(customerCode).build();
+                List<OrderLine> orderLines2 = IntStream.range(1, 4)
+                        .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000010", i).toBuilder()
+                                .salesUnitPrice(Money.of(10))
+                                .orderQuantity(Quantity.of(1))
+                                .shipmentInstructionQuantity(Quantity.of(1))
+                                .shippedQuantity(Quantity.of(1))
+                                .completionFlag(CompletionFlag.完了)
+                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2023, 2, 1, 0, 0)))
+                                .build())
+                        .toList();
+                Order newOrder3 = TestDataFactoryImpl.getSalesOrder("OD00000011").toBuilder().customerCode(customerCode).build();
+                List<OrderLine> orderLines3 = IntStream.range(1, 4)
+                        .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000011", i).toBuilder()
+                                .salesUnitPrice(Money.of(1))
+                                .orderQuantity(Quantity.of(1))
+                                .shipmentInstructionQuantity(Quantity.of(1))
+                                .shippedQuantity(Quantity.of(1))
+                                .completionFlag(CompletionFlag.完了)
+                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2023, 3, 1, 0, 0)))
+                                .build())
+                        .toList();
+                orderRepository.save(Order.of(newOrder1, orderLines1));
+                orderRepository.save(Order.of(newOrder2, orderLines2));
+                orderRepository.save(Order.of(newOrder3, orderLines3));
+                salesService.aggregate();
+
+                invoiceService.aggregate();
+
+                LocalDateTime today = LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), 0, 0, 0);
+                InvoiceList result = invoiceService.selectAll();
+                assertEquals(3, result.asList().size());
+                assertEquals(Money.of(300), result.asList().getFirst().getCurrentMonthSalesAmount());
+                assertEquals(Money.of(30), result.asList().get(1).getCurrentMonthSalesAmount());
+                assertEquals(Money.of(3), result.asList().getLast().getCurrentMonthSalesAmount());
+                assertEquals(LocalDateTime.of(today.getYear(),today.getMonth(),10,0,0), result.asList().getFirst().getInvoiceDate().getValue());
+                assertEquals(LocalDateTime.of(today.getYear(),today.getMonth(),10,0,0), result.asList().get(1).getInvoiceDate().getValue());
+                assertEquals(LocalDateTime.of(today.getYear(),today.getMonth(),10,0,0), result.asList().getLast().getInvoiceDate().getValue());
             }
 
             @Test
