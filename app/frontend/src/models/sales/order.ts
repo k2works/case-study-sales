@@ -32,6 +32,7 @@ export type SalesOrderLineType = {
     completionFlag: CompletionFlagEnumType;
     discountAmount: number;
     deliveryDate: string;
+    shippingDate?: string;
 }
 
 export type SalesOrderType = {
