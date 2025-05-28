@@ -123,7 +123,7 @@ public class SpotBillingProcessor {
                 0,
                 sales.getTotalSalesAmount().getAmount(),
                 0,
-                0,
+                sales.getTotalSalesAmount().plusMoney(sales.getTotalConsumptionTax()).getAmount(),
                 sales.getTotalConsumptionTax().getAmount(),
                 0,
                 invoiceLines

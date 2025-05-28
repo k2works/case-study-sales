@@ -219,6 +219,7 @@ class InvoiceServiceTest {
                 assertEquals(3, result.getInvoiceLines().size());
                 assertEquals(Money.of(300), result.getCurrentMonthSalesAmount());
                 assertEquals(Money.of(30), result.getConsumptionTaxAmount());
+                assertEquals(Money.of(330), result.getCurrentMonthInvoiceAmount());
 
                 Sales sales = salesService.selectAll().asList().getFirst();
                 assertEquals(Money.of(300), sales.getTotalSalesAmount());
@@ -396,6 +397,7 @@ class InvoiceServiceTest {
                 assertEquals(3, result.getInvoiceLines().size());
                 assertEquals(Money.of(600), result.getCurrentMonthSalesAmount());
                 assertEquals(Money.of(60), result.getConsumptionTaxAmount());
+                assertEquals(Money.of(660), result.getCurrentMonthInvoiceAmount());
 
                 Sales sales = salesService.selectAll().asList().getLast();
                 assertEquals(Money.of(600), sales.getTotalSalesAmount());
