@@ -126,4 +126,16 @@ public class InvoiceApiController {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
+
+    @Operation(summary = "請求を集計する", description = "請求を集計します。")
+    @PostMapping("/aggregate")
+    @AuditAnnotation(process = ApplicationExecutionProcessType.請求登録, type = ApplicationExecutionHistoryType.同期)
+    public ResponseEntity<?> aggregate(@RequestBody InvoiceResource resource) {
+        try {
+            invoiceService.aggregate();
+            return ResponseEntity.ok(new MessageResponse(message.getMessage("success.invoice.aggregated")));
+        } catch (BusinessException | IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
+    }
 }
