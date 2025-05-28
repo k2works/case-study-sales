@@ -703,7 +703,7 @@ class InvoiceServiceTest {
                 invoiceService.aggregate();
 
                 InvoiceList result = invoiceService.selectAll();
-                assertEquals(2, result.asList().size());
+                assertEquals(3, result.asList().size());
 
                 Invoice firstInvoice = result.asList().getFirst();
                 assertNotNull(firstInvoice);
@@ -739,7 +739,7 @@ class InvoiceServiceTest {
                 invoiceService.aggregate();
 
                 InvoiceList result = invoiceService.selectAll();
-                assertEquals(2, result.asList().size());
+                assertEquals(3, result.asList().size());
 
                 Invoice firstInvoice = result.asList().getFirst();
                 assertNotNull(firstInvoice);

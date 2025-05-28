@@ -1,6 +1,7 @@
 package com.example.sms.service.sales.invoice;
 
 import com.example.sms.domain.model.master.partner.customer.CustomerBillingCategory;
+import com.example.sms.domain.model.master.partner.customer.CustomerCode;
 import com.example.sms.domain.model.master.partner.invoice.ClosingDate;
 import com.example.sms.domain.model.sales.invoice.*;
 import com.example.sms.domain.model.sales.sales.*;
@@ -121,199 +122,198 @@ public class InvoiceService {
      * 都度請求
      */
     private void spotBilling(SalesList salesList) {
-        LocalDateTime today = LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), 0, 0, 0);
+        LocalDateTime today = getCurrentDateTime();
         List<Sales> billingList = salesList.asList().stream()
-                .filter(sales -> sales.getCustomer() != null && Objects.requireNonNull(sales.getCustomer().getInvoice()).getCustomerBillingCategory() == CustomerBillingCategory.都度請求)
+                .filter(sales -> sales.getCustomer() != null && 
+                        Objects.requireNonNull(sales.getCustomer().getInvoice()).getCustomerBillingCategory() == CustomerBillingCategory.都度請求)
                 .toList();
 
         billingList.forEach(sales -> {
             String invoiceNumber = generateInvoiceNumber(today);
             InvoiceDate invoiceDate = InvoiceDate.of(today);
 
-            List<InvoiceLine> invoiceLines = sales.getSalesLines().stream()
-                    .map(salesLine -> InvoiceLine.of(
-                            invoiceNumber,
-                            sales.getSalesNumber().getValue(),
-                            salesLine.getSalesLineNumber()
-                    ))
-                    .toList();
-
-            Invoice invoice = Invoice.of(
-                    invoiceNumber,
-                    invoiceDate.getValue(),
-                    sales.getPartnerCode().getValue(),
-                    sales.getCustomerCode().getBranchNumber(),
-                    0,
-                    sales.getTotalSalesAmount().getAmount(),
-                    0,
-                    0,
-                    sales.getTotalConsumptionTax().getAmount(),
-                    0,
-                    invoiceLines
-            );
-            invoiceRepository.save(invoice);
-
-            List<SalesLine> salesLines = sales.getSalesLines().stream()
-                    .map(salesLine -> salesLine.toBuilder()
-                            .billingNumber(BillingNumber.of(invoiceNumber))
-                            .billingDate(BillingDate.of(invoiceDate.getValue()))
-                            .build())
-                    .toList();
-            salesService.save(sales.toBuilder().salesLines(salesLines).build());
+            createAndSaveInvoice(sales, invoiceNumber, invoiceDate);
+            updateSalesWithBillingInfo(sales, invoiceNumber, invoiceDate);
         });
+    }
+
+    /**
+     * 現在の日時を取得する（時分秒は0に設定）
+     */
+    private LocalDateTime getCurrentDateTime() {
+        return LocalDateTime.of(
+                LocalDateTime.now().getYear(), 
+                LocalDateTime.now().getMonth(), 
+                LocalDateTime.now().getDayOfMonth(), 
+                0, 0, 0);
+    }
+
+    /**
+     * 請求を作成して保存する
+     */
+    private void createAndSaveInvoice(Sales sales, String invoiceNumber, InvoiceDate invoiceDate) {
+        List<InvoiceLine> invoiceLines = createInvoiceLines(sales, invoiceNumber);
+
+        Invoice invoice = Invoice.of(
+                invoiceNumber,
+                invoiceDate.getValue(),
+                sales.getPartnerCode().getValue(),
+                sales.getCustomerCode().getBranchNumber(),
+                0,
+                sales.getTotalSalesAmount().getAmount(),
+                0,
+                0,
+                sales.getTotalConsumptionTax().getAmount(),
+                0,
+                invoiceLines
+        );
+        invoiceRepository.save(invoice);
+    }
+
+    /**
+     * 請求明細を作成する
+     */
+    private List<InvoiceLine> createInvoiceLines(Sales sales, String invoiceNumber) {
+        return sales.getSalesLines().stream()
+                .map(salesLine -> InvoiceLine.of(
+                        invoiceNumber,
+                        sales.getSalesNumber().getValue(),
+                        salesLine.getSalesLineNumber()
+                ))
+                .toList();
+    }
+
+    /**
+     * 売上に請求情報を更新する
+     */
+    private void updateSalesWithBillingInfo(Sales sales, String invoiceNumber, InvoiceDate invoiceDate) {
+        List<SalesLine> salesLines = sales.getSalesLines().stream()
+                .map(salesLine -> salesLine.toBuilder()
+                        .billingNumber(BillingNumber.of(invoiceNumber))
+                        .billingDate(BillingDate.of(invoiceDate.getValue()))
+                        .build())
+                .toList();
+        salesService.save(sales.toBuilder().salesLines(salesLines).build());
     }
 
     /**
      * 締請求
      */
     private void consolidatedBilling(SalesList salesList) {
-        LocalDateTime today = LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), 0, 0, 0);
+        LocalDateTime today = getCurrentDateTime();
         List<Sales> billingList = salesList.asList().stream()
-                .filter(sales -> sales.getCustomer() != null && Objects.requireNonNull(sales.getCustomer().getInvoice()).getCustomerBillingCategory() == CustomerBillingCategory.締請求)
+                .filter(sales -> sales.getCustomer() != null && 
+                        Objects.requireNonNull(sales.getCustomer().getInvoice()).getCustomerBillingCategory() == CustomerBillingCategory.締請求)
                 .toList();
 
         billingList.forEach(sales -> {
-            String invoiceNumber = generateInvoiceNumber(today);
-
             com.example.sms.domain.model.master.partner.invoice.Invoice customerInvoice = sales.getCustomer().getInvoice();
-            ClosingDate closeDay = customerInvoice.getClosingInvoice1().getClosingDay();
 
-            Integer dayOfMonth;
-            if (closeDay.equals(ClosingDate.末日))
-                dayOfMonth = YearMonth.of(today.getYear(), today.getMonth()).lengthOfMonth();
-            else
-                dayOfMonth = closeDay.getValue();
-            InvoiceDate invoiceDate = InvoiceDate.of(LocalDateTime.of(today.getYear(), today.getMonth(), dayOfMonth, 0, 0, 0));
+            // 第1締め日処理
+            processClosingInvoice(sales, billingList, customerInvoice.getClosingInvoice1().getClosingDay(), today);
 
-            SalesDate salesDate = sales.getSalesDate();
-            if (closeDay.equals(ClosingDate.末日))
-                dayOfMonth = YearMonth.of(salesDate.getValue().getYear(), salesDate.getValue().getMonth()).lengthOfMonth();
-            else
-                dayOfMonth = closeDay.getValue();
-            LocalDateTime closingDate = LocalDateTime.of(salesDate.getValue().getYear(), salesDate.getValue().getMonth(), dayOfMonth, 0, 0, 0);
-            LocalDateTime preClosingDate = closingDate.minusMonths(1);
-            LocalDateTime from;
-            if (closeDay.equals(ClosingDate.末日)) {
-                dayOfMonth = YearMonth.of(preClosingDate.getYear(), preClosingDate.getMonth()).lengthOfMonth();
-                from = LocalDateTime.of(preClosingDate.getYear(), preClosingDate.getMonth(), dayOfMonth, 0, 0, 0);
-            } else {
-                from = closingDate.minusMonths(1).withDayOfMonth(closeDay.getValue());
-            }
-
-            if (salesDate.getValue().isAfter(closingDate)) return;
-
-            LocalDateTime to = closingDate;
-            List<Sales> consolidatedSales = billingList.stream()
-                    .filter(s -> s.getCustomerCode().equals(sales.getCustomerCode()) &&
-                            !s.getSalesDate().getValue().isBefore(from) &&
-                            s.getSalesDate().getValue().isBefore(to))
-                    .toList();
-
-            consolidatedSales.forEach(s -> {
-                List<InvoiceLine> invoiceLines = s.getSalesLines().stream()
-                        .map(salesLine -> InvoiceLine.of(
-                                invoiceNumber,
-                                s.getSalesNumber().getValue(),
-                                salesLine.getSalesLineNumber()
-                        ))
-                        .toList();
-
-                Invoice invoice = Invoice.of(
-                        invoiceNumber,
-                        invoiceDate.getValue(),
-                        s.getPartnerCode().getValue(),
-                        s.getCustomerCode().getBranchNumber(),
-                        0,
-                        s.getTotalSalesAmount().getAmount(),
-                        0,
-                        0,
-                        s.getTotalConsumptionTax().getAmount(),
-                        0,
-                        invoiceLines
-                );
-                invoiceRepository.save(invoice);
-
-                List<SalesLine> salesLines = s.getSalesLines().stream()
-                        .map(salesLine -> salesLine.toBuilder()
-                                .billingNumber(BillingNumber.of(invoiceNumber))
-                                .billingDate(BillingDate.of(invoiceDate.getValue()))
-                                .build())
-                        .toList();
-                salesService.save(s.toBuilder().salesLines(salesLines).build());
-            });
-
-            //TODO:リファクタリング
+            // 第1締め日と第2締め日が同じ場合は処理終了
             if (customerInvoice.getClosingInvoice1().equals(customerInvoice.getClosingInvoice2())) return;
 
-            String invoiceNumber2 = generateInvoiceNumber(today);
-
-            ClosingDate closeDay2 = customerInvoice.getClosingInvoice2().getClosingDay();
-
-            Integer dayOfMonth2;
-            if (closeDay2.equals(ClosingDate.末日))
-                dayOfMonth2 = YearMonth.of(today.getYear(), today.getMonth()).lengthOfMonth();
-            else
-                dayOfMonth2 = closeDay2.getValue();
-            InvoiceDate invoiceDate2 = InvoiceDate.of(LocalDateTime.of(today.getYear(), today.getMonth(), dayOfMonth2, 0, 0, 0));
-
-            SalesDate salesDate2 = sales.getSalesDate();
-            if (closeDay2.equals(ClosingDate.末日))
-                dayOfMonth2 = YearMonth.of(salesDate2.getValue().getYear(), salesDate2.getValue().getMonth()).lengthOfMonth();
-            else
-                dayOfMonth2 = closeDay2.getValue();
-            LocalDateTime closingDate2 = LocalDateTime.of(salesDate2.getValue().getYear(), salesDate2.getValue().getMonth(), dayOfMonth2, 0, 0, 0);
-            LocalDateTime preClosingDate2 = closingDate2.minusMonths(1);
-            LocalDateTime from2;
-            if (closeDay2.equals(ClosingDate.末日)) {
-                dayOfMonth2 = YearMonth.of(preClosingDate2.getYear(), preClosingDate2.getMonth()).lengthOfMonth();
-                from2 = LocalDateTime.of(preClosingDate2.getYear(), preClosingDate2.getMonth(), dayOfMonth2, 0, 0, 0);
-            } else {
-                from2 = closingDate2.minusMonths(1).withDayOfMonth(closeDay.getValue());
-            }
-
-            if (salesDate2.getValue().isAfter(closingDate2)) return;
-
-            LocalDateTime to2 = closingDate2;
-            List<Sales> consolidatedSales2 = billingList.stream()
-                    .filter(s -> s.getCustomerCode().equals(sales.getCustomerCode()) &&
-                            !s.getSalesDate().getValue().isBefore(from2) &&
-                            s.getSalesDate().getValue().isBefore(to2))
-                    .toList();
-
-            consolidatedSales2.forEach(s -> {
-                List<InvoiceLine> invoiceLines = s.getSalesLines().stream()
-                        .map(salesLine -> InvoiceLine.of(
-                                invoiceNumber2,
-                                s.getSalesNumber().getValue(),
-                                salesLine.getSalesLineNumber()
-                        ))
-                        .toList();
-
-                Invoice invoice = Invoice.of(
-                        invoiceNumber2,
-                        invoiceDate2.getValue(),
-                        s.getPartnerCode().getValue(),
-                        s.getCustomerCode().getBranchNumber(),
-                        0,
-                        s.getTotalSalesAmount().getAmount(),
-                        0,
-                        0,
-                        s.getTotalConsumptionTax().getAmount(),
-                        0,
-                        invoiceLines
-                );
-                invoiceRepository.save(invoice);
-
-                List<SalesLine> salesLines = s.getSalesLines().stream()
-                        .map(salesLine -> salesLine.toBuilder()
-                                .billingNumber(BillingNumber.of(invoiceNumber2))
-                                .billingDate(BillingDate.of(invoiceDate2.getValue()))
-                                .build())
-                        .toList();
-                salesService.save(s.toBuilder().salesLines(salesLines).build());
-            });
+            // 第2締め日処理
+            processClosingInvoice(sales, billingList, customerInvoice.getClosingInvoice2().getClosingDay(), today);
         });
     }
+
+    /**
+     * 締め請求処理を実行する
+     */
+    private void processClosingInvoice(Sales sales, List<Sales> billingList, ClosingDate closingDay, LocalDateTime today) {
+        // 請求日の計算
+        InvoiceDate invoiceDate = calculateInvoiceDate(closingDay, today);
+
+        // 締め日の計算
+        LocalDateTime closingDate = calculateClosingDate(closingDay, sales.getSalesDate().getValue());
+
+        // 売上日が締め日より後の場合は処理しない
+        if (sales.getSalesDate().getValue().isAfter(closingDate)) return;
+
+        // 請求期間の計算
+        BillingPeriod billingPeriod = determineBillingPeriod(closingDay, closingDate);
+
+        // 請求対象の売上を抽出
+        List<Sales> consolidatedSales = filterSalesForBilling(billingList, sales.getCustomerCode(), billingPeriod);
+
+        // 請求番号の生成
+        String invoiceNumber = generateInvoiceNumber(today);
+
+        // 請求処理
+        processBilling(consolidatedSales, invoiceNumber, invoiceDate);
+    }
+
+    /**
+     * 請求日を計算する
+     */
+    private InvoiceDate calculateInvoiceDate(ClosingDate closingDay, LocalDateTime referenceDate) {
+        Integer dayOfMonth;
+        if (closingDay.equals(ClosingDate.末日)) {
+            dayOfMonth = YearMonth.of(referenceDate.getYear(), referenceDate.getMonth()).lengthOfMonth();
+        } else {
+            dayOfMonth = closingDay.getValue();
+        }
+        return InvoiceDate.of(LocalDateTime.of(referenceDate.getYear(), referenceDate.getMonth(), dayOfMonth, 0, 0, 0));
+    }
+
+    /**
+     * 締め日を計算する
+     */
+    private LocalDateTime calculateClosingDate(ClosingDate closingDay, LocalDateTime salesDate) {
+        Integer dayOfMonth;
+        if (closingDay.equals(ClosingDate.末日)) {
+            dayOfMonth = YearMonth.of(salesDate.getYear(), salesDate.getMonth()).lengthOfMonth();
+        } else {
+            dayOfMonth = closingDay.getValue();
+        }
+        return LocalDateTime.of(salesDate.getYear(), salesDate.getMonth(), dayOfMonth, 0, 0, 0);
+    }
+
+    /**
+     * 請求期間を決定する
+     */
+    private BillingPeriod determineBillingPeriod(ClosingDate closingDay, LocalDateTime closingDate) {
+        LocalDateTime preClosingDate = closingDate.minusMonths(1);
+        LocalDateTime from;
+
+        if (closingDay.equals(ClosingDate.末日)) {
+            int dayOfMonth = YearMonth.of(preClosingDate.getYear(), preClosingDate.getMonth()).lengthOfMonth();
+            from = LocalDateTime.of(preClosingDate.getYear(), preClosingDate.getMonth(), dayOfMonth, 0, 0, 0);
+        } else {
+            from = closingDate.minusMonths(1).withDayOfMonth(closingDay.getValue());
+        }
+
+        return new BillingPeriod(from, closingDate);
+    }
+
+    /**
+     * 請求対象の売上を抽出する
+     */
+    private List<Sales> filterSalesForBilling(List<Sales> billingList, CustomerCode customerCode, BillingPeriod period) {
+        return billingList.stream()
+                .filter(s -> s.getCustomerCode().equals(customerCode) &&
+                        !s.getSalesDate().getValue().isBefore(period.from()) &&
+                        s.getSalesDate().getValue().isBefore(period.to()))
+                .toList();
+    }
+
+    /**
+     * 請求処理を実行する
+     */
+    private void processBilling(List<Sales> consolidatedSales, String invoiceNumber, InvoiceDate invoiceDate) {
+        consolidatedSales.forEach(s -> {
+            createAndSaveInvoice(s, invoiceNumber, invoiceDate);
+            updateSalesWithBillingInfo(s, invoiceNumber, invoiceDate);
+        });
+    }
+
+    /**
+     * 請求期間を表すレコード
+     */
+    private record BillingPeriod(LocalDateTime from, LocalDateTime to) {}
 
     /**
      * 請求番号を生成する
