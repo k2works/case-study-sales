@@ -33,11 +33,12 @@ public class OrderLine {
     CompletionFlag completionFlag; // 完了フラグ
     Money discountAmount; // 値引金額
     DeliveryDate deliveryDate; // 納期
+    ShippingDate shippingDate; // 出荷日
     Product product; // 商品
     SalesAmount salesAmount; // 販売価格
     ConsumptionTaxAmount consumptionTaxAmount; // 消費税額
 
-    public static OrderLine of(String orderNumber, Integer orderLineNumber, String productCode, String productName, Integer salesUnitPrice, Integer salesQuantity, Integer taxRate, Integer allocationQuantity, Integer shipmentInstructionQuantity, Integer shippedQuantity, Integer completionFlag, Integer discountAmount, LocalDateTime deliveryDate) {
+    public static OrderLine of(String orderNumber, Integer orderLineNumber, String productCode, String productName, Integer salesUnitPrice, Integer salesQuantity, Integer taxRate, Integer allocationQuantity, Integer shipmentInstructionQuantity, Integer shippedQuantity, Integer completionFlag, Integer discountAmount, LocalDateTime deliveryDate, LocalDateTime shippingDate) {
         SalesCalculation salesCalculation = SalesCalculation.of(Money.of(salesUnitPrice), Quantity.of(salesQuantity), null, TaxRateType.of(taxRate));
 
         return new OrderLine(
@@ -54,6 +55,7 @@ public class OrderLine {
                 CompletionFlag.of(completionFlag),
                 Money.of(discountAmount),
                 DeliveryDate.of(deliveryDate),
+                ShippingDate.of(shippingDate),
                 null,
                 salesCalculation.getSalesAmount(),
                 salesCalculation.getConsumptionTaxAmount()
@@ -77,6 +79,7 @@ public class OrderLine {
                 CompletionFlag.完了,
                 orderLine.getDiscountAmount(),
                 orderLine.getDeliveryDate(),
+                orderLine.getShippingDate(),
                 orderLine.getProduct(),
                 salesCalculation.getSalesAmount(),
                 salesCalculation.getConsumptionTaxAmount()
@@ -100,6 +103,7 @@ public class OrderLine {
                 orderLine.getCompletionFlag(),
                 orderLine.getDiscountAmount(),
                 orderLine.getDeliveryDate(),
+                orderLine.getShippingDate(),
                 product,
                 salesCalculation.getSalesAmount(),
                 salesCalculation.getConsumptionTaxAmount()

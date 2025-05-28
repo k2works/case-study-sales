@@ -24,7 +24,8 @@ public class OrderResourceDTOMapper {
                         line.getShippedQuantity(),
                         line.getCompletionFlag().getValue(),
                         line.getDiscountAmount(),
-                        line.getDeliveryDate()
+                        line.getDeliveryDate(),
+                        line.getShippingDate() != null ? line.getShippingDate() : null
                 )).toList()
                 : null;
 

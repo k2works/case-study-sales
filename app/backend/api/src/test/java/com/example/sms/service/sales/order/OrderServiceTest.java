@@ -9,9 +9,6 @@ import com.example.sms.domain.model.sales.order.Order;
 import com.example.sms.domain.model.sales.order.OrderLine;
 import com.example.sms.domain.model.sales.order.OrderList;
 import com.example.sms.domain.model.sales.order.rule.OrderRuleCheckList;
-import com.example.sms.service.sales.order.SalesOrderCriteria;
-import com.example.sms.service.sales.order.SalesOrderService;
-import com.example.sms.service.sales.order.SalesOrderUploadErrorList;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -448,7 +445,8 @@ class OrderServiceTest {
                     orderLine.getShippedQuantity().getAmount(),
                     0,
                     orderLine.getDiscountAmount().getAmount(),
-                    orderLine.getDeliveryDate().getValue()
+                    orderLine.getDeliveryDate().getValue(),
+                    null // 出荷日
             );
             Order newOrder = Order.of(
                     order.getOrderNumber().getValue(),
@@ -491,7 +489,8 @@ class OrderServiceTest {
                     orderLine.getShippedQuantity().getAmount(),
                     orderLine.getCompletionFlag().getValue(),
                     orderLine.getDiscountAmount().getAmount(),
-                    orderLine.getDeliveryDate().getValue().minusDays(1) // 納期が受注日より前
+                    orderLine.getDeliveryDate().getValue().minusDays(1), // 納期が受注日より前
+                    null // 出荷日
             );
             Order newOrder = Order.of(
                     order.getOrderNumber().getValue(),
@@ -534,7 +533,8 @@ class OrderServiceTest {
                     orderLine.getShippedQuantity().getAmount(),
                     orderLine.getCompletionFlag().getValue(),
                     orderLine.getDiscountAmount().getAmount(),
-                    DeliveryDate.of(LocalDateTime.now().minusDays(1)).getValue() // 納期を超過
+                    DeliveryDate.of(LocalDateTime.now().minusDays(1)).getValue(), // 納期を超過
+                    null // 出荷日
             );
             Order newOrder = Order.of(
                     order.getOrderNumber().getValue(),
@@ -577,7 +577,8 @@ class OrderServiceTest {
                     orderLine.getShippedQuantity().getAmount(),
                     1, // 完了済み
                     orderLine.getDiscountAmount().getAmount(),
-                    orderLine.getDeliveryDate().getValue()
+                    orderLine.getDeliveryDate().getValue(),
+                    orderLine.getShippingDate().getValue()
             );
             Order newOrder = Order.of(
                     order.getOrderNumber().getValue(),

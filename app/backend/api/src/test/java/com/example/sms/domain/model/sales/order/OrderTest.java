@@ -1,7 +1,5 @@
 package com.example.sms.domain.model.sales.order;
 
-import com.example.sms.domain.model.sales.order.*;
-import com.example.sms.domain.model.sales.order.Order;
 import com.example.sms.domain.type.money.Money;
 import org.junit.jupiter.api.*;
 
@@ -29,6 +27,7 @@ class OrderTest {
         private int completionFlag = 0;
         private int discountAmount = 200;
         private LocalDateTime deliveryDate = LocalDateTime.now();
+        private LocalDateTime shippingDate = null;
 
         public SalesOrderLineBuilder withOrderNumber(String orderNumber) {
             this.orderNumber = orderNumber;
@@ -95,6 +94,11 @@ class OrderTest {
             return this;
         }
 
+        public SalesOrderLineBuilder withShippingDate(LocalDateTime shippingDate) {
+            this.shippingDate = shippingDate;
+            return this;
+        }
+
         public OrderLine build() {
             return OrderLine.of(
                     orderNumber,
@@ -109,7 +113,8 @@ class OrderTest {
                     shippedQuantity,
                     completionFlag,
                     discountAmount,
-                    deliveryDate
+                    deliveryDate,
+                    shippingDate
             );
         }
     }

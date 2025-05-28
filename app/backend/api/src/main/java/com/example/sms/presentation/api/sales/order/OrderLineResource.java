@@ -63,6 +63,9 @@ public class OrderLineResource implements Serializable {
     @Schema(description = "納期")
     LocalDateTime deliveryDate;
 
+    @Schema(description = "出荷日")
+    LocalDateTime shippingDate;
+
     public static List<OrderLineResource> from(List<OrderLine> orderLines) {
         return orderLines.stream()
                 .map(salesOrderLine -> OrderLineResource.builder()
@@ -79,6 +82,7 @@ public class OrderLineResource implements Serializable {
                         .completionFlag(salesOrderLine.getCompletionFlag())
                         .discountAmount(salesOrderLine.getDiscountAmount().getAmount())
                         .deliveryDate(salesOrderLine.getDeliveryDate().getValue())
+                        .shippingDate(salesOrderLine.getShippingDate() != null ? salesOrderLine.getShippingDate().getValue() : null)
                         .build())
                 .toList();
     }

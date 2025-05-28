@@ -11,8 +11,6 @@ import com.example.sms.domain.model.sales.shipping.Shipping;
 import com.example.sms.domain.model.sales.shipping.ShippingList;
 import com.example.sms.domain.model.sales.shipping.rule.ShippingRuleCheckList;
 import com.example.sms.service.sales.order.SalesOrderService;
-import com.example.sms.service.sales.shipping.ShippingCriteria;
-import com.example.sms.service.sales.shipping.ShippingService;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -192,7 +190,8 @@ class ShippingServiceTest {
                     orderLine.getShippedQuantity().getAmount(),
                     CompletionFlag.未完了.getValue(),
                     orderLine.getDiscountAmount().getAmount(),
-                    LocalDateTime.now().minus(10, ChronoUnit.DAYS)
+                    LocalDateTime.now().minus(10, ChronoUnit.DAYS),
+                    null
             );
             Order newOrder = Order.of(
                     order.getOrderNumber().getValue(),

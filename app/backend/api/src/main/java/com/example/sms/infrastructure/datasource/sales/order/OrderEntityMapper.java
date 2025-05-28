@@ -63,6 +63,11 @@ public class OrderEntityMapper {
         salesOrderLineEntity.set値引金額(orderLine.getDiscountAmount().getAmount());
         salesOrderLineEntity.set納期(orderLine.getDeliveryDate().getValue());
 
+        // 出荷日の設定
+        if (orderLine.getShippingDate() != null) {
+            salesOrderLineEntity.set出荷日(orderLine.getShippingDate().getValue());
+        }
+
         return salesOrderLineEntity;
     }
 
@@ -132,7 +137,8 @@ public class OrderEntityMapper {
                             e.get出荷済数量(),
                             e.get完了フラグ(),
                             Objects.isNull(e.get値引金額()) ? 0 : e.get値引金額(), // 値引金額のnullチェック
-                            e.get納期()
+                            e.get納期(),
+                            e.get出荷日() // 出荷日の追加
                     ),
                     Objects.nonNull(e.get商品マスタ()) ? mapToProduct.apply(e.get商品マスタ()) : null // 商品マスタのnullチェック
             );
@@ -262,7 +268,8 @@ public class OrderEntityMapper {
                 orderLine.getShippedQuantity().getAmount(),
                 orderLine.getCompletionFlag().getValue(),
                 orderLine.getDiscountAmount().getAmount(),
-                orderLine.getDeliveryDate().getValue()
+                orderLine.getDeliveryDate().getValue(),
+                orderLine.getShippingDate() != null ? orderLine.getShippingDate().getValue() : null
         );
     }
 }

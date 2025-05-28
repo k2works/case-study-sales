@@ -456,7 +456,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
                                 10,  // shippedQuantity（出荷済数量）
                                 1,  // completionFlag（完了フラグ）
                                 10,  // discountAmount（値引金額）
-                                LocalDateTime.of(2021, 1, 1, 0, 0)  // deliveryDate（納期）
+                                LocalDateTime.of(2021, 1, 1, 0, 0),  // deliveryDate（納期）
+                                LocalDateTime.of(2021, 1, 1, 0, 0)  // shippingDate（出荷日）
                         );
                         newLines.add(newLine);
                     }
@@ -903,7 +904,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 10,  // shippedQuantity（出荷済数量）
                 0,  // completionFlag（完了フラグ）
                 10,  // discountAmount（値引金額）
-                LocalDateTime.of(2021, 1, 1, 0, 0)  // deliveryDate（納期）
+                LocalDateTime.of(2021, 1, 1, 0, 0),  // deliveryDate（納期）
+                LocalDateTime.of(2021, 1, 1, 0, 0)  // shippingDate（出荷日）
         );
     }
 
