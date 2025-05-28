@@ -7,6 +7,7 @@ import com.example.sms.domain.model.sales.invoice.*;
 import com.example.sms.domain.model.sales.sales.*;
 import com.example.sms.domain.model.system.autonumber.AutoNumber;
 import com.example.sms.domain.model.system.autonumber.DocumentTypeCode;
+import com.example.sms.service.sales.sales.SalesRepository;
 import com.example.sms.service.sales.sales.SalesService;
 import com.example.sms.service.system.autonumber.AutoNumberService;
 import com.github.pagehelper.PageInfo;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,11 +30,13 @@ public class InvoiceService {
     final InvoiceRepository invoiceRepository;
     final AutoNumberService autoNumberService;
     final SalesService salesService;
+    final SalesRepository salesRepository;
 
-    public InvoiceService(InvoiceRepository invoiceRepository, AutoNumberService autoNumberService, SalesService salesService) {
+    public InvoiceService(InvoiceRepository invoiceRepository, AutoNumberService autoNumberService, SalesService salesService, SalesRepository salesRepository) {
         this.invoiceRepository = invoiceRepository;
         this.autoNumberService = autoNumberService;
         this.salesService = salesService;
+        this.salesRepository = salesRepository;
     }
 
     /**
@@ -128,13 +132,45 @@ public class InvoiceService {
                         Objects.requireNonNull(sales.getCustomer().getInvoice()).getCustomerBillingCategory() == CustomerBillingCategory.都度請求)
                 .toList();
 
+        List<Invoice> invoiceList = new ArrayList<>();
+        List<Sales> updatedSalesList = new ArrayList<>();
+
         billingList.forEach(sales -> {
             String invoiceNumber = generateInvoiceNumber(today);
             InvoiceDate invoiceDate = InvoiceDate.of(today);
 
-            createAndSaveInvoice(sales, invoiceNumber, invoiceDate);
-            updateSalesWithBillingInfo(sales, invoiceNumber, invoiceDate);
+            // Create invoice and add to list
+            List<InvoiceLine> invoiceLines = createInvoiceLines(sales, invoiceNumber);
+            Invoice invoice = Invoice.of(
+                    invoiceNumber,
+                    invoiceDate.getValue(),
+                    sales.getPartnerCode().getValue(),
+                    sales.getCustomerCode().getBranchNumber(),
+                    0,
+                    sales.getTotalSalesAmount().getAmount(),
+                    0,
+                    0,
+                    sales.getTotalConsumptionTax().getAmount(),
+                    0,
+                    invoiceLines
+            );
+            invoiceList.add(invoice);
+
+            // Update sales with billing info and add to list
+            List<SalesLine> salesLines = sales.getSalesLines().stream()
+                    .map(salesLine -> salesLine.toBuilder()
+                            .billingNumber(BillingNumber.of(invoiceNumber))
+                            .billingDate(BillingDate.of(invoiceDate.getValue()))
+                            .build())
+                    .toList();
+            updatedSalesList.add(sales.toBuilder().salesLines(salesLines).build());
         });
+
+        // Save all invoices at once
+        invoiceRepository.save(new InvoiceList(invoiceList));
+
+        // Save all updated sales at once
+        salesRepository.save(new SalesList(updatedSalesList));
     }
 
     /**
@@ -146,28 +182,6 @@ public class InvoiceService {
                 LocalDateTime.now().getMonth(), 
                 LocalDateTime.now().getDayOfMonth(), 
                 0, 0, 0);
-    }
-
-    /**
-     * 請求を作成して保存する
-     */
-    private void createAndSaveInvoice(Sales sales, String invoiceNumber, InvoiceDate invoiceDate) {
-        List<InvoiceLine> invoiceLines = createInvoiceLines(sales, invoiceNumber);
-
-        Invoice invoice = Invoice.of(
-                invoiceNumber,
-                invoiceDate.getValue(),
-                sales.getPartnerCode().getValue(),
-                sales.getCustomerCode().getBranchNumber(),
-                0,
-                sales.getTotalSalesAmount().getAmount(),
-                0,
-                0,
-                sales.getTotalConsumptionTax().getAmount(),
-                0,
-                invoiceLines
-        );
-        invoiceRepository.save(invoice);
     }
 
     /**
@@ -184,19 +198,6 @@ public class InvoiceService {
     }
 
     /**
-     * 売上に請求情報を更新する
-     */
-    private void updateSalesWithBillingInfo(Sales sales, String invoiceNumber, InvoiceDate invoiceDate) {
-        List<SalesLine> salesLines = sales.getSalesLines().stream()
-                .map(salesLine -> salesLine.toBuilder()
-                        .billingNumber(BillingNumber.of(invoiceNumber))
-                        .billingDate(BillingDate.of(invoiceDate.getValue()))
-                        .build())
-                .toList();
-        salesService.save(sales.toBuilder().salesLines(salesLines).build());
-    }
-
-    /**
      * 締請求
      */
     private void consolidatedBilling(SalesList salesList) {
@@ -206,24 +207,33 @@ public class InvoiceService {
                         Objects.requireNonNull(sales.getCustomer().getInvoice()).getCustomerBillingCategory() == CustomerBillingCategory.締請求)
                 .toList();
 
+        List<Invoice> invoiceList = new ArrayList<>();
+        List<Sales> updatedSalesList = new ArrayList<>();
+
         billingList.forEach(sales -> {
             com.example.sms.domain.model.master.partner.invoice.Invoice customerInvoice = sales.getCustomer().getInvoice();
 
             // 第1締め日処理
-            processClosingInvoice(sales, billingList, customerInvoice.getClosingInvoice1().getClosingDay(), today);
+            processClosingInvoice(sales, billingList, customerInvoice.getClosingInvoice1().getClosingDay(), today, invoiceList, updatedSalesList);
 
             // 第1締め日と第2締め日が同じ場合は処理終了
             if (customerInvoice.getClosingInvoice1().equals(customerInvoice.getClosingInvoice2())) return;
 
             // 第2締め日処理
-            processClosingInvoice(sales, billingList, customerInvoice.getClosingInvoice2().getClosingDay(), today);
+            processClosingInvoice(sales, billingList, customerInvoice.getClosingInvoice2().getClosingDay(), today, invoiceList, updatedSalesList);
         });
+
+        // Save all invoices at once
+        invoiceRepository.save(new InvoiceList(invoiceList));
+
+        // Save all updated sales at once
+        salesRepository.save(new SalesList(updatedSalesList));
     }
 
     /**
      * 締め請求処理を実行する
      */
-    private void processClosingInvoice(Sales sales, List<Sales> billingList, ClosingDate closingDay, LocalDateTime today) {
+    private void processClosingInvoice(Sales sales, List<Sales> billingList, ClosingDate closingDay, LocalDateTime today, List<Invoice> invoiceList, List<Sales> updatedSalesList) {
         // 請求日の計算
         InvoiceDate invoiceDate = calculateInvoiceDate(closingDay, today);
 
@@ -243,7 +253,7 @@ public class InvoiceService {
         String invoiceNumber = generateInvoiceNumber(today);
 
         // 請求処理
-        processBilling(consolidatedSales, invoiceNumber, invoiceDate);
+        processBilling(consolidatedSales, invoiceNumber, invoiceDate, invoiceList, updatedSalesList);
     }
 
     /**
@@ -303,10 +313,33 @@ public class InvoiceService {
     /**
      * 請求処理を実行する
      */
-    private void processBilling(List<Sales> consolidatedSales, String invoiceNumber, InvoiceDate invoiceDate) {
+    private void processBilling(List<Sales> consolidatedSales, String invoiceNumber, InvoiceDate invoiceDate, List<Invoice> invoiceList, List<Sales> updatedSalesList) {
         consolidatedSales.forEach(s -> {
-            createAndSaveInvoice(s, invoiceNumber, invoiceDate);
-            updateSalesWithBillingInfo(s, invoiceNumber, invoiceDate);
+            // Create invoice and add to list
+            List<InvoiceLine> invoiceLines = createInvoiceLines(s, invoiceNumber);
+            Invoice invoice = Invoice.of(
+                    invoiceNumber,
+                    invoiceDate.getValue(),
+                    s.getPartnerCode().getValue(),
+                    s.getCustomerCode().getBranchNumber(),
+                    0,
+                    s.getTotalSalesAmount().getAmount(),
+                    0,
+                    0,
+                    s.getTotalConsumptionTax().getAmount(),
+                    0,
+                    invoiceLines
+            );
+            invoiceList.add(invoice);
+
+            // Update sales with billing info and add to list
+            List<SalesLine> salesLines = s.getSalesLines().stream()
+                    .map(salesLine -> salesLine.toBuilder()
+                            .billingNumber(BillingNumber.of(invoiceNumber))
+                            .billingDate(BillingDate.of(invoiceDate.getValue()))
+                            .build())
+                    .toList();
+            updatedSalesList.add(s.toBuilder().salesLines(salesLines).build());
         });
     }
 
