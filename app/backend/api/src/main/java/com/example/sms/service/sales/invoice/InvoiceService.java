@@ -127,50 +127,14 @@ public class InvoiceService {
      */
     private void spotBilling(SalesList salesList) {
         LocalDateTime today = getCurrentDateTime();
-        List<Sales> billingList = salesList.asList().stream()
-                .filter(sales -> sales.getCustomer() != null && 
-                        Objects.requireNonNull(sales.getCustomer().getInvoice()).getCustomerBillingCategory() == CustomerBillingCategory.都度請求)
-                .toList();
 
-        List<Invoice> invoiceList = new ArrayList<>();
-        List<Sales> updatedSalesList = new ArrayList<>();
+        // 都度請求処理の実行
+        SpotBillingProcessor processor = SpotBillingProcessor.createFrom(salesList, today);
+        processor.process(this::generateInvoiceNumber);
 
-        billingList.forEach(sales -> {
-            String invoiceNumber = generateInvoiceNumber(today);
-            InvoiceDate invoiceDate = InvoiceDate.of(today);
-
-            // Create invoice and add to list
-            List<InvoiceLine> invoiceLines = createInvoiceLines(sales, invoiceNumber);
-            Invoice invoice = Invoice.of(
-                    invoiceNumber,
-                    invoiceDate.getValue(),
-                    sales.getPartnerCode().getValue(),
-                    sales.getCustomerCode().getBranchNumber(),
-                    0,
-                    sales.getTotalSalesAmount().getAmount(),
-                    0,
-                    0,
-                    sales.getTotalConsumptionTax().getAmount(),
-                    0,
-                    invoiceLines
-            );
-            invoiceList.add(invoice);
-
-            // Update sales with billing info and add to list
-            List<SalesLine> salesLines = sales.getSalesLines().stream()
-                    .map(salesLine -> salesLine.toBuilder()
-                            .billingNumber(BillingNumber.of(invoiceNumber))
-                            .billingDate(BillingDate.of(invoiceDate.getValue()))
-                            .build())
-                    .toList();
-            updatedSalesList.add(sales.toBuilder().salesLines(salesLines).build());
-        });
-
-        // Save all invoices at once
-        invoiceRepository.save(new InvoiceList(invoiceList));
-
-        // Save all updated sales at once
-        salesRepository.save(new SalesList(updatedSalesList));
+        // 結果の保存
+        invoiceRepository.save(processor.getInvoiceList());
+        salesRepository.save(processor.getUpdatedSalesList());
     }
 
     /**
