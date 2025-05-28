@@ -39,6 +39,7 @@ create table if not exists 受注データ明細
     完了フラグ   integer      default 0            not null,
     値引金額     integer      default 0            not null,
     納期         timestamp(6),
+    出荷日       timestamp(6),
     作成日時     timestamp(6) default CURRENT_DATE not null,
     作成者名     varchar(12),
     更新日時     timestamp(6) default CURRENT_DATE not null,
