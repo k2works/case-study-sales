@@ -93,7 +93,7 @@ export const InvoiceCollectionView: React.FC<Props> = ({
                                     </div>
                                     <div className="collection-object-item-content" data-id={invoice.invoiceNumber}>
                                         <div className="collection-object-item-content-details">請求日</div>
-                                        <div className="collection-object-item-content-name">{invoice.invoiceDate}</div>
+                                        <div className="collection-object-item-content-name">{invoice.invoiceDate.split("T")[0]}</div>
                                     </div>
                                     <div className="collection-object-item-content" data-id={invoice.invoiceNumber}>
                                         <div className="collection-object-item-content-details">顧客コード</div>
