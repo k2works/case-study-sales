@@ -31,7 +31,7 @@ class ConsolidatedBillingProcessorTest {
     @DisplayName("10日締め当月10日支払い")
     void shouldCreateClosingInvoiceWith10thClosing() {
         // 現在日時の設定
-        LocalDateTime today = LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), 0, 0, 0);
+        LocalDateTime today = LocalDateTime.of(2025, 5, 11, 0, 0, 0);
 
         // 顧客コードの設定（10日締め当月10日支払いの顧客）
         CustomerCode customerCode = CustomerCode.of("010", 1);
@@ -125,7 +125,7 @@ class ConsolidatedBillingProcessorTest {
         // 実際のテストでは、この部分は必要ないが、ConsolidatedBillingProcessorの実装上、
         // sales.getCustomer().getInvoice()が呼ばれるため、テスト用に対応
         sales1 = sales1.toBuilder()
-                .customer(TestDataFactoryImpl.getCustomer("010", 1).toBuilder()
+                .customer(TestDataFactoryImpl.getCustomer(customerCode.getCode().getValue(),customerCode.getBranchNumber()).toBuilder()
                         .invoice(new com.example.sms.domain.model.master.partner.invoice.Invoice(
                                 CustomerBillingCategory.締請求,
                                 ClosingInvoice.of(10, 0, 10, 1),
@@ -135,7 +135,7 @@ class ConsolidatedBillingProcessorTest {
                 .build();
 
         sales2 = sales2.toBuilder()
-                .customer(TestDataFactoryImpl.getCustomer("010", 1).toBuilder()
+                .customer(TestDataFactoryImpl.getCustomer(customerCode.getCode().getValue(),customerCode.getBranchNumber()).toBuilder()
                         .invoice(new com.example.sms.domain.model.master.partner.invoice.Invoice(
                                 CustomerBillingCategory.締請求,
                                 ClosingInvoice.of(10, 0, 10, 1),
@@ -157,6 +157,7 @@ class ConsolidatedBillingProcessorTest {
         // 結果の検証
         List<Invoice> invoices = processor.getInvoiceList().asList();
         assertFalse(invoices.isEmpty(), "請求が生成されていません");
+        assertEquals(1, invoices.size(), "請求が複数件生成されています");
 
         Invoice result = invoices.getFirst();
         assertNotNull(result, "請求が生成されていません");

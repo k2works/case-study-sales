@@ -103,6 +103,15 @@ public class ConsolidatedBillingProcessor {
         // 請求番号の生成
         String invoiceNumber = generateInvoiceNumber.apply(today);
 
+        // 重複を除外
+        consolidatedSales = consolidatedSales.stream()
+                .filter(s -> s.getSalesLines().stream()
+                        .noneMatch(sl -> invoiceList.stream()
+                                .flatMap(i -> i.getInvoiceLines().stream())
+                                .anyMatch(il -> il.getSalesNumber().equals(s.getSalesNumber()) &&
+                                        il.getSalesLineNumber().equals(sl.getSalesLineNumber()))))
+                .toList();
+
         // 請求処理
         processBilling(consolidatedSales, invoiceNumber, invoiceDate);
     }
