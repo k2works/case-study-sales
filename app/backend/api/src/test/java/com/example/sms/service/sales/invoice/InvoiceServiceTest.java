@@ -5,6 +5,7 @@ import com.example.sms.TestDataFactory;
 import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.master.partner.customer.CustomerCode;
 import com.example.sms.domain.model.sales.invoice.Invoice;
+import com.example.sms.domain.model.sales.invoice.InvoiceDate;
 import com.example.sms.domain.model.sales.invoice.InvoiceLine;
 import com.example.sms.domain.model.sales.invoice.InvoiceList;
 import com.example.sms.domain.model.sales.order.*;
@@ -568,19 +569,20 @@ class InvoiceServiceTest {
             @Test
             @DisplayName("10日締め当月10日支払い")
             void shouldCreateClosingInvoiceWith10thClosing() {
+                LocalDateTime today = LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), 0, 0, 0);
                 CustomerCode customerCode = CustomerCode.of("010", 1);
                 Order newOrder1 = TestDataFactoryImpl.getSalesOrder("OD00000010").toBuilder().customerCode(customerCode).build();
                 List<OrderLine> orderLines1 = IntStream.range(1, 4)
                         .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000010", i).toBuilder()
                                 .completionFlag(CompletionFlag.完了)
-                                .shippingDate(ShippingDate.of(LocalDateTime.of(2025, 3, 9, 0, 0)))
+                                .shippingDate(ShippingDate.of(LocalDateTime.of(today.getYear(), today.getMonth(), 9, 0, 0)))
                                 .build())
                         .toList();
                 Order newOrder2 = TestDataFactoryImpl.getSalesOrder("OD00000011").toBuilder().customerCode(customerCode).build();
                 List<OrderLine> orderLines2 = IntStream.range(1, 4)
                         .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000011", i).toBuilder()
                                 .completionFlag(CompletionFlag.完了)
-                                .shippingDate(ShippingDate.of(LocalDateTime.of(2025, 3, 10, 0, 0)))
+                                .shippingDate(ShippingDate.of(LocalDateTime.of(today.getYear(), today.getMonth(), 10, 0, 0)))
                                 .build())
                         .toList();
                 orderRepository.save(Order.of(newOrder1, orderLines1));
@@ -589,11 +591,9 @@ class InvoiceServiceTest {
 
                 invoiceService.aggregate();
 
-                LocalDateTime today = LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), 0, 0, 0);
                 Invoice result = invoiceService.selectAll().asList().getFirst();
                 assertNotNull(result);
-                assertEquals(today.getMonth(), result.getInvoiceDate().getValue().getMonth());
-                assertEquals(10, result.getInvoiceDate().getValue().getDayOfMonth());
+                assertEquals(InvoiceDate.of(LocalDateTime.of(today.getYear(), today.getMonth(), 10, 0, 0)), result.getInvoiceDate());
                 Sales sales = salesService.selectAll().asList().getFirst();
                 assertNotNull(result.getInvoiceDate());
                 assertEquals(sales.getSalesLines().getFirst().getBillingDate().getValue(), result.getInvoiceDate().getValue());
