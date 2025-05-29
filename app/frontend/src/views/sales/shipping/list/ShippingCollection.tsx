@@ -19,6 +19,10 @@ const ShippingItem: React.FC<ShippingItemProps> = ({shipping, onEdit}) => (
             <div className="collection-object-item-content-details">受注日</div>
             <div className="collection-object-item-content-name">{shipping.orderDate.split("T")[0]}</div>
         </div>
+        <div className="collection-object-item-content" data-id={shipping.shippingDate}>
+            <div className="collection-object-item-content-details">出荷日</div>
+            <div className="collection-object-item-content-name">{shipping.shippingDate?.split("T")[0]}</div>
+        </div>
         <div className="collection-object-item-content" data-id={shipping.orderNumber}>
             <div className="collection-object-item-content-details">顧客コード</div>
             <div className="collection-object-item-content-name">{shipping.customerCode}</div>

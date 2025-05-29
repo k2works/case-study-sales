@@ -27,6 +27,7 @@ export interface ShippingType {
     completionFlag: boolean;
     discountAmount: number;
     deliveryDate: string;
+    shippingDate?: string;
     salesAmount: number;
     consumptionTaxAmount: number;
     checked?: boolean;
