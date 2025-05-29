@@ -1,5 +1,6 @@
 package com.example.sms.service.sales.shipping;
 
+import com.example.sms.domain.model.sales.order.ShippingDate;
 import com.example.sms.domain.model.sales.shipping.Shipping;
 import com.example.sms.domain.model.sales.shipping.ShippingList;
 import com.example.sms.domain.model.sales.shipping.rule.ShippingRuleCheckList;
@@ -10,9 +11,12 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * 出荷サービス
@@ -108,6 +112,7 @@ public class ShippingService {
                                         Objects.requireNonNull(shipping.getShippedQuantity()), // 出荷済数量
                                         shipping.getDiscountAmount(),
                                         shipping.getDeliveryDate(),
+                                        shipping.getShippingDate(),
                                         shipping.getProduct(),
                                         shipping.getSalesAmount(),
                                         shipping.getConsumptionTaxAmount(),
@@ -134,6 +139,12 @@ public class ShippingService {
 
             return currentQuantity;
         };
+
+        Supplier<LocalDateTime> getCurrentDateTime = () -> LocalDateTime.of(
+                LocalDateTime.now().getYear(),
+                LocalDateTime.now().getMonth(),
+                LocalDateTime.now().getDayOfMonth(),
+                0, 0, 0);
 
         ShippingList updatedShippingList =
                 new ShippingList(
@@ -162,6 +173,7 @@ public class ShippingService {
                                         calculateShippingConfirmQuantity.apply(shipping.getShipmentInstructionQuantity(), shipping.getShippedQuantity()), // 出荷指示数量
                                         shipping.getDiscountAmount(),
                                         shipping.getDeliveryDate(),
+                                        ShippingDate.of(getCurrentDateTime.get()), // 出荷日を現在日時に設定
                                         shipping.getProduct(),
                                         shipping.getSalesAmount(),
                                         shipping.getConsumptionTaxAmount(),

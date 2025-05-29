@@ -210,6 +210,7 @@ public class ShippingEntityMapper {
                 Quantity.of(orderLineCustomEntity.get出荷済数量()),
                 discountAmount,
                 DeliveryDate.of(orderLineCustomEntity.get納期()),
+                Objects.nonNull(orderLineCustomEntity.get出荷日()) ? ShippingDate.of(orderLineCustomEntity.get出荷日()) : null,
                 Objects.nonNull(orderLineCustomEntity.get商品マスタ()) ? mapToProduct.apply(orderLineCustomEntity.get商品マスタ()) : null,
                 salesAmount,
                 consumptionTaxAmount,

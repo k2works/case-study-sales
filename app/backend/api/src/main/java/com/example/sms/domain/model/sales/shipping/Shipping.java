@@ -12,6 +12,7 @@ import com.example.sms.domain.model.sales.order.*;
 import com.example.sms.domain.type.money.Money;
 import com.example.sms.domain.type.quantity.Quantity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
@@ -25,6 +26,7 @@ import static org.apache.commons.lang3.Validate.isTrue;
 @Value
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
+@Builder(toBuilder = true)
 public class Shipping {
     OrderNumber orderNumber; // 受注番号
     OrderDate orderDate; // 受注日
@@ -50,6 +52,7 @@ public class Shipping {
     CompletionFlag completionFlag; // 完了フラグ
     Money discountAmount; // 値引金額
     DeliveryDate deliveryDate; // 納期
+    ShippingDate shippingDate; // 出荷日
     Product product; // 商品
     SalesAmount salesAmount; // 販売価格
     ConsumptionTaxAmount consumptionTaxAmount; // 消費税額
@@ -84,6 +87,7 @@ public class Shipping {
             Quantity shippedQuantity,
             Money discountAmount,
             DeliveryDate deliveryDate,
+            ShippingDate shippingDate,
             Product product,
             SalesAmount salesAmount,
             ConsumptionTaxAmount consumptionTaxAmount,
@@ -122,6 +126,7 @@ public class Shipping {
                 status,
                 discountAmount,
                 deliveryDate,
+                shippingDate,
                 product,
                 salesAmount,
                 consumptionTaxAmount,

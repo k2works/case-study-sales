@@ -160,6 +160,18 @@ class ShippingServiceTest {
                     assertEquals(allShippings.asList().stream().filter(s -> s.getOrderNumber().getValue().equals(shipping.getOrderNumber().getValue())).count(), order.getOrderLines().size());
                 }
             }
+            @Test
+            @DisplayName("出荷指示日が出荷日として設定される")
+            void shouldSetShippingInstructionDate() {
+                ShippingList allShippings = shippingService.selectAll();
+                if (!allShippings.asList().isEmpty()) {
+                    Shipping shipping = allShippings.asList().getFirst();
+                    shippingService.orderShipping(allShippings);
+
+                    Shipping updatedShipping = shippingService.findById(shipping.getOrderNumber().getValue(), shipping.getCustomerOrderNumber()).orElse(null);
+                    assertNotNull(updatedShipping.getShippingDate());
+                }
+            }
         }
     }
 

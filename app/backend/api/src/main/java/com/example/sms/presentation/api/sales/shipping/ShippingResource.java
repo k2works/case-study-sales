@@ -87,6 +87,9 @@ public class ShippingResource {
     @Schema(description = "納期")
     private LocalDateTime deliveryDate;
 
+    @Schema(description = "出荷日")
+    private LocalDateTime shippingDate;
+
     @Schema(description = "販売価格")
     private Integer salesAmount;
 
@@ -123,6 +126,7 @@ public class ShippingResource {
         resource.setCompletionFlag(shipping.getCompletionFlag().getValue() == 1);
         resource.setDiscountAmount(shipping.getDiscountAmount().getAmount());
         resource.setDeliveryDate(shipping.getDeliveryDate().getValue());
+        resource.setShippingDate(shipping.getShippingDate() != null ? shipping.getShippingDate().getValue() : null);
         resource.setSalesAmount(shipping.getSalesAmount().getValue().getAmount());
         resource.setConsumptionTaxAmount(shipping.getConsumptionTaxAmount().getValue().getAmount());
         return resource;

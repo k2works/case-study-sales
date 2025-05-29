@@ -284,6 +284,7 @@ public class ShippingDataSource implements ShippingRepository {
 
                                 salesOrderLineData.set出荷指示数量(Objects.requireNonNull(shipping.getShipmentInstructionQuantity()).getAmount());
                                 salesOrderLineData.set出荷済数量(Objects.requireNonNull(shipping.getShippedQuantity()).getAmount());
+                                salesOrderLineData.set出荷日(Objects.requireNonNull(shipping.getDeliveryDate()).getValue());
                                 salesOrderLineData.set作成日時(salesOrderLineEntity.get作成日時());
                                 salesOrderLineData.set作成者名(salesOrderLineEntity.get作成者名());
                                 salesOrderLineData.set更新日時(LocalDateTime.now());
