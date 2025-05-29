@@ -7,10 +7,7 @@ import com.example.sms.domain.model.master.partner.customer.CustomerCode;
 import com.example.sms.domain.model.sales.invoice.Invoice;
 import com.example.sms.domain.model.sales.invoice.InvoiceLine;
 import com.example.sms.domain.model.sales.invoice.InvoiceList;
-import com.example.sms.domain.model.sales.order.CompletionFlag;
-import com.example.sms.domain.model.sales.order.DeliveryDate;
-import com.example.sms.domain.model.sales.order.Order;
-import com.example.sms.domain.model.sales.order.OrderLine;
+import com.example.sms.domain.model.sales.order.*;
 import com.example.sms.domain.model.sales.sales.Sales;
 import com.example.sms.domain.type.money.Money;
 import com.example.sms.domain.type.quantity.Quantity;
@@ -242,7 +239,7 @@ class InvoiceServiceTest {
                                 .shipmentInstructionQuantity(Quantity.of(1))
                                 .shippedQuantity(Quantity.of(1))
                                 .completionFlag(CompletionFlag.完了)
-                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2022, 1, 1, 0, 0)))
+                                .shippingDate(ShippingDate.of(LocalDateTime.of(2022, 1, 1, 0, 0)))
                                 .build())
                         .toList();
                 Order newOrder2 = TestDataFactoryImpl.getSalesOrder("OD00000010").toBuilder().customerCode(customerCode).build();
@@ -253,7 +250,7 @@ class InvoiceServiceTest {
                                 .shipmentInstructionQuantity(Quantity.of(1))
                                 .shippedQuantity(Quantity.of(1))
                                 .completionFlag(CompletionFlag.完了)
-                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2023, 1, 1, 0, 0)))
+                                .shippingDate(ShippingDate.of(LocalDateTime.of(2023, 1, 1, 0, 0)))
                                 .build())
                         .toList();
                 orderRepository.save(Order.of(newOrder1, orderLines1));
@@ -283,7 +280,7 @@ class InvoiceServiceTest {
                                 .shipmentInstructionQuantity(Quantity.of(1))
                                 .shippedQuantity(Quantity.of(1))
                                 .completionFlag(CompletionFlag.完了)
-                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2023, 1, 1, 0, 0)))
+                                .shippingDate(ShippingDate.of(LocalDateTime.of(2023, 1, 1, 0, 0)))
                                 .build())
                         .toList();
                 Order newOrder2 = TestDataFactoryImpl.getSalesOrder("OD00000010").toBuilder().customerCode(customerCode).build();
@@ -294,7 +291,7 @@ class InvoiceServiceTest {
                                 .shipmentInstructionQuantity(Quantity.of(1))
                                 .shippedQuantity(Quantity.of(1))
                                 .completionFlag(CompletionFlag.完了)
-                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2023, 2, 1, 0, 0)))
+                                .shippingDate(ShippingDate.of(LocalDateTime.of(2023, 2, 1, 0, 0)))
                                 .build())
                         .toList();
                 Order newOrder3 = TestDataFactoryImpl.getSalesOrder("OD00000011").toBuilder().customerCode(customerCode).build();
@@ -305,7 +302,7 @@ class InvoiceServiceTest {
                                 .shipmentInstructionQuantity(Quantity.of(1))
                                 .shippedQuantity(Quantity.of(1))
                                 .completionFlag(CompletionFlag.完了)
-                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2023, 3, 1, 0, 0)))
+                                .shippingDate(ShippingDate.of(LocalDateTime.of(2023, 3, 1, 0, 0)))
                                 .build())
                         .toList();
                 orderRepository.save(Order.of(newOrder1, orderLines1));
@@ -459,7 +456,7 @@ class InvoiceServiceTest {
                                 .shipmentInstructionQuantity(Quantity.of(1))
                                 .shippedQuantity(Quantity.of(1))
                                 .completionFlag(CompletionFlag.完了)
-                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2022, 1, 1, 0, 0)))
+                                .shippingDate(ShippingDate.of(LocalDateTime.of(2022, 1, 1, 0, 0)))
                                 .build())
                         .toList();
                 Order newOrder2 = TestDataFactoryImpl.getSalesOrder("OD00000010").toBuilder().customerCode(customerCode).build();
@@ -470,7 +467,7 @@ class InvoiceServiceTest {
                                 .shipmentInstructionQuantity(Quantity.of(1))
                                 .shippedQuantity(Quantity.of(1))
                                 .completionFlag(CompletionFlag.完了)
-                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2023, 1, 1, 0, 0)))
+                                .shippingDate(ShippingDate.of(LocalDateTime.of(2023, 1, 1, 0, 0)))
                                 .build())
                         .toList();
                 orderRepository.save(Order.of(newOrder1, orderLines1));
@@ -500,7 +497,7 @@ class InvoiceServiceTest {
                                 .shipmentInstructionQuantity(Quantity.of(1))
                                 .shippedQuantity(Quantity.of(1))
                                 .completionFlag(CompletionFlag.完了)
-                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2023, 1, 1, 0, 0)))
+                                .shippingDate(ShippingDate.of(LocalDateTime.of(2023, 1, 1, 0, 0)))
                                 .build())
                         .toList();
                 Order newOrder2 = TestDataFactoryImpl.getSalesOrder("OD00000010").toBuilder().customerCode(customerCode).build();
@@ -511,7 +508,7 @@ class InvoiceServiceTest {
                                 .shipmentInstructionQuantity(Quantity.of(1))
                                 .shippedQuantity(Quantity.of(1))
                                 .completionFlag(CompletionFlag.完了)
-                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2023, 2, 1, 0, 0)))
+                                .shippingDate(ShippingDate.of(LocalDateTime.of(2023, 2, 1, 0, 0)))
                                 .build())
                         .toList();
                 Order newOrder3 = TestDataFactoryImpl.getSalesOrder("OD00000011").toBuilder().customerCode(customerCode).build();
@@ -522,7 +519,7 @@ class InvoiceServiceTest {
                                 .shipmentInstructionQuantity(Quantity.of(1))
                                 .shippedQuantity(Quantity.of(1))
                                 .completionFlag(CompletionFlag.完了)
-                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2023, 3, 1, 0, 0)))
+                                .shippingDate(ShippingDate.of(LocalDateTime.of(2023, 3, 1, 0, 0)))
                                 .build())
                         .toList();
                 orderRepository.save(Order.of(newOrder1, orderLines1));
@@ -576,14 +573,14 @@ class InvoiceServiceTest {
                 List<OrderLine> orderLines1 = IntStream.range(1, 4)
                         .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000010", i).toBuilder()
                                 .completionFlag(CompletionFlag.完了)
-                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2025, 3, 9, 0, 0)))
+                                .shippingDate(ShippingDate.of(LocalDateTime.of(2025, 3, 9, 0, 0)))
                                 .build())
                         .toList();
                 Order newOrder2 = TestDataFactoryImpl.getSalesOrder("OD00000011").toBuilder().customerCode(customerCode).build();
                 List<OrderLine> orderLines2 = IntStream.range(1, 4)
                         .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000011", i).toBuilder()
                                 .completionFlag(CompletionFlag.完了)
-                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2025, 3, 10, 0, 0)))
+                                .shippingDate(ShippingDate.of(LocalDateTime.of(2025, 3, 10, 0, 0)))
                                 .build())
                         .toList();
                 orderRepository.save(Order.of(newOrder1, orderLines1));
@@ -610,14 +607,14 @@ class InvoiceServiceTest {
                 List<OrderLine> orderLines1 = IntStream.range(1, 4)
                         .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000010", i).toBuilder()
                                 .completionFlag(CompletionFlag.完了)
-                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2025, 3, 19, 0, 0)))
+                                .shippingDate(ShippingDate.of(LocalDateTime.of(2025, 3, 19, 0, 0)))
                                 .build())
                         .toList();
                 Order newOrder2 = TestDataFactoryImpl.getSalesOrder("OD00000011").toBuilder().customerCode(customerCode).build();
                 List<OrderLine> orderLines2 = IntStream.range(1, 4)
                         .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000011", i).toBuilder()
                                 .completionFlag(CompletionFlag.完了)
-                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2025, 3, 20, 0, 0)))
+                                .shippingDate(ShippingDate.of(LocalDateTime.of(2025, 3, 20, 0, 0)))
                                 .build())
                         .toList();
                 orderRepository.save(Order.of(newOrder1, orderLines1));
@@ -644,14 +641,14 @@ class InvoiceServiceTest {
                 List<OrderLine> orderLines1 = IntStream.range(1, 4)
                         .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000010", i).toBuilder()
                                 .completionFlag(CompletionFlag.完了)
-                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2025, 3, 31, 0, 0)))
+                                .shippingDate(ShippingDate.of(LocalDateTime.of(2025, 3, 31, 0, 0)))
                                 .build())
                         .toList();
                 Order newOrder2 = TestDataFactoryImpl.getSalesOrder("OD00000011").toBuilder().customerCode(customerCode).build();
                 List<OrderLine> orderLines2 = IntStream.range(1, 4)
                         .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000011", i).toBuilder()
                                 .completionFlag(CompletionFlag.完了)
-                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2025, 4, 1, 0, 0)))
+                                .shippingDate(ShippingDate.of(LocalDateTime.of(2025, 4, 1, 0, 0)))
                                 .build())
                         .toList();
                 orderRepository.save(Order.of(newOrder1, orderLines1));
@@ -688,14 +685,14 @@ class InvoiceServiceTest {
                 List<OrderLine> orderLines1 = IntStream.range(1, 4)
                         .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000010", i).toBuilder()
                                 .completionFlag(CompletionFlag.完了)
-                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2025, 3, 9, 0, 0)))
+                                .shippingDate(ShippingDate.of(LocalDateTime.of(2025, 3, 9, 0, 0)))
                                 .build())
                         .toList();
                 Order newOrder2 = TestDataFactoryImpl.getSalesOrder("OD00000011").toBuilder().customerCode(customerCode).build();
                 List<OrderLine> orderLines2 = IntStream.range(1, 4)
                         .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000011", i).toBuilder()
                                 .completionFlag(CompletionFlag.完了)
-                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2025, 3, 19, 0, 0)))
+                                .shippingDate(ShippingDate.of(LocalDateTime.of(2025, 3, 19, 0, 0)))
                                 .build())
                         .toList();
                 orderRepository.save(Order.of(newOrder1, orderLines1));
@@ -724,14 +721,14 @@ class InvoiceServiceTest {
                 List<OrderLine> orderLines1 = IntStream.range(1, 4)
                         .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000010", i).toBuilder()
                                 .completionFlag(CompletionFlag.完了)
-                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2025, 3, 19, 0, 0)))
+                                .shippingDate(ShippingDate.of(LocalDateTime.of(2025, 3, 19, 0, 0)))
                                 .build())
                         .toList();
                 Order newOrder2 = TestDataFactoryImpl.getSalesOrder("OD00000011").toBuilder().customerCode(customerCode).build();
                 List<OrderLine> orderLines2 = IntStream.range(1, 4)
                         .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000011", i).toBuilder()
                                 .completionFlag(CompletionFlag.完了)
-                                .deliveryDate(DeliveryDate.of(LocalDateTime.of(2025, 3, 31, 0, 0)))
+                                .shippingDate(ShippingDate.of(LocalDateTime.of(2025, 3, 31, 0, 0)))
                                 .build())
                         .toList();
                 orderRepository.save(Order.of(newOrder1, orderLines1));

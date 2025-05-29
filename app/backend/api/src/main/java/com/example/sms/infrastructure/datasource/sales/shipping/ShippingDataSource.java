@@ -1,6 +1,7 @@
 package com.example.sms.infrastructure.datasource.sales.shipping;
 
 import com.example.sms.domain.model.sales.order.CompletionFlag;
+import com.example.sms.domain.model.sales.order.ShippingDate;
 import com.example.sms.domain.model.sales.shipping.Shipping;
 import com.example.sms.domain.model.sales.shipping.ShippingList;
 import com.example.sms.infrastructure.datasource.ObjectOptimisticLockingFailureException;
@@ -284,7 +285,9 @@ public class ShippingDataSource implements ShippingRepository {
 
                                 salesOrderLineData.set出荷指示数量(Objects.requireNonNull(shipping.getShipmentInstructionQuantity()).getAmount());
                                 salesOrderLineData.set出荷済数量(Objects.requireNonNull(shipping.getShippedQuantity()).getAmount());
-                                salesOrderLineData.set出荷日(Objects.requireNonNull(shipping.getShippingDate()).getValue());
+                                salesOrderLineData.set出荷日(Optional.ofNullable(shipping.getShippingDate())
+                                        .map(ShippingDate::getValue)
+                                        .orElse(null));
                                 salesOrderLineData.set作成日時(salesOrderLineEntity.get作成日時());
                                 salesOrderLineData.set作成者名(salesOrderLineEntity.get作成者名());
                                 salesOrderLineData.set更新日時(LocalDateTime.now());

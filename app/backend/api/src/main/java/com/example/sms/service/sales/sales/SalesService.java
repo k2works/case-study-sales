@@ -159,7 +159,7 @@ public class SalesService {
                             null,
                             null,
                             null,
-                            shipping.getDeliveryDate().getValue(),
+                            null,
                             null,
                             shipping.getTaxRate()
                     ))
@@ -170,7 +170,7 @@ public class SalesService {
             Sales sales = Sales.of(
                     salesNumber,
                     shipping.getOrderNumber().getValue(),
-                    shipping.getDeliveryDate().getValue(),
+                    shipping.getShippingDate().getValue(),
                     SalesType.現金.getCode(),
                     shipping.getDepartmentCode().getValue(),
                     shipping.getDepartmentStartDate(),
