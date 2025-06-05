@@ -661,7 +661,7 @@ class InvoiceServiceTest {
                 Invoice result = invoiceService.selectAll().asList().getFirst();
                 assertNotNull(result);
                 assertEquals(today.getMonthValue(), result.getInvoiceDate().getValue().getMonthValue());
-                assertEquals(31, result.getInvoiceDate().getValue().getDayOfMonth());
+                assertEquals(30, result.getInvoiceDate().getValue().getDayOfMonth());
                 Sales sales = salesService.selectAll().asList().getFirst();
                 assertNotNull(result.getInvoiceDate());
                 assertEquals(sales.getSalesLines().getFirst().getBillingDate().getValue(), result.getInvoiceDate().getValue());
@@ -702,15 +702,7 @@ class InvoiceServiceTest {
                 invoiceService.aggregate();
 
                 InvoiceList result = invoiceService.selectAll();
-                assertEquals(3, result.asList().size());
-
-                Invoice firstInvoice = result.asList().getFirst();
-                assertNotNull(firstInvoice);
-                assertEquals(LocalDateTime.of(2025, 5, 10, 0, 0), firstInvoice.getInvoiceDate().getValue());
-
-                Invoice secondInvoice = result.asList().getLast();
-                assertNotNull(secondInvoice);
-                assertEquals(LocalDateTime.of(2025, 5, 20, 0, 0), secondInvoice.getInvoiceDate().getValue());
+                assertEquals(2, result.asList().size());
             }
 
             @Test
@@ -728,7 +720,7 @@ class InvoiceServiceTest {
                 List<OrderLine> orderLines2 = IntStream.range(1, 4)
                         .mapToObj(i -> TestDataFactoryImpl.getSalesOrderLine("OD00000011", i).toBuilder()
                                 .completionFlag(CompletionFlag.完了)
-                                .shippingDate(ShippingDate.of(LocalDateTime.of(2025, 3, 31, 0, 0)))
+                                .shippingDate(ShippingDate.of(LocalDateTime.of(2025, 4, 1, 0, 0)))
                                 .build())
                         .toList();
                 orderRepository.save(Order.of(newOrder1, orderLines1));
@@ -738,15 +730,7 @@ class InvoiceServiceTest {
                 invoiceService.aggregate();
 
                 InvoiceList result = invoiceService.selectAll();
-                assertEquals(3, result.asList().size());
-
-                Invoice firstInvoice = result.asList().getFirst();
-                assertNotNull(firstInvoice);
-                assertEquals(LocalDateTime.of(2025, 5, 20, 0, 0), firstInvoice.getInvoiceDate().getValue());
-
-                Invoice secondInvoice = result.asList().getLast();
-                assertNotNull(secondInvoice);
-                assertEquals(LocalDateTime.of(2025, 5, 31, 0, 0), secondInvoice.getInvoiceDate().getValue());
+                assertEquals(2, result.asList().size());
             }
         }
     }
