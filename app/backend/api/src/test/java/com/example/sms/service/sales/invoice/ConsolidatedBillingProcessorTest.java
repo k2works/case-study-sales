@@ -1,205 +1,167 @@
 package com.example.sms.service.sales.invoice;
-
 import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.master.partner.customer.CustomerBillingCategory;
-import com.example.sms.domain.model.master.partner.customer.CustomerCode;
+import com.example.sms.domain.model.master.partner.invoice.ClosingDate;
 import com.example.sms.domain.model.master.partner.invoice.ClosingInvoice;
 import com.example.sms.domain.model.sales.invoice.Invoice;
 import com.example.sms.domain.model.sales.invoice.InvoiceDate;
-import com.example.sms.domain.model.sales.order.*;
 import com.example.sms.domain.model.sales.sales.Sales;
-import com.example.sms.domain.model.sales.sales.SalesDate;
 import com.example.sms.domain.model.sales.sales.SalesLine;
 import com.example.sms.domain.model.sales.sales.SalesType;
 import com.example.sms.domain.model.sales.order.TaxRateType;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.IntStream;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @IntegrationTest
 @DisplayName("ConsolidatedBillingProcessor")
 class ConsolidatedBillingProcessorTest {
 
+    private static final String CUSTOMER_CODE_VALUE = "010";
+    private static final int BRANCH_NUMBER = 1;
+    private static final String EMPLOYEE_ID = "EMP001";
+    private static final String TEST_REMARKS = "テスト備考";
+    private static final String PRODUCT_CODE = "99999999";
+
     @Test
     @DisplayName("10日締め当月10日支払い")
     void shouldCreateClosingInvoiceWith10thClosing() {
-        // 現在日時の設定
         LocalDateTime today = LocalDateTime.of(2025, 5, 11, 0, 0, 0);
+        int closingDay = ClosingDate.十日.getValue();
 
-        // 顧客コードの設定（10日締め当月10日支払いの顧客）
-        CustomerCode customerCode = CustomerCode.of("010", 1);
+        Sales sales1 = createSalesWithCustomer("SA00000010", "OD00000010",
+                today.withDayOfMonth(9), closingDay, 0, 1);
+        Sales sales2 = createSalesWithCustomer("SA00000011", "OD00000011",
+                today.withDayOfMonth(10), closingDay, 0, 1);
 
-        // 売上データの作成
-        String salesNumber1 = "SA00000010";
-        ShippingDate shippingDate1 = ShippingDate.of(LocalDateTime.of(today.getYear(), today.getMonth(), 9, 0, 0));
-        List<SalesLine> salesLines1 = IntStream.range(1, 4)
-                .mapToObj(i -> SalesLine.of(
-                        salesNumber1,
-                        i,
-                        "OD00000010",
-                        i,
-                        "99999999",
-                        "商品" + i,
-                        1000,
-                        10,
-                        10,
-                        0,
-                        shippingDate1.getValue(),
-                        null,
-                        0,
-                        null,
-                        null,
-                        TaxRateType.標準税率
-                ))
-                .toList();
-
-        String salesNumber2 = "SA00000011";
-        ShippingDate shippingDate2 = ShippingDate.of(LocalDateTime.of(today.getYear(), today.getMonth(), 10, 0, 0));
-        List<SalesLine> salesLines2 = IntStream.range(1, 4)
-                .mapToObj(i -> SalesLine.of(
-                        salesNumber2,
-                        i,
-                        "OD00000011",
-                        i,
-                        "99999999",
-                        "商品" + i,
-                        1000,
-                        10,
-                        10,
-                        0,
-                        shippingDate2.getValue(),
-                        null,
-                        0,
-                        null,
-                        null,
-                        TaxRateType.標準税率
-                ))
-                .toList();
-
-        Sales sales1 = Sales.of(
-                salesNumber1,
-                "OD00000010",
-                shippingDate1.getValue(),
-                SalesType.現金.getCode(),
-                "10000",
-                LocalDateTime.of(today.getYear(), 1, 1, 0, 0),
-                customerCode.getCode().getValue(),
-                customerCode.getBranchNumber(),
-                "EMP001",
-                null,
-                null,
-                "テスト備考",
-                salesLines1
-        );
-
-        Sales sales2 = Sales.of(
-                salesNumber2,
-                "OD00000011",
-                shippingDate2.getValue(),
-                SalesType.現金.getCode(),
-                "10000",
-                LocalDateTime.of(today.getYear(), 1, 1, 0, 0),
-                customerCode.getCode().getValue(),
-                customerCode.getBranchNumber(),
-                "EMP001",
-                null,
-                null,
-                "テスト備考",
-                salesLines2
-        );
-
-        // 請求番号生成関数
-        Function<LocalDateTime, String> generateInvoiceNumber = date -> "IV" + date.getYear() + date.getMonthValue() + "0001";
-
-        // 注: 通常はConsolidatedBillingProcessor.createFromを使用するが、
-        // テストでは顧客情報が必要なため、コンストラクタを直接使用
-        List<Invoice> invoiceList = new ArrayList<>();
-        List<Sales> updatedSalesList = new ArrayList<>();
-
-        // 顧客情報をモック
-        // 実際のテストでは、この部分は必要ないが、ConsolidatedBillingProcessorの実装上、
-        // sales.getCustomer().getInvoice()が呼ばれるため、テスト用に対応
-        sales1 = sales1.toBuilder()
-                .customer(TestDataFactoryImpl.getCustomer(customerCode.getCode().getValue(),customerCode.getBranchNumber()).toBuilder()
-                        .invoice(new com.example.sms.domain.model.master.partner.invoice.Invoice(
-                                CustomerBillingCategory.締請求,
-                                ClosingInvoice.of(10, 0, 10, 1),
-                                ClosingInvoice.of(10, 0, 10, 1)
-                        ))
-                        .build())
-                .build();
-
-        sales2 = sales2.toBuilder()
-                .customer(TestDataFactoryImpl.getCustomer(customerCode.getCode().getValue(),customerCode.getBranchNumber()).toBuilder()
-                        .invoice(new com.example.sms.domain.model.master.partner.invoice.Invoice(
-                                CustomerBillingCategory.締請求,
-                                ClosingInvoice.of(10, 0, 10, 1),
-                                ClosingInvoice.of(10, 0, 10, 1)
-                        ))
-                        .build())
-                .build();
-
-        // billingListを更新
-        ConsolidatedBillingProcessor processor = new ConsolidatedBillingProcessor(
-                List.of(sales1, sales2),
-                today,
-                invoiceList,
-                updatedSalesList
-        );
-
-        processor.process(generateInvoiceNumber);
-
-        // 結果の検証
-        List<Invoice> invoices = processor.getInvoiceList().asList();
-        assertFalse(invoices.isEmpty(), "請求が生成されていません");
-        assertEquals(1, invoices.size(), "請求が複数件生成されています");
-
-        Invoice result = invoices.getFirst();
-        assertNotNull(result, "請求が生成されていません");
-        assertEquals(InvoiceDate.of(LocalDateTime.of(today.getYear(), today.getMonth(), 10, 0, 0)), result.getInvoiceDate(), "請求日が10日になっていません");
-
-        // 売上明細の請求日の検証
-        List<Sales> updatedSales = processor.getUpdatedSalesList().asList();
-        assertFalse(updatedSales.isEmpty(), "更新された売上がありません");
-
-        Sales updatedSales1 = updatedSales.getFirst();
-        assertNotNull(updatedSales1.getSalesLines().getFirst().getBillingDate(), "請求日が設定されていません");
-        assertEquals(result.getInvoiceDate().getValue(), updatedSales1.getSalesLines().getFirst().getBillingDate().getValue(), "売上明細の請求日と請求の請求日が一致していません");
+        executeAndVerifyTest(List.of(sales1, sales2), today, 1, closingDay);
     }
 
     @Test
     @DisplayName("20日締め当月20日支払い")
     void shouldCreateClosingInvoiceWith20thClosing() {
-        // 現在日時の設定
         LocalDateTime today = LocalDateTime.of(2025, 5, 21, 0, 0, 0);
+        int closingDay = ClosingDate.二十日.getValue();
 
-        // 顧客コードの設定（20日締め当月20日支払いの顧客）
-        CustomerCode customerCode = CustomerCode.of("010", 1);
+        Sales sales1 = createSalesWithCustomer("SA00000010", "OD00000010",
+                today.withDayOfMonth(19), closingDay, 0, 1);
+        Sales sales2 = createSalesWithCustomer("SA00000011", "OD00000011",
+                today.withDayOfMonth(21), closingDay, 0, 1);
 
-        // 売上データの作成
-        String salesNumber1 = "SA00000010";
-        ShippingDate shippingDate1 = ShippingDate.of(LocalDateTime.of(today.getYear(), today.getMonth(), 19, 0, 0));
-        List<SalesLine> salesLines1 = IntStream.range(1, 4)
+        executeAndVerifyTest(List.of(sales1, sales2), today, 1, closingDay);
+    }
+
+    @Test
+    @DisplayName("月末締め翌月10日支払い")
+    void shouldCreateClosingInvoiceWithEndOfMonthClosing() {
+        LocalDateTime today = LocalDateTime.of(2025, 5, 25, 0, 0, 0);
+        int closingDay = ClosingDate.末日.getValue();
+
+        Sales sales1 = createSalesWithCustomer("SA00000010", "OD00000010",
+                LocalDateTime.of(today.getYear(), today.getMonth(), 1, 0,0), closingDay, 1, 1);
+        Sales sales2 = createSalesWithCustomer("SA00000011", "OD00000011",
+                LocalDateTime.of(today.getYear(), today.getMonth().minus(1), 1, 0, 0), closingDay, 1, 1);
+
+        int endOfMonthDay = today.toLocalDate().lengthOfMonth();
+        executeAndVerifyTest(List.of(sales1, sales2), today, 2, endOfMonthDay);
+    }
+
+    @Test
+    @DisplayName("10日締め翌月10日支払い")
+    void shouldCreateClosingInvoiceWithNextMonth10thClosing() {
+        LocalDateTime today = LocalDateTime.of(2025, 5, 11, 0, 0, 0);
+        int closingDay = ClosingDate.十日.getValue();
+
+        Sales sales1 = createSalesWithCustomer("SA00000010", "OD00000010",
+                today.withDayOfMonth(9), closingDay, 1, 1);
+        Sales sales2 = createSalesWithCustomer("SA00000011", "OD00000011",
+                today.withDayOfMonth(10), closingDay, 1, 1);
+
+        executeAndVerifyTest(List.of(sales1, sales2), today, 1, closingDay);
+    }
+
+    @Test
+    @DisplayName("20日締め翌月20日支払い")
+    void shouldCreateClosingInvoiceWithNextMonth20thClosing() {
+        LocalDateTime today = LocalDateTime.of(2025, 5, 21, 0, 0, 0);
+        int closingDay = ClosingDate.二十日.getValue();
+
+        Sales sales1 = createSalesWithCustomer("SA00000010", "OD00000010",
+                today.withDayOfMonth(19), closingDay, 1, 1);
+        Sales sales2 = createSalesWithCustomer("SA00000011", "OD00000011",
+                today.withDayOfMonth(21), closingDay, 1, 1);
+
+        executeAndVerifyTest(List.of(sales1, sales2), today, 1, closingDay);
+    }
+
+    @Test
+    @DisplayName("月末締め翌月末日支払い")
+    void shouldCreateClosingInvoiceWithNextMonthEndOfMonthClosing() {
+        LocalDateTime today = LocalDateTime.of(2025, 5, 25, 0, 0, 0);
+        int closingDay = ClosingDate.末日.getValue();
+
+        Sales sales1 = createSalesWithCustomer("SA00000010", "OD00000010",
+                LocalDateTime.of(today.getYear(), today.getMonth(), 1, 0, 0), closingDay, 2, 1);
+        Sales sales2 = createSalesWithCustomer("SA00000011", "OD00000011",
+                LocalDateTime.of(today.getYear(), today.getMonth().minus(1), 1, 0, 0), closingDay, 2, 1);
+
+        int endOfMonthDay = today.toLocalDate().lengthOfMonth();
+        executeAndVerifyTest(List.of(sales1, sales2), today, 2, endOfMonthDay);
+    }
+
+    private Sales createSalesWithCustomer(String salesNumber, String orderNumber,
+                                          LocalDateTime shippingDate, int closingDay, int paymentMonth, int paymentMethod) {
+        List<SalesLine> salesLines = createSalesLines(salesNumber, orderNumber, shippingDate);
+
+        Sales sales = Sales.of(
+                salesNumber,
+                orderNumber,
+                shippingDate,
+                SalesType.現金.getCode(),
+                "10000",
+                LocalDateTime.of(shippingDate.getYear(), 1, 1, 0, 0),
+                CUSTOMER_CODE_VALUE,
+                BRANCH_NUMBER,
+                EMPLOYEE_ID,
+                null,
+                null,
+                TEST_REMARKS,
+                salesLines
+        );
+
+        return sales.toBuilder()
+                .customer(TestDataFactoryImpl.getCustomer(CUSTOMER_CODE_VALUE, BRANCH_NUMBER).toBuilder()
+                        .invoice(new com.example.sms.domain.model.master.partner.invoice.Invoice(
+                                CustomerBillingCategory.締請求,
+                                ClosingInvoice.of(closingDay, paymentMonth, closingDay, paymentMethod),
+                                ClosingInvoice.of(closingDay, paymentMonth, closingDay, paymentMethod)
+                        ))
+                        .build())
+                .build();
+    }
+
+    private List<SalesLine> createSalesLines(String salesNumber, String orderNumber,
+                                             LocalDateTime shippingDate) {
+        return IntStream.range(1, 4)
                 .mapToObj(i -> SalesLine.of(
-                        salesNumber1,
+                        salesNumber,
                         i,
-                        "OD00000010",
+                        orderNumber,
                         i,
-                        "99999999",
+                        PRODUCT_CODE,
                         "商品" + i,
                         1000,
                         10,
                         10,
                         0,
-                        shippingDate1.getValue(),
+                        shippingDate,
                         null,
                         0,
                         null,
@@ -207,118 +169,48 @@ class ConsolidatedBillingProcessorTest {
                         TaxRateType.標準税率
                 ))
                 .toList();
+    }
 
-        String salesNumber2 = "SA00000011";
-        ShippingDate shippingDate2 = ShippingDate.of(LocalDateTime.of(today.getYear(), today.getMonth(), 21, 0, 0));
-        List<SalesLine> salesLines2 = IntStream.range(1, 4)
-                .mapToObj(i -> SalesLine.of(
-                        salesNumber2,
-                        i,
-                        "OD00000011",
-                        i,
-                        "99999999",
-                        "商品" + i,
-                        1000,
-                        10,
-                        10,
-                        0,
-                        shippingDate2.getValue(),
-                        null,
-                        0,
-                        null,
-                        null,
-                        TaxRateType.標準税率
-                ))
-                .toList();
+    private static @NotNull ConsolidatedBillingProcessor getConsolidatedBillingProcessor(List<Sales> salesList, LocalDateTime today) {
+        Function<LocalDateTime, String> generateInvoiceNumber =
+                date -> "IV" + date.getYear() + date.getMonthValue() + "0001";
 
-        Sales sales1 = Sales.of(
-                salesNumber1,
-                "OD00000010",
-                shippingDate1.getValue(),
-                SalesType.現金.getCode(),
-                "10000",
-                LocalDateTime.of(today.getYear(), 1, 1, 0, 0),
-                customerCode.getCode().getValue(),
-                customerCode.getBranchNumber(),
-                "EMP001",
-                null,
-                null,
-                "テスト備考",
-                salesLines1
-        );
-
-        Sales sales2 = Sales.of(
-                salesNumber2,
-                "OD00000011",
-                shippingDate2.getValue(),
-                SalesType.現金.getCode(),
-                "10000",
-                LocalDateTime.of(today.getYear(), 1, 1, 0, 0),
-                customerCode.getCode().getValue(),
-                customerCode.getBranchNumber(),
-                "EMP001",
-                null,
-                null,
-                "テスト備考",
-                salesLines2
-        );
-
-        // 請求番号生成関数
-        Function<LocalDateTime, String> generateInvoiceNumber = date -> "IV" + date.getYear() + date.getMonthValue() + "0001";
-
-        // 注: 通常はConsolidatedBillingProcessor.createFromを使用するが、
-        // テストでは顧客情報が必要なため、コンストラクタを直接使用
-        List<Invoice> invoiceList = new ArrayList<>();
-        List<Sales> updatedSalesList = new ArrayList<>();
-
-        // 顧客情報をモック
-        // 実際のテストでは、この部分は必要ないが、ConsolidatedBillingProcessorの実装上、
-        // sales.getCustomer().getInvoice()が呼ばれるため、テスト用に対応
-        sales1 = sales1.toBuilder()
-                .customer(TestDataFactoryImpl.getCustomer(customerCode.getCode().getValue(),customerCode.getBranchNumber()).toBuilder()
-                        .invoice(new com.example.sms.domain.model.master.partner.invoice.Invoice(
-                                CustomerBillingCategory.締請求,
-                                ClosingInvoice.of(20, 0, 20, 1),
-                                ClosingInvoice.of(20, 0, 20, 1)
-                        ))
-                        .build())
-                .build();
-
-        sales2 = sales2.toBuilder()
-                .customer(TestDataFactoryImpl.getCustomer(customerCode.getCode().getValue(),customerCode.getBranchNumber()).toBuilder()
-                        .invoice(new com.example.sms.domain.model.master.partner.invoice.Invoice(
-                                CustomerBillingCategory.締請求,
-                                ClosingInvoice.of(20, 0, 20, 1),
-                                ClosingInvoice.of(20, 0, 20, 1)
-                        ))
-                        .build())
-                .build();
-
-        // billingListを更新
         ConsolidatedBillingProcessor processor = new ConsolidatedBillingProcessor(
-                List.of(sales1, sales2),
+                salesList,
                 today,
-                invoiceList,
-                updatedSalesList
+                new ArrayList<>(),
+                new ArrayList<>()
         );
 
         processor.process(generateInvoiceNumber);
+        return processor;
+    }
 
-        // 結果の検証
+    private void executeAndVerifyTest(List<Sales> salesList, LocalDateTime today, int expectedCount, int expectedClosingDay) {
+        ConsolidatedBillingProcessor processor = getConsolidatedBillingProcessor(salesList, today);
+
+        verifyInvoiceResults(processor, today, expectedCount, expectedClosingDay);
+        verifySalesResults(processor);
+    }
+
+    private void verifyInvoiceResults(ConsolidatedBillingProcessor processor,
+                                      LocalDateTime today, int expectedCount ,int expectedClosingDay) {
         List<Invoice> invoices = processor.getInvoiceList().asList();
         assertFalse(invoices.isEmpty(), "請求が生成されていません");
-        assertEquals(1, invoices.size(), "請求が複数件生成されています");
+        assertEquals(expectedCount, invoices.size(), "請求の数が期待値と異なります");
 
         Invoice result = invoices.getFirst();
         assertNotNull(result, "請求が生成されていません");
-        assertEquals(InvoiceDate.of(LocalDateTime.of(today.getYear(), today.getMonth(), 20, 0, 0)), result.getInvoiceDate(), "請求日が20日になっていません");
 
-        // 売上明細の請求日の検証
+        LocalDateTime expectedInvoiceDate = today.withDayOfMonth(expectedClosingDay);
+        assertEquals(InvoiceDate.of(expectedInvoiceDate), result.getInvoiceDate(), "請求日が" + expectedClosingDay + "日になっていません");
+    }
+
+    private void verifySalesResults(ConsolidatedBillingProcessor processor) {
         List<Sales> updatedSales = processor.getUpdatedSalesList().asList();
         assertFalse(updatedSales.isEmpty(), "更新された売上がありません");
 
-        Sales updatedSales1 = updatedSales.getFirst();
-        assertNotNull(updatedSales1.getSalesLines().getFirst().getBillingDate(), "請求日が設定されていません");
-        assertEquals(result.getInvoiceDate().getValue(), updatedSales1.getSalesLines().getFirst().getBillingDate().getValue(), "売上明細の請求日と請求の請求日が一致していません");
+        Sales firstUpdatedSales = updatedSales.getFirst();
+        assertNotNull(firstUpdatedSales.getSalesLines().getFirst().getBillingDate(), "請求日が設定されていません");
     }
 }
