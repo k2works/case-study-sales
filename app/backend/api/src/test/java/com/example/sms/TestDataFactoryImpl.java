@@ -681,6 +681,18 @@ public class TestDataFactoryImpl implements TestDataFactory {
     }
 
     @Override
+    public void setUpForInvoiceAcceptanceService() {
+        IntStream.range(0, 3).forEach(i -> {
+            Invoice invoice = getInvoice(String.format("IV%08d", i));
+            invoiceRepository.save(invoice);
+        });
+
+        Sales sales = getSales("SA12345678");
+        SalesLine salesLine = getSalesLine(sales.getSalesNumber().getValue(), 1);
+        salesRepository.save(sales.toBuilder().salesLines(List.of(salesLine)).build());
+    }
+
+    @Override
     public MultipartFile createOrderFile() {
         InputStream is = getClass().getResourceAsStream("/csv/order/order_multiple.csv");
         try {
