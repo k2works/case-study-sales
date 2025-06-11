@@ -10,24 +10,28 @@ import java.util.List;
 public class OrderResourceDTOMapper {
 
     public static Order convertToEntity(OrderResource resource) {
+        if (resource == null) {
+            throw new IllegalArgumentException("OrderResource cannot be null");
+        }
+
         List<OrderLine> orderLines = resource.getSalesOrderLines() != null
                 ? resource.getSalesOrderLines().stream().map(line -> OrderLine.of(
-                        line.getOrderNumber(),
-                        line.getOrderLineNumber(),
-                        line.getProductCode(),
-                        line.getProductName(),
-                        line.getSalesUnitPrice(),
-                        line.getOrderQuantity(),
-                        line.getTaxRate().getRate(),
-                        line.getAllocationQuantity(),
-                        line.getShipmentInstructionQuantity(),
-                        line.getShippedQuantity(),
-                        line.getCompletionFlag().getValue(),
-                        line.getDiscountAmount(),
-                        line.getDeliveryDate(),
-                        line.getShippingDate() != null ? line.getShippingDate() : null
-                )).toList()
-                : null;
+                line.getOrderNumber(),
+                line.getOrderLineNumber(),
+                line.getProductCode(),
+                line.getProductName(),
+                line.getSalesUnitPrice(),
+                line.getOrderQuantity(),
+                line.getTaxRate() != null ? line.getTaxRate().getRate() : null,
+                line.getAllocationQuantity(),
+                line.getShipmentInstructionQuantity(),
+                line.getShippedQuantity(),
+                line.getCompletionFlag() != null ? line.getCompletionFlag().getValue() : null,
+                line.getDiscountAmount(),
+                line.getDeliveryDate(),
+                line.getShippingDate() != null ? line.getShippingDate() : null
+        )).toList()
+                : List.of();
 
         return Order.of(
                 resource.getOrderNumber(),
