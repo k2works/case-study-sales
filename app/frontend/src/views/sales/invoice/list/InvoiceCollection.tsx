@@ -68,9 +68,6 @@ export const InvoiceCollectionView: React.FC<Props> = ({
                     />
 
                     <div className="button-container">
-                        <button className="action-button" onClick={() => handleOpenModal()} id="new">
-                            新規登録
-                        </button>
                         <button className="action-button" onClick={handleCheckToggleCollection} id="checkAll">
                             一括選択
                         </button>

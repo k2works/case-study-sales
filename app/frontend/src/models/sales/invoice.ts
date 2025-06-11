@@ -57,10 +57,11 @@ export const mapToInvoiceResource = (invoice: InvoiceType) => {
 
 // 検索条件をAPIリクエスト用に変換
 export const mapToInvoiceCriteriaResource = (criteria: InvoiceCriteriaType) => {
+    const isEmpty = (value: unknown) => value === "" || value === null || value === undefined;
     return {
-        invoiceNumber: criteria.invoiceNumber ?? null,
-        invoiceDate: criteria.invoiceDate ?? null,
-        customerCode: criteria.customerCode ?? null
+        ...(isEmpty(criteria.invoiceNumber) ? {} : { invoiceNumber: criteria.invoiceNumber }),
+        ...(isEmpty(criteria.invoiceDate) ? {} : { invoiceDate: criteria.invoiceDate }),
+        ...(isEmpty(criteria.customerCode) ? {} : { customerCode: criteria.customerCode }),
     };
 };
 
