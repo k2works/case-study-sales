@@ -62,7 +62,7 @@ describe('受注管理', () => {
                     // 値引金額
                     cy.get('input[type="number"]').eq(5).type('0');
                     // 納期
-                    cy.get('input[type="datetime-local"]').type('2024-02-01T12:00');
+                    cy.get(':nth-child(11) > .table-input').type('2024-02-01T12:00');
                 });
 
                 // 受注を保存
@@ -184,7 +184,7 @@ describe('受注管理', () => {
                     // 値引金額
                     cy.get('input[type="number"]').eq(5).type('0');
                     // 納期
-                    cy.get('input[type="datetime-local"]').type('2024-02-01T12:00');
+                    cy.get(':nth-child(11) > .table-input').type('2024-02-01T12:00');
                 });
 
                 // 受注を保存
