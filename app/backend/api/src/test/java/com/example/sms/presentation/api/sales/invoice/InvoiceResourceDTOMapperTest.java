@@ -120,7 +120,7 @@ class InvoiceResourceDTOMapperTest {
         // Assert
         assertNotNull(criteria);
         assertEquals("IV00000001", criteria.getInvoiceNumber());
-        assertEquals("2024-01-15", criteria.getInvoiceDate());
+        assertEquals("2024-01-15", criteria.getInvoiceDate().toString());
         assertEquals("001", criteria.getPartnerCode());
         assertEquals("001", criteria.getCustomerCode());
     }

@@ -66,19 +66,12 @@ public class InvoiceResourceDTOMapper {
         if (resource == null) {
             return null;
         }
-        
-        LocalDate invoiceDate = null;
-        if (resource.getInvoiceDate() != null && !resource.getInvoiceDate().isEmpty()) {
-            try {
-                invoiceDate = LocalDate.parse(resource.getInvoiceDate());
-            } catch (Exception e) {
-                // 日付のパースに失敗した場合は null のままにする
-            }
-        }
+
+        LocalDate invoiceDate = resource.getInvoiceDate() != null ? LocalDate.parse(resource.getInvoiceDate()) : null;
 
         return InvoiceCriteria.builder()
                 .invoiceNumber(resource.getInvoiceNumber())
-                .invoiceDate(invoiceDate != null ? invoiceDate.toString() : null)
+                .invoiceDate(invoiceDate)
                 .partnerCode(resource.getPartnerCode())
                 .customerCode(resource.getCustomerCode())
                 .build();
