@@ -20,7 +20,7 @@ export const InvoiceAggregateCollectionView: React.FC<InvoiceAggregateCollection
             <div className="collection-view-container">
                 <div className="collection-view-header">
                     <div className="single-view-header-item">
-                        <h1 className="single-view-title">請求書集計</h1>
+                        <h1 className="single-view-title">請求集計</h1>
                     </div>
                 </div>
                 <div className="collection-view-content">

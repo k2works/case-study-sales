@@ -47,7 +47,7 @@ const Form = ({criteria, setCondition, handleClick, handleClose}: FormProps) => 
             />
 
             <div className="button-container">
-                <button className="action-button" id="search" onClick={handleClick}>
+                <button className="action-button" id="search-all" onClick={handleClick}>
                     検索
                 </button>
                 <button className="action-button" onClick={handleClose} id="cancel">
