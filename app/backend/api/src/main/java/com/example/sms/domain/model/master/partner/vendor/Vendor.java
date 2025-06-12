@@ -4,7 +4,7 @@ import com.example.sms.domain.type.mail.EmailAddress;
 import com.example.sms.domain.type.phone.FaxNumber;
 import com.example.sms.domain.type.phone.PhoneNumber;
 import com.example.sms.domain.type.address.Address;
-import com.example.sms.domain.model.master.partner.invoice.ClosingInvoice;
+import com.example.sms.domain.model.master.partner.billing.ClosingInvoice;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;

@@ -5,7 +5,7 @@ import com.example.sms.domain.model.master.partner.customer.Customer;
 import com.example.sms.domain.model.master.partner.customer.CustomerBillingCategory;
 import com.example.sms.domain.model.master.partner.customer.CustomerCode;
 import com.example.sms.domain.model.master.partner.customer.Shipping;
-import com.example.sms.domain.model.master.partner.invoice.ClosingInvoice;
+import com.example.sms.domain.model.master.partner.billing.ClosingInvoice;
 import com.example.sms.domain.model.master.partner.vendor.Vendor;
 import com.example.sms.domain.model.master.product.MiscellaneousType;
 import com.example.sms.domain.model.master.region.Region;
@@ -595,7 +595,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
         String partnerCode = partner.getPartnerCode().getValue();
         CustomerBillingCategory customerBillingCategory = CustomerBillingCategory.都度請求;
         ClosingInvoice closingInvoice = ClosingInvoice.of(20, 1, 99, 1);
-        com.example.sms.domain.model.master.partner.invoice.Invoice invoice = new com.example.sms.domain.model.master.partner.invoice.Invoice(customerBillingCategory, closingInvoice, closingInvoice);
+        com.example.sms.domain.model.master.partner.billing.Invoice invoice = new com.example.sms.domain.model.master.partner.billing.Invoice(customerBillingCategory, closingInvoice, closingInvoice);
         Customer customer = TestDataFactoryImpl.getCustomer("009", 1).toBuilder()
                 .invoice(invoice)
                 .build();
@@ -610,7 +610,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
         CustomerBillingCategory customerBillingCategory2 = CustomerBillingCategory.締請求;
         ClosingInvoice closingInvoice2_1 = ClosingInvoice.of(10, 0, 10, 1);
         ClosingInvoice closingInvoice2_2 = ClosingInvoice.of(10, 0, 10, 1);
-        com.example.sms.domain.model.master.partner.invoice.Invoice invoice2 = new com.example.sms.domain.model.master.partner.invoice.Invoice(customerBillingCategory2, closingInvoice2_1, closingInvoice2_2);
+        com.example.sms.domain.model.master.partner.billing.Invoice invoice2 = new com.example.sms.domain.model.master.partner.billing.Invoice(customerBillingCategory2, closingInvoice2_1, closingInvoice2_2);
         Customer customer2 = TestDataFactoryImpl.getCustomer("010", 1).toBuilder()
                 .invoice(invoice2)
                 .build();
@@ -625,7 +625,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
         CustomerBillingCategory customerBillingCategory3 = CustomerBillingCategory.締請求;
         ClosingInvoice closingInvoice3_1 = ClosingInvoice.of(20, 1, 20, 1);
         ClosingInvoice closingInvoice3_2 = ClosingInvoice.of(20, 1, 20, 1);
-        com.example.sms.domain.model.master.partner.invoice.Invoice invoice3 = new com.example.sms.domain.model.master.partner.invoice.Invoice(customerBillingCategory3, closingInvoice3_1, closingInvoice3_2);
+        com.example.sms.domain.model.master.partner.billing.Invoice invoice3 = new com.example.sms.domain.model.master.partner.billing.Invoice(customerBillingCategory3, closingInvoice3_1, closingInvoice3_2);
         Customer customer3 = TestDataFactoryImpl.getCustomer("011", 1).toBuilder()
                 .invoice(invoice3)
                 .build();
@@ -640,7 +640,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
         CustomerBillingCategory customerBillingCategory4 = CustomerBillingCategory.締請求;
         ClosingInvoice closingInvoice4_1 = ClosingInvoice.of(99, 2, 99, 1);
         ClosingInvoice closingInvoice4_2 = ClosingInvoice.of(99, 2, 99, 1);
-        com.example.sms.domain.model.master.partner.invoice.Invoice invoice4 = new com.example.sms.domain.model.master.partner.invoice.Invoice(customerBillingCategory4, closingInvoice4_1, closingInvoice4_2);
+        com.example.sms.domain.model.master.partner.billing.Invoice invoice4 = new com.example.sms.domain.model.master.partner.billing.Invoice(customerBillingCategory4, closingInvoice4_1, closingInvoice4_2);
         Customer customer4 = TestDataFactoryImpl.getCustomer("012", 1).toBuilder()
                 .invoice(invoice4)
                 .build();
@@ -655,7 +655,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
         CustomerBillingCategory customerBillingCategory5 = CustomerBillingCategory.締請求;
         ClosingInvoice closingInvoice5_1 = ClosingInvoice.of(10, 0, 10, 1);
         ClosingInvoice closingInvoice5_2 = ClosingInvoice.of(20, 1, 20, 1);
-        com.example.sms.domain.model.master.partner.invoice.Invoice invoice5 = new com.example.sms.domain.model.master.partner.invoice.Invoice(customerBillingCategory5, closingInvoice5_1, closingInvoice5_2);
+        com.example.sms.domain.model.master.partner.billing.Invoice invoice5 = new com.example.sms.domain.model.master.partner.billing.Invoice(customerBillingCategory5, closingInvoice5_1, closingInvoice5_2);
         Customer customer5 = TestDataFactoryImpl.getCustomer("013", 1).toBuilder()
                 .invoice(invoice5)
                 .build();
@@ -670,7 +670,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
         CustomerBillingCategory customerBillingCategory6 = CustomerBillingCategory.締請求;
         ClosingInvoice closingInvoice6_1 = ClosingInvoice.of(20, 1, 20, 1);
         ClosingInvoice closingInvoice6_2 = ClosingInvoice.of(99, 2, 99, 1);
-        com.example.sms.domain.model.master.partner.invoice.Invoice invoice6 = new com.example.sms.domain.model.master.partner.invoice.Invoice(customerBillingCategory6, closingInvoice6_1, closingInvoice6_2);
+        com.example.sms.domain.model.master.partner.billing.Invoice invoice6 = new com.example.sms.domain.model.master.partner.billing.Invoice(customerBillingCategory6, closingInvoice6_1, closingInvoice6_2);
         Customer customer6 = TestDataFactoryImpl.getCustomer("014", 1).toBuilder()
                 .invoice(invoice6)
                 .build();

@@ -4,7 +4,7 @@ import com.example.sms.domain.model.master.partner.vendor.VendorType;
 import com.example.sms.domain.type.address.Address;
 import com.example.sms.domain.type.address.PostalCode;
 import com.example.sms.domain.model.master.partner.customer.*;
-import com.example.sms.domain.model.master.partner.invoice.*;
+import com.example.sms.domain.model.master.partner.billing.*;
 import com.example.sms.domain.model.master.partner.vendor.Vendor;
 import com.example.sms.domain.model.master.partner.vendor.VendorCode;
 import com.example.sms.domain.type.mail.EmailAddress;

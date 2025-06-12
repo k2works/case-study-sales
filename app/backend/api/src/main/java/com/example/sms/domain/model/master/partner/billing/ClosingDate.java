@@ -1,4 +1,4 @@
-package com.example.sms.domain.model.master.partner.invoice;
+package com.example.sms.domain.model.master.partner.billing;
 
 import lombok.Getter;
 

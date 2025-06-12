@@ -2,7 +2,7 @@ package com.example.sms.service.sales.invoice;
 
 import com.example.sms.domain.model.master.partner.customer.CustomerBillingCategory;
 import com.example.sms.domain.model.master.partner.customer.CustomerCode;
-import com.example.sms.domain.model.master.partner.invoice.ClosingDate;
+import com.example.sms.domain.model.master.partner.billing.ClosingDate;
 import com.example.sms.domain.model.sales.invoice.*;
 import com.example.sms.domain.model.sales.sales.*;
 import java.time.LocalDateTime;
@@ -68,7 +68,7 @@ public class ConsolidatedBillingProcessor {
      */
     public void process(Function<LocalDateTime, String> generateInvoiceNumber) {
         billingList.forEach(sales -> {
-            com.example.sms.domain.model.master.partner.invoice.Invoice customerInvoice = sales.getCustomer().getInvoice();
+            com.example.sms.domain.model.master.partner.billing.Invoice customerInvoice = sales.getCustomer().getInvoice();
 
             // 第1締め日処理
             processClosingInvoice(sales, customerInvoice.getClosingInvoice1().getClosingDay(), generateInvoiceNumber);
