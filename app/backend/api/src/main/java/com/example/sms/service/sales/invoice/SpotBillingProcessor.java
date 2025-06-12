@@ -31,7 +31,7 @@ public class SpotBillingProcessor {
         // 都度請求対象の売上を抽出
         List<Sales> billingList = salesList.asList().stream()
                 .filter(sales -> sales.getCustomer() != null && 
-                        Objects.requireNonNull(sales.getCustomer().getInvoice()).getCustomerBillingCategory() == CustomerBillingCategory.都度請求)
+                        Objects.requireNonNull(sales.getCustomer().getBilling()).getCustomerBillingCategory() == CustomerBillingCategory.都度請求)
                 .toList();
 
         // 結果を格納するリストを作成

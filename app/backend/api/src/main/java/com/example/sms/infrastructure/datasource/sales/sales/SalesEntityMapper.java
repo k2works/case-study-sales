@@ -3,7 +3,7 @@ package com.example.sms.infrastructure.datasource.sales.sales;
 import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.master.partner.customer.*;
 import com.example.sms.domain.model.master.partner.billing.ClosingInvoice;
-import com.example.sms.domain.model.master.partner.billing.Invoice;
+import com.example.sms.domain.model.master.partner.billing.Billing;
 import com.example.sms.domain.model.sales.order.OrderNumber;
 import com.example.sms.domain.model.sales.order.TaxRateType;
 import com.example.sms.domain.model.sales.sales.*;
@@ -132,7 +132,7 @@ public class SalesEntityMapper {
                 PhoneNumber.of(e.get顧客電話番号()),
                 FaxNumber.of(e.get顧客ｆａｘ番号()),
                 EmailAddress.of(e.get顧客メールアドレス()),
-                Invoice.of(
+                Billing.of(
                         CustomerBillingCategory.fromCode(e.get顧客請求区分()),
                         ClosingInvoice.of(
                                 e.get顧客締日１(),

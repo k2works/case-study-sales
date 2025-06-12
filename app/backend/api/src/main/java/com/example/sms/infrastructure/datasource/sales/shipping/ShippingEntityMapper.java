@@ -7,7 +7,7 @@ import com.example.sms.domain.model.master.employee.EmployeeCode;
 import com.example.sms.domain.model.master.department.DepartmentCode;
 import com.example.sms.domain.model.master.partner.customer.*;
 import com.example.sms.domain.model.master.partner.billing.ClosingInvoice;
-import com.example.sms.domain.model.master.partner.billing.Invoice;
+import com.example.sms.domain.model.master.partner.billing.Billing;
 import com.example.sms.domain.model.master.product.*;
 import com.example.sms.domain.model.sales.order.*;
 import com.example.sms.domain.model.sales.shipping.Shipping;
@@ -150,7 +150,7 @@ public class ShippingEntityMapper {
                 PhoneNumber.of(e.get顧客電話番号()),
                 FaxNumber.of(e.get顧客ｆａｘ番号()),
                 EmailAddress.of(e.get顧客メールアドレス()),
-                Invoice.of(
+                Billing.of(
                         CustomerBillingCategory.fromCode(e.get顧客請求区分()),
                         ClosingInvoice.of(
                                 e.get顧客締日１(),

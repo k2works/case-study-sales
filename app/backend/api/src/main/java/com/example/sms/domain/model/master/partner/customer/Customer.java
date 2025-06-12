@@ -1,11 +1,11 @@
 package com.example.sms.domain.model.master.partner.customer;
 
+import com.example.sms.domain.model.master.partner.billing.Billing;
 import com.example.sms.domain.type.mail.EmailAddress;
 import com.example.sms.domain.type.phone.FaxNumber;
 import com.example.sms.domain.type.phone.PhoneNumber;
 import com.example.sms.domain.type.address.Address;
 import com.example.sms.domain.model.master.partner.billing.ClosingInvoice;
-import com.example.sms.domain.model.master.partner.billing.Invoice;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -36,7 +36,7 @@ public class Customer {
     PhoneNumber customerPhoneNumber; // 顧客電話番号
     FaxNumber customerFaxNumber; // 顧客ｆａｘ番号
     EmailAddress customerEmailAddress; // 顧客メールアドレス
-    Invoice invoice; // 請求
+    Billing billing; // 請求
     List<Shipping> shippings; // 出荷先
 
     public static Customer of(
@@ -87,7 +87,7 @@ public class Customer {
                 PhoneNumber.of(customerPhoneNumber),
                 FaxNumber.of(customerFaxNumber),
                 EmailAddress.of(customerEmailAddress),
-                Invoice.of(
+                Billing.of(
                         CustomerBillingCategory.fromCode(customerBillingCategory),
                         ClosingInvoice.of(
                                 customerClosingDay1,
@@ -120,7 +120,7 @@ public class Customer {
                 customer.customerPhoneNumber,
                 customer.customerFaxNumber,
                 customer.customerEmailAddress,
-                customer.invoice,
+                customer.billing,
                 shippings
         );
     }
@@ -146,7 +146,7 @@ public class Customer {
                 customer.customerPhoneNumber,
                 customer.customerFaxNumber,
                 customer.customerEmailAddress,
-                Invoice.of(
+                Billing.of(
                         CustomerBillingCategory.締請求,
                         closingInvoice1,
                         closingInvoice2
@@ -168,7 +168,7 @@ public class Customer {
             PhoneNumber customerPhoneNumber,
             FaxNumber customerFaxNumber,
             EmailAddress customerEmailAddress,
-            Invoice invoice,
+            Billing billing,
             List<Shipping> shippings
     ) {
         return new Customer(
@@ -184,7 +184,7 @@ public class Customer {
                 customerPhoneNumber,
                 customerFaxNumber,
                 customerEmailAddress,
-                invoice,
+                billing,
                 shippings
         );
     }

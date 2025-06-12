@@ -1,6 +1,7 @@
 package com.example.sms.service.sales.invoice;
 import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactoryImpl;
+import com.example.sms.domain.model.master.partner.billing.Billing;
 import com.example.sms.domain.model.master.partner.customer.CustomerBillingCategory;
 import com.example.sms.domain.model.master.partner.billing.ClosingDate;
 import com.example.sms.domain.model.master.partner.billing.ClosingInvoice;
@@ -138,7 +139,7 @@ class ConsolidatedBillingProcessorTest {
 
         return sales.toBuilder()
                 .customer(TestDataFactoryImpl.getCustomer(CUSTOMER_CODE_VALUE, BRANCH_NUMBER).toBuilder()
-                        .invoice(new com.example.sms.domain.model.master.partner.billing.Invoice(
+                        .billing(new Billing(
                                 CustomerBillingCategory.締請求,
                                 ClosingInvoice.of(closingDay, paymentMonth, closingDay, paymentMethod),
                                 ClosingInvoice.of(closingDay, paymentMonth, closingDay, paymentMethod)

@@ -9,19 +9,19 @@ import lombok.Value;
  */
 @Value
 @NoArgsConstructor(force = true)
-public class Invoice {
+public class Billing {
     CustomerBillingCategory customerBillingCategory; // 顧客請求区分
     ClosingInvoice closingInvoice1; // 締請求1
     ClosingInvoice closingInvoice2; // 締請求2
 
-    public Invoice(CustomerBillingCategory customerBillingCategory, ClosingInvoice closingInvoice1, ClosingInvoice closingInvoice2) {
+    public Billing(CustomerBillingCategory customerBillingCategory, ClosingInvoice closingInvoice1, ClosingInvoice closingInvoice2) {
         this.customerBillingCategory = customerBillingCategory;
         this.closingInvoice1 = closingInvoice1;
         this.closingInvoice2 = closingInvoice2;
     }
 
-    public static Invoice of(CustomerBillingCategory customerBillingCategory, ClosingInvoice closingInvoice1, ClosingInvoice closingInvoice2) {
-        return new Invoice(
+    public static Billing of(CustomerBillingCategory customerBillingCategory, ClosingInvoice closingInvoice1, ClosingInvoice closingInvoice2) {
+        return new Billing(
                 customerBillingCategory,
                 closingInvoice1,
                 closingInvoice2

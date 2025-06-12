@@ -1,5 +1,6 @@
 package com.example.sms.service.sales.invoice;
 
+import com.example.sms.domain.model.master.partner.billing.Billing;
 import com.example.sms.domain.model.master.partner.customer.CustomerBillingCategory;
 import com.example.sms.domain.model.master.partner.customer.CustomerCode;
 import com.example.sms.domain.model.master.partner.billing.ClosingDate;
@@ -32,7 +33,7 @@ public class ConsolidatedBillingProcessor {
         // 締請求対象の売上を抽出
         List<Sales> billingList = salesList.asList().stream()
                 .filter(sales -> sales.getCustomer() != null && 
-                        Objects.requireNonNull(sales.getCustomer().getInvoice()).getCustomerBillingCategory() == CustomerBillingCategory.締請求)
+                        Objects.requireNonNull(sales.getCustomer().getBilling()).getCustomerBillingCategory() == CustomerBillingCategory.締請求)
                 .toList();
 
         // 結果を格納するリストを作成
@@ -68,16 +69,16 @@ public class ConsolidatedBillingProcessor {
      */
     public void process(Function<LocalDateTime, String> generateInvoiceNumber) {
         billingList.forEach(sales -> {
-            com.example.sms.domain.model.master.partner.billing.Invoice customerInvoice = sales.getCustomer().getInvoice();
+            Billing customerBilling = sales.getCustomer().getBilling();
 
             // 第1締め日処理
-            processClosingInvoice(sales, customerInvoice.getClosingInvoice1().getClosingDay(), generateInvoiceNumber);
+            processClosingInvoice(sales, customerBilling.getClosingInvoice1().getClosingDay(), generateInvoiceNumber);
 
             // 第1締め日と第2締め日が同じ場合は処理終了
-            if (customerInvoice.getClosingInvoice1().equals(customerInvoice.getClosingInvoice2())) return;
+            if (customerBilling.getClosingInvoice1().equals(customerBilling.getClosingInvoice2())) return;
 
             // 第2締め日処理
-            processClosingInvoice(sales, customerInvoice.getClosingInvoice2().getClosingDay(), generateInvoiceNumber);
+            processClosingInvoice(sales, customerBilling.getClosingInvoice2().getClosingDay(), generateInvoiceNumber);
         });
     }
 

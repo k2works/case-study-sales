@@ -176,15 +176,15 @@ class PartnerTest {
                     () -> assertEquals("03-1234-5678", customer.getCustomerPhoneNumber().getValue()),
                     () -> assertEquals("03-1234-5679", customer.getCustomerFaxNumber().getValue()),
                     () -> assertEquals("example@example.com", customer.getCustomerEmailAddress().getValue()),
-                    () -> assertEquals(CustomerBillingCategory.締請求, customer.getInvoice().getCustomerBillingCategory()),
-                    () -> assertEquals(ClosingDate.十日, customer.getInvoice().getClosingInvoice1().getClosingDay()),
-                    () -> assertEquals(PaymentMonth.当月, customer.getInvoice().getClosingInvoice1().getPaymentMonth()),
-                    () -> assertEquals(PaymentDay.十日, customer.getInvoice().getClosingInvoice1().getPaymentDay()),
-                    () -> assertEquals(PaymentMethod.振込, customer.getInvoice().getClosingInvoice1().getPaymentMethod()),
-                    () -> assertEquals(ClosingDate.二十日, customer.getInvoice().getClosingInvoice2().getClosingDay()),
-                    () -> assertEquals(PaymentMonth.翌月, customer.getInvoice().getClosingInvoice2().getPaymentMonth()),
-                    () -> assertEquals(PaymentDay.末日, customer.getInvoice().getClosingInvoice2().getPaymentDay()),
-                    () -> assertEquals(PaymentMethod.手形, customer.getInvoice().getClosingInvoice2().getPaymentMethod())
+                    () -> assertEquals(CustomerBillingCategory.締請求, customer.getBilling().getCustomerBillingCategory()),
+                    () -> assertEquals(ClosingDate.十日, customer.getBilling().getClosingInvoice1().getClosingDay()),
+                    () -> assertEquals(PaymentMonth.当月, customer.getBilling().getClosingInvoice1().getPaymentMonth()),
+                    () -> assertEquals(PaymentDay.十日, customer.getBilling().getClosingInvoice1().getPaymentDay()),
+                    () -> assertEquals(PaymentMethod.振込, customer.getBilling().getClosingInvoice1().getPaymentMethod()),
+                    () -> assertEquals(ClosingDate.二十日, customer.getBilling().getClosingInvoice2().getClosingDay()),
+                    () -> assertEquals(PaymentMonth.翌月, customer.getBilling().getClosingInvoice2().getPaymentMonth()),
+                    () -> assertEquals(PaymentDay.末日, customer.getBilling().getClosingInvoice2().getPaymentDay()),
+                    () -> assertEquals(PaymentMethod.手形, customer.getBilling().getClosingInvoice2().getPaymentMethod())
             );
         }
 
@@ -264,7 +264,7 @@ class PartnerTest {
 
         @Nested
         @DisplayName("請求")
-        class InvoiceTest {
+        class BillingTest {
             @Test
             @DisplayName("20日締翌月末現金払い条件を設定できる")
             void shouldCreateClosingInvoice() {
@@ -281,8 +281,8 @@ class PartnerTest {
                         () -> assertEquals(PaymentMonth.翌月, closingInvoice.getPaymentMonth()),
                         () -> assertEquals(PaymentDay.末日, closingInvoice.getPaymentDay()),
                         () -> assertEquals(PaymentMethod.振込, closingInvoice.getPaymentMethod()),
-                        () -> assertEquals(CustomerBillingCategory.締請求, invoiceCustomer.getInvoice().getCustomerBillingCategory()),
-                        () -> assertEquals(invoiceCustomer.getInvoice().getClosingInvoice1(), closingInvoice)
+                        () -> assertEquals(CustomerBillingCategory.締請求, invoiceCustomer.getBilling().getCustomerBillingCategory()),
+                        () -> assertEquals(invoiceCustomer.getBilling().getClosingInvoice1(), closingInvoice)
                 );
             }
 
@@ -307,9 +307,9 @@ class PartnerTest {
                         () -> assertEquals(PaymentMonth.翌月, closingInvoice2.getPaymentMonth()),
                         () -> assertEquals(PaymentDay.十日, closingInvoice2.getPaymentDay()),
                         () -> assertEquals(PaymentMethod.手形, closingInvoice2.getPaymentMethod()),
-                        () -> assertEquals(CustomerBillingCategory.締請求, invoiceCustomer.getInvoice().getCustomerBillingCategory()),
-                        () -> assertEquals(invoiceCustomer.getInvoice().getClosingInvoice1(), closingInvoice1),
-                        () -> assertEquals(invoiceCustomer.getInvoice().getClosingInvoice2(), closingInvoice2)
+                        () -> assertEquals(CustomerBillingCategory.締請求, invoiceCustomer.getBilling().getCustomerBillingCategory()),
+                        () -> assertEquals(invoiceCustomer.getBilling().getClosingInvoice1(), closingInvoice1),
+                        () -> assertEquals(invoiceCustomer.getBilling().getClosingInvoice2(), closingInvoice2)
                 );
             }
 

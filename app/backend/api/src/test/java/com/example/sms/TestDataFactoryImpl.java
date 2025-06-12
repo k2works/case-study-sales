@@ -1,6 +1,7 @@
 package com.example.sms;
 
 import com.example.sms.domain.model.master.employee.EmployeeCode;
+import com.example.sms.domain.model.master.partner.billing.Billing;
 import com.example.sms.domain.model.master.partner.customer.Customer;
 import com.example.sms.domain.model.master.partner.customer.CustomerBillingCategory;
 import com.example.sms.domain.model.master.partner.customer.CustomerCode;
@@ -595,9 +596,9 @@ public class TestDataFactoryImpl implements TestDataFactory {
         String partnerCode = partner.getPartnerCode().getValue();
         CustomerBillingCategory customerBillingCategory = CustomerBillingCategory.都度請求;
         ClosingInvoice closingInvoice = ClosingInvoice.of(20, 1, 99, 1);
-        com.example.sms.domain.model.master.partner.billing.Invoice invoice = new com.example.sms.domain.model.master.partner.billing.Invoice(customerBillingCategory, closingInvoice, closingInvoice);
+        Billing billing = new Billing(customerBillingCategory, closingInvoice, closingInvoice);
         Customer customer = TestDataFactoryImpl.getCustomer("009", 1).toBuilder()
-                .invoice(invoice)
+                .billing(billing)
                 .build();
         CustomerCode customerCode = customer.getCustomerCode();
         List<Shipping> shippingList = IntStream.rangeClosed(1, 3)
@@ -610,9 +611,9 @@ public class TestDataFactoryImpl implements TestDataFactory {
         CustomerBillingCategory customerBillingCategory2 = CustomerBillingCategory.締請求;
         ClosingInvoice closingInvoice2_1 = ClosingInvoice.of(10, 0, 10, 1);
         ClosingInvoice closingInvoice2_2 = ClosingInvoice.of(10, 0, 10, 1);
-        com.example.sms.domain.model.master.partner.billing.Invoice invoice2 = new com.example.sms.domain.model.master.partner.billing.Invoice(customerBillingCategory2, closingInvoice2_1, closingInvoice2_2);
+        Billing billing2 = new Billing(customerBillingCategory2, closingInvoice2_1, closingInvoice2_2);
         Customer customer2 = TestDataFactoryImpl.getCustomer("010", 1).toBuilder()
-                .invoice(invoice2)
+                .billing(billing2)
                 .build();
         CustomerCode customerCode2 = customer.getCustomerCode();
         List<Shipping> shippingList2 = IntStream.rangeClosed(1, 3)
@@ -625,9 +626,9 @@ public class TestDataFactoryImpl implements TestDataFactory {
         CustomerBillingCategory customerBillingCategory3 = CustomerBillingCategory.締請求;
         ClosingInvoice closingInvoice3_1 = ClosingInvoice.of(20, 1, 20, 1);
         ClosingInvoice closingInvoice3_2 = ClosingInvoice.of(20, 1, 20, 1);
-        com.example.sms.domain.model.master.partner.billing.Invoice invoice3 = new com.example.sms.domain.model.master.partner.billing.Invoice(customerBillingCategory3, closingInvoice3_1, closingInvoice3_2);
+        Billing billing3 = new Billing(customerBillingCategory3, closingInvoice3_1, closingInvoice3_2);
         Customer customer3 = TestDataFactoryImpl.getCustomer("011", 1).toBuilder()
-                .invoice(invoice3)
+                .billing(billing3)
                 .build();
         CustomerCode customerCode3 = customer.getCustomerCode();
         List<Shipping> shippingList3 = IntStream.rangeClosed(1, 3)
@@ -640,9 +641,9 @@ public class TestDataFactoryImpl implements TestDataFactory {
         CustomerBillingCategory customerBillingCategory4 = CustomerBillingCategory.締請求;
         ClosingInvoice closingInvoice4_1 = ClosingInvoice.of(99, 2, 99, 1);
         ClosingInvoice closingInvoice4_2 = ClosingInvoice.of(99, 2, 99, 1);
-        com.example.sms.domain.model.master.partner.billing.Invoice invoice4 = new com.example.sms.domain.model.master.partner.billing.Invoice(customerBillingCategory4, closingInvoice4_1, closingInvoice4_2);
+        Billing billing4 = new Billing(customerBillingCategory4, closingInvoice4_1, closingInvoice4_2);
         Customer customer4 = TestDataFactoryImpl.getCustomer("012", 1).toBuilder()
-                .invoice(invoice4)
+                .billing(billing4)
                 .build();
         CustomerCode customerCode4 = customer.getCustomerCode();
         List<Shipping> shippingList4 = IntStream.rangeClosed(1, 3)
@@ -655,9 +656,9 @@ public class TestDataFactoryImpl implements TestDataFactory {
         CustomerBillingCategory customerBillingCategory5 = CustomerBillingCategory.締請求;
         ClosingInvoice closingInvoice5_1 = ClosingInvoice.of(10, 0, 10, 1);
         ClosingInvoice closingInvoice5_2 = ClosingInvoice.of(20, 1, 20, 1);
-        com.example.sms.domain.model.master.partner.billing.Invoice invoice5 = new com.example.sms.domain.model.master.partner.billing.Invoice(customerBillingCategory5, closingInvoice5_1, closingInvoice5_2);
+        Billing billing5 = new Billing(customerBillingCategory5, closingInvoice5_1, closingInvoice5_2);
         Customer customer5 = TestDataFactoryImpl.getCustomer("013", 1).toBuilder()
-                .invoice(invoice5)
+                .billing(billing5)
                 .build();
         CustomerCode customerCode5 = customer.getCustomerCode();
         List<Shipping> shippingList5 = IntStream.rangeClosed(1, 3)
@@ -670,9 +671,9 @@ public class TestDataFactoryImpl implements TestDataFactory {
         CustomerBillingCategory customerBillingCategory6 = CustomerBillingCategory.締請求;
         ClosingInvoice closingInvoice6_1 = ClosingInvoice.of(20, 1, 20, 1);
         ClosingInvoice closingInvoice6_2 = ClosingInvoice.of(99, 2, 99, 1);
-        com.example.sms.domain.model.master.partner.billing.Invoice invoice6 = new com.example.sms.domain.model.master.partner.billing.Invoice(customerBillingCategory6, closingInvoice6_1, closingInvoice6_2);
+        Billing billing6 = new Billing(customerBillingCategory6, closingInvoice6_1, closingInvoice6_2);
         Customer customer6 = TestDataFactoryImpl.getCustomer("014", 1).toBuilder()
-                .invoice(invoice6)
+                .billing(billing6)
                 .build();
         CustomerCode customerCode6 = customer.getCustomerCode();
         List<Shipping> shippingList6 = IntStream.rangeClosed(1, 3)

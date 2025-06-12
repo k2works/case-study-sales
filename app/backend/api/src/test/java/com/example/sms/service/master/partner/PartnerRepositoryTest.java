@@ -210,15 +210,15 @@ class PartnerRepositoryTest {
                     updatedCustomer.getCustomerPhoneNumber().getValue(),
                     updatedCustomer.getCustomerFaxNumber().getValue(),
                     updatedCustomer.getCustomerEmailAddress().getValue(),
-                    updatedCustomer.getInvoice().getCustomerBillingCategory().getValue(),
-                    updatedCustomer.getInvoice().getClosingInvoice1().getClosingDay().getValue(),
-                    updatedCustomer.getInvoice().getClosingInvoice1().getPaymentMonth().getValue(),
-                    updatedCustomer.getInvoice().getClosingInvoice1().getPaymentDay().getValue(),
-                    updatedCustomer.getInvoice().getClosingInvoice1().getPaymentMethod().getValue(),
-                    updatedCustomer.getInvoice().getClosingInvoice2().getClosingDay().getValue(),
-                    updatedCustomer.getInvoice().getClosingInvoice2().getPaymentMonth().getValue(),
-                    updatedCustomer.getInvoice().getClosingInvoice2().getPaymentDay().getValue(),
-                    updatedCustomer.getInvoice().getClosingInvoice2().getPaymentMethod().getValue()
+                    updatedCustomer.getBilling().getCustomerBillingCategory().getValue(),
+                    updatedCustomer.getBilling().getClosingInvoice1().getClosingDay().getValue(),
+                    updatedCustomer.getBilling().getClosingInvoice1().getPaymentMonth().getValue(),
+                    updatedCustomer.getBilling().getClosingInvoice1().getPaymentDay().getValue(),
+                    updatedCustomer.getBilling().getClosingInvoice1().getPaymentMethod().getValue(),
+                    updatedCustomer.getBilling().getClosingInvoice2().getClosingDay().getValue(),
+                    updatedCustomer.getBilling().getClosingInvoice2().getPaymentMonth().getValue(),
+                    updatedCustomer.getBilling().getClosingInvoice2().getPaymentDay().getValue(),
+                    updatedCustomer.getBilling().getClosingInvoice2().getPaymentMethod().getValue()
             );
             Partner updatedPartner = Partner.ofWithCustomers(partner, List.of(updatedCustomer, customer2));
             repository.save(updatedPartner);

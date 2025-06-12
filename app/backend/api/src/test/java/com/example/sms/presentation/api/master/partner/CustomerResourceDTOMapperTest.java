@@ -124,15 +124,15 @@ class CustomerResourceDTOMapperTest {
         assertEquals(customerPhoneNumber, customer.getCustomerPhoneNumber().getValue());
         assertEquals(customerFaxNumber, customer.getCustomerFaxNumber().getValue());
         assertEquals(customerEmailAddress, customer.getCustomerEmailAddress().getValue());
-        assertEquals(customerBillingType.getValue(), customer.getInvoice().getCustomerBillingCategory().getValue());
-        assertEquals(customerClosingDay1.getValue(), customer.getInvoice().getClosingInvoice1().getClosingDay().getValue());
-        assertEquals(customerPaymentMonth1.getValue(), customer.getInvoice().getClosingInvoice1().getPaymentMonth().getValue());
-        assertEquals(customerPaymentDay1.getValue(), customer.getInvoice().getClosingInvoice1().getPaymentDay().getValue());
-        assertEquals(customerPaymentMethod1.getValue(), customer.getInvoice().getClosingInvoice1().getPaymentMethod().getValue());
-        assertEquals(customerClosingDay2.getValue(), customer.getInvoice().getClosingInvoice2().getClosingDay().getValue());
-        assertEquals(customerPaymentMonth2.getValue(), customer.getInvoice().getClosingInvoice2().getPaymentMonth().getValue());
-        assertEquals(customerPaymentDay2.getValue(), customer.getInvoice().getClosingInvoice2().getPaymentDay().getValue());
-        assertEquals(customerPaymentMethod2.getValue(), customer.getInvoice().getClosingInvoice2().getPaymentMethod().getValue());
+        assertEquals(customerBillingType.getValue(), customer.getBilling().getCustomerBillingCategory().getValue());
+        assertEquals(customerClosingDay1.getValue(), customer.getBilling().getClosingInvoice1().getClosingDay().getValue());
+        assertEquals(customerPaymentMonth1.getValue(), customer.getBilling().getClosingInvoice1().getPaymentMonth().getValue());
+        assertEquals(customerPaymentDay1.getValue(), customer.getBilling().getClosingInvoice1().getPaymentDay().getValue());
+        assertEquals(customerPaymentMethod1.getValue(), customer.getBilling().getClosingInvoice1().getPaymentMethod().getValue());
+        assertEquals(customerClosingDay2.getValue(), customer.getBilling().getClosingInvoice2().getClosingDay().getValue());
+        assertEquals(customerPaymentMonth2.getValue(), customer.getBilling().getClosingInvoice2().getPaymentMonth().getValue());
+        assertEquals(customerPaymentDay2.getValue(), customer.getBilling().getClosingInvoice2().getPaymentDay().getValue());
+        assertEquals(customerPaymentMethod2.getValue(), customer.getBilling().getClosingInvoice2().getPaymentMethod().getValue());
 
         // Check shipping
         assertNotNull(customer.getShippings());
