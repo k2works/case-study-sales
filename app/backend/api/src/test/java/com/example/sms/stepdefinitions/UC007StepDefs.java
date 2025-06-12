@@ -88,6 +88,10 @@ public class UC007StepDefs extends SpringAcceptanceTest {
             downloadCriteriaResource = new DownloadCriteriaResource();
             downloadCriteriaResource.setTarget(DownloadTarget.売上);
         }
+        if (target.equals("請求")) {
+            downloadCriteriaResource = new DownloadCriteriaResource();
+            downloadCriteriaResource.setTarget(DownloadTarget.請求);
+        }
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(downloadCriteriaResource);
         executePost(url, json);

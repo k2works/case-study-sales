@@ -8,6 +8,7 @@ import com.example.sms.domain.model.master.partner.customer.CustomerList;
 import com.example.sms.domain.model.master.partner.vendor.VendorList;
 import com.example.sms.domain.model.master.product.ProductCategoryList;
 import com.example.sms.domain.model.master.product.ProductList;
+import com.example.sms.domain.model.sales.invoice.InvoiceList;
 import com.example.sms.domain.model.sales.order.OrderList;
 import com.example.sms.domain.model.sales.sales.SalesList;
 import com.example.sms.domain.model.sales.shipping.ShippingList;
@@ -37,8 +38,9 @@ public class DownloadService {
     private final OrderCSVRepository orderCSVRepository;
     private final ShippingCSVRepository shippingCSVRepository;
     private final SalesCSVRepository salesCSVRepository;
+    private final InvoiceCSVRepository invoiceCSVRepository;
 
-    public DownloadService(DepartmentCSVRepository departmentCSVRepository, EmployeeCSVRepository employeeCSVRepository, ProductCategoryCSVRepository productCategoryCSVRepository, ProductCSVRepository productCSVRepository, PartnerGroupCSVRepository partnerGroupCSVRepository, PartnerCSVRepository partnerCSVRepository, CustomerCSVRepository customerCSVRepository, VendorCSVRepository vendorCSVRepository, OrderCSVRepository orderCSVRepository, ShippingCSVRepository shippingCSVRepository, SalesCSVRepository salesCSVRepository) {
+    public DownloadService(DepartmentCSVRepository departmentCSVRepository, EmployeeCSVRepository employeeCSVRepository, ProductCategoryCSVRepository productCategoryCSVRepository, ProductCSVRepository productCSVRepository, PartnerGroupCSVRepository partnerGroupCSVRepository, PartnerCSVRepository partnerCSVRepository, CustomerCSVRepository customerCSVRepository, VendorCSVRepository vendorCSVRepository, OrderCSVRepository orderCSVRepository, ShippingCSVRepository shippingCSVRepository, SalesCSVRepository salesCSVRepository, InvoiceCSVRepository invoiceCSVRepository) {
         this.departmentCSVRepository = departmentCSVRepository;
         this.employeeCSVRepository = employeeCSVRepository;
         this.productCategoryCSVRepository = productCategoryCSVRepository;
@@ -50,6 +52,7 @@ public class DownloadService {
         this.orderCSVRepository = orderCSVRepository;
         this.shippingCSVRepository = shippingCSVRepository;
         this.salesCSVRepository = salesCSVRepository;
+        this.invoiceCSVRepository = invoiceCSVRepository;
     }
 
     /**
@@ -98,6 +101,9 @@ public class DownloadService {
             case 売上 -> {
                 yield countSales(condition);
             }
+            case 請求 -> {
+                yield countInvoice(condition);
+            }
         };
     }
 
@@ -117,6 +123,7 @@ public class DownloadService {
             case 受注 -> writeCsv(OrderDownloadCSV.class).accept(streamWriter, convert(condition));
             case 出荷 -> writeCsv(ShippingDownloadCSV.class).accept(streamWriter, convert(condition));
             case 売上 -> writeCsv(SalesDownloadCSV.class).accept(streamWriter, convert(condition));
+            case 請求 -> writeCsv(InvoiceDownloadCSV.class).accept(streamWriter, convert(condition));
         }
     }
 
@@ -136,6 +143,7 @@ public class DownloadService {
             case 受注 -> (List<T>) convertOrder(condition);
             case 出荷 -> (List<T>) convertShipping(condition);
             case 売上 -> (List<T>) convertSales(condition);
+            case 請求 -> (List<T>) convertInvoice(condition);
         };
     }
 
@@ -298,5 +306,20 @@ public class DownloadService {
     private List<SalesDownloadCSV> convertSales(DownloadCriteria condition) {
         SalesList salesList = salesCSVRepository.selectBy(condition);
         return salesCSVRepository.convert(salesList);
+    }
+
+    /**
+     * 請求ダウンロード件数取得
+     */
+    private int countInvoice(DownloadCriteria condition) {
+        return invoiceCSVRepository.countBy(condition);
+    }
+
+    /**
+     * 請求CSV変換
+     */
+    private List<InvoiceDownloadCSV> convertInvoice(DownloadCriteria condition) {
+        InvoiceList invoiceList = invoiceCSVRepository.selectBy(condition);
+        return invoiceCSVRepository.convert(invoiceList);
     }
 }

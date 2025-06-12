@@ -277,6 +277,9 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
             // 作成した売上データを保存
             salesRepository.save(newSales);
+
+            // 請求データの準備
+            setUpForInvoiceAcceptanceService();
         });
     }
 

@@ -420,7 +420,7 @@ class DownloadServiceTest {
         void testCount() {
             DownloadCriteria condition = com.example.sms.domain.model.system.download.Sales.of();
             int result = downloadService.count(condition);
-            assertEquals(3, result);
+            assertEquals(4, result);
         }
 
         @Test

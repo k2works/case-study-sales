@@ -17,7 +17,8 @@ public enum DownloadTarget {
     仕入先("vendor"),
     受注("order"),
     出荷("shipment"),
-    売上("sales");
+    売上("sales"),
+    請求("invoice");
 
     private final String value;
 
