@@ -1,11 +1,11 @@
 package com.example.sms.domain.model.master.partner.customer;
 
 import com.example.sms.domain.model.master.partner.billing.Billing;
+import com.example.sms.domain.model.master.partner.billing.ClosingBilling;
 import com.example.sms.domain.type.mail.EmailAddress;
 import com.example.sms.domain.type.phone.FaxNumber;
 import com.example.sms.domain.type.phone.PhoneNumber;
 import com.example.sms.domain.type.address.Address;
-import com.example.sms.domain.model.master.partner.billing.ClosingInvoice;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -89,13 +89,13 @@ public class Customer {
                 EmailAddress.of(customerEmailAddress),
                 Billing.of(
                         CustomerBillingCategory.fromCode(customerBillingCategory),
-                        ClosingInvoice.of(
+                        ClosingBilling.of(
                                 customerClosingDay1,
                                 customerPaymentMonth1,
                                 customerPaymentDay1,
                                 customerPaymentMethod1
                         ),
-                        ClosingInvoice.of(
+                        ClosingBilling.of(
                                 customerClosingDay2,
                                 customerPaymentMonth2,
                                 customerPaymentDay2,
@@ -125,13 +125,13 @@ public class Customer {
         );
     }
 
-    public static Customer of(Customer customer, ClosingInvoice closingInvoice1, ClosingInvoice  closingInvoice2) {
+    public static Customer of(Customer customer, ClosingBilling closingBilling1, ClosingBilling closingBilling2) {
         isTrue(
-                !(closingInvoice1 == null && closingInvoice2 == null),
+                !(closingBilling1 == null && closingBilling2 == null),
                 "締請求が設定されていません"
         );
 
-        notNull(closingInvoice1, "締請求1が設定されていません");
+        notNull(closingBilling1, "締請求1が設定されていません");
 
         return new Customer(
                 customer.customerCode,
@@ -148,8 +148,8 @@ public class Customer {
                 customer.customerEmailAddress,
                 Billing.of(
                         CustomerBillingCategory.締請求,
-                        closingInvoice1,
-                        closingInvoice2
+                        closingBilling1,
+                        closingBilling2
                 ),
                 customer.shippings
         );

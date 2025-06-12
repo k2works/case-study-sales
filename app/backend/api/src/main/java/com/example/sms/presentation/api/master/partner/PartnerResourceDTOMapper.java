@@ -3,7 +3,7 @@ package com.example.sms.presentation.api.master.partner;
 import com.example.sms.domain.model.master.partner.Partner;
 import com.example.sms.domain.model.master.partner.TradeProhibitedFlag;
 import com.example.sms.domain.model.master.partner.customer.*;
-import com.example.sms.domain.model.master.partner.billing.ClosingInvoice;
+import com.example.sms.domain.model.master.partner.billing.ClosingBilling;
 import com.example.sms.domain.model.master.partner.billing.Billing;
 import com.example.sms.domain.model.master.partner.vendor.Vendor;
 import com.example.sms.domain.model.master.partner.vendor.VendorCode;
@@ -79,13 +79,13 @@ public class PartnerResourceDTOMapper {
         // Invoiceオブジェクトの生成（ClosingInvoiceを2つ含む）
         Billing billing = Billing.of(
                 resource.getCustomerBillingType(),
-                ClosingInvoice.of(
+                ClosingBilling.of(
                         resource.getCustomerClosingDay1().getValue(),
                         resource.getCustomerPaymentMonth1().getValue(),
                         resource.getCustomerPaymentDay1().getValue(),
                         resource.getCustomerPaymentMethod1().getValue()
                 ),
-                ClosingInvoice.of(
+                ClosingBilling.of(
                         resource.getCustomerClosingDay2().getValue(),
                         resource.getCustomerPaymentMonth2().getValue(),
                         resource.getCustomerPaymentDay2().getValue(),
@@ -149,7 +149,7 @@ public class PartnerResourceDTOMapper {
                 PhoneNumber.of(resource.getVendorPhoneNumber()),
                 FaxNumber.of(resource.getVendorFaxNumber()),
                 EmailAddress.of(resource.getVendorEmailAddress()),
-                ClosingInvoice.of(
+                ClosingBilling.of(
                         resource.getVendorClosingDate().getValue(),
                         resource.getVendorPaymentMonth().getValue(),
                         resource.getVendorPaymentDate().getValue(),

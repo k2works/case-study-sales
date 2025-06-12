@@ -72,13 +72,13 @@ public class ConsolidatedBillingProcessor {
             Billing customerBilling = sales.getCustomer().getBilling();
 
             // 第1締め日処理
-            processClosingInvoice(sales, customerBilling.getClosingInvoice1().getClosingDay(), generateInvoiceNumber);
+            processClosingInvoice(sales, customerBilling.getClosingBilling1().getClosingDay(), generateInvoiceNumber);
 
             // 第1締め日と第2締め日が同じ場合は処理終了
-            if (customerBilling.getClosingInvoice1().equals(customerBilling.getClosingInvoice2())) return;
+            if (customerBilling.getClosingBilling1().equals(customerBilling.getClosingBilling2())) return;
 
             // 第2締め日処理
-            processClosingInvoice(sales, customerBilling.getClosingInvoice2().getClosingDay(), generateInvoiceNumber);
+            processClosingInvoice(sales, customerBilling.getClosingBilling2().getClosingDay(), generateInvoiceNumber);
         });
     }
 

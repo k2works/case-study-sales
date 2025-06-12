@@ -70,10 +70,10 @@ public class VendorResource {
                 .vendorPhoneNumber(vendor.getVendorPhoneNumber().getValue())
                 .vendorFaxNumber(vendor.getVendorFaxNumber().getValue())
                 .vendorEmailAddress(vendor.getVendorEmailAddress().getValue())
-                .vendorClosingDate(vendor.getVendorClosingInvoice().getClosingDay())
-                .vendorPaymentMonth(vendor.getVendorClosingInvoice().getPaymentMonth())
-                .vendorPaymentDate(vendor.getVendorClosingInvoice().getPaymentDay())
-                .vendorPaymentMethod(vendor.getVendorClosingInvoice().getPaymentMethod())
+                .vendorClosingDate(vendor.getVendorClosingBilling().getClosingDay())
+                .vendorPaymentMonth(vendor.getVendorClosingBilling().getPaymentMonth())
+                .vendorPaymentDate(vendor.getVendorClosingBilling().getPaymentDay())
+                .vendorPaymentMethod(vendor.getVendorClosingBilling().getPaymentMethod())
                 .build();
     }
 

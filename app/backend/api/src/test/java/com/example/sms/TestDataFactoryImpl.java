@@ -2,11 +2,11 @@ package com.example.sms;
 
 import com.example.sms.domain.model.master.employee.EmployeeCode;
 import com.example.sms.domain.model.master.partner.billing.Billing;
+import com.example.sms.domain.model.master.partner.billing.ClosingBilling;
 import com.example.sms.domain.model.master.partner.customer.Customer;
 import com.example.sms.domain.model.master.partner.customer.CustomerBillingCategory;
 import com.example.sms.domain.model.master.partner.customer.CustomerCode;
 import com.example.sms.domain.model.master.partner.customer.Shipping;
-import com.example.sms.domain.model.master.partner.billing.ClosingInvoice;
 import com.example.sms.domain.model.master.partner.vendor.Vendor;
 import com.example.sms.domain.model.master.product.MiscellaneousType;
 import com.example.sms.domain.model.master.region.Region;
@@ -595,8 +595,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
         Partner partner = getPartner("009");
         String partnerCode = partner.getPartnerCode().getValue();
         CustomerBillingCategory customerBillingCategory = CustomerBillingCategory.都度請求;
-        ClosingInvoice closingInvoice = ClosingInvoice.of(20, 1, 99, 1);
-        Billing billing = new Billing(customerBillingCategory, closingInvoice, closingInvoice);
+        ClosingBilling closingBilling = ClosingBilling.of(20, 1, 99, 1);
+        Billing billing = new Billing(customerBillingCategory, closingBilling, closingBilling);
         Customer customer = TestDataFactoryImpl.getCustomer("009", 1).toBuilder()
                 .billing(billing)
                 .build();
@@ -609,9 +609,9 @@ public class TestDataFactoryImpl implements TestDataFactory {
         Partner partner2 = getPartner("010");
         String partnerCode2 = partner2.getPartnerCode().getValue();
         CustomerBillingCategory customerBillingCategory2 = CustomerBillingCategory.締請求;
-        ClosingInvoice closingInvoice2_1 = ClosingInvoice.of(10, 0, 10, 1);
-        ClosingInvoice closingInvoice2_2 = ClosingInvoice.of(10, 0, 10, 1);
-        Billing billing2 = new Billing(customerBillingCategory2, closingInvoice2_1, closingInvoice2_2);
+        ClosingBilling closingBilling2_1 = ClosingBilling.of(10, 0, 10, 1);
+        ClosingBilling closingBilling2_2 = ClosingBilling.of(10, 0, 10, 1);
+        Billing billing2 = new Billing(customerBillingCategory2, closingBilling2_1, closingBilling2_2);
         Customer customer2 = TestDataFactoryImpl.getCustomer("010", 1).toBuilder()
                 .billing(billing2)
                 .build();
@@ -624,9 +624,9 @@ public class TestDataFactoryImpl implements TestDataFactory {
         Partner partner3 = getPartner("011");
         String partnerCode3 = partner3.getPartnerCode().getValue();
         CustomerBillingCategory customerBillingCategory3 = CustomerBillingCategory.締請求;
-        ClosingInvoice closingInvoice3_1 = ClosingInvoice.of(20, 1, 20, 1);
-        ClosingInvoice closingInvoice3_2 = ClosingInvoice.of(20, 1, 20, 1);
-        Billing billing3 = new Billing(customerBillingCategory3, closingInvoice3_1, closingInvoice3_2);
+        ClosingBilling closingBilling3_1 = ClosingBilling.of(20, 1, 20, 1);
+        ClosingBilling closingBilling3_2 = ClosingBilling.of(20, 1, 20, 1);
+        Billing billing3 = new Billing(customerBillingCategory3, closingBilling3_1, closingBilling3_2);
         Customer customer3 = TestDataFactoryImpl.getCustomer("011", 1).toBuilder()
                 .billing(billing3)
                 .build();
@@ -639,9 +639,9 @@ public class TestDataFactoryImpl implements TestDataFactory {
         Partner partner4 = getPartner("012");
         String partnerCode4 = partner4.getPartnerCode().getValue();
         CustomerBillingCategory customerBillingCategory4 = CustomerBillingCategory.締請求;
-        ClosingInvoice closingInvoice4_1 = ClosingInvoice.of(99, 2, 99, 1);
-        ClosingInvoice closingInvoice4_2 = ClosingInvoice.of(99, 2, 99, 1);
-        Billing billing4 = new Billing(customerBillingCategory4, closingInvoice4_1, closingInvoice4_2);
+        ClosingBilling closingBilling4_1 = ClosingBilling.of(99, 2, 99, 1);
+        ClosingBilling closingBilling4_2 = ClosingBilling.of(99, 2, 99, 1);
+        Billing billing4 = new Billing(customerBillingCategory4, closingBilling4_1, closingBilling4_2);
         Customer customer4 = TestDataFactoryImpl.getCustomer("012", 1).toBuilder()
                 .billing(billing4)
                 .build();
@@ -654,9 +654,9 @@ public class TestDataFactoryImpl implements TestDataFactory {
         Partner partner5 = getPartner("013");
         String partnerCode5 = partner5.getPartnerCode().getValue();
         CustomerBillingCategory customerBillingCategory5 = CustomerBillingCategory.締請求;
-        ClosingInvoice closingInvoice5_1 = ClosingInvoice.of(10, 0, 10, 1);
-        ClosingInvoice closingInvoice5_2 = ClosingInvoice.of(20, 1, 20, 1);
-        Billing billing5 = new Billing(customerBillingCategory5, closingInvoice5_1, closingInvoice5_2);
+        ClosingBilling closingBilling5_1 = ClosingBilling.of(10, 0, 10, 1);
+        ClosingBilling closingBilling5_2 = ClosingBilling.of(20, 1, 20, 1);
+        Billing billing5 = new Billing(customerBillingCategory5, closingBilling5_1, closingBilling5_2);
         Customer customer5 = TestDataFactoryImpl.getCustomer("013", 1).toBuilder()
                 .billing(billing5)
                 .build();
@@ -669,9 +669,9 @@ public class TestDataFactoryImpl implements TestDataFactory {
         Partner partner6 = getPartner("014");
         String partnerCode6 = partner6.getPartnerCode().getValue();
         CustomerBillingCategory customerBillingCategory6 = CustomerBillingCategory.締請求;
-        ClosingInvoice closingInvoice6_1 = ClosingInvoice.of(20, 1, 20, 1);
-        ClosingInvoice closingInvoice6_2 = ClosingInvoice.of(99, 2, 99, 1);
-        Billing billing6 = new Billing(customerBillingCategory6, closingInvoice6_1, closingInvoice6_2);
+        ClosingBilling closingBilling6_1 = ClosingBilling.of(20, 1, 20, 1);
+        ClosingBilling closingBilling6_2 = ClosingBilling.of(99, 2, 99, 1);
+        Billing billing6 = new Billing(customerBillingCategory6, closingBilling6_1, closingBilling6_2);
         Customer customer6 = TestDataFactoryImpl.getCustomer("014", 1).toBuilder()
                 .billing(billing6)
                 .build();

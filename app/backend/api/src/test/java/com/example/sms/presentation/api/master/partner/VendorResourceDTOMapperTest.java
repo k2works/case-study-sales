@@ -74,10 +74,10 @@ class VendorResourceDTOMapperTest {
         assertEquals(vendorPhoneNumber, vendor.getVendorPhoneNumber().getValue());
         assertEquals(vendorFaxNumber, vendor.getVendorFaxNumber().getValue());
         assertEquals(vendorEmailAddress, vendor.getVendorEmailAddress().getValue());
-        assertEquals(vendorClosingDate.getValue(), vendor.getVendorClosingInvoice().getClosingDay().getValue());
-        assertEquals(vendorPaymentMonth.getValue(), vendor.getVendorClosingInvoice().getPaymentMonth().getValue());
-        assertEquals(vendorPaymentDate.getValue(), vendor.getVendorClosingInvoice().getPaymentDay().getValue());
-        assertEquals(vendorPaymentMethod.getValue(), vendor.getVendorClosingInvoice().getPaymentMethod().getValue());
+        assertEquals(vendorClosingDate.getValue(), vendor.getVendorClosingBilling().getClosingDay().getValue());
+        assertEquals(vendorPaymentMonth.getValue(), vendor.getVendorClosingBilling().getPaymentMonth().getValue());
+        assertEquals(vendorPaymentDate.getValue(), vendor.getVendorClosingBilling().getPaymentDay().getValue());
+        assertEquals(vendorPaymentMethod.getValue(), vendor.getVendorClosingBilling().getPaymentMethod().getValue());
     }
 
     @Test

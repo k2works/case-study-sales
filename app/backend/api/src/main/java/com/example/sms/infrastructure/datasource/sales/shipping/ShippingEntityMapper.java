@@ -5,8 +5,8 @@ import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.master.employee.EmployeeCode;
 import com.example.sms.domain.model.master.department.DepartmentCode;
+import com.example.sms.domain.model.master.partner.billing.ClosingBilling;
 import com.example.sms.domain.model.master.partner.customer.*;
-import com.example.sms.domain.model.master.partner.billing.ClosingInvoice;
 import com.example.sms.domain.model.master.partner.billing.Billing;
 import com.example.sms.domain.model.master.product.*;
 import com.example.sms.domain.model.sales.order.*;
@@ -152,13 +152,13 @@ public class ShippingEntityMapper {
                 EmailAddress.of(e.get顧客メールアドレス()),
                 Billing.of(
                         CustomerBillingCategory.fromCode(e.get顧客請求区分()),
-                        ClosingInvoice.of(
+                        ClosingBilling.of(
                                 e.get顧客締日１(),
                                 e.get顧客支払月１(),
                                 e.get顧客支払日１(),
                                 e.get顧客支払方法１()
                         ),
-                        ClosingInvoice.of(
+                        ClosingBilling.of(
                                 e.get顧客締日２(),
                                 e.get顧客支払月２(),
                                 e.get顧客支払日２(),
