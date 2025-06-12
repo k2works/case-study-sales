@@ -89,6 +89,13 @@ describe('アプリケーションデータダウンロード', () => {
             cy.get('#download').click();
             cy.get('#message').contains('売上 データをダウンロードしました。');
         });
+
+        it('請求データダウンロード', () => {
+            userPage();
+            cy.get('#downloadTarget').select('請求');
+            cy.get('#download').click();
+            cy.get('#message').contains('請求 データをダウンロードしました。');
+        });
     });
 
     describe('利用者', () => {
@@ -180,6 +187,13 @@ describe('アプリケーションデータダウンロード', () => {
             cy.get('#downloadTarget').select('売上');
             cy.get('#download').click();
             cy.get('#message').contains('売上 データをダウンロードしました。');
+        });
+
+        it('請求データダウンロード', () => {
+            userPage();
+            cy.get('#downloadTarget').select('請求');
+            cy.get('#download').click();
+            cy.get('#message').contains('請求 データをダウンロードしました。');
         });
     });
 });
