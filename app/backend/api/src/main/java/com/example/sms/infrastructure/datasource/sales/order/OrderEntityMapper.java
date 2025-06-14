@@ -3,9 +3,9 @@ package com.example.sms.infrastructure.datasource.sales.order;
 import com.example.sms.domain.model.master.department.Department;
 import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.employee.Employee;
+import com.example.sms.domain.model.master.partner.billing.ClosingBilling;
 import com.example.sms.domain.model.master.partner.customer.*;
-import com.example.sms.domain.model.master.partner.invoice.ClosingInvoice;
-import com.example.sms.domain.model.master.partner.invoice.Invoice;
+import com.example.sms.domain.model.master.partner.billing.Billing;
 import com.example.sms.domain.model.master.product.*;
 import com.example.sms.domain.model.sales.order.Order;
 import com.example.sms.domain.model.sales.order.OrderLine;
@@ -62,6 +62,11 @@ public class OrderEntityMapper {
         salesOrderLineEntity.set完了フラグ(orderLine.getCompletionFlag().getValue());
         salesOrderLineEntity.set値引金額(orderLine.getDiscountAmount().getAmount());
         salesOrderLineEntity.set納期(orderLine.getDeliveryDate().getValue());
+
+        // 出荷日の設定
+        if (orderLine.getShippingDate() != null) {
+            salesOrderLineEntity.set出荷日(orderLine.getShippingDate().getValue());
+        }
 
         return salesOrderLineEntity;
     }
@@ -132,7 +137,8 @@ public class OrderEntityMapper {
                             e.get出荷済数量(),
                             e.get完了フラグ(),
                             Objects.isNull(e.get値引金額()) ? 0 : e.get値引金額(), // 値引金額のnullチェック
-                            e.get納期()
+                            e.get納期(),
+                            e.get出荷日() // 出荷日の追加
                     ),
                     Objects.nonNull(e.get商品マスタ()) ? mapToProduct.apply(e.get商品マスタ()) : null // 商品マスタのnullチェック
             );
@@ -177,15 +183,15 @@ public class OrderEntityMapper {
                 PhoneNumber.of(e.get顧客電話番号()),
                 FaxNumber.of(e.get顧客ｆａｘ番号()),
                 EmailAddress.of(e.get顧客メールアドレス()),
-                Invoice.of(
+                Billing.of(
                         CustomerBillingCategory.fromCode(e.get顧客請求区分()),
-                        ClosingInvoice.of(
+                        ClosingBilling.of(
                                 e.get顧客締日１(),
                                 e.get顧客支払月１(),
                                 e.get顧客支払日１(),
                                 e.get顧客支払方法１()
                         ),
-                        ClosingInvoice.of(
+                        ClosingBilling.of(
                                 e.get顧客締日２(),
                                 e.get顧客支払月２(),
                                 e.get顧客支払日２(),
@@ -262,7 +268,8 @@ public class OrderEntityMapper {
                 orderLine.getShippedQuantity().getAmount(),
                 orderLine.getCompletionFlag().getValue(),
                 orderLine.getDiscountAmount().getAmount(),
-                orderLine.getDeliveryDate().getValue()
+                orderLine.getDeliveryDate().getValue(),
+                orderLine.getShippingDate() != null ? orderLine.getShippingDate().getValue() : null
         );
     }
 }

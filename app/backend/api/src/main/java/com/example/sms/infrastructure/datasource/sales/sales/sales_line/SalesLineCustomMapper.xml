@@ -31,4 +31,11 @@
         where 売上番号 = #{salesNumber, jdbcType=VARCHAR}
     </delete>
 
+    <select id="selectBillingLines" resultMap="BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.売上データ明細Mapper.Base_Column_List" />
+        from public.売上データ明細
+        where 請求番号 is not null or 請求番号 != ''
+    </select>
+
 </mapper>

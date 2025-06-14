@@ -161,21 +161,21 @@ public class PartnerEntityMapper {
         customerEntity.set顧客ｆａｘ番号(customer.getCustomerFaxNumber().getValue());
         customerEntity.set顧客メールアドレス(customer.getCustomerEmailAddress().getValue());
 
-        if (customer.getInvoice() != null) {
-            customerEntity.set顧客請求区分(customer.getInvoice().getCustomerBillingCategory().getValue());
+        if (customer.getBilling() != null) {
+            customerEntity.set顧客請求区分(customer.getBilling().getCustomerBillingCategory().getValue());
 
-            if (customer.getInvoice().getClosingInvoice1() != null) {
-                customerEntity.set顧客締日１(customer.getInvoice().getClosingInvoice1().getClosingDay().getValue());
-                customerEntity.set顧客支払月１(customer.getInvoice().getClosingInvoice1().getPaymentMonth().getValue());
-                customerEntity.set顧客支払日１(customer.getInvoice().getClosingInvoice1().getPaymentDay().getValue());
-                customerEntity.set顧客支払方法１(customer.getInvoice().getClosingInvoice1().getPaymentMethod().getValue());
+            if (customer.getBilling().getClosingBilling1() != null) {
+                customerEntity.set顧客締日１(customer.getBilling().getClosingBilling1().getClosingDay().getValue());
+                customerEntity.set顧客支払月１(customer.getBilling().getClosingBilling1().getPaymentMonth().getValue());
+                customerEntity.set顧客支払日１(customer.getBilling().getClosingBilling1().getPaymentDay().getValue());
+                customerEntity.set顧客支払方法１(customer.getBilling().getClosingBilling1().getPaymentMethod().getValue());
             }
-            if (customer.getInvoice().getClosingInvoice2() != null) {
-                customerEntity.set顧客締日２(customer.getInvoice().getClosingInvoice2().getClosingDay().getValue());
-                customerEntity.set顧客締日２(customer.getInvoice().getClosingInvoice2().getClosingDay().getValue());
-                customerEntity.set顧客支払月２(customer.getInvoice().getClosingInvoice2().getPaymentMonth().getValue());
-                customerEntity.set顧客支払日２(customer.getInvoice().getClosingInvoice2().getPaymentDay().getValue());
-                customerEntity.set顧客支払方法２(customer.getInvoice().getClosingInvoice2().getPaymentMethod().getValue());
+            if (customer.getBilling().getClosingBilling2() != null) {
+                customerEntity.set顧客締日２(customer.getBilling().getClosingBilling2().getClosingDay().getValue());
+                customerEntity.set顧客締日２(customer.getBilling().getClosingBilling2().getClosingDay().getValue());
+                customerEntity.set顧客支払月２(customer.getBilling().getClosingBilling2().getPaymentMonth().getValue());
+                customerEntity.set顧客支払日２(customer.getBilling().getClosingBilling2().getPaymentDay().getValue());
+                customerEntity.set顧客支払方法２(customer.getBilling().getClosingBilling2().getPaymentMethod().getValue());
             }
         }
 
@@ -260,11 +260,11 @@ public class PartnerEntityMapper {
         vendorEntity.set仕入先ｆａｘ番号(vendor.getVendorFaxNumber().getValue());
         vendorEntity.set仕入先メールアドレス(vendor.getVendorEmailAddress().getValue());
 
-        if (vendor.getVendorClosingInvoice() != null) {
-            vendorEntity.set仕入先締日(vendor.getVendorClosingInvoice().getClosingDay().getValue());
-            vendorEntity.set仕入先支払月(vendor.getVendorClosingInvoice().getPaymentMonth().getValue());
-            vendorEntity.set仕入先支払日(vendor.getVendorClosingInvoice().getPaymentDay().getValue());
-            vendorEntity.set仕入先支払方法(vendor.getVendorClosingInvoice().getPaymentMethod().getValue());
+        if (vendor.getVendorClosingBilling() != null) {
+            vendorEntity.set仕入先締日(vendor.getVendorClosingBilling().getClosingDay().getValue());
+            vendorEntity.set仕入先支払月(vendor.getVendorClosingBilling().getPaymentMonth().getValue());
+            vendorEntity.set仕入先支払日(vendor.getVendorClosingBilling().getPaymentDay().getValue());
+            vendorEntity.set仕入先支払方法(vendor.getVendorClosingBilling().getPaymentMethod().getValue());
         }
 
         return vendorEntity;
@@ -331,15 +331,15 @@ public class PartnerEntityMapper {
                 customer.getCustomerPhoneNumber().getValue(),
                 customer.getCustomerFaxNumber().getValue(),
                 customer.getCustomerEmailAddress().getValue(),
-                customer.getInvoice().getCustomerBillingCategory().getValue(),
-                customer.getInvoice().getClosingInvoice1().getClosingDay().getValue(),
-                customer.getInvoice().getClosingInvoice1().getPaymentMonth().getValue(),
-                customer.getInvoice().getClosingInvoice1().getPaymentDay().getValue(),
-                customer.getInvoice().getClosingInvoice1().getPaymentMethod().getValue(),
-                customer.getInvoice().getClosingInvoice2().getClosingDay().getValue(),
-                customer.getInvoice().getClosingInvoice2().getPaymentMonth().getValue(),
-                customer.getInvoice().getClosingInvoice2().getPaymentDay().getValue(),
-                customer.getInvoice().getClosingInvoice2().getPaymentMethod().getValue()
+                customer.getBilling().getCustomerBillingCategory().getValue(),
+                customer.getBilling().getClosingBilling1().getClosingDay().getValue(),
+                customer.getBilling().getClosingBilling1().getPaymentMonth().getValue(),
+                customer.getBilling().getClosingBilling1().getPaymentDay().getValue(),
+                customer.getBilling().getClosingBilling1().getPaymentMethod().getValue(),
+                customer.getBilling().getClosingBilling2().getClosingDay().getValue(),
+                customer.getBilling().getClosingBilling2().getPaymentMonth().getValue(),
+                customer.getBilling().getClosingBilling2().getPaymentDay().getValue(),
+                customer.getBilling().getClosingBilling2().getPaymentMethod().getValue()
         );
     }
 
@@ -358,10 +358,10 @@ public class PartnerEntityMapper {
                 vendor.getVendorPhoneNumber().getValue(),
                 vendor.getVendorFaxNumber().getValue(),
                 vendor.getVendorEmailAddress().getValue(),
-                vendor.getVendorClosingInvoice().getClosingDay().getValue(),
-                vendor.getVendorClosingInvoice().getPaymentMonth().getValue(),
-                vendor.getVendorClosingInvoice().getPaymentDay().getValue(),
-                vendor.getVendorClosingInvoice().getPaymentMethod().getValue()
+                vendor.getVendorClosingBilling().getClosingDay().getValue(),
+                vendor.getVendorClosingBilling().getPaymentMonth().getValue(),
+                vendor.getVendorClosingBilling().getPaymentDay().getValue(),
+                vendor.getVendorClosingBilling().getPaymentMethod().getValue()
         );
     }
 }

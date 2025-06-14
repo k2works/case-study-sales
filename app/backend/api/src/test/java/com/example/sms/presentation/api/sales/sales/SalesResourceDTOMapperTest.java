@@ -7,6 +7,7 @@ import com.example.sms.service.sales.sales.SalesCriteria;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,6 +27,7 @@ class SalesResourceDTOMapperTest {
         String departmentCode = "10000";
         LocalDateTime departmentStartDate = LocalDateTime.now().minusDays(30);
         String customerCode = "001";
+        Integer customerBranchNumber = 1;
         String employeeCode = "EMP001";
         Integer totalSalesAmount = 100000;
         Integer totalConsumptionTax = 10000;
@@ -57,6 +59,7 @@ class SalesResourceDTOMapperTest {
         resource.setDepartmentCode(departmentCode);
         resource.setDepartmentStartDate(departmentStartDate);
         resource.setCustomerCode(customerCode);
+        resource.setCustomerBranchNumber(customerBranchNumber);
         resource.setEmployeeCode(employeeCode);
         resource.setTotalSalesAmount(totalSalesAmount);
         resource.setTotalConsumptionTax(totalConsumptionTax);
@@ -76,7 +79,7 @@ class SalesResourceDTOMapperTest {
         assertEquals(salesCategory, sales.getSalesType());
         assertEquals(departmentCode, sales.getDepartmentId().getDeptCode().getValue());
         assertEquals(departmentStartDate, sales.getDepartmentId().getDepartmentStartDate().getValue());
-        assertEquals(customerCode, sales.getCustomerCode().getValue());
+        assertEquals(customerCode, sales.getPartnerCode().getValue());
         assertEquals(employeeCode, sales.getEmployeeCode().getValue());
         assertEquals(totalSalesAmount, sales.getTotalSalesAmount().getAmount());
         assertEquals(totalConsumptionTax, sales.getTotalConsumptionTax().getAmount());
@@ -109,7 +112,7 @@ class SalesResourceDTOMapperTest {
         assertNotNull(criteria);
         assertEquals(salesNumber, criteria.getSalesNumber());
         assertEquals(orderNumber, criteria.getOrderNumber());
-        assertEquals(salesDate, criteria.getSalesDate());
+        assertEquals(LocalDate.of(2023, 10, 1), criteria.getSalesDate());
         assertEquals(departmentCode, criteria.getDepartmentCode());
         assertEquals(remarks, criteria.getRemarks());
     }

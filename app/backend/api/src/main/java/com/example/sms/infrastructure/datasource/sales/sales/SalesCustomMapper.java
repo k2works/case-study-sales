@@ -25,5 +25,5 @@ public interface SalesCustomMapper {
 
     List<SalesCustomEntity> selectByCriteria(SalesCriteria criteria);
 
-    List<SalesCustomEntity> selectAllNotComplete(Integer completionFlag);
+    List<SalesCustomEntity> selectAllUnbilled();
 }

@@ -34,6 +34,9 @@ import {ShippingContainer} from "../sales/shipping/list/ShippingContainer.tsx";
 import {ShippingRuleContainer} from "../sales/shipping/rule/ShippingRuleContainer.tsx";
 import {ShippingOrderContainer} from "../sales/shipping/order/ShippingOrderContainer.tsx";
 import {ShippingConfirmContainer} from "../sales/shipping/confirm/ShippingConfirmContainer.tsx";
+import {InvoiceContainer} from "../sales/invoice/list/InvoiceContainer.tsx";
+import {InvoiceTabContainer} from "../sales/invoice/InvoceTabContainer.tsx";
+import {InvoiceAggregateContainer} from "../sales/invoice/aggregate/InvoiceAggregateContainer.tsx";
 
 export const RouteConfig: React.FC = () => {
     const ProductCategoryPage = () => {
@@ -172,6 +175,22 @@ export const RouteConfig: React.FC = () => {
         )
     }
 
+    const InvoicePage = () => {
+        return (
+            <SiteLayout>
+                <InvoiceContainer/>
+            </SiteLayout>
+        )
+    }
+
+    const InvoiceSummrayyPage = () => {
+        return (
+            <SiteLayout>
+                <InvoiceAggregateContainer/>
+            </SiteLayout>
+        )
+    }
+
 
     return (
             <Routes>
@@ -206,6 +225,12 @@ export const RouteConfig: React.FC = () => {
                                                                       allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/shipping-confirm" element={<RouteAuthGuard component={<ShippingConfirmPage/>} redirectPath="/"
                                                                        allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/invoice" element={<RouteAuthGuard component={<InvoiceTabContainer/>} redirectPath="/"
+                                                                     allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/invoice-list" element={<RouteAuthGuard component={<InvoicePage/>} redirectPath="/"
+                                                                   allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/invoice-summary" element={<RouteAuthGuard component={<InvoiceSummrayyPage/>} redirectPath="/"
+                                                                     allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/department" element={<RouteAuthGuard component={<DepartmentContainer/>} redirectPath="/"
                                                                    allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/employee" element={<RouteAuthGuard component={<EmployeeContainer/>} redirectPath="/"

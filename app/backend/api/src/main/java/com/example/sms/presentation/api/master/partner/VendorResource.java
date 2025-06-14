@@ -1,9 +1,9 @@
 package com.example.sms.presentation.api.master.partner;
 
-import com.example.sms.domain.model.master.partner.invoice.ClosingDate;
-import com.example.sms.domain.model.master.partner.invoice.PaymentDay;
-import com.example.sms.domain.model.master.partner.invoice.PaymentMethod;
-import com.example.sms.domain.model.master.partner.invoice.PaymentMonth;
+import com.example.sms.domain.model.master.partner.billing.ClosingDate;
+import com.example.sms.domain.model.master.partner.billing.PaymentDay;
+import com.example.sms.domain.model.master.partner.billing.PaymentMethod;
+import com.example.sms.domain.model.master.partner.billing.PaymentMonth;
 import com.example.sms.domain.model.master.partner.vendor.Vendor;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
@@ -70,10 +70,10 @@ public class VendorResource {
                 .vendorPhoneNumber(vendor.getVendorPhoneNumber().getValue())
                 .vendorFaxNumber(vendor.getVendorFaxNumber().getValue())
                 .vendorEmailAddress(vendor.getVendorEmailAddress().getValue())
-                .vendorClosingDate(vendor.getVendorClosingInvoice().getClosingDay())
-                .vendorPaymentMonth(vendor.getVendorClosingInvoice().getPaymentMonth())
-                .vendorPaymentDate(vendor.getVendorClosingInvoice().getPaymentDay())
-                .vendorPaymentMethod(vendor.getVendorClosingInvoice().getPaymentMethod())
+                .vendorClosingDate(vendor.getVendorClosingBilling().getClosingDay())
+                .vendorPaymentMonth(vendor.getVendorClosingBilling().getPaymentMonth())
+                .vendorPaymentDate(vendor.getVendorClosingBilling().getPaymentDay())
+                .vendorPaymentMethod(vendor.getVendorClosingBilling().getPaymentMethod())
                 .build();
     }
 

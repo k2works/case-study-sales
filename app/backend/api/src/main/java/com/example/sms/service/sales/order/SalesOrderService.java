@@ -309,7 +309,8 @@ public class SalesOrderService {
                     csv.getShippedQuantity(),
                     csv.getCompletionFlag(),
                     csv.getDiscountAmount(),
-                    csv.getDeliveryDate()
+                    csv.getDeliveryDate(),
+                    csv.getShippingDate()
             );
             // Productを取得
             Product product = productRepository.findById(csv.getProductCode()).orElse(null);

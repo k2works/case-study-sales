@@ -5,7 +5,7 @@ import { showErrorMessage } from "../../../application/utils.ts";
 import { useDepartmentContext } from "../../../../providers/master/Department.tsx";
 import { useEmployeeContext } from "../../../../providers/master/Employee.tsx";
 import { useProductItemContext } from "../../../../providers/master/product/ProductItem.tsx";
-import {usePartnerListContext} from "../../../../providers/master/partner/PartnerList.tsx";
+import {useCustomerContext} from "../../../../providers/master/partner/Customer.tsx";
 
 export const SalesSingle: React.FC = () => {
     const {
@@ -32,8 +32,8 @@ export const SalesSingle: React.FC = () => {
     } = useEmployeeContext();
 
     const {
-        setModalIsOpen: setPartnerListModalIsOpen,
-    } = usePartnerListContext();
+        setModalIsOpen: setCustomerModalIsOpen,
+    } = useCustomerContext();
 
     const {
         setModalIsOpen: setProductModalIsOpen,
@@ -100,7 +100,7 @@ export const SalesSingle: React.FC = () => {
             handleCloseModal={handleCloseModal}
             handleDepartmentSelect={() => setDepartmentModalIsOpen(true)}
             handleEmployeeSelect={() => setEmployeeModalIsOpen(true)}
-            handlePartnerSelect={() => setPartnerListModalIsOpen(true)}
+            handleCustomerSelect={() => setCustomerModalIsOpen(true)}
             handleProductSelect={() => setProductModalIsOpen(true)}
         />
     );

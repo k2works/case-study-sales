@@ -28,6 +28,7 @@ public class DownloadCriteriaResource {
             case 受注 -> Order.of();
             case 出荷 -> Shipment.of();
             case 売上 -> Sales.of();
+            case 請求 -> Invoice.of();
         };
     }
 }

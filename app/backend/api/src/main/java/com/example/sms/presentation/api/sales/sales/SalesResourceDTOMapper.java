@@ -25,6 +25,8 @@ public class SalesResourceDTOMapper {
                                 ? SalesLine.of(
                                 line.getSalesNumber(),
                                 line.getSalesLineNumber(),
+                                line.getOrderNumber(),
+                                line.getOrderLineNumber(),
                                 line.getProductCode(),
                                 line.getProductName(),
                                 Optional.ofNullable(line.getSalesUnitPrice()).orElse(0),
@@ -52,6 +54,7 @@ public class SalesResourceDTOMapper {
                 resource.getDepartmentCode(),
                 resource.getDepartmentStartDate(),
                 resource.getCustomerCode(),
+                resource.getCustomerBranchNumber(),
                 resource.getEmployeeCode(),
                 resource.getVoucherNumber(),
                 resource.getOriginalVoucherNumber(),
@@ -71,7 +74,7 @@ public class SalesResourceDTOMapper {
         resource.setSalesType(sales.getSalesType());
         resource.setDepartmentCode(sales.getDepartmentId().getDeptCode().getValue());
         resource.setDepartmentStartDate(sales.getDepartmentId().getDepartmentStartDate().getValue());
-        resource.setCustomerCode(sales.getCustomerCode().getValue());
+        resource.setCustomerCode(sales.getPartnerCode().getValue());
         resource.setEmployeeCode(sales.getEmployeeCode().getValue());
         resource.setTotalSalesAmount(sales.getTotalSalesAmount().getAmount());
         resource.setTotalConsumptionTax(sales.getTotalConsumptionTax().getAmount());
@@ -88,7 +91,7 @@ public class SalesResourceDTOMapper {
         return SalesCriteria.builder()
                 .salesNumber(resource.getSalesNumber())
                 .orderNumber(resource.getOrderNumber())
-                .salesDate(salesDate != null ? salesDate.toString() : null) // SalesCriteria では String
+                .salesDate(salesDate)
                 .departmentCode(resource.getDepartmentCode())
                 .remarks(resource.getRemarks())
                 .build();

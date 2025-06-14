@@ -27,6 +27,7 @@ export interface ShippingType {
     completionFlag: boolean;
     discountAmount: number;
     deliveryDate: string;
+    shippingDate?: string;
     salesAmount: number;
     consumptionTaxAmount: number;
     checked?: boolean;
@@ -87,23 +88,25 @@ export const mapToShippingResource = (shipping: ShippingType) => {
 
 // 検索条件をAPIリクエスト用に変換
 export const mapToShippingCriteriaResource = (criteria: ShippingCriteriaType) => {
+    const isEmpty = (value: unknown) => value === "" || value === null || value === undefined;
     return {
-        orderNumber: criteria.orderNumber || null,
-        orderDate: criteria.orderDate || null,
-        departmentCode: criteria.departmentCode || null,
-        departmentStartDate: criteria.departmentStartDate || null,
-        customerCode: criteria.customerCode || null,
-        customerBranchNumber: criteria.customerBranchNumber || null,
-        employeeCode: criteria.employeeCode || null,
-        desiredDeliveryDate: criteria.desiredDeliveryDate || null,
-        customerOrderNumber: criteria.customerOrderNumber || null,
-        warehouseCode: criteria.warehouseCode || null,
-        remarks: criteria.remarks || null,
-        orderLineNumber: criteria.orderLineNumber || null,
-        productCode: criteria.productCode || null,
-        productName: criteria.productName || null,
-        deliveryDate: criteria.deliveryDate || null,
-        completionFlag: criteria.completionFlag || false
+        ...(isEmpty(criteria.orderNumber) ? {} : { orderNumber: criteria.orderNumber }),
+        ...(isEmpty(criteria.orderDate) ? {} : { orderDate: criteria.orderDate }),
+        ...(isEmpty(criteria.departmentCode) ? {} : { departmentCode: criteria.departmentCode }),
+        ...(isEmpty(criteria.departmentStartDate) ? {} : { departmentStartDate: criteria.departmentStartDate }),
+        ...(isEmpty(criteria.customerCode) ? {} : { customerCode: criteria.customerCode }),
+        ...(isEmpty(criteria.customerBranchNumber) ? {} : { customerBranchNumber: criteria.customerBranchNumber }),
+        ...(isEmpty(criteria.employeeCode) ? {} : { employeeCode: criteria.employeeCode }),
+        ...(isEmpty(criteria.desiredDeliveryDate) ? {} : { desiredDeliveryDate: criteria.desiredDeliveryDate }),
+        ...(isEmpty(criteria.customerOrderNumber) ? {} : { customerOrderNumber: criteria.customerOrderNumber }),
+        ...(isEmpty(criteria.warehouseCode) ? {} : { warehouseCode: criteria.warehouseCode }),
+        ...(isEmpty(criteria.remarks) ? {} : { remarks: criteria.remarks }),
+        ...(isEmpty(criteria.orderLineNumber) ? {} : { orderLineNumber: criteria.orderLineNumber }),
+        ...(isEmpty(criteria.productCode) ? {} : { productCode: criteria.productCode }),
+        ...(isEmpty(criteria.productName) ? {} : { productName: criteria.productName }),
+        ...(isEmpty(criteria.deliveryDate) ? {} : { deliveryDate: criteria.deliveryDate }),
+        // completionFlagはブーリアン値なので、特別な処理を行う
+        completionFlag: criteria.completionFlag ?? false
     };
 };
 

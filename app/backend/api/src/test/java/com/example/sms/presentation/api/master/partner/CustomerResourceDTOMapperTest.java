@@ -1,10 +1,10 @@
 package com.example.sms.presentation.api.master.partner;
 
 import com.example.sms.domain.model.master.partner.customer.*;
-import com.example.sms.domain.model.master.partner.invoice.ClosingDate;
-import com.example.sms.domain.model.master.partner.invoice.PaymentDay;
-import com.example.sms.domain.model.master.partner.invoice.PaymentMethod;
-import com.example.sms.domain.model.master.partner.invoice.PaymentMonth;
+import com.example.sms.domain.model.master.partner.billing.ClosingDate;
+import com.example.sms.domain.model.master.partner.billing.PaymentDay;
+import com.example.sms.domain.model.master.partner.billing.PaymentMethod;
+import com.example.sms.domain.model.master.partner.billing.PaymentMonth;
 import com.example.sms.domain.model.master.region.RegionCode;
 import com.example.sms.domain.type.address.Address;
 import com.example.sms.domain.type.address.PostalCode;
@@ -124,15 +124,15 @@ class CustomerResourceDTOMapperTest {
         assertEquals(customerPhoneNumber, customer.getCustomerPhoneNumber().getValue());
         assertEquals(customerFaxNumber, customer.getCustomerFaxNumber().getValue());
         assertEquals(customerEmailAddress, customer.getCustomerEmailAddress().getValue());
-        assertEquals(customerBillingType.getValue(), customer.getInvoice().getCustomerBillingCategory().getValue());
-        assertEquals(customerClosingDay1.getValue(), customer.getInvoice().getClosingInvoice1().getClosingDay().getValue());
-        assertEquals(customerPaymentMonth1.getValue(), customer.getInvoice().getClosingInvoice1().getPaymentMonth().getValue());
-        assertEquals(customerPaymentDay1.getValue(), customer.getInvoice().getClosingInvoice1().getPaymentDay().getValue());
-        assertEquals(customerPaymentMethod1.getValue(), customer.getInvoice().getClosingInvoice1().getPaymentMethod().getValue());
-        assertEquals(customerClosingDay2.getValue(), customer.getInvoice().getClosingInvoice2().getClosingDay().getValue());
-        assertEquals(customerPaymentMonth2.getValue(), customer.getInvoice().getClosingInvoice2().getPaymentMonth().getValue());
-        assertEquals(customerPaymentDay2.getValue(), customer.getInvoice().getClosingInvoice2().getPaymentDay().getValue());
-        assertEquals(customerPaymentMethod2.getValue(), customer.getInvoice().getClosingInvoice2().getPaymentMethod().getValue());
+        assertEquals(customerBillingType.getValue(), customer.getBilling().getCustomerBillingCategory().getValue());
+        assertEquals(customerClosingDay1.getValue(), customer.getBilling().getClosingBilling1().getClosingDay().getValue());
+        assertEquals(customerPaymentMonth1.getValue(), customer.getBilling().getClosingBilling1().getPaymentMonth().getValue());
+        assertEquals(customerPaymentDay1.getValue(), customer.getBilling().getClosingBilling1().getPaymentDay().getValue());
+        assertEquals(customerPaymentMethod1.getValue(), customer.getBilling().getClosingBilling1().getPaymentMethod().getValue());
+        assertEquals(customerClosingDay2.getValue(), customer.getBilling().getClosingBilling2().getClosingDay().getValue());
+        assertEquals(customerPaymentMonth2.getValue(), customer.getBilling().getClosingBilling2().getPaymentMonth().getValue());
+        assertEquals(customerPaymentDay2.getValue(), customer.getBilling().getClosingBilling2().getPaymentDay().getValue());
+        assertEquals(customerPaymentMethod2.getValue(), customer.getBilling().getClosingBilling2().getPaymentMethod().getValue());
 
         // Check shipping
         assertNotNull(customer.getShippings());

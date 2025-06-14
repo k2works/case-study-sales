@@ -53,8 +53,6 @@ public class UC017StepDefs extends SpringAcceptanceTest {
 
     @前提(":UC017 {string} が登録されている")
     public void init(String data) {
-        salesRepository.deleteAll();
-
         switch (data) {
             case "部門データ":
                 testDataFactory.setUpForDepartmentService();
@@ -172,6 +170,8 @@ public class UC017StepDefs extends SpringAcceptanceTest {
         SalesLineResource salesLine = SalesLineResource.builder()
                 .salesNumber(salesNumber)
                 .salesLineNumber(1)
+                .orderNumber("OD" + salesNumber.substring(2))
+                .orderLineNumber(1)
                 .productCode(productCode)
                 .productName(productName)
                 .salesUnitPrice(1000)
@@ -291,6 +291,7 @@ public class UC017StepDefs extends SpringAcceptanceTest {
         salesResource.setDepartmentCode(departmentCode);
         salesResource.setDepartmentStartDate(OffsetDateTime.parse(salesDate).toLocalDateTime());
         salesResource.setCustomerCode(customerCode);
+        salesResource.setCustomerBranchNumber(1);
         salesResource.setEmployeeCode(employeeCode);
         salesResource.setTotalSalesAmount(Integer.parseInt(totalAmount));
         salesResource.setRemarks("備考");
@@ -303,6 +304,8 @@ public class UC017StepDefs extends SpringAcceptanceTest {
         return SalesLineResource.builder()
                 .salesNumber(entry.get("売上番号"))
                 .salesLineNumber(Integer.parseInt(entry.get("明細番号")))
+                .orderNumber("OD" + entry.get("売上番号").substring(2))
+                .orderLineNumber(Integer.parseInt(entry.get("明細番号")))
                 .productCode(entry.get("製品コード"))
                 .productName(entry.get("製品名"))
                 .salesUnitPrice(Integer.parseInt(entry.get("売上単価")))

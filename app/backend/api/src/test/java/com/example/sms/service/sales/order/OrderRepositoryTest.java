@@ -4,7 +4,6 @@ import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.sales.order.Order;
 import com.example.sms.domain.model.sales.order.OrderLine;
 import com.example.sms.domain.model.sales.order.OrderList;
-import com.example.sms.service.sales.order.SalesOrderRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -195,7 +194,7 @@ class OrderRepositoryTest {
             newOrder = repository.findById(order.getOrderNumber().getValue()).get();
             OrderLine updatedLine = OrderLine.of(
                     order.getOrderNumber().getValue(), 1, "99999999", "更新後商品名",
-                    3000, 5, 8, 3, 1, 0, 1, 200, LocalDateTime.of(2021, 1, 3, 0, 0) );
+                    3000, 5, 8, 3, 1, 0, 1, 200, LocalDateTime.of(2021, 1, 3, 0, 0), null );
             Order updatedOrder = Order.of(
                     newOrder.getOrderNumber().getValue(),
                     newOrder.getOrderDate().getValue(),

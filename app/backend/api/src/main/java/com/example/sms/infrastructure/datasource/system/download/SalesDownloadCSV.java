@@ -42,78 +42,87 @@ public class SalesDownloadCSV {
     private String employeeCode;
 
     @CsvBindByPosition(position = 8)
+    @CsvBindByName(column = "顧客コード", required = false)
+    private String customerCustomerCode;
+
+    @CsvBindByPosition(position = 9)
+    @CsvBindByName(column = "顧客枝番", required = false)
+    private Integer customerBranchNumber;
+
+    @CsvBindByPosition(position = 10)
     @CsvBindByName(column = "売上金額合計", required = true)
     private Integer totalSalesAmount;
 
-    @CsvBindByPosition(position = 9)
+    @CsvBindByPosition(position = 11)
     @CsvBindByName(column = "消費税合計", required = false)
     private Integer totalConsumptionTax;
 
-    @CsvBindByPosition(position = 10)
+    @CsvBindByPosition(position = 12)
     @CsvBindByName(column = "備考", required = false)
     private String remarks;
 
-    @CsvBindByPosition(position = 11)
+    @CsvBindByPosition(position = 13)
     @CsvBindByName(column = "赤黒伝票番号", required = false)
     private Integer voucherNumber;
 
-    @CsvBindByPosition(position = 12)
+    @CsvBindByPosition(position = 14)
     @CsvBindByName(column = "元伝票番号", required = false)
     private String originalVoucherNumber;
 
     // 売上明細情報
-    @CsvBindByPosition(position = 13)
+    @CsvBindByPosition(position = 15)
     @CsvBindByName(column = "売上行番号", required = true)
     private Integer salesLineNumber;
 
-    @CsvBindByPosition(position = 14)
+    @CsvBindByPosition(position = 16)
     @CsvBindByName(column = "商品コード", required = true)
     private String productCode;
 
-    @CsvBindByPosition(position = 15)
+    @CsvBindByPosition(position = 17)
     @CsvBindByName(column = "商品名", required = false)
     private String productName;
 
-    @CsvBindByPosition(position = 16)
+    @CsvBindByPosition(position = 18)
     @CsvBindByName(column = "販売単価", required = true)
     private Integer salesUnitPrice;
 
-    @CsvBindByPosition(position = 17)
+    @CsvBindByPosition(position = 19)
     @CsvBindByName(column = "売上数量", required = true)
     private Integer salesQuantity;
 
-    @CsvBindByPosition(position = 18)
+    @CsvBindByPosition(position = 20)
     @CsvBindByName(column = "出荷数量", required = false)
     private Integer shippedQuantity;
 
-    @CsvBindByPosition(position = 19)
+    @CsvBindByPosition(position = 21)
     @CsvBindByName(column = "値引金額", required = false)
     private Integer discountAmount;
 
-    @CsvBindByPosition(position = 20)
+    @CsvBindByPosition(position = 22)
     @CsvBindByName(column = "請求日", required = false)
     private LocalDateTime billingDate;
 
-    @CsvBindByPosition(position = 21)
+    @CsvBindByPosition(position = 23)
     @CsvBindByName(column = "請求番号", required = false)
     private String billingNumber;
 
-    @CsvBindByPosition(position = 22)
+    @CsvBindByPosition(position = 24)
     @CsvBindByName(column = "請求遅延区分", required = false)
     private Integer billingDelayType;
 
-    @CsvBindByPosition(position = 23)
+    @CsvBindByPosition(position = 25)
     @CsvBindByName(column = "自動仕訳日", required = false)
     private LocalDateTime autoJournalDate;
 
-    @CsvBindByPosition(position = 24)
+    @CsvBindByPosition(position = 26)
     @CsvBindByName(column = "消費税率", required = false)
     private Integer taxRate;
 
     // コンストラクター
     public SalesDownloadCSV(String salesNumber, String orderNumber, LocalDateTime salesDate, Integer salesType,
                            String departmentCode, LocalDateTime departmentStartDate, String customerCode,
-                           String employeeCode, Integer totalSalesAmount, Integer totalConsumptionTax,
+                           String employeeCode, String customerCustomerCode, Integer customerBranchNumber,
+                           Integer totalSalesAmount, Integer totalConsumptionTax,
                            String remarks, Integer voucherNumber, String originalVoucherNumber,
                            Integer salesLineNumber, String productCode, String productName, Integer salesUnitPrice,
                            Integer salesQuantity, Integer shippedQuantity, Integer discountAmount,
@@ -127,6 +136,8 @@ public class SalesDownloadCSV {
         this.departmentStartDate = departmentStartDate;
         this.customerCode = customerCode;
         this.employeeCode = employeeCode;
+        this.customerCustomerCode = customerCustomerCode;
+        this.customerBranchNumber = customerBranchNumber;
         this.totalSalesAmount = totalSalesAmount;
         this.totalConsumptionTax = totalConsumptionTax;
         this.remarks = remarks;

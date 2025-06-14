@@ -110,13 +110,18 @@ public class OrderDownloadCSV {
     @CsvBindByName(column = "納期", required = false)
     private LocalDateTime deliveryDate;
 
+    @CsvBindByPosition(position = 25)
+    @CsvBindByName(column = "出荷日", required = false)
+    private LocalDateTime shippingDate;
+
     // コンストラクター
     public OrderDownloadCSV(String orderNumber, LocalDateTime orderDate, String departmentCode, LocalDateTime departmentStartDate,
                             String customerCode, Integer customerBranchNumber, String employeeCode, LocalDateTime desiredDeliveryDate,
                             String customerOrderNumber, String warehouseCode, Integer totalOrderAmount, Integer totalConsumptionTax,
                             String remarks, Integer orderLineNumber, String productCode, String productName, Integer salesUnitPrice,
                             Integer orderQuantity, Integer taxRate, Integer allocationQuantity, Integer shipmentInstructionQuantity,
-                            Integer shippedQuantity, Integer completionFlag, Integer discountAmount, LocalDateTime deliveryDate) {
+                            Integer shippedQuantity, Integer completionFlag, Integer discountAmount, LocalDateTime deliveryDate,
+                            LocalDateTime shippingDate) {
         this.orderNumber = orderNumber;
         this.orderDate = orderDate;
         this.departmentCode = departmentCode;
@@ -142,6 +147,7 @@ public class OrderDownloadCSV {
         this.completionFlag = completionFlag;
         this.discountAmount = discountAmount;
         this.deliveryDate = deliveryDate;
+        this.shippingDate = shippingDate;
     }
 
     @Override

@@ -33,7 +33,13 @@ public class SalesResource {
     LocalDateTime departmentStartDate;
 
     @Schema(description = "取引先コード")
+    String partnerCode;
+
+    @Schema(description = "顧客コード")
     String customerCode;
+
+    @Schema(description = "顧客枝番")
+    Integer customerBranchNumber;
 
     @Schema(description = "社員コード")
     String employeeCode;
@@ -67,7 +73,9 @@ public class SalesResource {
         resource.setSalesType(sales.getSalesType());
         resource.setDepartmentCode(sales.getDepartmentId().getDeptCode().getValue());
         resource.setDepartmentStartDate(sales.getDepartmentId().getDepartmentStartDate().getValue());
-        resource.setCustomerCode(sales.getCustomerCode().getValue());
+        resource.setPartnerCode(sales.getPartnerCode().getValue());
+        resource.setCustomerCode(sales.getCustomerCode().getCode().getValue());
+        resource.setCustomerBranchNumber(sales.getCustomerCode().getBranchNumber());
         resource.setEmployeeCode(sales.getEmployeeCode().getValue());
         resource.setTotalSalesAmount(sales.getTotalSalesAmount().getAmount());
         resource.setTotalConsumptionTax(sales.getTotalConsumptionTax().getAmount());

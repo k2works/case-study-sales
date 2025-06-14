@@ -4,8 +4,8 @@ import { SalesSingle } from "./SalesSingle.tsx";
 import { useSalesContext } from "../../../../providers/sales/Sales.tsx";
 import {DepartmentSelectModal} from "./DepartmentSelectModal.tsx";
 import {EmployeeSelectModal} from "./EmployeeSelectModal.tsx";
-import {PartnerSelectModal} from "./PartnerSelectModal.tsx";
 import {ProductSelectModal} from "./ProductSelectModal.tsx";
+import {CustomerSelectModal} from "./CustomerSelectModal.tsx";
 
 export const SalesEditModal: React.FC = () => {
     const {
@@ -33,7 +33,7 @@ export const SalesEditModal: React.FC = () => {
             <SalesSingle/>
             <DepartmentSelectModal type={"edit"}/>
             <EmployeeSelectModal type={"edit"}/>
-            <PartnerSelectModal type={"edit"}/>
+            <CustomerSelectModal type={"edit"}/>
             <ProductSelectModal/>
         </Modal>
     )

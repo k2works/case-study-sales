@@ -1,10 +1,10 @@
 package com.example.sms.domain.model.master.partner.vendor;
 
+import com.example.sms.domain.model.master.partner.billing.ClosingBilling;
 import com.example.sms.domain.type.mail.EmailAddress;
 import com.example.sms.domain.type.phone.FaxNumber;
 import com.example.sms.domain.type.phone.PhoneNumber;
 import com.example.sms.domain.type.address.Address;
-import com.example.sms.domain.model.master.partner.invoice.ClosingInvoice;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;
@@ -24,7 +24,7 @@ public class Vendor {
     PhoneNumber vendorPhoneNumber; // 仕入先電話番号
     FaxNumber vendorFaxNumber; // 仕入先ｆａｘ番号
     EmailAddress vendorEmailAddress; // 仕入先メールアドレス
-    ClosingInvoice vendorClosingInvoice; // 仕入先締請求
+    ClosingBilling vendorClosingBilling; // 仕入先締請求
 
     public static Vendor of(
             String vendorCode,
@@ -54,7 +54,7 @@ public class Vendor {
                 PhoneNumber.of(vendorPhoneNumber),
                 FaxNumber.of(vendorFaxNumber),
                 EmailAddress.of(vendorEmailAddress),
-                ClosingInvoice.of(vendorClosingDate, vendorPaymentMonth, vendorPaymentDate, vendorPaymentMethod)
+                ClosingBilling.of(vendorClosingDate, vendorPaymentMonth, vendorPaymentDate, vendorPaymentMethod)
         );
     }
 
@@ -67,7 +67,7 @@ public class Vendor {
             PhoneNumber vendorPhoneNumber,
             FaxNumber vendorFaxNumber,
             EmailAddress vendorEmailAddress,
-            ClosingInvoice vendorClosingInvoice
+            ClosingBilling vendorClosingBilling
     ) {
         return new Vendor(
                 vendorCode,
@@ -78,7 +78,7 @@ public class Vendor {
                 vendorPhoneNumber,
                 vendorFaxNumber,
                 vendorEmailAddress,
-                vendorClosingInvoice
+                vendorClosingBilling
         );
     }
 }

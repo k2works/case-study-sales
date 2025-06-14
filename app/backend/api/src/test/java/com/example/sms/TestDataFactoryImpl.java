@@ -1,7 +1,11 @@
 package com.example.sms;
 
 import com.example.sms.domain.model.master.employee.EmployeeCode;
+import com.example.sms.domain.model.master.partner.billing.Billing;
+import com.example.sms.domain.model.master.partner.billing.ClosingBilling;
 import com.example.sms.domain.model.master.partner.customer.Customer;
+import com.example.sms.domain.model.master.partner.customer.CustomerBillingCategory;
+import com.example.sms.domain.model.master.partner.customer.CustomerCode;
 import com.example.sms.domain.model.master.partner.customer.Shipping;
 import com.example.sms.domain.model.master.partner.vendor.Vendor;
 import com.example.sms.domain.model.master.product.MiscellaneousType;
@@ -12,6 +16,8 @@ import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.master.partner.*;
 import com.example.sms.domain.model.master.partner.Partner;
 import com.example.sms.domain.model.master.product.*;
+import com.example.sms.domain.model.sales.invoice.Invoice;
+import com.example.sms.domain.model.sales.invoice.InvoiceLine;
 import com.example.sms.domain.model.sales.order.Order;
 import com.example.sms.domain.model.sales.order.OrderLine;
 import com.example.sms.domain.model.sales.order.OrderList;
@@ -31,6 +37,7 @@ import com.example.sms.service.master.partner.PartnerGroupRepository;
 import com.example.sms.service.master.partner.PartnerRepository;
 import com.example.sms.service.master.product.ProductCategoryRepository;
 import com.example.sms.service.master.product.ProductRepository;
+import com.example.sms.service.sales.invoice.InvoiceRepository;
 import com.example.sms.service.sales.sales.SalesRepository;
 import com.example.sms.service.sales.order.SalesOrderRepository;
 import com.example.sms.service.system.audit.AuditRepository;
@@ -74,6 +81,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
     SalesOrderRepository salesOrderRepository;
     @Autowired
     SalesRepository salesRepository;
+    @Autowired
+    InvoiceRepository invoiceRepository;
 
     @Override
     public void setUpForAuthApiService() {
@@ -207,13 +216,16 @@ public class TestDataFactoryImpl implements TestDataFactory {
         Department department = departmentRepository.findById(DepartmentId.of("30000", LocalDateTime.of(2021, 1, 1, 0, 0))).orElseThrow();
 
         // 取引先データの準備
-        Partner partner = partnerRepository.findById("001").orElseThrow();
+        Customer customer = partnerRepository.findCustomerById(CustomerCode.of("001", 1)).orElseThrow();
 
         // 社員データの準備
         Employee employee = employeeRepository.findById(EmployeeCode.of("EMP003")).orElseThrow();
 
         // 出荷データの準備
         setUpForShippingService();
+
+        // 請求データの準備
+        invoiceRepository.deleteAll();
 
         // 売上データの削除
         salesRepository.deleteAll();
@@ -222,11 +234,15 @@ public class TestDataFactoryImpl implements TestDataFactory {
         IntStream.rangeClosed(1, 3).forEach(i -> {
             // 売上番号をフォーマット
             String salesNumber = String.format("SA%08d", i);
+            // 受注番号をフォーマット
+            String orderNumber = salesNumber.replace("SA", "OD");
 
             // 売上明細の準備
             List<SalesLine> salesLines = IntStream.range(1, 4)
                     .mapToObj((IntFunction<SalesLine>) lineNumber -> SalesLine.of(
                             salesNumber,
+                            lineNumber,
+                            orderNumber,
                             lineNumber,
                             "99999999", // 商品コード
                             "商品1",    // 商品名
@@ -251,7 +267,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
                     1, // 売上区分
                     department.getDepartmentId().getDeptCode().getValue(), // 部門コード
                     department.getDepartmentId().getDepartmentStartDate().getValue(), // 部門開始日
-                    partner.getPartnerCode().getValue(), // 取引先コード
+                    customer.getCustomerCode().getCode().getValue(), // 取引先コード
+                    customer.getCustomerCode().getBranchNumber(),
                     employee.getEmpCode().getValue(), // 社員コード
                     null, // 赤黒伝票番号
                     null, // 元伝票番号
@@ -261,6 +278,9 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
             // 作成した売上データを保存
             salesRepository.save(newSales);
+
+            // 請求データの準備
+            setUpForInvoiceAcceptanceService();
         });
     }
 
@@ -440,7 +460,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
                                 10,  // shippedQuantity（出荷済数量）
                                 1,  // completionFlag（完了フラグ）
                                 10,  // discountAmount（値引金額）
-                                LocalDateTime.of(2021, 1, 1, 0, 0)  // deliveryDate（納期）
+                                LocalDateTime.of(2021, 1, 1, 0, 0),  // deliveryDate（納期）
+                                LocalDateTime.of(2021, 1, 1, 0, 0)  // shippingDate（出荷日）
                         );
                         newLines.add(newLine);
                     }
@@ -499,6 +520,9 @@ public class TestDataFactoryImpl implements TestDataFactory {
         // 出荷データの準備
         setUpForShippingService();
 
+        // 請求データの準備
+        invoiceRepository.deleteAll();
+
         // 売上データの削除
         salesRepository.deleteAll();
 
@@ -506,11 +530,15 @@ public class TestDataFactoryImpl implements TestDataFactory {
         IntStream.rangeClosed(1, 3).forEach(i -> {
             // 売上番号をフォーマット
             String salesNumber = String.format("SA%08d", i);
+            // 受注番号をフォーマット
+            String orderNumber = salesNumber.replace("SA", "OD");
 
             // 売上明細の準備
             List<SalesLine> salesLines = IntStream.range(1, 4)
                     .mapToObj((IntFunction<SalesLine>) lineNumber -> SalesLine.of(
                             salesNumber,
+                            lineNumber,
+                            orderNumber,
                             lineNumber,
                             "99999999", // 商品コード
                             "商品1",    // 商品名
@@ -536,6 +564,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
                     department.getDepartmentId().getDeptCode().getValue(), // 部門コード
                     department.getDepartmentId().getDepartmentStartDate().getValue(), // 部門開始日
                     customer.getCustomerCode().getCode().getValue(), // 取引先コード
+                    customer.getCustomerCode().getBranchNumber(),
                     employee.getEmpCode().getValue(), // 社員コード
                     null, // 赤黒伝票番号
                     null, // 元伝票番号
@@ -546,6 +575,125 @@ public class TestDataFactoryImpl implements TestDataFactory {
             // 作成した売上データを保存
             salesRepository.save(newSales);
         });
+    }
+
+    @Override
+    public void setUpForSalesServiceForAggregate() {
+        // 請求データの削除
+        invoiceRepository.deleteAll();
+
+        // 売上データの削除
+        salesRepository.deleteAll();
+
+        // 受注データの削除
+        salesOrderRepository.deleteAll();
+    }
+
+    @Override
+    public void setUpForInvoiceService() {
+        // 取引先・顧客データの準備
+        Partner partner = getPartner("009");
+        String partnerCode = partner.getPartnerCode().getValue();
+        CustomerBillingCategory customerBillingCategory = CustomerBillingCategory.都度請求;
+        ClosingBilling closingBilling = ClosingBilling.of(20, 1, 99, 1);
+        Billing billing = new Billing(customerBillingCategory, closingBilling, closingBilling);
+        Customer customer = TestDataFactoryImpl.getCustomer("009", 1).toBuilder()
+                .billing(billing)
+                .build();
+        CustomerCode customerCode = customer.getCustomerCode();
+        List<Shipping> shippingList = IntStream.rangeClosed(1, 3)
+                .mapToObj(i -> getShipping(partnerCode, i, customerCode.getBranchNumber()))
+                .toList();
+        partnerRepository.save(Partner.ofWithCustomers(partner, List.of(Customer.of(customer, shippingList))));
+
+        Partner partner2 = getPartner("010");
+        String partnerCode2 = partner2.getPartnerCode().getValue();
+        CustomerBillingCategory customerBillingCategory2 = CustomerBillingCategory.締請求;
+        ClosingBilling closingBilling2_1 = ClosingBilling.of(10, 0, 10, 1);
+        ClosingBilling closingBilling2_2 = ClosingBilling.of(10, 0, 10, 1);
+        Billing billing2 = new Billing(customerBillingCategory2, closingBilling2_1, closingBilling2_2);
+        Customer customer2 = TestDataFactoryImpl.getCustomer("010", 1).toBuilder()
+                .billing(billing2)
+                .build();
+        CustomerCode customerCode2 = customer.getCustomerCode();
+        List<Shipping> shippingList2 = IntStream.rangeClosed(1, 3)
+                .mapToObj(i -> getShipping(partnerCode2, i, customerCode2.getBranchNumber()))
+                .toList();
+        partnerRepository.save(Partner.ofWithCustomers(partner2, List.of(Customer.of(customer2, shippingList2))));
+
+        Partner partner3 = getPartner("011");
+        String partnerCode3 = partner3.getPartnerCode().getValue();
+        CustomerBillingCategory customerBillingCategory3 = CustomerBillingCategory.締請求;
+        ClosingBilling closingBilling3_1 = ClosingBilling.of(20, 1, 20, 1);
+        ClosingBilling closingBilling3_2 = ClosingBilling.of(20, 1, 20, 1);
+        Billing billing3 = new Billing(customerBillingCategory3, closingBilling3_1, closingBilling3_2);
+        Customer customer3 = TestDataFactoryImpl.getCustomer("011", 1).toBuilder()
+                .billing(billing3)
+                .build();
+        CustomerCode customerCode3 = customer.getCustomerCode();
+        List<Shipping> shippingList3 = IntStream.rangeClosed(1, 3)
+                .mapToObj(i -> getShipping(partnerCode3, i, customerCode3.getBranchNumber()))
+                .toList();
+        partnerRepository.save(Partner.ofWithCustomers(partner3, List.of(Customer.of(customer3, shippingList3))));
+
+        Partner partner4 = getPartner("012");
+        String partnerCode4 = partner4.getPartnerCode().getValue();
+        CustomerBillingCategory customerBillingCategory4 = CustomerBillingCategory.締請求;
+        ClosingBilling closingBilling4_1 = ClosingBilling.of(99, 2, 99, 1);
+        ClosingBilling closingBilling4_2 = ClosingBilling.of(99, 2, 99, 1);
+        Billing billing4 = new Billing(customerBillingCategory4, closingBilling4_1, closingBilling4_2);
+        Customer customer4 = TestDataFactoryImpl.getCustomer("012", 1).toBuilder()
+                .billing(billing4)
+                .build();
+        CustomerCode customerCode4 = customer.getCustomerCode();
+        List<Shipping> shippingList4 = IntStream.rangeClosed(1, 3)
+                .mapToObj(i -> getShipping(partnerCode4, i, customerCode4.getBranchNumber()))
+                .toList();
+        partnerRepository.save(Partner.ofWithCustomers(partner4, List.of(Customer.of(customer4, shippingList4))));
+
+        Partner partner5 = getPartner("013");
+        String partnerCode5 = partner5.getPartnerCode().getValue();
+        CustomerBillingCategory customerBillingCategory5 = CustomerBillingCategory.締請求;
+        ClosingBilling closingBilling5_1 = ClosingBilling.of(10, 0, 10, 1);
+        ClosingBilling closingBilling5_2 = ClosingBilling.of(20, 1, 20, 1);
+        Billing billing5 = new Billing(customerBillingCategory5, closingBilling5_1, closingBilling5_2);
+        Customer customer5 = TestDataFactoryImpl.getCustomer("013", 1).toBuilder()
+                .billing(billing5)
+                .build();
+        CustomerCode customerCode5 = customer.getCustomerCode();
+        List<Shipping> shippingList5 = IntStream.rangeClosed(1, 3)
+                .mapToObj(i -> getShipping(partnerCode5, i, customerCode5.getBranchNumber()))
+                .toList();
+        partnerRepository.save(Partner.ofWithCustomers(partner5, List.of(Customer.of(customer5, shippingList5))));
+
+        Partner partner6 = getPartner("014");
+        String partnerCode6 = partner6.getPartnerCode().getValue();
+        CustomerBillingCategory customerBillingCategory6 = CustomerBillingCategory.締請求;
+        ClosingBilling closingBilling6_1 = ClosingBilling.of(20, 1, 20, 1);
+        ClosingBilling closingBilling6_2 = ClosingBilling.of(99, 2, 99, 1);
+        Billing billing6 = new Billing(customerBillingCategory6, closingBilling6_1, closingBilling6_2);
+        Customer customer6 = TestDataFactoryImpl.getCustomer("014", 1).toBuilder()
+                .billing(billing6)
+                .build();
+        CustomerCode customerCode6 = customer.getCustomerCode();
+        List<Shipping> shippingList6 = IntStream.rangeClosed(1, 3)
+                .mapToObj(i -> getShipping(partnerCode6, i, customerCode6.getBranchNumber()))
+                .toList();
+        partnerRepository.save(Partner.ofWithCustomers(partner6, List.of(Customer.of(customer6, shippingList6))));
+
+        setUpForSalesServiceForAggregate();
+    }
+
+    @Override
+    public void setUpForInvoiceAcceptanceService() {
+        IntStream.range(0, 3).forEach(i -> {
+            Invoice invoice = getInvoice(String.format("IV%08d", i));
+            invoiceRepository.save(invoice);
+        });
+
+        Sales sales = getSales("SA12345678");
+        SalesLine salesLine = getSalesLine(sales.getSalesNumber().getValue(), 1);
+        salesRepository.save(sales.toBuilder().salesLines(List.of(salesLine)).build());
     }
 
     @Override
@@ -772,7 +920,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 10,  // shippedQuantity（出荷済数量）
                 0,  // completionFlag（完了フラグ）
                 10,  // discountAmount（値引金額）
-                LocalDateTime.of(2021, 1, 1, 0, 0)  // deliveryDate（納期）
+                LocalDateTime.of(2021, 1, 1, 0, 0),  // deliveryDate（納期）
+                LocalDateTime.of(2021, 1, 1, 0, 0)  // shippingDate（出荷日）
         );
     }
 
@@ -785,6 +934,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 "10000",
                 LocalDateTime.of(2023, 10, 1, 0, 0),
                 "001",
+                1,
                 "EMP001",
                 1,
                 "V001",
@@ -796,6 +946,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
     public static SalesLine getSalesLine(String salesNumber, int lineNumber) {
         return SalesLine.of(
                 salesNumber,
+                lineNumber,
+                salesNumber.replace("SA", "OD"),
                 lineNumber,
                 "99999999",
                 "商品名",
@@ -809,6 +961,30 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 LocalDateTime.of(2023, 10, 1, 0, 0),
                 null,
                 TaxRateType.標準税率
+        );
+    }
+
+    public static Invoice getInvoice(String invoiceNumber) {
+        return Invoice.of(
+                invoiceNumber,
+                LocalDateTime.now(),
+                "001",
+                1,
+                10000,
+                50000,
+                20000,
+                40000,
+                4000,
+                0,
+                List.of()
+        );
+    }
+
+    public static InvoiceLine getInvoiceLine(String invoiceNumber, String saleNumber, int lineNumber) {
+        return  InvoiceLine.of(
+                invoiceNumber,
+                saleNumber,
+                lineNumber
         );
     }
 

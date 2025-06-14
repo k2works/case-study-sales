@@ -9,6 +9,7 @@ import lombok.Getter;
 public enum DocumentTypeCode {
     受注("OD"),
     売上("SA"),
+    請求("IV"),
     その他("XX");
 
     private final String code;

@@ -296,6 +296,7 @@ const Form = ({isEditing, newSalesOrder, setNewSalesOrder, setSelectedLineIndex,
                                 <th>完了フラグ</th>
                                 <th>値引金額</th>
                                 <th>納期</th>
+                                <th>出荷日</th>
                                 <th>操作</th>
                             </tr>
                         </thead>
@@ -407,6 +408,14 @@ const Form = ({isEditing, newSalesOrder, setNewSalesOrder, setSelectedLineIndex,
                                             type="datetime-local"
                                             value={line.deliveryDate}
                                             onChange={(e) => handleUpdateLine(index, { ...line, deliveryDate: e.target.value })}
+                                            className="table-input"
+                                        />
+                                    </td>
+                                    <td className="table-cell">
+                                        <input
+                                            type="datetime-local"
+                                            value={line.shippingDate}
+                                            onChange={(e) => handleUpdateLine(index, { ...line, shippingDate: e.target.value })}
                                             className="table-input"
                                         />
                                     </td>

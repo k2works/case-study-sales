@@ -22,6 +22,12 @@ public class SalesLineResource {
     @Schema(description = "明細番号")
     private Integer salesLineNumber;
 
+    @Schema(description = "受注番号")
+    private String orderNumber;
+
+    @Schema(description = "受注明細番号")
+    private Integer orderLineNumber;
+
     @Schema(description = "製品コード")
     private String productCode;
 
@@ -63,6 +69,8 @@ public class SalesLineResource {
         return SalesLineResource.builder()
                 .salesNumber(salesLine.getSalesNumber().getValue())
                 .salesLineNumber(salesLine.getSalesLineNumber())
+                .orderNumber(salesLine.getOrderNumber().getValue())
+                .orderLineNumber(salesLine.getOrderLineNumber())
                 .productCode(salesLine.getProductCode().getValue())
                 .productName(salesLine.getProductName())
                 .salesUnitPrice(salesLine.getSalesUnitPrice().getAmount())

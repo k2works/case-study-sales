@@ -147,7 +147,7 @@ class VendorServiceTest {
                         originalVendor.getVendorPhoneNumber(),
                         originalVendor.getVendorFaxNumber(),
                         originalVendor.getVendorEmailAddress(),
-                        originalVendor.getVendorClosingInvoice()
+                        originalVendor.getVendorClosingBilling()
                 );
                 vendorService.save(updatedVendor);
 
@@ -174,7 +174,7 @@ class VendorServiceTest {
                         originalVendor1.getVendorPhoneNumber(),
                         originalVendor1.getVendorFaxNumber(),
                         originalVendor1.getVendorEmailAddress(),
-                        originalVendor1.getVendorClosingInvoice()
+                        originalVendor1.getVendorClosingBilling()
                 );
                 Vendor updatedVendor2 = Vendor.of(
                         originalVendor2.getVendorCode(),
@@ -185,7 +185,7 @@ class VendorServiceTest {
                         originalVendor2.getVendorPhoneNumber(),
                         originalVendor2.getVendorFaxNumber(),
                         originalVendor2.getVendorEmailAddress(),
-                        originalVendor2.getVendorClosingInvoice()
+                        originalVendor2.getVendorClosingBilling()
                 );
                 vendorService.save(updatedVendor1);
                 vendorService.save(updatedVendor2);
@@ -250,7 +250,7 @@ class VendorServiceTest {
                         originalVendor.getVendorPhoneNumber(),
                         originalVendor.getVendorFaxNumber(),
                         originalVendor.getVendorEmailAddress(),
-                        originalVendor.getVendorClosingInvoice()
+                        originalVendor.getVendorClosingBilling()
                 );
                 vendorService.register(updatedVendor);
 
@@ -276,7 +276,7 @@ class VendorServiceTest {
                         originalVendor.getVendorPhoneNumber(),
                         originalVendor.getVendorFaxNumber(),
                         originalVendor.getVendorEmailAddress(),
-                        originalVendor.getVendorClosingInvoice()
+                        originalVendor.getVendorClosingBilling()
                 );
                 vendorService.register(updatedVendor);
 
@@ -302,7 +302,7 @@ class VendorServiceTest {
                         originalVendor.getVendorPhoneNumber(),
                         originalVendor.getVendorFaxNumber(),
                         originalVendor.getVendorEmailAddress(),
-                        originalVendor.getVendorClosingInvoice()
+                        originalVendor.getVendorClosingBilling()
                 );
                 vendorService.register(updatedVendor);
 
@@ -328,7 +328,7 @@ class VendorServiceTest {
                         originalVendor.getVendorPhoneNumber(),
                         originalVendor.getVendorFaxNumber(),
                         originalVendor.getVendorEmailAddress(),
-                        originalVendor.getVendorClosingInvoice()
+                        originalVendor.getVendorClosingBilling()
                 );
                 vendorService.register(updatedVendor);
 
@@ -357,7 +357,7 @@ class VendorServiceTest {
                         PhoneNumber.of("0123456789"),
                         originalVendor.getVendorFaxNumber(),
                         originalVendor.getVendorEmailAddress(),
-                        originalVendor.getVendorClosingInvoice()
+                        originalVendor.getVendorClosingBilling()
                 );
                 vendorService.register(updatedVendor);
 
@@ -383,7 +383,7 @@ class VendorServiceTest {
                         originalVendor.getVendorPhoneNumber(),
                         FaxNumber.of("0123456789"),
                         originalVendor.getVendorEmailAddress(),
-                        originalVendor.getVendorClosingInvoice()
+                        originalVendor.getVendorClosingBilling()
                 );
                 vendorService.register(updatedVendor);
 
@@ -409,7 +409,7 @@ class VendorServiceTest {
                         originalVendor.getVendorPhoneNumber(),
                         originalVendor.getVendorFaxNumber(),
                         EmailAddress.of("user@example.com"),
-                        originalVendor.getVendorClosingInvoice()
+                        originalVendor.getVendorClosingBilling()
                 );
                 vendorService.register(updatedVendor);
 

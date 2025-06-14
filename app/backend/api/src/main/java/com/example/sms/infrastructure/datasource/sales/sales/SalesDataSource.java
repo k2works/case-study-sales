@@ -1,7 +1,9 @@
 package com.example.sms.infrastructure.datasource.sales.sales;
 
 
+import com.example.sms.domain.model.sales.invoice.InvoiceLine;
 import com.example.sms.domain.model.sales.sales.Sales;
+import com.example.sms.domain.model.sales.sales.SalesLine;
 import com.example.sms.domain.model.sales.sales.SalesList;
 import com.example.sms.infrastructure.PageInfoHelper;
 import com.example.sms.infrastructure.datasource.ObjectOptimisticLockingFailureException;
@@ -10,6 +12,8 @@ import com.example.sms.infrastructure.datasource.autogen.mapper.売上データ�
 import com.example.sms.infrastructure.datasource.autogen.model.売上データ;
 import com.example.sms.infrastructure.datasource.autogen.model.売上データ明細;
 import com.example.sms.infrastructure.datasource.autogen.model.売上データ明細Key;
+import com.example.sms.infrastructure.datasource.sales.invoice.invoice_line.InvoiceLineCustomMapper;
+import com.example.sms.infrastructure.datasource.sales.sales.sales_line.SalesLineCustomEntity;
 import com.example.sms.infrastructure.datasource.sales.sales.sales_line.SalesLineCustomMapper;
 import com.example.sms.service.sales.sales.SalesCriteria;
 import com.example.sms.service.sales.sales.SalesRepository;
@@ -31,17 +35,19 @@ public class SalesDataSource implements SalesRepository {
     private final SalesCustomMapper salesCustomMapper;
     private final SalesLineCustomMapper salesLineCustomMapper;
     private final SalesEntityMapper salesEntityMapper;
+    private final InvoiceLineCustomMapper invoiceLineCustomMapper;
 
     public SalesDataSource(
             売上データMapper salesMapper, 売上データ明細Mapper salesLineMapper,
             SalesCustomMapper salesCustomMapper,
             SalesLineCustomMapper salesLineCustomMapper,
-            SalesEntityMapper salesEntityMapper) {
+            SalesEntityMapper salesEntityMapper, InvoiceLineCustomMapper invoiceLineCustomMapper) {
         this.salesMapper = salesMapper;
         this.salesLineMapper = salesLineMapper;
         this.salesCustomMapper = salesCustomMapper;
         this.salesLineCustomMapper = salesLineCustomMapper;
         this.salesEntityMapper = salesEntityMapper;
+        this.invoiceLineCustomMapper = invoiceLineCustomMapper;
     }
 
     @Override
@@ -79,7 +85,6 @@ public class SalesDataSource implements SalesRepository {
         }
 
         if (sales.getSalesLines() != null) {
-            salesLineCustomMapper.deleteBySalesNumber(sales.getSalesNumber().getValue());
             AtomicInteger index = new AtomicInteger(1);
             sales.getSalesLines().forEach(salesLine -> {
                 売上データ明細Key key = new 売上データ明細Key();
@@ -90,7 +95,7 @@ public class SalesDataSource implements SalesRepository {
                 salesLineData.set作成者名(username);
                 salesLineData.set更新日時(LocalDateTime.now());
                 salesLineData.set更新者名(username);
-                salesLineMapper.insert(salesLineData);
+                salesLineMapper.updateByPrimaryKey(salesLineData);
             });
         }
     }
@@ -169,10 +174,41 @@ public class SalesDataSource implements SalesRepository {
     }
 
     @Override
-    public SalesList selectAllNotComplete() {
-        List<SalesCustomEntity> salesCustomEntities = salesCustomMapper.selectAllNotComplete(0);  // Assuming 0 => 未完了
+    public void deleteExceptInvoiced() {
+        List<SalesLineCustomEntity> salesLineCustomEntities = salesLineCustomMapper.selectAll();
+        salesLineCustomEntities.forEach(salesLineCustomEntity -> {
+            List<InvoiceLine> invoiceLines = invoiceLineCustomMapper.selectBySalesNumberAndLineNumber(salesLineCustomEntity.get売上番号(), salesLineCustomEntity.get売上行番号());
+            if (invoiceLines.isEmpty()) {
+                売上データ明細Key key = new 売上データ明細Key();
+                key.set売上番号(salesLineCustomEntity.get売上番号());
+                key.set売上行番号(salesLineCustomEntity.get売上行番号());
+                salesLineMapper.deleteByPrimaryKey(key);
+            }
+        });
+
+        List<SalesCustomEntity> salesCustomEntities = salesCustomMapper.selectAll();
+        salesCustomEntities.forEach(salesCustomEntity -> {
+            if (salesCustomEntity.get売上データ明細() == null || salesCustomEntity.get売上データ明細().isEmpty()) {
+                salesMapper.deleteByPrimaryKey(salesCustomEntity.get売上番号());
+            }
+        });
+    }
+
+    @Override
+    public List<SalesLine> selectBillingLines() {
+        List<SalesLineCustomEntity> salesLineCustomEntities = salesLineCustomMapper.selectBillingLines();
+        return salesLineCustomEntities.stream()
+                .map(salesEntityMapper::mapToDomainModel)
+                .toList();
+    }
+
+    @Override
+    public SalesList selectAllUnbilled() {
+        List<SalesCustomEntity> salesCustomEntities = salesCustomMapper.selectAllUnbilled();
+
         return new SalesList(salesCustomEntities.stream()
                 .map(salesEntityMapper::mapToDomainModel)
-                .toList());
+                .toList()
+        );
     }
 }

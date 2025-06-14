@@ -16,6 +16,7 @@ import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 売上サービス
@@ -63,7 +64,8 @@ public class SalesService {
                     Objects.requireNonNull(sales.getSalesType()).getCode(),
                     Objects.requireNonNull(Objects.requireNonNull(sales.getDepartmentId()).getDeptCode()).getValue(),
                     Objects.requireNonNull(sales.getDepartmentId().getDepartmentStartDate()).getValue(),
-                    Objects.requireNonNull(sales.getCustomerCode()).getValue(),
+                    Objects.requireNonNull(Objects.requireNonNull(sales.getCustomerCode()).getCode()).getValue(),
+                    Objects.requireNonNull(sales.getCustomerCode()).getBranchNumber(),
                     Objects.requireNonNull(sales.getEmployeeCode()).getValue(),
                     sales.getVoucherNumber(),
                     sales.getOriginalVoucherNumber(),
@@ -103,14 +105,30 @@ public class SalesService {
     }
 
     /**
+     * 売上の請求済みを取得
+     */
+    public SalesList selectAllUnbilled() {
+        return salesRepository.selectAllUnbilled();
+    }
+    /**
      * 売上集計
      */
     public void aggregate() {
-        salesRepository.deleteAll();
+       salesRepository.deleteExceptInvoiced();
 
         ShippingList  shippingList = shippingRepository.selectAllComplete();
 
-        List<String> orderNumberList = shippingList.asList().stream()
+        List<SalesLine> billingSalesLine = salesRepository.selectBillingLines();
+
+        List<Shipping> filteredList = shippingList.asList().stream()
+                .filter(shipping -> billingSalesLine.stream()
+                        .noneMatch(line -> line.getOrderNumber().equals(shipping.getOrderNumber())
+                                && line.getOrderLineNumber().equals(shipping.getOrderLineNumber())))
+                .toList();
+
+        ShippingList filteredShippingList = new ShippingList(filteredList);
+
+        List<String> orderNumberList = filteredShippingList.asList().stream()
                 .map(shipping -> shipping.getOrderNumber().getValue())
                 .distinct()
                 .toList();
@@ -118,16 +136,19 @@ public class SalesService {
         List<Sales> salesList = new ArrayList<>();
 
         orderNumberList.forEach(orderNumber -> {
-            List<Shipping> shippingListByOrderNumber = shippingList.asList().stream()
+            List<Shipping> shippingListByOrderNumber = filteredShippingList.asList().stream()
                     .filter(shipping -> Objects.equals(shipping.getOrderNumber().getValue(), orderNumber))
                     .toList();
 
             LocalDateTime saleDate = Objects.requireNonNull(Objects.requireNonNull(shippingListByOrderNumber.getFirst().getOrderDate()).getValue());
             String salesNumber = generateSalesNumber(saleDate);
 
+            AtomicInteger lineNumber = new AtomicInteger(1);
             List<SalesLine> salesLines = shippingListByOrderNumber.stream()
                     .map(shipping -> SalesLine.of(
                             salesNumber,
+                            lineNumber.getAndIncrement(),
+                            shipping.getOrderNumber().getValue(),
                             shipping.getOrderLineNumber(),
                             shipping.getProductCode().getValue(),
                             shipping.getProductName(),
@@ -138,7 +159,7 @@ public class SalesService {
                             null,
                             null,
                             null,
-                            shipping.getDeliveryDate().getValue(),
+                            null,
                             null,
                             shipping.getTaxRate()
                     ))
@@ -149,11 +170,12 @@ public class SalesService {
             Sales sales = Sales.of(
                     salesNumber,
                     shipping.getOrderNumber().getValue(),
-                    shipping.getDeliveryDate().getValue(),
+                    shipping.getShippingDate().getValue(),
                     SalesType.現金.getCode(),
                     shipping.getDepartmentCode().getValue(),
                     shipping.getDepartmentStartDate(),
                     shipping.getCustomerCode().getCode().getValue(),
+                    shipping.getCustomerCode().getBranchNumber(),
                     shipping.getEmployeeCode().getValue(),
                     null,
                     null,
@@ -178,5 +200,4 @@ public class SalesService {
         autoNumberService.incrementDocumentNumber(code, yearMonth);
         return salesNumber;
     }
-
 }

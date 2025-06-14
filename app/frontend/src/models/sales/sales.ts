@@ -18,6 +18,8 @@ export const SalesTypeValues = {
 export interface SalesLineType {
     salesNumber: string;
     salesLineNumber: number;
+    orderNumber: string;
+    orderLineNumber: number;
     productCode: string;
     productName: string;
     salesUnitPrice: number;
@@ -40,7 +42,9 @@ export interface SalesType {
     salesType: SalesTypeEnumType;
     departmentCode: string;
     departmentStartDate: string;
+    partnerCode: string;
     customerCode: string;
+    customerBranchNumber: number;
     employeeCode: string;
     totalSalesAmount: number;
     totalConsumptionTax: number;
@@ -56,6 +60,7 @@ export interface SalesCriteriaType {
     salesNumber?: string;
     orderNumber?: string;
     salesDate?: string;
+    customerCode?: string;
     departmentCode?: string;
     remarks?: string;
 }
@@ -69,7 +74,9 @@ export const mapToSalesResource = (sales: SalesType) => {
         salesType: sales.salesType ? SalesTypeValues[sales.salesType] : null,
         departmentCode: sales.departmentCode,
         departmentStartDate: toISOStringLocal(new Date(sales.departmentStartDate)),
+        partnerCode: sales.partnerCode,
         customerCode: sales.customerCode,
+        customerBranchNumber: sales.customerBranchNumber,
         employeeCode: sales.employeeCode,
         totalSalesAmount: sales.totalSalesAmount,
         totalConsumptionTax: sales.totalConsumptionTax,
@@ -79,6 +86,8 @@ export const mapToSalesResource = (sales: SalesType) => {
         salesLines: sales.salesLines.map(line => ({
             salesNumber: line.salesNumber,
             salesLineNumber: line.salesLineNumber,
+            orderNumber: line.orderNumber,
+            orderLineNumber: line.orderLineNumber,
             productCode: line.productCode,
             productName: line.productName,
             salesUnitPrice: line.salesUnitPrice,
@@ -96,12 +105,13 @@ export const mapToSalesResource = (sales: SalesType) => {
 
 // 検索条件をAPIリクエスト用に変換
 export const mapToSalesCriteriaResource = (criteria: SalesCriteriaType) => {
+    const isEmpty = (value: unknown) => value === "" || value === null || value === undefined;
     return {
-        salesNumber: criteria.salesNumber ?? null,
-        orderNumber: criteria.orderNumber ?? null,
-        salesDate: criteria.salesDate ?? null,
-        departmentCode: criteria.departmentCode ?? null,
-        remarks: criteria.remarks ?? null
+        ...(isEmpty(criteria.salesNumber) ? {} : { salesNumber: criteria.salesNumber }),
+        ...(isEmpty(criteria.orderNumber) ? {} : { orderNumber: criteria.orderNumber }),
+        ...(isEmpty(criteria.salesDate) ? {} : { salesDate: criteria.salesDate }),
+        ...(isEmpty(criteria.departmentCode) ? {} : { departmentCode: criteria.departmentCode }),
+        ...(isEmpty(criteria.remarks) ? {} : { remarks: criteria.remarks })
     };
 };
 
@@ -135,7 +145,9 @@ export const initialSales: SalesType = {
     salesType: SalesTypeEnumType.現金,
     departmentCode: "",
     departmentStartDate: "",
+    partnerCode: "",
     customerCode: "",
+    customerBranchNumber: 0,
     employeeCode: "",
     totalSalesAmount: 0,
     totalConsumptionTax: 0,
@@ -149,6 +161,8 @@ export const initialSales: SalesType = {
 export const initialSalesLine: SalesLineType = {
     salesNumber: "",
     salesLineNumber: 0,
+    orderNumber: "",
+    orderLineNumber: 0,
     productCode: "",
     productName: "",
     salesUnitPrice: 0,

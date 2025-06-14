@@ -3,12 +3,14 @@ package com.example.sms.domain.model.sales.sales;
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.ProductCode;
 import com.example.sms.domain.model.sales.order.ConsumptionTaxAmount;
+import com.example.sms.domain.model.sales.order.OrderNumber;
 import com.example.sms.domain.model.sales.order.SalesAmount;
 import com.example.sms.domain.model.sales.order.SalesCalculation;
 import com.example.sms.domain.model.sales.order.TaxRateType;
 import com.example.sms.domain.type.money.Money;
 import com.example.sms.domain.type.quantity.Quantity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
@@ -21,9 +23,12 @@ import java.util.Objects;
 @Value
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
+@Builder(toBuilder = true)
 public class SalesLine {
     SalesNumber salesNumber; // 売上番号
     Integer salesLineNumber; // 売上行番号
+    OrderNumber orderNumber; // 受注番号
+    Integer orderLineNumber; // 受注行番号
     ProductCode productCode; // 商品コード
     String productName; // 商品名
     Money salesUnitPrice; // 販売単価
@@ -41,17 +46,21 @@ public class SalesLine {
     Product product; // 商品マスタ情報
     TaxRateType taxRate; // 消費税率
 
-    public static SalesLine of(String salesNumber, Integer salesLineNumber, String productCode, String productName,
+    public static SalesLine of(String salesNumber, Integer salesLineNumber, String orderNumber, Integer orderLineNumber, 
+                               String productCode, String productName,
                                Integer salesUnitPrice, Integer salesQuantity, Integer shippedQuantity,
                                Integer discountAmount, LocalDateTime billingDate, String billingNumber,
                                Integer billingDelayCategory, LocalDateTime autoJournalDate, Product product, TaxRateType taxRate) {
         SalesCalculation salesCalculation = SalesCalculation.of(Money.of(salesUnitPrice), Quantity.of(salesQuantity), product, taxRate);
 
         SalesNumber salesNumberValueObject = salesNumber == null ? null : SalesNumber.of(salesNumber);
+        OrderNumber orderNumberValueObject = orderNumber == null ? null : OrderNumber.of(orderNumber);
 
         return new SalesLine(
                 salesNumberValueObject,
                 salesLineNumber,
+                orderNumberValueObject,
+                orderLineNumber,
                 ProductCode.of(productCode),
                 productName,
                 Money.of(salesUnitPrice),
@@ -75,6 +84,8 @@ public class SalesLine {
         return new SalesLine(
                 salesLine.getSalesNumber(),
                 salesLine.getSalesLineNumber(),
+                salesLine.getOrderNumber(),
+                salesLine.getOrderLineNumber(),
                 salesLine.getProductCode(),
                 salesLine.getProductName(),
                 salesLine.getSalesUnitPrice(),
@@ -108,6 +119,8 @@ public class SalesLine {
         return new SalesLine(
                 salesLine.getSalesNumber(),
                 salesLine.getSalesLineNumber(),
+                salesLine.getOrderNumber(),
+                salesLine.getOrderLineNumber(),
                 salesLine.getProductCode(),
                 salesLine.getProductName(),
                 salesLine.getSalesUnitPrice(),

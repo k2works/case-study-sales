@@ -8,7 +8,6 @@ import com.example.sms.domain.model.sales.order.SalesAmount;
 import com.example.sms.domain.model.sales.shipping.Shipping;
 import com.example.sms.domain.type.money.Money;
 import com.example.sms.service.sales.order.SalesOrderRepository;
-import com.example.sms.service.sales.shipping.ShippingRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -90,6 +89,7 @@ class ShippingRepositoryTest {
                 orderLine.getShippedQuantity(),
                 orderLine.getDiscountAmount(),
                 orderLine.getDeliveryDate(),
+                orderLine.getShippingDate(),
                 orderLine.getProduct(),
                 salesAmount,
                 consumptionTaxAmount,
@@ -158,7 +158,7 @@ class ShippingRepositoryTest {
             shippingRepository.save(shipping);
 
             Shipping actual = shippingRepository.findById(order.getOrderNumber().getValue(), 0).orElse(new Shipping());
-            assertEquals(shipping, actual);
+            assertEquals(shipping.toBuilder().shippingDate(null).build(), actual);
         }
 
         @Test
@@ -189,7 +189,7 @@ class ShippingRepositoryTest {
             shippingRepository.save(shipping);
 
             Shipping actual = shippingRepository.findById(order.getOrderNumber().getValue(), 0).orElse(new Shipping());
-            assertEquals(shipping, actual);
+            assertEquals(shipping.toBuilder().shippingDate(null).build(), actual);
         }
     }
 }

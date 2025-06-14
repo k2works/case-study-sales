@@ -114,7 +114,8 @@ public class UC019StepDefs extends SpringAcceptanceTest {
                         salesOrderLine.getShippedQuantity().getAmount(),
                         salesOrderLine.getCompletionFlag().getValue(),
                         salesOrderLine.getDiscountAmount().getAmount(),
-                        LocalDateTime.now().plusDays(1)
+                        LocalDateTime.now().plusDays(1),
+                        null
                 );
                 orderLines.add(line);
             });

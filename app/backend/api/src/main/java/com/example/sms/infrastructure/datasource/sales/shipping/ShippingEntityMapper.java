@@ -5,9 +5,9 @@ import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.master.employee.EmployeeCode;
 import com.example.sms.domain.model.master.department.DepartmentCode;
+import com.example.sms.domain.model.master.partner.billing.ClosingBilling;
 import com.example.sms.domain.model.master.partner.customer.*;
-import com.example.sms.domain.model.master.partner.invoice.ClosingInvoice;
-import com.example.sms.domain.model.master.partner.invoice.Invoice;
+import com.example.sms.domain.model.master.partner.billing.Billing;
 import com.example.sms.domain.model.master.product.*;
 import com.example.sms.domain.model.sales.order.*;
 import com.example.sms.domain.model.sales.shipping.Shipping;
@@ -150,15 +150,15 @@ public class ShippingEntityMapper {
                 PhoneNumber.of(e.get顧客電話番号()),
                 FaxNumber.of(e.get顧客ｆａｘ番号()),
                 EmailAddress.of(e.get顧客メールアドレス()),
-                Invoice.of(
+                Billing.of(
                         CustomerBillingCategory.fromCode(e.get顧客請求区分()),
-                        ClosingInvoice.of(
+                        ClosingBilling.of(
                                 e.get顧客締日１(),
                                 e.get顧客支払月１(),
                                 e.get顧客支払日１(),
                                 e.get顧客支払方法１()
                         ),
-                        ClosingInvoice.of(
+                        ClosingBilling.of(
                                 e.get顧客締日２(),
                                 e.get顧客支払月２(),
                                 e.get顧客支払日２(),
@@ -210,6 +210,7 @@ public class ShippingEntityMapper {
                 Quantity.of(orderLineCustomEntity.get出荷済数量()),
                 discountAmount,
                 DeliveryDate.of(orderLineCustomEntity.get納期()),
+                Objects.nonNull(orderLineCustomEntity.get出荷日()) ? ShippingDate.of(orderLineCustomEntity.get出荷日()) : null,
                 Objects.nonNull(orderLineCustomEntity.get商品マスタ()) ? mapToProduct.apply(orderLineCustomEntity.get商品マスタ()) : null,
                 salesAmount,
                 consumptionTaxAmount,

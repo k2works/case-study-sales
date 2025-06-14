@@ -5,7 +5,6 @@ import com.example.sms.domain.model.master.employee.EmployeeCode;
 import com.example.sms.domain.model.master.partner.customer.CustomerCode;
 import com.example.sms.domain.model.master.product.ProductCode;
 import com.example.sms.domain.model.sales.order.*;
-import com.example.sms.domain.model.sales.shipping.Shipping;
 import com.example.sms.domain.type.money.Money;
 import com.example.sms.domain.type.quantity.Quantity;
 import org.jetbrains.annotations.NotNull;
@@ -43,6 +42,7 @@ class ShippingTest {
                 Quantity.of(2),
                 Money.of(200),
                 DeliveryDate.of(LocalDateTime.now().plusDays(1)),
+                ShippingDate.of(LocalDateTime.now()),
                 null,
                 SalesAmount.of(Money.of(1000), Quantity.of(2)),
                 ConsumptionTaxAmount.of(SalesAmount.of(Money.of(1000), Quantity.of(2)), TaxRateType.標準税率),
@@ -191,6 +191,7 @@ class ShippingTest {
                     Quantity.of(2),
                     shipping.getDiscountAmount(),
                     shipping.getDeliveryDate(),
+                    shipping.getShippingDate(),
                     shipping.getProduct(),
                     shipping.getSalesAmount(),
                     shipping.getConsumptionTaxAmount(),
@@ -231,6 +232,7 @@ class ShippingTest {
                     Quantity.of(1),
                     shipping.getDiscountAmount(),
                     shipping.getDeliveryDate(),
+                    shipping.getShippingDate(),
                     shipping.getProduct(),
                     shipping.getSalesAmount(),
                     shipping.getConsumptionTaxAmount(),
@@ -306,6 +308,7 @@ class ShippingTest {
                     shipping.getShippedQuantity(),
                     shipping.getDiscountAmount(),
                     shipping.getDeliveryDate(),
+                    shipping.getShippingDate(),
                     shipping.getProduct(),
                     shipping.getSalesAmount(),
                     shipping.getConsumptionTaxAmount(),
@@ -345,6 +348,7 @@ class ShippingTest {
                     Quantity.of(3),
                     shipping.getDiscountAmount(),
                     shipping.getDeliveryDate(),
+                    shipping.getShippingDate(),
                     shipping.getProduct(),
                     shipping.getSalesAmount(),
                     shipping.getConsumptionTaxAmount(),
@@ -382,6 +386,7 @@ class ShippingTest {
                     Quantity.of(2),
                     shipping.getDiscountAmount(),
                     shipping.getDeliveryDate(),
+                    shipping.getShippingDate(),
                     shipping.getProduct(),
                     shipping.getSalesAmount(),
                     shipping.getConsumptionTaxAmount(),

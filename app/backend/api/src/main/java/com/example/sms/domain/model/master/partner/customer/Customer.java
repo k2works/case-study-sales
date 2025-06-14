@@ -1,12 +1,13 @@
 package com.example.sms.domain.model.master.partner.customer;
 
+import com.example.sms.domain.model.master.partner.billing.Billing;
+import com.example.sms.domain.model.master.partner.billing.ClosingBilling;
 import com.example.sms.domain.type.mail.EmailAddress;
 import com.example.sms.domain.type.phone.FaxNumber;
 import com.example.sms.domain.type.phone.PhoneNumber;
 import com.example.sms.domain.type.address.Address;
-import com.example.sms.domain.model.master.partner.invoice.ClosingInvoice;
-import com.example.sms.domain.model.master.partner.invoice.Invoice;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
@@ -21,6 +22,7 @@ import static org.apache.commons.lang3.Validate.notNull;
 @Value
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
+@Builder(toBuilder = true)
 public class Customer {
     CustomerCode customerCode; // 顧客コード
     CustomerType customerType; // 顧客区分
@@ -34,7 +36,7 @@ public class Customer {
     PhoneNumber customerPhoneNumber; // 顧客電話番号
     FaxNumber customerFaxNumber; // 顧客ｆａｘ番号
     EmailAddress customerEmailAddress; // 顧客メールアドレス
-    Invoice invoice; // 請求
+    Billing billing; // 請求
     List<Shipping> shippings; // 出荷先
 
     public static Customer of(
@@ -85,15 +87,15 @@ public class Customer {
                 PhoneNumber.of(customerPhoneNumber),
                 FaxNumber.of(customerFaxNumber),
                 EmailAddress.of(customerEmailAddress),
-                Invoice.of(
+                Billing.of(
                         CustomerBillingCategory.fromCode(customerBillingCategory),
-                        ClosingInvoice.of(
+                        ClosingBilling.of(
                                 customerClosingDay1,
                                 customerPaymentMonth1,
                                 customerPaymentDay1,
                                 customerPaymentMethod1
                         ),
-                        ClosingInvoice.of(
+                        ClosingBilling.of(
                                 customerClosingDay2,
                                 customerPaymentMonth2,
                                 customerPaymentDay2,
@@ -118,18 +120,18 @@ public class Customer {
                 customer.customerPhoneNumber,
                 customer.customerFaxNumber,
                 customer.customerEmailAddress,
-                customer.invoice,
+                customer.billing,
                 shippings
         );
     }
 
-    public static Customer of(Customer customer, ClosingInvoice closingInvoice1, ClosingInvoice  closingInvoice2) {
+    public static Customer of(Customer customer, ClosingBilling closingBilling1, ClosingBilling closingBilling2) {
         isTrue(
-                !(closingInvoice1 == null && closingInvoice2 == null),
+                !(closingBilling1 == null && closingBilling2 == null),
                 "締請求が設定されていません"
         );
 
-        notNull(closingInvoice1, "締請求1が設定されていません");
+        notNull(closingBilling1, "締請求1が設定されていません");
 
         return new Customer(
                 customer.customerCode,
@@ -144,10 +146,10 @@ public class Customer {
                 customer.customerPhoneNumber,
                 customer.customerFaxNumber,
                 customer.customerEmailAddress,
-                Invoice.of(
+                Billing.of(
                         CustomerBillingCategory.締請求,
-                        closingInvoice1,
-                        closingInvoice2
+                        closingBilling1,
+                        closingBilling2
                 ),
                 customer.shippings
         );
@@ -166,7 +168,7 @@ public class Customer {
             PhoneNumber customerPhoneNumber,
             FaxNumber customerFaxNumber,
             EmailAddress customerEmailAddress,
-            Invoice invoice,
+            Billing billing,
             List<Shipping> shippings
     ) {
         return new Customer(
@@ -182,7 +184,7 @@ public class Customer {
                 customerPhoneNumber,
                 customerFaxNumber,
                 customerEmailAddress,
-                invoice,
+                billing,
                 shippings
         );
     }

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.sms.infrastructure.datasource.sales.invoice.invoice_line.InvoiceLineCustomMapper">
+
+    <resultMap
+            id="BaseResultMap"
+            type="com.example.sms.infrastructure.datasource.sales.invoice.invoice_line.InvoiceLineCustomEntity"
+            extends="com.example.sms.infrastructure.datasource.autogen.mapper.請求データ明細Mapper.BaseResultMap">
+        <!-- 必要に応じて関連エンティティを追加 -->
+    </resultMap>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.請求データ明細Mapper.Base_Column_List" />
+        from public.請求データ明細
+    </select>
+
+    <select id="selectByInvoiceNumber" resultMap="BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.請求データ明細Mapper.Base_Column_List" />
+        from public.請求データ明細
+        where 請求番号 = #{invoiceNumber, jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByInvoiceNumber" parameterType="java.lang.String">
+        delete from public.請求データ明細
+        where 請求番号 = #{invoiceNumber, jdbcType=VARCHAR}
+    </delete>
+
+    <select id="selectBySalesNumberAndLineNumber" resultMap="BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.請求データ明細Mapper.Base_Column_List" />
+        from public.請求データ明細
+        where 売上番号 = #{salesNumber, jdbcType=VARCHAR}
+        and 売上行番号 = #{salesLineNumber, jdbcType=INTEGER}
+    </select>
+</mapper>

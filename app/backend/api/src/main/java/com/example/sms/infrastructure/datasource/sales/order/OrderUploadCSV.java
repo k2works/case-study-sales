@@ -112,6 +112,10 @@ public class OrderUploadCSV {
     @CsvCustomBindByName(column = "納期", converter = Pattern2ReadCSVUtil.LocalDateTimeConverter.class)
     private LocalDateTime deliveryDate;
 
+    @CsvCustomBindByPosition(position = 25, converter = Pattern2ReadCSVUtil.LocalDateTimeConverter.class)
+    @CsvCustomBindByName(column = "出荷日", converter = Pattern2ReadCSVUtil.LocalDateTimeConverter.class)
+    private LocalDateTime shippingDate;
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);

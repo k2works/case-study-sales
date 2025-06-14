@@ -157,7 +157,7 @@ class CustomerServiceTest {
                         originalCustomer.getCustomerPhoneNumber(),
                         originalCustomer.getCustomerFaxNumber(),
                         originalCustomer.getCustomerEmailAddress(),
-                        originalCustomer.getInvoice(),
+                        originalCustomer.getBilling(),
                         originalCustomer.getShippings()
                 );
                 customerService.save(updatedCustomer);
@@ -190,7 +190,7 @@ class CustomerServiceTest {
                         originalCustomer.getCustomerPhoneNumber(),
                         originalCustomer.getCustomerFaxNumber(),
                         originalCustomer.getCustomerEmailAddress(),
-                        originalCustomer.getInvoice(),
+                        originalCustomer.getBilling(),
                         originalCustomer.getShippings()
                 );
                 customerService.save(updatedCustomer);
@@ -223,7 +223,7 @@ class CustomerServiceTest {
                         originalCustomer2.getCustomerPhoneNumber(),
                         originalCustomer2.getCustomerFaxNumber(),
                         originalCustomer2.getCustomerEmailAddress(),
-                        originalCustomer2.getInvoice(),
+                        originalCustomer2.getBilling(),
                         originalCustomer2.getShippings()
                 );
                 customerService.save(updatedCustomer);
@@ -262,7 +262,7 @@ class CustomerServiceTest {
                         originalCustomer.getCustomerPhoneNumber(),
                         originalCustomer.getCustomerFaxNumber(),
                         originalCustomer.getCustomerEmailAddress(),
-                        originalCustomer.getInvoice(),
+                        originalCustomer.getBilling(),
                         List.of(updatedShipping)
                 );
                 customerService.save(updatedCustomer);
@@ -303,7 +303,7 @@ class CustomerServiceTest {
                         originalCustomer.getCustomerPhoneNumber(),
                         originalCustomer.getCustomerFaxNumber(),
                         originalCustomer.getCustomerEmailAddress(),
-                        originalCustomer.getInvoice(),
+                        originalCustomer.getBilling(),
                         List.of(updatedShipping, shipping2)
                 );
                 customerService.save(updatedCustomer);
@@ -415,7 +415,7 @@ class CustomerServiceTest {
                         originalCustomer.getCustomerPhoneNumber(),
                         originalCustomer.getCustomerFaxNumber(),
                         originalCustomer.getCustomerEmailAddress(),
-                        originalCustomer.getInvoice(),
+                        originalCustomer.getBilling(),
                         originalCustomer.getShippings()
                 );
                 customerService.register(updatedCustomer);
@@ -447,7 +447,7 @@ class CustomerServiceTest {
                         originalCustomer.getCustomerPhoneNumber(),
                         originalCustomer.getCustomerFaxNumber(),
                         originalCustomer.getCustomerEmailAddress(),
-                        originalCustomer.getInvoice(),
+                        originalCustomer.getBilling(),
                         originalCustomer.getShippings()
                 );
                 customerService.register(updatedCustomer);
@@ -479,7 +479,7 @@ class CustomerServiceTest {
                         originalCustomer.getCustomerPhoneNumber(),
                         originalCustomer.getCustomerFaxNumber(),
                         originalCustomer.getCustomerEmailAddress(),
-                        originalCustomer.getInvoice(),
+                        originalCustomer.getBilling(),
                         originalCustomer.getShippings()
                 );
                 customerService.register(updatedCustomer);
@@ -511,7 +511,7 @@ class CustomerServiceTest {
                         originalCustomer.getCustomerPhoneNumber(),
                         originalCustomer.getCustomerFaxNumber(),
                         originalCustomer.getCustomerEmailAddress(),
-                        originalCustomer.getInvoice(),
+                        originalCustomer.getBilling(),
                         originalCustomer.getShippings()
                 );
                 customerService.register(updatedCustomer);
@@ -543,7 +543,7 @@ class CustomerServiceTest {
                         originalCustomer.getCustomerPhoneNumber(),
                         originalCustomer.getCustomerFaxNumber(),
                         originalCustomer.getCustomerEmailAddress(),
-                        originalCustomer.getInvoice(),
+                        originalCustomer.getBilling(),
                         originalCustomer.getShippings()
                 );
                 customerService.register(updatedCustomer);
@@ -575,7 +575,7 @@ class CustomerServiceTest {
                         originalCustomer.getCustomerPhoneNumber(),
                         originalCustomer.getCustomerFaxNumber(),
                         originalCustomer.getCustomerEmailAddress(),
-                        originalCustomer.getInvoice(),
+                        originalCustomer.getBilling(),
                         originalCustomer.getShippings()
                 );
                 customerService.register(updatedCustomer);
@@ -607,7 +607,7 @@ class CustomerServiceTest {
                         originalCustomer.getCustomerPhoneNumber(),
                         originalCustomer.getCustomerFaxNumber(),
                         originalCustomer.getCustomerEmailAddress(),
-                        originalCustomer.getInvoice(),
+                        originalCustomer.getBilling(),
                         originalCustomer.getShippings()
                 );
                 customerService.register(updatedCustomer);
@@ -639,7 +639,7 @@ class CustomerServiceTest {
                         originalCustomer.getCustomerPhoneNumber(),
                         originalCustomer.getCustomerFaxNumber(),
                         originalCustomer.getCustomerEmailAddress(),
-                        originalCustomer.getInvoice(),
+                        originalCustomer.getBilling(),
                         originalCustomer.getShippings()
                 );
                 customerService.register(updatedCustomer);
@@ -671,7 +671,7 @@ class CustomerServiceTest {
                         originalCustomer.getCustomerPhoneNumber(),
                         originalCustomer.getCustomerFaxNumber(),
                         originalCustomer.getCustomerEmailAddress(),
-                        originalCustomer.getInvoice(),
+                        originalCustomer.getBilling(),
                         originalCustomer.getShippings()
                 );
                 customerService.register(updatedCustomer);
@@ -706,7 +706,7 @@ class CustomerServiceTest {
                         PhoneNumber.of("0312345679"), // 電話番号
                         customer.getCustomerFaxNumber(),
                         customer.getCustomerEmailAddress(),
-                        customer.getInvoice(),
+                        customer.getBilling(),
                         customer.getShippings()
                 );
                 customerService.register(updatedCustomer);
@@ -738,7 +738,7 @@ class CustomerServiceTest {
                         customer.getCustomerPhoneNumber(),
                         FaxNumber.of("0398765439"), // FAX番号
                         customer.getCustomerEmailAddress(),
-                        customer.getInvoice(),
+                        customer.getBilling(),
                         customer.getShippings()
                 );
                 customerService.register(updatedCustomer);
@@ -770,7 +770,7 @@ class CustomerServiceTest {
                         customer.getCustomerPhoneNumber(),
                         customer.getCustomerFaxNumber(),
                         EmailAddress.of("customer@example.com"), // メールアドレス
-                        customer.getInvoice(),
+                        customer.getBilling(),
                         customer.getShippings()
                 );
                 customerService.register(updatedCustomer);
@@ -816,7 +816,7 @@ class CustomerServiceTest {
                         PhoneNumber.of("0312345678"), // 電話番号
                         FaxNumber.of("0398765432"), // FAX番号
                         EmailAddress.of("customer@example.com"), // メールアドレス
-                        customer.getInvoice(),
+                        customer.getBilling(),
                         customer.getShippings()
                 );
                 customerService.register(updatedCustomer);

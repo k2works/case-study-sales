@@ -76,7 +76,8 @@ class SalesRepositoryTest {
                 sales.getSalesType().getCode(),
                 sales.getDepartmentId().getDeptCode().getValue(),
                 sales.getDepartmentId().getDepartmentStartDate().getValue(),
-                sales.getCustomerCode().getValue(),
+                sales.getCustomerCode().getCode().getValue(),
+                sales.getCustomerCode().getBranchNumber(),
                 sales.getEmployeeCode().getValue(),
                 sales.getVoucherNumber(),
                 sales.getOriginalVoucherNumber(),
@@ -94,7 +95,8 @@ class SalesRepositoryTest {
                 sales.getSalesType().getCode(),
                 sales.getDepartmentId().getDeptCode().getValue(),
                 sales.getDepartmentId().getDepartmentStartDate().getValue(),
-                sales.getCustomerCode().getValue(),
+                sales.getCustomerCode().getCode().getValue(),
+                sales.getCustomerCode().getBranchNumber(),
                 sales.getEmployeeCode().getValue(),
                 sales.getVoucherNumber(),
                 sales.getOriginalVoucherNumber(),
@@ -175,6 +177,8 @@ class SalesRepositoryTest {
             SalesLine updatedSalesLine = SalesLine.of(
                     originalLine.getSalesNumber().getValue(),
                     originalLine.getSalesLineNumber(),
+                    originalLine.getOrderNumber().getValue(),
+                    originalLine.getOrderLineNumber(),
                     originalLine.getProductCode().getValue(),
                     originalLine.getProductName(),
                     2000, // 売上単価を変更
