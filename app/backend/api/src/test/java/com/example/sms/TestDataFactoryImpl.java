@@ -23,6 +23,8 @@ import com.example.sms.domain.model.sales.order.Order;
 import com.example.sms.domain.model.sales.order.OrderLine;
 import com.example.sms.domain.model.sales.order.OrderList;
 import com.example.sms.domain.model.sales.order.TaxRateType;
+import com.example.sms.domain.model.sales.payment.incoming.Payment;
+import com.example.sms.domain.model.sales.payment.incoming.PaymentMethodType;
 import com.example.sms.domain.model.sales.sales.Sales;
 import com.example.sms.domain.model.sales.sales.SalesLine;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
@@ -1004,6 +1006,51 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 LocalDateTime.of(2023, 1, 1, 0, 0),
                 "0001",
                 "001"
+        );
+    }
+
+    public static Payment getPaymentData(String paymentNumber) {
+        return Payment.of(
+                paymentNumber,
+                LocalDateTime.now(),
+                "10000",
+                LocalDateTime.now(),
+                "001",
+                1,
+                4, // 振込
+                "ACC001",
+                10000,
+                0
+        );
+    }
+
+    public static Payment getPaymentWithCustomer(String paymentNumber, String customerCode, Integer branchNumber) {
+        return Payment.of(
+                paymentNumber,
+                LocalDateTime.now(),
+                "10000",
+                LocalDateTime.of(2021, 1, 1, 0, 0),
+                customerCode,
+                branchNumber,
+                PaymentMethodType.振込.getCode(),
+                "ACC001",
+                10000,
+                5000
+        );
+    }
+
+    public static Payment getPaymentWithAccount(String paymentNumber, String accountCode) {
+        return Payment.of(
+                paymentNumber,
+                LocalDateTime.now(),
+                "10000",
+                LocalDateTime.of(2021, 1, 1, 0, 0),
+                "001",
+                1,
+                PaymentMethodType.振込.getCode(),
+                accountCode,
+                10000,
+                5000
         );
     }
 

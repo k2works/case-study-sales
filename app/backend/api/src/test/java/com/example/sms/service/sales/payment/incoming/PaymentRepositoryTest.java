@@ -1,9 +1,9 @@
-package com.example.sms.service.sales.incoming;
+package com.example.sms.service.sales.payment.incoming;
 
+import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.sales.payment.incoming.Payment;
 import com.example.sms.domain.model.sales.payment.incoming.PaymentNumber;
 import com.example.sms.domain.type.money.Money;
-import com.example.sms.service.sales.payment.incoming.PaymentRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -58,7 +58,7 @@ class PaymentRepositoryTest {
     @DisplayName("入金データを保存して取得できること")
     void testSaveAndFindPaymentData() {
         // Given
-        Payment payment = createTestPaymentData("TEST001");
+        Payment payment = getPaymentData("TEST001");
 
         // When
         paymentRepository.save(payment);
@@ -74,7 +74,7 @@ class PaymentRepositoryTest {
     @DisplayName("入金データを更新できること")
     void testUpdatePaymentData() {
         // Given
-        Payment payment = createTestPaymentData("TEST002");
+        Payment payment = getPaymentData("TEST002");
         paymentRepository.save(payment);
 
         // When
@@ -100,7 +100,7 @@ class PaymentRepositoryTest {
     @DisplayName("入金データを削除できること")
     void testDeletePaymentData() {
         // Given
-        Payment payment = createTestPaymentData("TEST003");
+        Payment payment = getPaymentData("TEST003");
         paymentRepository.save(payment);
 
         // When
@@ -115,8 +115,8 @@ class PaymentRepositoryTest {
     @DisplayName("全ての入金データを取得できること")
     void testSelectAllPaymentData() {
         // Given
-        paymentRepository.save(createTestPaymentData("TEST004"));
-        paymentRepository.save(createTestPaymentData("TEST005"));
+        paymentRepository.save(getPaymentData("TEST004"));
+        paymentRepository.save(getPaymentData("TEST005"));
 
         // When
         List<Payment> allPayments = paymentRepository.selectAll();
@@ -126,18 +126,7 @@ class PaymentRepositoryTest {
     }
 
 
-    private Payment createTestPaymentData(String paymentNumber) {
-        return Payment.of(
-                paymentNumber,
-                LocalDateTime.now(),
-                "10000",
-                LocalDateTime.now(),
-                "001",
-                1,
-                4, // 振込
-                "ACC001",
-                10000,
-                0
-        );
+    private Payment getPaymentData(String paymentNumber) {
+        return TestDataFactoryImpl.getPaymentData(paymentNumber);
     }
 }
