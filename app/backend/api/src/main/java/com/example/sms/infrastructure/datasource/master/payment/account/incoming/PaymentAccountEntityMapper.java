@@ -1,6 +1,6 @@
-package com.example.sms.infrastructure.datasource.master.payment.account;
+package com.example.sms.infrastructure.datasource.master.payment.account.incoming;
 
-import com.example.sms.domain.model.master.payment.account.PaymentAccount;
+import com.example.sms.domain.model.master.payment.account.incoming.PaymentAccount;
 import com.example.sms.infrastructure.datasource.autogen.model.入金口座マスタ;
 import org.springframework.stereotype.Component;
 

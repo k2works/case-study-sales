@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.sms.infrastructure.datasource.sales.payment.PaymentCustomMapper">
+<mapper namespace="com.example.sms.infrastructure.datasource.sales.payment.incoming.PaymentCustomMapper">
     
     <!-- BaseResultMap -->
     <resultMap
             id="BaseResultMap"
-            type="com.example.sms.infrastructure.datasource.sales.payment.PaymentCustomEntity"
+            type="com.example.sms.infrastructure.datasource.sales.payment.incoming.PaymentCustomEntity"
             extends="com.example.sms.infrastructure.datasource.autogen.mapper.入金データMapper.BaseResultMap">
         <association property="部門マスタ"
                      javaType="com.example.sms.infrastructure.datasource.master.department.DepartmentCustomEntity"
@@ -18,9 +18,9 @@
                      select="com.example.sms.infrastructure.datasource.master.partner.customer.CustomerCustomMapper.selectByPrimaryKey"
                      fetchType="eager" />
         <association property="入金口座マスタ"
-                     javaType="com.example.sms.infrastructure.datasource.master.payment.account.PaymentAccountCustomEntity"
+                     javaType="com.example.sms.infrastructure.datasource.master.payment.account.incoming.PaymentAccountCustomEntity"
                      column="入金口座コード"
-                     select="com.example.sms.infrastructure.datasource.master.payment.account.PaymentAccountCustomMapper.selectByPrimaryKey"
+                     select="com.example.sms.infrastructure.datasource.master.payment.account.incoming.PaymentAccountCustomMapper.selectByPrimaryKey"
                      fetchType="eager" />
     </resultMap>
 
@@ -57,7 +57,7 @@
     </select>
 
     <!-- insert -->
-    <insert id="insert" parameterType="com.example.sms.infrastructure.datasource.sales.payment.PaymentCustomEntity">
+    <insert id="insert" parameterType="com.example.sms.infrastructure.datasource.sales.payment.incoming.PaymentCustomEntity">
         insert into public.入金データ (
             入金番号,
             入金日,
@@ -99,7 +99,7 @@
     </insert>
 
     <!-- updateByPrimaryKeyForOptimisticLock -->
-    <update id="updateByPrimaryKeyForOptimisticLock" parameterType="com.example.sms.infrastructure.datasource.sales.payment.PaymentCustomEntity">
+    <update id="updateByPrimaryKeyForOptimisticLock" parameterType="com.example.sms.infrastructure.datasource.sales.payment.incoming.PaymentCustomEntity">
         update public.入金データ
         set 入金日 = #{入金日,jdbcType=TIMESTAMP},
             部門コード = #{部門コード,jdbcType=VARCHAR},

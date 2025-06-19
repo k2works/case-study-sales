@@ -1,6 +1,6 @@
-package com.example.sms.service.sales.payment;
+package com.example.sms.service.sales.payment.incoming;
 
-import com.example.sms.domain.model.sales.payment.Payment;
+import com.example.sms.domain.model.sales.payment.incoming.Payment;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;

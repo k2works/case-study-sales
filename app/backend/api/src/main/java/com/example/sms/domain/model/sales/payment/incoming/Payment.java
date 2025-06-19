@@ -1,9 +1,9 @@
-package com.example.sms.domain.model.sales.payment;
+package com.example.sms.domain.model.sales.payment.incoming;
 
 import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.partner.customer.Customer;
 import com.example.sms.domain.model.master.partner.customer.CustomerCode;
-import com.example.sms.domain.model.master.payment.account.PaymentAccount;
+import com.example.sms.domain.model.master.payment.account.incoming.PaymentAccount;
 import com.example.sms.domain.type.money.Money;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

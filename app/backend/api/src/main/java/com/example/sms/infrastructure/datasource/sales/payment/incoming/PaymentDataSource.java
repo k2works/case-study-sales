@@ -1,10 +1,10 @@
-package com.example.sms.infrastructure.datasource.sales.payment;
+package com.example.sms.infrastructure.datasource.sales.payment.incoming;
 
-import com.example.sms.domain.model.sales.payment.Payment;
+import com.example.sms.domain.model.sales.payment.incoming.Payment;
 import com.example.sms.infrastructure.PageInfoHelper;
 import com.example.sms.infrastructure.datasource.autogen.mapper.入金データMapper;
 import com.example.sms.infrastructure.datasource.autogen.model.入金データ;
-import com.example.sms.service.sales.payment.PaymentRepository;
+import com.example.sms.service.sales.payment.incoming.PaymentRepository;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

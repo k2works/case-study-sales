@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.sms.infrastructure.datasource.master.payment.account.PaymentAccountCustomMapper">
+<mapper namespace="com.example.sms.infrastructure.datasource.master.payment.account.incoming.PaymentAccountCustomMapper">
     
     <!-- BaseResultMap -->
     <resultMap
             id="BaseResultMap"
-            type="com.example.sms.infrastructure.datasource.master.payment.account.PaymentAccountCustomEntity"
+            type="com.example.sms.infrastructure.datasource.master.payment.account.incoming.PaymentAccountCustomEntity"
             extends="com.example.sms.infrastructure.datasource.autogen.mapper.入金口座マスタMapper.BaseResultMap">
         <!-- 必要に応じて関連エンティティのマッピングを追加 -->
     </resultMap>
@@ -26,7 +26,7 @@
     </select>
 
     <!-- insert -->
-    <insert id="insert" parameterType="com.example.sms.infrastructure.datasource.master.payment.account.PaymentAccountCustomEntity">
+    <insert id="insert" parameterType="com.example.sms.infrastructure.datasource.master.payment.account.incoming.PaymentAccountCustomEntity">
         insert into public.入金口座マスタ (
             入金口座コード,
             入金口座名,
@@ -74,7 +74,7 @@
     </insert>
 
     <!-- updateByPrimaryKeyForOptimisticLock -->
-    <update id="updateByPrimaryKeyForOptimisticLock" parameterType="com.example.sms.infrastructure.datasource.master.payment.account.PaymentAccountCustomEntity">
+    <update id="updateByPrimaryKeyForOptimisticLock" parameterType="com.example.sms.infrastructure.datasource.master.payment.account.incoming.PaymentAccountCustomEntity">
         update public.入金口座マスタ
         set 入金口座名 = #{入金口座名,jdbcType=VARCHAR},
             適用開始日 = #{適用開始日,jdbcType=TIMESTAMP},

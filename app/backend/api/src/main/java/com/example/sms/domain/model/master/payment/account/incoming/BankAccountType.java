@@ -1,4 +1,4 @@
-package com.example.sms.domain.model.master.payment.account;
+package com.example.sms.domain.model.master.payment.account.incoming;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

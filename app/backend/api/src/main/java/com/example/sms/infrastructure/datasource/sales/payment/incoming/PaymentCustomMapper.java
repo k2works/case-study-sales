@@ -1,4 +1,4 @@
-package com.example.sms.infrastructure.datasource.sales.payment;
+package com.example.sms.infrastructure.datasource.sales.payment.incoming;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;

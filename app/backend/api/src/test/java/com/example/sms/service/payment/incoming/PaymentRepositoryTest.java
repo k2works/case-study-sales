@@ -1,9 +1,9 @@
-package com.example.sms.service.payment;
+package com.example.sms.service.payment.incoming;
 
-import com.example.sms.domain.model.sales.payment.Payment;
-import com.example.sms.domain.model.sales.payment.PaymentNumber;
+import com.example.sms.domain.model.sales.payment.incoming.Payment;
+import com.example.sms.domain.model.sales.payment.incoming.PaymentNumber;
 import com.example.sms.domain.type.money.Money;
-import com.example.sms.service.sales.payment.PaymentRepository;
+import com.example.sms.service.sales.payment.incoming.PaymentRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

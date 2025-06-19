@@ -1,7 +1,7 @@
 package com.example.sms.service.master.payment;
 
-import com.example.sms.domain.model.master.payment.account.PaymentAccount;
-import com.example.sms.domain.model.master.payment.account.PaymentAccountCode;
+import com.example.sms.domain.model.master.payment.account.incoming.PaymentAccount;
+import com.example.sms.domain.model.master.payment.account.incoming.PaymentAccountCode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

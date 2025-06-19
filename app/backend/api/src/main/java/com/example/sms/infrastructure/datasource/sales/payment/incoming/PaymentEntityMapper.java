@@ -1,12 +1,12 @@
-package com.example.sms.infrastructure.datasource.sales.payment;
+package com.example.sms.infrastructure.datasource.sales.payment.incoming;
 
 import com.example.sms.domain.model.master.partner.customer.Customer;
-import com.example.sms.domain.model.master.payment.account.PaymentAccount;
-import com.example.sms.domain.model.sales.payment.Payment;
+import com.example.sms.domain.model.master.payment.account.incoming.PaymentAccount;
+import com.example.sms.domain.model.sales.payment.incoming.Payment;
 import com.example.sms.infrastructure.datasource.autogen.model.入金口座マスタ;
 import com.example.sms.infrastructure.datasource.autogen.model.入金データ;
 import com.example.sms.infrastructure.datasource.master.partner.customer.CustomerCustomEntity;
-import com.example.sms.infrastructure.datasource.master.payment.account.PaymentAccountCustomEntity;
+import com.example.sms.infrastructure.datasource.master.payment.account.incoming.PaymentAccountCustomEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;

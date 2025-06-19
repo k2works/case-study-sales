@@ -1,9 +1,9 @@
-package com.example.sms.infrastructure.datasource.sales.payment;
+package com.example.sms.infrastructure.datasource.sales.payment.incoming;
 
 import com.example.sms.infrastructure.datasource.autogen.model.入金データ;
 import com.example.sms.infrastructure.datasource.master.department.DepartmentCustomEntity;
 import com.example.sms.infrastructure.datasource.master.partner.customer.CustomerCustomEntity;
-import com.example.sms.infrastructure.datasource.master.payment.account.PaymentAccountCustomEntity;
+import com.example.sms.infrastructure.datasource.master.payment.account.incoming.PaymentAccountCustomEntity;
 import lombok.Getter;
 import lombok.Setter;
 
