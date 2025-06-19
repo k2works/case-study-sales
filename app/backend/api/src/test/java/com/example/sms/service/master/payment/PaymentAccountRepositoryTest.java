@@ -1,5 +1,6 @@
 package com.example.sms.service.master.payment;
 
+import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.master.payment.account.incoming.PaymentAccount;
 import com.example.sms.domain.model.master.payment.account.incoming.PaymentAccountCode;
 import org.junit.jupiter.api.AfterEach;
@@ -16,7 +17,6 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,7 +57,7 @@ class PaymentAccountRepositoryTest {
     @DisplayName("入金口座マスタを保存して取得できること")
     void testSaveAndFindPaymentAccount() {
         // Given
-        PaymentAccount account = createTestPaymentAccount("ACC001");
+        PaymentAccount account = getPaymentAccount("ACC001");
 
         // When
         paymentAccountRepository.save(account);
@@ -73,7 +73,7 @@ class PaymentAccountRepositoryTest {
     @DisplayName("入金口座マスタを更新できること")
     void testUpdatePaymentAccount() {
         // Given
-        PaymentAccount account = createTestPaymentAccount("ACC002");
+        PaymentAccount account = getPaymentAccount("ACC002");
         paymentAccountRepository.save(account);
 
         // When
@@ -103,7 +103,7 @@ class PaymentAccountRepositoryTest {
     @DisplayName("入金口座マスタを削除できること")
     void testDeletePaymentAccount() {
         // Given
-        PaymentAccount account = createTestPaymentAccount("ACC003");
+        PaymentAccount account = getPaymentAccount("ACC003");
         paymentAccountRepository.save(account);
 
         // When
@@ -118,8 +118,8 @@ class PaymentAccountRepositoryTest {
     @DisplayName("全ての入金口座マスタを取得できること")
     void testSelectAllPaymentAccounts() {
         // Given
-        paymentAccountRepository.save(createTestPaymentAccount("ACC004"));
-        paymentAccountRepository.save(createTestPaymentAccount("ACC005"));
+        paymentAccountRepository.save(getPaymentAccount("ACC004"));
+        paymentAccountRepository.save(getPaymentAccount("ACC005"));
 
         // When
         List<PaymentAccount> allAccounts = paymentAccountRepository.selectAll();
@@ -128,21 +128,7 @@ class PaymentAccountRepositoryTest {
         assertThat(allAccounts).hasSize(2);
     }
 
-    private PaymentAccount createTestPaymentAccount(String accountCode) {
-        return PaymentAccount.of(
-                accountCode,
-                "テスト口座",
-                LocalDateTime.now(),
-                LocalDateTime.now().plusYears(1),
-                "テスト口座（適用後）",
-                "1", // 普通
-                "1234567",
-                "1", // 普通
-                "テスト太郎",
-                "10000",
-                LocalDateTime.now(),
-                "0001",
-                "001"
-        );
+    private PaymentAccount getPaymentAccount(String accountCode) {
+        return TestDataFactoryImpl.getPaymentAccount(accountCode);
     }
 }

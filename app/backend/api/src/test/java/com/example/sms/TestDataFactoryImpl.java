@@ -8,6 +8,7 @@ import com.example.sms.domain.model.master.partner.customer.CustomerBillingCateg
 import com.example.sms.domain.model.master.partner.customer.CustomerCode;
 import com.example.sms.domain.model.master.partner.customer.Shipping;
 import com.example.sms.domain.model.master.partner.vendor.Vendor;
+import com.example.sms.domain.model.master.payment.account.incoming.PaymentAccount;
 import com.example.sms.domain.model.master.product.MiscellaneousType;
 import com.example.sms.domain.model.master.region.Region;
 import com.example.sms.domain.model.master.department.Department;
@@ -985,6 +986,24 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 invoiceNumber,
                 saleNumber,
                 lineNumber
+        );
+    }
+
+    public static PaymentAccount getPaymentAccount(String accountCode) {
+        return PaymentAccount.of(
+                accountCode,
+                "テスト口座",
+                LocalDateTime.of(2023, 10, 1, 0, 0), // 開始日
+                LocalDateTime.of(2024, 10, 1, 0, 0), // 開始日
+                "テスト口座（適用後）",
+                "1", // 普通
+                "1234567",
+                "1", // 普通
+                "テスト太郎",
+                "10000",
+                LocalDateTime.of(2023, 1, 1, 0, 0),
+                "0001",
+                "001"
         );
     }
 
