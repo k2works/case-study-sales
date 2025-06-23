@@ -42,6 +42,7 @@ import com.example.sms.service.master.partner.PartnerRepository;
 import com.example.sms.service.master.product.ProductCategoryRepository;
 import com.example.sms.service.master.product.ProductRepository;
 import com.example.sms.service.sales.invoice.InvoiceRepository;
+import com.example.sms.service.sales.payment.incoming.PaymentRepository;
 import com.example.sms.service.sales.sales.SalesRepository;
 import com.example.sms.service.sales.order.SalesOrderRepository;
 import com.example.sms.service.system.audit.AuditRepository;
@@ -89,6 +90,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
     InvoiceRepository invoiceRepository;
     @Autowired
     PaymentAccountRepository paymentAccountRepository;
+    @Autowired
+    PaymentRepository paymentIncomingRepository;
 
     @Override
     public void setUpForAuthApiService() {
@@ -708,6 +711,15 @@ public class TestDataFactoryImpl implements TestDataFactory {
         IntStream.range(0, 3).forEach(i -> {
             PaymentAccount paymentAccount = getPaymentAccount(String.format("ACC%03d", i));
             paymentAccountRepository.save(paymentAccount);
+        });
+    }
+
+    @Override
+    public void setUpForPaymentIncomingService() {
+        paymentIncomingRepository.deleteAll();
+        IntStream.range(0, 3).forEach(i -> {
+            Payment paymentIncoming = getPaymentData(String.format("PAY%03d", i));
+            paymentIncomingRepository.save(paymentIncoming);
         });
     }
 

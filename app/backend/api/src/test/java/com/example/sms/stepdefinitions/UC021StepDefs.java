@@ -176,7 +176,7 @@ public class UC021StepDefs extends SpringAcceptanceTest {
     /**
      * 日付文字列を適切な形式で解析し、ZonedDateTimeを返すヘルパーメソッド
      */
-    private ZonedDateTime parseDateTime(String dateTimeString) {
+    public static ZonedDateTime parseDateTime(String dateTimeString) {
         try {
             // まずZonedDateTimeとして解析を試行
             return ZonedDateTime.parse(dateTimeString, FORMATTER);

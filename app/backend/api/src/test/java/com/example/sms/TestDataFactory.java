@@ -49,6 +49,8 @@ public interface TestDataFactory {
 
     void setUpForPaymentAccountService();
 
+    void setUpForPaymentIncomingService();
+
     MultipartFile createOrderFile();
 
     MultipartFile createOrderInvalidFile();

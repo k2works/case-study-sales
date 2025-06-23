@@ -1,0 +1,223 @@
+package com.example.sms.stepdefinitions;
+
+import com.example.sms.TestDataFactory;
+import com.example.sms.domain.model.sales.payment.incoming.Payment;
+import com.example.sms.domain.model.sales.payment.incoming.PaymentMethodType;
+import com.example.sms.presentation.api.sales.payment.incoming.PaymentResource;
+import com.example.sms.service.sales.payment.incoming.PaymentService;
+import com.example.sms.stepdefinitions.utils.MessageResponse;
+import com.example.sms.stepdefinitions.utils.SpringAcceptanceTest;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import io.cucumber.java.ja.かつ;
+import io.cucumber.java.ja.ならば;
+import io.cucumber.java.ja.もし;
+import io.cucumber.java.ja.前提;
+import org.junit.jupiter.api.Assertions;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+import static jakarta.xml.bind.DatatypeConverter.parseDateTime;
+import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+public class UC022StepDefs extends SpringAcceptanceTest {
+    private static final String PORT = "8079";
+    private static final String HOST = "http://localhost:" + PORT;
+    private static final String AUTH_API_URL = HOST + "/api/auth";
+    private static final String PAYMENTS_API_URL = HOST + "/api/payments";
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_ZONED_DATE_TIME;
+    private static final DateTimeFormatter LOCAL_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+    @Autowired
+    TestDataFactory testDataFactory;
+
+    @Autowired
+    PaymentService paymentService;
+
+    @前提(":UC022 {string} である")
+    public void login(String user) {
+        String url = AUTH_API_URL + "/" + "signin";
+
+        if (user.equals("管理者")) {
+            signin("U888888", "demo", url);
+        } else {
+            signin("U999999", "demo", url);
+        }
+    }
+
+    @前提(":UC022 {string} が登録されている")
+    public void init(String data) {
+        switch (data) {
+            case "入金口座データ":
+                testDataFactory.setUpForPaymentAccountService();
+                break;
+            case "顧客データ":
+                testDataFactory.setUpForCustomerService();
+                break;
+            case "入金データ":
+                testDataFactory.setUpForPaymentIncomingService();
+                break;
+            default:
+                break;
+        }
+    }
+
+    @もし(":UC022 {string} を取得する")
+    public void toGet(String list) throws IOException {
+        if (list.equals("入金データ一覧")) {
+            executeGet(PAYMENTS_API_URL);
+        } else if (list.equals("全ての入金データ")) {
+            executeGet(PAYMENTS_API_URL + "/all");
+        }
+    }
+
+    @ならば(":UC022 {string} を取得できる")
+    public void canGet(String list) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
+        if (list.equals("入金データ一覧")) {
+            String result = latestResponse.getBody();
+            com.github.pagehelper.PageInfo<PaymentResource> response = objectMapper.readValue(result, new TypeReference<>() {
+            });
+            List<PaymentResource> actual = response.getList();
+            assertTrue(actual.size() > 0);
+        } else if (list.equals("全ての入金データ")) {
+            String result = latestResponse.getBody();
+            List<PaymentResource> actual = objectMapper.readValue(result, new TypeReference<>() {
+            });
+            assertTrue(actual.size() > 0);
+        }
+    }
+
+    @もし(":UC022 入金番号 {string} 顧客コード {string} 枝番 {int} 入金口座コード {string} 入金額 {int} で新規登録する")
+    public void toRegist(String paymentNumber, String customerCode, Integer branchNumber, String accountCode, Integer amount) throws IOException {
+        PaymentResource resource = new PaymentResource();
+        resource.setPaymentNumber(paymentNumber);
+        resource.setCustomerCode(customerCode);
+        resource.setCustomerBranchNumber(branchNumber);
+        resource.setPaymentAccountCode(accountCode);
+        resource.setPaymentAmount(amount);
+
+        // 現在時刻をISO_ZONED_DATE_TIME形式で設定
+        ZonedDateTime now = LocalDateTime.now().atZone(ZoneId.systemDefault());
+        resource.setPaymentDate(now.format(FORMATTER));
+
+        // その他の必須項目を設定
+        resource.setDepartmentCode("10000");
+        resource.setDepartmentStartDate(now.format(FORMATTER));
+        resource.setPaymentMethodType(String.valueOf(PaymentMethodType.振込.getCode()));
+        resource.setOffsetAmount(0);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(resource);
+        executePost(PAYMENTS_API_URL, json);
+    }
+
+    @ならば(":UC022 {string} が表示される")
+    public void toShow(String message) throws JsonProcessingException {
+        String result = latestResponse.getBody();
+        ObjectMapper objectMapper = new ObjectMapper();
+        MessageResponse response = objectMapper.readValue(result, MessageResponse.class);
+        Assertions.assertEquals(message, response.getMessage());
+    }
+
+    @もし(":UC022 入金番号 {string} で検索する")
+    public void toFind(String paymentNumber) throws IOException {
+        String url = PAYMENTS_API_URL + "/" + paymentNumber;
+        executeGet(url);
+    }
+
+    @ならば(":UC022 入金番号 {string} の入金データが取得できる")
+    public void canFind(String paymentNumber) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
+        String result = latestResponse.getBody();
+        PaymentResource payment = objectMapper.readValue(result, PaymentResource.class);
+        Assertions.assertEquals(paymentNumber, payment.getPaymentNumber());
+    }
+
+    @かつ(":UC022 入金番号 {string} の情報を更新する \\(入金額 {int})")
+    public void toUpdate(String paymentNumber, Integer amount) throws IOException {
+        String url = PAYMENTS_API_URL + "/" + paymentNumber;
+
+        // 現在の入金データ情報を取得
+        executeGet(url);
+        String result = latestResponse.getBody();
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        PaymentResource currentPayment = objectMapper.readValue(result, PaymentResource.class);
+
+        // 入金額を更新
+        currentPayment.setPaymentAmount(amount);
+
+        // 日付文字列を安全に解析してから適切な形式で設定
+        ZonedDateTime paymentDate = UC021StepDefs.parseDateTime(currentPayment.getPaymentDate());
+        currentPayment.setPaymentDate(paymentDate.format(FORMATTER));
+        ZonedDateTime departmentStartDate = UC021StepDefs.parseDateTime(currentPayment.getDepartmentStartDate());
+        currentPayment.setDepartmentStartDate(departmentStartDate.format(FORMATTER));
+
+        String json = objectMapper.writeValueAsString(currentPayment);
+        executePut(url, json);
+    }
+
+    @ならば(":UC022 入金額が {int} であることを確認する")
+    public void verifyAmount(Integer amount) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
+        String result = latestResponse.getBody();
+        PaymentResource payment = objectMapper.readValue(result, PaymentResource.class);
+        Assertions.assertEquals(amount, payment.getPaymentAmount());
+    }
+
+    @かつ(":UC022 入金番号 {string} を削除する")
+    public void toDelete(String paymentNumber) throws IOException {
+        String url = PAYMENTS_API_URL + "/" + paymentNumber;
+        executeDelete(url);
+    }
+
+    @もし(":UC022 顧客コード {string} 枝番 {int} で検索する")
+    public void findByCustomer(String customerCode, Integer branchNumber) throws IOException {
+        String url = PAYMENTS_API_URL + "/customer/" + customerCode + "/" + branchNumber;
+        executeGet(url);
+    }
+
+    @ならば(":UC022 顧客コード {string} の入金データが取得できる")
+    public void verifyCustomerPayment(String customerCode) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
+        String result = latestResponse.getBody();
+        List<PaymentResource> payments = objectMapper.readValue(result, new TypeReference<>() {});
+        assertTrue(payments.size() > 0);
+        payments.forEach(payment -> Assertions.assertEquals(customerCode, payment.getCustomerCode()));
+    }
+
+    @もし(":UC022 入金口座コード {string} で検索する")
+    public void findByAccount(String accountCode) throws IOException {
+        String url = PAYMENTS_API_URL + "/account/" + accountCode;
+        executeGet(url);
+    }
+
+    @ならば(":UC022 入金口座コード {string} の入金データが取得できる")
+    public void verifyAccountPayment(String accountCode) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
+        String result = latestResponse.getBody();
+        List<PaymentResource> payments = objectMapper.readValue(result, new TypeReference<>() {});
+        assertTrue(payments.size() > 0);
+        payments.forEach(payment -> Assertions.assertEquals(accountCode, payment.getPaymentAccountCode()));
+    }
+}
