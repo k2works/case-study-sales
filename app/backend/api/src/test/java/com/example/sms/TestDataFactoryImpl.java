@@ -32,6 +32,7 @@ import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag;
 import com.example.sms.domain.model.system.user.RoleName;
+import com.example.sms.service.master.payment.PaymentAccountRepository;
 import com.example.sms.service.master.region.RegionRepository;
 import com.example.sms.service.master.department.DepartmentRepository;
 import com.example.sms.service.master.employee.EmployeeRepository;
@@ -86,6 +87,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
     SalesRepository salesRepository;
     @Autowired
     InvoiceRepository invoiceRepository;
+    @Autowired
+    PaymentAccountRepository paymentAccountRepository;
 
     @Override
     public void setUpForAuthApiService() {
@@ -697,6 +700,15 @@ public class TestDataFactoryImpl implements TestDataFactory {
         Sales sales = getSales("SA12345678");
         SalesLine salesLine = getSalesLine(sales.getSalesNumber().getValue(), 1);
         salesRepository.save(sales.toBuilder().salesLines(List.of(salesLine)).build());
+    }
+
+    @Override
+    public void setUpForPaymentAccountService() {
+        paymentAccountRepository.deleteAll();
+        IntStream.range(0, 3).forEach(i -> {
+            PaymentAccount paymentAccount = getPaymentAccount(String.format("ACC%03d", i));
+            paymentAccountRepository.save(paymentAccount);
+        });
     }
 
     @Override
