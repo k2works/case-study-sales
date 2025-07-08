@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Setter
@@ -21,7 +22,7 @@ public class PaymentResource {
 
     @NotNull
     @Schema(description = "入金日")
-    private String paymentDate;
+    private LocalDateTime paymentDate;
 
     @NotNull
     @Schema(description = "部門ID")
@@ -29,7 +30,7 @@ public class PaymentResource {
 
     @NotNull
     @Schema(description = "部門開始日")
-    private String departmentStartDate;
+    private LocalDateTime departmentStartDate;
 
     @NotNull
     @Schema(description = "顧客コード")
@@ -64,9 +65,9 @@ public class PaymentResource {
     public static PaymentResource from(Payment payment) {
         return PaymentResource.builder()
                 .paymentNumber(payment.getPaymentNumber().getValue())
-                .paymentDate(payment.getPaymentDate().toString())
+                .paymentDate(payment.getPaymentDate())
                 .departmentCode(payment.getDepartmentId().getDeptCode().getValue())
-                .departmentStartDate(payment.getDepartmentId().getDepartmentStartDate().getValue().toString())
+                .departmentStartDate(payment.getDepartmentId().getDepartmentStartDate().getValue())
                 .customerCode(payment.getCustomerCode().getCode().getValue())
                 .customerBranchNumber(payment.getCustomerCode().getBranchNumber())
                 .paymentMethodType(payment.getPaymentMethodType().getCode().toString())
