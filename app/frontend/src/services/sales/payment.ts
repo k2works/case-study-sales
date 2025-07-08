@@ -11,7 +11,8 @@ import {
 export interface PaymentServiceType {
     select: (page?: number, pageSize?: number) => Promise<PaymentPageInfoType>;
     find: (paymentNumber: string) => Promise<PaymentType>;
-    save: (payment: PaymentType) => Promise<void>;
+    create: (payment: PaymentType) => Promise<void>;
+    update: (payment: PaymentType) => Promise<void>;
     search: (criteria: PaymentCriteriaType, page?: number, pageSize?: number) => Promise<PaymentPageInfoType>;
     destroy: (paymentNumber: string) => Promise<void>;
 }
@@ -31,8 +32,13 @@ export const PaymentService = () => {
         return await apiUtils.fetchGet<PaymentType>(url);
     };
 
-    const save = async (payment: PaymentType): Promise<void> => {
+    const create = async (payment: PaymentType): Promise<void> => {
         await apiUtils.fetchPost<void>(endPoint, mapToPaymentResource(payment));
+    };
+
+    const update = async (payment: PaymentType): Promise<void> => {
+        const url = `${endPoint}/${payment.paymentNumber}`;
+        await apiUtils.fetchPut<void>(url, mapToPaymentResource(payment));
     };
 
     const search = async (criteria: PaymentCriteriaType, page?: number, pageSize?: number): Promise<PaymentPageInfoType> => {
@@ -48,7 +54,8 @@ export const PaymentService = () => {
     return {
         select,
         find,
-        save,
+        create,
+        update,
         search,
         destroy
     };

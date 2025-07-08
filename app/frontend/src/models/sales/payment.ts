@@ -1,4 +1,5 @@
 import { PageNationType } from "../../views/application/PageNation";
+import {toISOStringLocal} from "../../components/application/utils.ts";
 
 // 入金情報
 export interface PaymentType {
@@ -33,9 +34,9 @@ export interface PaymentCriteriaType {
 export const mapToPaymentResource = (payment: PaymentType) => {
     return {
         paymentNumber: payment.paymentNumber,
-        paymentDate: payment.paymentDate,
+        paymentDate: toISOStringLocal(new Date(payment.paymentDate)),
         departmentCode: payment.departmentCode,
-        departmentStartDate: payment.departmentStartDate,
+        departmentStartDate: toISOStringLocal(new Date(payment.departmentStartDate)),
         customerCode: payment.customerCode,
         customerBranchNumber: payment.customerBranchNumber,
         paymentMethodType: payment.paymentMethodType,
@@ -50,9 +51,9 @@ export const mapToPaymentCriteriaResource = (criteria: PaymentCriteriaType) => {
     const isEmpty = (value: unknown) => value === "" || value === null || value === undefined;
     return {
         ...(isEmpty(criteria.paymentNumber) ? {} : { paymentNumber: criteria.paymentNumber }),
-        ...(isEmpty(criteria.paymentDate) ? {} : { paymentDate: criteria.paymentDate }),
+        ...(isEmpty(criteria.paymentDate) ? {} : { paymentDate: toISOStringLocal(new Date(criteria.paymentDate)) }),
         ...(isEmpty(criteria.departmentCode) ? {} : { departmentCode: criteria.departmentCode }),
-        ...(isEmpty(criteria.departmentStartDate) ? {} : { departmentStartDate: criteria.departmentStartDate }),
+        ...(isEmpty(criteria.departmentStartDate) ? {} : { departmentStartDate: toISOStringLocal(new Date(criteria.departmentStartDate)) }),
         ...(isEmpty(criteria.customerCode) ? {} : { customerCode: criteria.customerCode }),
         ...(isEmpty(criteria.customerBranchNumber) ? {} : { customerBranchNumber: criteria.customerBranchNumber }),
         ...(isEmpty(criteria.paymentMethodType) ? {} : { paymentMethodType: criteria.paymentMethodType }),

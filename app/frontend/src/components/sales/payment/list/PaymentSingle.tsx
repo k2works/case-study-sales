@@ -36,10 +36,10 @@ export const PaymentSingle: React.FC = () => {
     const handleCreateOrUpdatePayment = async () => {
         try {
             if (isEditing) {
-                await paymentService.save(newPayment);
+                await paymentService.update(newPayment);
                 setMessage("入金を更新しました。");
             } else {
-                await paymentService.save(newPayment);
+                await paymentService.create(newPayment);
                 setMessage("入金を作成しました。");
             }
             await fetchPayments.load();
