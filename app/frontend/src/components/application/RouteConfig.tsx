@@ -37,6 +37,8 @@ import {ShippingConfirmContainer} from "../sales/shipping/confirm/ShippingConfir
 import {InvoiceContainer} from "../sales/invoice/list/InvoiceContainer.tsx";
 import {InvoiceTabContainer} from "../sales/invoice/InvoceTabContainer.tsx";
 import {InvoiceAggregateContainer} from "../sales/invoice/aggregate/InvoiceAggregateContainer.tsx";
+import {PaymentContainer} from "../sales/payment/list/PaymentContainer.tsx";
+import {PaymentTabContainer} from "../sales/payment/PaymentTabContainer.tsx";
 
 export const RouteConfig: React.FC = () => {
     const ProductCategoryPage = () => {
@@ -191,6 +193,14 @@ export const RouteConfig: React.FC = () => {
         )
     }
 
+    const PaymentPage = () => {
+        return (
+            <SiteLayout>
+                <PaymentContainer/>
+            </SiteLayout>
+        )
+    }
+
 
     return (
             <Routes>
@@ -230,6 +240,10 @@ export const RouteConfig: React.FC = () => {
                 <Route path="/invoice-list" element={<RouteAuthGuard component={<InvoicePage/>} redirectPath="/"
                                                                    allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/invoice-summary" element={<RouteAuthGuard component={<InvoiceSummrayyPage/>} redirectPath="/"
+                                                                     allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/payment" element={<RouteAuthGuard component={<PaymentTabContainer/>} redirectPath="/"
+                                                                              allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/payment-incoming-list" element={<RouteAuthGuard component={<PaymentPage/>} redirectPath="/"
                                                                      allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/department" element={<RouteAuthGuard component={<DepartmentContainer/>} redirectPath="/"
                                                                    allowedRoles={[RoleType.ADMIN]}/>}/>

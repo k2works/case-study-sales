@@ -1,0 +1,55 @@
+import Config from "../config";
+import Utils from "../utils";
+import {
+    PaymentCriteriaType,
+    PaymentPageInfoType,
+    PaymentType,
+    mapToPaymentCriteriaResource,
+    mapToPaymentResource
+} from "../../models/sales/payment";
+
+export interface PaymentServiceType {
+    select: (page?: number, pageSize?: number) => Promise<PaymentPageInfoType>;
+    find: (paymentNumber: string) => Promise<PaymentType>;
+    save: (payment: PaymentType) => Promise<void>;
+    search: (criteria: PaymentCriteriaType, page?: number, pageSize?: number) => Promise<PaymentPageInfoType>;
+    destroy: (paymentNumber: string) => Promise<void>;
+}
+
+export const PaymentService = () => {
+    const config = Config();
+    const apiUtils = Utils.apiUtils;
+    const endPoint = `${config.apiUrl}/payments`;
+
+    const select = async (page?: number, pageSize?: number): Promise<PaymentPageInfoType> => {
+        const url = Utils.buildUrlWithPaging(endPoint, page, pageSize);
+        return await apiUtils.fetchGet<PaymentPageInfoType>(url);
+    };
+
+    const find = async (paymentNumber: string): Promise<PaymentType> => {
+        const url = `${endPoint}/${paymentNumber}`;
+        return await apiUtils.fetchGet<PaymentType>(url);
+    };
+
+    const save = async (payment: PaymentType): Promise<void> => {
+        await apiUtils.fetchPost<void>(endPoint, mapToPaymentResource(payment));
+    };
+
+    const search = async (criteria: PaymentCriteriaType, page?: number, pageSize?: number): Promise<PaymentPageInfoType> => {
+        const url = Utils.buildUrlWithPaging(`${endPoint}/search`, page, pageSize);
+        return await apiUtils.fetchPost<PaymentPageInfoType>(url, mapToPaymentCriteriaResource(criteria));
+    };
+
+    const destroy = async (paymentNumber: string): Promise<void> => {
+        const url = `${endPoint}/${paymentNumber}`;
+        await apiUtils.fetchDelete<void>(url);
+    };
+
+    return {
+        select,
+        find,
+        save,
+        search,
+        destroy
+    };
+}
