@@ -32,12 +32,12 @@ import static com.example.sms.presentation.api.sales.payment.incoming.PaymentRes
 @RequestMapping("/api/payments")
 @Tag(name = "Payment", description = "入金データ")
 @PreAuthorize("hasRole('ADMIN')")
-public class PaymentController {
+public class PaymentApiController {
     final PaymentService paymentService;
     final PageNationService pageNationService;
     final Message message;
 
-    public PaymentController(PaymentService paymentService, PageNationService pageNationService, Message message) {
+    public PaymentApiController(PaymentService paymentService, PageNationService pageNationService, Message message) {
         this.paymentService = paymentService;
         this.pageNationService = pageNationService;
         this.message = message;
