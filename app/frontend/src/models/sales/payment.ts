@@ -1,6 +1,15 @@
 import { PageNationType } from "../../views/application/PageNation";
 import {toISOStringLocal} from "../../components/application/utils.ts";
 
+export enum PaymentMethodType {
+    現金 = "現金",
+    小切手 = "小切手",
+    手形 = "手形",
+    振込 = "振込",
+    相殺 = "相殺",
+    その他 = "その他"
+}
+
 // 入金情報
 export interface PaymentType {
     paymentNumber: string;

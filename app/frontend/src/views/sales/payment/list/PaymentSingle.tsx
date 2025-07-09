@@ -1,8 +1,8 @@
 import React from 'react';
 import { Message } from "../../../../components/application/Message.tsx";
-import { PaymentType } from "../../../../models/sales/payment";
+import {PaymentMethodType, PaymentType} from "../../../../models/sales/payment";
 import { convertToDateInputFormat } from "../../../../components/application/utils.ts";
-import { FormInput, SingleViewHeaderActions, SingleViewHeaderItem } from "../../../Common.tsx";
+import {FormInput, FormSelect, SingleViewHeaderActions, SingleViewHeaderItem} from "../../../Common.tsx";
 
 interface HeaderProps {
     title: string;
@@ -135,15 +135,14 @@ const Form = ({
                     customerBranchNumber: Number(e.target.value)
                 })}
             />
-            <FormInput
+            <FormSelect
                 label="支払方法区分"
                 id="paymentMethodType"
-                type="text"
-                className="single-view-content-item-form-item-input"
                 value={newPayment.paymentMethodType}
+                options={PaymentMethodType}
                 onChange={(e) => setNewPayment({
                     ...newPayment,
-                    paymentMethodType: e.target.value
+                    paymentMethodType: e
                 })}
             />
             <FormInput

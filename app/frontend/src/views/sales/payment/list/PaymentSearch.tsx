@@ -1,6 +1,6 @@
 import React, { MouseEventHandler } from "react";
-import { FormInput, SingleViewHeaderItem } from "../../../Common.tsx";
-import { PaymentCriteriaType } from "../../../../models/sales/payment";
+import {FormInput, FormSelect, SingleViewHeaderItem} from "../../../Common.tsx";
+import {PaymentCriteriaType, PaymentMethodType} from "../../../../models/sales/payment";
 
 interface FormProps {
     criteria: PaymentCriteriaType,
@@ -54,14 +54,13 @@ const Form = ({criteria, setCondition, handleClick, handleClose, handleDepartmen
                 )}
                 onClick={handleCustomerSelect}
             />
-            <FormInput
-                id={"search-payment-method-type"}
-                type="text"
-                className="single-view-content-item-form-item-input"
-                label={"支払方法区分"}
+            <FormSelect
+                label="支払方法区分"
+                id="paymentMethodType"
                 value={criteria.paymentMethodType}
+                options={PaymentMethodType}
                 onChange={(e) => setCondition(
-                    {...criteria, paymentMethodType: e.target.value}
+                    {...criteria, paymentMethodType: e}
                 )}
             />
             <FormInput

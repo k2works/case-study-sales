@@ -2,6 +2,8 @@ import React from "react";
 import Modal from "react-modal";
 import { PaymentSingle } from "./PaymentSingle.tsx";
 import { usePaymentContext } from "../../../../providers/sales/Payment.tsx";
+import {DepartmentSelectModal} from "./DepartmentSelectModal.tsx";
+import {CustomerSelectModal} from "./CustomerSelectModal.tsx";
 
 export const PaymentEditModal: React.FC = () => {
     const {
@@ -27,6 +29,8 @@ export const PaymentEditModal: React.FC = () => {
             bodyOpenClassName="modal-open"
         >
             <PaymentSingle/>
+            <DepartmentSelectModal type={"edit"}/>
+            <CustomerSelectModal type={"edit"}/>
         </Modal>
     )
 }

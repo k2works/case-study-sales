@@ -44,9 +44,8 @@ export const PaymentSingle: React.FC = () => {
             }
             await fetchPayments.load();
             handleCloseModal();
-        } catch (error: unknown) {
-            const errorMessage = error instanceof Error ? error.message : '不明なエラーが発生しました';
-            showErrorMessage(`入金の更新に失敗しました: ${errorMessage}`, setError);
+        } catch (error: any) {
+            showErrorMessage(`入金の更新に失敗しました: ${error?.message}`, setError);
         }
     };
 

@@ -5,6 +5,8 @@ import { showErrorMessage } from "../../../application/utils.ts";
 import { usePaymentContext } from "../../../../providers/sales/Payment.tsx";
 import { useDepartmentContext } from "../../../../providers/master/Department.tsx";
 import { useCustomerContext } from "../../../../providers/master/partner/Customer.tsx";
+import {DepartmentSelectModal} from "./DepartmentSelectModal.tsx";
+import {CustomerSelectModal} from "./CustomerSelectModal.tsx";
 
 export const PaymentSearchModal: React.FC = () => {
     const {
@@ -76,6 +78,8 @@ export const PaymentSearchModal: React.FC = () => {
                     handleCustomerSelect={() => setCustomerSearchModalIsOpen(true)}
                 />
             }
+            <DepartmentSelectModal type={"search"}/>
+            <CustomerSelectModal type={"search"}/>
         </Modal>
     )
 }
