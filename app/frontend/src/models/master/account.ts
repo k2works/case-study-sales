@@ -2,19 +2,34 @@ import {PageNationType} from "../../views/application/PageNation.tsx";
 import {toISOStringWithTimezone} from "../../components/application/utils.ts";
 
 // Account types
-export const PaymentAccountType = {
-    BANK: "BANK",
-    CASH: "CASH",
+export enum PaymentAccountEnumType  {
+    銀行 = "銀行",
+    郵便局 = "郵便局",
+    農協 = "農協",
+    その他 = "その他",
 }
-export type PaymentAccountType = typeof PaymentAccountType[keyof typeof PaymentAccountType];
+
+export const PaymentAccountTypeValues = {
+    [PaymentAccountEnumType.銀行]: 0,
+    [PaymentAccountEnumType.郵便局]: 1,
+    [PaymentAccountEnumType.農協]: 2,
+    [PaymentAccountEnumType.その他]: 3
+};
 
 // Bank account types
-export const BankAccountType = {
-    ORDINARY: "ORDINARY",
-    CURRENT: "CURRENT",
-    SAVINGS: "SAVINGS",
+export enum BankAccountEnumType {
+    普通 = "普通",
+    当座 = "当座",
+    貯蓄 = "貯蓄",
+    その他 = "その他",
 }
-export type BankAccountType = typeof BankAccountType[keyof typeof BankAccountType];
+
+export const BankAccountTypeValue = {
+   [BankAccountEnumType.普通]: 0,
+   [BankAccountEnumType.当座]: 1,
+   [BankAccountEnumType.貯蓄]: 2,
+   [BankAccountEnumType.その他]: 3
+}
 
 // Main account type
 export type AccountType = {
@@ -23,9 +38,9 @@ export type AccountType = {
     startDate: string;
     endDate: string;
     accountNameAfterStart: string;
-    accountType: PaymentAccountType;
+    accountType: PaymentAccountEnumType;
     accountNumber: string;
-    bankAccountType: BankAccountType;
+    bankAccountType: BankAccountEnumType;
     accountHolder: string;
     departmentCode: string;
     departmentStartDate: string;

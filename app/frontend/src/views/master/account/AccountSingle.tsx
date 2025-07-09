@@ -1,8 +1,8 @@
 import React from 'react';
 import {Message} from "../../../components/application/Message.tsx";
-import {AccountType, PaymentAccountType, BankAccountType} from "../../../models/master/account.ts";
+import {AccountType, PaymentAccountEnumType, BankAccountEnumType} from "../../../models/master/account.ts";
 import {convertToDateInputFormat} from "../../../components/application/utils.ts";
-import {FormInput, SingleViewHeaderActions, SingleViewHeaderItem} from "../../Common.tsx";
+import {FormInput, FormSelect, SingleViewHeaderActions, SingleViewHeaderItem} from "../../Common.tsx";
 import {useDepartmentContext} from "../../../providers/master/Department.tsx";
 
 interface HeaderProps {
@@ -106,37 +106,16 @@ const Form = ({isEditing, newAccount, setNewAccount}: FormProps) => {
                 })}
             />
             {/* 口座区分フィールド */}
-            <div className="form-item">
-                <label>口座区分</label>
-                <div className="single-view-content-item-form-radios">
-                    <label>
-                        <input
-                            type="radio"
-                            name="accountType"
-                            value={PaymentAccountType.BANK}
-                            checked={newAccount.accountType === PaymentAccountType.BANK}
-                            onChange={(e) => setNewAccount({
-                                ...newAccount,
-                                accountType: e.target.value as PaymentAccountType
-                            })}
-                        />
-                        銀行口座
-                    </label>
-                    <label>
-                        <input
-                            type="radio"
-                            name="accountType"
-                            value={PaymentAccountType.CASH}
-                            checked={newAccount.accountType === PaymentAccountType.CASH}
-                            onChange={(e) => setNewAccount({
-                                ...newAccount,
-                                accountType: e.target.value as PaymentAccountType
-                            })}
-                        />
-                        現金
-                    </label>
-                </div>
-            </div>
+            <FormSelect
+                label="口座区分"
+                id="accountType"
+                value={newAccount.accountType}
+                options={PaymentAccountEnumType}
+                onChange={(e) => setNewAccount({
+                    ...newAccount,
+                    accountType: e
+                })}
+            />
             <FormInput
                 label="口座番号"
                 id="accountNumber"
@@ -150,50 +129,16 @@ const Form = ({isEditing, newAccount, setNewAccount}: FormProps) => {
                 })}
             />
             {/* 銀行口座種別フィールド */}
-            <div className="form-item">
-                <label>銀行口座種別</label>
-                <div className="single-view-content-item-form-radios">
-                    <label>
-                        <input
-                            type="radio"
-                            name="bankAccountType"
-                            value={BankAccountType.ORDINARY}
-                            checked={newAccount.bankAccountType === BankAccountType.ORDINARY}
-                            onChange={(e) => setNewAccount({
-                                ...newAccount,
-                                bankAccountType: e.target.value as BankAccountType
-                            })}
-                        />
-                        普通
-                    </label>
-                    <label>
-                        <input
-                            type="radio"
-                            name="bankAccountType"
-                            value={BankAccountType.CURRENT}
-                            checked={newAccount.bankAccountType === BankAccountType.CURRENT}
-                            onChange={(e) => setNewAccount({
-                                ...newAccount,
-                                bankAccountType: e.target.value as BankAccountType
-                            })}
-                        />
-                        当座
-                    </label>
-                    <label>
-                        <input
-                            type="radio"
-                            name="bankAccountType"
-                            value={BankAccountType.SAVINGS}
-                            checked={newAccount.bankAccountType === BankAccountType.SAVINGS}
-                            onChange={(e) => setNewAccount({
-                                ...newAccount,
-                                bankAccountType: e.target.value as BankAccountType
-                            })}
-                        />
-                        貯蓄
-                    </label>
-                </div>
-            </div>
+            <FormSelect
+                label="銀行口座種別"
+                id="bankAccountType"
+                value={newAccount.bankAccountType}
+                options={BankAccountEnumType}
+                onChange={(e) => setNewAccount({
+                    ...newAccount,
+                    bankAccountType: e
+                })}
+            />
             <FormInput
                 label="口座名義人"
                 id="accountHolder"

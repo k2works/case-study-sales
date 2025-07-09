@@ -1,6 +1,6 @@
 import React, {MouseEventHandler} from "react";
 import {FormInput, SingleViewHeaderItem} from "../../Common.tsx";
-import {AccountCriteriaType, PaymentAccountType} from "../../../models/master/account.ts";
+import {AccountCriteriaType, PaymentAccountEnumType} from "../../../models/master/account.ts";
 
 interface FormProps {
     criteria: AccountCriteriaType,
@@ -36,8 +36,8 @@ const Form = ({criteria, setCondition, handleClick, handleClose}: FormProps) => 
                         <input
                             type="radio"
                             name="accountType"
-                            value={PaymentAccountType.BANK}
-                            checked={criteria.accountType === PaymentAccountType.BANK}
+                            value={PaymentAccountEnumType.銀行}
+                            checked={criteria.accountType === PaymentAccountEnumType.銀行}
                             onChange={(e) => setCondition({
                                 ...criteria,
                                 accountType: e.target.value
@@ -49,8 +49,8 @@ const Form = ({criteria, setCondition, handleClick, handleClose}: FormProps) => 
                         <input
                             type="radio"
                             name="accountType"
-                            value={PaymentAccountType.CASH}
-                            checked={criteria.accountType === PaymentAccountType.CASH}
+                            value={PaymentAccountEnumType.銀行}
+                            checked={criteria.accountType === PaymentAccountEnumType.銀行}
                             onChange={(e) => setCondition({
                                 ...criteria,
                                 accountType: e.target.value
