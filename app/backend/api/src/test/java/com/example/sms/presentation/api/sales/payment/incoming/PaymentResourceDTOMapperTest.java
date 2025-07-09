@@ -21,11 +21,10 @@ class PaymentResourceDTOMapperTest {
     @DisplayName("入金データリソースを入金データエンティティに変換する")
     void testConvertToEntity_validResource_shouldReturnPayment() {
         // Arrange
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
         String paymentNumber = "PAY001";
-        String paymentDate = "2023-01-01T10:00:00Z";
+        LocalDateTime paymentDate = LocalDateTime.of(2023,1,1,0,0);
         String departmentCode = "10000";
-        String departmentStartDate = "2023-01-01T00:00:00Z";
+        LocalDateTime departmentStartDate = LocalDateTime.of(2023,1,1,0,0);
         String customerCode = "101";
         Integer customerBranchNumber = 1;
         String paymentMethodType = "4"; // 振込
@@ -52,8 +51,8 @@ class PaymentResourceDTOMapperTest {
         // Assert
         assertNotNull(payment);
         assertEquals(PaymentNumber.of(paymentNumber), payment.getPaymentNumber());
-        assertEquals(LocalDateTime.parse(paymentDate, formatter), payment.getPaymentDate());
-        assertEquals(DepartmentId.of(departmentCode, LocalDateTime.parse(departmentStartDate, formatter)), payment.getDepartmentId());
+        assertEquals(paymentDate, payment.getPaymentDate());
+        assertEquals(DepartmentId.of(departmentCode, departmentStartDate), payment.getDepartmentId());
         assertEquals(CustomerCode.of(customerCode, customerBranchNumber), payment.getCustomerCode());
         assertEquals(PaymentMethodType.fromCode(Integer.parseInt(paymentMethodType)), payment.getPaymentMethodType());
         assertEquals(paymentAccountCode, payment.getPaymentAccountCode());
@@ -81,31 +80,7 @@ class PaymentResourceDTOMapperTest {
                 .build();
 
         // Act & Assert
-        assertThrows(NullPointerException.class, () -> {
-            PaymentResourceDTOMapper.convertToEntity(resource);
-        });
-    }
-
-    @Test
-    @DisplayName("入金データリソースの日付フォーマットが無効な場合は例外をスローする")
-    void testConvertToEntity_invalidDateFormat_shouldThrowException() {
-        // Arrange
-        String invalidDate = "2023/01/01 10:00:00";
-        PaymentResource resource = PaymentResource.builder()
-                .paymentNumber("PAY001")
-                .paymentDate(invalidDate)
-                .departmentCode("10000")
-                .departmentStartDate("2023-01-01T00:00:00Z")
-                .customerCode("101")
-                .customerBranchNumber(1)
-                .paymentMethodType("4")
-                .paymentAccountCode("ACC001")
-                .paymentAmount(10000)
-                .offsetAmount(5000)
-                .build();
-
-        // Act & Assert
-        assertThrows(Exception.class, () -> {
+        assertThrows(NumberFormatException.class, () -> {
             PaymentResourceDTOMapper.convertToEntity(resource);
         });
     }
@@ -117,9 +92,9 @@ class PaymentResourceDTOMapperTest {
         String invalidPaymentMethodType = "invalid";
         PaymentResource resource = PaymentResource.builder()
                 .paymentNumber("PAY001")
-                .paymentDate("2023-01-01T10:00:00Z")
+                .paymentDate(LocalDateTime.of(2023,1,1,0,0))
                 .departmentCode("10000")
-                .departmentStartDate("2023-01-01T00:00:00Z")
+                .departmentStartDate(LocalDateTime.of(2023,1,1,0,0))
                 .customerCode("101")
                 .customerBranchNumber(1)
                 .paymentMethodType(invalidPaymentMethodType)

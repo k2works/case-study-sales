@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -661,7 +662,7 @@ class InvoiceServiceTest {
                 Invoice result = invoiceService.selectAll().asList().getFirst();
                 assertNotNull(result);
                 assertEquals(today.getMonthValue(), result.getInvoiceDate().getValue().getMonthValue());
-                assertEquals(30, result.getInvoiceDate().getValue().getDayOfMonth());
+                assertEquals(today.with(TemporalAdjusters.lastDayOfMonth()).getDayOfMonth(), result.getInvoiceDate().getValue().getDayOfMonth());
                 Sales sales = salesService.selectAll().asList().getFirst();
                 assertNotNull(result.getInvoiceDate());
                 assertEquals(sales.getSalesLines().getFirst().getBillingDate().getValue(), result.getInvoiceDate().getValue());
