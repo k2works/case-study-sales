@@ -114,6 +114,7 @@ const NaveItems: React.FC = () => {
                                     <SubNavItem id="side-nav-code-nav" to="/region">地域</SubNavItem>
                                 </ul>
                             )}
+                            <SubNavItem id="side-nav-account-nav" to="/account">口座</SubNavItem>
                         </ul>
                     </li>
                 </>

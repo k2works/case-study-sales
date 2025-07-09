@@ -39,6 +39,7 @@ import {InvoiceTabContainer} from "../sales/invoice/InvoceTabContainer.tsx";
 import {InvoiceAggregateContainer} from "../sales/invoice/aggregate/InvoiceAggregateContainer.tsx";
 import {PaymentContainer} from "../sales/payment/list/PaymentContainer.tsx";
 import {PaymentTabContainer} from "../sales/payment/PaymentTabContainer.tsx";
+import {AccountContainer} from "../master/account/AccountContainer.tsx";
 
 export const RouteConfig: React.FC = () => {
     const ProductCategoryPage = () => {
@@ -270,6 +271,8 @@ export const RouteConfig: React.FC = () => {
                 <Route path="/code" element={<RouteAuthGuard component={<CodeContainer/>} redirectPath="/"
                                                                 allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/region" element={<RouteAuthGuard component={<RegionPage/>} redirectPath="/"
+                                                             allowedRoles={[RoleType.ADMIN]}/>}/>
+                <Route path="/account" element={<RouteAuthGuard component={<AccountContainer/>} redirectPath="/"
                                                              allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/logout" element={<Logout/>}/>
