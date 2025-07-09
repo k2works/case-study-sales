@@ -290,6 +290,9 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
             // 請求データの準備
             setUpForInvoiceAcceptanceService();
+
+            // 入金データの準備
+            setUpForPaymentIncomingService();
         });
     }
 
@@ -1036,9 +1039,9 @@ public class TestDataFactoryImpl implements TestDataFactory {
     public static Payment getPaymentData(String paymentNumber) {
         return Payment.of(
                 paymentNumber,
-                LocalDateTime.now(),
+                LocalDateTime.of(2022, 1, 1, 0, 0),
                 "10000",
-                LocalDateTime.now(),
+                LocalDateTime.of(2021, 1, 1, 0, 0),
                 "001",
                 1,
                 4, // 振込

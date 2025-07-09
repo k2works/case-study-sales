@@ -501,15 +501,15 @@ class DownloadServiceTest {
             assertNotNull(firstResult, "最初のデータがnullです");
 
             // フィールドごとのアサーション
-            assertEquals("PY00000001", firstResult.getPaymentNumber(), "入金番号が一致しません");
-            assertEquals(LocalDateTime.of(2025, 5, 10, 9, 30), firstResult.getPaymentDate(), "入金日が一致しません");
+            assertEquals("PAY000", firstResult.getPaymentNumber(), "入金番号が一致しません");
+            assertEquals(LocalDateTime.of(2022, 1, 1, 0, 0), firstResult.getPaymentDate(), "入金日が一致しません");
             assertEquals("10000", firstResult.getDepartmentCode(), "部門コードが一致しません");
             assertEquals("001", firstResult.getCustomerCode(), "顧客コードが一致しません");
             assertEquals(1, firstResult.getCustomerBranchNumber(), "顧客枝番が一致しません");
-            assertEquals(1, firstResult.getPaymentMethodType(), "支払方法区分が一致しません");
-            assertEquals("BANK001", firstResult.getPaymentAccountCode(), "入金口座コードが一致しません");
-            assertEquals(15950, firstResult.getPaymentAmount(), "入金金額が一致しません");
-            assertEquals(15950, firstResult.getOffsetAmount(), "消込金額が一致しません");
+            assertEquals(4, firstResult.getPaymentMethodType(), "支払方法区分が一致しません");
+            assertEquals("ACC001", firstResult.getPaymentAccountCode(), "入金口座コードが一致しません");
+            assertEquals(10000, firstResult.getPaymentAmount(), "入金金額が一致しません");
+            assertEquals(0, firstResult.getOffsetAmount(), "消込金額が一致しません");
         }
     }
 }
