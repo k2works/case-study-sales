@@ -470,4 +470,46 @@ class DownloadServiceTest {
             assertEquals(10, firstResult.getTaxRate(), "消費税率が一致しません");
         }
     }
+
+    @Nested
+    @DisplayName("入金データ")
+    @WithMockUser(username = "XXXXX", roles = "ADMIN")
+    class PaymentDownload {
+        @Test
+        @DisplayName("件数取得")
+        void testCount() {
+            DownloadCriteria condition = com.example.sms.domain.model.system.download.Payment.of();
+            int result = downloadService.count(condition);
+            assertEquals(3, result);
+        }
+
+        @Test
+        @DisplayName("データダウンロード変換")
+        void testDownload() {
+            DownloadCriteria condition = com.example.sms.domain.model.system.download.Payment.of();
+            List<?> rawResult = downloadService.convert(condition);
+            List<PaymentDownloadCSV> result = rawResult.stream()
+                    .filter(PaymentDownloadCSV.class::isInstance)
+                    .map(PaymentDownloadCSV.class::cast)
+                    .toList();
+
+            // 結果が空ではないことを確認
+            assertFalse(result.isEmpty(), "結果が空です");
+
+            // 最初のデータを確認
+            PaymentDownloadCSV firstResult = result.getFirst();
+            assertNotNull(firstResult, "最初のデータがnullです");
+
+            // フィールドごとのアサーション
+            assertEquals("PY00000001", firstResult.getPaymentNumber(), "入金番号が一致しません");
+            assertEquals(LocalDateTime.of(2025, 5, 10, 9, 30), firstResult.getPaymentDate(), "入金日が一致しません");
+            assertEquals("10000", firstResult.getDepartmentCode(), "部門コードが一致しません");
+            assertEquals("001", firstResult.getCustomerCode(), "顧客コードが一致しません");
+            assertEquals(1, firstResult.getCustomerBranchNumber(), "顧客枝番が一致しません");
+            assertEquals(1, firstResult.getPaymentMethodType(), "支払方法区分が一致しません");
+            assertEquals("BANK001", firstResult.getPaymentAccountCode(), "入金口座コードが一致しません");
+            assertEquals(15950, firstResult.getPaymentAmount(), "入金金額が一致しません");
+            assertEquals(15950, firstResult.getOffsetAmount(), "消込金額が一致しません");
+        }
+    }
 }

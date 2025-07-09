@@ -10,10 +10,12 @@ import com.example.sms.domain.model.master.product.ProductCategoryList;
 import com.example.sms.domain.model.master.product.ProductList;
 import com.example.sms.domain.model.sales.invoice.InvoiceList;
 import com.example.sms.domain.model.sales.order.OrderList;
+import com.example.sms.domain.model.sales.payment.incoming.PaymentList;
 import com.example.sms.domain.model.sales.sales.SalesList;
 import com.example.sms.domain.model.sales.shipping.ShippingList;
 import com.example.sms.domain.model.system.download.DownloadCriteria;
 import com.example.sms.infrastructure.datasource.system.download.*;
+import com.example.sms.infrastructure.datasource.system.download.PaymentDownloadCSV;
 import org.springframework.stereotype.Service;
 
 import java.io.OutputStreamWriter;
@@ -39,8 +41,9 @@ public class DownloadService {
     private final ShippingCSVRepository shippingCSVRepository;
     private final SalesCSVRepository salesCSVRepository;
     private final InvoiceCSVRepository invoiceCSVRepository;
+    private final PaymentCSVRepository paymentCSVRepository;
 
-    public DownloadService(DepartmentCSVRepository departmentCSVRepository, EmployeeCSVRepository employeeCSVRepository, ProductCategoryCSVRepository productCategoryCSVRepository, ProductCSVRepository productCSVRepository, PartnerGroupCSVRepository partnerGroupCSVRepository, PartnerCSVRepository partnerCSVRepository, CustomerCSVRepository customerCSVRepository, VendorCSVRepository vendorCSVRepository, OrderCSVRepository orderCSVRepository, ShippingCSVRepository shippingCSVRepository, SalesCSVRepository salesCSVRepository, InvoiceCSVRepository invoiceCSVRepository) {
+    public DownloadService(DepartmentCSVRepository departmentCSVRepository, EmployeeCSVRepository employeeCSVRepository, ProductCategoryCSVRepository productCategoryCSVRepository, ProductCSVRepository productCSVRepository, PartnerGroupCSVRepository partnerGroupCSVRepository, PartnerCSVRepository partnerCSVRepository, CustomerCSVRepository customerCSVRepository, VendorCSVRepository vendorCSVRepository, OrderCSVRepository orderCSVRepository, ShippingCSVRepository shippingCSVRepository, SalesCSVRepository salesCSVRepository, InvoiceCSVRepository invoiceCSVRepository, PaymentCSVRepository paymentCSVRepository) {
         this.departmentCSVRepository = departmentCSVRepository;
         this.employeeCSVRepository = employeeCSVRepository;
         this.productCategoryCSVRepository = productCategoryCSVRepository;
@@ -53,6 +56,7 @@ public class DownloadService {
         this.shippingCSVRepository = shippingCSVRepository;
         this.salesCSVRepository = salesCSVRepository;
         this.invoiceCSVRepository = invoiceCSVRepository;
+        this.paymentCSVRepository = paymentCSVRepository;
     }
 
     /**
@@ -104,6 +108,9 @@ public class DownloadService {
             case 請求 -> {
                 yield countInvoice(condition);
             }
+            case 入金 -> {
+                yield countPayment(condition);
+            }
         };
     }
 
@@ -124,6 +131,7 @@ public class DownloadService {
             case 出荷 -> writeCsv(ShippingDownloadCSV.class).accept(streamWriter, convert(condition));
             case 売上 -> writeCsv(SalesDownloadCSV.class).accept(streamWriter, convert(condition));
             case 請求 -> writeCsv(InvoiceDownloadCSV.class).accept(streamWriter, convert(condition));
+            case 入金 -> writeCsv(PaymentDownloadCSV.class).accept(streamWriter, convert(condition));
         }
     }
 
@@ -144,6 +152,7 @@ public class DownloadService {
             case 出荷 -> (List<T>) convertShipping(condition);
             case 売上 -> (List<T>) convertSales(condition);
             case 請求 -> (List<T>) convertInvoice(condition);
+            case 入金 -> (List<T>) convertPayment(condition);
         };
     }
 
@@ -316,10 +325,25 @@ public class DownloadService {
     }
 
     /**
+     * 入金ダウンロード件数取得
+     */
+    private int countPayment(DownloadCriteria condition) {
+        return paymentCSVRepository.countBy(condition);
+    }
+
+    /**
      * 請求CSV変換
      */
     private List<InvoiceDownloadCSV> convertInvoice(DownloadCriteria condition) {
         InvoiceList invoiceList = invoiceCSVRepository.selectBy(condition);
         return invoiceCSVRepository.convert(invoiceList);
+    }
+
+    /**
+     * 入金CSV変換
+     */
+    private List<PaymentDownloadCSV> convertPayment(DownloadCriteria condition) {
+        PaymentList paymentList = paymentCSVRepository.selectBy(condition);
+        return paymentCSVRepository.convert(paymentList);
     }
 }
