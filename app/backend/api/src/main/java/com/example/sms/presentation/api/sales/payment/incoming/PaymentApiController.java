@@ -31,7 +31,6 @@ import static com.example.sms.presentation.api.sales.payment.incoming.PaymentRes
 @RestController
 @RequestMapping("/api/payments")
 @Tag(name = "Payment", description = "入金データ")
-@PreAuthorize("hasRole('ADMIN')")
 public class PaymentApiController {
     final PaymentService paymentService;
     final PageNationService pageNationService;
@@ -45,7 +44,6 @@ public class PaymentApiController {
 
     @Operation(summary = "入金データ一覧を取得する", description = "入金データ一覧を取得する")
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> select(
             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(value = "page", defaultValue = "1") int... page) {
@@ -75,7 +73,7 @@ public class PaymentApiController {
 
     @Operation(summary = "入金データを登録する", description = "入金データを登録する")
     @PostMapping
-    @AuditAnnotation(process = ApplicationExecutionProcessType.その他, type = ApplicationExecutionHistoryType.同期)
+    @AuditAnnotation(process = ApplicationExecutionProcessType.入金登録, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> create(@RequestBody @Validated PaymentResource resource) {
         try {
             Payment payment = convertToEntity(resource);
@@ -92,7 +90,7 @@ public class PaymentApiController {
 
     @Operation(summary = "入金データを更新する", description = "入金データを更新する")
     @PutMapping("/{paymentNumber}")
-    @AuditAnnotation(process = ApplicationExecutionProcessType.その他, type = ApplicationExecutionHistoryType.同期)
+    @AuditAnnotation(process = ApplicationExecutionProcessType.入金更新, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> update(@PathVariable String paymentNumber, @RequestBody PaymentResource resource) {
         try {
             resource.setPaymentNumber(paymentNumber);
@@ -106,7 +104,7 @@ public class PaymentApiController {
 
     @Operation(summary = "入金データを削除する", description = "入金データを削除する")
     @DeleteMapping("/{paymentNumber}")
-    @AuditAnnotation(process = ApplicationExecutionProcessType.その他, type = ApplicationExecutionHistoryType.同期)
+    @AuditAnnotation(process = ApplicationExecutionProcessType.入金削除, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> delete(@PathVariable String paymentNumber) {
         try {
             Optional<Payment> payment = paymentService.findById(paymentNumber);
@@ -122,7 +120,6 @@ public class PaymentApiController {
 
     @Operation(summary = "全ての入金データを取得する", description = "全ての入金データを取得する")
     @GetMapping("/all")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> selectAll() {
         try {
             List<Payment> payments = paymentService.selectAll();
@@ -137,7 +134,6 @@ public class PaymentApiController {
 
     @Operation(summary = "顧客コードで入金データを検索する", description = "顧客コードで入金データを検索する")
     @GetMapping("/customer/{customerCode}/{branchNumber}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> findByCustomer(
             @PathVariable String customerCode,
             @PathVariable Integer branchNumber) {
@@ -154,7 +150,6 @@ public class PaymentApiController {
 
     @Operation(summary = "入金口座コードで入金データを検索する", description = "入金口座コードで入金データを検索する")
     @GetMapping("/account/{accountCode}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> findByAccount(@PathVariable String accountCode) {
         try {
             List<Payment> payments = paymentService.findByAccount(accountCode);
@@ -169,7 +164,6 @@ public class PaymentApiController {
 
     @Operation(summary = "入金データを検索する", description = "指定された検索条件で入金データを検索します。")
     @PostMapping("/search")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> search(
             @RequestBody PaymentCriteriaResource resource,
             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
