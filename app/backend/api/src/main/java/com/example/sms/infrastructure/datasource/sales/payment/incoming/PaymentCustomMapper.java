@@ -1,5 +1,6 @@
 package com.example.sms.infrastructure.datasource.sales.payment.incoming;
 
+import com.example.sms.service.sales.payment.incoming.PaymentCriteria;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -64,4 +65,6 @@ public interface PaymentCustomMapper {
      * @return 入金データのカスタムエンティティのリスト
      */
     List<PaymentCustomEntity> selectByAccount(String accountCode);
+
+    List<PaymentCustomEntity> selectByCriteria(PaymentCriteria criteria);
 }

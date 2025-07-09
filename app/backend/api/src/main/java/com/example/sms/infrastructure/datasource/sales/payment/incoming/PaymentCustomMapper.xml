@@ -120,4 +120,32 @@
         where 入金番号 = #{入金番号,jdbcType=VARCHAR}
         and version = #{version,jdbcType=INTEGER}
     </update>
+
+    <!-- selectByCriteria -->
+    <select id="selectByCriteria" resultMap="BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.入金データMapper.Base_Column_List" />
+        from public.入金データ
+            
+        <where>
+            <if test="paymentNumber != null">
+                入金番号 = #{paymentNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="paymentDate != null">
+                and 入金日 = #{paymentDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="departmentCode != null">
+                and 部門コード = #{departmentCode,jdbcType=VARCHAR}
+            </if>
+            <if test="customerCode != null">
+                and 顧客コード = #{customerCode,jdbcType=VARCHAR}
+            </if>
+            <if test="paymentMethodType != null">
+                and 支払方法区分 = #{paymentMethodType,jdbcType=INTEGER}
+            </if>
+            <if test="paymentAccountCode != null">
+                and 入金口座コード = #{paymentAccountCode,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
 </mapper>

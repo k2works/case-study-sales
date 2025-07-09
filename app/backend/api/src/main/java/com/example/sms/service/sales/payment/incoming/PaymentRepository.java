@@ -53,6 +53,14 @@ public interface PaymentRepository {
     PageInfo<Payment> selectAllWithPageInfo();
 
     /**
+     * 検索条件に基づいて入金データを検索する（ページング付き）
+     *
+     * @param criteria 検索条件
+     * @return ページング情報付きの入金データ
+     */
+    PageInfo<Payment> searchWithPageInfo(PaymentCriteria criteria);
+
+    /**
      * 顧客コードで入金データを検索する
      *
      * @param customerCode 顧客コード

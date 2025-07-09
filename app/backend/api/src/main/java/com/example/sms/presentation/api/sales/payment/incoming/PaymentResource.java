@@ -42,7 +42,7 @@ public class PaymentResource {
 
     @NotNull
     @Schema(description = "支払方法区分")
-    private String paymentMethodType;
+    private PaymentMethodType paymentMethodType;
 
     @NotNull
     @Schema(description = "入金口座コード")
@@ -70,7 +70,7 @@ public class PaymentResource {
                 .departmentStartDate(payment.getDepartmentId().getDepartmentStartDate().getValue())
                 .customerCode(payment.getCustomerCode().getCode().getValue())
                 .customerBranchNumber(payment.getCustomerCode().getBranchNumber())
-                .paymentMethodType(payment.getPaymentMethodType().getCode().toString())
+                .paymentMethodType(payment.getPaymentMethodType())
                 .paymentAccountCode(payment.getPaymentAccountCode())
                 .paymentAmount(payment.getPaymentAmount().getAmount())
                 .offsetAmount(payment.getOffsetAmount().getAmount())

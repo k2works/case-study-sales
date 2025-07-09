@@ -111,7 +111,7 @@ public class UC022StepDefs extends SpringAcceptanceTest {
         // その他の必須項目を設定
         resource.setDepartmentCode("10000");
         resource.setDepartmentStartDate(LocalDateTime.now());
-        resource.setPaymentMethodType(String.valueOf(PaymentMethodType.振込.getCode()));
+        resource.setPaymentMethodType(PaymentMethodType.振込);
         resource.setOffsetAmount(0);
 
         ObjectMapper objectMapper = createObjectMapper();

@@ -10,7 +10,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -39,7 +38,7 @@ class PaymentResourceDTOMapperTest {
                 .departmentStartDate(departmentStartDate)
                 .customerCode(customerCode)
                 .customerBranchNumber(customerBranchNumber)
-                .paymentMethodType(paymentMethodType)
+                .paymentMethodType(PaymentMethodType.振込)
                 .paymentAccountCode(paymentAccountCode)
                 .paymentAmount(paymentAmount)
                 .offsetAmount(offsetAmount)
@@ -80,7 +79,7 @@ class PaymentResourceDTOMapperTest {
                 .build();
 
         // Act & Assert
-        assertThrows(NumberFormatException.class, () -> {
+        assertThrows(NullPointerException.class, () -> {
             PaymentResourceDTOMapper.convertToEntity(resource);
         });
     }
@@ -89,7 +88,6 @@ class PaymentResourceDTOMapperTest {
     @DisplayName("入金データリソースの支払方法区分が無効な場合は例外をスローする")
     void testConvertToEntity_invalidPaymentMethodType_shouldThrowException() {
         // Arrange
-        String invalidPaymentMethodType = "invalid";
         PaymentResource resource = PaymentResource.builder()
                 .paymentNumber("PAY001")
                 .paymentDate(LocalDateTime.of(2023,1,1,0,0))
@@ -97,14 +95,14 @@ class PaymentResourceDTOMapperTest {
                 .departmentStartDate(LocalDateTime.of(2023,1,1,0,0))
                 .customerCode("101")
                 .customerBranchNumber(1)
-                .paymentMethodType(invalidPaymentMethodType)
+                .paymentMethodType(null)
                 .paymentAccountCode("ACC001")
                 .paymentAmount(10000)
                 .offsetAmount(5000)
                 .build();
 
         // Act & Assert
-        assertThrows(NumberFormatException.class, () -> {
+        assertThrows(NullPointerException.class, () -> {
             PaymentResourceDTOMapper.convertToEntity(resource);
         });
     }

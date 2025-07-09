@@ -84,6 +84,16 @@ public class PaymentService {
     }
 
     /**
+     * 検索条件に基づいて入金データを検索する（ページング付き）
+     *
+     * @param criteria 検索条件
+     * @return ページング情報付きの入金データ
+     */
+    public PageInfo<Payment> searchWithPageInfo(PaymentCriteria criteria) {
+        return paymentRepository.searchWithPageInfo(criteria);
+    }
+
+    /**
      * 顧客コードで入金データを検索する
      *
      * @param customerCode 顧客コード

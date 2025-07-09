@@ -4,6 +4,7 @@ import com.example.sms.domain.model.sales.payment.incoming.Payment;
 import com.example.sms.infrastructure.PageInfoHelper;
 import com.example.sms.infrastructure.datasource.autogen.mapper.入金データMapper;
 import com.example.sms.infrastructure.datasource.autogen.model.入金データ;
+import com.example.sms.service.sales.payment.incoming.PaymentCriteria;
 import com.example.sms.service.sales.payment.incoming.PaymentRepository;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.core.Authentication;
@@ -94,6 +95,13 @@ public class PaymentDataSource implements PaymentRepository {
     @Override
     public PageInfo<Payment> selectAllWithPageInfo() {
         List<PaymentCustomEntity> entities = paymentCustomMapper.selectAll();
+        PageInfo<PaymentCustomEntity> pageInfo = new PageInfo<>(entities);
+        return PageInfoHelper.of(pageInfo, paymentEntityMapper::mapToDomainModel);
+    }
+
+    @Override
+    public PageInfo<Payment> searchWithPageInfo(PaymentCriteria criteria) {
+        List<PaymentCustomEntity> entities = paymentCustomMapper.selectByCriteria(criteria);
         PageInfo<PaymentCustomEntity> pageInfo = new PageInfo<>(entities);
         return PageInfoHelper.of(pageInfo, paymentEntityMapper::mapToDomainModel);
     }
