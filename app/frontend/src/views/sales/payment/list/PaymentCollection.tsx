@@ -62,6 +62,8 @@ const PaymentItem: React.FC<PaymentItemProps> = ({payment, onEdit, onDelete, onC
         </div>
         <div className="collection-object-item-actions" data-id={payment.paymentNumber}>
             <button className="action-button" onClick={() => onEdit(payment)} id="edit">編集</button>
+        </div>
+        <div className="collection-object-item-actions" data-id={payment.paymentNumber}>
             <button className="action-button" onClick={() => onDelete(payment.paymentNumber)} id="delete">削除</button>
         </div>
     </li>

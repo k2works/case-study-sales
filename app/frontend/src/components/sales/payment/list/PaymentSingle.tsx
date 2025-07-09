@@ -34,6 +34,31 @@ export const PaymentSingle: React.FC = () => {
     };
 
     const handleCreateOrUpdatePayment = async () => {
+        const validate = () => {
+            if (!newPayment.paymentNumber) {
+                setError("入金番号を入力してください")
+                return false;
+            }
+            if (!newPayment.departmentCode) {
+                setError("部門コードを入力してください")
+                return false;
+            }
+            if (!newPayment.customerCode) {
+                setError("顧客コードを入力してください")
+                return false;
+            }
+            if(!newPayment.paymentMethodType) {
+                setError("支払方法区分を選択してください")
+                return false;
+            }
+
+            return true;
+        }
+
+        if (!validate()) {
+            return;
+        }
+
         try {
             if (isEditing) {
                 await paymentService.update(newPayment);
