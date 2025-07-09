@@ -9,8 +9,9 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum PaymentAccountType {
-    普通("1", "普通"),
-    当座("2", "当座"),
+    銀行("1", "銀行"),
+    郵便局("2", "郵便局"),
+    農協("3", "農協"),
     その他("9", "その他");
 
     private final String code;
@@ -24,7 +25,7 @@ public enum PaymentAccountType {
      */
     public static PaymentAccountType fromCode(String code) {
         if (code == null) {
-            return 普通;
+            return 銀行;
         }
 
         for (PaymentAccountType type : PaymentAccountType.values()) {
@@ -33,6 +34,6 @@ public enum PaymentAccountType {
             }
         }
         
-        return 普通;
+        return 銀行;
     }
 }

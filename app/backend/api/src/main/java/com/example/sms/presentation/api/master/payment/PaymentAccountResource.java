@@ -36,13 +36,13 @@ public class PaymentAccountResource {
     private String accountNameAfterStart;
     
     @Schema(description = "入金口座区分")
-    private String accountType;
+    private PaymentAccountType accountType;
     
     @Schema(description = "入金口座番号")
     private String accountNumber;
     
     @Schema(description = "銀行口座種別")
-    private String bankAccountType;
+    private BankAccountType bankAccountType;
     
     @Schema(description = "口座名義人")
     private String accountHolder;
@@ -66,9 +66,9 @@ public class PaymentAccountResource {
                 .startDate(paymentAccount.getStartDate().toString())
                 .endDate(paymentAccount.getEndDate().toString())
                 .accountNameAfterStart(paymentAccount.getAccountNameAfterStart())
-                .accountType(paymentAccount.getAccountType().getCode())
+                .accountType(paymentAccount.getAccountType())
                 .accountNumber(paymentAccount.getAccountNumber())
-                .bankAccountType(paymentAccount.getBankAccountType().getCode())
+                .bankAccountType(paymentAccount.getBankAccountType())
                 .accountHolder(paymentAccount.getAccountHolder())
                 .departmentCode(paymentAccount.getDepartmentId().getDeptCode().getValue())
                 .departmentStartDate(paymentAccount.getDepartmentId().getDepartmentStartDate().getValue().toString())

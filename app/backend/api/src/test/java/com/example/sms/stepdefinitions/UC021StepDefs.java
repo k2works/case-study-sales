@@ -1,7 +1,9 @@
 package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
+import com.example.sms.domain.model.master.payment.account.incoming.BankAccountType;
 import com.example.sms.domain.model.master.payment.account.incoming.PaymentAccount;
+import com.example.sms.domain.model.master.payment.account.incoming.PaymentAccountType;
 import com.example.sms.presentation.api.master.payment.PaymentAccountResource;
 import com.example.sms.stepdefinitions.utils.ListResponse;
 import com.example.sms.stepdefinitions.utils.MessageResponse;
@@ -102,9 +104,9 @@ public class UC021StepDefs extends SpringAcceptanceTest {
         
         // その他の必須項目を設定
         resource.setAccountNameAfterStart(name);
-        resource.setAccountType("1"); // 普通
+        resource.setAccountType(PaymentAccountType.銀行);
         resource.setAccountNumber("12345678");
-        resource.setBankAccountType("1"); // 普通
+        resource.setBankAccountType(BankAccountType.普通);
         resource.setAccountHolder("テスト口座名義");
         resource.setDepartmentCode("10000");
         resource.setDepartmentStartDate(now.format(FORMATTER));

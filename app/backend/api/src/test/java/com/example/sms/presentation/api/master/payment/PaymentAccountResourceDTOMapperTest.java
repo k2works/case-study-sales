@@ -26,9 +26,7 @@ class PaymentAccountResourceDTOMapperTest {
         String startDate = "2023-01-01T10:00:00Z";
         String endDate = "2023-12-31T10:00:00Z";
         String accountNameAfterStart = "テスト口座（適用後）";
-        String accountType = "1"; // 普通
         String accountNumber = "1234567";
-        String bankAccountType = "1"; // 普通
         String accountHolder = "テスト太郎";
         String departmentCode = "10000";
         String departmentStartDate = "2023-01-01T00:00:00Z";
@@ -41,9 +39,9 @@ class PaymentAccountResourceDTOMapperTest {
                 .startDate(startDate)
                 .endDate(endDate)
                 .accountNameAfterStart(accountNameAfterStart)
-                .accountType(accountType)
+                .accountType(PaymentAccountType.銀行)
                 .accountNumber(accountNumber)
-                .bankAccountType(bankAccountType)
+                .bankAccountType(BankAccountType.普通)
                 .accountHolder(accountHolder)
                 .departmentCode(departmentCode)
                 .departmentStartDate(departmentStartDate)
@@ -61,9 +59,9 @@ class PaymentAccountResourceDTOMapperTest {
         assertEquals(LocalDateTime.parse(startDate, formatter), paymentAccount.getStartDate());
         assertEquals(LocalDateTime.parse(endDate, formatter), paymentAccount.getEndDate());
         assertEquals(accountNameAfterStart, paymentAccount.getAccountNameAfterStart());
-        assertEquals(PaymentAccountType.fromCode(accountType), paymentAccount.getAccountType());
+        assertEquals(PaymentAccountType.銀行, paymentAccount.getAccountType());
         assertEquals(accountNumber, paymentAccount.getAccountNumber());
-        assertEquals(BankAccountType.fromCode(bankAccountType), paymentAccount.getBankAccountType());
+        assertEquals(BankAccountType.普通, paymentAccount.getBankAccountType());
         assertEquals(accountHolder, paymentAccount.getAccountHolder());
         assertEquals(DepartmentId.of(departmentCode, LocalDateTime.parse(departmentStartDate, formatter)), paymentAccount.getDepartmentId());
         assertEquals(bankCode, paymentAccount.getBankCode());
