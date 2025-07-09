@@ -2,8 +2,8 @@ import {useState} from "react";
 import {
     AccountCriteriaType,
     AccountType,
-    PaymentAccountType,
-    BankAccountType
+    PaymentAccountEnumType,
+    BankAccountEnumType
 } from "../../../../models/master/account.ts";
 import {AccountService, AccountServiceType} from "../../../../services/master/account.ts";
 import {PageNationType} from "../../../../views/application/PageNation.tsx";
@@ -16,9 +16,9 @@ export const useAccount = () => {
         startDate: "",
         endDate: "",
         accountNameAfterStart: "",
-        accountType: PaymentAccountType.BANK,
+        accountType: PaymentAccountEnumType.銀行,
         accountNumber: "",
-        bankAccountType: BankAccountType.ORDINARY,
+        bankAccountType: BankAccountEnumType.普通,
         accountHolder: "",
         departmentCode: "",
         departmentStartDate: "",

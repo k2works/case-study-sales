@@ -29,6 +29,18 @@ const AccountItem: React.FC<AccountItemProps> = ({account, onEdit, onDelete, onC
             <div className="collection-object-item-content-details">口座区分</div>
             <div className="collection-object-item-content-name">{account.accountType}</div>
         </div>
+        <div className="collection-object-item-content" data-id={account.bankAccountType}>
+            <div className="collection-object-item-content-details">口座種別</div>
+            <div className="collection-object-item-content-name">{account.bankAccountType}</div>
+        </div>
+        <div className="collection-object-item-content" data-id={account.accountNumber}>
+            <div className="collection-object-item-content-details">口座番号</div>
+            <div className="collection-object-item-content-name">{account.accountNumber}</div>
+        </div>
+        <div className="collection-object-item-content" data-id={account.accountHolder}>
+            <div className="collection-object-item-content-details">口座名義人</div>
+            <div className="collection-object-item-content-name">{account.accountHolder}</div>
+        </div>
         <div className="collection-object-item-actions" data-id={account.accountCode}>
             <button className="action-button" onClick={() => onEdit(account)} id="edit">編集</button>
         </div>
