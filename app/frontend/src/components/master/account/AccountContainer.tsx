@@ -4,6 +4,7 @@ import {SiteLayout} from "../../../views/SiteLayout.tsx";
 import LoadingIndicator from "../../../views/application/LoadingIndicatior.tsx";
 import {AccountProvider, useAccountContext} from "../../../providers/master/Account.tsx";
 import {AccountCollection} from "./AccountCollection.tsx";
+import {DepartmentProvider, useDepartmentContext} from "../../../providers/master/Department.tsx";
 
 export const AccountContainer: React.FC = () => {
     const Content: React.FC = () => {
@@ -13,10 +14,15 @@ export const AccountContainer: React.FC = () => {
             fetchAccounts,
         } = useAccountContext();
 
+        const {
+            fetchDepartments,
+        } = useDepartmentContext();
+
         useEffect(() => {
             (async () => {
                 try {
                     await fetchAccounts.load();
+                    await fetchDepartments.load();
                 } catch (error: unknown) {
                     showErrorMessage(`口座情報の取得に失敗しました: ${error instanceof Error ? error.message : String(error)}`, setError);
                 }
@@ -37,7 +43,9 @@ export const AccountContainer: React.FC = () => {
     return (
         <SiteLayout>
             <AccountProvider>
-                <Content/>
+                <DepartmentProvider>
+                    <Content/>
+                </DepartmentProvider>
             </AccountProvider>
         </SiteLayout>
     );

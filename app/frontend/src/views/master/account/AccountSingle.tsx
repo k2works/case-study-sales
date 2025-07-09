@@ -3,6 +3,7 @@ import {Message} from "../../../components/application/Message.tsx";
 import {AccountType, PaymentAccountType, BankAccountType} from "../../../models/master/account.ts";
 import {convertToDateInputFormat} from "../../../components/application/utils.ts";
 import {FormInput, SingleViewHeaderActions, SingleViewHeaderItem} from "../../Common.tsx";
+import {useDepartmentContext} from "../../../providers/master/Department.tsx";
 
 interface HeaderProps {
     title: string;
@@ -36,6 +37,12 @@ interface FormProps {
 }
 
 const Form = ({isEditing, newAccount, setNewAccount}: FormProps) => {
+    const { setModalIsOpen: setDepartmentModalIsOpen } = useDepartmentContext();
+
+    const handleOpenDepartmentModal = () => {
+        setDepartmentModalIsOpen(true);
+    };
+
     return (
         <div className="single-view-content-item-form">
             <FormInput
@@ -199,18 +206,29 @@ const Form = ({isEditing, newAccount, setNewAccount}: FormProps) => {
                     accountHolder: e.target.value
                 })}
             />
-            <FormInput
-                label="部門コード"
-                id="departmentCode"
-                type="text"
-                className="single-view-content-item-form-item-input"
-                placeholder="部門コード"
-                value={newAccount.departmentCode}
-                onChange={(e) => setNewAccount({
-                    ...newAccount,
-                    departmentCode: e.target.value
-                })}
-            />
+            <div className="form-item">
+                <label htmlFor="departmentCode">部門コード</label>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                    <input
+                        id="departmentCode"
+                        type="text"
+                        className="single-view-content-item-form-item-input"
+                        placeholder="部門コード"
+                        value={newAccount.departmentCode}
+                        onChange={(e) => setNewAccount({
+                            ...newAccount,
+                            departmentCode: e.target.value
+                        })}
+                    />
+                    <button
+                        type="button"
+                        className="single-view-content-item-form-item-button"
+                        onClick={handleOpenDepartmentModal}
+                    >
+                        選択
+                    </button>
+                </div>
+            </div>
             <FormInput
                 label="部門開始日"
                 id="departmentStartDate"
