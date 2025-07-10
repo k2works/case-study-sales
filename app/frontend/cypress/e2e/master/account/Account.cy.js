@@ -4,7 +4,7 @@ describe('口座管理', () => {
     })
 
     const userPage = () => {
-        cy.get('#side-nav-menu > :nth-child(1) > :nth-child(4) > :nth-child(1) > :nth-child(9) > #side-nav-account-nav').click();
+        cy.get('#side-nav-menu > :nth-child(1) > :nth-child(4) > :nth-child(1) > :nth-child(7) > #side-nav-account-nav').click();
     }
 
     context('口座一覧', () => {
