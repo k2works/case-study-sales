@@ -108,13 +108,13 @@ const NaveItems: React.FC = () => {
                                     <SubNavItem id="side-nav-partner-nav" to="/vendor">仕入先</SubNavItem>
                                 </ul>
                             )}
+                            <SubNavItem id="side-nav-account-nav" to="/account">口座</SubNavItem>
                             <SubNavItem id="side-nav-code-nav" to="/code">コード</SubNavItem>
                             {!Env.isProduction() && (
                                 <ul className="nav-sub-list">
                                     <SubNavItem id="side-nav-code-nav" to="/region">地域</SubNavItem>
                                 </ul>
                             )}
-                            <SubNavItem id="side-nav-account-nav" to="/account">口座</SubNavItem>
                         </ul>
                     </li>
                 </>

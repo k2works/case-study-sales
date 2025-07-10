@@ -75,7 +75,7 @@ public class PaymentAccountApiController {
 
     @Operation(summary = "入金口座を登録する", description = "入金口座を登録する")
     @PostMapping
-    @AuditAnnotation(process = ApplicationExecutionProcessType.その他, type = ApplicationExecutionHistoryType.同期)
+    @AuditAnnotation(process = ApplicationExecutionProcessType.口座登録, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> create(@RequestBody @Validated PaymentAccountResource resource) {
         try {
             PaymentAccount paymentAccount = convertToEntity(resource);
@@ -92,7 +92,7 @@ public class PaymentAccountApiController {
 
     @Operation(summary = "入金口座を更新する", description = "入金口座を更新する")
     @PutMapping("/{accountCode}")
-    @AuditAnnotation(process = ApplicationExecutionProcessType.その他, type = ApplicationExecutionHistoryType.同期)
+    @AuditAnnotation(process = ApplicationExecutionProcessType.口座更新, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> update(@PathVariable String accountCode, @RequestBody PaymentAccountResource resource) {
         try {
             resource.setAccountCode(accountCode);
@@ -106,7 +106,7 @@ public class PaymentAccountApiController {
 
     @Operation(summary = "入金口座を削除する", description = "入金口座を削除する")
     @DeleteMapping("/{accountCode}")
-    @AuditAnnotation(process = ApplicationExecutionProcessType.その他, type = ApplicationExecutionHistoryType.同期)
+    @AuditAnnotation(process = ApplicationExecutionProcessType.口座削除, type = ApplicationExecutionHistoryType.同期)
     public ResponseEntity<?> delete(@PathVariable String accountCode) {
         try {
             Optional<PaymentAccount> paymentAccount = paymentAccountService.findById(accountCode);
@@ -122,7 +122,6 @@ public class PaymentAccountApiController {
 
     @Operation(summary = "全ての入金口座を取得する", description = "全ての入金口座を取得する")
     @GetMapping("/all")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> selectAll() {
         try {
             List<PaymentAccount> accounts = paymentAccountService.selectAll();
@@ -137,7 +136,6 @@ public class PaymentAccountApiController {
 
     @Operation(summary = "入金口座を検索する", description = "入金口座を検索する")
     @PostMapping("/search")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> search(
             @RequestBody PaymentAccountCriteriaResource resource,
             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
