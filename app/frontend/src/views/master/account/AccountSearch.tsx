@@ -1,14 +1,15 @@
 import React, {MouseEventHandler} from "react";
-import {FormInput, SingleViewHeaderItem} from "../../Common.tsx";
+import {FormInput, FormSelect, SingleViewHeaderItem} from "../../Common.tsx";
 import {AccountCriteriaType, PaymentAccountEnumType} from "../../../models/master/account.ts";
 
 interface FormProps {
     criteria: AccountCriteriaType,
     setCondition:(criteria: AccountCriteriaType) => void,
     handleClick: (e: React.MouseEvent<HTMLButtonElement>) => void,
-    handleClose: (e: React.MouseEvent<HTMLButtonElement>) => void
+    handleClose: (e: React.MouseEvent<HTMLButtonElement>) => void,
+    handleDepartmentSelect: () => void;
 }
-const Form = ({criteria, setCondition, handleClick, handleClose}: FormProps) => {
+const Form = ({criteria, setCondition, handleClick, handleClose, handleDepartmentSelect}: FormProps) => {
     return (
         <div className="single-view-content-item-form">
             <FormInput
@@ -29,37 +30,16 @@ const Form = ({criteria, setCondition, handleClick, handleClose}: FormProps) => 
                 onChange={(e) => setCondition(
                     {...criteria, accountName: e.target.value}
                 )}/>
-            <div className="form-item">
-                <label>口座区分</label>
-                <div className="single-view-content-item-form-radios">
-                    <label>
-                        <input
-                            type="radio"
-                            name="accountType"
-                            value={PaymentAccountEnumType.銀行}
-                            checked={criteria.accountType === PaymentAccountEnumType.銀行}
-                            onChange={(e) => setCondition({
-                                ...criteria,
-                                accountType: e.target.value
-                            })}
-                        />
-                        銀行口座
-                    </label>
-                    <label>
-                        <input
-                            type="radio"
-                            name="accountType"
-                            value={PaymentAccountEnumType.銀行}
-                            checked={criteria.accountType === PaymentAccountEnumType.銀行}
-                            onChange={(e) => setCondition({
-                                ...criteria,
-                                accountType: e.target.value
-                            })}
-                        />
-                        現金
-                    </label>
-                </div>
-            </div>
+            <FormSelect
+                label="口座区分"
+                id="accountType"
+                value={criteria.accountType}
+                options={PaymentAccountEnumType}
+                onChange={(e) => setCondition({
+                    ...criteria,
+                    accountType: e
+                })}
+            />
             <FormInput
                 label="開始日"
                 id="startDate"
@@ -88,7 +68,9 @@ const Form = ({criteria, setCondition, handleClick, handleClose}: FormProps) => 
                 value={criteria.departmentCode}
                 onChange={(e) => setCondition(
                     {...criteria, departmentCode: e.target.value}
-                )}/>
+                )}
+                onClick={handleDepartmentSelect}
+            />
 
             <div className="button-container">
                 <button className="action-button" id="search-all" onClick={handleClick}>
@@ -106,7 +88,8 @@ interface AccountSearchSingleViewProps {
     criteria: AccountCriteriaType,
     setCondition:(criteria: AccountCriteriaType) => void,
     handleSelect: (criteria: AccountCriteriaType) => Promise<void>,
-    handleClose: () => void
+    handleClose: () => void,
+    handleDepartmentSelect: () => void
 }
 
 export const AccountSearchSingleView: React.FC<AccountSearchSingleViewProps> = ({
@@ -114,6 +97,7 @@ export const AccountSearchSingleView: React.FC<AccountSearchSingleViewProps> = (
                                                                                   setCondition,
                                                                                   handleSelect,
                                                                                   handleClose,
+                                                                                  handleDepartmentSelect,
                                                                               }) => {
     const handleClick: MouseEventHandler<HTMLButtonElement> = async(e) => {
         e.preventDefault();
@@ -136,7 +120,7 @@ export const AccountSearchSingleView: React.FC<AccountSearchSingleViewProps> = (
             <div className="single-view-container">
                 <div className="single-view-content">
                     <div className="single-view-content-item">
-                        <Form criteria={criteria} setCondition={setCondition} handleClick={handleClick} handleClose={handleCancel}/>
+                        <Form criteria={criteria} setCondition={setCondition} handleClick={handleClick} handleClose={handleCancel} handleDepartmentSelect={handleDepartmentSelect}/>
                     </div>
                 </div>
             </div>

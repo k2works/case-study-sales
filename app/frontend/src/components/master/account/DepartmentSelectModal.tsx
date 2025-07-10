@@ -5,29 +5,41 @@ import { useDepartmentContext } from "../../../providers/master/Department.tsx";
 import { useAccountContext } from "../../../providers/master/Account.tsx";
 import { DepartmentType } from "../../../models/master/department";
 
-export const DepartmentSelectModal: React.FC = () => {
+type DepartmentSelectModalProps = {
+    type: "edit" | "search";
+};
+
+export const DepartmentSelectModal: React.FC<DepartmentSelectModalProps> = ({ type }) => {
     const {
         newAccount,
         setNewAccount,
+        searchAccountCriteria,
+        setSearchAccountCriteria,
     } = useAccountContext();
 
     const {
         pageNation: departmentPageNation,
         modalIsOpen: departmentModalIsOpen,
         setModalIsOpen: setDepartmentModalIsOpen,
+        searchModalIsOpen: departmentSearchModalIsOpen,
+        setSearchModalIsOpen: setDepartmentSearchModalIsOpen,
         departments,
         fetchDepartments,
     } = useDepartmentContext();
 
-    const handleCloseModal = () => {
+    const handleCloseEditModal = () => {
         setDepartmentModalIsOpen(false);
     };
 
-    return (
+    const handleCloseSearchModal = () => {
+        setDepartmentSearchModalIsOpen(false);
+    };
+
+    const departmentEditModalView = () => (
         <Modal
             isOpen={departmentModalIsOpen}
-            onRequestClose={handleCloseModal}
-            contentLabel="部門情報を選択"
+            onRequestClose={handleCloseEditModal}
+            contentLabel="部門情報を入力"
             className="modal"
             overlayClassName="modal-overlay"
             bodyOpenClassName="modal-open"
@@ -38,13 +50,46 @@ export const DepartmentSelectModal: React.FC = () => {
                     setNewAccount({
                         ...newAccount,
                         departmentCode: department.departmentCode,
+                        departmentStartDate: department.startDate,
                     });
                     setDepartmentModalIsOpen(false);
                 }}
-                handleClose={handleCloseModal}
+                handleClose={handleCloseEditModal}
                 pageNation={departmentPageNation}
                 fetchDepartments={fetchDepartments.load}
             />
         </Modal>
+    );
+
+    const departmentSearchModalView = () => (
+        <Modal
+            isOpen={departmentSearchModalIsOpen}
+            onRequestClose={handleCloseSearchModal}
+            contentLabel="部門情報を検索"
+            className="modal"
+            overlayClassName="modal-overlay"
+            bodyOpenClassName="modal-open"
+        >
+            <DepartmentCollectionSelectView
+                departments={departments}
+                handleSelect={(department: DepartmentType) => {
+                    setSearchAccountCriteria({
+                        ...searchAccountCriteria,
+                        departmentCode: department.departmentCode,
+                    });
+                    setDepartmentSearchModalIsOpen(false);
+                }}
+                handleClose={handleCloseSearchModal}
+                pageNation={departmentPageNation}
+                fetchDepartments={fetchDepartments.load}
+            />
+        </Modal>
+    );
+
+    return (
+        <>
+            {type === "edit" ? departmentEditModalView() : null}
+            {type === "search" ? departmentSearchModalView() : null}
+        </>
     );
 };

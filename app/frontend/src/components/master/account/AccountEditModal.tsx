@@ -30,7 +30,7 @@ export const AccountEditModal: React.FC = () => {
             >
                 <AccountSingle/>
             </Modal>
-            <DepartmentSelectModal />
+            <DepartmentSelectModal type="edit" />
         </>
     )
 }

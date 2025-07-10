@@ -3,6 +3,8 @@ import Modal from "react-modal";
 import {AccountSearchSingleView} from "../../../views/master/account/AccountSearch.tsx";
 import {showErrorMessage} from "../../application/utils.ts";
 import {useAccountContext} from "../../../providers/master/Account.tsx";
+import {DepartmentSelectModal} from "./DepartmentSelectModal.tsx";
+import {useDepartmentContext} from "../../../providers/master/Department.tsx";
 
 export const AccountSearchModal: React.FC = () => {
     const {
@@ -18,6 +20,10 @@ export const AccountSearchModal: React.FC = () => {
         setError,
         accountService
     } = useAccountContext();
+
+    const {
+        setSearchModalIsOpen: setDepartmentSearchModalIsOpen,
+    } = useDepartmentContext();
 
     const handleCloseSearchModal = () => {
         setSearchModalIsOpen(false);
@@ -55,14 +61,16 @@ export const AccountSearchModal: React.FC = () => {
             overlayClassName="modal-overlay"
             bodyOpenClassName="modal-open"
         >
-            {
+            <>
                 <AccountSearchSingleView
                     criteria={searchAccountCriteria}
                     setCondition={setSearchAccountCriteria}
                     handleSelect={handleSelectSearchModal}
                     handleClose={handleCloseSearchModal}
+                    handleDepartmentSelect={() => setDepartmentSearchModalIsOpen(true)}
                 />
-            }
+                <DepartmentSelectModal type="search" />
+            </>
         </Modal>
     )
 }
