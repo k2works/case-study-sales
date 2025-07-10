@@ -512,4 +512,49 @@ class DownloadServiceTest {
             assertEquals(0, firstResult.getOffsetAmount(), "消込金額が一致しません");
         }
     }
+
+    @Nested
+    @DisplayName("口座データ")
+    @WithMockUser(username = "admin", roles = "ADMIN")
+    class PaymentAccountDownload {
+        @Test
+        @DisplayName("件数取得")
+        void testCount() {
+            DownloadCriteria condition = com.example.sms.domain.model.system.download.PaymentAccount.of();
+            int result = downloadService.count(condition);
+            assertEquals(3, result);
+        }
+
+        @Test
+        @DisplayName("データダウンロード変換")
+        void testDownload() {
+            DownloadCriteria condition = com.example.sms.domain.model.system.download.PaymentAccount.of();
+            List<?> rawResult = downloadService.convert(condition);
+            List<PaymentAccountDownloadCSV> result = rawResult.stream()
+                    .filter(PaymentAccountDownloadCSV.class::isInstance)
+                    .map(PaymentAccountDownloadCSV.class::cast)
+                    .toList();
+
+            // 結果が空ではないことを確認
+            assertFalse(result.isEmpty(), "結果が空です");
+
+            // 最初のデータを確認
+            PaymentAccountDownloadCSV firstResult = result.getFirst();
+            assertNotNull(firstResult, "最初のデータがnullです");
+
+            // フィールドごとのアサーション
+            assertEquals("ACC001", firstResult.getAccountCode(), "入金口座コードが一致しません");
+            assertEquals("テスト口座", firstResult.getAccountName(), "入金口座名が一致しません");
+            assertEquals(LocalDateTime.of(2023, 10, 1, 0, 0), firstResult.getStartDate(), "適用開始日が一致しません");
+            assertEquals(LocalDateTime.of(2024, 10, 1, 0, 0), firstResult.getEndDate(), "適用終了日が一致しません");
+            assertEquals("テスト口座（適用後）", firstResult.getAccountNameAfterStart(), "適用開始後入金口座名が一致しません");
+            assertEquals("1", firstResult.getAccountType(), "入金口座区分が一致しません");
+            assertEquals("1234567", firstResult.getAccountNumber(), "入金口座番号が一致しません");
+            assertEquals("1", firstResult.getBankAccountType(), "銀行口座種別が一致しません");
+            assertEquals("テスト太郎", firstResult.getAccountHolder(), "口座名義人が一致しません");
+            assertEquals("10000", firstResult.getDepartmentCode(), "部門コードが一致しません");
+            assertEquals("0001", firstResult.getBankCode(), "全銀協銀行コードが一致しません");
+            assertEquals("001", firstResult.getBranchCode(), "全銀協支店コードが一致しません");
+        }
+    }
 }

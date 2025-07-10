@@ -290,6 +290,13 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
             // 請求データの準備
             setUpForInvoiceAcceptanceService();
+            
+            // 口座データの準備
+            paymentAccountRepository.deleteAll();
+            IntStream.range(1, 4).forEach(j -> {
+                PaymentAccount paymentAccount = getPaymentAccount(String.format("ACC%03d", j));
+                paymentAccountRepository.save(paymentAccount);
+            });
 
             // 入金データの準備
             setUpForPaymentIncomingService();
