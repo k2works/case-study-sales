@@ -1,5 +1,6 @@
 package com.example.sms.infrastructure.datasource.master.payment.account.incoming;
 
+import com.example.sms.service.master.payment.PaymentAccountCriteria;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -46,4 +47,6 @@ public interface PaymentAccountCustomMapper {
      * @return 更新された行数
      */
     int updateByPrimaryKeyForOptimisticLock(PaymentAccountCustomEntity entity);
+
+    List<PaymentAccountCustomEntity> selectByCriteria(PaymentAccountCriteria criteria);
 }

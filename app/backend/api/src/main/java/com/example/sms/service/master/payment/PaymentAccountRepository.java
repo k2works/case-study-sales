@@ -51,4 +51,11 @@ public interface PaymentAccountRepository {
      */
     PageInfo<PaymentAccount> selectAllWithPageInfo();
 
+    /**
+     * 検索条件に基づいて入金口座を検索し、ページング情報付きで結果を返す
+     *
+     * @param criteria 検索条件
+     * @return ページング情報付きの入金口座
+     */
+    PageInfo<PaymentAccount> searchWithPageInfo(PaymentAccountCriteria criteria);
 }

@@ -82,4 +82,14 @@ public class PaymentAccountService {
     public PageInfo<PaymentAccount> selectAllWithPageInfo() {
         return paymentAccountRepository.selectAllWithPageInfo();
     }
+
+    /**
+     * 検索条件に基づいて入金口座を検索し、ページング情報付きで結果を返す
+     *
+     * @param criteria 検索条件
+     * @return ページング情報付きの入金口座
+     */
+    public PageInfo<PaymentAccount> searchWithPageInfo(PaymentAccountCriteria criteria) {
+        return paymentAccountRepository.searchWithPageInfo(criteria);
+    }
 }

@@ -8,6 +8,7 @@ import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
 import com.example.sms.service.BusinessException;
 import com.example.sms.service.PageNationService;
+import com.example.sms.service.master.payment.PaymentAccountCriteria;
 import com.example.sms.service.master.payment.PaymentAccountService;
 import com.example.sms.service.system.audit.AuditAnnotation;
 import com.github.pagehelper.PageInfo;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.sms.presentation.api.master.payment.PaymentAccountResourceDTOMapper.convertToCriteria;
 import static com.example.sms.presentation.api.master.payment.PaymentAccountResourceDTOMapper.convertToEntity;
 
 /**
@@ -129,6 +131,24 @@ public class PaymentAccountApiController {
                     .toList();
             return ResponseEntity.ok(resources);
         } catch (BusinessException | IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
+    }
+
+    @Operation(summary = "入金口座を検索する", description = "入金口座を検索する")
+    @PostMapping("/search")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public ResponseEntity<?> search(
+            @RequestBody PaymentAccountCriteriaResource resource,
+            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(value = "page", defaultValue = "1") int... page) {
+        try {
+            PageNation.startPage(page, pageSize);
+            PaymentAccountCriteria criteria = convertToCriteria(resource);
+            PageInfo<PaymentAccount> entity = paymentAccountService.searchWithPageInfo(criteria);
+            PageInfo<PaymentAccountResource> result = pageNationService.getPageInfo(entity, PaymentAccountResource::from);
+            return ResponseEntity.ok(result);
+        } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }

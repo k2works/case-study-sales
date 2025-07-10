@@ -98,4 +98,35 @@
         where 入金口座コード = #{入金口座コード,jdbcType=VARCHAR}
         and version = #{version,jdbcType=INTEGER}
     </update>
+
+    <!-- selectByCriteria -->
+    <select id="selectByCriteria" parameterType="com.example.sms.service.master.payment.PaymentAccountCriteria"
+            resultMap="BaseResultMap">
+        select
+        <include
+                refid="com.example.sms.infrastructure.datasource.autogen.mapper.入金口座マスタMapper.Base_Column_List"/>
+        from public.入金口座マスタ
+        <where>
+            <if test="accountCode != null and accountCode != ''">
+                and 入金口座コード = #{accountCode,jdbcType=VARCHAR}
+            </if>
+            <if test="accountName != null and accountName != ''">
+                and 入金口座名 like concat('%', #{accountName,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="startDate != null">
+                and 適用開始日 &gt;= #{startDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endDate != null">
+                and 適用終了日 &lt;= #{endDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="accountType != null">
+                and 入金口座区分 = #{accountType,jdbcType=VARCHAR}
+            </if>
+            <if test="departmentCode != null and departmentCode != ''">
+                and 部門コード = #{departmentCode,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+
 </mapper>
