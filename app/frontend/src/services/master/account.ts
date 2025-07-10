@@ -48,9 +48,8 @@ export const AccountService = () => {
         return await apiUtils.fetchPost<AccountFetchType>(url, mapToAccountCriteriaResource(criteria));
     };
 
-    const destroy = async (accountCode: string, startDate: string): Promise<void> => {
-        const formattedStartDate = toISOStringWithTimezone(new Date(startDate));
-        const url = `${endPoint}/${accountCode}/${formattedStartDate}`;
+    const destroy = async (accountCode: string): Promise<void> => {
+        const url = `${endPoint}/${accountCode}`;
         await apiUtils.fetchDelete<void>(url);
     };
 

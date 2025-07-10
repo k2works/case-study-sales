@@ -184,7 +184,6 @@ const Form = ({isEditing, newAccount, setNewAccount}: FormProps) => {
                     ...newAccount,
                     departmentStartDate: e.target.value
                 })}
-                disabled={true}
             />
             <FormInput
                 label="銀行コード"
