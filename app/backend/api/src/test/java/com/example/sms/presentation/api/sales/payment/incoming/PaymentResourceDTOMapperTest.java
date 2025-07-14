@@ -6,6 +6,7 @@ import com.example.sms.domain.model.sales.payment.incoming.Payment;
 import com.example.sms.domain.model.sales.payment.incoming.PaymentMethodType;
 import com.example.sms.domain.model.sales.payment.incoming.PaymentNumber;
 import com.example.sms.domain.type.money.Money;
+import com.example.sms.service.sales.payment.incoming.PaymentCriteria;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -105,5 +106,70 @@ class PaymentResourceDTOMapperTest {
         assertThrows(NullPointerException.class, () -> {
             PaymentResourceDTOMapper.convertToEntity(resource);
         });
+    }
+
+    @Test
+    @DisplayName("入金検索条件リソースを入金検索条件に変換する")
+    void testConvertToCriteria_validResource_shouldReturnPaymentCriteria() {
+        // Arrange
+        String paymentNumber = "PAY001";
+        LocalDateTime paymentDate = LocalDateTime.of(2023,1,1,0,0);
+        String departmentCode = "10000";
+        String customerCode = "101";
+        PaymentMethodType paymentMethodType = PaymentMethodType.振込;
+        String paymentAccountCode = "ACC001";
+
+        PaymentCriteriaResource resource = new PaymentCriteriaResource();
+        resource.setPaymentNumber(paymentNumber);
+        resource.setPaymentDate(paymentDate);
+        resource.setDepartmentCode(departmentCode);
+        resource.setCustomerCode(customerCode);
+        resource.setPaymentMethodType(paymentMethodType);
+        resource.setPaymentAccountCode(paymentAccountCode);
+
+        // Act
+        PaymentCriteria criteria = PaymentResourceDTOMapper.convertToCriteria(resource);
+
+        // Assert
+        assertNotNull(criteria);
+        assertEquals(paymentNumber, criteria.getPaymentNumber());
+        assertEquals(paymentDate, criteria.getPaymentDate());
+        assertEquals(departmentCode, criteria.getDepartmentCode());
+        assertEquals(customerCode, criteria.getCustomerCode());
+        assertEquals(paymentMethodType.getCode(), criteria.getPaymentMethodType());
+        assertEquals(paymentAccountCode, criteria.getPaymentAccountCode());
+    }
+
+    @Test
+    @DisplayName("入金検索条件リソースがnullの場合はnullを返す")
+    void testConvertToCriteria_nullResource_shouldReturnNull() {
+        // Arrange
+        PaymentCriteriaResource resource = null;
+
+        // Act
+        PaymentCriteria criteria = PaymentResourceDTOMapper.convertToCriteria(resource);
+
+        // Assert
+        assertNull(criteria);
+    }
+
+    @Test
+    @DisplayName("入金検索条件リソースのフィールドがnullの場合も正常に変換する")
+    void testConvertToCriteria_nullFieldsInResource_shouldHandleNullFields() {
+        // Arrange
+        PaymentCriteriaResource resource = new PaymentCriteriaResource();
+        // すべてのフィールドがnull
+
+        // Act
+        PaymentCriteria criteria = PaymentResourceDTOMapper.convertToCriteria(resource);
+
+        // Assert
+        assertNotNull(criteria);
+        assertNull(criteria.getPaymentNumber());
+        assertNull(criteria.getPaymentDate());
+        assertNull(criteria.getDepartmentCode());
+        assertNull(criteria.getCustomerCode());
+        assertNull(criteria.getPaymentMethodType());
+        assertNull(criteria.getPaymentAccountCode());
     }
 }
