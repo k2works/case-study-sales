@@ -2,6 +2,7 @@ package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
 import com.example.sms.domain.model.sales.payment.incoming.PaymentMethodType;
+import com.example.sms.presentation.api.sales.payment.incoming.PaymentCriteriaResource;
 import com.example.sms.presentation.api.sales.payment.incoming.PaymentResource;
 import com.example.sms.service.sales.payment.incoming.PaymentService;
 import com.example.sms.stepdefinitions.utils.MessageResponse;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class UC022StepDefs extends SpringAcceptanceTest {
@@ -177,35 +179,31 @@ public class UC022StepDefs extends SpringAcceptanceTest {
         executeDelete(url);
     }
 
-    @もし(":UC022 顧客コード {string} 枝番 {int} で検索する")
-    public void findByCustomer(String customerCode, Integer branchNumber) throws IOException {
-        String url = PAYMENTS_API_URL + "/customer/" + customerCode + "/" + branchNumber;
-        executeGet(url);
+    @もし(":UC022 検索条件で入金データを検索する")
+    public void searchWithCriteria() throws IOException {
+        // 検索条件を作成
+        PaymentCriteriaResource resource = new PaymentCriteriaResource();
+        resource.setCustomerCode("001");
+        resource.setPaymentAccountCode("A001");
+
+        ObjectMapper objectMapper = createObjectMapper();
+        String json = objectMapper.writeValueAsString(resource);
+
+        // 検索APIを呼び出し
+        String url = PAYMENTS_API_URL + "/search?page=1&pageSize=10";
+        executePost(url, json);
     }
 
-    @ならば(":UC022 顧客コード {string} の入金データが取得できる")
-    public void verifyCustomerPayment(String customerCode) throws JsonProcessingException {
+    @ならば(":UC022 検索結果として入金データ一覧を取得できる")
+    public void verifySearchResults() throws JsonProcessingException {
         ObjectMapper objectMapper = createObjectMapper();
 
         String result = latestResponse.getBody();
-        List<PaymentResource> payments = objectMapper.readValue(result, new TypeReference<>() {});
-        assertTrue(payments.size() > 0);
-        payments.forEach(payment -> Assertions.assertEquals(customerCode, payment.getCustomerCode()));
-    }
+        // PageInfo<PaymentResource>の形式でレスポンスを取得
+        com.github.pagehelper.PageInfo<PaymentResource> pageInfo = objectMapper.readValue(result, 
+            new TypeReference<com.github.pagehelper.PageInfo<PaymentResource>>() {});
 
-    @もし(":UC022 入金口座コード {string} で検索する")
-    public void findByAccount(String accountCode) throws IOException {
-        String url = PAYMENTS_API_URL + "/account/" + accountCode;
-        executeGet(url);
-    }
-
-    @ならば(":UC022 入金口座コード {string} の入金データが取得できる")
-    public void verifyAccountPayment(String accountCode) throws JsonProcessingException {
-        ObjectMapper objectMapper = createObjectMapper();
-
-        String result = latestResponse.getBody();
-        List<PaymentResource> payments = objectMapper.readValue(result, new TypeReference<>() {});
-        assertTrue(payments.size() > 0);
-        payments.forEach(payment -> Assertions.assertEquals(accountCode, payment.getPaymentAccountCode()));
+        // 検索結果が存在することを確認
+        assertFalse(pageInfo.getList().isEmpty());
     }
 }

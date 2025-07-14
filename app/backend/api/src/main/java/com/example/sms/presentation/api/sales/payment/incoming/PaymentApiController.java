@@ -118,50 +118,6 @@ public class PaymentApiController {
         }
     }
 
-    @Operation(summary = "全ての入金データを取得する", description = "全ての入金データを取得する")
-    @GetMapping("/all")
-    public ResponseEntity<?> selectAll() {
-        try {
-            List<Payment> payments = paymentService.selectAll();
-            List<PaymentResource> resources = payments.stream()
-                    .map(PaymentResource::from)
-                    .toList();
-            return ResponseEntity.ok(resources);
-        } catch (BusinessException | IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
-        }
-    }
-
-    @Operation(summary = "顧客コードで入金データを検索する", description = "顧客コードで入金データを検索する")
-    @GetMapping("/customer/{customerCode}/{branchNumber}")
-    public ResponseEntity<?> findByCustomer(
-            @PathVariable String customerCode,
-            @PathVariable Integer branchNumber) {
-        try {
-            List<Payment> payments = paymentService.findByCustomer(customerCode, branchNumber);
-            List<PaymentResource> resources = payments.stream()
-                    .map(PaymentResource::from)
-                    .toList();
-            return ResponseEntity.ok(resources);
-        } catch (BusinessException | IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
-        }
-    }
-
-    @Operation(summary = "入金口座コードで入金データを検索する", description = "入金口座コードで入金データを検索する")
-    @GetMapping("/account/{accountCode}")
-    public ResponseEntity<?> findByAccount(@PathVariable String accountCode) {
-        try {
-            List<Payment> payments = paymentService.findByAccount(accountCode);
-            List<PaymentResource> resources = payments.stream()
-                    .map(PaymentResource::from)
-                    .toList();
-            return ResponseEntity.ok(resources);
-        } catch (BusinessException | IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
-        }
-    }
-
     @Operation(summary = "入金データを検索する", description = "指定された検索条件で入金データを検索します。")
     @PostMapping("/search")
     public ResponseEntity<?> search(
