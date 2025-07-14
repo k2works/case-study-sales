@@ -5,6 +5,7 @@ import com.example.sms.domain.model.master.payment.account.incoming.PaymentAccou
 import com.example.sms.domain.model.master.payment.account.incoming.PaymentAccountType;
 import com.example.sms.domain.model.master.payment.account.incoming.BankAccountType;
 import com.example.sms.domain.model.master.department.DepartmentId;
+import com.example.sms.service.master.payment.PaymentAccountCriteria;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -101,5 +102,46 @@ class PaymentAccountResourceDTOMapperTest {
         assertThrows(Exception.class, () -> {
             PaymentAccountResourceDTOMapper.convertToEntity(resource);
         });
+    }
+
+    @Test
+    @DisplayName("convertToCriteria - 有効なリソースを渡すと入金口座検索条件を返す")
+    void testConvertToCriteria_validResource_shouldReturnPaymentAccountCriteria() {
+        // Arrange
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
+        String accountCode = "ACC001";
+        String accountName = "テスト口座";
+        String startDate = "2023-01-01T10:00:00Z";
+        String endDate = "2023-12-31T10:00:00Z";
+
+        PaymentAccountCriteriaResource resource = new PaymentAccountCriteriaResource();
+        resource.setAccountCode(accountCode);
+        resource.setAccountName(accountName);
+        resource.setStartDate(startDate);
+        resource.setEndDate(endDate);
+        resource.setAccountType(PaymentAccountType.銀行);
+        resource.setDepartmentCode("10000");
+
+        // Act
+        PaymentAccountCriteria criteria = PaymentAccountResourceDTOMapper.convertToCriteria(resource);
+
+        // Assert
+        assertNotNull(criteria);
+        assertEquals(accountCode, criteria.getAccountCode());
+        assertEquals(accountName, criteria.getAccountName());
+        assertEquals(LocalDateTime.parse(startDate, formatter), criteria.getStartDate());
+        assertEquals(LocalDateTime.parse(endDate, formatter), criteria.getEndDate());
+        assertEquals(PaymentAccountType.銀行.getCode(), criteria.getAccountType());
+        assertEquals("10000", criteria.getDepartmentCode());
+    }
+
+    @Test
+    @DisplayName("convertToCriteria - nullリソースを渡すとnullを返す")
+    void testConvertToCriteria_nullResource_shouldReturnNull() {
+        // Act
+        PaymentAccountCriteria criteria = PaymentAccountResourceDTOMapper.convertToCriteria(null);
+
+        // Assert
+        assertNull(criteria);
     }
 }

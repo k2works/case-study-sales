@@ -28,6 +28,10 @@ public class PaymentAccountResourceDTOMapper {
     }
 
     public static PaymentAccountCriteria convertToCriteria(PaymentAccountCriteriaResource resource) {
+        if (resource == null) {
+            return null;
+        }
+
         return PaymentAccountCriteria.builder()
                 .accountCode(resource.getAccountCode())
                 .accountName(resource.getAccountName())
