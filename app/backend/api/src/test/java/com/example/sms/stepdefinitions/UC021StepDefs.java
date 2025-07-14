@@ -66,8 +66,6 @@ public class UC021StepDefs extends SpringAcceptanceTest {
     public void toGet(String list) throws IOException {
         if (list.equals("入金口座一覧")) {
             executeGet(PAYMENT_ACCOUNTS_API_URL);
-        } else if (list.equals("全ての入金口座")) {
-            executeGet(PAYMENT_ACCOUNTS_API_URL + "/all");
         }
     }
 
@@ -82,11 +80,6 @@ public class UC021StepDefs extends SpringAcceptanceTest {
             });
             List<PaymentAccountResource> actual = response.getList();
             assertEquals(3, actual.size());
-        } else if (list.equals("全ての入金口座")) {
-            String result = latestResponse.getBody();
-            List<PaymentAccountResource> actual = objectMapper.readValue(result, new TypeReference<>() {
-            });
-            assertEquals(3, actual.size());
         }
     }
 
@@ -95,13 +88,13 @@ public class UC021StepDefs extends SpringAcceptanceTest {
         PaymentAccountResource resource = new PaymentAccountResource();
         resource.setAccountCode(code);
         resource.setAccountName(name);
-        
+
         // 現在時刻をISO_ZONED_DATE_TIME形式で設定
         ZonedDateTime now = LocalDateTime.now().atZone(ZoneId.systemDefault());
         ZonedDateTime future = now.plusYears(10);
         resource.setStartDate(now.format(FORMATTER));
         resource.setEndDate(future.format(FORMATTER));
-        
+
         // その他の必須項目を設定
         resource.setAccountNameAfterStart(name);
         resource.setAccountType(PaymentAccountType.銀行);
@@ -195,4 +188,38 @@ public class UC021StepDefs extends SpringAcceptanceTest {
         }
     }
 
+    @もし(":UC021 検索条件で入金口座を検索する")
+    public void searchWithCriteria() throws IOException {
+        // 検索条件を作成
+        com.example.sms.presentation.api.master.payment.PaymentAccountCriteriaResource resource = new com.example.sms.presentation.api.master.payment.PaymentAccountCriteriaResource();
+        resource.setAccountCode("A001");
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(resource);
+        executePost(PAYMENT_ACCOUNTS_API_URL + "/search", json);
+    }
+
+    @ならば(":UC021 検索結果として入金口座一覧を取得できる")
+    public void canGetSearchResults() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
+        String result = latestResponse.getBody();
+        com.github.pagehelper.PageInfo<PaymentAccountResource> response = objectMapper.readValue(result, new TypeReference<>() {
+        });
+        List<PaymentAccountResource> actual = response.getList();
+
+        // 少なくとも1件以上の結果があることを確認
+        Assertions.assertTrue(actual.size() > 0);
+
+        // 検索条件に一致する結果があることを確認
+        boolean found = false;
+        for (PaymentAccountResource account : actual) {
+            if (account.getAccountCode().equals("A001")) {
+                found = true;
+                break;
+            }
+        }
+        Assertions.assertTrue(found, "検索結果に入金口座コード 'A001' が含まれていません");
+    }
 }

@@ -76,8 +76,6 @@ public class UC022StepDefs extends SpringAcceptanceTest {
     public void toGet(String list) throws IOException {
         if (list.equals("入金データ一覧")) {
             executeGet(PAYMENTS_API_URL);
-        } else if (list.equals("全ての入金データ")) {
-            executeGet(PAYMENTS_API_URL + "/all");
         }
     }
 
@@ -90,11 +88,6 @@ public class UC022StepDefs extends SpringAcceptanceTest {
             com.github.pagehelper.PageInfo<PaymentResource> response = objectMapper.readValue(result, new TypeReference<>() {
             });
             List<PaymentResource> actual = response.getList();
-            assertTrue(actual.size() > 0);
-        } else if (list.equals("全ての入金データ")) {
-            String result = latestResponse.getBody();
-            List<PaymentResource> actual = objectMapper.readValue(result, new TypeReference<>() {
-            });
             assertTrue(actual.size() > 0);
         }
     }

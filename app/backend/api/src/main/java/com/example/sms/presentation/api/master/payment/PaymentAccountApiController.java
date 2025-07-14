@@ -120,20 +120,6 @@ public class PaymentAccountApiController {
         }
     }
 
-    @Operation(summary = "全ての入金口座を取得する", description = "全ての入金口座を取得する")
-    @GetMapping("/all")
-    public ResponseEntity<?> selectAll() {
-        try {
-            List<PaymentAccount> accounts = paymentAccountService.selectAll();
-            List<PaymentAccountResource> resources = accounts.stream()
-                    .map(PaymentAccountResource::from)
-                    .toList();
-            return ResponseEntity.ok(resources);
-        } catch (BusinessException | IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
-        }
-    }
-
     @Operation(summary = "入金口座を検索する", description = "入金口座を検索する")
     @PostMapping("/search")
     public ResponseEntity<?> search(
