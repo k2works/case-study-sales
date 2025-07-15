@@ -8,6 +8,8 @@ import lombok.Value;
 
 import java.time.LocalDateTime;
 
+import static org.apache.commons.lang3.Validate.notNull;
+
 /**
  * 入金口座マスタのドメインモデル
  */
@@ -36,6 +38,12 @@ public class PaymentAccount {
                                    String accountNameAfterStart, String accountType, String accountNumber,
                                    String bankAccountType, String accountHolder, String departmentCode, LocalDateTime departmentStartDate,
                                    String bankCode, String branchCode) {
+        if (startDate != null && endDate != null) {
+            if (endDate.isBefore(startDate)) {
+                throw new RuntimeException("終了日は開始日より後である必要があります");
+            }
+        }
+
         return new PaymentAccount(
                 PaymentAccountCode.of(accountCode),
                 accountName,
