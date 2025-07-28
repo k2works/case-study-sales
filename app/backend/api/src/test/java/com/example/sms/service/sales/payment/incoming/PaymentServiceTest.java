@@ -1,9 +1,14 @@
 package com.example.sms.service.sales.payment.incoming;
 
 import com.example.sms.IntegrationTest;
+import com.example.sms.TestDataFactory;
 import com.example.sms.TestDataFactoryImpl;
+import com.example.sms.domain.model.sales.invoice.Invoice;
+import com.example.sms.domain.model.sales.invoice.InvoiceDate;
+import com.example.sms.domain.model.sales.invoice.InvoiceLine;
 import com.example.sms.domain.model.sales.payment.incoming.Payment;
 import com.example.sms.domain.type.money.Money;
+import com.example.sms.service.sales.invoice.InvoiceRepository;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -11,6 +16,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,9 +33,17 @@ class PaymentServiceTest {
     @Autowired
     private PaymentRepository paymentRepository;
 
+    @Autowired
+    private InvoiceRepository invoiceRepository;
+
+    @Autowired
+    private TestDataFactory testDataFactory;
+
     @BeforeEach
     void setUp() {
         paymentRepository.deleteAll();
+        invoiceRepository.deleteAll();
+        testDataFactory.setUpForSalesService();
     }
 
     @Nested
@@ -157,11 +171,42 @@ class PaymentServiceTest {
         return TestDataFactoryImpl.getPaymentData(paymentNumber);
     }
 
+    private Invoice createInvoice(String invoiceNumber, Payment payment) {
+        InvoiceLine invoiceLine = TestDataFactoryImpl.getInvoiceLine(invoiceNumber, "SA00000001", 1);
+        Invoice invoice = TestDataFactoryImpl.getInvoice(invoiceNumber).toBuilder().invoiceLines(List.of(invoiceLine)).build();
+        invoiceRepository.save(invoice.toBuilder().customerCode(payment.getCustomerCode()).currentMonthPaymentAmount(Money.of(0)).build());
+        return invoice;
+    }
+
     private Payment getPaymentWithCustomer(String paymentNumber, String customerCode, Integer branchNumber) {
         return TestDataFactoryImpl.getPaymentWithCustomer(paymentNumber, customerCode, branchNumber);
     }
 
     private Payment getPaymentWithAccount(String paymentNumber, String accountCode) {
         return TestDataFactoryImpl.getPaymentWithAccount(paymentNumber, accountCode);
+    }
+
+    @Nested
+    @DisplayName("売掛金消込")
+    class PaymentApplication {
+        @Test
+        @DisplayName("売掛金消込を登録できる")
+        void shouldRegisterPaymentApplication() {
+            // Given
+            Payment payment = getPayment("PAY014").toBuilder().paymentAmount(Money.of(10000)).build();
+            Invoice preInvoice = createInvoice("IV00000001", payment).toBuilder().invoiceDate(InvoiceDate.of(LocalDateTime.now())).build();
+            paymentService.save(payment);
+
+            // When
+            paymentService.registerPaymentApplication(payment);
+
+            // Then
+            Optional<Payment> result = paymentService.findById("PAY014");
+            Optional<Invoice> afterInvoice = invoiceRepository.findById(preInvoice.getInvoiceNumber().getValue());
+            assertTrue(result.isPresent());
+            assertEquals(afterInvoice.get().getCurrentMonthPaymentAmount().getAmount(), result.get().getPaymentAmount().getAmount());
+            assertEquals(afterInvoice.get().getInvoiceReconciliationAmount().getAmount(), result.get().getPaymentAmount().getAmount());
+            assertEquals(afterInvoice.get().getInvoiceReconciliationAmount(), result.get().getOffsetAmount());
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.sms.infrastructure.datasource.sales.invoice;
 
+import com.example.sms.domain.model.master.partner.customer.CustomerCode;
 import com.example.sms.domain.model.sales.invoice.Invoice;
 import com.example.sms.domain.model.sales.invoice.InvoiceList;
 import com.example.sms.infrastructure.PageInfoHelper;
@@ -162,5 +163,11 @@ public class InvoiceDataSource implements InvoiceRepository {
     @Override
     public void save(InvoiceList invoiceList) {
         invoiceList.asList().forEach(this::save);
+    }
+
+    @Override
+    public Invoice selectLatestByCustomerCode(CustomerCode customerCode) {
+        InvoiceCustomEntity invoiceCustomEntity = invoiceCustomMapper.selectLatestByCustomerCode(customerCode.getCode().getValue(), customerCode.getBranchNumber());
+        return invoiceCustomEntity != null ? invoiceEntityMapper.mapToDomainModel(invoiceCustomEntity) : null;
     }
 }

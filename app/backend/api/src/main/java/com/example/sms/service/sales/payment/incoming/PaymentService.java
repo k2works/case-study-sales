@@ -1,6 +1,8 @@
 package com.example.sms.service.sales.payment.incoming;
 
+import com.example.sms.domain.model.sales.invoice.Invoice;
 import com.example.sms.domain.model.sales.payment.incoming.Payment;
+import com.example.sms.service.sales.invoice.InvoiceRepository;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,8 +19,11 @@ public class PaymentService {
 
     final PaymentRepository paymentRepository;
 
-    public PaymentService(PaymentRepository paymentRepository) {
+    final InvoiceRepository invoiceRepository;
+
+    public PaymentService(PaymentRepository paymentRepository, InvoiceRepository invoiceRepository) {
         this.paymentRepository = paymentRepository;
+        this.invoiceRepository = invoiceRepository;
     }
 
     /**
@@ -112,5 +117,26 @@ public class PaymentService {
      */
     public List<Payment> findByAccount(String accountCode) {
         return paymentRepository.findByAccount(accountCode);
+    }
+
+    /**
+     * 入金データを登録し、関連する請求書の当月入金額を更新する
+     *
+     * @param payment 入金データ
+     */
+    public void registerPaymentApplication(Payment payment) {
+        Invoice invoice = invoiceRepository.selectLatestByCustomerCode(payment.getCustomerCode());
+
+        Invoice updatedInvoice = invoice.toBuilder()
+                .currentMonthPaymentAmount(invoice.getCurrentMonthPaymentAmount().plusMoney(payment.getPaymentAmount()))
+                .invoiceReconciliationAmount(invoice.getCurrentMonthPaymentAmount().plusMoney(payment.getPaymentAmount()))
+                .build();
+
+        Payment updatedPayment = payment.toBuilder()
+                .offsetAmount(payment.getPaymentAmount())
+                .build();
+
+        invoiceRepository.save(updatedInvoice);
+        paymentRepository.save(updatedPayment);
     }
 }

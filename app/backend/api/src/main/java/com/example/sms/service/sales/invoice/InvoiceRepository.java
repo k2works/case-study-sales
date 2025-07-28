@@ -1,5 +1,6 @@
 package com.example.sms.service.sales.invoice;
 
+import com.example.sms.domain.model.master.partner.customer.CustomerCode;
 import com.example.sms.domain.model.sales.invoice.Invoice;
 import com.example.sms.domain.model.sales.invoice.InvoiceList;
 import com.github.pagehelper.PageInfo;
@@ -26,4 +27,6 @@ public interface InvoiceRepository {
     PageInfo<Invoice> searchWithPageInfo(InvoiceCriteria criteria);
 
     void save(InvoiceList invoiceList);
+
+    Invoice selectLatestByCustomerCode(CustomerCode customerCode);
 }
