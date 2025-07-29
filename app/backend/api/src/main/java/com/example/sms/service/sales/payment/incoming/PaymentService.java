@@ -2,6 +2,7 @@ package com.example.sms.service.sales.payment.incoming;
 
 import com.example.sms.domain.model.sales.invoice.Invoice;
 import com.example.sms.domain.model.sales.payment.incoming.Payment;
+import com.example.sms.domain.model.sales.payment.incoming.PaymentList;
 import com.example.sms.service.sales.invoice.InvoiceRepository;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -50,7 +51,7 @@ public class PaymentService {
      * @return 入金データのリスト
      */
     public List<Payment> selectAll() {
-        return paymentRepository.selectAll();
+        return paymentRepository.selectAll().asList();
     }
 
     /**
@@ -143,7 +144,7 @@ public class PaymentService {
     }
 
     public void aggregate() {
-        List<Payment> paymentList = paymentRepository.selectAll();
-        paymentList.forEach(this::registerPaymentApplication);
+        PaymentList paymentList = paymentRepository.selectAll();
+        paymentList.asList().forEach(this::registerPaymentApplication);
     }
 }

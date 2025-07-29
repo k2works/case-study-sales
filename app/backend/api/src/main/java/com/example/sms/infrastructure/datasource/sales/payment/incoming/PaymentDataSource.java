@@ -1,6 +1,7 @@
 package com.example.sms.infrastructure.datasource.sales.payment.incoming;
 
 import com.example.sms.domain.model.sales.payment.incoming.Payment;
+import com.example.sms.domain.model.sales.payment.incoming.PaymentList;
 import com.example.sms.infrastructure.PageInfoHelper;
 import com.example.sms.infrastructure.datasource.autogen.mapper.入金データMapper;
 import com.example.sms.infrastructure.datasource.autogen.model.入金データ;
@@ -74,11 +75,11 @@ public class PaymentDataSource implements PaymentRepository {
     }
 
     @Override
-    public List<Payment> selectAll() {
+    public PaymentList selectAll() {
         List<PaymentCustomEntity> entities = paymentCustomMapper.selectAll();
-        return entities.stream()
+        return new PaymentList(entities.stream()
                 .map(paymentEntityMapper::mapToDomainModel)
-                .collect(Collectors.toList());
+                .toList());
     }
 
     @Override
@@ -111,7 +112,7 @@ public class PaymentDataSource implements PaymentRepository {
         List<PaymentCustomEntity> entities = paymentCustomMapper.selectByCustomer(customerCode, branchNumber);
         return entities.stream()
                 .map(paymentEntityMapper::mapToDomainModel)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -119,6 +120,6 @@ public class PaymentDataSource implements PaymentRepository {
         List<PaymentCustomEntity> entities = paymentCustomMapper.selectByAccount(accountCode);
         return entities.stream()
                 .map(paymentEntityMapper::mapToDomainModel)
-                .collect(Collectors.toList());
+                .toList();
     }
 }

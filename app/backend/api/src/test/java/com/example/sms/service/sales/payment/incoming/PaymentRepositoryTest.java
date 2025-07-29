@@ -119,7 +119,7 @@ class PaymentRepositoryTest {
         paymentRepository.save(getPaymentData("TEST005"));
 
         // When
-        List<Payment> allPayments = paymentRepository.selectAll();
+        List<Payment> allPayments = paymentRepository.selectAll().asList();
 
         // Then
         assertThat(allPayments).hasSize(2);

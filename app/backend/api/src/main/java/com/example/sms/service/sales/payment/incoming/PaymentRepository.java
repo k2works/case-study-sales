@@ -1,6 +1,7 @@
 package com.example.sms.service.sales.payment.incoming;
 
 import com.example.sms.domain.model.sales.payment.incoming.Payment;
+import com.example.sms.domain.model.sales.payment.incoming.PaymentList;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public interface PaymentRepository {
      *
      * @return 入金データのリスト
      */
-    List<Payment> selectAll();
+    PaymentList selectAll();
 
     /**
      * 入金番号で入金データを検索する
