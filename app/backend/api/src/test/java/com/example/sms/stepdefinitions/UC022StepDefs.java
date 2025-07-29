@@ -2,6 +2,7 @@ package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
 import com.example.sms.domain.model.sales.payment.incoming.PaymentMethodType;
+import com.example.sms.presentation.api.sales.invoice.InvoiceResource;
 import com.example.sms.presentation.api.sales.payment.incoming.PaymentCriteriaResource;
 import com.example.sms.presentation.api.sales.payment.incoming.PaymentResource;
 import com.example.sms.service.sales.payment.incoming.PaymentService;
@@ -15,6 +16,7 @@ import io.cucumber.java.ja.かつ;
 import io.cucumber.java.ja.ならば;
 import io.cucumber.java.ja.もし;
 import io.cucumber.java.ja.前提;
+import jakarta.validation.constraints.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -199,4 +201,43 @@ public class UC022StepDefs extends SpringAcceptanceTest {
         // 検索結果が存在することを確認
         assertFalse(pageInfo.getList().isEmpty());
     }
+
+    @もし(":UC022 入金集計を実行した")
+    public void aggregate() throws JsonProcessingException {
+        String url = PAYMENTS_API_URL + "/aggregate";
+
+        PaymentResource payment = getPaymentResource(
+                "P20231001",
+                "2023-10-01T10:00:00",
+                "10000",
+                "001",
+                1,
+                "振込",
+                "A001",
+                100000,
+                0
+        );
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        String json = objectMapper.writeValueAsString(payment);
+        executePost(url, json);
+    }
+
+    private static @NotNull PaymentResource getPaymentResource(String paymentNumber, String paymentDate, String departmentCode, String customerCode, Integer customerBranchNumber, String paymentMethodType, String paymentAccountCode, Integer paymentAmount, Integer offsetAmount) {
+        PaymentResource paymentResource = new PaymentResource();
+        paymentResource.setPaymentNumber(paymentNumber);
+        paymentResource.setPaymentDate(LocalDateTime.parse(paymentDate));
+        paymentResource.setDepartmentCode(departmentCode);
+        paymentResource.setCustomerCode(customerCode);
+        paymentResource.setCustomerBranchNumber(customerBranchNumber);
+        paymentResource.setPaymentMethodType(PaymentMethodType.valueOf(paymentMethodType));
+        paymentResource.setPaymentAccountCode(paymentAccountCode);
+        paymentResource.setPaymentAmount(paymentAmount);
+        paymentResource.setOffsetAmount(offsetAmount);
+        paymentResource.setCustomerName(null); // 初期値はnull
+        paymentResource.setPaymentAccountName(null); // 初期値はnull
+        return paymentResource;
+    }
+
 }
