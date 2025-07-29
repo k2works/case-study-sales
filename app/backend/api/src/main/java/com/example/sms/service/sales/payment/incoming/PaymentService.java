@@ -127,16 +127,23 @@ public class PaymentService {
     public void registerPaymentApplication(Payment payment) {
         Invoice invoice = invoiceRepository.selectLatestByCustomerCode(payment.getCustomerCode());
 
-        Invoice updatedInvoice = invoice.toBuilder()
-                .currentMonthPaymentAmount(invoice.getCurrentMonthPaymentAmount().plusMoney(payment.getPaymentAmount()))
-                .invoiceReconciliationAmount(invoice.getCurrentMonthPaymentAmount().plusMoney(payment.getPaymentAmount()))
-                .build();
+        if (invoice != null) {
+            Invoice updatedInvoice = invoice.toBuilder()
+                    .currentMonthPaymentAmount(invoice.getCurrentMonthPaymentAmount().plusMoney(payment.getPaymentAmount()))
+                    .invoiceReconciliationAmount(invoice.getCurrentMonthPaymentAmount().plusMoney(payment.getPaymentAmount()))
+                    .build();
 
-        Payment updatedPayment = payment.toBuilder()
-                .offsetAmount(payment.getPaymentAmount())
-                .build();
+            Payment updatedPayment = payment.toBuilder()
+                    .offsetAmount(payment.getPaymentAmount())
+                    .build();
 
-        invoiceRepository.save(updatedInvoice);
-        paymentRepository.save(updatedPayment);
+            invoiceRepository.save(updatedInvoice);
+            paymentRepository.save(updatedPayment);
+        }
+    }
+
+    public void aggregate() {
+        List<Payment> paymentList = paymentRepository.selectAll();
+        paymentList.forEach(this::registerPaymentApplication);
     }
 }

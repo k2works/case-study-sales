@@ -15,11 +15,9 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 import static com.example.sms.presentation.api.sales.payment.incoming.PaymentResourceDTOMapper.convertToEntity;
@@ -130,6 +128,18 @@ public class PaymentApiController {
             PageInfo<Payment> entity = paymentService.searchWithPageInfo(criteria);
             PageInfo<PaymentResource> result = pageNationService.getPageInfo(entity, PaymentResource::from);
             return ResponseEntity.ok(result);
+        } catch (BusinessException | IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
+    }
+
+    @Operation(summary = "入金データを集計する", description = "入金データを集計します。")
+    @PostMapping("/aggregate")
+    @AuditAnnotation(process = ApplicationExecutionProcessType.入金登録, type = ApplicationExecutionHistoryType.同期)
+    public ResponseEntity<?> aggregate(@RequestBody PaymentCriteriaResource resource) {
+        try {
+            paymentService.aggregate();
+            return ResponseEntity.ok(new MessageResponse(message.getMessage("success.payment.aggregated")));
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
