@@ -8,6 +8,11 @@ import {
     mapToPaymentResource
 } from "../../models/sales/payment";
 
+export interface PaymentAggregateResponse {
+    message: string;
+    details: string[];
+}
+
 export interface PaymentServiceType {
     select: (page?: number, pageSize?: number) => Promise<PaymentPageInfoType>;
     find: (paymentNumber: string) => Promise<PaymentType>;
@@ -15,6 +20,7 @@ export interface PaymentServiceType {
     update: (payment: PaymentType) => Promise<void>;
     search: (criteria: PaymentCriteriaType, page?: number, pageSize?: number) => Promise<PaymentPageInfoType>;
     destroy: (paymentNumber: string) => Promise<void>;
+    aggregate: () => Promise<PaymentAggregateResponse>;
 }
 
 export const PaymentService = () => {
@@ -51,12 +57,18 @@ export const PaymentService = () => {
         await apiUtils.fetchDelete<void>(url);
     };
 
+    const aggregate = async (): Promise<PaymentAggregateResponse> => {
+        const url = `${endPoint}/aggregate`;
+        return await apiUtils.fetchPost<PaymentAggregateResponse>(url, {});
+    };
+
     return {
         select,
         find,
         create,
         update,
         search,
-        destroy
+        destroy,
+        aggregate
     };
 }
