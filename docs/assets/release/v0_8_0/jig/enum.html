@@ -1,0 +1,3867 @@
+<html lang="ja">
+<head>
+    <meta charset="UTF-8"/>
+    <link href="./assets/style.css" rel="stylesheet">
+    <link rel="icon" href="./assets/favicon.ico">
+    <title>区分概要</title>
+</head>
+<body>
+<header class="top">
+    <a href="./index.html">[INDEX]</a>
+    <b>区分概要</b>
+</header>
+<div class="sideNavMain">
+    <nav class="tree">
+        <details open>
+            <summary class="package">
+                <a href="#com.example.sms.domain">ドメイン層</a>
+            </summary>
+            <details open>
+            <summary class="package">
+                <a href="#com.example.sms.domain.type">ドメインモデル(基本型)</a>
+            </summary>
+            <details open>
+            <summary class="package">
+                <a href="#com.example.sms.domain.type.address">住所</a>
+            </summary>
+            <div><a href="#com.example.sms.domain.type.address.Prefecture">都道府県</a></div>
+        </details><details open>
+            <summary class="package">
+                <a href="#com.example.sms.domain.type.quantity">数量</a>
+            </summary>
+            <div><a href="#com.example.sms.domain.type.quantity.UnitType">単位区分</a></div>
+        </details><details open>
+            <summary class="package">
+                <a href="#com.example.sms.domain.type.money">通貨</a>
+            </summary>
+            <div><a href="#com.example.sms.domain.type.money.CurrencyType">通貨タイプ</a></div>
+        </details>
+        </details><details open>
+            <summary class="package">
+                <a href="#com.example.sms.domain.model">ドメインモデル(複合型)</a>
+            </summary>
+            <details open>
+            <summary class="package">
+                <a href="#com.example.sms.domain.model.system">システム</a>
+            </summary>
+            <details open>
+            <summary class="package">
+                <a href="#com.example.sms.domain.model.system.user">ユーザー</a>
+            </summary>
+            <div><a href="#com.example.sms.domain.model.system.user.RoleName">役割</a></div>
+        </details><details open>
+            <summary class="package">
+                <a href="#com.example.sms.domain.model.system.download">データダウンロード</a>
+            </summary>
+            <div><a href="#com.example.sms.domain.model.system.download.DownloadTarget">ダウンロード対象</a></div>
+        </details><details open>
+            <summary class="package">
+                <a href="#com.example.sms.domain.model.system.autonumber">自動採番</a>
+            </summary>
+            <div><a href="#com.example.sms.domain.model.system.autonumber.DocumentTypeCode">伝票種別コード</a></div>
+        </details><details open>
+            <summary class="package">
+                <a href="#com.example.sms.domain.model.system.audit">監査</a>
+            </summary>
+            <div><a href="#com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType">アプリケーション実行履歴区分</a></div><div><a href="#com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag">アプリケーション実行プロセスフラグ</a></div><div><a href="#com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType">アプリケーション実行プロセス区分</a></div>
+        </details>
+        </details><details open>
+            <summary class="package">
+                <a href="#com.example.sms.domain.model.master">マスタ</a>
+            </summary>
+            <details open>
+            <summary class="package">
+                <a href="#com.example.sms.domain.model.master.department">部門</a>
+            </summary>
+            <div><a href="#com.example.sms.domain.model.master.department.DepartmentLowerType">最下層区分</a></div><div><a href="#com.example.sms.domain.model.master.department.SlitYnType">伝票入力可否</a></div>
+        </details><details open>
+            <summary class="package">
+                <a href="#com.example.sms.domain.model.master.product">商品</a>
+            </summary>
+            <div><a href="#com.example.sms.domain.model.master.product.BusinessType">事業区分</a></div><div><a href="#com.example.sms.domain.model.master.product.ItemType">品目区分</a></div><div><a href="#com.example.sms.domain.model.master.product.LiveStockType">畜産区分</a></div><div><a href="#com.example.sms.domain.model.master.product.MiscellaneousType">雑区分</a></div><div><a href="#com.example.sms.domain.model.master.product.ProductType">商品区分</a></div><div><a href="#com.example.sms.domain.model.master.product.StockAllocationType">在庫引当区分</a></div><div><a href="#com.example.sms.domain.model.master.product.StockManagementTargetType">在庫管理対象区分</a></div><div><a href="#com.example.sms.domain.model.master.product.TaxType">税区分</a></div>
+        </details><details open>
+            <summary class="package">
+                <a href="#com.example.sms.domain.model.master.partner">取引先</a>
+            </summary>
+            <div><a href="#com.example.sms.domain.model.master.partner.MiscellaneousType">雑区分</a></div><div><a href="#com.example.sms.domain.model.master.partner.TradeProhibitedFlag">取引禁止フラグ</a></div><details open>
+            <summary class="package">
+                <a href="#com.example.sms.domain.model.master.partner.vendor">仕入先</a>
+            </summary>
+            <div><a href="#com.example.sms.domain.model.master.partner.vendor.VendorType">仕入先区分</a></div>
+        </details><details open>
+            <summary class="package">
+                <a href="#com.example.sms.domain.model.master.partner.customer">顧客</a>
+            </summary>
+            <div><a href="#com.example.sms.domain.model.master.partner.customer.CustomerBillingCategory">顧客請求区分</a></div><div><a href="#com.example.sms.domain.model.master.partner.customer.CustomerType">顧客区分</a></div>
+        </details><details open>
+            <summary class="package">
+                <a href="#com.example.sms.domain.model.master.partner.billing">請求</a>
+            </summary>
+            <div><a href="#com.example.sms.domain.model.master.partner.billing.ClosingDate">締日</a></div><div><a href="#com.example.sms.domain.model.master.partner.billing.PaymentDay">支払日</a></div><div><a href="#com.example.sms.domain.model.master.partner.billing.PaymentMethod">支払方法</a></div><div><a href="#com.example.sms.domain.model.master.partner.billing.PaymentMonth">支払月</a></div>
+        </details>
+        </details><details open>
+            <summary class="package">
+                <a href="#com.example.sms.domain.model.master.payment">入出金</a>
+            </summary>
+            <details open>
+            <summary class="package">
+                <a href="#com.example.sms.domain.model.master.payment.account.incoming">入出口座</a>
+            </summary>
+            <div><a href="#com.example.sms.domain.model.master.payment.account.incoming.BankAccountType">銀行口座種別の列挙型</a></div><div><a href="#com.example.sms.domain.model.master.payment.account.incoming.PaymentAccountType">入金口座区分の列挙型</a></div>
+        </details>
+        </details>
+        </details><details open>
+            <summary class="package">
+                <a href="#com.example.sms.domain.model.sales">販売</a>
+            </summary>
+            <details open>
+            <summary class="package">
+                <a href="#com.example.sms.domain.model.sales.payment">入出金</a>
+            </summary>
+            <div><a href="#com.example.sms.domain.model.sales.payment.incoming.PaymentMethodType">支払方法区分の列挙型</a></div>
+        </details><details open>
+            <summary class="package">
+                <a href="#com.example.sms.domain.model.sales.sales">売上</a>
+            </summary>
+            <div><a href="#com.example.sms.domain.model.sales.sales.BillingDelayType">請求遅延区分</a></div><div><a href="#com.example.sms.domain.model.sales.sales.SalesType">売上区分</a></div>
+        </details><details open>
+            <summary class="package">
+                <a href="#com.example.sms.domain.model.sales.order">受注</a>
+            </summary>
+            <div><a href="#com.example.sms.domain.model.sales.order.CompletionFlag">完了フラグ</a></div><div><a href="#com.example.sms.domain.model.sales.order.TaxRateType">消費税率種別</a></div>
+        </details>
+        </details>
+        </details>
+        </details>
+        
+    </nav>
+
+    <main>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.model.master.department.DepartmentLowerType">最下層区分</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.master.department.DepartmentLowerType</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    <th>value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">NOT_LOWER</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td class="method-name">LOWER</td>
+                    <td>1</td>
+                </tr>
+            </table>
+
+            <table>
+                <thead class="enum">
+                <tr>
+                    <th width="20%">フィールド</th>
+                    <th>フィールド型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>value</td>
+                    <td>
+                        <span class="weak">int</span>
+                        
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">メソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ getValue</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">int</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">staticメソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ of</td>
+                    <td>
+                        <a class="method-argument-item" href="#int">int</a>
+                    </td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.master.department.DepartmentLowerType">最下層区分</a></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.model.master.department.SlitYnType">伝票入力可否</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.master.department.SlitYnType</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    <th>value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">NOT_SLIT</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td class="method-name">SLIT</td>
+                    <td>1</td>
+                </tr>
+            </table>
+
+            <table>
+                <thead class="enum">
+                <tr>
+                    <th width="20%">フィールド</th>
+                    <th>フィールド型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>value</td>
+                    <td>
+                        <span class="weak">int</span>
+                        
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">メソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ getValue</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">int</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">staticメソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ of</td>
+                    <td>
+                        <a class="method-argument-item" href="#int">int</a>
+                    </td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.master.department.SlitYnType">伝票入力可否</a></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.model.master.partner.MiscellaneousType">雑区分</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.master.partner.MiscellaneousType</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    <th>code</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">対象外</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td class="method-name">対象</td>
+                    <td>1</td>
+                </tr>
+            </table>
+
+            <table>
+                <thead class="enum">
+                <tr>
+                    <th width="20%">フィールド</th>
+                    <th>フィールド型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>code</td>
+                    <td>
+                        <span class="weak">int</span>
+                        
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">メソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ getCode</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">int</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">staticメソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ fromCode</td>
+                    <td>
+                        <a class="method-argument-item" href="#int">int</a>
+                    </td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.master.partner.MiscellaneousType">雑区分</a></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+                <tr>
+                    <td class="method-name">+ getCodeByName</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.String">String</a>
+                    </td>
+                    <td><span class="weak">Integer</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.model.master.partner.TradeProhibitedFlag">取引禁止フラグ</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.master.partner.TradeProhibitedFlag</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    <th>value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">OFF</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td class="method-name">ON</td>
+                    <td>1</td>
+                </tr>
+            </table>
+
+            <table>
+                <thead class="enum">
+                <tr>
+                    <th width="20%">フィールド</th>
+                    <th>フィールド型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>value</td>
+                    <td>
+                        <span class="weak">int</span>
+                        
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">メソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ getValue</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">int</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">staticメソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ fromCode</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.Integer">Integer</a>
+                    </td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.master.partner.TradeProhibitedFlag">取引禁止フラグ</a></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+                <tr>
+                    <td class="method-name">+ getCodeByName</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.String">String</a>
+                    </td>
+                    <td><span class="weak">Integer</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.model.master.partner.billing.ClosingDate">締日</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.master.partner.billing.ClosingDate</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    <th>value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">十日</td>
+                    <td>10</td>
+                </tr>
+                <tr>
+                    <td class="method-name">二十日</td>
+                    <td>20</td>
+                </tr>
+                <tr>
+                    <td class="method-name">末日</td>
+                    <td>99</td>
+                </tr>
+            </table>
+
+            <table>
+                <thead class="enum">
+                <tr>
+                    <th width="20%">フィールド</th>
+                    <th>フィールド型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>value</td>
+                    <td>
+                        <span class="weak">java.lang.Integer</span>
+                        
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">メソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ getValue</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">Integer</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">staticメソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ fromCode</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.Integer">Integer</a>
+                    </td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.master.partner.billing.ClosingDate">締日</a></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.model.master.partner.billing.PaymentDay">支払日</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.master.partner.billing.PaymentDay</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    <th>value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">十日</td>
+                    <td>10</td>
+                </tr>
+                <tr>
+                    <td class="method-name">二十日</td>
+                    <td>20</td>
+                </tr>
+                <tr>
+                    <td class="method-name">末日</td>
+                    <td>99</td>
+                </tr>
+            </table>
+
+            <table>
+                <thead class="enum">
+                <tr>
+                    <th width="20%">フィールド</th>
+                    <th>フィールド型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>value</td>
+                    <td>
+                        <span class="weak">java.lang.Integer</span>
+                        
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">メソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ getValue</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">Integer</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">staticメソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ fromCode</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.Integer">Integer</a>
+                    </td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.master.partner.billing.PaymentDay">支払日</a></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.model.master.partner.billing.PaymentMethod">支払方法</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.master.partner.billing.PaymentMethod</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    <th>value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">振込</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td class="method-name">手形</td>
+                    <td>2</td>
+                </tr>
+            </table>
+
+            <table>
+                <thead class="enum">
+                <tr>
+                    <th width="20%">フィールド</th>
+                    <th>フィールド型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>value</td>
+                    <td>
+                        <span class="weak">java.lang.Integer</span>
+                        
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">メソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ getValue</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">Integer</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">staticメソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ fromCode</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.Integer">Integer</a>
+                    </td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.master.partner.billing.PaymentMethod">支払方法</a></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.model.master.partner.billing.PaymentMonth">支払月</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.master.partner.billing.PaymentMonth</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    <th>value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">当月</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td class="method-name">翌月</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td class="method-name">翌々月</td>
+                    <td>2</td>
+                </tr>
+            </table>
+
+            <table>
+                <thead class="enum">
+                <tr>
+                    <th width="20%">フィールド</th>
+                    <th>フィールド型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>value</td>
+                    <td>
+                        <span class="weak">java.lang.Integer</span>
+                        
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">メソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ getValue</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">Integer</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">staticメソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ fromCode</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.Integer">Integer</a>
+                    </td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.master.partner.billing.PaymentMonth">支払月</a></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.model.master.partner.customer.CustomerBillingCategory">顧客請求区分</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.master.partner.customer.CustomerBillingCategory</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    <th>value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">都度請求</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td class="method-name">締請求</td>
+                    <td>2</td>
+                </tr>
+            </table>
+
+            <table>
+                <thead class="enum">
+                <tr>
+                    <th width="20%">フィールド</th>
+                    <th>フィールド型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>value</td>
+                    <td>
+                        <span class="weak">int</span>
+                        
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">メソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ getValue</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">int</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">staticメソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ fromCode</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.Integer">Integer</a>
+                    </td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.master.partner.customer.CustomerBillingCategory">顧客請求区分</a></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+                <tr>
+                    <td class="method-name">+ getCodeByName</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.String">String</a>
+                    </td>
+                    <td><span class="weak">Integer</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.model.master.partner.customer.CustomerType">顧客区分</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.master.partner.customer.CustomerType</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    <th>value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">顧客でない</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td class="method-name">顧客</td>
+                    <td>1</td>
+                </tr>
+            </table>
+
+            <table>
+                <thead class="enum">
+                <tr>
+                    <th width="20%">フィールド</th>
+                    <th>フィールド型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>value</td>
+                    <td>
+                        <span class="weak">int</span>
+                        
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">メソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ getValue</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">int</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">staticメソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ fromCode</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.Integer">Integer</a>
+                    </td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.master.partner.customer.CustomerType">顧客区分</a></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+                <tr>
+                    <td class="method-name">+ getCodeByName</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.String">String</a>
+                    </td>
+                    <td><span class="weak">Integer</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.model.master.partner.vendor.VendorType">仕入先区分</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.master.partner.vendor.VendorType</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    <th>value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">仕入先でない</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td class="method-name">仕入先</td>
+                    <td>1</td>
+                </tr>
+            </table>
+
+            <table>
+                <thead class="enum">
+                <tr>
+                    <th width="20%">フィールド</th>
+                    <th>フィールド型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>value</td>
+                    <td>
+                        <span class="weak">int</span>
+                        
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">メソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ getValue</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">int</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">staticメソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ fromCode</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.Integer">Integer</a>
+                    </td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.master.partner.vendor.VendorType">仕入先区分</a></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+                <tr>
+                    <td class="method-name">+ getCodeByName</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.String">String</a>
+                    </td>
+                    <td><span class="weak">Integer</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.model.master.payment.account.incoming.BankAccountType">銀行口座種別の列挙型</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.master.payment.account.incoming.BankAccountType</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">普通</td>
+                    <td>&quot;1&quot;</td>
+                    <td>&quot;普通&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">当座</td>
+                    <td>&quot;2&quot;</td>
+                    <td>&quot;当座&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">貯蓄</td>
+                    <td>&quot;3&quot;</td>
+                    <td>&quot;貯蓄&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">その他</td>
+                    <td>&quot;9&quot;</td>
+                    <td>&quot;その他&quot;</td>
+                </tr>
+            </table>
+
+            <table>
+                <thead class="enum">
+                <tr>
+                    <th width="20%">フィールド</th>
+                    <th>フィールド型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>code</td>
+                    <td>
+                        <span class="weak">java.lang.String</span>
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td>name</td>
+                    <td>
+                        <span class="weak">java.lang.String</span>
+                        
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">メソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ getCode</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">String</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+                <tr>
+                    <td class="method-name">+ getName</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">String</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">staticメソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ コードから銀行口座種別を取得する</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.String">String</a>
+                    </td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.master.payment.account.incoming.BankAccountType">銀行口座種別の列挙型</a></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.model.master.payment.account.incoming.PaymentAccountType">入金口座区分の列挙型</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.master.payment.account.incoming.PaymentAccountType</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">銀行</td>
+                    <td>&quot;1&quot;</td>
+                    <td>&quot;銀行&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">郵便局</td>
+                    <td>&quot;2&quot;</td>
+                    <td>&quot;郵便局&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">農協</td>
+                    <td>&quot;3&quot;</td>
+                    <td>&quot;農協&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">その他</td>
+                    <td>&quot;9&quot;</td>
+                    <td>&quot;その他&quot;</td>
+                </tr>
+            </table>
+
+            <table>
+                <thead class="enum">
+                <tr>
+                    <th width="20%">フィールド</th>
+                    <th>フィールド型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>code</td>
+                    <td>
+                        <span class="weak">java.lang.String</span>
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td>name</td>
+                    <td>
+                        <span class="weak">java.lang.String</span>
+                        
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">メソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ getCode</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">String</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+                <tr>
+                    <td class="method-name">+ getName</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">String</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">staticメソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ コードから入金口座区分を取得する</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.String">String</a>
+                    </td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.master.payment.account.incoming.PaymentAccountType">入金口座区分の列挙型</a></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.model.master.product.BusinessType">事業区分</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.master.product.BusinessType</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    <th>code</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">生鮮食料品</td>
+                    <td>&quot;1&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">缶詰</td>
+                    <td>&quot;2&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">その他</td>
+                    <td>&quot;9&quot;</td>
+                </tr>
+            </table>
+
+            <table>
+                <thead class="enum">
+                <tr>
+                    <th width="20%">フィールド</th>
+                    <th>フィールド型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>code</td>
+                    <td>
+                        <span class="weak">java.lang.String</span>
+                        
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            
+            
+        
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">staticメソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ fromCode</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.String">String</a>
+                    </td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.master.product.BusinessType">事業区分</a></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.model.master.product.ItemType">品目区分</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.master.product.ItemType</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    <th>code</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">食肉</td>
+                    <td>&quot;01&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">水産物</td>
+                    <td>&quot;02&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">その他</td>
+                    <td>&quot;99&quot;</td>
+                </tr>
+            </table>
+
+            <table>
+                <thead class="enum">
+                <tr>
+                    <th width="20%">フィールド</th>
+                    <th>フィールド型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>code</td>
+                    <td>
+                        <span class="weak">java.lang.String</span>
+                        
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            
+            
+        
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">staticメソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ fromCode</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.String">String</a>
+                    </td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.master.product.ItemType">品目区分</a></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.model.master.product.LiveStockType">畜産区分</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.master.product.LiveStockType</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    <th>code</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">牛肉</td>
+                    <td>&quot;01&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">豚肉</td>
+                    <td>&quot;02&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">まぐろ</td>
+                    <td>&quot;03&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">えび</td>
+                    <td>&quot;04&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">その他</td>
+                    <td>&quot;99&quot;</td>
+                </tr>
+            </table>
+
+            <table>
+                <thead class="enum">
+                <tr>
+                    <th width="20%">フィールド</th>
+                    <th>フィールド型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>code</td>
+                    <td>
+                        <span class="weak">java.lang.String</span>
+                        
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            
+            
+        
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">staticメソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ fromCode</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.String">String</a>
+                    </td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.master.product.LiveStockType">畜産区分</a></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.model.master.product.MiscellaneousType">雑区分</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.master.product.MiscellaneousType</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    <th>code</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">適用外</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td class="method-name">適用</td>
+                    <td>1</td>
+                </tr>
+            </table>
+
+            <table>
+                <thead class="enum">
+                <tr>
+                    <th width="20%">フィールド</th>
+                    <th>フィールド型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>code</td>
+                    <td>
+                        <span class="weak">java.lang.Integer</span>
+                        
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">メソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ getCode</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">Integer</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">staticメソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ fromCode</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.Integer">Integer</a>
+                    </td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.master.product.MiscellaneousType">雑区分</a></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+                <tr>
+                    <td class="method-name">+ getCodeByName</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.String">String</a>
+                    </td>
+                    <td><span class="weak">Integer</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.model.master.product.ProductType">商品区分</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.master.product.ProductType</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    <th>code</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">商品</td>
+                    <td>&quot;1&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">製品</td>
+                    <td>&quot;2&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">部品</td>
+                    <td>&quot;3&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">包材</td>
+                    <td>&quot;4&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">その他</td>
+                    <td>&quot;9&quot;</td>
+                </tr>
+            </table>
+
+            <table>
+                <thead class="enum">
+                <tr>
+                    <th width="20%">フィールド</th>
+                    <th>フィールド型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>code</td>
+                    <td>
+                        <span class="weak">java.lang.String</span>
+                        
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">メソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ getCode</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">String</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">staticメソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ fromCode</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.String">String</a>
+                    </td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.master.product.ProductType">商品区分</a></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+                <tr>
+                    <td class="method-name">+ getCodeByName</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.String">String</a>
+                    </td>
+                    <td><span class="weak">String</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.model.master.product.StockAllocationType">在庫引当区分</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.master.product.StockAllocationType</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    <th>code</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">未引当</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td class="method-name">引当済</td>
+                    <td>1</td>
+                </tr>
+            </table>
+
+            <table>
+                <thead class="enum">
+                <tr>
+                    <th width="20%">フィールド</th>
+                    <th>フィールド型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>code</td>
+                    <td>
+                        <span class="weak">java.lang.Integer</span>
+                        
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">メソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ getCode</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">Integer</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">staticメソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ fromCode</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.Integer">Integer</a>
+                    </td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.master.product.StockAllocationType">在庫引当区分</a></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+                <tr>
+                    <td class="method-name">+ getCodeByName</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.String">String</a>
+                    </td>
+                    <td><span class="weak">Integer</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.model.master.product.StockManagementTargetType">在庫管理対象区分</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.master.product.StockManagementTargetType</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    <th>code</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">対象外</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td class="method-name">対象</td>
+                    <td>1</td>
+                </tr>
+            </table>
+
+            <table>
+                <thead class="enum">
+                <tr>
+                    <th width="20%">フィールド</th>
+                    <th>フィールド型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>code</td>
+                    <td>
+                        <span class="weak">java.lang.Integer</span>
+                        
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">メソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ getCode</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">Integer</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">staticメソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ fromCode</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.Integer">Integer</a>
+                    </td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.master.product.StockManagementTargetType">在庫管理対象区分</a></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+                <tr>
+                    <td class="method-name">+ getCodeByName</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.String">String</a>
+                    </td>
+                    <td><span class="weak">Integer</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.model.master.product.TaxType">税区分</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.master.product.TaxType</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    <th>code</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">外税</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td class="method-name">内税</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td class="method-name">非課税</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td class="method-name">その他</td>
+                    <td>9</td>
+                </tr>
+            </table>
+
+            <table>
+                <thead class="enum">
+                <tr>
+                    <th width="20%">フィールド</th>
+                    <th>フィールド型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>code</td>
+                    <td>
+                        <span class="weak">java.lang.Integer</span>
+                        
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">メソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ getCode</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">Integer</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">staticメソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ fromCode</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.Integer">Integer</a>
+                    </td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.master.product.TaxType">税区分</a></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+                <tr>
+                    <td class="method-name">+ getCodeByName</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.String">String</a>
+                    </td>
+                    <td><span class="weak">Integer</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.model.sales.order.CompletionFlag">完了フラグ</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.sales.order.CompletionFlag</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    <th>value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">未完了</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td class="method-name">完了</td>
+                    <td>1</td>
+                </tr>
+            </table>
+
+            <table>
+                <thead class="enum">
+                <tr>
+                    <th width="20%">フィールド</th>
+                    <th>フィールド型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>value</td>
+                    <td>
+                        <span class="weak">int</span>
+                        
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">メソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ getValue</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">int</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">staticメソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ of</td>
+                    <td>
+                        <a class="method-argument-item" href="#int">int</a>
+                    </td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.sales.order.CompletionFlag">完了フラグ</a></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.model.sales.order.TaxRateType">消費税率種別</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.sales.order.TaxRateType</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    <th>rate</th>
+                    <th>description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">標準税率</td>
+                    <td>10</td>
+                    <td>&quot;通常の消費税率&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">軽減税率</td>
+                    <td>8</td>
+                    <td>&quot;軽減税率（食品など）&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">非課税</td>
+                    <td>0</td>
+                    <td>&quot;非課税（消費税がかからない）&quot;</td>
+                </tr>
+            </table>
+
+            <table>
+                <thead class="enum">
+                <tr>
+                    <th width="20%">フィールド</th>
+                    <th>フィールド型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>rate</td>
+                    <td>
+                        <span class="weak">java.lang.Integer</span>
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td>description</td>
+                    <td>
+                        <span class="weak">java.lang.String</span>
+                        
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">メソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ getDescription</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">String</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+                <tr>
+                    <td class="method-name">+ getRate</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">Integer</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">staticメソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ of</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.Integer">Integer</a>
+                    </td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.sales.order.TaxRateType">消費税率種別</a></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.model.sales.payment.incoming.PaymentMethodType">支払方法区分の列挙型</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.sales.payment.incoming.PaymentMethodType</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">現金</td>
+                    <td>1</td>
+                    <td>&quot;現金&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">小切手</td>
+                    <td>2</td>
+                    <td>&quot;小切手&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">手形</td>
+                    <td>3</td>
+                    <td>&quot;手形&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">振込</td>
+                    <td>4</td>
+                    <td>&quot;振込&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">相殺</td>
+                    <td>5</td>
+                    <td>&quot;相殺&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">その他</td>
+                    <td>9</td>
+                    <td>&quot;その他&quot;</td>
+                </tr>
+            </table>
+
+            <table>
+                <thead class="enum">
+                <tr>
+                    <th width="20%">フィールド</th>
+                    <th>フィールド型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>code</td>
+                    <td>
+                        <span class="weak">java.lang.Integer</span>
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td>name</td>
+                    <td>
+                        <span class="weak">java.lang.String</span>
+                        
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">メソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ getCode</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">Integer</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+                <tr>
+                    <td class="method-name">+ getName</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">String</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">staticメソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ コードから支払方法区分を取得する</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.Integer">Integer</a>
+                    </td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.sales.payment.incoming.PaymentMethodType">支払方法区分の列挙型</a></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.model.sales.sales.BillingDelayType">請求遅延区分</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.sales.sales.BillingDelayType</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    <th>code</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">未遅延</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td class="method-name">遅延</td>
+                    <td>1</td>
+                </tr>
+            </table>
+
+            <table>
+                <thead class="enum">
+                <tr>
+                    <th width="20%">フィールド</th>
+                    <th>フィールド型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>code</td>
+                    <td>
+                        <span class="weak">java.lang.Integer</span>
+                        
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">メソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ getCode</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">Integer</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">staticメソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ fromCode</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.Integer">Integer</a>
+                    </td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.sales.sales.BillingDelayType">請求遅延区分</a></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+                <tr>
+                    <td class="method-name">+ getCodeByName</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.String">String</a>
+                    </td>
+                    <td><span class="weak">Integer</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.model.sales.sales.SalesType">売上区分</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.sales.sales.SalesType</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    <th>code</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">現金</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td class="method-name">掛</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td class="method-name">その他</td>
+                    <td>2</td>
+                </tr>
+            </table>
+
+            <table>
+                <thead class="enum">
+                <tr>
+                    <th width="20%">フィールド</th>
+                    <th>フィールド型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>code</td>
+                    <td>
+                        <span class="weak">java.lang.Integer</span>
+                        
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">メソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ getCode</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">Integer</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">staticメソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ fromCode</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.Integer">Integer</a>
+                    </td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.sales.sales.SalesType">売上区分</a></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+                <tr>
+                    <td class="method-name">+ getCodeByName</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.String">String</a>
+                    </td>
+                    <td><span class="weak">Integer</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType">アプリケーション実行履歴区分</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">同期</td>
+                    
+                </tr>
+                <tr>
+                    <td class="method-name">非同期</td>
+                    
+                </tr>
+            </table>
+
+            
+
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">メソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ getName</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">String</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">staticメソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ fromName</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.String">String</a>
+                    </td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType">アプリケーション実行履歴区分</a></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag">アプリケーション実行プロセスフラグ</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    <th>i</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">未実行</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td class="method-name">実行中</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td class="method-name">実行済</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td class="method-name">エラー</td>
+                    <td>3</td>
+                </tr>
+            </table>
+
+            <table>
+                <thead class="enum">
+                <tr>
+                    <th width="20%">フィールド</th>
+                    <th>フィールド型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>i</td>
+                    <td>
+                        <span class="weak">int</span>
+                        
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">メソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ getValue</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">int</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">staticメソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ fromValue</td>
+                    <td>
+                        <a class="method-argument-item" href="#int">int</a>
+                    </td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag">アプリケーション実行プロセスフラグ</a></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType">アプリケーション実行プロセス区分</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    <th>name</th>
+                    <th>code</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">ユーザー登録</td>
+                    <td>&quot;ユーザー登録&quot;</td>
+                    <td>&quot;0001&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">ユーザー更新</td>
+                    <td>&quot;ユーザー更新&quot;</td>
+                    <td>&quot;0002&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">ユーザー削除</td>
+                    <td>&quot;ユーザー削除&quot;</td>
+                    <td>&quot;0003&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">部門登録</td>
+                    <td>&quot;部門登録&quot;</td>
+                    <td>&quot;0004&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">部門更新</td>
+                    <td>&quot;部門更新&quot;</td>
+                    <td>&quot;0005&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">部門削除</td>
+                    <td>&quot;部門削除&quot;</td>
+                    <td>&quot;0006&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">社員登録</td>
+                    <td>&quot;社員登録&quot;</td>
+                    <td>&quot;0007&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">社員更新</td>
+                    <td>&quot;社員更新&quot;</td>
+                    <td>&quot;0008&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">社員削除</td>
+                    <td>&quot;社員削除&quot;</td>
+                    <td>&quot;0009&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">商品分類登録</td>
+                    <td>&quot;商品分類登録&quot;</td>
+                    <td>&quot;0010&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">商品分類更新</td>
+                    <td>&quot;商品分類更新&quot;</td>
+                    <td>&quot;0011&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">商品分類削除</td>
+                    <td>&quot;商品分類削除&quot;</td>
+                    <td>&quot;0012&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">商品登録</td>
+                    <td>&quot;商品登録&quot;</td>
+                    <td>&quot;0013&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">商品更新</td>
+                    <td>&quot;商品更新&quot;</td>
+                    <td>&quot;0014&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">商品削除</td>
+                    <td>&quot;商品削除&quot;</td>
+                    <td>&quot;0015&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">取引先グループ登録</td>
+                    <td>&quot;取引先グループ登録&quot;</td>
+                    <td>&quot;0016&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">取引先グループ更新</td>
+                    <td>&quot;取引先グループ更新&quot;</td>
+                    <td>&quot;0017&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">取引先グループ削除</td>
+                    <td>&quot;取引先グループ削除&quot;</td>
+                    <td>&quot;0018&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">取引先分類種別登録</td>
+                    <td>&quot;取引先分類登録&quot;</td>
+                    <td>&quot;0019&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">取引先分類種別更新</td>
+                    <td>&quot;取引先分類更新&quot;</td>
+                    <td>&quot;0020&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">取引先分類種別削除</td>
+                    <td>&quot;取引先分類削除&quot;</td>
+                    <td>&quot;0021&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">地域登録</td>
+                    <td>&quot;地域登録&quot;</td>
+                    <td>&quot;0022&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">地域更新</td>
+                    <td>&quot;地域更新&quot;</td>
+                    <td>&quot;0023&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">地域削除</td>
+                    <td>&quot;地域削除&quot;</td>
+                    <td>&quot;0024&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">取引先登録</td>
+                    <td>&quot;取引先登録&quot;</td>
+                    <td>&quot;0025&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">取引先更新</td>
+                    <td>&quot;取引先更新&quot;</td>
+                    <td>&quot;0026&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">取引先削除</td>
+                    <td>&quot;取引先削除&quot;</td>
+                    <td>&quot;0027&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">顧客登録</td>
+                    <td>&quot;顧客登録&quot;</td>
+                    <td>&quot;0028&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">顧客更新</td>
+                    <td>&quot;顧客更新&quot;</td>
+                    <td>&quot;0029&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">顧客削除</td>
+                    <td>&quot;顧客削除&quot;</td>
+                    <td>&quot;0030&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">仕入先登録</td>
+                    <td>&quot;仕入先登録&quot;</td>
+                    <td>&quot;0031&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">仕入先更新</td>
+                    <td>&quot;仕入先更新&quot;</td>
+                    <td>&quot;0032&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">仕入先削除</td>
+                    <td>&quot;仕入先削除&quot;</td>
+                    <td>&quot;0033&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">受注登録</td>
+                    <td>&quot;受注登録&quot;</td>
+                    <td>&quot;0034&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">受注更新</td>
+                    <td>&quot;受注更新&quot;</td>
+                    <td>&quot;0035&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">受注削除</td>
+                    <td>&quot;受注削除&quot;</td>
+                    <td>&quot;0036&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">出荷登録</td>
+                    <td>&quot;出荷登録&quot;</td>
+                    <td>&quot;0037&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">出荷更新</td>
+                    <td>&quot;出荷更新&quot;</td>
+                    <td>&quot;0038&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">出荷削除</td>
+                    <td>&quot;出荷削除&quot;</td>
+                    <td>&quot;0039&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">売上登録</td>
+                    <td>&quot;売上登録&quot;</td>
+                    <td>&quot;0040&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">売上更新</td>
+                    <td>&quot;売上更新&quot;</td>
+                    <td>&quot;0041&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">売上削除</td>
+                    <td>&quot;売上削除&quot;</td>
+                    <td>&quot;0042&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">売上集計</td>
+                    <td>&quot;売上集計&quot;</td>
+                    <td>&quot;0043&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">請求登録</td>
+                    <td>&quot;請求登録&quot;</td>
+                    <td>&quot;0044&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">請求更新</td>
+                    <td>&quot;請求更新&quot;</td>
+                    <td>&quot;0045&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">請求削除</td>
+                    <td>&quot;請求削除&quot;</td>
+                    <td>&quot;0046&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">入金登録</td>
+                    <td>&quot;入金登録&quot;</td>
+                    <td>&quot;0047&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">入金更新</td>
+                    <td>&quot;入金更新&quot;</td>
+                    <td>&quot;0048&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">入金削除</td>
+                    <td>&quot;入金削除&quot;</td>
+                    <td>&quot;0049&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">口座登録</td>
+                    <td>&quot;口座登録&quot;</td>
+                    <td>&quot;0050&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">口座更新</td>
+                    <td>&quot;口座更新&quot;</td>
+                    <td>&quot;0051&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">口座削除</td>
+                    <td>&quot;口座削除&quot;</td>
+                    <td>&quot;0052&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">その他</td>
+                    <td>&quot;その他&quot;</td>
+                    <td>&quot;9999&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">データダウンロード</td>
+                    <td>&quot;データダウンロード&quot;</td>
+                    <td>&quot;9001&quot;</td>
+                </tr>
+            </table>
+
+            <table>
+                <thead class="enum">
+                <tr>
+                    <th width="20%">フィールド</th>
+                    <th>フィールド型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>name</td>
+                    <td>
+                        <span class="weak">java.lang.String</span>
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td>code</td>
+                    <td>
+                        <span class="weak">java.lang.String</span>
+                        
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">メソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ getCode</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">String</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+                <tr>
+                    <td class="method-name">+ getName</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">String</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">staticメソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ fromNameAndCode</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.String">String</a><a class="method-argument-item" href="#java.lang.String">String</a>
+                    </td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType">アプリケーション実行プロセス区分</a></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.model.system.autonumber.DocumentTypeCode">伝票種別コード</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.system.autonumber.DocumentTypeCode</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    <th>code</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">受注</td>
+                    <td>&quot;OD&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">売上</td>
+                    <td>&quot;SA&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">請求</td>
+                    <td>&quot;IV&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">その他</td>
+                    <td>&quot;XX&quot;</td>
+                </tr>
+            </table>
+
+            <table>
+                <thead class="enum">
+                <tr>
+                    <th width="20%">フィールド</th>
+                    <th>フィールド型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>code</td>
+                    <td>
+                        <span class="weak">java.lang.String</span>
+                        
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">メソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ getCode</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">String</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">staticメソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ fromCode</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.String">String</a>
+                    </td>
+                    <td><a href="./domain.html#com.example.sms.domain.model.system.autonumber.DocumentTypeCode">伝票種別コード</a></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.model.system.download.DownloadTarget">ダウンロード対象</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.system.download.DownloadTarget</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    <th>value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">部門</td>
+                    <td>&quot;department&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">社員</td>
+                    <td>&quot;employee&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">商品分類</td>
+                    <td>&quot;product_category&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">商品</td>
+                    <td>&quot;product&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">取引先グループ</td>
+                    <td>&quot;partner_group&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">取引先</td>
+                    <td>&quot;partner&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">顧客</td>
+                    <td>&quot;customer&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">仕入先</td>
+                    <td>&quot;vendor&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">受注</td>
+                    <td>&quot;order&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">出荷</td>
+                    <td>&quot;shipment&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">売上</td>
+                    <td>&quot;sales&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">請求</td>
+                    <td>&quot;invoice&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">入金</td>
+                    <td>&quot;payment&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">口座</td>
+                    <td>&quot;payment_account&quot;</td>
+                </tr>
+            </table>
+
+            <table>
+                <thead class="enum">
+                <tr>
+                    <th width="20%">フィールド</th>
+                    <th>フィールド型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>value</td>
+                    <td>
+                        <span class="weak">java.lang.String</span>
+                        
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">メソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ getValue</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">String</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+            
+            
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.model.system.user.RoleName">役割</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.model.system.user.RoleName</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">ADMIN</td>
+                    
+                </tr>
+                <tr>
+                    <td class="method-name">USER</td>
+                    
+                </tr>
+            </table>
+
+            
+
+            
+            
+        
+            
+            
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.type.address.Prefecture">都道府県</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.type.address.Prefecture</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    <th>code</th>
+                    <th>region</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">北海道</td>
+                    <td>1</td>
+                    <td>&quot;北海道&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">青森県</td>
+                    <td>2</td>
+                    <td>&quot;東北地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">岩手県</td>
+                    <td>3</td>
+                    <td>&quot;東北地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">宮城県</td>
+                    <td>4</td>
+                    <td>&quot;東北地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">秋田県</td>
+                    <td>5</td>
+                    <td>&quot;東北地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">山形県</td>
+                    <td>6</td>
+                    <td>&quot;東北地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">福島県</td>
+                    <td>7</td>
+                    <td>&quot;東北地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">茨城県</td>
+                    <td>8</td>
+                    <td>&quot;関東地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">栃木県</td>
+                    <td>9</td>
+                    <td>&quot;関東地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">群馬県</td>
+                    <td>10</td>
+                    <td>&quot;関東地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">埼玉県</td>
+                    <td>11</td>
+                    <td>&quot;関東地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">千葉県</td>
+                    <td>12</td>
+                    <td>&quot;関東地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">東京都</td>
+                    <td>13</td>
+                    <td>&quot;関東地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">神奈川県</td>
+                    <td>14</td>
+                    <td>&quot;関東地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">新潟県</td>
+                    <td>15</td>
+                    <td>&quot;中部地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">富山県</td>
+                    <td>16</td>
+                    <td>&quot;中部地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">石川県</td>
+                    <td>17</td>
+                    <td>&quot;中部地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">福井県</td>
+                    <td>18</td>
+                    <td>&quot;中部地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">山梨県</td>
+                    <td>19</td>
+                    <td>&quot;中部地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">長野県</td>
+                    <td>20</td>
+                    <td>&quot;中部地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">岐阜県</td>
+                    <td>21</td>
+                    <td>&quot;中部地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">静岡県</td>
+                    <td>22</td>
+                    <td>&quot;中部地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">愛知県</td>
+                    <td>23</td>
+                    <td>&quot;中部地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">三重県</td>
+                    <td>24</td>
+                    <td>&quot;近畿地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">滋賀県</td>
+                    <td>25</td>
+                    <td>&quot;近畿地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">京都府</td>
+                    <td>26</td>
+                    <td>&quot;近畿地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">大阪府</td>
+                    <td>27</td>
+                    <td>&quot;近畿地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">兵庫県</td>
+                    <td>28</td>
+                    <td>&quot;近畿地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">奈良県</td>
+                    <td>29</td>
+                    <td>&quot;近畿地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">和歌山県</td>
+                    <td>30</td>
+                    <td>&quot;近畿地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">鳥取県</td>
+                    <td>31</td>
+                    <td>&quot;中国地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">島根県</td>
+                    <td>32</td>
+                    <td>&quot;中国地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">岡山県</td>
+                    <td>33</td>
+                    <td>&quot;中国地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">広島県</td>
+                    <td>34</td>
+                    <td>&quot;中国地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">山口県</td>
+                    <td>35</td>
+                    <td>&quot;中国地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">徳島県</td>
+                    <td>36</td>
+                    <td>&quot;四国地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">香川県</td>
+                    <td>37</td>
+                    <td>&quot;四国地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">愛媛県</td>
+                    <td>38</td>
+                    <td>&quot;四国地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">高知県</td>
+                    <td>39</td>
+                    <td>&quot;四国地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">福岡県</td>
+                    <td>40</td>
+                    <td>&quot;九州地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">佐賀県</td>
+                    <td>41</td>
+                    <td>&quot;九州地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">長崎県</td>
+                    <td>42</td>
+                    <td>&quot;九州地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">熊本県</td>
+                    <td>43</td>
+                    <td>&quot;九州地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">大分県</td>
+                    <td>44</td>
+                    <td>&quot;九州地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">宮崎県</td>
+                    <td>45</td>
+                    <td>&quot;九州地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">鹿児島県</td>
+                    <td>46</td>
+                    <td>&quot;九州地方&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">沖縄県</td>
+                    <td>47</td>
+                    <td>&quot;九州地方&quot;</td>
+                </tr>
+            </table>
+
+            <table>
+                <thead class="enum">
+                <tr>
+                    <th width="20%">フィールド</th>
+                    <th>フィールド型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>code</td>
+                    <td>
+                        <span class="weak">int</span>
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td>region</td>
+                    <td>
+                        <span class="weak">java.lang.String</span>
+                        
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">メソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ getCode</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">int</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+                <tr>
+                    <td class="method-name">+ getRegion</td>
+                    <td>
+                        
+                    </td>
+                    <td><span class="weak">String</span></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">staticメソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ コードから都道府県を取得 (例: 13 -&gt; 東京都)</td>
+                    <td>
+                        <a class="method-argument-item" href="#int">int</a>
+                    </td>
+                    <td><a href="./domain.html#com.example.sms.domain.type.address.Prefecture">都道府県</a></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+                <tr>
+                    <td class="method-name">+ 都道府県名からEnumオブジェクトを取得</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.String">String</a>
+                    </td>
+                    <td><a href="./domain.html#com.example.sms.domain.type.address.Prefecture">都道府県</a></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.type.money.CurrencyType">通貨タイプ</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.type.money.CurrencyType</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">JPY</td>
+                    
+                </tr>
+                <tr>
+                    <td class="method-name">USD</td>
+                    
+                </tr>
+                <tr>
+                    <td class="method-name">CHF</td>
+                    
+                </tr>
+            </table>
+
+            
+
+            
+            
+        
+            
+            
+        
+        </section>
+        <section class="type">
+            <h2><a name="com.example.sms.domain.type.quantity.UnitType">単位区分</a></h2>
+            <div class="fully-qualified-name">com.example.sms.domain.type.quantity.UnitType</div>
+
+            
+                
+            
+
+            <table class="fields">
+                <thead>
+                <tr>
+                    <th>列挙定数名</th>
+                    <th>code</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">個</td>
+                    <td>&quot;1&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">グラム</td>
+                    <td>&quot;2&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">ミリリットル</td>
+                    <td>&quot;3&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">パック</td>
+                    <td>&quot;4&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">本</td>
+                    <td>&quot;5&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">セット</td>
+                    <td>&quot;6&quot;</td>
+                </tr>
+                <tr>
+                    <td class="method-name">その他</td>
+                    <td>&quot;9&quot;</td>
+                </tr>
+            </table>
+
+            <table>
+                <thead class="enum">
+                <tr>
+                    <th width="20%">フィールド</th>
+                    <th>フィールド型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>code</td>
+                    <td>
+                        <span class="weak">java.lang.String</span>
+                        
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            
+            
+        
+            
+            <table>
+                <thead>
+                <tr>
+                    <th width="20%">staticメソッド</th>
+                    <th>引数</th>
+                    <th>戻り値型</th>
+                    <th>説明</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="method-name">+ fromCode</td>
+                    <td>
+                        <a class="method-argument-item" href="#java.lang.String">String</a>
+                    </td>
+                    <td><a href="./domain.html#com.example.sms.domain.type.quantity.UnitType">単位区分</a></td>
+                    <td class="markdown javadoc"></td>
+                </tr>
+            </table>
+        
+        </section>
+    </main>
+</div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/marked@5.1.0/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11.3.0/dist/mermaid.min.js"></script>
+    <script src="./assets/jig.js"></script>
+
+</body>
+</html>

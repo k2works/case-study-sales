@@ -1,0 +1,3 @@
+# com.example.sms.domain.model.master.department <-> com.example.sms.domain.model.master.employee
+- com.example.sms.domain.model.master.department.Department -> com.example.sms.domain.model.master.employee.Employee
+- com.example.sms.domain.model.master.employee.Employee -> com.example.sms.domain.model.master.department.Department
