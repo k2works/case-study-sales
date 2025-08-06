@@ -110,4 +110,14 @@
             </if>
         </where>
     </select>
+
+    <select id="selectLatestByCustomerCode" resultMap="BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.請求データMapper.Base_Column_List" />
+        from public.請求データ
+        where 取引先コード = #{customerCode,jdbcType=VARCHAR}
+        and 顧客枝番 = #{branchCode,jdbcType=INTEGER}
+        order by 請求日 desc
+        limit 1
+    </select>
 </mapper>

@@ -36,7 +36,9 @@ markdown_extensions:
   - toc:
       permalink: true
   - plantuml_markdown:
-      server: http://www.plantuml.com/plantuml
+      server: !!python/object/apply:os.getenv
+        - PLANTUML_SERVER_URL
+        - http://www.plantuml.com/plantuml
       format: svg
 
 extra_javascript:

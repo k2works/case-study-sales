@@ -37,6 +37,10 @@ import {ShippingConfirmContainer} from "../sales/shipping/confirm/ShippingConfir
 import {InvoiceContainer} from "../sales/invoice/list/InvoiceContainer.tsx";
 import {InvoiceTabContainer} from "../sales/invoice/InvoceTabContainer.tsx";
 import {InvoiceAggregateContainer} from "../sales/invoice/aggregate/InvoiceAggregateContainer.tsx";
+import {PaymentContainer} from "../sales/payment/list/PaymentContainer.tsx";
+import {PaymentTabContainer} from "../sales/payment/PaymentTabContainer.tsx";
+import {AccountContainer} from "../master/account/AccountContainer.tsx";
+import {PaymentAggregateContainer} from "../sales/payment/aggregate/PaymentAggregateContainer.tsx";
 
 export const RouteConfig: React.FC = () => {
     const ProductCategoryPage = () => {
@@ -191,6 +195,22 @@ export const RouteConfig: React.FC = () => {
         )
     }
 
+    const PaymentPage = () => {
+        return (
+            <SiteLayout>
+                <PaymentContainer/>
+            </SiteLayout>
+        )
+    }
+
+    const PaymentSummrayyPage = () => {
+        return (
+            <SiteLayout>
+                <PaymentAggregateContainer/>
+            </SiteLayout>
+        )
+    }
+
 
     return (
             <Routes>
@@ -231,6 +251,12 @@ export const RouteConfig: React.FC = () => {
                                                                    allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/invoice-summary" element={<RouteAuthGuard component={<InvoiceSummrayyPage/>} redirectPath="/"
                                                                      allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/payment" element={<RouteAuthGuard component={<PaymentTabContainer/>} redirectPath="/"
+                                                                              allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/payment-summary" element={<RouteAuthGuard component={<PaymentSummrayyPage/>} redirectPath="/"
+                                                                        allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/payment-incoming-list" element={<RouteAuthGuard component={<PaymentPage/>} redirectPath="/"
+                                                                     allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/department" element={<RouteAuthGuard component={<DepartmentContainer/>} redirectPath="/"
                                                                    allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/employee" element={<RouteAuthGuard component={<EmployeeContainer/>} redirectPath="/"
@@ -256,6 +282,8 @@ export const RouteConfig: React.FC = () => {
                 <Route path="/code" element={<RouteAuthGuard component={<CodeContainer/>} redirectPath="/"
                                                                 allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/region" element={<RouteAuthGuard component={<RegionPage/>} redirectPath="/"
+                                                             allowedRoles={[RoleType.ADMIN]}/>}/>
+                <Route path="/account" element={<RouteAuthGuard component={<AccountContainer/>} redirectPath="/"
                                                              allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/logout" element={<Logout/>}/>

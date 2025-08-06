@@ -8,6 +8,7 @@ import com.example.sms.domain.model.master.partner.customer.CustomerBillingCateg
 import com.example.sms.domain.model.master.partner.customer.CustomerCode;
 import com.example.sms.domain.model.master.partner.customer.Shipping;
 import com.example.sms.domain.model.master.partner.vendor.Vendor;
+import com.example.sms.domain.model.master.payment.account.incoming.PaymentAccount;
 import com.example.sms.domain.model.master.product.MiscellaneousType;
 import com.example.sms.domain.model.master.region.Region;
 import com.example.sms.domain.model.master.department.Department;
@@ -22,6 +23,8 @@ import com.example.sms.domain.model.sales.order.Order;
 import com.example.sms.domain.model.sales.order.OrderLine;
 import com.example.sms.domain.model.sales.order.OrderList;
 import com.example.sms.domain.model.sales.order.TaxRateType;
+import com.example.sms.domain.model.sales.payment.incoming.Payment;
+import com.example.sms.domain.model.sales.payment.incoming.PaymentMethodType;
 import com.example.sms.domain.model.sales.sales.Sales;
 import com.example.sms.domain.model.sales.sales.SalesLine;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
@@ -29,6 +32,7 @@ import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag;
 import com.example.sms.domain.model.system.user.RoleName;
+import com.example.sms.service.master.payment.PaymentAccountRepository;
 import com.example.sms.service.master.region.RegionRepository;
 import com.example.sms.service.master.department.DepartmentRepository;
 import com.example.sms.service.master.employee.EmployeeRepository;
@@ -38,6 +42,7 @@ import com.example.sms.service.master.partner.PartnerRepository;
 import com.example.sms.service.master.product.ProductCategoryRepository;
 import com.example.sms.service.master.product.ProductRepository;
 import com.example.sms.service.sales.invoice.InvoiceRepository;
+import com.example.sms.service.sales.payment.incoming.PaymentRepository;
 import com.example.sms.service.sales.sales.SalesRepository;
 import com.example.sms.service.sales.order.SalesOrderRepository;
 import com.example.sms.service.system.audit.AuditRepository;
@@ -83,6 +88,10 @@ public class TestDataFactoryImpl implements TestDataFactory {
     SalesRepository salesRepository;
     @Autowired
     InvoiceRepository invoiceRepository;
+    @Autowired
+    PaymentAccountRepository paymentAccountRepository;
+    @Autowired
+    PaymentRepository paymentIncomingRepository;
 
     @Override
     public void setUpForAuthApiService() {
@@ -281,6 +290,16 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
             // 請求データの準備
             setUpForInvoiceAcceptanceService();
+            
+            // 口座データの準備
+            paymentAccountRepository.deleteAll();
+            IntStream.range(1, 4).forEach(j -> {
+                PaymentAccount paymentAccount = getPaymentAccount(String.format("ACC%03d", j));
+                paymentAccountRepository.save(paymentAccount);
+            });
+
+            // 入金データの準備
+            setUpForPaymentIncomingService();
         });
     }
 
@@ -697,6 +716,24 @@ public class TestDataFactoryImpl implements TestDataFactory {
     }
 
     @Override
+    public void setUpForPaymentAccountService() {
+        paymentAccountRepository.deleteAll();
+        IntStream.range(0, 3).forEach(i -> {
+            PaymentAccount paymentAccount = getPaymentAccount(String.format("ACC%03d", i));
+            paymentAccountRepository.save(paymentAccount);
+        });
+    }
+
+    @Override
+    public void setUpForPaymentIncomingService() {
+        paymentIncomingRepository.deleteAll();
+        IntStream.range(0, 3).forEach(i -> {
+            Payment paymentIncoming = getPaymentData(String.format("PAY%03d", i));
+            paymentIncomingRepository.save(paymentIncoming);
+        });
+    }
+
+    @Override
     public MultipartFile createOrderFile() {
         InputStream is = getClass().getResourceAsStream("/csv/order/order_multiple.csv");
         try {
@@ -985,6 +1022,69 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 invoiceNumber,
                 saleNumber,
                 lineNumber
+        );
+    }
+
+    public static PaymentAccount getPaymentAccount(String accountCode) {
+        return PaymentAccount.of(
+                accountCode,
+                "テスト口座",
+                LocalDateTime.of(2023, 10, 1, 0, 0), // 開始日
+                LocalDateTime.of(2024, 10, 1, 0, 0), // 開始日
+                "テスト口座（適用後）",
+                "1", // 普通
+                "1234567",
+                "1", // 普通
+                "テスト太郎",
+                "10000",
+                LocalDateTime.of(2023, 1, 1, 0, 0),
+                "0001",
+                "001"
+        );
+    }
+
+    public static Payment getPaymentData(String paymentNumber) {
+        return Payment.of(
+                paymentNumber,
+                LocalDateTime.of(2022, 1, 1, 0, 0),
+                "10000",
+                LocalDateTime.of(2021, 1, 1, 0, 0),
+                "001",
+                1,
+                4, // 振込
+                "ACC001",
+                10000,
+                0
+        );
+    }
+
+    public static Payment getPaymentWithCustomer(String paymentNumber, String customerCode, Integer branchNumber) {
+        return Payment.of(
+                paymentNumber,
+                LocalDateTime.now(),
+                "10000",
+                LocalDateTime.of(2021, 1, 1, 0, 0),
+                customerCode,
+                branchNumber,
+                PaymentMethodType.振込.getCode(),
+                "ACC001",
+                10000,
+                5000
+        );
+    }
+
+    public static Payment getPaymentWithAccount(String paymentNumber, String accountCode) {
+        return Payment.of(
+                paymentNumber,
+                LocalDateTime.now(),
+                "10000",
+                LocalDateTime.of(2021, 1, 1, 0, 0),
+                "001",
+                1,
+                PaymentMethodType.振込.getCode(),
+                accountCode,
+                10000,
+                5000
         );
     }
 

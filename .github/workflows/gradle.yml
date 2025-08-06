@@ -56,23 +56,7 @@ jobs:
         run: ./gradlew clean build jacocoTestReport
         working-directory: app/backend/api
 
-      - name: DownloadContainer and set up Code Climate Test Reporter
-        run: |
-          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-          chmod +x ./cc-test-reporter
-        working-directory: app/backend/api
-
-      - name: Set jacoco.xml path for code climate
-        env:
-          JACOCO_SOURCE_PATH: src/main/java
-        run: ./cc-test-reporter format-coverage ./build/reports/jacoco/test/jacocoTestReport.xml --input-type jacoco
-        working-directory: app/backend/api
-
-      - name: Upload code climate report
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./cc-test-reporter upload-coverage -r $CC_TEST_REPORTER_ID
-        working-directory: app/backend/api
-        if: success()
-
+      - uses: qltysh/qlty-action/coverage@v1
+        with:
+          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
+          files: app/backend/api/build/reports/jacoco/test/jacocoTestReport.xml

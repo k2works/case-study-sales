@@ -1,0 +1,147 @@
+package com.example.sms.presentation.api.master.payment;
+
+import com.example.sms.domain.model.master.payment.account.incoming.PaymentAccount;
+import com.example.sms.domain.model.master.payment.account.incoming.PaymentAccountCode;
+import com.example.sms.domain.model.master.payment.account.incoming.PaymentAccountType;
+import com.example.sms.domain.model.master.payment.account.incoming.BankAccountType;
+import com.example.sms.domain.model.master.department.DepartmentId;
+import com.example.sms.service.master.payment.PaymentAccountCriteria;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@DisplayName("入金口座DTOマッパーテスト")
+class PaymentAccountResourceDTOMapperTest {
+
+    @Test
+    @DisplayName("入金口座リソースを入金口座エンティティに変換する")
+    void testConvertToEntity_validResource_shouldReturnPaymentAccount() {
+        // Arrange
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
+        String accountCode = "ACC001";
+        String accountName = "テスト口座";
+        String startDate = "2023-01-01T10:00:00Z";
+        String endDate = "2023-12-31T10:00:00Z";
+        String accountNameAfterStart = "テスト口座（適用後）";
+        String accountNumber = "1234567";
+        String accountHolder = "テスト太郎";
+        String departmentCode = "10000";
+        String departmentStartDate = "2023-01-01T00:00:00Z";
+        String bankCode = "0001";
+        String branchCode = "001";
+
+        PaymentAccountResource resource = PaymentAccountResource.builder()
+                .accountCode(accountCode)
+                .accountName(accountName)
+                .startDate(startDate)
+                .endDate(endDate)
+                .accountNameAfterStart(accountNameAfterStart)
+                .accountType(PaymentAccountType.銀行)
+                .accountNumber(accountNumber)
+                .bankAccountType(BankAccountType.普通)
+                .accountHolder(accountHolder)
+                .departmentCode(departmentCode)
+                .departmentStartDate(departmentStartDate)
+                .bankCode(bankCode)
+                .branchCode(branchCode)
+                .build();
+
+        // Act
+        PaymentAccount paymentAccount = PaymentAccountResourceDTOMapper.convertToEntity(resource);
+
+        // Assert
+        assertNotNull(paymentAccount);
+        assertEquals(PaymentAccountCode.of(accountCode), paymentAccount.getAccountCode());
+        assertEquals(accountName, paymentAccount.getAccountName());
+        assertEquals(LocalDateTime.parse(startDate, formatter), paymentAccount.getStartDate());
+        assertEquals(LocalDateTime.parse(endDate, formatter), paymentAccount.getEndDate());
+        assertEquals(accountNameAfterStart, paymentAccount.getAccountNameAfterStart());
+        assertEquals(PaymentAccountType.銀行, paymentAccount.getAccountType());
+        assertEquals(accountNumber, paymentAccount.getAccountNumber());
+        assertEquals(BankAccountType.普通, paymentAccount.getBankAccountType());
+        assertEquals(accountHolder, paymentAccount.getAccountHolder());
+        assertEquals(DepartmentId.of(departmentCode, LocalDateTime.parse(departmentStartDate, formatter)), paymentAccount.getDepartmentId());
+        assertEquals(bankCode, paymentAccount.getBankCode());
+        assertEquals(branchCode, paymentAccount.getBranchCode());
+    }
+
+    @Test
+    @DisplayName("入金口座リソースにnull値がある場合は例外をスローする")
+    void testConvertToEntity_nullValuesInResource_shouldThrowException() {
+        // Arrange
+        PaymentAccountResource resource = PaymentAccountResource.builder()
+                .accountCode(null)
+                .accountName(null)
+                .startDate(null)
+                .endDate(null)
+                .build();
+
+        // Act & Assert
+        assertThrows(NullPointerException.class, () -> {
+            PaymentAccountResourceDTOMapper.convertToEntity(resource);
+        });
+    }
+
+    @Test
+    @DisplayName("入金口座リソースの日付フォーマットが無効な場合は例外をスローする")
+    void testConvertToEntity_invalidDateFormat_shouldThrowException() {
+        // Arrange
+        String invalidDate = "2023/01/01 10:00:00";
+        PaymentAccountResource resource = PaymentAccountResource.builder()
+                .accountCode("ACC001")
+                .accountName("テスト口座")
+                .startDate(invalidDate)
+                .endDate("2023-12-31T10:00:00Z")
+                .build();
+
+        // Act & Assert
+        assertThrows(Exception.class, () -> {
+            PaymentAccountResourceDTOMapper.convertToEntity(resource);
+        });
+    }
+
+    @Test
+    @DisplayName("convertToCriteria - 有効なリソースを渡すと入金口座検索条件を返す")
+    void testConvertToCriteria_validResource_shouldReturnPaymentAccountCriteria() {
+        // Arrange
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
+        String accountCode = "ACC001";
+        String accountName = "テスト口座";
+        String startDate = "2023-01-01T10:00:00Z";
+        String endDate = "2023-12-31T10:00:00Z";
+
+        PaymentAccountCriteriaResource resource = new PaymentAccountCriteriaResource();
+        resource.setAccountCode(accountCode);
+        resource.setAccountName(accountName);
+        resource.setStartDate(startDate);
+        resource.setEndDate(endDate);
+        resource.setAccountType(PaymentAccountType.銀行);
+        resource.setDepartmentCode("10000");
+
+        // Act
+        PaymentAccountCriteria criteria = PaymentAccountResourceDTOMapper.convertToCriteria(resource);
+
+        // Assert
+        assertNotNull(criteria);
+        assertEquals(accountCode, criteria.getAccountCode());
+        assertEquals(accountName, criteria.getAccountName());
+        assertEquals(LocalDateTime.parse(startDate, formatter), criteria.getStartDate());
+        assertEquals(LocalDateTime.parse(endDate, formatter), criteria.getEndDate());
+        assertEquals(PaymentAccountType.銀行.getCode(), criteria.getAccountType());
+        assertEquals("10000", criteria.getDepartmentCode());
+    }
+
+    @Test
+    @DisplayName("convertToCriteria - nullリソースを渡すとnullを返す")
+    void testConvertToCriteria_nullResource_shouldReturnNull() {
+        // Act
+        PaymentAccountCriteria criteria = PaymentAccountResourceDTOMapper.convertToCriteria(null);
+
+        // Assert
+        assertNull(criteria);
+    }
+}

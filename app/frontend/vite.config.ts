@@ -8,4 +8,8 @@ export default defineConfig({
       react(),
       env({ prefix: "VITE",  mountedPath: "process.env" }),
   ],
+    server: {
+        port: 5173,
+        host: '127.0.0.1'
+    }
 })

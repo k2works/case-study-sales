@@ -69,6 +69,13 @@ describe('アプリケーションデータダウンロード', () => {
             cy.get('#message').contains('仕入先 データをダウンロードしました。');
         });
 
+        it('口座データダウンロード', () => {
+            userPage();
+            cy.get('#downloadTarget').select('口座');
+            cy.get('#download').click();
+            cy.get('#message').contains('口座 データをダウンロードしました。');
+        });
+
         it('受注データダウンロード', () => {
             userPage();
             cy.get('#downloadTarget').select('受注');
@@ -95,6 +102,13 @@ describe('アプリケーションデータダウンロード', () => {
             cy.get('#downloadTarget').select('請求');
             cy.get('#download').click();
             cy.get('#message').contains('請求 データをダウンロードしました。');
+        });
+
+        it('入金データダウンロード', () => {
+            userPage();
+            cy.get('#downloadTarget').select('入金');
+            cy.get('#download').click();
+            cy.get('#message').contains('入金 データをダウンロードしました。');
         });
     });
 
@@ -168,6 +182,13 @@ describe('アプリケーションデータダウンロード', () => {
             cy.get('#message').contains('ダウンロードに失敗しました: 権限がありません');
         });
 
+        it('口座データダウンロード', () => {
+            userPage();
+            cy.get('#downloadTarget').select('口座');
+            cy.get('#download').click();
+            cy.get('#message').contains('ダウンロードに失敗しました: 権限がありません');
+        });
+
         it('受注データダウンロード', () => {
             userPage();
             cy.get('#downloadTarget').select('受注');
@@ -194,6 +215,13 @@ describe('アプリケーションデータダウンロード', () => {
             cy.get('#downloadTarget').select('請求');
             cy.get('#download').click();
             cy.get('#message').contains('請求 データをダウンロードしました。');
+        });
+
+        it('入金データダウンロード', () => {
+            userPage();
+            cy.get('#downloadTarget').select('入金');
+            cy.get('#download').click();
+            cy.get('#message').contains('入金 データをダウンロードしました。');
         });
     });
 });

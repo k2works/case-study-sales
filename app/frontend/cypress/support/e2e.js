@@ -21,7 +21,7 @@ import './commands.js'
 import "allure-cypress";
 
 Cypress.Commands.add('login', (username, password) => {
-    cy.visit('http://localhost:5173/login');
+    cy.visit('http://127.0.0.1:5173/login');
     cy.get('#userId').clear();
     cy.get('#userId').type(username);
     cy.get('#password').clear();
@@ -33,7 +33,7 @@ Cypress.Commands.add('loginWithSession', (username, password) => {
     cy.session(
         username,
         () => {
-            cy.visit('http://localhost:5173/login');
+            cy.visit('http://127.0.0.1:5173/login');
             cy.get('#userId').clear();
             cy.get('#userId').type(username);
             cy.get('#password').clear();

@@ -31,10 +31,12 @@ const Form: React.FC<FormProps> = ({selectedTarget, setSelectedTarget}) => {
                 <option value={DownloadTarget.取引先}>{getKeyBySymbol(DownloadTarget, DownloadTarget.取引先)}</option>
                 <option value={DownloadTarget.顧客}>{getKeyBySymbol(DownloadTarget, DownloadTarget.顧客)}</option>
                 <option value={DownloadTarget.仕入先}>{getKeyBySymbol(DownloadTarget, DownloadTarget.仕入先)}</option>
+                <option value={DownloadTarget.口座}>{getKeyBySymbol(DownloadTarget, DownloadTarget.口座)}</option>
                 <option value={DownloadTarget.受注}>{getKeyBySymbol(DownloadTarget, DownloadTarget.受注)}</option>
                 <option value={DownloadTarget.出荷}>{getKeyBySymbol(DownloadTarget, DownloadTarget.出荷)}</option>
                 <option value={DownloadTarget.売上}>{getKeyBySymbol(DownloadTarget, DownloadTarget.売上)}</option>
                 <option value={DownloadTarget.請求}>{getKeyBySymbol(DownloadTarget, DownloadTarget.請求)}</option>
+                <option value={DownloadTarget.入金}>{getKeyBySymbol(DownloadTarget, DownloadTarget.入金)}</option>
             </select>
         </div>
     );

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.sms.infrastructure.datasource.master.payment.account.incoming.PaymentAccountCustomMapper">
+    
+    <!-- BaseResultMap -->
+    <resultMap
+            id="BaseResultMap"
+            type="com.example.sms.infrastructure.datasource.master.payment.account.incoming.PaymentAccountCustomEntity"
+            extends="com.example.sms.infrastructure.datasource.autogen.mapper.入金口座マスタMapper.BaseResultMap">
+        <!-- 必要に応じて関連エンティティのマッピングを追加 -->
+    </resultMap>
+
+    <!-- selectByPrimaryKey -->
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select 
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.入金口座マスタMapper.Base_Column_List" />
+        from public.入金口座マスタ
+        where 入金口座コード = #{入金口座コード,jdbcType=VARCHAR}
+    </select>
+
+    <!-- selectAll -->
+    <select id="selectAll" resultMap="BaseResultMap">
+        select 
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.入金口座マスタMapper.Base_Column_List" />
+        from public.入金口座マスタ
+    </select>
+
+    <!-- insert -->
+    <insert id="insert" parameterType="com.example.sms.infrastructure.datasource.master.payment.account.incoming.PaymentAccountCustomEntity">
+        insert into public.入金口座マスタ (
+            入金口座コード,
+            入金口座名,
+            適用開始日,
+            適用終了日,
+            適用開始後入金口座名,
+            入金口座区分,
+            入金口座番号,
+            銀行口座種別,
+            口座名義人,
+            部門コード,
+            部門開始日,
+            全銀協銀行コード,
+            全銀協支店コード,
+            作成日時,
+            作成者名,
+            更新日時,
+            更新者名,
+            プログラム更新日時,
+            更新プログラム名,
+            version
+        )
+        values (
+            #{入金口座コード,jdbcType=VARCHAR},
+            #{入金口座名,jdbcType=VARCHAR},
+            #{適用開始日,jdbcType=TIMESTAMP},
+            #{適用終了日,jdbcType=TIMESTAMP},
+            #{適用開始後入金口座名,jdbcType=VARCHAR},
+            #{入金口座区分,jdbcType=VARCHAR},
+            #{入金口座番号,jdbcType=VARCHAR},
+            #{銀行口座種別,jdbcType=VARCHAR},
+            #{口座名義人,jdbcType=VARCHAR},
+            #{部門コード,jdbcType=VARCHAR},
+            #{部門開始日,jdbcType=TIMESTAMP},
+            #{全銀協銀行コード,jdbcType=VARCHAR},
+            #{全銀協支店コード,jdbcType=VARCHAR},
+            #{作成日時,jdbcType=TIMESTAMP},
+            #{作成者名,jdbcType=VARCHAR},
+            #{更新日時,jdbcType=TIMESTAMP},
+            #{更新者名,jdbcType=VARCHAR},
+            #{プログラム更新日時,jdbcType=TIMESTAMP},
+            #{更新プログラム名,jdbcType=VARCHAR},
+            1
+        )
+    </insert>
+
+    <!-- updateByPrimaryKeyForOptimisticLock -->
+    <update id="updateByPrimaryKeyForOptimisticLock" parameterType="com.example.sms.infrastructure.datasource.master.payment.account.incoming.PaymentAccountCustomEntity">
+        update public.入金口座マスタ
+        set 入金口座名 = #{入金口座名,jdbcType=VARCHAR},
+            適用開始日 = #{適用開始日,jdbcType=TIMESTAMP},
+            適用終了日 = #{適用終了日,jdbcType=TIMESTAMP},
+            適用開始後入金口座名 = #{適用開始後入金口座名,jdbcType=VARCHAR},
+            入金口座区分 = #{入金口座区分,jdbcType=VARCHAR},
+            入金口座番号 = #{入金口座番号,jdbcType=VARCHAR},
+            銀行口座種別 = #{銀行口座種別,jdbcType=VARCHAR},
+            口座名義人 = #{口座名義人,jdbcType=VARCHAR},
+            部門コード = #{部門コード,jdbcType=VARCHAR},
+            部門開始日 = #{部門開始日,jdbcType=TIMESTAMP},
+            全銀協銀行コード = #{全銀協銀行コード,jdbcType=VARCHAR},
+            全銀協支店コード = #{全銀協支店コード,jdbcType=VARCHAR},
+            作成日時 = #{作成日時,jdbcType=TIMESTAMP},
+            作成者名 = #{作成者名,jdbcType=VARCHAR},
+            更新日時 = #{更新日時,jdbcType=TIMESTAMP},
+            更新者名 = #{更新者名,jdbcType=VARCHAR},
+            プログラム更新日時 = #{プログラム更新日時,jdbcType=TIMESTAMP},
+            更新プログラム名 = #{更新プログラム名,jdbcType=VARCHAR},
+            version = #{version,jdbcType=INTEGER} + 1
+        where 入金口座コード = #{入金口座コード,jdbcType=VARCHAR}
+        and version = #{version,jdbcType=INTEGER}
+    </update>
+
+    <!-- selectByCriteria -->
+    <select id="selectByCriteria" parameterType="com.example.sms.service.master.payment.PaymentAccountCriteria"
+            resultMap="BaseResultMap">
+        select
+        <include
+                refid="com.example.sms.infrastructure.datasource.autogen.mapper.入金口座マスタMapper.Base_Column_List"/>
+        from public.入金口座マスタ
+        <where>
+            <if test="accountCode != null and accountCode != ''">
+                and 入金口座コード = #{accountCode,jdbcType=VARCHAR}
+            </if>
+            <if test="accountName != null and accountName != ''">
+                and 入金口座名 like concat('%', #{accountName,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="startDate != null">
+                and 適用開始日 &gt;= #{startDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endDate != null">
+                and 適用終了日 &lt;= #{endDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="accountType != null">
+                and 入金口座区分 = #{accountType,jdbcType=VARCHAR}
+            </if>
+            <if test="departmentCode != null and departmentCode != ''">
+                and 部門コード = #{departmentCode,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

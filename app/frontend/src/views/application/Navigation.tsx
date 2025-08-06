@@ -78,6 +78,13 @@ const NaveItems: React.FC = () => {
                                     <SubNavItem id="side-nav-invoice-nav" to="/invoice-summary">集計</SubNavItem>
                                 </ul>
                             )}
+                            <SubNavItem id="side-nav-invoice-nav" to="/payment">回収</SubNavItem>
+                            {!Env.isProduction() && (
+                                <ul className="nav-sub-list">
+                                    <SubNavItem id="side-nav-payment-nav" to="/payment-incoming-list">一覧</SubNavItem>
+                                    <SubNavItem id="side-nav-invoice-nav" to="/payment-summary">集計</SubNavItem>
+                                </ul>
+                            )}
                         </ul>
                     </li>
                     <li className="nav-item">
@@ -102,6 +109,7 @@ const NaveItems: React.FC = () => {
                                     <SubNavItem id="side-nav-partner-nav" to="/vendor">仕入先</SubNavItem>
                                 </ul>
                             )}
+                            <SubNavItem id="side-nav-account-nav" to="/account">口座</SubNavItem>
                             <SubNavItem id="side-nav-code-nav" to="/code">コード</SubNavItem>
                             {!Env.isProduction() && (
                                 <ul className="nav-sub-list">
@@ -150,6 +158,13 @@ const NaveItems: React.FC = () => {
                                 <ul className="nav-sub-list">
                                     <SubNavItem id="side-nav-invoice-nav" to="/invoice-list">一覧</SubNavItem>
                                     <SubNavItem id="side-nav-invoice-nav" to="/invoice-summary">集計</SubNavItem>
+                                </ul>
+                            )}
+                            <SubNavItem id="side-nav-invoice-nav" to="/payment">回収</SubNavItem>
+                            {!Env.isProduction() && (
+                                <ul className="nav-sub-list">
+                                    <SubNavItem id="side-nav-payment-nav" to="/payment-incoming-list">一覧</SubNavItem>
+                                    <SubNavItem id="side-nav-invoice-nav" to="/payment-summary">集計</SubNavItem>
                                 </ul>
                             )}
                         </ul>

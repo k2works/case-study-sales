@@ -27,4 +27,6 @@ public interface InvoiceCustomMapper {
     int updateByPrimaryKeyForOptimisticLock(請求データ entity);
 
     List<InvoiceCustomEntity> selectByCriteria(InvoiceCriteria criteria);
+
+    InvoiceCustomEntity selectLatestByCustomerCode(String customerCode, Integer branchCode);
 }
