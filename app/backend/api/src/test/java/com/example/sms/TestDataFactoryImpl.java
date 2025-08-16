@@ -27,6 +27,8 @@ import com.example.sms.domain.model.sales.payment.incoming.Payment;
 import com.example.sms.domain.model.sales.payment.incoming.PaymentMethodType;
 import com.example.sms.domain.model.sales.sales.Sales;
 import com.example.sms.domain.model.sales.sales.SalesLine;
+import com.example.sms.domain.model.sales.purchase.order.PurchaseOrder;
+import com.example.sms.domain.model.sales.purchase.order.PurchaseOrderLine;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
@@ -45,6 +47,7 @@ import com.example.sms.service.sales.invoice.InvoiceRepository;
 import com.example.sms.service.sales.payment.incoming.PaymentRepository;
 import com.example.sms.service.sales.sales.SalesRepository;
 import com.example.sms.service.sales.order.SalesOrderRepository;
+import com.example.sms.service.sales.purchase.order.PurchaseOrderRepository;
 import com.example.sms.service.system.audit.AuditRepository;
 import com.example.sms.service.system.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,6 +95,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
     PaymentAccountRepository paymentAccountRepository;
     @Autowired
     PaymentRepository paymentIncomingRepository;
+    @Autowired
+    PurchaseOrderRepository purchaseOrderRepository;
 
     @Override
     public void setUpForAuthApiService() {
@@ -1085,6 +1090,71 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 accountCode,
                 10000,
                 5000
+        );
+    }
+
+    @Override
+    public void setUpForPurchaseOrderService() {
+        setUpForUserManagementService();
+        setUpForDepartmentService();
+        setUpForEmployeeService();
+        setUpForRegionService();
+        setUpForPartnerGroupService();
+        setUpForPartnerCategoryService();
+        setUpForPartnerService();
+        setUpForProductService();
+        setUpPurchaseOrder();
+    }
+
+    private void setUpPurchaseOrder() {
+        purchaseOrderRepository.deleteAll();
+        List<PurchaseOrder> purchaseOrders = getPurchaseOrders();
+        purchaseOrders.forEach(purchaseOrderRepository::save);
+    }
+
+    private List<PurchaseOrder> getPurchaseOrders() {
+        List<PurchaseOrder> purchaseOrders = new ArrayList<>();
+        IntFunction<PurchaseOrder> getPurchaseOrder = i -> getPurchaseOrder("PO" + String.format("%08d", i));
+        IntStream.range(1, 4).forEach(i -> purchaseOrders.add(getPurchaseOrder.apply(i)));
+        return purchaseOrders;
+    }
+
+    public static PurchaseOrder getPurchaseOrder(String purchaseOrderNumber) {
+        LocalDateTime now = LocalDateTime.now();
+        
+        List<PurchaseOrderLine> lines = List.of(
+                getPurchaseOrderLine(purchaseOrderNumber, 1)
+        );
+
+        return PurchaseOrder.of(
+                purchaseOrderNumber,
+                now,
+                "SO000001",
+                "001", // 仕入先コード
+                0,
+                "EMP001", // 社員コード
+                now.plusDays(7),
+                "001", // 倉庫コード
+                10000,
+                1000, // 消費税（10000円 × 10% = 1000円）
+                "備考",
+                lines
+        );
+    }
+
+    public static PurchaseOrderLine getPurchaseOrderLine(String purchaseOrderNumber, int lineNumber) {
+        return PurchaseOrderLine.of(
+                purchaseOrderNumber,
+                lineNumber,
+                lineNumber,
+                "SO000001",
+                1,
+                "10101001", // 実際の商品コード
+                "商品" + lineNumber,
+                1000,
+                10,
+                0,
+                0
         );
     }
 
