@@ -67,8 +67,10 @@ public class PurchaseOrderLine {
      * 消費税計算
      */
     public Money calcConsumptionTax() {
-        // TODO: 消費税計算の実装
-        return Money.of(0);
+        // 仮の消費税率（10%）
+        double taxRate = 0.10;
+        int lineTotal = purchaseUnitPrice.getAmount() * purchaseOrderQuantity.getAmount();
+        return Money.of((int) (lineTotal * taxRate));
     }
 
     /**

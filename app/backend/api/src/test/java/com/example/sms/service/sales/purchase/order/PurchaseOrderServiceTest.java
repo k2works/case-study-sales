@@ -2,10 +2,13 @@ package com.example.sms.service.sales.purchase.order;
 
 import com.example.sms.domain.model.master.employee.EmployeeCode;
 import com.example.sms.domain.model.master.partner.supplier.SupplierCode;
+import com.example.sms.domain.model.master.product.ProductCode;
+import com.example.sms.domain.model.sales.order.CompletionFlag;
 import com.example.sms.domain.model.sales.purchase.order.*;
+import com.example.sms.domain.type.money.Money;
+import com.example.sms.domain.type.quantity.Quantity;
 import com.example.sms.domain.model.sales.purchase.order.rule.PurchaseOrderRuleCheckList;
 import com.example.sms.domain.service.sales.purchase.order.PurchaseOrderDomainService;
-import com.example.sms.domain.type.money.Money;
 import com.example.sms.service.system.autonumber.AutoNumberService;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
@@ -85,8 +88,22 @@ class PurchaseOrderServiceTest {
     private PurchaseOrder createTestPurchaseOrderWithoutNumber() {
         LocalDateTime now = LocalDateTime.now();
         
-        // 発注番号なしの場合はbuilderを使用
-        List<PurchaseOrderLine> lines = List.of();
+        // 発注番号なしの場合でも明細を追加して金額計算を合わせる
+        List<PurchaseOrderLine> lines = List.of(
+            PurchaseOrderLine.builder()
+                .purchaseOrderNumber(null) // 発注番号なし
+                .purchaseOrderLineNumber(1)
+                .purchaseOrderLineDisplayNumber(1)
+                .salesOrderNumber("SO000001")
+                .salesOrderLineNumber(1)
+                .productCode(ProductCode.of("10101001"))
+                .productName("商品1")
+                .purchaseUnitPrice(Money.of(1000))
+                .purchaseOrderQuantity(Quantity.of(10))
+                .receivedQuantity(Quantity.of(0))
+                .completionFlag(CompletionFlag.of(0))
+                .build()
+        );
 
         return PurchaseOrder.builder()
                 .purchaseOrderNumber(null) // 発注番号なし
@@ -97,8 +114,8 @@ class PurchaseOrderServiceTest {
                 .purchaseManagerCode(EmployeeCode.of("EMP001"))
                 .designatedDeliveryDate(DesignatedDeliveryDate.of(now.plusDays(7)))
                 .warehouseCode("001")
-                .totalPurchaseAmount(Money.of(10000))
-                .totalConsumptionTax(Money.of(1000))
+                .totalPurchaseAmount(Money.of(10000)) // 1000 × 10 = 10000
+                .totalConsumptionTax(Money.of(1000)) // 10000 × 10% = 1000
                 .remarks("備考")
                 .purchaseOrderLines(lines)
                 .build();
