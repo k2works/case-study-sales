@@ -89,13 +89,41 @@ class PurchaseOrderRepositoryTest {
     @DisplayName("発注")
     class PurchaseOrderTest {
         @Test
-        @DisplayName("発注一覧を取得できる（仮実装）")
+        @DisplayName("発注一覧を取得できる")
         void shouldRetrieveAllPurchaseOrders() {
             IntStream.range(0, 10).forEach(i -> {
                 PurchaseOrder order = getPurchaseOrder(String.format("PO%08d", i));
                 repository.save(order);
             });
-            assertEquals(10, repository.findAll(1, 100).getList().size());
+            assertEquals(10, repository.selectAll().asList().size());
+        }
+
+        @Test
+        @DisplayName("発注一覧をPageInfoで取得できる")
+        void shouldRetrieveAllPurchaseOrdersWithPageInfo() {
+            IntStream.range(0, 5).forEach(i -> {
+                PurchaseOrder order = getPurchaseOrder(String.format("PO%08d", i));
+                repository.save(order);
+            });
+            PageInfo<PurchaseOrder> pageInfo = repository.selectAllWithPageInfo();
+            assertEquals(5, pageInfo.getList().size());
+        }
+
+        @Test
+        @DisplayName("発注を条件検索してPageInfoで取得できる")
+        void shouldSearchPurchaseOrdersWithPageInfo() {
+            IntStream.range(0, 3).forEach(i -> {
+                PurchaseOrder order = getPurchaseOrder(String.format("PO%08d", i));
+                repository.save(order);
+            });
+            
+            PurchaseOrderCriteria criteria = PurchaseOrderCriteria.builder()
+                    .purchaseOrderNumber("PO00000001")
+                    .build();
+            
+            PageInfo<PurchaseOrder> pageInfo = repository.searchWithPageInfo(criteria);
+            assertEquals(1, pageInfo.getList().size());
+            assertEquals("PO00000001", pageInfo.getList().get(0).getPurchaseOrderNumber().getValue());
         }
 
         @Test
@@ -109,12 +137,11 @@ class PurchaseOrderRepositoryTest {
         }
 
         @Test
-        @DisplayName("発注を更新できる（仮実装）")
+        @DisplayName("発注を更新できる")
         void shouldUpdatePurchaseOrder() {
             PurchaseOrder order = getPurchaseOrder("PO00000001");
             repository.save(order);
             
-            // TODO: 実装が完了したら更新処理のテストを追加
             PurchaseOrder updatedOrder = PurchaseOrder.of(
                     order.getPurchaseOrderNumber().getValue(),
                     order.getPurchaseOrderDate().getValue().plusDays(1),
@@ -136,17 +163,17 @@ class PurchaseOrderRepositoryTest {
         }
 
         @Test
-        @DisplayName("発注を削除できる（仮実装）")
+        @DisplayName("発注を削除できる")
         void shouldDeletePurchaseOrder() {
             PurchaseOrder order = getPurchaseOrder("PO00000001");
             repository.save(order);
             repository.delete(order.getPurchaseOrderNumber().getValue());
             
-            assertEquals(0, repository.findAll(1, 100).getList().size());
+            assertEquals(0, repository.selectAll().asList().size());
         }
 
         @Test
-        @DisplayName("発注番号で検索できる（仮実装）")
+        @DisplayName("発注番号で検索できる")
         void findByPurchaseOrderNumber() {
             // Given
             String purchaseOrderNumber = "PO000002";
@@ -166,7 +193,7 @@ class PurchaseOrderRepositoryTest {
     @DisplayName("発注明細")
     class PurchaseOrderLineTest {
         @Test
-        @DisplayName("発注明細一覧を取得できる（仮実装）")
+        @DisplayName("発注明細一覧を取得できる")
         void shouldRetrieveAllPurchaseOrderLines() {
             PurchaseOrder order = getPurchaseOrder("PO00000001");
             List<PurchaseOrderLine> lines = IntStream.range(1, 11)
@@ -182,18 +209,18 @@ class PurchaseOrderRepositoryTest {
                     order.getPurchaseManagerCode().getValue(),
                     order.getDesignatedDeliveryDate().getValue(),
                     order.getWarehouseCode(),
-                    order.getTotalPurchaseAmount().getValue(),
-                    order.getTotalConsumptionTax().getValue(),
+                    order.getTotalPurchaseAmount().getAmount(),
+                    order.getTotalConsumptionTax().getAmount(),
                     order.getRemarks(),
                     lines);
             repository.save(newOrder);
             
-            PageInfo<PurchaseOrder> actual = repository.findAll(1, 100);
+            PageInfo<PurchaseOrder> actual = repository.selectAllWithPageInfo();
             assertEquals(10, actual.getList().getFirst().getPurchaseOrderLines().size());
         }
 
         @Test
-        @DisplayName("発注明細を登録できる（仮実装）")
+        @DisplayName("発注明細を登録できる")
         void shouldRegisterPurchaseOrderLine() {
             PurchaseOrder order = getPurchaseOrder("PO00000001");
             PurchaseOrderLine line = getPurchaseOrderLine(order.getPurchaseOrderNumber().getValue(), 1);
@@ -207,8 +234,8 @@ class PurchaseOrderRepositoryTest {
                     order.getPurchaseManagerCode().getValue(),
                     order.getDesignatedDeliveryDate().getValue(),
                     order.getWarehouseCode(),
-                    order.getTotalPurchaseAmount().getValue(),
-                    order.getTotalConsumptionTax().getValue(),
+                    order.getTotalPurchaseAmount().getAmount(),
+                    order.getTotalConsumptionTax().getAmount(),
                     order.getRemarks(),
                     List.of(line));
             repository.save(newOrder);
@@ -218,7 +245,7 @@ class PurchaseOrderRepositoryTest {
         }
 
         @Test
-        @DisplayName("発注明細を更新できる（仮実装）")
+        @DisplayName("発注明細を更新できる")
         void shouldUpdatePurchaseOrderLine() {
             PurchaseOrder order = getPurchaseOrder("PO00000001");
             PurchaseOrderLine line = getPurchaseOrderLine(order.getPurchaseOrderNumber().getValue(), 1);
@@ -232,13 +259,12 @@ class PurchaseOrderRepositoryTest {
                     order.getPurchaseManagerCode().getValue(),
                     order.getDesignatedDeliveryDate().getValue(),
                     order.getWarehouseCode(),
-                    order.getTotalPurchaseAmount().getValue(),
-                    order.getTotalConsumptionTax().getValue(),
+                    order.getTotalPurchaseAmount().getAmount(),
+                    order.getTotalConsumptionTax().getAmount(),
                     order.getRemarks(),
                     List.of(line));
             repository.save(newOrder);
 
-            // TODO: 実装が完了したら更新処理のテストを追加
             PurchaseOrderLine updatedLine = PurchaseOrderLine.of(
                     order.getPurchaseOrderNumber().getValue(), 1, 1, "SO000002", 2, "10101002", "更新後商品名",
                     3000, 5, 0, 0);
@@ -252,8 +278,8 @@ class PurchaseOrderRepositoryTest {
                     newOrder.getPurchaseManagerCode().getValue(),
                     newOrder.getDesignatedDeliveryDate().getValue(),
                     newOrder.getWarehouseCode(),
-                    newOrder.getTotalPurchaseAmount().getValue(),
-                    newOrder.getTotalConsumptionTax().getValue(),
+                    newOrder.getTotalPurchaseAmount().getAmount(),
+                    newOrder.getTotalConsumptionTax().getAmount(),
                     newOrder.getRemarks(),
                     List.of(updatedLine));
             repository.save(updatedOrder);
@@ -263,7 +289,7 @@ class PurchaseOrderRepositoryTest {
         }
 
         @Test
-        @DisplayName("発注明細を削除できる（仮実装）")
+        @DisplayName("発注明細を削除できる")
         void shouldDeletePurchaseOrderLine() {
             PurchaseOrder order = getPurchaseOrder("PO00000001");
             PurchaseOrderLine line = getPurchaseOrderLine(order.getPurchaseOrderNumber().getValue(), 1);
@@ -277,8 +303,8 @@ class PurchaseOrderRepositoryTest {
                     order.getPurchaseManagerCode().getValue(),
                     order.getDesignatedDeliveryDate().getValue(),
                     order.getWarehouseCode(),
-                    order.getTotalPurchaseAmount().getValue(),
-                    order.getTotalConsumptionTax().getValue(),
+                    order.getTotalPurchaseAmount().getAmount(),
+                    order.getTotalConsumptionTax().getAmount(),
                     order.getRemarks(),
                     List.of(line));
             repository.save(newOrder);

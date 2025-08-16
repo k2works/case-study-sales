@@ -11,7 +11,8 @@ import java.util.Optional;
  * 発注リポジトリ
  */
 public interface PurchaseOrderRepository {
-    
+
+    PurchaseOrderList selectAll();
     /**
      * 発注保存
      */
@@ -25,13 +26,13 @@ public interface PurchaseOrderRepository {
     /**
      * 全件検索（ページング）
      */
-    PageInfo<PurchaseOrder> findAll(int page, int size);
-    
+    PageInfo<PurchaseOrder> selectAllWithPageInfo();
+
     /**
      * 検索条件で検索（ページング）
      */
-    PageInfo<PurchaseOrder> findByCriteria(PurchaseOrderCriteria criteria, int page, int size);
-    
+    PageInfo<PurchaseOrder> searchWithPageInfo(PurchaseOrderCriteria criteria);
+
     /**
      * 発注削除
      */
@@ -46,4 +47,5 @@ public interface PurchaseOrderRepository {
      * 全削除（テスト用）
      */
     void deleteAll();
+
 }

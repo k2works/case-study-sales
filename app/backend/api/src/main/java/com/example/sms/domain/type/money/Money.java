@@ -74,10 +74,6 @@ public class Money implements Expression {
         return new Money(amount, CurrencyType.JPY);
     }
     
-    public int getValue() {
-        return amount;
-    }
-
     public boolean isGreaterThan(Money other) {
         return amount >= other.amount;
     }

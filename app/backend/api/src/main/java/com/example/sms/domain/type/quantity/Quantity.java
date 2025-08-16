@@ -39,8 +39,4 @@ public class Quantity {
     public static Quantity of(int amount) {
         return new Quantity(amount, UnitType.個);
     }
-    
-    public int getValue() {
-        return amount;
-    }
 }

@@ -135,21 +135,6 @@ public class PurchaseOrderDataSource implements PurchaseOrderRepository {
     }
 
     @Override
-    public PageInfo<PurchaseOrder> findAll(int page, int size) {
-        List<PurchaseOrderCustomEntity> entities = purchaseOrderCustomMapper.selectAll();
-        List<PurchaseOrder> models = purchaseOrderEntityMapper.toModelList(entities);
-        return new PageInfo<>(models);
-    }
-
-    @Override
-    public PageInfo<PurchaseOrder> findByCriteria(PurchaseOrderCriteria criteria, int page, int size) {
-        // TODO: ページング機能の仮実装
-        List<PurchaseOrderCustomEntity> entities = purchaseOrderCustomMapper.selectByCriteria(criteria.toMap());
-        List<PurchaseOrder> models = purchaseOrderEntityMapper.toModelList(entities);
-        return new PageInfo<>(models);
-    }
-
-    @Override
     public void delete(String purchaseOrderNumber) {
         // 明細データの削除
         purchaseOrderLineCustomMapper.deleteByPurchaseOrderNumber(purchaseOrderNumber);
@@ -172,5 +157,28 @@ public class PurchaseOrderDataSource implements PurchaseOrderRepository {
         
         // 全メインデータの削除
         purchaseOrderCustomMapper.deleteAll();
+    }
+
+    @Override
+    public PurchaseOrderList selectAll() {
+        List<PurchaseOrderCustomEntity> entities = purchaseOrderCustomMapper.selectAll();
+        List<PurchaseOrder> purchaseOrders = purchaseOrderEntityMapper.toModelList(entities);
+        return PurchaseOrderList.of(purchaseOrders);
+    }
+
+    @Override
+    public PageInfo<PurchaseOrder> selectAllWithPageInfo() {
+        List<PurchaseOrderCustomEntity> purchaseOrderCustomEntities = purchaseOrderCustomMapper.selectAll();
+        PageInfo<PurchaseOrderCustomEntity> pageInfo = new PageInfo<>(purchaseOrderCustomEntities);
+        
+        return PageInfoHelper.of(pageInfo, purchaseOrderEntityMapper::toModel);
+    }
+
+    @Override
+    public PageInfo<PurchaseOrder> searchWithPageInfo(PurchaseOrderCriteria criteria) {
+        List<PurchaseOrderCustomEntity> purchaseOrderCustomEntities = purchaseOrderCustomMapper.selectByCriteria(criteria.toMap());
+        PageInfo<PurchaseOrderCustomEntity> pageInfo = new PageInfo<>(purchaseOrderCustomEntities);
+        
+        return PageInfoHelper.of(pageInfo, purchaseOrderEntityMapper::toModel);
     }
 }
