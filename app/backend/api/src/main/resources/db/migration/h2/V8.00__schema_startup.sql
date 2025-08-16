@@ -16,7 +16,8 @@ create table if not exists 発注データ
     作成日時         timestamp(6) default CURRENT_DATE not null,
     作成者名         varchar(12),
     更新日時         timestamp(6) default CURRENT_DATE not null,
-    更新者名         varchar(12)
+    更新者名         varchar(12),
+    version          integer      default 1            not null
     );
 
 create table if not exists 発注データ明細
@@ -38,6 +39,7 @@ create table if not exists 発注データ明細
     作成者名       varchar(12),
     更新日時       timestamp(6) default CURRENT_DATE not null,
     更新者名       varchar(12),
+    version        integer      default 1            not null,
     constraint pk_purchase_order_details
     primary key (発注行番号, 発注番号)
     );

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.sms.infrastructure.datasource.master.partner.supplier.SupplierCustomMapper">
+  
+  <select id="selectByPrimaryKey" resultType="com.example.sms.infrastructure.datasource.master.partner.supplier.SupplierCustomEntity">
+      SELECT * FROM public.仕入先マスタ WHERE 仕入先コード = #{仕入先コード} AND 仕入先枝番 = #{仕入先枝番}
+  </select>
+
+  <select id="selectAll" resultType="com.example.sms.infrastructure.datasource.master.partner.supplier.SupplierCustomEntity">
+      SELECT * FROM public.仕入先マスタ
+  </select>
+  
+  <select id="selectByCriteria" resultType="com.example.sms.infrastructure.datasource.master.partner.supplier.SupplierCustomEntity">
+      SELECT * FROM public.仕入先マスタ
+  </select>
+</mapper>

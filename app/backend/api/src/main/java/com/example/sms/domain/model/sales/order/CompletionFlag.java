@@ -20,4 +20,8 @@ public enum CompletionFlag {
     public int getValue() {
         return value;
     }
+    
+    public boolean isCompleted() {
+        return this == 完了;
+    }
 }

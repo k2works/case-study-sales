@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.sms.infrastructure.datasource.sales.purchase.order.PurchaseOrderCustomMapper">
+  <resultMap
+          id="BaseResultMap"
+          type="com.example.sms.infrastructure.datasource.sales.purchase.order.PurchaseOrderCustomEntity"
+          extends="com.example.sms.infrastructure.datasource.autogen.mapper.発注データMapper.BaseResultMap">
+      <association property="仕入先マスタ"
+                   javaType="com.example.sms.infrastructure.datasource.master.partner.supplier.SupplierCustomEntity"
+                   column="{仕入先コード=仕入先コード, 仕入先枝番=仕入先枝番}"
+                   select="com.example.sms.infrastructure.datasource.master.partner.supplier.SupplierCustomMapper.selectByPrimaryKey"
+                   fetchType="eager"
+      />
+      <association property="社員マスタ"
+                  javaType="com.example.sms.infrastructure.datasource.master.employee.EmployeeCustomEntity"
+                  column="発注担当者コード"
+                  select="com.example.sms.infrastructure.datasource.master.employee.EmployeeCustomMapper.selectByPrimaryKey"
+                  fetchType="eager"
+      />
+      <collection property="発注データ明細"
+                  javaType="ArrayList"
+                  column="発注番号"
+                  select="com.example.sms.infrastructure.datasource.sales.purchase.order.order_line.PurchaseOrderLineCustomMapper.selectByPurchaseOrderNumber"
+                  fetchType="eager"
+        />
+  </resultMap>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+      select
+      <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.発注データMapper.Base_Column_List"/>
+      from public.発注データ
+      where 発注番号 = #{発注番号,jdbcType=VARCHAR}
+  </select>
+
+    <select id="selectAll" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.発注データMapper.Base_Column_List"/>
+        from public.発注データ
+    </select>
+    
+    <insert id="insertForOptimisticLock" parameterType="com.example.sms.infrastructure.datasource.autogen.model.発注データ">
+        insert into public.発注データ (発注番号, 発注日, 受注番号,
+                                       仕入先コード, 仕入先枝番, 発注担当者コード,
+                                       指定納期, 倉庫コード, 発注金額合計,
+                                       消費税合計, 備考, 作成日時,
+                                       作成者名, 更新日時, 更新者名)
+        values (#{発注番号,jdbcType=VARCHAR}, #{発注日,jdbcType=TIMESTAMP}, #{受注番号,jdbcType=VARCHAR},
+                #{仕入先コード,jdbcType=VARCHAR}, #{仕入先枝番,jdbcType=INTEGER}, #{発注担当者コード,jdbcType=VARCHAR},
+                #{指定納期,jdbcType=TIMESTAMP}, #{倉庫コード,jdbcType=VARCHAR}, #{発注金額合計,jdbcType=INTEGER},
+                #{消費税合計,jdbcType=INTEGER}, #{備考,jdbcType=VARCHAR}, #{作成日時,jdbcType=TIMESTAMP},
+                #{作成者名,jdbcType=VARCHAR}, #{更新日時,jdbcType=TIMESTAMP}, #{更新者名,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKeyForOptimisticLock" parameterType="com.example.sms.infrastructure.datasource.autogen.model.発注データ">
+        update public.発注データ
+        set 発注日 = #{発注日,jdbcType=TIMESTAMP},
+            受注番号 = #{受注番号,jdbcType=VARCHAR},
+            仕入先コード = #{仕入先コード,jdbcType=VARCHAR},
+            仕入先枝番 = #{仕入先枝番,jdbcType=INTEGER},
+            発注担当者コード = #{発注担当者コード,jdbcType=VARCHAR},
+            指定納期 = #{指定納期,jdbcType=TIMESTAMP},
+            倉庫コード = #{倉庫コード,jdbcType=VARCHAR},
+            発注金額合計 = #{発注金額合計,jdbcType=INTEGER},
+            消費税合計 = #{消費税合計,jdbcType=INTEGER},
+            備考 = #{備考,jdbcType=VARCHAR},
+            作成日時 = #{作成日時,jdbcType=TIMESTAMP},
+            作成者名 = #{作成者名,jdbcType=VARCHAR},
+            更新日時 = #{更新日時,jdbcType=TIMESTAMP},
+            更新者名 = #{更新者名,jdbcType=VARCHAR},
+            version = #{version,jdbcType=INTEGER} + 1
+        where 発注番号 = #{発注番号,jdbcType=VARCHAR}
+        and version = #{version,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByCriteria" resultMap="BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.発注データMapper.Base_Column_List"/>
+        from public.発注データ
+        <where>
+            <if test="purchaseOrderNumber != null">
+                発注番号 = #{purchaseOrderNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="purchaseOrderDate != null">
+                and 発注日 = #{purchaseOrderDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="salesOrderNumber != null">
+                and 受注番号 = #{salesOrderNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="supplierCode != null">
+                and 仕入先コード = #{supplierCode,jdbcType=VARCHAR}
+            </if>
+            <if test="supplierBranchNumber != null">
+                and 仕入先枝番 = #{supplierBranchNumber,jdbcType=INTEGER}
+            </if>
+            <if test="purchaseManagerCode != null">
+                and 発注担当者コード = #{purchaseManagerCode,jdbcType=VARCHAR}
+            </if>
+            <if test="designatedDeliveryDate != null">
+                and 指定納期 = #{designatedDeliveryDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="warehouseCode != null">
+                and 倉庫コード = #{warehouseCode,jdbcType=VARCHAR}
+            </if>
+            <if test="remarks != null">
+                and 備考 = #{remarks,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectAllWithCompletionFlag" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.発注データMapper.Base_Column_List"/>
+        from public.発注データ
+        where 発注番号 in (select 発注番号 from public.発注データ明細 where public.発注データ明細.完了フラグ = #{value})
+    </select>
+
+    <delete id="deleteAll">
+        delete from public.発注データ
+    </delete>
+</mapper>
