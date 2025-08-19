@@ -2,7 +2,7 @@ package com.example.sms.domain.service.sales.purchase.order;
 
 import com.example.sms.domain.model.sales.purchase.order.PurchaseOrder;
 import com.example.sms.domain.model.sales.purchase.order.PurchaseOrderList;
-import com.example.sms.domain.model.sales.purchase.order.rule.PurchaseOrderRuleCheckList;
+import com.example.sms.domain.model.sales.purchase.order.rule.*;
 import com.example.sms.domain.type.money.Money;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 /**
  * 発注ドメインサービス
@@ -62,21 +63,30 @@ public class PurchaseOrderDomainService {
         List<Map<String, String>> checkList = new ArrayList<>();
 
         List<PurchaseOrder> orderList = purchaseOrders.asList();
-        
+        PurchaseOrderRule purchaseOrderAmountRule = new PurchaseOrderAmountRule();
+        PurchaseOrderRule purchaseOrderDeliveryRule = new PurchaseOrderDeliveryRule();
+        PurchaseOrderRule purchaseOrderDeliveryOverDueRule = new PurchaseOrderDeliveryOverDueRule();
+
+        BiConsumer<String, String> addCheck = (purchaseOrderNumber, message) -> {
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put(purchaseOrderNumber, message);
+            checkList.add(errorMap);
+        };
+
         orderList.forEach(purchaseOrder -> {
-            // 発注金額チェック（500万円超過）
-            if (purchaseOrder.getTotalPurchaseAmount().getAmount() > 5000000) {
-                Map<String, String> errorMap = new HashMap<>();
-                errorMap.put(purchaseOrder.getPurchaseOrderNumber().getValue(), "発注金額が500万円を超えています。");
-                checkList.add(errorMap);
+            // 発注金額ルールチェック
+            if (purchaseOrderAmountRule.isSatisfiedBy(purchaseOrder)) {
+                addCheck.accept(purchaseOrder.getPurchaseOrderNumber().getValue(), "発注金額が500万円を超えています。");
             }
             
-            // 納期チェック（発注日より前）
-            if (purchaseOrder.getDesignatedDeliveryDate().getValue()
-                    .isBefore(purchaseOrder.getPurchaseOrderDate().getValue())) {
-                Map<String, String> errorMap = new HashMap<>();
-                errorMap.put(purchaseOrder.getPurchaseOrderNumber().getValue(), "指定納期が発注日より前です。");
-                checkList.add(errorMap);
+            // 発注納期ルールチェック
+            if (purchaseOrderDeliveryRule.isSatisfiedBy(purchaseOrder)) {
+                addCheck.accept(purchaseOrder.getPurchaseOrderNumber().getValue(), "指定納期が発注日より前です。");
+            }
+            
+            // 発注納期超過ルールチェック
+            if (purchaseOrderDeliveryOverDueRule.isSatisfiedBy(purchaseOrder)) {
+                addCheck.accept(purchaseOrder.getPurchaseOrderNumber().getValue(), "納期を超過しています。");
             }
         });
 

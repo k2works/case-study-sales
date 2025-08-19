@@ -255,6 +255,7 @@ public class PurchaseOrderService {
 
             // `computeIfAbsent`を使って、存在しなければ新しいPurchaseOrderを作成
             PurchaseOrder purchaseOrder = purchaseOrderMap.computeIfAbsent(purchaseOrderNumber, key -> {
+                csv.setSalesOrderNumber("");
                 PurchaseOrder newPurchaseOrder = PurchaseOrder.of(
                         key,
                         csv.getPurchaseOrderDate(),
@@ -280,7 +281,7 @@ public class PurchaseOrderService {
                     csv.getPurchaseOrderLineNumber(),
                     csv.getPurchaseOrderLineNumber(), // 表示番号として使用
                     csv.getSalesOrderNumber(),
-                    null, // 受注行番号はCSVに含まれていない
+                    0, // 受注行番号はCSVに含まれていない
                     csv.getProductCode(),
                     csv.getProductName(),
                     csv.getPurchaseUnitPrice() != null ? csv.getPurchaseUnitPrice() : 0,

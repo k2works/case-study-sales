@@ -53,6 +53,8 @@ public interface TestDataFactory {
 
     void setUpForPurchaseOrderService();
 
+    void setUpForPurchaseOrderServiceWithErrors();
+
     MultipartFile createOrderFile();
 
     MultipartFile createOrderInvalidFile();
@@ -63,4 +65,5 @@ public interface TestDataFactory {
 
     MultipartFile createPurchaseOrderInvalidFile();
 
+    MultipartFile createPurchaseOrderForCheckFile();
 }

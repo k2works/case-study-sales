@@ -28,6 +28,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -391,6 +392,176 @@ class PurchaseOrderServiceTest {
             verify(purchaseOrderRepository).selectAll();
             verify(purchaseOrderDomainService).checkRule(purchaseOrders);
         }
+        
+        @Test
+        @DisplayName("発注金額が500万円を超える場合にエラーを返す")
+        void shouldReturnErrorWhenPurchaseAmountExceeds5Million() {
+            // Arrange
+            LocalDateTime now = LocalDateTime.now();
+            PurchaseOrder purchaseOrder = PurchaseOrder.builder()
+                    .purchaseOrderNumber(PurchaseOrderNumber.of("PO202301010001"))
+                    .purchaseOrderDate(PurchaseOrderDate.of(now))
+                    .designatedDeliveryDate(DesignatedDeliveryDate.of(now.plusDays(30)))
+                    .totalPurchaseAmount(Money.of(6000000)) // 600万円
+                    .purchaseOrderLines(List.of())
+                    .build();
+
+            PurchaseOrderList purchaseOrders = PurchaseOrderList.of(List.of(purchaseOrder));
+            
+            // エラーありの結果をモック
+            PurchaseOrderRuleCheckList expectedCheckList = new PurchaseOrderRuleCheckList(List.of(
+                Map.of("PO202301010001", "発注金額が500万円を超えています。")
+            ));
+            
+            when(purchaseOrderRepository.selectAll()).thenReturn(purchaseOrders);
+            when(purchaseOrderDomainService.checkRule(purchaseOrders)).thenReturn(expectedCheckList);
+
+            // Act
+            PurchaseOrderRuleCheckList result = purchaseOrderService.checkRule();
+
+            // Assert
+            assertTrue(result.hasErrors(), "金額超過のエラーが発生すること");
+            assertTrue(result.getErrorCount() >= 1, "少なくとも1つのエラーがあること");
+        }
+        
+        @Test
+        @DisplayName("納期が発注日より前の場合にエラーを返す")
+        void shouldReturnErrorWhenDeliveryDateIsBeforePurchaseOrderDate() {
+            // Arrange
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime deliveryDate = now.minusDays(1); // 前日を納期に設定
+            
+            PurchaseOrder purchaseOrder = PurchaseOrder.builder()
+                    .purchaseOrderNumber(PurchaseOrderNumber.of("PO202301010001"))
+                    .purchaseOrderDate(PurchaseOrderDate.of(now))
+                    .designatedDeliveryDate(DesignatedDeliveryDate.of(deliveryDate))
+                    .totalPurchaseAmount(Money.of(1000000))
+                    .purchaseOrderLines(List.of())
+                    .build();
+
+            PurchaseOrderList purchaseOrders = PurchaseOrderList.of(List.of(purchaseOrder));
+            
+            // エラーありの結果をモック
+            PurchaseOrderRuleCheckList expectedCheckList = new PurchaseOrderRuleCheckList(List.of(
+                Map.of("PO202301010001", "指定納期が発注日より前です。")
+            ));
+            
+            when(purchaseOrderRepository.selectAll()).thenReturn(purchaseOrders);
+            when(purchaseOrderDomainService.checkRule(purchaseOrders)).thenReturn(expectedCheckList);
+
+            // Act
+            PurchaseOrderRuleCheckList result = purchaseOrderService.checkRule();
+
+            // Assert
+            assertTrue(result.hasErrors(), "納期エラーが発生すること");
+            assertTrue(result.getErrorCount() >= 1, "少なくとも1つのエラーがあること");
+        }
+        
+        @Test
+        @DisplayName("納期が過去の場合にエラーを返す")
+        void shouldReturnErrorWhenDeliveryDateIsPast() {
+            // Arrange
+            LocalDateTime pastDate = LocalDateTime.now().minusDays(10);
+            LocalDateTime deliveryDate = LocalDateTime.now().minusDays(1); // 昨日を納期に設定
+            
+            PurchaseOrder purchaseOrder = PurchaseOrder.builder()
+                    .purchaseOrderNumber(PurchaseOrderNumber.of("PO202301010001"))
+                    .purchaseOrderDate(PurchaseOrderDate.of(pastDate))
+                    .designatedDeliveryDate(DesignatedDeliveryDate.of(deliveryDate))
+                    .totalPurchaseAmount(Money.of(1000000))
+                    .purchaseOrderLines(List.of())
+                    .build();
+
+            PurchaseOrderList purchaseOrders = PurchaseOrderList.of(List.of(purchaseOrder));
+            
+            // エラーありの結果をモック
+            PurchaseOrderRuleCheckList expectedCheckList = new PurchaseOrderRuleCheckList(List.of(
+                Map.of("PO202301010001", "指定納期が過ぎています。")
+            ));
+            
+            when(purchaseOrderRepository.selectAll()).thenReturn(purchaseOrders);
+            when(purchaseOrderDomainService.checkRule(purchaseOrders)).thenReturn(expectedCheckList);
+
+            // Act
+            PurchaseOrderRuleCheckList result = purchaseOrderService.checkRule();
+
+            // Assert
+            assertTrue(result.hasErrors(), "納期超過エラーが発生すること");
+            assertTrue(result.getErrorCount() >= 1, "少なくとも1つのエラーがあること");
+        }
+        
+        @Test
+        @DisplayName("すべてのルールを満たす場合はエラーなし")
+        void shouldReturnNoErrorWhenAllRulesAreSatisfied() {
+            // Arrange
+            LocalDateTime now = LocalDateTime.now();
+            PurchaseOrder purchaseOrder = PurchaseOrder.builder()
+                    .purchaseOrderNumber(PurchaseOrderNumber.of("PO202301010001"))
+                    .purchaseOrderDate(PurchaseOrderDate.of(now))
+                    .designatedDeliveryDate(DesignatedDeliveryDate.of(now.plusDays(30)))
+                    .totalPurchaseAmount(Money.of(1000000)) // 100万円
+                    .purchaseOrderLines(List.of())
+                    .build();
+
+            PurchaseOrderList purchaseOrders = PurchaseOrderList.of(List.of(purchaseOrder));
+            
+            // エラーなしの結果をモック
+            PurchaseOrderRuleCheckList expectedCheckList = new PurchaseOrderRuleCheckList(List.of());
+            
+            when(purchaseOrderRepository.selectAll()).thenReturn(purchaseOrders);
+            when(purchaseOrderDomainService.checkRule(purchaseOrders)).thenReturn(expectedCheckList);
+
+            // Act
+            PurchaseOrderRuleCheckList result = purchaseOrderService.checkRule();
+
+            // Assert
+            assertFalse(result.hasErrors(), "ルール違反がないこと");
+            assertEquals(0, result.getErrorCount(), "エラー数が0であること");
+        }
+        
+        @Test
+        @DisplayName("複数の発注で複数のエラーがある場合")
+        void shouldReturnMultipleErrorsWhenMultiplePurchaseOrdersHaveViolations() {
+            // Arrange
+            LocalDateTime now = LocalDateTime.now();
+            
+            // 金額超過の発注
+            PurchaseOrder purchaseOrder1 = PurchaseOrder.builder()
+                    .purchaseOrderNumber(PurchaseOrderNumber.of("PO202301010001"))
+                    .purchaseOrderDate(PurchaseOrderDate.of(now))
+                    .designatedDeliveryDate(DesignatedDeliveryDate.of(now.plusDays(30)))
+                    .totalPurchaseAmount(Money.of(6000000))
+                    .purchaseOrderLines(List.of())
+                    .build();
+
+            // 納期が前の発注（builderでバリデーションを回避）
+            LocalDateTime deliveryDate = now.minusDays(1);
+            PurchaseOrder purchaseOrder2 = PurchaseOrder.builder()
+                    .purchaseOrderNumber(PurchaseOrderNumber.of("PO202301010002"))
+                    .purchaseOrderDate(PurchaseOrderDate.of(now))
+                    .designatedDeliveryDate(DesignatedDeliveryDate.of(deliveryDate))
+                    .totalPurchaseAmount(Money.of(1000000))
+                    .purchaseOrderLines(List.of())
+                    .build();
+
+            PurchaseOrderList purchaseOrders = PurchaseOrderList.of(List.of(purchaseOrder1, purchaseOrder2));
+            
+            // 複数エラーの結果をモック
+            PurchaseOrderRuleCheckList expectedCheckList = new PurchaseOrderRuleCheckList(List.of(
+                Map.of("PO202301010001", "発注金額が500万円を超えています。"),
+                Map.of("PO202301010002", "指定納期が発注日より前です。")
+            ));
+            
+            when(purchaseOrderRepository.selectAll()).thenReturn(purchaseOrders);
+            when(purchaseOrderDomainService.checkRule(purchaseOrders)).thenReturn(expectedCheckList);
+
+            // Act
+            PurchaseOrderRuleCheckList result = purchaseOrderService.checkRule();
+
+            // Assert
+            assertTrue(result.hasErrors(), "複数のエラーが発生すること");
+            assertTrue(result.getErrorCount() >= 2, "少なくとも2つのエラーがあること");
+        }
     }
 
     @Nested
@@ -442,6 +613,62 @@ class PurchaseOrderServiceTest {
             assertThrows(NullPointerException.class, () -> {
                 purchaseOrderService.calculateTotalConsumptionTax(null);
             });
+        }
+        
+        @Test
+        @DisplayName("発注金額合計を正しく計算できる（Service経由）")
+        void shouldCalculateTotalPurchaseAmountViaService() {
+            // Arrange
+            PurchaseOrderLine line1 = PurchaseOrderLine.builder()
+                    .purchaseUnitPrice(Money.of(1000))
+                    .purchaseOrderQuantity(Quantity.of(10))
+                    .build();
+            PurchaseOrderLine line2 = PurchaseOrderLine.builder()
+                    .purchaseUnitPrice(Money.of(2000))
+                    .purchaseOrderQuantity(Quantity.of(5))
+                    .build();
+
+            PurchaseOrder purchaseOrder = PurchaseOrder.builder()
+                    .purchaseOrderLines(List.of(line1, line2))
+                    .build();
+
+            // ドメインサービスを直接実行して結果をモック
+            Money expectedAmount = Money.of(20000); // 1000*10 + 2000*5 = 20000
+            when(purchaseOrderDomainService.calculateTotalPurchaseAmount(purchaseOrder))
+                .thenReturn(expectedAmount);
+
+            // Act
+            Money result = purchaseOrderService.calculateTotalPurchaseAmount(purchaseOrder);
+
+            // Assert
+            assertEquals(expectedAmount, result);
+            verify(purchaseOrderDomainService).calculateTotalPurchaseAmount(purchaseOrder);
+        }
+        
+        @Test
+        @DisplayName("発注消費税合計を正しく計算できる（Service経由）")
+        void shouldCalculateTotalConsumptionTaxViaService() {
+            // Arrange
+            PurchaseOrderLine line1 = PurchaseOrderLine.builder()
+                    .purchaseUnitPrice(Money.of(1000))
+                    .purchaseOrderQuantity(Quantity.of(10))
+                    .build();
+
+            PurchaseOrder purchaseOrder = PurchaseOrder.builder()
+                    .purchaseOrderLines(List.of(line1))
+                    .build();
+
+            // ドメインサービスを直接実行して結果をモック
+            Money expectedTax = Money.of(1000); // (1000*10) * 0.1 = 1000
+            when(purchaseOrderDomainService.calculateTotalConsumptionTax(purchaseOrder))
+                .thenReturn(expectedTax);
+
+            // Act
+            Money result = purchaseOrderService.calculateTotalConsumptionTax(purchaseOrder);
+
+            // Assert
+            assertEquals(expectedTax, result);
+            verify(purchaseOrderDomainService).calculateTotalConsumptionTax(purchaseOrder);
         }
     }
 

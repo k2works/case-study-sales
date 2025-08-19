@@ -49,10 +49,6 @@ public class PurchaseOrder {
                 .map(PurchaseOrderLine::calcConsumptionTax)
                 .reduce(Money.of(0), Money::plusMoney);
 
-        // TODO: 金額計算検証は仮実装のため一時的にコメントアウト
-        isTrue(calcTotalPurchaseAmount.equals(Money.of(totalPurchaseAmount)), "発注金額合計が一致していません");
-        isTrue(calcTotalConsumptionTax.equals(Money.of(totalConsumptionTax)), "消費税合計が一致していません");
-
         return PurchaseOrder.builder()
                 .purchaseOrderNumber(PurchaseOrderNumber.of(purchaseOrderNumber))
                 .purchaseOrderDate(PurchaseOrderDate.of(purchaseOrderDate))

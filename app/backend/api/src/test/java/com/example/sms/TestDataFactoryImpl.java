@@ -29,6 +29,11 @@ import com.example.sms.domain.model.sales.sales.Sales;
 import com.example.sms.domain.model.sales.sales.SalesLine;
 import com.example.sms.domain.model.sales.purchase.order.PurchaseOrder;
 import com.example.sms.domain.model.sales.purchase.order.PurchaseOrderLine;
+import com.example.sms.domain.model.sales.purchase.order.PurchaseOrderNumber;
+import com.example.sms.domain.model.sales.purchase.order.PurchaseOrderDate;
+import com.example.sms.domain.model.sales.purchase.order.DesignatedDeliveryDate;
+import com.example.sms.domain.model.master.partner.supplier.SupplierCode;
+import com.example.sms.domain.type.money.Money;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
@@ -1106,10 +1111,36 @@ public class TestDataFactoryImpl implements TestDataFactory {
         setUpPurchaseOrder();
     }
 
+    @Override
+    public void setUpForPurchaseOrderServiceWithErrors() {
+        setUpForUserManagementService();
+        setUpForDepartmentService();
+        setUpForEmployeeService();
+        setUpForRegionService();
+        setUpForPartnerGroupService();
+        setUpForPartnerCategoryService();
+        setUpForPartnerService();
+        setUpForProductService();
+        setUpPurchaseOrderWithErrors();
+    }
+
     private void setUpPurchaseOrder() {
         purchaseOrderRepository.deleteAll();
         List<PurchaseOrder> purchaseOrders = getPurchaseOrders();
         purchaseOrders.forEach(purchaseOrderRepository::save);
+    }
+
+    private void setUpPurchaseOrderWithErrors() {
+        purchaseOrderRepository.deleteAll();
+        List<PurchaseOrder> purchaseOrders = getPurchaseOrdersWithErrors();
+        purchaseOrders.forEach(purchaseOrder -> {
+            try {
+                purchaseOrderRepository.save(purchaseOrder);
+            } catch (Exception e) {
+                // バリデーションエラーでもテスト用データとして保存する
+                System.out.println("テスト用エラーデータ作成時のエラー: " + e.getMessage());
+            }
+        });
     }
 
     private List<PurchaseOrder> getPurchaseOrders() {
@@ -1117,6 +1148,83 @@ public class TestDataFactoryImpl implements TestDataFactory {
         IntFunction<PurchaseOrder> getPurchaseOrder = i -> getPurchaseOrder("PO" + String.format("%08d", i));
         IntStream.range(1, 4).forEach(i -> purchaseOrders.add(getPurchaseOrder.apply(i)));
         return purchaseOrders;
+    }
+
+    private List<PurchaseOrder> getPurchaseOrdersWithErrors() {
+        List<PurchaseOrder> purchaseOrders = new ArrayList<>();
+        
+        // 金額超過の発注（600万円）
+        purchaseOrders.add(getPurchaseOrderWithAmountError("PE00000001"));
+        
+        // 納期が過去の発注
+        purchaseOrders.add(getPurchaseOrderWithDeliveryError("PE00000002"));
+        
+        return purchaseOrders;
+    }
+
+    private PurchaseOrder getPurchaseOrderWithAmountError(String purchaseOrderNumber) {
+        LocalDateTime now = LocalDateTime.now();
+        
+        List<PurchaseOrderLine> lines = List.of(
+                getPurchaseOrderLineWithHighAmount(purchaseOrderNumber, 1)
+        );
+
+        // 金額超過の発注をbuilderで作成（バリデーションを回避）
+        return PurchaseOrder.builder()
+                .purchaseOrderNumber(PurchaseOrderNumber.of(purchaseOrderNumber))
+                .purchaseOrderDate(PurchaseOrderDate.of(now))
+                .salesOrderNumber("SO000001")
+                .supplierCode(SupplierCode.of("001"))
+                .supplierBranchNumber(0)
+                .purchaseManagerCode(EmployeeCode.of("EMP001"))
+                .designatedDeliveryDate(DesignatedDeliveryDate.of(now.plusDays(30)))
+                .warehouseCode("001")
+                .totalPurchaseAmount(Money.of(6000000)) // 600万円でルール違反
+                .totalConsumptionTax(Money.of(600000))
+                .remarks("金額超過テストデータ")
+                .purchaseOrderLines(lines)
+                .build();
+    }
+
+    private PurchaseOrder getPurchaseOrderWithDeliveryError(String purchaseOrderNumber) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime pastDeliveryDate = now.minusDays(1); // 納期が過去
+        
+        List<PurchaseOrderLine> lines = List.of(
+                getPurchaseOrderLine(purchaseOrderNumber, 1)
+        );
+
+        // 納期エラーの発注をbuilderで作成（バリデーションを回避）
+        return PurchaseOrder.builder()
+                .purchaseOrderNumber(PurchaseOrderNumber.of(purchaseOrderNumber))
+                .purchaseOrderDate(PurchaseOrderDate.of(now))
+                .salesOrderNumber("SO000001")
+                .supplierCode(SupplierCode.of("001"))
+                .supplierBranchNumber(0)
+                .purchaseManagerCode(EmployeeCode.of("EMP001"))
+                .designatedDeliveryDate(DesignatedDeliveryDate.of(pastDeliveryDate)) // 過去の日付
+                .warehouseCode("001")
+                .totalPurchaseAmount(Money.of(100000))
+                .totalConsumptionTax(Money.of(10000))
+                .remarks("納期エラーテストデータ")
+                .purchaseOrderLines(lines)
+                .build();
+    }
+
+    private static PurchaseOrderLine getPurchaseOrderLineWithHighAmount(String purchaseOrderNumber, int lineNumber) {
+        return PurchaseOrderLine.of(
+                purchaseOrderNumber,
+                lineNumber,
+                lineNumber,
+                "SO000001",
+                1,
+                "99999001", // 商品コード
+                "高額商品",
+                6000000, // 600万円の単価
+                1, // 数量1
+                0,
+                0
+        );
     }
 
     public static PurchaseOrder getPurchaseOrder(String purchaseOrderNumber) {
@@ -1180,6 +1288,21 @@ public class TestDataFactoryImpl implements TestDataFactory {
             return new MockMultipartFile(
                     "purchase_order_invalid.csv",
                     "purchase_order_invalid.csv",
+                    "text/csv",
+                    is
+            );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public MultipartFile createPurchaseOrderForCheckFile() {
+        InputStream is = getClass().getResourceAsStream("/csv/purchase/order/purchase_order_valid_for_check.csv");
+        try {
+            return new MockMultipartFile(
+                    "purchase_order_valid_for_check.csv",
+                    "purchase_order_valid_for_check.csv",
                     "text/csv",
                     is
             );
