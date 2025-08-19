@@ -12,12 +12,14 @@ import com.example.sms.service.BusinessException;
 import com.example.sms.service.PageNationService;
 import com.example.sms.service.sales.purchase.order.PurchaseOrderCriteria;
 import com.example.sms.service.sales.purchase.order.PurchaseOrderService;
+import com.example.sms.service.sales.purchase.order.PurchaseOrderUploadErrorList;
 import com.example.sms.service.system.audit.AuditAnnotation;
 import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import static com.example.sms.presentation.api.sales.purchase.order.PurchaseOrderResourceDTOMapper.convertToCriteria;
 import static com.example.sms.presentation.api.sales.purchase.order.PurchaseOrderResourceDTOMapper.convertToEntity;
@@ -82,6 +84,21 @@ public class PurchaseOrderApiController {
             purchaseOrderService.register(purchaseOrder);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.purchase.order.registered")));
         } catch (BusinessException | IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
+    }
+
+    @Operation(summary = "発注を一括登録する", description = "ファイルアップロードで発注を登録する")
+    @PostMapping("/upload")
+    @AuditAnnotation(process = ApplicationExecutionProcessType.発注登録, type = ApplicationExecutionHistoryType.同期)
+    public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file) {
+        try {
+            PurchaseOrderUploadErrorList result = purchaseOrderService.uploadCsvFile(file);
+            if (result.isEmpty()) {
+                return ResponseEntity.ok(new MessageResponseWithDetail(message.getMessage("success.purchase.order.upload"), result.asList()));
+            }
+            return ResponseEntity.ok(new MessageResponseWithDetail(message.getMessage("error.purchase.order.upload"), result.asList()));
+        } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }

@@ -59,4 +59,8 @@ public interface TestDataFactory {
 
     MultipartFile createOrderCheckRuleFile();
 
+    MultipartFile createPurchaseOrderFile();
+
+    MultipartFile createPurchaseOrderInvalidFile();
+
 }

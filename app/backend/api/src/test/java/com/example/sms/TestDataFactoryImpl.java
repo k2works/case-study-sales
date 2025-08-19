@@ -1158,4 +1158,34 @@ public class TestDataFactoryImpl implements TestDataFactory {
         );
     }
 
+    @Override
+    public MultipartFile createPurchaseOrderFile() {
+        InputStream is = getClass().getResourceAsStream("/csv/purchase/order/purchase_order_valid.csv");
+        try {
+            return new MockMultipartFile(
+                    "purchase_order_valid.csv",
+                    "purchase_order_valid.csv",
+                    "text/csv",
+                    is
+            );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public MultipartFile createPurchaseOrderInvalidFile() {
+        InputStream is = getClass().getResourceAsStream("/csv/purchase/order/purchase_order_invalid.csv");
+        try {
+            return new MockMultipartFile(
+                    "purchase_order_invalid.csv",
+                    "purchase_order_invalid.csv",
+                    "text/csv",
+                    is
+            );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

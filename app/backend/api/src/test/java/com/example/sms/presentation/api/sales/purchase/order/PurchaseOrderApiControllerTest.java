@@ -5,6 +5,7 @@ import com.example.sms.domain.model.sales.purchase.order.PurchaseOrder;
 import com.example.sms.domain.model.sales.purchase.order.PurchaseOrderLine;
 import com.example.sms.domain.model.sales.purchase.order.rule.PurchaseOrderRuleCheckList;
 import com.example.sms.service.sales.purchase.order.PurchaseOrderService;
+import com.example.sms.service.sales.purchase.order.PurchaseOrderUploadErrorList;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,6 +28,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import org.springframework.mock.web.MockMultipartFile;
 
 @DisplayName("発注API")
 @PresentationTest
@@ -337,6 +339,112 @@ public class PurchaseOrderApiControllerTest {
                     .andExpect(status().isOk());
 
             verify(purchaseOrderService).checkRule();
+        }
+    }
+
+    @Nested
+    @DisplayName("発注アップロード")
+    class UploadTest {
+
+        @Test
+        @WithMockUser(username = "admin", roles = {"ADMIN"})
+        @DisplayName("管理者が発注をアップロードできる")
+        void shouldUploadPurchaseOrdersAsAdmin() throws Exception {
+            // Arrange
+            String csvContent = "発注番号,発注日,売上注文番号,仕入先コード,仕入先支店番号,発注担当者コード,指定納期,倉庫コード,発注金額合計,消費税合計,備考,発注行番号,商品コード,商品名,仕入単価,発注数量,消費税率,入荷予定数量,入荷済数量,完了フラグ,値引金額,納期,入荷日\n"
+                            + "PO00000001,2023-01-01,,SUPP001,1,EMP001,2023-01-10,WH001,10000,1000,備考,1,PROD001,商品1,1000,10,10,0,0,0,0,2023-01-10,";
+            MockMultipartFile file = new MockMultipartFile(
+                "file",
+                "purchase_orders.csv",
+                "text/csv",
+                csvContent.getBytes()
+            );
+
+            PurchaseOrderUploadErrorList mockResult = new PurchaseOrderUploadErrorList();
+            when(purchaseOrderService.uploadCsvFile(any())).thenReturn(mockResult);
+            when(message.getMessage("success.purchase.order.upload")).thenReturn("発注アップロードが成功しました");
+
+            // Act & Assert
+            mockMvc.perform(multipart("/api/purchase-orders/upload")
+                    .file(file))
+                    .andExpect(status().isOk());
+
+            verify(purchaseOrderService).uploadCsvFile(any());
+        }
+
+        @Test
+        @WithMockUser(username = "user")
+        @DisplayName("利用者が発注をアップロードできる")
+        void shouldUploadPurchaseOrdersAsUser() throws Exception {
+            // Arrange
+            String csvContent = "発注番号,発注日,売上注文番号,仕入先コード,仕入先支店番号,発注担当者コード,指定納期,倉庫コード,発注金額合計,消費税合計,備考,発注行番号,商品コード,商品名,仕入単価,発注数量,消費税率,入荷予定数量,入荷済数量,完了フラグ,値引金額,納期,入荷日\n"
+                            + "PO00000001,2023-01-01,,SUPP001,1,EMP001,2023-01-10,WH001,10000,1000,備考,1,PROD001,商品1,1000,10,10,0,0,0,0,2023-01-10,";
+            MockMultipartFile file = new MockMultipartFile(
+                "file",
+                "purchase_orders.csv",
+                "text/csv",
+                csvContent.getBytes()
+            );
+
+            PurchaseOrderUploadErrorList mockResult = new PurchaseOrderUploadErrorList();
+            when(purchaseOrderService.uploadCsvFile(any())).thenReturn(mockResult);
+            when(message.getMessage("success.purchase.order.upload")).thenReturn("発注アップロードが成功しました");
+
+            // Act & Assert
+            mockMvc.perform(multipart("/api/purchase-orders/upload")
+                    .file(file))
+                    .andExpect(status().isOk());
+
+            verify(purchaseOrderService).uploadCsvFile(any());
+        }
+
+        @Test
+        @WithMockUser(username = "admin", roles = {"ADMIN"})
+        @DisplayName("バリデーションエラーがある場合はエラーレスポンスを返す")
+        void shouldReturnErrorResponseWhenValidationFails() throws Exception {
+            // Arrange
+            String csvContent = "発注番号,発注日,売上注文番号,仕入先コード,仕入先支店番号,発注担当者コード,指定納期,倉庫コード,発注金額合計,消費税合計,備考,発注行番号,商品コード,商品名,仕入単価,発注数量,消費税率,入荷予定数量,入荷済数量,完了フラグ,値引金額,納期,入荷日\n"
+                            + "PO00000001,2023-01-01,,SUPP999,1,EMP001,2023-01-10,WH001,10000,1000,備考,1,PROD999,商品1,1000,10,10,0,0,0,0,2023-01-10,";
+            MockMultipartFile file = new MockMultipartFile(
+                "file",
+                "purchase_orders.csv",
+                "text/csv",
+                csvContent.getBytes()
+            );
+
+            PurchaseOrderUploadErrorList mockResult = new PurchaseOrderUploadErrorList();
+            mockResult = mockResult.add(Map.of("PO00000001", "仕入先マスタに存在しません:SUPP999"));
+            when(purchaseOrderService.uploadCsvFile(any())).thenReturn(mockResult);
+            when(message.getMessage("error.purchase.order.upload")).thenReturn("発注アップロードでエラーが発生しました");
+
+            // Act & Assert
+            mockMvc.perform(multipart("/api/purchase-orders/upload")
+                    .file(file))
+                    .andExpect(status().isOk());
+
+            verify(purchaseOrderService).uploadCsvFile(any());
+        }
+
+        @Test
+        @WithMockUser(username = "admin", roles = {"ADMIN"})
+        @DisplayName("ランタイム例外が発生した場合はエラーレスポンスを返す")
+        void shouldReturnErrorResponseWhenRuntimeExceptionOccurs() throws Exception {
+            // Arrange
+            MockMultipartFile file = new MockMultipartFile(
+                "file",
+                "purchase_orders.csv",
+                "text/csv",
+                "invalid csv content".getBytes()
+            );
+
+            when(purchaseOrderService.uploadCsvFile(any())).thenThrow(new RuntimeException("CSVファイルの読み込みに失敗しました"));
+
+            // Act & Assert
+            mockMvc.perform(multipart("/api/purchase-orders/upload")
+                    .file(file))
+                    .andExpect(status().isBadRequest());
+
+            verify(purchaseOrderService).uploadCsvFile(any());
         }
     }
 }

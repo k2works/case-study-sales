@@ -1,6 +1,9 @@
 package com.example.sms.service.sales.purchase.order;
 
 import com.example.sms.domain.model.master.employee.EmployeeCode;
+import com.example.sms.domain.model.master.partner.Partner;
+import com.example.sms.domain.model.master.product.Product;
+import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.master.partner.supplier.SupplierCode;
 import com.example.sms.domain.model.master.product.ProductCode;
 import com.example.sms.domain.model.sales.order.CompletionFlag;
@@ -10,7 +13,11 @@ import com.example.sms.domain.type.quantity.Quantity;
 import com.example.sms.domain.model.sales.purchase.order.rule.PurchaseOrderRuleCheckList;
 import com.example.sms.domain.service.sales.purchase.order.PurchaseOrderDomainService;
 import com.example.sms.service.system.autonumber.AutoNumberService;
+import com.example.sms.service.master.partner.PartnerRepository;
+import com.example.sms.service.master.product.ProductRepository;
+import com.example.sms.service.master.employee.EmployeeRepository;
 import com.github.pagehelper.PageInfo;
+import org.springframework.mock.web.MockMultipartFile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -39,6 +46,15 @@ class PurchaseOrderServiceTest {
     @Mock
     private PurchaseOrderDomainService purchaseOrderDomainService;
     
+    @Mock
+    private PartnerRepository partnerRepository;
+    
+    @Mock
+    private ProductRepository productRepository;
+    
+    @Mock
+    private EmployeeRepository employeeRepository;
+    
     private PurchaseOrderService purchaseOrderService;
 
     @BeforeEach
@@ -46,7 +62,10 @@ class PurchaseOrderServiceTest {
         purchaseOrderService = new PurchaseOrderService(
             purchaseOrderRepository, 
             autoNumberService, 
-            purchaseOrderDomainService
+            purchaseOrderDomainService,
+            partnerRepository,
+            productRepository,
+            employeeRepository
         );
     }
 
@@ -422,6 +441,106 @@ class PurchaseOrderServiceTest {
             
             assertThrows(NullPointerException.class, () -> {
                 purchaseOrderService.calculateTotalConsumptionTax(null);
+            });
+        }
+    }
+
+    @Nested
+    @DisplayName("CSVファイルアップロード")
+    class UploadCsvFileTest {
+
+        @Test
+        @DisplayName("正常なCSVファイルをアップロードできる")
+        void shouldUploadValidCsvFile() {
+            // Arrange
+            String csvContent = "発注番号,発注日,売上注文番号,仕入先コード,仕入先支店番号,発注担当者コード,指定納期,倉庫コード,発注金額合計,消費税合計,備考,発注行番号,商品コード,商品名,仕入単価,発注数量,消費税率,入荷予定数量,入荷済数量,完了フラグ,値引金額,納期,入荷日\n"
+                          + "PO00000001,2023-01-01,,SUPP001,1,EMP001,2023-01-10,WH001,10000,1000,備考,1,PROD001,商品1,1000,10,10,0,0,0,0,2023-01-10,";
+            MockMultipartFile file = new MockMultipartFile(
+                "file",
+                "purchase_orders.csv",
+                "text/csv",
+                csvContent.getBytes()
+            );
+
+            when(partnerRepository.findById("SUPP001")).thenReturn(Optional.of(mock(Partner.class)));
+            when(productRepository.findById("PROD001")).thenReturn(Optional.of(mock(Product.class)));
+            when(employeeRepository.findById(EmployeeCode.of("EMP001"))).thenReturn(Optional.of(mock(Employee.class)));
+
+            // Act
+            PurchaseOrderUploadErrorList result = purchaseOrderService.uploadCsvFile(file);
+
+            // Assert
+            assertNotNull(result);
+            assertTrue(result.isEmpty(), "エラーが発生していないこと");
+        }
+
+        @Test
+        @DisplayName("バリデーションエラーのあるCSVファイルをアップロードする")
+        void shouldReturnValidationErrorsForInvalidCsv() {
+            // Arrange
+            String csvContent = "発注番号,発注日,売上注文番号,仕入先コード,仕入先支店番号,発注担当者コード,指定納期,倉庫コード,発注金額合計,消費税税合計,備考,発注行番号,商品コード,商品名,仕入単価,発注数量,消費税率,入荷予定数量,入荷済数量,完了フラグ,値引金額,納期,入荷日\n"
+                          + "PO00000001,2023-01-01,,SUPP999,1,EMP001,2023-01-10,WH001,10000,1000,備考,1,PROD999,商品1,1000,10,10,0,0,0,0,2023-01-10,";
+            MockMultipartFile file = new MockMultipartFile(
+                "file",
+                "purchase_orders.csv",
+                "text/csv",
+                csvContent.getBytes()
+            );
+
+            // 存在しないマスタデータを設定
+            when(partnerRepository.findById("SUPP999")).thenReturn(Optional.empty());
+            when(productRepository.findById("PROD999")).thenReturn(Optional.empty());
+            when(employeeRepository.findById(EmployeeCode.of("EMP001"))).thenReturn(Optional.of(mock(Employee.class)));
+
+            // Act
+            PurchaseOrderUploadErrorList result = purchaseOrderService.uploadCsvFile(file);
+
+            // Assert
+            assertNotNull(result);
+            assertFalse(result.isEmpty(), "バリデーションエラーが発生すること");
+            assertEquals(2, result.size(), "2つのエラーが発生すること（仕入先、商品）");
+        }
+
+        @Test
+        @DisplayName("ファイルがnullの場合は例外が発生する")
+        void shouldThrowExceptionWhenFileIsNull() {
+            // Act & Assert
+            assertThrows(NullPointerException.class, () -> {
+                purchaseOrderService.uploadCsvFile(null);
+            });
+        }
+
+        @Test
+        @DisplayName("空のファイルの場合は例外が発生する")
+        void shouldThrowExceptionWhenFileIsEmpty() {
+            // Arrange
+            MockMultipartFile file = new MockMultipartFile(
+                "file",
+                "empty.csv",
+                "text/csv",
+                new byte[0]
+            );
+
+            // Act & Assert
+            assertThrows(IllegalArgumentException.class, () -> {
+                purchaseOrderService.uploadCsvFile(file);
+            });
+        }
+
+        @Test
+        @DisplayName("CSVでないファイルの場合は例外が発生する")
+        void shouldThrowExceptionWhenFileIsNotCsv() {
+            // Arrange
+            MockMultipartFile file = new MockMultipartFile(
+                "file",
+                "test.txt",
+                "text/plain",
+                "test content".getBytes()
+            );
+
+            // Act & Assert
+            assertThrows(IllegalArgumentException.class, () -> {
+                purchaseOrderService.uploadCsvFile(file);
             });
         }
     }
