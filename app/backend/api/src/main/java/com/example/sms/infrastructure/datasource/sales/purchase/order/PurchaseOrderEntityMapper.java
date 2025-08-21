@@ -6,6 +6,7 @@ import com.example.sms.domain.model.sales.purchase.order.*;
 import com.example.sms.infrastructure.datasource.autogen.model.発注データ;
 import com.example.sms.infrastructure.datasource.autogen.model.発注データ明細;
 import com.example.sms.infrastructure.datasource.sales.purchase.order.order_line.PurchaseOrderLineCustomEntity;
+import com.example.sms.infrastructure.datasource.system.download.PurchaseOrderDownloadCSV;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -150,6 +151,39 @@ public class PurchaseOrderEntityMapper {
                 entity.get電話番号(),
                 entity.getFax番号(),
                 entity.get職種コード()
+        );
+    }
+    
+    /**
+     * 発注ドメインモデルとその明細からCSV形式に変換
+     */
+    public PurchaseOrderDownloadCSV mapToCsvModel(PurchaseOrder purchaseOrder, PurchaseOrderLine purchaseOrderLine) {
+        return new PurchaseOrderDownloadCSV(
+                purchaseOrder.getPurchaseOrderNumber().getValue(),
+                purchaseOrder.getPurchaseOrderDate().getValue(),
+                null, // 部門コード（現在の発注データには含まれていない）
+                null, // 部門開始日（現在の発注データには含まれていない）
+                purchaseOrder.getSupplierCode().getValue(),
+                purchaseOrder.getSupplierBranchNumber(),
+                purchaseOrder.getPurchaseManagerCode().getValue(),
+                purchaseOrder.getDesignatedDeliveryDate().getValue(),
+                null, // 仕入先注文番号（現在の発注データには含まれていない）
+                purchaseOrder.getWarehouseCode(),
+                purchaseOrder.getTotalPurchaseAmount().getAmount(),
+                purchaseOrder.getTotalConsumptionTax().getAmount(),
+                purchaseOrder.getRemarks(),
+                purchaseOrderLine.getPurchaseOrderLineNumber(),
+                purchaseOrderLine.getProductCode().getValue(),
+                purchaseOrderLine.getProductName(),
+                purchaseOrderLine.getPurchaseUnitPrice().getAmount(),
+                purchaseOrderLine.getPurchaseOrderQuantity().getAmount(),
+                null, // 消費税率（現在の発注データには含まれていない）
+                null, // 入荷予定数量（現在の発注データには含まれていない）
+                purchaseOrderLine.getReceivedQuantity().getAmount(),
+                purchaseOrderLine.getCompletionFlag().getValue(),
+                null, // 値引金額（現在の発注データには含まれていない）
+                null, // 納期（現在の発注データには含まれていない）
+                null  // 入荷日（現在の発注データには含まれていない）
         );
     }
 }
