@@ -101,8 +101,8 @@ const Form = ({isEditing, newPurchaseOrder, setNewPurchaseOrder, setSelectedLine
             purchaseOrderNumber: newPurchaseOrder.purchaseOrderNumber,
             purchaseOrderLineNumber: newPurchaseOrder.purchaseOrderLines.length + 1,
             purchaseOrderLineDisplayNumber: newPurchaseOrder.purchaseOrderLines.length + 1,
-            orderNumber: '',
-            orderLineNumber: 0,
+            salesOrderNumber: '',
+            salesOrderLineNumber: 0,
             productCode: '',
             productName: '',
             purchaseUnitPrice: 0,
@@ -148,13 +148,13 @@ const Form = ({isEditing, newPurchaseOrder, setNewPurchaseOrder, setSelectedLine
             />
             <FormInput
                 label="受注番号"
-                id="orderNumber"
+                id="salesOrderNumber"
                 type="text"
                 className="single-view-content-item-form-item-input"
-                value={newPurchaseOrder.orderNumber}
+                value={newPurchaseOrder.salesOrderNumber}
                 onChange={(e) => setNewPurchaseOrder({
                     ...newPurchaseOrder,
-                    orderNumber: e.target.value
+                    salesOrderNumber: e.target.value
                 })}
             />
             <FormInput
@@ -297,16 +297,16 @@ const Form = ({isEditing, newPurchaseOrder, setNewPurchaseOrder, setSelectedLine
                                     <td className="table-cell">
                                         <input
                                             type="text"
-                                            value={line.orderNumber}
-                                            onChange={(e) => handleUpdateLine(index, { ...line, orderNumber: e.target.value })}
+                                            value={line.salesOrderNumber}
+                                            onChange={(e) => handleUpdateLine(index, { ...line, salesOrderNumber: e.target.value })}
                                             className="table-input"
                                         />
                                     </td>
                                     <td className="table-cell">
                                         <input
                                             type="number"
-                                            value={line.orderLineNumber}
-                                            onChange={(e) => handleUpdateLine(index, { ...line, orderLineNumber: Number(e.target.value) })}
+                                            value={line.salesOrderLineNumber}
+                                            onChange={(e) => handleUpdateLine(index, { ...line, salesOrderLineNumber: Number(e.target.value) })}
                                             className="table-input"
                                         />
                                     </td>

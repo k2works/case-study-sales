@@ -32,12 +32,12 @@ export const EmployeeSelectModal: React.FC<Props> = ({ type }) => {
         if (type === "edit") {
             setNewPurchaseOrder({
                 ...newPurchaseOrder,
-                purchaseOrderManagerCode: employeeCode
+                purchaseManagerCode: employeeCode
             });
         } else {
             setSearchCriteria({
                 ...searchCriteria,
-                purchaseOrderManagerCode: employeeCode
+                purchaseManagerCode: employeeCode
             });
         }
         setModalIsOpen(false);

@@ -8,7 +8,7 @@ import {
     PurchaseOrderPageNationType,
     CompletionFlagEnumType
 } from "../../models/sales/purchaseOrder.ts";
-import { PurchaseOrderService } from "../../services/sales/purchaseOrder.ts";
+import { PurchaseOrderService, UploadResultType } from "../../services/sales/purchaseOrder.ts";
 import { useMessage } from "../../components/application/Message.tsx";
 
 type Props = {
@@ -47,6 +47,11 @@ type PurchaseOrderContextType = {
     setSearchCriteria: Dispatch<SetStateAction<PurchaseOrderSearchCriteriaType>>;
     fetchPurchaseOrders: { load: (pageNumber?: number) => Promise<void> };
     purchaseOrderService: ReturnType<typeof PurchaseOrderService>;
+    uploadModalIsOpen: boolean;
+    setUploadModalIsOpen: Dispatch<SetStateAction<boolean>>;
+    uploadResults: UploadResultType[];
+    setUploadResults: Dispatch<SetStateAction<UploadResultType[]>>;
+    uploadPurchaseOrders: (file: File) => Promise<void>;
 };
 
 const PurchaseOrderContext = createContext<PurchaseOrderContextType | undefined>(undefined);
@@ -56,6 +61,7 @@ export const PurchaseOrderProvider: React.FC<Props> = ({ children }) => {
     const { message, setMessage, error, setError } = useMessage();
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
     const [searchModalIsOpen, setSearchModalIsOpen] = useState<boolean>(false);
+    const [uploadModalIsOpen, setUploadModalIsOpen] = useState<boolean>(false);
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [editId, setEditId] = useState<string | null>(null);
     const [purchaseOrders, setPurchaseOrders] = useState<PurchaseOrderType[]>([]);
@@ -109,6 +115,7 @@ export const PurchaseOrderProvider: React.FC<Props> = ({ children }) => {
     const [searchPurchaseOrderCriteria, setSearchPurchaseOrderCriteria] = useState<PurchaseOrderSearchCriteriaType>({});
     const [searchCriteria, setSearchCriteria] = useState<PurchaseOrderSearchCriteriaType>({});
     const [criteria, setCriteria] = useState<PurchaseOrderCriteriaType>({});
+    const [uploadResults, setUploadResults] = useState<UploadResultType[]>([]);
 
     const purchaseOrderService = PurchaseOrderService();
 
@@ -132,6 +139,20 @@ export const PurchaseOrderProvider: React.FC<Props> = ({ children }) => {
         };
         setCriteria(mappedCriteria);
     }, [searchPurchaseOrderCriteria]);
+
+    const uploadPurchaseOrders = async (file: File) => {
+        try {
+            setLoading(true);
+            const results = await purchaseOrderService.upload(file);
+            setUploadResults(prev => [...prev, ...results]);
+            setMessage("発注データのアップロードが完了しました。");
+        } catch (error: any) {
+            setError(`発注データのアップロードに失敗しました: ${error?.message}`);
+            throw error;
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const value = useMemo(
         () => ({
@@ -166,8 +187,13 @@ export const PurchaseOrderProvider: React.FC<Props> = ({ children }) => {
             setSearchCriteria,
             fetchPurchaseOrders,
             purchaseOrderService,
+            uploadModalIsOpen,
+            setUploadModalIsOpen,
+            uploadResults,
+            setUploadResults,
+            uploadPurchaseOrders,
         }),
-        [loading, message, setMessage, error, setError, pageNation, criteria, modalIsOpen, searchModalIsOpen, isEditing, editId, newPurchaseOrder, selectedLineIndex, purchaseOrders, searchPurchaseOrderCriteria, searchCriteria, purchaseOrderService]
+        [loading, message, setMessage, error, setError, pageNation, criteria, modalIsOpen, searchModalIsOpen, uploadModalIsOpen, isEditing, editId, newPurchaseOrder, selectedLineIndex, purchaseOrders, searchPurchaseOrderCriteria, searchCriteria, uploadResults, purchaseOrderService]
     );
 
     return <PurchaseOrderContext.Provider value={value}>{children}</PurchaseOrderContext.Provider>;

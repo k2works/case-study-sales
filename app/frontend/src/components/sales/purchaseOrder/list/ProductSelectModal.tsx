@@ -34,13 +34,13 @@ export const ProductSelectModal: React.FC = () => {
             };
 
             const totalAmount = newLines.reduce((sum, line) => 
-                sum + (line.purchaseQuantity * line.purchaseUnitPrice), 0);
+                sum + (line.purchaseOrderQuantity * line.purchaseUnitPrice), 0);
             const totalTax = Math.floor(totalAmount * 0.1);
 
             setNewPurchaseOrder({
                 ...newPurchaseOrder,
                 purchaseOrderLines: newLines,
-                totalPurchaseOrderAmount: totalAmount,
+                totalPurchaseAmount: totalAmount,
                 totalConsumptionTax: totalTax
             });
         }

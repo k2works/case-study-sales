@@ -37,9 +37,9 @@ const Form = ({criteria, setCondition, handleClick, handleClose, handleVendorSel
                 type="text"
                 className="single-view-content-item-form-item-input"
                 label={"受注番号"}
-                value={criteria.orderNumber}
+                value={criteria.salesOrderNumber}
                 onChange={(e) => setCondition(
-                    {...criteria, orderNumber: e.target.value}
+                    {...criteria, salesOrderNumber: e.target.value}
                 )}/>
             <FormInput
                 id={"search-vendor-code"}
