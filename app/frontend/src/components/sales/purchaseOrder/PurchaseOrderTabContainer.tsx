@@ -1,5 +1,6 @@
 import { PurchaseOrderContainer } from "./list/PurchaseOrderContainer.tsx";
 import { PurchaseOrderUploadContainer } from "./upload/PurchaseOrderUploadContainer.tsx";
+import { PurchaseOrderRuleContainer } from "./rule/PurchaseOrderRuleContainer.tsx";
 import {useTab} from "../../application/hooks.ts";
 import {SiteLayout} from "../../../views/SiteLayout.tsx";
 
@@ -26,7 +27,7 @@ export const PurchaseOrderTabContainer: React.FC = () => {
                     <PurchaseOrderUploadContainer />
                 </TabPanel>
                 <TabPanel>
-                    {/* TODO: 発注ルールコンテナを実装 */}
+                    <PurchaseOrderRuleContainer />
                 </TabPanel>
             </Tabs>
         </SiteLayout>

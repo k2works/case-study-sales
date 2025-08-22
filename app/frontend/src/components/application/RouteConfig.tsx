@@ -43,6 +43,8 @@ import {AccountContainer} from "../master/account/AccountContainer.tsx";
 import {PaymentAggregateContainer} from "../sales/payment/aggregate/PaymentAggregateContainer.tsx";
 import {PurchaseOrderTabContainer} from "../sales/purchaseOrder/PurchaseOrderTabContainer.tsx";
 import {PurchaseOrderContainer} from "../sales/purchaseOrder/list/PurchaseOrderContainer.tsx";
+import {PurchaseOrderUploadContainer} from "../sales/purchaseOrder/upload/PurchaseOrderUploadContainer.tsx";
+import {PurchaseOrderRuleContainer} from "../sales/purchaseOrder/rule/PurchaseOrderRuleContainer.tsx";
 
 export const RouteConfig: React.FC = () => {
     const ProductCategoryPage = () => {
@@ -221,6 +223,22 @@ export const RouteConfig: React.FC = () => {
         )
     }
 
+    const PurchaseOrderUploadPage = () => {
+        return (
+            <SiteLayout>
+                <PurchaseOrderUploadContainer/>
+            </SiteLayout>
+        )
+    }
+
+    const PurchaseOrderRulePage = () => {
+        return (
+            <SiteLayout>
+                <PurchaseOrderRuleContainer/>
+            </SiteLayout>
+        )
+    }
+
 
     return (
             <Routes>
@@ -270,6 +288,10 @@ export const RouteConfig: React.FC = () => {
                 <Route path="/purchase-order" element={<RouteAuthGuard component={<PurchaseOrderTabContainer/>} redirectPath="/"
                                                                      allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/purchase-order-list" element={<RouteAuthGuard component={<PurchaseOrderPage/>} redirectPath="/"
+                                                                           allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/purchase-order-upload" element={<RouteAuthGuard component={<PurchaseOrderUploadPage/>} redirectPath="/"
+                                                                           allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/purchase-order-rule" element={<RouteAuthGuard component={<PurchaseOrderRulePage/>} redirectPath="/"
                                                                            allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/department" element={<RouteAuthGuard component={<DepartmentContainer/>} redirectPath="/"
                                                                    allowedRoles={[RoleType.ADMIN]}/>}/>
