@@ -15,7 +15,7 @@ describe('発注管理', () => {
         })
 
         const userPage = () => {
-            cy.get('#side-nav-menu > :nth-child(1) > :nth-child(3) > :nth-child(1) > :nth-child(12) > :nth-child(2) > #side-nav-purchase-order-nav').click();
+            cy.get('#side-nav-menu > :nth-child(1) > :nth-child(3) > :nth-child(2) > .nav-sub-list > :nth-child(2) > #side-nav-purchase-order-nav').click();
         }
 
         context('発注一括登録', () => {
@@ -59,7 +59,7 @@ describe('発注管理', () => {
         })
 
         const userPage = () => {
-            cy.get('#side-nav-menu > :nth-child(1) > :nth-child(2) > .nav-item > :nth-child(1) > :nth-child(12) > :nth-child(2) > #side-nav-purchase-order-nav').click();
+            cy.get('#side-nav-menu > :nth-child(1) > :nth-child(2) > .nav-item > :nth-child(2) > .nav-sub-list > :nth-child(2) > #side-nav-purchase-order-nav').click();
         }
 
         context('発注一括登録', () => {

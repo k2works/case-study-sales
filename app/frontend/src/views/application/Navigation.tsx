@@ -85,6 +85,9 @@ const NaveItems: React.FC = () => {
                                     <SubNavItem id="side-nav-invoice-nav" to="/payment-summary">集計</SubNavItem>
                                 </ul>
                             )}
+                        </ul>
+                        調達
+                        <ul className="nav-sub-list">
                             <SubNavItem id="side-nav-purchase-order-nav" to="/purchase-order">発注</SubNavItem>
                             {!Env.isProduction() && (
                                 <ul className="nav-sub-list">
@@ -175,6 +178,9 @@ const NaveItems: React.FC = () => {
                                     <SubNavItem id="side-nav-invoice-nav" to="/payment-summary">集計</SubNavItem>
                                 </ul>
                             )}
+                        </ul>
+                        調達
+                        <ul className="nav-sub-list">
                             <SubNavItem id="side-nav-purchase-order-nav" to="/purchase-order">発注</SubNavItem>
                             {!Env.isProduction() && (
                                 <ul className="nav-sub-list">
