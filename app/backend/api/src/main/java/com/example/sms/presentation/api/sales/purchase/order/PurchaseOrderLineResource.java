@@ -1,5 +1,6 @@
 package com.example.sms.presentation.api.sales.purchase.order;
 
+import com.example.sms.domain.model.sales.order.CompletionFlag;
 import com.example.sms.domain.model.sales.purchase.order.PurchaseOrderLine;
 import lombok.Getter;
 import lombok.Setter;
@@ -44,7 +45,7 @@ public class PurchaseOrderLineResource {
     Integer receivedQuantity;
 
     @Schema(description = "完了フラグ")
-    Integer completionFlag;
+    CompletionFlag completionFlag;
 
     public static PurchaseOrderLineResource from(PurchaseOrderLine line) {
         PurchaseOrderLineResource resource = new PurchaseOrderLineResource();
@@ -58,7 +59,7 @@ public class PurchaseOrderLineResource {
         resource.setPurchaseUnitPrice(line.getPurchaseUnitPrice().getAmount());
         resource.setPurchaseOrderQuantity(line.getPurchaseOrderQuantity().getAmount());
         resource.setReceivedQuantity(line.getReceivedQuantity().getAmount());
-        resource.setCompletionFlag(line.getCompletionFlag() != null ? line.getCompletionFlag().getValue() : null);
+        resource.setCompletionFlag(line.getCompletionFlag());
         return resource;
     }
 

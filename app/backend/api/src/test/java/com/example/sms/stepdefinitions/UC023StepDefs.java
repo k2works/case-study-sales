@@ -1,6 +1,7 @@
 package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
+import com.example.sms.domain.model.sales.order.CompletionFlag;
 import com.example.sms.presentation.api.sales.purchase.order.PurchaseOrderCriteriaResource;
 import com.example.sms.presentation.api.sales.purchase.order.PurchaseOrderLineResource;
 import com.example.sms.presentation.api.sales.purchase.order.PurchaseOrderResource;
@@ -169,7 +170,7 @@ public class UC023StepDefs extends SpringAcceptanceTest {
         purchaseOrderLine.setPurchaseUnitPrice(1000);
         purchaseOrderLine.setPurchaseOrderQuantity(Integer.parseInt(quantity));
         purchaseOrderLine.setReceivedQuantity(0);
-        purchaseOrderLine.setCompletionFlag(0);
+        purchaseOrderLine.setCompletionFlag(CompletionFlag.未完了);
         
         // 更新後の合計金額を計算
         int totalAmount = purchaseOrderLine.getPurchaseUnitPrice() * purchaseOrderLine.getPurchaseOrderQuantity();
@@ -314,7 +315,7 @@ public class UC023StepDefs extends SpringAcceptanceTest {
         resource.setPurchaseUnitPrice(Integer.parseInt(entry.get("単価")));
         resource.setPurchaseOrderQuantity(Integer.parseInt(entry.get("数量")));
         resource.setReceivedQuantity(0);
-        resource.setCompletionFlag(0);
+        resource.setCompletionFlag(CompletionFlag.未完了);
         return resource;
     }
 }

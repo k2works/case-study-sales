@@ -28,7 +28,7 @@ public class PurchaseOrderResourceDTOMapper {
                 line.getPurchaseUnitPrice(),
                 line.getPurchaseOrderQuantity(),
                 line.getReceivedQuantity(),
-                line.getCompletionFlag()
+                line.getCompletionFlag().getValue()
         )).toList()
                 : List.of();
 

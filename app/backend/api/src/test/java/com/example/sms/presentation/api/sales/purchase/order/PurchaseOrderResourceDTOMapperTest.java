@@ -1,5 +1,6 @@
 package com.example.sms.presentation.api.sales.purchase.order;
 
+import com.example.sms.domain.model.sales.order.CompletionFlag;
 import com.example.sms.domain.model.sales.purchase.order.PurchaseOrder;
 import com.example.sms.service.sales.purchase.order.PurchaseOrderCriteria;
 import org.junit.jupiter.api.DisplayName;
@@ -43,7 +44,7 @@ class PurchaseOrderResourceDTOMapperTest {
         lineResource.setPurchaseUnitPrice(1000);
         lineResource.setPurchaseOrderQuantity(10); // 1000円 × 10 = 10000円
         lineResource.setReceivedQuantity(0);
-        lineResource.setCompletionFlag(0);
+        lineResource.setCompletionFlag(CompletionFlag.未完了);
         
         resource.setPurchaseOrderLines(List.of(lineResource));
 
