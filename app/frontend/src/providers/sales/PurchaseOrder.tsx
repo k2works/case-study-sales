@@ -5,7 +5,6 @@ import {
     PurchaseOrderCriteriaType, 
     PurchaseOrderSearchCriteriaType,
     PurchaseOrderFetchType,
-    PurchaseOrderPageNationType,
     CompletionFlagEnumType
 } from "../../models/sales/purchaseOrder.ts";
 import { PurchaseOrderService, UploadResultType } from "../../services/sales/purchaseOrder.ts";
@@ -107,7 +106,7 @@ export const PurchaseOrderProvider: React.FC<Props> = ({ children }) => {
         designatedDeliveryDate: new Date().toISOString().split('T')[0],
         totalPurchaseAmount: 0,
         totalConsumptionTax: 0,
-        purchaseOrderLines: [initialPurchaseOrderLine]
+        purchaseOrderLines: []
     };
 
     const [newPurchaseOrder, setNewPurchaseOrder] = useState<PurchaseOrderType>(initialPurchaseOrder);

@@ -1,8 +1,9 @@
 import { PageNationType } from "../../views/application/PageNation.tsx";
+import { toISOStringLocal } from "../../components/application/utils.ts";
 
 export enum CompletionFlagEnumType {
-    未完了 = "0",
-    完了 = "1"
+    未完了 = "未完了",
+    完了 = "完了"
 }
 
 export type PurchaseOrderLineType = {
@@ -68,165 +69,51 @@ export type PurchaseOrderFetchType = {
 
 export type PurchaseOrderPageNationType = PageNationType<PurchaseOrderCriteriaType>;
 
-export const mapToPurchaseOrderResource = (purchaseOrder: PurchaseOrderType) => {
-    const isEmpty = (value: unknown) => value === "" || value === null || value === undefined;
-
-    type Resource = {
-        purchaseOrderNumber: string;
-        purchaseOrderDate: string;
-        salesOrderNumber?: string;
-        supplierCode: string;
-        supplierBranchNumber: number;
-        purchaseManagerCode: string;
-        designatedDeliveryDate: string;
-        warehouseCode?: string;
-        totalPurchaseAmount: number;
-        totalConsumptionTax: number;
-        remarks?: string;
-        purchaseOrderLines: {
-            purchaseOrderNumber: string;
-            purchaseOrderLineNumber: number;
-            purchaseOrderLineDisplayNumber: number;
-            salesOrderNumber?: string;
-            salesOrderLineNumber?: number;
-            productCode: string;
-            productName?: string;
-            purchaseUnitPrice: number;
-            purchaseOrderQuantity: number;
-            receivedQuantity: number;
-            completionFlag: CompletionFlagEnumType;
-        }[];
-    };
-
-    if (isEmpty(purchaseOrder.purchaseOrderNumber)) {
-        throw new Error("Purchase order number is required.");
-    }
-    if (isEmpty(purchaseOrder.supplierCode)) {
-        throw new Error("Supplier code is required.");
-    }
-
-    const resource: Resource = {
+export const mapToPurchaseOrderResource = (purchaseOrder: PurchaseOrderType): PurchaseOrderType => {
+    return {
         purchaseOrderNumber: purchaseOrder.purchaseOrderNumber,
-        purchaseOrderDate: purchaseOrder.purchaseOrderDate,
+        purchaseOrderDate: toISOStringLocal(new Date(purchaseOrder.purchaseOrderDate)),
         salesOrderNumber: purchaseOrder.salesOrderNumber,
         supplierCode: purchaseOrder.supplierCode,
+        supplierName: purchaseOrder.supplierName,
         supplierBranchNumber: purchaseOrder.supplierBranchNumber,
         purchaseManagerCode: purchaseOrder.purchaseManagerCode,
-        designatedDeliveryDate: purchaseOrder.designatedDeliveryDate,
+        purchaseManagerName: purchaseOrder.purchaseManagerName,
+        designatedDeliveryDate: toISOStringLocal(new Date(purchaseOrder.designatedDeliveryDate)),
         warehouseCode: purchaseOrder.warehouseCode,
         totalPurchaseAmount: purchaseOrder.totalPurchaseAmount,
         totalConsumptionTax: purchaseOrder.totalConsumptionTax,
         remarks: purchaseOrder.remarks,
-        purchaseOrderLines: purchaseOrder.purchaseOrderLines.map(line => ({
-            purchaseOrderNumber: line.purchaseOrderNumber,
-            purchaseOrderLineNumber: line.purchaseOrderLineNumber,
-            purchaseOrderLineDisplayNumber: line.purchaseOrderLineDisplayNumber,
-            salesOrderNumber: line.salesOrderNumber,
-            salesOrderLineNumber: line.salesOrderLineNumber,
-            productCode: line.productCode,
-            productName: line.productName,
-            purchaseUnitPrice: line.purchaseUnitPrice,
-            purchaseOrderQuantity: line.purchaseOrderQuantity,
-            receivedQuantity: line.receivedQuantity,
-            completionFlag: line.completionFlag
-        }))
+        purchaseOrderLines: purchaseOrder.purchaseOrderLines
     };
-
-    return resource;
 };
 
 export const mapToPurchaseOrderSearchResource = (criteria: PurchaseOrderSearchCriteriaType) => {
     const isEmpty = (value: unknown) => value === "" || value === null || value === undefined;
-
-    type Resource = {
-        purchaseOrderNumber?: string;
-        purchaseOrderDate?: string;
-        salesOrderNumber?: string;
-        supplierCode?: string;
-        supplierName?: string;
-        purchaseManagerCode?: string;
-        designatedDeliveryDate?: string;
-        warehouseCode?: string;
-        completionFlag?: boolean;
+    return {
+        ...(isEmpty(criteria.purchaseOrderNumber) ? {} : { purchaseOrderNumber: criteria.purchaseOrderNumber }),
+        ...(isEmpty(criteria.purchaseOrderDate) ? {} : { purchaseOrderDate: toISOStringLocal(new Date(criteria.purchaseOrderDate)) }),
+        ...(isEmpty(criteria.salesOrderNumber) ? {} : { salesOrderNumber: criteria.salesOrderNumber }),
+        ...(isEmpty(criteria.supplierCode) ? {} : { supplierCode: criteria.supplierCode }),
+        ...(isEmpty(criteria.supplierName) ? {} : { supplierName: criteria.supplierName }),
+        ...(isEmpty(criteria.purchaseManagerCode) ? {} : { purchaseManagerCode: criteria.purchaseManagerCode }),
+        ...(isEmpty(criteria.designatedDeliveryDate) ? {} : { designatedDeliveryDate: toISOStringLocal(new Date(criteria.designatedDeliveryDate)) }),
+        ...(isEmpty(criteria.warehouseCode) ? {} : { warehouseCode: criteria.warehouseCode }),
+        ...(isEmpty(criteria.completionFlag) ? {} : { completionFlag: criteria.completionFlag === "true" })
     };
-
-    const resource: Resource = {};
-
-    if (!isEmpty(criteria.purchaseOrderNumber)) {
-        resource.purchaseOrderNumber = criteria.purchaseOrderNumber;
-    }
-    if (!isEmpty(criteria.purchaseOrderDate)) {
-        resource.purchaseOrderDate = criteria.purchaseOrderDate;
-    }
-    if (!isEmpty(criteria.salesOrderNumber)) {
-        resource.salesOrderNumber = criteria.salesOrderNumber;
-    }
-    if (!isEmpty(criteria.supplierCode)) {
-        resource.supplierCode = criteria.supplierCode;
-    }
-    if (!isEmpty(criteria.supplierName)) {
-        resource.supplierName = criteria.supplierName;
-    }
-    if (!isEmpty(criteria.purchaseManagerCode)) {
-        resource.purchaseManagerCode = criteria.purchaseManagerCode;
-    }
-    if (!isEmpty(criteria.designatedDeliveryDate)) {
-        resource.designatedDeliveryDate = criteria.designatedDeliveryDate;
-    }
-    if (!isEmpty(criteria.warehouseCode)) {
-        resource.warehouseCode = criteria.warehouseCode;
-    }
-    if (!isEmpty(criteria.completionFlag)) {
-        resource.completionFlag = criteria.completionFlag === "true";
-    }
-
-    return resource;
 };
 
 export const mapToPurchaseOrderCriteriaResource = (criteria: PurchaseOrderCriteriaType) => {
     const isEmpty = (value: unknown) => value === "" || value === null || value === undefined;
-
-    type Resource = {
-        purchaseOrderNumber?: string;
-        purchaseOrderDate?: string;
-        salesOrderNumber?: string;
-        supplierCode?: string;
-        supplierName?: string;
-        purchaseManagerCode?: string;
-        designatedDeliveryDate?: string;
-        warehouseCode?: string;
-        completionFlag?: boolean;
+    return {
+        ...(isEmpty(criteria.purchaseOrderNumber) ? {} : { purchaseOrderNumber: criteria.purchaseOrderNumber }),
+        ...(isEmpty(criteria.purchaseOrderDate) ? {} : { purchaseOrderDate: toISOStringLocal(new Date(criteria.purchaseOrderDate)) }),
+        ...(isEmpty(criteria.salesOrderNumber) ? {} : { salesOrderNumber: criteria.salesOrderNumber }),
+        ...(isEmpty(criteria.supplierCode) ? {} : { supplierCode: criteria.supplierCode }),
+        ...(isEmpty(criteria.supplierName) ? {} : { supplierName: criteria.supplierName }),
+        ...(isEmpty(criteria.purchaseManagerCode) ? {} : { purchaseManagerCode: criteria.purchaseManagerCode }),
+        ...(isEmpty(criteria.designatedDeliveryDate) ? {} : { designatedDeliveryDate: toISOStringLocal(new Date(criteria.designatedDeliveryDate)) }),
+        ...(isEmpty(criteria.warehouseCode) ? {} : { warehouseCode: criteria.warehouseCode }),
+        ...(isEmpty(criteria.completionFlag) ? {} : { completionFlag: criteria.completionFlag })
     };
-
-    const resource: Resource = {};
-
-    if (!isEmpty(criteria.purchaseOrderNumber)) {
-        resource.purchaseOrderNumber = criteria.purchaseOrderNumber;
-    }
-    if (!isEmpty(criteria.purchaseOrderDate)) {
-        resource.purchaseOrderDate = criteria.purchaseOrderDate;
-    }
-    if (!isEmpty(criteria.salesOrderNumber)) {
-        resource.salesOrderNumber = criteria.salesOrderNumber;
-    }
-    if (!isEmpty(criteria.supplierCode)) {
-        resource.supplierCode = criteria.supplierCode;
-    }
-    if (!isEmpty(criteria.supplierName)) {
-        resource.supplierName = criteria.supplierName;
-    }
-    if (!isEmpty(criteria.purchaseManagerCode)) {
-        resource.purchaseManagerCode = criteria.purchaseManagerCode;
-    }
-    if (!isEmpty(criteria.designatedDeliveryDate)) {
-        resource.designatedDeliveryDate = criteria.designatedDeliveryDate;
-    }
-    if (!isEmpty(criteria.warehouseCode)) {
-        resource.warehouseCode = criteria.warehouseCode;
-    }
-    if (!isEmpty(criteria.completionFlag)) {
-        resource.completionFlag = criteria.completionFlag;
-    }
-
-    return resource;
 };

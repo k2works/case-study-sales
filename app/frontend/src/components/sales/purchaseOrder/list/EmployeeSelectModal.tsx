@@ -1,91 +1,98 @@
 import React from "react";
 import Modal from "react-modal";
-import {useEmployeeContext} from "../../../../providers/master/Employee.tsx";
-import {usePurchaseOrderContext} from "../../../../providers/sales/PurchaseOrder.tsx";
+import { EmployeeCollectionSelectView } from "../../../../views/master/employee/EmployeeSelect.tsx";
+import { useEmployeeContext } from "../../../../providers/master/Employee.tsx";
+import { usePurchaseOrderContext } from "../../../../providers/sales/PurchaseOrder.tsx";
+import { EmployeeType } from "../../../../models/master/employee";
 
-interface Props {
+type EmployeeSelectModalProps = {
     type: "edit" | "search";
-}
+};
 
-export const EmployeeSelectModal: React.FC<Props> = ({ type }) => {
-    const {
-        employees,
-        modalIsOpen,
-        setModalIsOpen,
-        fetchEmployees
-    } = useEmployeeContext();
-
+export const EmployeeSelectModal: React.FC<EmployeeSelectModalProps> = ({ type }) => {
     const {
         newPurchaseOrder,
         setNewPurchaseOrder,
         searchCriteria,
-        setSearchCriteria
+        setSearchCriteria,
     } = usePurchaseOrderContext();
 
-    React.useEffect(() => {
-        if (modalIsOpen && employees.length === 0) {
-            fetchEmployees.load();
-        }
-    }, [modalIsOpen]);
+    const {
+        pageNation: employeePageNation,
+        modalIsOpen: employeeModalIsOpen,
+        setModalIsOpen: setEmployeeModalIsOpen,
+        searchModalIsOpen: employeeSearchModalIsOpen,
+        setSearchModalIsOpen: setEmployeeSearchModalIsOpen,
+        employees,
+        fetchEmployees,
+    } = useEmployeeContext();
 
-    const handleEmployeeSelect = (employeeCode: string) => {
-        if (type === "edit") {
-            setNewPurchaseOrder({
-                ...newPurchaseOrder,
-                purchaseManagerCode: employeeCode
-            });
-        } else {
-            setSearchCriteria({
-                ...searchCriteria,
-                purchaseManagerCode: employeeCode
-            });
-        }
-        setModalIsOpen(false);
+    // 編集モーダルを閉じる
+    const handleCloseEditModal = () => {
+        setEmployeeModalIsOpen(false);
     };
 
-    const handleCloseModal = () => {
-        setModalIsOpen(false);
+    // 検索モーダルを閉じる
+    const handleCloseSearchModal = () => {
+        setEmployeeSearchModalIsOpen(false);
     };
 
-    return (
+    // 編集モード用モーダルビュー
+    const employeeEditModalView = () => (
         <Modal
-            isOpen={modalIsOpen}
-            onRequestClose={handleCloseModal}
-            contentLabel="社員を選択"
+            isOpen={employeeModalIsOpen}
+            onRequestClose={handleCloseEditModal}
+            contentLabel="従業員情報を入力"
             className="modal"
             overlayClassName="modal-overlay"
             bodyOpenClassName="modal-open"
         >
-            <div className="single-view-object-container">
-                <div className="single-view-header">
-                    <div className="single-view-header-title">
-                        <h2>社員選択</h2>
-                        <button onClick={handleCloseModal} className="close-button">
-                            ✕
-                        </button>
-                    </div>
-                </div>
-                <div className="single-view-container">
-                    <div className="select-modal-content">
-                        <div className="select-modal-list">
-                            {employees.map((employee) => (
-                                <div
-                                    key={employee.empCode}
-                                    className="select-modal-item"
-                                    onClick={() => handleEmployeeSelect(employee.empCode)}
-                                >
-                                    <span className="select-modal-item-code">
-                                        {employee.empCode}
-                                    </span>
-                                    <span className="select-modal-item-name">
-                                        {employee.empFirstName} {employee.empLastName}
-                                    </span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <EmployeeCollectionSelectView
+                employees={employees}
+                handleSelect={(employee: EmployeeType) => {
+                    setNewPurchaseOrder({
+                        ...newPurchaseOrder,
+                        purchaseManagerCode: employee.empCode,
+                    });
+                    setEmployeeModalIsOpen(false);
+                }}
+                handleClose={handleCloseEditModal}
+                pageNation={employeePageNation}
+                fetchEmployees={fetchEmployees.load}
+            />
         </Modal>
+    );
+
+    // 検索モード用モーダルビュー
+    const employeeSearchModalView = () => (
+        <Modal
+            isOpen={employeeSearchModalIsOpen}
+            onRequestClose={handleCloseSearchModal}
+            contentLabel="従業員情報を検索"
+            className="modal"
+            overlayClassName="modal-overlay"
+            bodyOpenClassName="modal-open"
+        >
+            <EmployeeCollectionSelectView
+                employees={employees}
+                handleSelect={(employee: EmployeeType) => {
+                    setSearchCriteria({
+                        ...searchCriteria,
+                        purchaseManagerCode: employee.empCode,
+                    });
+                    setEmployeeSearchModalIsOpen(false);
+                }}
+                handleClose={handleCloseSearchModal}
+                pageNation={employeePageNation}
+                fetchEmployees={fetchEmployees.load}
+            />
+        </Modal>
+    );
+
+    return (
+        <>
+            {type === "edit" ? employeeEditModalView() : null}
+            {type === "search" ? employeeSearchModalView() : null}
+        </>
     );
 };

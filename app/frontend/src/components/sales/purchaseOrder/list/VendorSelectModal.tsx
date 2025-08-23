@@ -1,92 +1,99 @@
 import React from "react";
 import Modal from "react-modal";
-import {useVendorContext} from "../../../../providers/master/partner/Vendor.tsx";
-import {usePurchaseOrderContext} from "../../../../providers/sales/PurchaseOrder.tsx";
+import { VendorCollectionSelectView } from "../../../../views/master/partner/vendor/VendorSelect.tsx";
+import { useVendorContext } from "../../../../providers/master/partner/Vendor.tsx";
+import { usePurchaseOrderContext } from "../../../../providers/sales/PurchaseOrder.tsx";
+import { VendorType } from "../../../../models/master/partner";
 
-interface Props {
+type VendorSelectModalProps = {
     type: "edit" | "search";
-}
+};
 
-export const VendorSelectModal: React.FC<Props> = ({ type }) => {
-    const {
-        vendors,
-        modalIsOpen,
-        setModalIsOpen,
-        fetchVendors
-    } = useVendorContext();
-
+export const VendorSelectModal: React.FC<VendorSelectModalProps> = ({ type }) => {
     const {
         newPurchaseOrder,
         setNewPurchaseOrder,
         searchCriteria,
-        setSearchCriteria
+        setSearchCriteria,
     } = usePurchaseOrderContext();
 
-    React.useEffect(() => {
-        if (modalIsOpen && vendors.length === 0) {
-            fetchVendors.load();
-        }
-    }, [modalIsOpen]);
+    const {
+        modalIsOpen: vendorModalIsOpen,
+        setModalIsOpen: setVendorModalIsOpen,
+        searchModalIsOpen: vendorSearchModalIsOpen,
+        setSearchModalIsOpen: setVendorSearchModalIsOpen,
+        vendors,
+        fetchVendors,
+        pageNation: vendorPageNation,
+    } = useVendorContext();
 
-    const handleVendorSelect = (vendorCode: string, branchNumber: number) => {
-        if (type === "edit") {
-            setNewPurchaseOrder({
-                ...newPurchaseOrder,
-                supplierCode: vendorCode,
-                supplierBranchNumber: branchNumber
-            });
-        } else {
-            setSearchCriteria({
-                ...searchCriteria,
-                supplierCode: vendorCode
-            });
-        }
-        setModalIsOpen(false);
+    // 編集モーダルを閉じる
+    const handleCloseEditModal = () => {
+        setVendorModalIsOpen(false);
     };
 
-    const handleCloseModal = () => {
-        setModalIsOpen(false);
+    // 検索モーダルを閉じる
+    const handleCloseSearchModal = () => {
+        setVendorSearchModalIsOpen(false);
     };
 
-    return (
+    // 編集モード用モーダルビュー
+    const vendorEditModalView = () => (
         <Modal
-            isOpen={modalIsOpen}
-            onRequestClose={handleCloseModal}
-            contentLabel="仕入先を選択"
+            isOpen={vendorModalIsOpen}
+            onRequestClose={handleCloseEditModal}
+            contentLabel="仕入先情報を入力"
             className="modal"
             overlayClassName="modal-overlay"
             bodyOpenClassName="modal-open"
         >
-            <div className="single-view-object-container">
-                <div className="single-view-header">
-                    <div className="single-view-header-title">
-                        <h2>仕入先選択</h2>
-                        <button onClick={handleCloseModal} className="close-button">
-                            ✕
-                        </button>
-                    </div>
-                </div>
-                <div className="single-view-container">
-                    <div className="select-modal-content">
-                        <div className="select-modal-list">
-                            {vendors.map((vendor) => (
-                                <div
-                                    key={`${vendor.vendorCode}-${vendor.vendorBranchNumber}`}
-                                    className="select-modal-item"
-                                    onClick={() => handleVendorSelect(vendor.vendorCode, vendor.vendorBranchNumber)}
-                                >
-                                    <span className="select-modal-item-code">
-                                        {vendor.vendorCode}-{vendor.vendorBranchNumber}
-                                    </span>
-                                    <span className="select-modal-item-name">
-                                        {vendor.vendorName}
-                                    </span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <VendorCollectionSelectView
+                vendors={vendors}
+                handleSelect={(vendor: VendorType) => {
+                    setNewPurchaseOrder({
+                        ...newPurchaseOrder,
+                        supplierCode: vendor.vendorCode,
+                        supplierBranchNumber: vendor.vendorBranchNumber
+                    });
+                    setVendorModalIsOpen(false);
+                }}
+                handleClose={handleCloseEditModal}
+                pageNation={vendorPageNation}
+                fetchVendors={fetchVendors.load}
+            />
         </Modal>
+    );
+
+    // 検索モード用モーダルビュー
+    const vendorSearchModalView = () => (
+        <Modal
+            isOpen={vendorSearchModalIsOpen}
+            onRequestClose={handleCloseSearchModal}
+            contentLabel="仕入先情報を検索"
+            className="modal"
+            overlayClassName="modal-overlay"
+            bodyOpenClassName="modal-open"
+        >
+            <VendorCollectionSelectView
+                vendors={vendors}
+                handleSelect={(vendor: VendorType) => {
+                    setSearchCriteria({
+                        ...searchCriteria,
+                        supplierCode: vendor.vendorCode
+                    });
+                    setVendorSearchModalIsOpen(false);
+                }}
+                handleClose={handleCloseSearchModal}
+                pageNation={vendorPageNation}
+                fetchVendors={fetchVendors.load}
+            />
+        </Modal>
+    );
+
+    return (
+        <>
+            {type === "edit" ? vendorEditModalView() : null}
+            {type === "search" ? vendorSearchModalView() : null}
+        </>
     );
 };
