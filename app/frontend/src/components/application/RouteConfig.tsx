@@ -41,10 +41,10 @@ import {PaymentContainer} from "../sales/payment/list/PaymentContainer.tsx";
 import {PaymentTabContainer} from "../sales/payment/PaymentTabContainer.tsx";
 import {AccountContainer} from "../master/account/AccountContainer.tsx";
 import {PaymentAggregateContainer} from "../sales/payment/aggregate/PaymentAggregateContainer.tsx";
-import {PurchaseOrderTabContainer} from "../sales/purchaseOrder/PurchaseOrderTabContainer.tsx";
-import {PurchaseOrderContainer} from "../sales/purchaseOrder/list/PurchaseOrderContainer.tsx";
-import {PurchaseOrderUploadContainer} from "../sales/purchaseOrder/upload/PurchaseOrderUploadContainer.tsx";
-import {PurchaseOrderRuleContainer} from "../sales/purchaseOrder/rule/PurchaseOrderRuleContainer.tsx";
+import {PurchaseOrderTabContainer} from "../procurement/purchase/PurchaseOrderTabContainer.tsx";
+import {PurchaseOrderContainer} from "../procurement/purchase/list/PurchaseOrderContainer.tsx";
+import {PurchaseOrderUploadContainer} from "../procurement/purchase/upload/PurchaseOrderUploadContainer.tsx";
+import {PurchaseOrderRuleContainer} from "../procurement/purchase/rule/PurchaseOrderRuleContainer.tsx";
 
 export const RouteConfig: React.FC = () => {
     const ProductCategoryPage = () => {
