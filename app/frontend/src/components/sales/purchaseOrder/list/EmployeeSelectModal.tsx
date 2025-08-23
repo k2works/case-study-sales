@@ -13,8 +13,8 @@ export const EmployeeSelectModal: React.FC<EmployeeSelectModalProps> = ({ type }
     const {
         newPurchaseOrder,
         setNewPurchaseOrder,
-        searchCriteria,
-        setSearchCriteria,
+        searchPurchaseOrderCriteria,
+        setSearchPurchaseOrderCriteria,
     } = usePurchaseOrderContext();
 
     const {
@@ -76,8 +76,8 @@ export const EmployeeSelectModal: React.FC<EmployeeSelectModalProps> = ({ type }
             <EmployeeCollectionSelectView
                 employees={employees}
                 handleSelect={(employee: EmployeeType) => {
-                    setSearchCriteria({
-                        ...searchCriteria,
+                    setSearchPurchaseOrderCriteria({
+                        ...searchPurchaseOrderCriteria,
                         purchaseManagerCode: employee.empCode,
                     });
                     setEmployeeSearchModalIsOpen(false);

@@ -13,8 +13,8 @@ export const VendorSelectModal: React.FC<VendorSelectModalProps> = ({ type }) =>
     const {
         newPurchaseOrder,
         setNewPurchaseOrder,
-        searchCriteria,
-        setSearchCriteria,
+        searchPurchaseOrderCriteria,
+        setSearchPurchaseOrderCriteria,
     } = usePurchaseOrderContext();
 
     const {
@@ -77,8 +77,8 @@ export const VendorSelectModal: React.FC<VendorSelectModalProps> = ({ type }) =>
             <VendorCollectionSelectView
                 vendors={vendors}
                 handleSelect={(vendor: VendorType) => {
-                    setSearchCriteria({
-                        ...searchCriteria,
+                    setSearchPurchaseOrderCriteria({
+                        ...searchPurchaseOrderCriteria,
                         supplierCode: vendor.vendorCode
                     });
                     setVendorSearchModalIsOpen(false);
