@@ -92,7 +92,7 @@ services:
       - "3306:3306"
 
   wiki:
-    image: ghcr.io/requarks/wiki:2
+    image: requarks/wiki:2
     environment:
       DB_TYPE: mysql
       DB_HOST: wiki_db
