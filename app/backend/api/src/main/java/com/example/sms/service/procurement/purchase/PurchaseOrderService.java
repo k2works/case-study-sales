@@ -90,7 +90,7 @@ public class PurchaseOrderService {
                     Objects.requireNonNull(purchaseOrder.getPurchaseOrderDate().getValue()),
                     purchaseOrder.getSalesOrderNumber().getValue(),
                     Objects.requireNonNull(purchaseOrder.getSupplierCode().getValue()),
-                    purchaseOrder.getSupplierBranchNumber(),
+                    purchaseOrder.getSupplierCode().getBranchNumber(),
                     Objects.requireNonNull(purchaseOrder.getPurchaseManagerCode().getValue()),
                     Objects.requireNonNull(purchaseOrder.getDesignatedDeliveryDate().getValue()),
                     purchaseOrder.getWarehouseCode(),

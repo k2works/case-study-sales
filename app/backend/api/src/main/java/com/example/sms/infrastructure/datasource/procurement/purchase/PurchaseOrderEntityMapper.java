@@ -90,7 +90,7 @@ public class PurchaseOrderEntityMapper {
         entity.set発注日(model.getPurchaseOrderDate().getValue());
         entity.set受注番号(model.getSalesOrderNumber().getValue());
         entity.set仕入先コード(model.getSupplierCode().getValue());
-        entity.set仕入先枝番(model.getSupplierBranchNumber());
+        entity.set仕入先枝番(model.getSupplierCode().getBranchNumber());
         entity.set発注担当者コード(model.getPurchaseManagerCode().getValue());
         entity.set指定納期(model.getDesignatedDeliveryDate().getValue());
         entity.set倉庫コード(model.getWarehouseCode());
@@ -164,7 +164,7 @@ public class PurchaseOrderEntityMapper {
                 null, // 部門コード（現在の発注データには含まれていない）
                 null, // 部門開始日（現在の発注データには含まれていない）
                 purchaseOrder.getSupplierCode().getValue(),
-                purchaseOrder.getSupplierBranchNumber(),
+                purchaseOrder.getSupplierCode().getBranchNumber(),
                 purchaseOrder.getPurchaseManagerCode().getValue(),
                 purchaseOrder.getDesignatedDeliveryDate().getValue(),
                 null, // 仕入先注文番号（現在の発注データには含まれていない）

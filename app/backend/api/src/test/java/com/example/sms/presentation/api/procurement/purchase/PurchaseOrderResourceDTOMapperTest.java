@@ -58,7 +58,7 @@ class PurchaseOrderResourceDTOMapperTest {
         assertEquals(now, result.getPurchaseOrderDate().getValue());
         assertEquals("OD25010001", result.getSalesOrderNumber().getValue());
         assertEquals("001", result.getSupplierCode().getValue());
-        assertEquals(0, result.getSupplierBranchNumber());
+        assertEquals(0, result.getSupplierCode().getBranchNumber());
         assertEquals("EMP001", result.getPurchaseManagerCode().getValue());
         assertEquals(now.plusDays(1), result.getDesignatedDeliveryDate().getValue());
         assertEquals("001", result.getWarehouseCode());

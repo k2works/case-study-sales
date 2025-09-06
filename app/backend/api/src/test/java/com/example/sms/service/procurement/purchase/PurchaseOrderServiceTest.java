@@ -130,8 +130,7 @@ class PurchaseOrderServiceTest {
                 .purchaseOrderNumber(null) // 発注番号なし
                 .purchaseOrderDate(PurchaseOrderDate.of(now))
                 .salesOrderNumber(OrderNumber.of("OD25010001"))
-                .supplierCode(SupplierCode.of("001"))
-                .supplierBranchNumber(0)
+                .supplierCode(SupplierCode.of("001", 0))
                 .purchaseManagerCode(EmployeeCode.of("EMP001"))
                 .designatedDeliveryDate(DesignatedDeliveryDate.of(now.plusDays(7)))
                 .warehouseCode("001")

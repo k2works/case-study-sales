@@ -28,7 +28,6 @@ public class PurchaseOrder {
     PurchaseOrderDate purchaseOrderDate; // 発注日
     OrderNumber salesOrderNumber; // 受注番号
     SupplierCode supplierCode; // 仕入先コード
-    Integer supplierBranchNumber; // 仕入先枝番
     EmployeeCode purchaseManagerCode; // 発注担当者コード
     DesignatedDeliveryDate designatedDeliveryDate; // 指定納期
     String warehouseCode; // 倉庫コード
@@ -54,8 +53,7 @@ public class PurchaseOrder {
                 .purchaseOrderNumber(PurchaseOrderNumber.of(purchaseOrderNumber))
                 .purchaseOrderDate(PurchaseOrderDate.of(purchaseOrderDate))
                 .salesOrderNumber(OrderNumber.of(salesOrderNumber))
-                .supplierCode(SupplierCode.of(supplierCode))
-                .supplierBranchNumber(supplierBranchNumber)
+                .supplierCode(SupplierCode.of(supplierCode, supplierBranchNumber))
                 .purchaseManagerCode(EmployeeCode.of(purchaseManagerCode))
                 .designatedDeliveryDate(DesignatedDeliveryDate.of(designatedDeliveryDate))
                 .warehouseCode(warehouseCode)
