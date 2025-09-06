@@ -88,7 +88,7 @@ public class PurchaseOrderEntityMapper {
         発注データ entity = new 発注データ();
         entity.set発注番号(model.getPurchaseOrderNumber().getValue());
         entity.set発注日(model.getPurchaseOrderDate().getValue());
-        entity.set受注番号(model.getSalesOrderNumber());
+        entity.set受注番号(model.getSalesOrderNumber().getValue());
         entity.set仕入先コード(model.getSupplierCode().getValue());
         entity.set仕入先枝番(model.getSupplierBranchNumber());
         entity.set発注担当者コード(model.getPurchaseManagerCode().getValue());
@@ -110,7 +110,7 @@ public class PurchaseOrderEntityMapper {
         entity.set発注番号(model.getPurchaseOrderNumber().getValue());
         entity.set発注行番号(model.getPurchaseOrderLineNumber());
         entity.set発注行表示番号(model.getPurchaseOrderLineDisplayNumber());
-        entity.set受注番号(model.getSalesOrderNumber());
+        entity.set受注番号(model.getSalesOrderNumber().getValue());
         entity.set受注行番号(model.getSalesOrderLineNumber());
         entity.set商品コード(model.getProductCode().getValue());
         entity.set商品名(model.getProductName());

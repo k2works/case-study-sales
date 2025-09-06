@@ -163,7 +163,7 @@ public class UC023StepDefs extends SpringAcceptanceTest {
         purchaseOrderLine.setPurchaseOrderNumber(purchaseOrderNumber);
         purchaseOrderLine.setPurchaseOrderLineNumber(1);
         purchaseOrderLine.setPurchaseOrderLineDisplayNumber(1);
-        purchaseOrderLine.setSalesOrderNumber("SO000001");
+        purchaseOrderLine.setSalesOrderNumber("OD25010001");
         purchaseOrderLine.setSalesOrderLineNumber(1);
         purchaseOrderLine.setProductCode("10101001");
         purchaseOrderLine.setProductName("鶏ささみ");
@@ -289,7 +289,7 @@ public class UC023StepDefs extends SpringAcceptanceTest {
         PurchaseOrderResource purchaseOrderResource = new PurchaseOrderResource();
         purchaseOrderResource.setPurchaseOrderNumber(purchaseOrderNumber);
         purchaseOrderResource.setPurchaseOrderDate(OffsetDateTime.parse(purchaseOrderDate).toLocalDateTime());
-        purchaseOrderResource.setSalesOrderNumber("SO000001");
+        purchaseOrderResource.setSalesOrderNumber("OD25010001");
         purchaseOrderResource.setSupplierCode(supplierCode);
         purchaseOrderResource.setSupplierBranchNumber(0);
         purchaseOrderResource.setPurchaseManagerCode(employeeCode);
@@ -308,7 +308,7 @@ public class UC023StepDefs extends SpringAcceptanceTest {
         resource.setPurchaseOrderNumber(entry.get("発注番号"));
         resource.setPurchaseOrderLineNumber(Integer.parseInt(entry.get("枝番")));
         resource.setPurchaseOrderLineDisplayNumber(Integer.parseInt(entry.get("枝番")));
-        resource.setSalesOrderNumber("SO000001");
+        resource.setSalesOrderNumber("OD25010001");
         resource.setSalesOrderLineNumber(Integer.parseInt(entry.get("枝番")));
         resource.setProductCode(entry.get("商品コード"));
         resource.setProductName(entry.get("商品名"));

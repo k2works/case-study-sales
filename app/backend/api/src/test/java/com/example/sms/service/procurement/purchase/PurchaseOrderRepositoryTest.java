@@ -56,7 +56,7 @@ class PurchaseOrderRepositoryTest {
         return PurchaseOrder.of(
                 purchaseOrderNumber,
                 now,
-                "SO000001",
+                "OD25010001",
                 "001", // 仕入先コード
                 0,
                 "EMP001", // 社員コード
@@ -74,7 +74,7 @@ class PurchaseOrderRepositoryTest {
                 purchaseOrderNumber,
                 lineNumber,
                 lineNumber,
-                "SO000001",
+                "OD25010001",
                 1,
                 "10101001", // 実際の商品コード
                 "商品" + lineNumber,
@@ -145,7 +145,7 @@ class PurchaseOrderRepositoryTest {
             PurchaseOrder updatedOrder = PurchaseOrder.of(
                     order.getPurchaseOrderNumber().getValue(),
                     order.getPurchaseOrderDate().getValue().plusDays(1),
-                    order.getSalesOrderNumber(),
+                    order.getSalesOrderNumber().getValue(),
                     "002", // 仕入先を変更
                     0,
                     "EMP002", // 担当者を変更
@@ -203,7 +203,7 @@ class PurchaseOrderRepositoryTest {
             PurchaseOrder newOrder = PurchaseOrder.of(
                     order.getPurchaseOrderNumber().getValue(),
                     order.getPurchaseOrderDate().getValue(),
-                    order.getSalesOrderNumber(),
+                    order.getSalesOrderNumber().getValue(),
                     order.getSupplierCode().getValue(),
                     order.getSupplierBranchNumber(),
                     order.getPurchaseManagerCode().getValue(),
@@ -228,7 +228,7 @@ class PurchaseOrderRepositoryTest {
             PurchaseOrder newOrder = PurchaseOrder.of(
                     order.getPurchaseOrderNumber().getValue(),
                     order.getPurchaseOrderDate().getValue(),
-                    order.getSalesOrderNumber(),
+                    order.getSalesOrderNumber().getValue(),
                     order.getSupplierCode().getValue(),
                     order.getSupplierBranchNumber(),
                     order.getPurchaseManagerCode().getValue(),
@@ -253,7 +253,7 @@ class PurchaseOrderRepositoryTest {
             PurchaseOrder newOrder = PurchaseOrder.of(
                     order.getPurchaseOrderNumber().getValue(),
                     order.getPurchaseOrderDate().getValue(),
-                    order.getSalesOrderNumber(),
+                    order.getSalesOrderNumber().getValue(),
                     order.getSupplierCode().getValue(),
                     order.getSupplierBranchNumber(),
                     order.getPurchaseManagerCode().getValue(),
@@ -266,13 +266,13 @@ class PurchaseOrderRepositoryTest {
             repository.save(newOrder);
 
             PurchaseOrderLine updatedLine = PurchaseOrderLine.of(
-                    order.getPurchaseOrderNumber().getValue(), 1, 1, "SO000002", 2, "10101002", "更新後商品名",
+                    order.getPurchaseOrderNumber().getValue(), 1, 1, "OD25010002", 2, "10101002", "更新後商品名",
                     3000, 5, 0, 0);
             
             PurchaseOrder updatedOrder = PurchaseOrder.of(
                     newOrder.getPurchaseOrderNumber().getValue(),
                     newOrder.getPurchaseOrderDate().getValue(),
-                    newOrder.getSalesOrderNumber(),
+                    newOrder.getSalesOrderNumber().getValue(),
                     newOrder.getSupplierCode().getValue(),
                     newOrder.getSupplierBranchNumber(),
                     newOrder.getPurchaseManagerCode().getValue(),
@@ -297,7 +297,7 @@ class PurchaseOrderRepositoryTest {
             PurchaseOrder newOrder = PurchaseOrder.of(
                     order.getPurchaseOrderNumber().getValue(),
                     order.getPurchaseOrderDate().getValue(),
-                    order.getSalesOrderNumber(),
+                    order.getSalesOrderNumber().getValue(),
                     order.getSupplierCode().getValue(),
                     order.getSupplierBranchNumber(),
                     order.getPurchaseManagerCode().getValue(),

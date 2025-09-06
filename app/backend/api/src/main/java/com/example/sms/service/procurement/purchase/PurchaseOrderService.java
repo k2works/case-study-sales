@@ -88,7 +88,7 @@ public class PurchaseOrderService {
             purchaseOrder = PurchaseOrder.of(
                     purchaseOrderNumber,
                     Objects.requireNonNull(purchaseOrder.getPurchaseOrderDate().getValue()),
-                    purchaseOrder.getSalesOrderNumber(),
+                    purchaseOrder.getSalesOrderNumber().getValue(),
                     Objects.requireNonNull(purchaseOrder.getSupplierCode().getValue()),
                     purchaseOrder.getSupplierBranchNumber(),
                     Objects.requireNonNull(purchaseOrder.getPurchaseManagerCode().getValue()),
@@ -255,7 +255,7 @@ public class PurchaseOrderService {
 
             // `computeIfAbsent`を使って、存在しなければ新しいPurchaseOrderを作成
             PurchaseOrder purchaseOrder = purchaseOrderMap.computeIfAbsent(purchaseOrderNumber, key -> {
-                csv.setSalesOrderNumber("");
+                if (csv.getSalesOrderNumber() == null) csv.setSalesOrderNumber("");
                 PurchaseOrder newPurchaseOrder = PurchaseOrder.of(
                         key,
                         csv.getPurchaseOrderDate(),

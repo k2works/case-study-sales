@@ -7,6 +7,7 @@ import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.master.partner.supplier.SupplierCode;
 import com.example.sms.domain.model.master.product.ProductCode;
 import com.example.sms.domain.model.sales.order.CompletionFlag;
+import com.example.sms.domain.model.sales.order.OrderNumber;
 import com.example.sms.domain.model.procurement.purchase.*;
 import com.example.sms.domain.type.money.Money;
 import com.example.sms.domain.type.quantity.Quantity;
@@ -78,7 +79,7 @@ class PurchaseOrderServiceTest {
                 purchaseOrderNumber,
                 1,
                 1,
-                "SO000001",
+"OD25010001",
                 1,
                 "10101001",
                 "商品1",
@@ -92,7 +93,7 @@ class PurchaseOrderServiceTest {
         return PurchaseOrder.of(
             purchaseOrderNumber,
             now,
-            "SO000001",
+            "OD25010001",
             "001", // 仕入先コード
             0,
             "EMP001", // 社員コード
@@ -114,7 +115,7 @@ class PurchaseOrderServiceTest {
                 .purchaseOrderNumber(null) // 発注番号なし
                 .purchaseOrderLineNumber(1)
                 .purchaseOrderLineDisplayNumber(1)
-                .salesOrderNumber("SO000001")
+                .salesOrderNumber(OrderNumber.of("OD25010001"))
                 .salesOrderLineNumber(1)
                 .productCode(ProductCode.of("10101001"))
                 .productName("商品1")
@@ -128,7 +129,7 @@ class PurchaseOrderServiceTest {
         return PurchaseOrder.builder()
                 .purchaseOrderNumber(null) // 発注番号なし
                 .purchaseOrderDate(PurchaseOrderDate.of(now))
-                .salesOrderNumber("SO000001")
+                .salesOrderNumber(OrderNumber.of("OD25010001"))
                 .supplierCode(SupplierCode.of("001"))
                 .supplierBranchNumber(0)
                 .purchaseManagerCode(EmployeeCode.of("EMP001"))

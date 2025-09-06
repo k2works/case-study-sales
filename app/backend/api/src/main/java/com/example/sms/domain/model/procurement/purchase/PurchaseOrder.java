@@ -4,6 +4,7 @@ import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.master.employee.EmployeeCode;
 import com.example.sms.domain.model.master.partner.supplier.Supplier;
 import com.example.sms.domain.model.master.partner.supplier.SupplierCode;
+import com.example.sms.domain.model.sales.order.OrderNumber;
 import com.example.sms.domain.type.money.Money;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,7 +26,7 @@ import static org.apache.commons.lang3.Validate.isTrue;
 public class PurchaseOrder {
     PurchaseOrderNumber purchaseOrderNumber; // 発注番号
     PurchaseOrderDate purchaseOrderDate; // 発注日
-    String salesOrderNumber; // 受注番号
+    OrderNumber salesOrderNumber; // 受注番号
     SupplierCode supplierCode; // 仕入先コード
     Integer supplierBranchNumber; // 仕入先枝番
     EmployeeCode purchaseManagerCode; // 発注担当者コード
@@ -52,7 +53,7 @@ public class PurchaseOrder {
         return PurchaseOrder.builder()
                 .purchaseOrderNumber(PurchaseOrderNumber.of(purchaseOrderNumber))
                 .purchaseOrderDate(PurchaseOrderDate.of(purchaseOrderDate))
-                .salesOrderNumber(salesOrderNumber)
+                .salesOrderNumber(OrderNumber.of(salesOrderNumber))
                 .supplierCode(SupplierCode.of(supplierCode))
                 .supplierBranchNumber(supplierBranchNumber)
                 .purchaseManagerCode(EmployeeCode.of(purchaseManagerCode))

@@ -52,7 +52,7 @@ public class PurchaseOrderLineResource {
         resource.setPurchaseOrderNumber(line.getPurchaseOrderNumber().getValue());
         resource.setPurchaseOrderLineNumber(line.getPurchaseOrderLineNumber());
         resource.setPurchaseOrderLineDisplayNumber(line.getPurchaseOrderLineDisplayNumber());
-        resource.setSalesOrderNumber(line.getSalesOrderNumber());
+        resource.setSalesOrderNumber(line.getSalesOrderNumber().getValue());
         resource.setSalesOrderLineNumber(line.getSalesOrderLineNumber());
         resource.setProductCode(line.getProductCode().getValue());
         resource.setProductName(line.getProductName());

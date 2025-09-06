@@ -30,6 +30,7 @@ import com.example.sms.domain.model.sales.sales.SalesLine;
 import com.example.sms.domain.model.procurement.purchase.PurchaseOrder;
 import com.example.sms.domain.model.procurement.purchase.PurchaseOrderLine;
 import com.example.sms.domain.model.procurement.purchase.PurchaseOrderNumber;
+import com.example.sms.domain.model.sales.order.OrderNumber;
 import com.example.sms.domain.model.procurement.purchase.PurchaseOrderDate;
 import com.example.sms.domain.model.procurement.purchase.DesignatedDeliveryDate;
 import com.example.sms.domain.model.master.partner.supplier.SupplierCode;
@@ -1173,7 +1174,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
         return PurchaseOrder.builder()
                 .purchaseOrderNumber(PurchaseOrderNumber.of(purchaseOrderNumber))
                 .purchaseOrderDate(PurchaseOrderDate.of(now))
-                .salesOrderNumber("SO000001")
+                .salesOrderNumber(OrderNumber.of("OD25010001"))
                 .supplierCode(SupplierCode.of("001"))
                 .supplierBranchNumber(0)
                 .purchaseManagerCode(EmployeeCode.of("EMP001"))
@@ -1198,7 +1199,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
         return PurchaseOrder.builder()
                 .purchaseOrderNumber(PurchaseOrderNumber.of(purchaseOrderNumber))
                 .purchaseOrderDate(PurchaseOrderDate.of(now))
-                .salesOrderNumber("SO000001")
+                .salesOrderNumber(OrderNumber.of("OD25010001"))
                 .supplierCode(SupplierCode.of("001"))
                 .supplierBranchNumber(0)
                 .purchaseManagerCode(EmployeeCode.of("EMP001"))
@@ -1216,7 +1217,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 purchaseOrderNumber,
                 lineNumber,
                 lineNumber,
-                "SO000001",
+                "OD25010001",
                 1,
                 "99999001", // 商品コード
                 "高額商品",
@@ -1237,7 +1238,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
         return PurchaseOrder.of(
                 purchaseOrderNumber,
                 now,
-                "SO000001",
+                "OD25010001",
                 "001", // 仕入先コード
                 0,
                 "EMP001", // 社員コード
@@ -1255,7 +1256,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 purchaseOrderNumber,
                 lineNumber,
                 lineNumber,
-                "SO000001",
+                "OD25010001",
                 1,
                 "10101001", // 実際の商品コード
                 "商品" + lineNumber,

@@ -3,6 +3,7 @@ package com.example.sms.domain.model.procurement.purchase;
 import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.product.ProductCode;
 import com.example.sms.domain.model.sales.order.CompletionFlag;
+import com.example.sms.domain.model.sales.order.OrderNumber;
 import com.example.sms.domain.model.sales.order.TaxRateType;
 import com.example.sms.domain.type.money.Money;
 import com.example.sms.domain.type.quantity.Quantity;
@@ -25,7 +26,7 @@ public class PurchaseOrderLine {
     PurchaseOrderNumber purchaseOrderNumber; // 発注番号
     Integer purchaseOrderLineNumber; // 発注行番号
     Integer purchaseOrderLineDisplayNumber; // 発注行表示番号
-    String salesOrderNumber; // 受注番号
+    OrderNumber salesOrderNumber; // 受注番号
     Integer salesOrderLineNumber; // 受注行番号
     ProductCode productCode; // 商品コード
     String productName; // 商品名
@@ -45,7 +46,7 @@ public class PurchaseOrderLine {
                 .purchaseOrderNumber(PurchaseOrderNumber.of(purchaseOrderNumber))
                 .purchaseOrderLineNumber(purchaseOrderLineNumber)
                 .purchaseOrderLineDisplayNumber(purchaseOrderLineDisplayNumber)
-                .salesOrderNumber(salesOrderNumber)
+                .salesOrderNumber(OrderNumber.of(salesOrderNumber))
                 .salesOrderLineNumber(salesOrderLineNumber)
                 .productCode(ProductCode.of(productCode))
                 .productName(productName)

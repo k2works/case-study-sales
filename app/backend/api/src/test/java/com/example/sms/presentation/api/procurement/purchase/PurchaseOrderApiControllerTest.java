@@ -62,7 +62,7 @@ public class PurchaseOrderApiControllerTest {
                 "PO25010001",
                 1,
                 1,
-                "SO000001",
+                "OD25010001",
                 1,
                 "10101001",
                 "商品1",
@@ -76,7 +76,7 @@ public class PurchaseOrderApiControllerTest {
         testPurchaseOrder = PurchaseOrder.of(
             "PO25010001",
             now,
-            "SO000001",
+            "OD25010001",
             "001",
             0,
             "EMP001",

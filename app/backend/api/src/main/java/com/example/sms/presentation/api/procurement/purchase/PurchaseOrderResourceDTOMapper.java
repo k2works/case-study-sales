@@ -3,6 +3,7 @@ package com.example.sms.presentation.api.procurement.purchase;
 import com.example.sms.domain.model.master.employee.EmployeeCode;
 import com.example.sms.domain.model.master.partner.supplier.SupplierCode;
 import com.example.sms.domain.model.procurement.purchase.*;
+import com.example.sms.domain.model.sales.order.OrderNumber;
 import com.example.sms.domain.type.money.Money;
 import com.example.sms.service.procurement.purchase.PurchaseOrderCriteria;
 
@@ -37,7 +38,7 @@ public class PurchaseOrderResourceDTOMapper {
             return PurchaseOrder.builder()
                     .purchaseOrderNumber(null)
                     .purchaseOrderDate(PurchaseOrderDate.of(resource.getPurchaseOrderDate()))
-                    .salesOrderNumber(resource.getSalesOrderNumber())
+                    .salesOrderNumber(OrderNumber.of(resource.getSalesOrderNumber()))
                     .supplierCode(SupplierCode.of(resource.getSupplierCode()))
                     .supplierBranchNumber(resource.getSupplierBranchNumber())
                     .purchaseManagerCode(EmployeeCode.of(resource.getPurchaseManagerCode()))

@@ -73,7 +73,7 @@ public class PurchaseOrderDataSource implements PurchaseOrderRepository {
                 発注データ明細 lineEntity = purchaseOrderEntityMapper.toLineEntity(line);
                 lineEntity.set発注番号(purchaseOrder.getPurchaseOrderNumber().getValue());
                 lineEntity.set発注行番号(lineNumber.getAndIncrement());
-                lineEntity.set受注番号(line.getSalesOrderNumber());
+                lineEntity.set受注番号(line.getSalesOrderNumber().getValue());
                 lineEntity.set受注行番号(line.getSalesOrderLineNumber());
                 lineEntity.set作成日時(now);
                 lineEntity.set作成者名(username);

@@ -22,7 +22,7 @@ class PurchaseOrderResourceDTOMapperTest {
         PurchaseOrderResource resource = new PurchaseOrderResource();
         resource.setPurchaseOrderNumber("PO25010001");
         resource.setPurchaseOrderDate(now);
-        resource.setSalesOrderNumber("SO000001");
+        resource.setSalesOrderNumber("OD25010001");
         resource.setSupplierCode("001");
         resource.setSupplierBranchNumber(0);
         resource.setPurchaseManagerCode("EMP001");
@@ -37,7 +37,7 @@ class PurchaseOrderResourceDTOMapperTest {
         lineResource.setPurchaseOrderNumber("PO25010001");
         lineResource.setPurchaseOrderLineNumber(1);
         lineResource.setPurchaseOrderLineDisplayNumber(1);
-        lineResource.setSalesOrderNumber("SO000001");
+        lineResource.setSalesOrderNumber("OD25010001");
         lineResource.setSalesOrderLineNumber(1);
         lineResource.setProductCode("10101001");
         lineResource.setProductName("商品1");
@@ -56,7 +56,7 @@ class PurchaseOrderResourceDTOMapperTest {
         assertNotNull(result.getPurchaseOrderNumber());
         assertEquals("PO25010001", result.getPurchaseOrderNumber().getValue());
         assertEquals(now, result.getPurchaseOrderDate().getValue());
-        assertEquals("SO000001", result.getSalesOrderNumber());
+        assertEquals("OD25010001", result.getSalesOrderNumber().getValue());
         assertEquals("001", result.getSupplierCode().getValue());
         assertEquals(0, result.getSupplierBranchNumber());
         assertEquals("EMP001", result.getPurchaseManagerCode().getValue());
@@ -72,7 +72,7 @@ class PurchaseOrderResourceDTOMapperTest {
         assertEquals("PO25010001", line.getPurchaseOrderNumber().getValue());
         assertEquals(1, line.getPurchaseOrderLineNumber());
         assertEquals(1, line.getPurchaseOrderLineDisplayNumber());
-        assertEquals("SO000001", line.getSalesOrderNumber());
+        assertEquals("OD25010001", line.getSalesOrderNumber().getValue());
         assertEquals(1, line.getSalesOrderLineNumber());
         assertEquals("10101001", line.getProductCode().getValue());
         assertEquals("商品1", line.getProductName());
@@ -89,7 +89,7 @@ class PurchaseOrderResourceDTOMapperTest {
         PurchaseOrderCriteriaResource resource = new PurchaseOrderCriteriaResource();
         resource.setPurchaseOrderNumber("PO25010001");
         resource.setPurchaseOrderDate(now);
-        resource.setSalesOrderNumber("SO000001");
+        resource.setSalesOrderNumber("OD25010001");
         resource.setSupplierCode("001");
         resource.setSupplierBranchNumber(0);
         resource.setPurchaseManagerCode("EMP001");
@@ -104,7 +104,7 @@ class PurchaseOrderResourceDTOMapperTest {
         assertNotNull(result);
         assertEquals("PO25010001", result.getPurchaseOrderNumber());
         assertEquals(now, result.getPurchaseOrderDate());
-        assertEquals("SO000001", result.getSalesOrderNumber());
+        assertEquals("OD25010001", result.getSalesOrderNumber());
         assertEquals("001", result.getSupplierCode());
         assertEquals(0, result.getSupplierBranchNumber());
         assertEquals("EMP001", result.getPurchaseManagerCode());

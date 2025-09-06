@@ -54,7 +54,7 @@ public class PurchaseOrderResource {
         resource.setPurchaseOrderNumber(purchaseOrder.getPurchaseOrderNumber() != null ? 
             purchaseOrder.getPurchaseOrderNumber().getValue() : null);
         resource.setPurchaseOrderDate(purchaseOrder.getPurchaseOrderDate().getValue());
-        resource.setSalesOrderNumber(purchaseOrder.getSalesOrderNumber());
+        resource.setSalesOrderNumber(purchaseOrder.getSalesOrderNumber().getValue());
         resource.setSupplierCode(purchaseOrder.getSupplierCode().getValue());
         resource.setSupplierBranchNumber(purchaseOrder.getSupplierBranchNumber());
         resource.setPurchaseManagerCode(purchaseOrder.getPurchaseManagerCode().getValue());
