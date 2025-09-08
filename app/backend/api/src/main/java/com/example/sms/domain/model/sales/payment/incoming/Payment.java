@@ -13,7 +13,7 @@ import lombok.Value;
 import java.time.LocalDateTime;
 
 /**
- * 入金データのドメインモデル
+ * 入金
  */
 @Value
 @AllArgsConstructor

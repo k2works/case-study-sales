@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 支払方法区分の列挙型
+ * 支払方法区分
  */
 @AllArgsConstructor
 @Getter

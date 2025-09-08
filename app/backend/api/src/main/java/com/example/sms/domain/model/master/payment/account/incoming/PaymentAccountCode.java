@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Value;
 
 /**
- * 入金口座コードの値オブジェクト
+ * 入金口座コード
  */
 @Value
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
