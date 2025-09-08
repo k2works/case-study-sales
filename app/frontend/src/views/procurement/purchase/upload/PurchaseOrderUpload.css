@@ -1,0 +1,79 @@
+.upload-container {
+    padding: 1rem;
+}
+
+.upload-result-container {
+    margin-top: 1rem;
+}
+
+.upload-result-list {
+    margin-top: 1rem;
+}
+
+.upload-result-item {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+    background-color: #f9f9f9;
+    margin-bottom: 0.5rem;
+}
+
+.upload-result-message {
+    flex: 1;
+    margin-right: 1rem;
+}
+
+.upload-result-details {
+    margin-top: 0.5rem;
+    padding-left: 1rem;
+    border-left: 2px solid #ddd;
+}
+
+.upload-result-detail {
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.detail-item {
+    display: flex;
+    margin-bottom: 0.25rem;
+}
+
+.detail-key {
+    font-weight: bold;
+    margin-right: 0.5rem;
+    color: #666;
+    min-width: 120px;
+}
+
+.detail-value {
+    color: #333;
+}
+
+.upload-modal {
+    position: relative;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    max-width: 600px;
+    margin: 2rem auto;
+}
+
+.upload-modal-header {
+    margin-bottom: 1.5rem;
+}
+
+.upload-modal-content {
+    margin-bottom: 1.5rem;
+}
+
+.upload-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}

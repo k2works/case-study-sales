@@ -13,6 +13,7 @@ export enum DownloadTarget {
     請求 = "11",
     入金 = "12",
     口座 = "13",
+    発注 = "14"
 }
 
 export type DownloadConditionType = {

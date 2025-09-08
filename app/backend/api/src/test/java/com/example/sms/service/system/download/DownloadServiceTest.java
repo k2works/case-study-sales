@@ -557,4 +557,41 @@ class DownloadServiceTest {
             assertEquals("001", firstResult.getBranchCode(), "全銀協支店コードが一致しません");
         }
     }
+
+    @Nested
+    @DisplayName("発注データ")
+    @WithMockUser(username = "admin", roles = "ADMIN")
+    class PurchaseOrderDownload {
+        @Test
+        @DisplayName("件数取得")
+        void testCount() {
+            DownloadCriteria condition = PurchaseOrder.of();
+            int result = downloadService.count(condition);
+            assertTrue(result >= 0);
+        }
+
+        @Test
+        @DisplayName("データダウンロード変換")
+        void testDownload() {
+            DownloadCriteria condition = PurchaseOrder.of();
+            List<?> rawResult = downloadService.convert(condition);
+            List<PurchaseOrderDownloadCSV> result = rawResult.stream()
+                    .filter(PurchaseOrderDownloadCSV.class::isInstance)
+                    .map(PurchaseOrderDownloadCSV.class::cast)
+                    .toList();
+
+            // 結果の確認
+            assertNotNull(result, "結果がnullです");
+            // データが存在する場合の基本的なフィールドチェック
+            if (!result.isEmpty()) {
+                PurchaseOrderDownloadCSV firstResult = result.getFirst();
+                assertNotNull(firstResult, "最初のデータがnullです");
+                assertNotNull(firstResult.getPurchaseOrderNumber(), "発注番号がnullです");
+                assertNotNull(firstResult.getPurchaseOrderDate(), "発注日がnullです");
+                assertNotNull(firstResult.getVendorCode(), "仕入先コードがnullです");
+                assertNotNull(firstResult.getPurchaseOrderLineNumber(), "発注行番号がnullです");
+                assertNotNull(firstResult.getProductCode(), "商品コードがnullです");
+            }
+        }
+    }
 }

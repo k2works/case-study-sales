@@ -110,6 +110,13 @@ describe('アプリケーションデータダウンロード', () => {
             cy.get('#download').click();
             cy.get('#message').contains('入金 データをダウンロードしました。');
         });
+
+        it('発注データダウンロード', () => {
+            userPage();
+            cy.get('#downloadTarget').select('発注');
+            cy.get('#download').click();
+            cy.get('#message').contains('発注 データをダウンロードしました。');
+        });
     });
 
     describe('利用者', () => {
@@ -222,6 +229,13 @@ describe('アプリケーションデータダウンロード', () => {
             cy.get('#downloadTarget').select('入金');
             cy.get('#download').click();
             cy.get('#message').contains('入金 データをダウンロードしました。');
+        });
+
+        it('発注データダウンロード', () => {
+            userPage();
+            cy.get('#downloadTarget').select('発注');
+            cy.get('#download').click();
+            cy.get('#message').contains('発注 データをダウンロードしました。');
         });
     });
 });

@@ -27,6 +27,14 @@ import com.example.sms.domain.model.sales.payment.incoming.Payment;
 import com.example.sms.domain.model.sales.payment.incoming.PaymentMethodType;
 import com.example.sms.domain.model.sales.sales.Sales;
 import com.example.sms.domain.model.sales.sales.SalesLine;
+import com.example.sms.domain.model.procurement.purchase.PurchaseOrder;
+import com.example.sms.domain.model.procurement.purchase.PurchaseOrderLine;
+import com.example.sms.domain.model.procurement.purchase.PurchaseOrderNumber;
+import com.example.sms.domain.model.sales.order.OrderNumber;
+import com.example.sms.domain.model.procurement.purchase.PurchaseOrderDate;
+import com.example.sms.domain.model.procurement.purchase.DesignatedDeliveryDate;
+import com.example.sms.domain.model.master.partner.supplier.SupplierCode;
+import com.example.sms.domain.type.money.Money;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
 import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
@@ -45,6 +53,7 @@ import com.example.sms.service.sales.invoice.InvoiceRepository;
 import com.example.sms.service.sales.payment.incoming.PaymentRepository;
 import com.example.sms.service.sales.sales.SalesRepository;
 import com.example.sms.service.sales.order.SalesOrderRepository;
+import com.example.sms.service.procurement.purchase.PurchaseOrderRepository;
 import com.example.sms.service.system.audit.AuditRepository;
 import com.example.sms.service.system.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,6 +101,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
     PaymentAccountRepository paymentAccountRepository;
     @Autowired
     PaymentRepository paymentIncomingRepository;
+    @Autowired
+    PurchaseOrderRepository purchaseOrderRepository;
 
     @Override
     public void setUpForAuthApiService() {
@@ -1086,6 +1097,217 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 10000,
                 5000
         );
+    }
+
+    @Override
+    public void setUpForPurchaseOrderService() {
+        setUpForUserManagementService();
+        setUpForDepartmentService();
+        setUpForEmployeeService();
+        setUpForRegionService();
+        setUpForPartnerGroupService();
+        setUpForPartnerCategoryService();
+        setUpForPartnerService();
+        setUpForProductService();
+        setUpPurchaseOrder();
+    }
+
+    @Override
+    public void setUpForPurchaseOrderServiceWithErrors() {
+        setUpForUserManagementService();
+        setUpForDepartmentService();
+        setUpForEmployeeService();
+        setUpForRegionService();
+        setUpForPartnerGroupService();
+        setUpForPartnerCategoryService();
+        setUpForPartnerService();
+        setUpForProductService();
+        setUpPurchaseOrderWithErrors();
+    }
+
+    private void setUpPurchaseOrder() {
+        purchaseOrderRepository.deleteAll();
+        List<PurchaseOrder> purchaseOrders = getPurchaseOrders();
+        purchaseOrders.forEach(purchaseOrderRepository::save);
+    }
+
+    private void setUpPurchaseOrderWithErrors() {
+        purchaseOrderRepository.deleteAll();
+        List<PurchaseOrder> purchaseOrders = getPurchaseOrdersWithErrors();
+        purchaseOrders.forEach(purchaseOrder -> {
+            try {
+                purchaseOrderRepository.save(purchaseOrder);
+            } catch (Exception e) {
+                // バリデーションエラーでもテスト用データとして保存する
+                System.out.println("テスト用エラーデータ作成時のエラー: " + e.getMessage());
+            }
+        });
+    }
+
+    private List<PurchaseOrder> getPurchaseOrders() {
+        List<PurchaseOrder> purchaseOrders = new ArrayList<>();
+        IntFunction<PurchaseOrder> getPurchaseOrder = i -> getPurchaseOrder("PO" + String.format("%08d", i));
+        IntStream.range(1, 4).forEach(i -> purchaseOrders.add(getPurchaseOrder.apply(i)));
+        return purchaseOrders;
+    }
+
+    private List<PurchaseOrder> getPurchaseOrdersWithErrors() {
+        List<PurchaseOrder> purchaseOrders = new ArrayList<>();
+        
+        // 金額超過の発注（600万円）
+        purchaseOrders.add(getPurchaseOrderWithAmountError("PE00000001"));
+        
+        // 納期が過去の発注
+        purchaseOrders.add(getPurchaseOrderWithDeliveryError("PE00000002"));
+        
+        return purchaseOrders;
+    }
+
+    private PurchaseOrder getPurchaseOrderWithAmountError(String purchaseOrderNumber) {
+        LocalDateTime now = LocalDateTime.now();
+        
+        List<PurchaseOrderLine> lines = List.of(
+                getPurchaseOrderLineWithHighAmount(purchaseOrderNumber, 1)
+        );
+
+        // 金額超過の発注をbuilderで作成（バリデーションを回避）
+        return PurchaseOrder.builder()
+                .purchaseOrderNumber(PurchaseOrderNumber.of(purchaseOrderNumber))
+                .purchaseOrderDate(PurchaseOrderDate.of(now))
+                .salesOrderNumber(OrderNumber.of("OD25010001"))
+                .supplierCode(SupplierCode.of("001", 0))
+                .purchaseManagerCode(EmployeeCode.of("EMP001"))
+                .designatedDeliveryDate(DesignatedDeliveryDate.of(now.plusDays(30)))
+                .warehouseCode("001")
+                .totalPurchaseAmount(Money.of(6000000)) // 600万円でルール違反
+                .totalConsumptionTax(Money.of(600000))
+                .remarks("金額超過テストデータ")
+                .purchaseOrderLines(lines)
+                .build();
+    }
+
+    private PurchaseOrder getPurchaseOrderWithDeliveryError(String purchaseOrderNumber) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime pastDeliveryDate = now.minusDays(1); // 納期が過去
+        
+        List<PurchaseOrderLine> lines = List.of(
+                getPurchaseOrderLine(purchaseOrderNumber, 1)
+        );
+
+        // 納期エラーの発注をbuilderで作成（バリデーションを回避）
+        return PurchaseOrder.builder()
+                .purchaseOrderNumber(PurchaseOrderNumber.of(purchaseOrderNumber))
+                .purchaseOrderDate(PurchaseOrderDate.of(now))
+                .salesOrderNumber(OrderNumber.of("OD25010001"))
+                .supplierCode(SupplierCode.of("001", 0))
+                .purchaseManagerCode(EmployeeCode.of("EMP001"))
+                .designatedDeliveryDate(DesignatedDeliveryDate.of(pastDeliveryDate)) // 過去の日付
+                .warehouseCode("001")
+                .totalPurchaseAmount(Money.of(100000))
+                .totalConsumptionTax(Money.of(10000))
+                .remarks("納期エラーテストデータ")
+                .purchaseOrderLines(lines)
+                .build();
+    }
+
+    private static PurchaseOrderLine getPurchaseOrderLineWithHighAmount(String purchaseOrderNumber, int lineNumber) {
+        return PurchaseOrderLine.of(
+                purchaseOrderNumber,
+                lineNumber,
+                lineNumber,
+                "OD25010001",
+                1,
+                "99999001", // 商品コード
+                "高額商品",
+                6000000, // 600万円の単価
+                1, // 数量1
+                0,
+                0
+        );
+    }
+
+    public static PurchaseOrder getPurchaseOrder(String purchaseOrderNumber) {
+        LocalDateTime now = LocalDateTime.now();
+        
+        List<PurchaseOrderLine> lines = List.of(
+                getPurchaseOrderLine(purchaseOrderNumber, 1)
+        );
+
+        return PurchaseOrder.of(
+                purchaseOrderNumber,
+                now,
+                "OD25010001",
+                "001", // 仕入先コード
+                0,
+                "EMP001", // 社員コード
+                now.plusDays(7),
+                "001", // 倉庫コード
+                10000,
+                1000, // 消費税（10000円 × 10% = 1000円）
+                "備考",
+                lines
+        );
+    }
+
+    public static PurchaseOrderLine getPurchaseOrderLine(String purchaseOrderNumber, int lineNumber) {
+        return PurchaseOrderLine.of(
+                purchaseOrderNumber,
+                lineNumber,
+                lineNumber,
+                "OD25010001",
+                1,
+                "10101001", // 実際の商品コード
+                "商品" + lineNumber,
+                1000,
+                10,
+                0,
+                0
+        );
+    }
+
+    @Override
+    public MultipartFile createPurchaseOrderFile() {
+        InputStream is = getClass().getResourceAsStream("/csv/purchase/order/purchase_order_valid.csv");
+        try {
+            return new MockMultipartFile(
+                    "purchase_order_valid.csv",
+                    "purchase_order_valid.csv",
+                    "text/csv",
+                    is
+            );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public MultipartFile createPurchaseOrderInvalidFile() {
+        InputStream is = getClass().getResourceAsStream("/csv/purchase/order/purchase_order_invalid.csv");
+        try {
+            return new MockMultipartFile(
+                    "purchase_order_invalid.csv",
+                    "purchase_order_invalid.csv",
+                    "text/csv",
+                    is
+            );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public MultipartFile createPurchaseOrderForCheckFile() {
+        InputStream is = getClass().getResourceAsStream("/csv/purchase/order/purchase_order_valid_for_check.csv");
+        try {
+            return new MockMultipartFile(
+                    "purchase_order_valid_for_check.csv",
+                    "purchase_order_valid_for_check.csv",
+                    "text/csv",
+                    is
+            );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

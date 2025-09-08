@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 入金口座区分の列挙型
+ * 入金口座区分
  */
 @AllArgsConstructor
 @Getter

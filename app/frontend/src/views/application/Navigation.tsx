@@ -86,6 +86,17 @@ const NaveItems: React.FC = () => {
                                 </ul>
                             )}
                         </ul>
+                        調達
+                        <ul className="nav-sub-list">
+                            <SubNavItem id="side-nav-purchase-order-nav" to="/purchase-order">発注</SubNavItem>
+                            {!Env.isProduction() && (
+                                <ul className="nav-sub-list">
+                                    <SubNavItem id="side-nav-purchase-order-nav" to="/purchase-order-list">一覧</SubNavItem>
+                                    <SubNavItem id="side-nav-purchase-order-nav" to="/purchase-order-upload">一括登録</SubNavItem>
+                                    <SubNavItem id="side-nav-purchase-order-nav" to="/purchase-order-rule">ルール</SubNavItem>
+                                </ul>
+                            )}
+                        </ul>
                     </li>
                     <li className="nav-item">
                         マスタ
@@ -165,6 +176,17 @@ const NaveItems: React.FC = () => {
                                 <ul className="nav-sub-list">
                                     <SubNavItem id="side-nav-payment-nav" to="/payment-incoming-list">一覧</SubNavItem>
                                     <SubNavItem id="side-nav-invoice-nav" to="/payment-summary">集計</SubNavItem>
+                                </ul>
+                            )}
+                        </ul>
+                        調達
+                        <ul className="nav-sub-list">
+                            <SubNavItem id="side-nav-purchase-order-nav" to="/purchase-order">発注</SubNavItem>
+                            {!Env.isProduction() && (
+                                <ul className="nav-sub-list">
+                                    <SubNavItem id="side-nav-purchase-order-nav" to="/purchase-order-list">一覧</SubNavItem>
+                                    <SubNavItem id="side-nav-purchase-order-nav" to="/purchase-order-upload">一括登録</SubNavItem>
+                                    <SubNavItem id="side-nav-purchase-order-nav" to="/purchase-order-rule">ルール</SubNavItem>
                                 </ul>
                             )}
                         </ul>

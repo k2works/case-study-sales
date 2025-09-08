@@ -161,3 +161,5 @@ docs/k2works.github.io.wiki
 .junie
 .github
 !.github/workflows
+.claude
+docs/k2works-wiki

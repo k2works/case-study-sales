@@ -73,7 +73,7 @@ public class Money implements Expression {
     public static Money of(int amount) {
         return new Money(amount, CurrencyType.JPY);
     }
-
+    
     public boolean isGreaterThan(Money other) {
         return amount >= other.amount;
     }

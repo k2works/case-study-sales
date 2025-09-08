@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import static org.apache.commons.lang3.Validate.notNull;
 
 /**
- * 入金口座マスタのドメインモデル
+ * 入金口座
  */
 @Value
 @AllArgsConstructor

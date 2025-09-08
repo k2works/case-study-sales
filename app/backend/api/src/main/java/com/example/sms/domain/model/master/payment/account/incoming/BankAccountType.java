@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 銀行口座種別の列挙型
+ * 銀行口座種別
  */
 @AllArgsConstructor
 @Getter
