@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.sms.infrastructure.datasource.inventory.InventoryCustomMapper">
+
+    <resultMap id="InventoryCustomEntityResult" type="com.example.sms.infrastructure.datasource.inventory.InventoryCustomEntity">
+        <id column="倉庫コード" jdbcType="VARCHAR" property="倉庫コード" />
+        <id column="商品コード" jdbcType="VARCHAR" property="商品コード" />
+        <id column="ロット番号" jdbcType="VARCHAR" property="ロット番号" />
+        <id column="在庫区分" jdbcType="VARCHAR" property="在庫区分" />
+        <id column="良品区分" jdbcType="VARCHAR" property="良品区分" />
+        <result column="実在庫数" jdbcType="INTEGER" property="実在庫数" />
+        <result column="有効在庫数" jdbcType="INTEGER" property="有効在庫数" />
+        <result column="最終出荷日" jdbcType="TIMESTAMP" property="最終出荷日" />
+        <result column="作成日時" jdbcType="TIMESTAMP" property="作成日時" />
+        <result column="作成者名" jdbcType="VARCHAR" property="作成者名" />
+        <result column="更新日時" jdbcType="TIMESTAMP" property="更新日時" />
+        <result column="更新者名" jdbcType="VARCHAR" property="更新者名" />
+        <result column="version" jdbcType="INTEGER" property="version" />
+        <result column="商品名" jdbcType="VARCHAR" property="商品名" />
+        <result column="倉庫名" jdbcType="VARCHAR" property="倉庫名" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        i.倉庫コード, i.商品コード, i.ロット番号, i.在庫区分, i.良品区分,
+        i.実在庫数, i.有効在庫数, i.最終出荷日,
+        i.作成日時, i.作成者名, i.更新日時, i.更新者名, i.version,
+        p.商品正式名 as 商品名, w.倉庫名
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="InventoryCustomEntityResult">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM "在庫データ" i
+        LEFT JOIN "商品マスタ" p ON i.商品コード = p.商品コード
+        LEFT JOIN "倉庫マスタ" w ON i.倉庫コード = w.倉庫コード
+        WHERE i.倉庫コード = #{倉庫コード,jdbcType=VARCHAR}
+        AND i.商品コード = #{商品コード,jdbcType=VARCHAR}
+        AND i.ロット番号 = #{ロット番号,jdbcType=VARCHAR}
+        AND i.在庫区分 = #{在庫区分,jdbcType=VARCHAR}
+        AND i.良品区分 = #{良品区分,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectAll" resultMap="InventoryCustomEntityResult">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM "在庫データ" i
+        LEFT JOIN "商品マスタ" p ON i.商品コード = p.商品コード
+        LEFT JOIN "倉庫マスタ" w ON i.倉庫コード = w.倉庫コード
+        ORDER BY i.倉庫コード, i.商品コード, i.ロット番号, i.在庫区分, i.良品区分
+    </select>
+
+    <select id="selectByCriteria" resultMap="InventoryCustomEntityResult">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM "在庫データ" i
+        LEFT JOIN "商品マスタ" p ON i.商品コード = p.商品コード
+        LEFT JOIN "倉庫マスタ" w ON i.倉庫コード = w.倉庫コード
+        <where>
+            <if test="倉庫コード != null and 倉庫コード != ''">
+                AND i.倉庫コード = #{倉庫コード,jdbcType=VARCHAR}
+            </if>
+            <if test="商品コード != null and 商品コード != ''">
+                AND i.商品コード = #{商品コード,jdbcType=VARCHAR}
+            </if>
+            <if test="ロット番号 != null and ロット番号 != ''">
+                AND i.ロット番号 = #{ロット番号,jdbcType=VARCHAR}
+            </if>
+            <if test="在庫区分 != null and 在庫区分 != ''">
+                AND i.在庫区分 = #{在庫区分,jdbcType=VARCHAR}
+            </if>
+            <if test="良品区分 != null and 良品区分 != ''">
+                AND i.良品区分 = #{良品区分,jdbcType=VARCHAR}
+            </if>
+            <if test="商品名 != null and 商品名 != ''">
+                AND p.商品正式名 LIKE CONCAT('%', #{商品名,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="倉庫名 != null and 倉庫名 != ''">
+                AND w.倉庫名 LIKE CONCAT('%', #{倉庫名,jdbcType=VARCHAR}, '%')
+            </if>
+        </where>
+        ORDER BY i.倉庫コード, i.商品コード, i.ロット番号, i.在庫区分, i.良品区分
+    </select>
+
+    <insert id="insertForOptimisticLock" parameterType="com.example.sms.infrastructure.datasource.autogen.model.在庫データ">
+        INSERT INTO "在庫データ" (
+            倉庫コード, 商品コード, ロット番号, 在庫区分, 良品区分,
+            実在庫数, 有効在庫数, 最終出荷日,
+            作成日時, 作成者名, 更新日時, 更新者名, version
+        ) VALUES (
+            #{倉庫コード,jdbcType=VARCHAR}, #{商品コード,jdbcType=VARCHAR}, #{ロット番号,jdbcType=VARCHAR}, 
+            #{在庫区分,jdbcType=VARCHAR}, #{良品区分,jdbcType=VARCHAR},
+            #{実在庫数,jdbcType=INTEGER}, #{有効在庫数,jdbcType=INTEGER}, #{最終出荷日,jdbcType=TIMESTAMP},
+            #{作成日時,jdbcType=TIMESTAMP}, #{作成者名,jdbcType=VARCHAR}, 
+            #{更新日時,jdbcType=TIMESTAMP}, #{更新者名,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}
+        )
+    </insert>
+
+    <update id="updateByPrimaryKeyForOptimisticLock" parameterType="com.example.sms.infrastructure.datasource.autogen.model.在庫データ">
+        UPDATE "在庫データ"
+        SET 実在庫数 = #{実在庫数,jdbcType=INTEGER},
+            有効在庫数 = #{有効在庫数,jdbcType=INTEGER},
+            最終出荷日 = #{最終出荷日,jdbcType=TIMESTAMP},
+            更新日時 = #{更新日時,jdbcType=TIMESTAMP},
+            更新者名 = #{更新者名,jdbcType=VARCHAR},
+            version = version + 1
+        WHERE 倉庫コード = #{倉庫コード,jdbcType=VARCHAR}
+        AND 商品コード = #{商品コード,jdbcType=VARCHAR}
+        AND ロット番号 = #{ロット番号,jdbcType=VARCHAR}
+        AND 在庫区分 = #{在庫区分,jdbcType=VARCHAR}
+        AND 良品区分 = #{良品区分,jdbcType=VARCHAR}
+        AND version = #{version,jdbcType=INTEGER}
+    </update>
+
+    <delete id="deleteAll">
+        DELETE FROM "在庫データ"
+    </delete>
+
+</mapper>

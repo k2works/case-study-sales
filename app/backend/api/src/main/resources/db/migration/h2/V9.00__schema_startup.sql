@@ -33,6 +33,7 @@ create table if not exists 在庫データ
     作成者名   varchar(12),
     更新日時   timestamp(6) default CURRENT_DATE           not null,
     更新者名   varchar(12),
+    version          integer      default 1            not null,
     constraint pk_stock
     primary key (倉庫コード, 商品コード, ロット番号, 在庫区分, 良品区分)
     );
