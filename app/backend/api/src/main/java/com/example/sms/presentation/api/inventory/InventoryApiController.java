@@ -7,16 +7,19 @@ import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
+import com.example.sms.presentation.api.system.auth.payload.response.MessageResponseWithDetail;
 import com.example.sms.service.BusinessException;
 import com.example.sms.service.PageNationService;
 import com.example.sms.service.inventory.InventoryCriteria;
 import com.example.sms.service.inventory.InventoryService;
+import com.example.sms.service.inventory.InventoryUploadErrorList;
 import com.example.sms.service.system.audit.AuditAnnotation;
 import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -158,6 +161,21 @@ public class InventoryApiController {
             PageInfo<InventoryResource> result = pageNationService.getPageInfo(pageInfo, InventoryResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
+    }
+
+    @Operation(summary = "在庫を一括登録する", description = "ファイルアップロードで在庫を登録する")
+    @PostMapping("/upload")
+    @AuditAnnotation(process = ApplicationExecutionProcessType.在庫登録, type = ApplicationExecutionHistoryType.同期)
+    public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file) {
+        try {
+            InventoryUploadErrorList result = inventoryService.uploadCsvFile(file);
+            if (result.isEmpty()) {
+                return ResponseEntity.ok(new MessageResponseWithDetail(message.getMessage("success.inventory.upload"), result.asList()));
+            }
+            return ResponseEntity.ok(new MessageResponseWithDetail(message.getMessage("error.inventory.upload"), result.asList()));
+        } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }

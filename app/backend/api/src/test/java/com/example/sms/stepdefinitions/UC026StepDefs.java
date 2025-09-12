@@ -4,6 +4,7 @@ import com.example.sms.TestDataFactory;
 import com.example.sms.presentation.api.inventory.InventoryCriteriaResource;
 import com.example.sms.presentation.api.inventory.InventoryResource;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
+import com.example.sms.presentation.api.system.auth.payload.response.MessageResponseWithDetail;
 import com.example.sms.service.inventory.InventoryRepository;
 import com.example.sms.stepdefinitions.utils.SpringAcceptanceTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -16,8 +17,15 @@ import io.cucumber.java.ja.ならば;
 import io.cucumber.java.ja.もし;
 import io.cucumber.java.ja.前提;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -212,6 +220,137 @@ public class UC026StepDefs extends SpringAcceptanceTest {
         assertNotNull(response);
         assertNotNull(response.getList());
         assertTrue(response.getList().size() > 0);
+    }
+
+    @もし(":UC026 正常な在庫CSVファイル {string} をアップロードする")
+    public void uploadValidInventoryCSV(String fileName) throws IOException {
+        ClassPathResource resource = new ClassPathResource("csv/inventory/" + fileName);
+        byte[] fileContent = Files.readAllBytes(resource.getFile().toPath());
+        
+        MockMultipartFile csvFile = new MockMultipartFile(
+            "file", 
+            fileName, 
+            "text/csv", 
+            fileContent
+        );
+        
+        executePost(INVENTORY_API_URL + "/upload", csvFile);
+    }
+
+    @もし(":UC026 不正な在庫CSVファイル {string} をアップロードする")
+    public void uploadInvalidInventoryCSV(String fileName) throws IOException {
+        ClassPathResource resource = new ClassPathResource("csv/inventory/" + fileName);
+        byte[] fileContent = Files.readAllBytes(resource.getFile().toPath());
+        
+        MockMultipartFile csvFile = new MockMultipartFile(
+            "file", 
+            fileName, 
+            "text/csv", 
+            fileContent
+        );
+        
+        executePost(INVENTORY_API_URL + "/upload", csvFile);
+    }
+
+    @もし(":UC026 空の在庫CSVファイル {string} をアップロードする")
+    public void uploadEmptyInventoryCSV(String fileName) throws IOException {
+        ClassPathResource resource = new ClassPathResource("csv/inventory/" + fileName);
+        byte[] fileContent = Files.readAllBytes(resource.getFile().toPath());
+        
+        MockMultipartFile csvFile = new MockMultipartFile(
+            "file", 
+            fileName, 
+            "text/csv", 
+            fileContent
+        );
+        
+        executePost(INVENTORY_API_URL + "/upload", csvFile);
+    }
+
+    @もし(":UC026 CSV以外のファイル {string} をアップロードする")
+    public void uploadNonCSVFile(String fileName) throws IOException {
+        ClassPathResource resource = new ClassPathResource("csv/inventory/" + fileName);
+        byte[] fileContent = Files.readAllBytes(resource.getFile().toPath());
+        
+        MockMultipartFile nonCsvFile = new MockMultipartFile(
+            "file", 
+            fileName, 
+            "text/plain", 
+            fileContent
+        );
+        
+        executePost(INVENTORY_API_URL + "/upload", nonCsvFile);
+    }
+
+    @もし(":UC026 ファイルを選択せずにアップロードする")
+    public void uploadWithoutFile() {
+        MockMultipartFile emptyFile = new MockMultipartFile(
+            "file", 
+            "", 
+            "text/csv", 
+            new byte[0]
+        );
+        
+        executePost(INVENTORY_API_URL + "/upload", emptyFile);
+    }
+
+    @もし(":UC026 大きすぎるファイル {string} をアップロードする")
+    public void uploadLargeFile(String fileName) throws IOException {
+        // テスト用に大きなファイルを模擬（実際は小さなファイルだが、テスト目的で大きなサイズとして扱う）
+        byte[] largeContent = new byte[15000000]; // 15MB > 10MB制限
+        
+        MockMultipartFile largeFile = new MockMultipartFile(
+            "file", 
+            fileName, 
+            "text/csv", 
+            largeContent
+        );
+        
+        executePost(INVENTORY_API_URL + "/upload", largeFile);
+    }
+
+    @もし(":UC026 重複在庫キーを含む在庫CSVファイル {string} をアップロードする")
+    public void uploadDuplicateInventoryCSV(String fileName) throws IOException {
+        ClassPathResource resource = new ClassPathResource("csv/inventory/" + fileName);
+        byte[] fileContent = Files.readAllBytes(resource.getFile().toPath());
+        
+        MockMultipartFile csvFile = new MockMultipartFile(
+            "file", 
+            fileName, 
+            "text/csv", 
+            fileContent
+        );
+        
+        executePost(INVENTORY_API_URL + "/upload", csvFile);
+    }
+
+    @ならば(":UC026 バリデーションエラー詳細が表示される")
+    public void verifyValidationErrorDetails() throws JsonProcessingException {
+        String result = latestResponse.getBody();
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        
+        MessageResponseWithDetail response = objectMapper.readValue(result, MessageResponseWithDetail.class);
+        assertNotNull(response.getDetails());
+        assertTrue(response.getDetails().size() > 0);
+        System.out.println("Validation errors: " + response.getDetails());
+    }
+
+    @ならば(":UC026 重複エラー詳細が表示される")
+    public void verifyDuplicateErrorDetails() throws JsonProcessingException {
+        String result = latestResponse.getBody();
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        
+        MessageResponseWithDetail response = objectMapper.readValue(result, MessageResponseWithDetail.class);
+        assertNotNull(response.getDetails());
+        assertTrue(response.getDetails().size() > 0);
+        
+        // 重複エラーメッセージの確認
+        boolean hasDuplicateError = response.getDetails().stream()
+                .anyMatch(detail -> detail.toString().contains("既に存在") || detail.toString().contains("重複"));
+        assertTrue(hasDuplicateError, "重複エラーが検出されませんでした");
+        System.out.println("Duplicate errors: " + response.getDetails());
     }
 
     private InventoryResource getInventoryResource(String warehouseCode, String productCode, String lotNumber, String stockCategory, String qualityCategory, Integer actualStockQuantity, Integer availableStockQuantity) {

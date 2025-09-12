@@ -4,6 +4,7 @@ import com.example.sms.domain.model.inventory.Inventory;
 import com.example.sms.domain.model.inventory.InventoryKey;
 import com.example.sms.domain.model.inventory.InventoryList;
 import com.github.pagehelper.PageInfo;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -77,4 +78,9 @@ public interface InventoryService {
      * 全在庫を削除
      */
     void deleteAll();
+
+    /**
+     * CSVファイルから在庫データを一括登録
+     */
+    InventoryUploadErrorList uploadCsvFile(MultipartFile file);
 }
