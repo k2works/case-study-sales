@@ -27,7 +27,7 @@ public class SpringAcceptanceTest {
     @Autowired
     protected RestTemplate restTemplate;
 
-    String authHeader = null;
+    protected String authHeader = null;
 
     protected void signin(String userId, String password, String url) {
         RestTemplate restTemplate = new RestTemplate();

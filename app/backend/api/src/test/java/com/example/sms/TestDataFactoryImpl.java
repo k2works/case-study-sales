@@ -40,6 +40,9 @@ import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag;
 import com.example.sms.domain.model.system.user.RoleName;
+import com.example.sms.domain.model.inventory.Inventory;
+import com.example.sms.domain.model.inventory.InventoryKey;
+import com.example.sms.service.inventory.InventoryRepository;
 import com.example.sms.service.master.payment.PaymentAccountRepository;
 import com.example.sms.service.master.region.RegionRepository;
 import com.example.sms.service.master.department.DepartmentRepository;
@@ -103,6 +106,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
     PaymentRepository paymentIncomingRepository;
     @Autowired
     PurchaseOrderRepository purchaseOrderRepository;
+    @Autowired
+    InventoryRepository inventoryRepository;
 
     @Override
     public void setUpForAuthApiService() {
@@ -1144,6 +1149,24 @@ public class TestDataFactoryImpl implements TestDataFactory {
         });
     }
 
+    @Override
+    public void setUpForInventoryService() {
+        // 在庫データをクリア
+        inventoryRepository.deleteAll();
+        
+        // 商品マスタデータの準備
+        productRepository.deleteAll();
+        productRepository.save(Product.of("10101001", "商品1", "商品1", "しょうひん1", ProductType.その他, 1000, 900, 100, TaxType.外税, "カテゴリ1", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "001", 1));
+        productRepository.save(Product.of("10101002", "商品2", "商品2", "しょうひん2", ProductType.その他, 2000, 1800, 200, TaxType.内税, "カテゴリ1", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "002", 2));
+        productRepository.save(Product.of("10103001", "商品3", "商品3", "しょうひん3", ProductType.その他, 3000, 2700, 300, TaxType.非課税, "カテゴリ2", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "003", 3));
+        
+        // 既存の在庫データを作成（テスト用）
+        // テストシナリオで使用される WH1/10101001/LOT001 とは異なるデータを作成
+        inventoryRepository.save(getInventory("WH2", "10101001", "LOT002"));
+        inventoryRepository.save(getInventory("WH3", "10101002", "LOT003"));
+        inventoryRepository.save(getInventory("WH1", "10103001", "LOT004"));
+    }
+
     private List<PurchaseOrder> getPurchaseOrders() {
         List<PurchaseOrder> purchaseOrders = new ArrayList<>();
         IntFunction<PurchaseOrder> getPurchaseOrder = i -> getPurchaseOrder("PO" + String.format("%08d", i));
@@ -1309,5 +1332,17 @@ public class TestDataFactoryImpl implements TestDataFactory {
             throw new RuntimeException(e);
         }
     }
-
+    
+    public static Inventory getInventory(String warehouseCode, String productCode, String lotNumber) {
+        return Inventory.of(
+                warehouseCode,
+                productCode,
+                lotNumber,
+                "1",  // 在庫区分
+                "G",  // 良品区分
+                100,  // 実在庫数
+                95,   // 有効在庫数
+                LocalDateTime.now().minusDays(1)  // 最終出荷日
+        );
+    }
 }

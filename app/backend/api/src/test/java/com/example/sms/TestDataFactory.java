@@ -55,6 +55,8 @@ public interface TestDataFactory {
 
     void setUpForPurchaseOrderServiceWithErrors();
 
+    void setUpForInventoryService();
+
     MultipartFile createOrderFile();
 
     MultipartFile createOrderInvalidFile();
