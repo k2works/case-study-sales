@@ -1159,6 +1159,10 @@ public class TestDataFactoryImpl implements TestDataFactory {
         productRepository.save(Product.of("10101001", "商品1", "商品1", "しょうひん1", ProductType.その他, 1000, 900, 100, TaxType.外税, "カテゴリ1", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "001", 1));
         productRepository.save(Product.of("10101002", "商品2", "商品2", "しょうひん2", ProductType.その他, 2000, 1800, 200, TaxType.内税, "カテゴリ1", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "002", 2));
         productRepository.save(Product.of("10103001", "商品3", "商品3", "しょうひん3", ProductType.その他, 3000, 2700, 300, TaxType.非課税, "カテゴリ2", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "003", 3));
+        // InventoryUploadTest用の商品データ
+        productRepository.save(Product.of("99999001", "テスト商品1", "テスト商品1", "てすとしょうひん1", ProductType.その他, 1000, 900, 100, TaxType.外税, "カテゴリ1", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "T01", 1));
+        productRepository.save(Product.of("99999002", "テスト商品2", "テスト商品2", "てすとしょうひん2", ProductType.その他, 2000, 1800, 200, TaxType.内税, "カテゴリ1", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "T02", 2));
+        productRepository.save(Product.of("99999003", "テスト商品3", "テスト商品3", "てすとしょうひん3", ProductType.その他, 3000, 2700, 300, TaxType.非課税, "カテゴリ1", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "T03", 3));
         
         // 既存の在庫データを作成（テスト用）
         // テストシナリオで使用される WH1/10101001/LOT001 とは異なるデータを作成
@@ -1325,6 +1329,36 @@ public class TestDataFactoryImpl implements TestDataFactory {
             return new MockMultipartFile(
                     "purchase_order_valid_for_check.csv",
                     "purchase_order_valid_for_check.csv",
+                    "text/csv",
+                    is
+            );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public MultipartFile createInventoryFile() {
+        InputStream is = getClass().getResourceAsStream("/csv/inventory/valid_inventory.csv");
+        try {
+            return new MockMultipartFile(
+                    "valid_inventory.csv",
+                    "valid_inventory.csv",
+                    "text/csv",
+                    is
+            );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public MultipartFile createInventoryInvalidFile() {
+        InputStream is = getClass().getResourceAsStream("/csv/inventory/invalid_inventory.csv");
+        try {
+            return new MockMultipartFile(
+                    "invalid_inventory.csv",
+                    "invalid_inventory.csv",
                     "text/csv",
                     is
             );

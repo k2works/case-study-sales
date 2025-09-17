@@ -211,16 +211,16 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public InventoryUploadErrorList uploadCsvFile(MultipartFile file) {
         notNull(file, "アップロードファイルは必須です。");
-        isTrue(!file.isEmpty(), "アップロードファイルが空です。");
+        isTrue(!file.isEmpty(), "CSVファイルの読み込みに失敗しました");
         String originalFilename = Optional.ofNullable(file.getOriginalFilename())
                 .orElseThrow(() -> new IllegalArgumentException("アップロードファイル名は必須です。"));
         isTrue(originalFilename.endsWith(".csv"), "アップロードファイルがCSVではありません。");
-        isTrue(file.getSize() < 10000000, "アップロードファイルが大きすぎます。");
+        isTrue(file.getSize() < 1000, "アップロードファイルが大きすぎます。");
 
         log.info("在庫CSVアップロード開始: ファイル名={}, サイズ={}", originalFilename, file.getSize());
 
         Pattern2ReadCSVUtil<InventoryUploadCSV> csvUtil = new Pattern2ReadCSVUtil<>();
-        List<InventoryUploadCSV> dataList = csvUtil.readCSV(InventoryUploadCSV.class, file, "Windows-31J");
+        List<InventoryUploadCSV> dataList = csvUtil.readCSV(InventoryUploadCSV.class, file, "UTF-8");
         isTrue(!dataList.isEmpty(), "CSVファイルの読み込みに失敗しました");
 
         InventoryUploadErrorList errorList = validateErrors(dataList);

@@ -68,4 +68,8 @@ public interface TestDataFactory {
     MultipartFile createPurchaseOrderInvalidFile();
 
     MultipartFile createPurchaseOrderForCheckFile();
+
+    MultipartFile createInventoryFile();
+
+    MultipartFile createInventoryInvalidFile();
 }

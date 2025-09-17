@@ -176,7 +176,8 @@ public class InventoryApiController {
             }
             return ResponseEntity.ok(new MessageResponseWithDetail(message.getMessage("error.inventory.upload"), result.asList()));
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+            System.out.println("InventoryApiController: Exception caught: " + e.getClass().getName() + " - " + e.getMessage());
+            return ResponseEntity.badRequest().body(new MessageResponseWithDetail(e.getMessage(), java.util.List.of()));
         }
     }
 
