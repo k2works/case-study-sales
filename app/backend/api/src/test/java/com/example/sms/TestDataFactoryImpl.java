@@ -41,6 +41,7 @@ import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType
 import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag;
 import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.domain.model.inventory.Inventory;
+import com.example.sms.domain.model.master.warehouse.Warehouse;
 import com.example.sms.service.inventory.InventoryRepository;
 import com.example.sms.service.master.payment.PaymentAccountRepository;
 import com.example.sms.service.master.region.RegionRepository;
@@ -1398,5 +1399,9 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 95,   // 有効在庫数
                 LocalDateTime.now().minusDays(1)  // 最終出荷日
         );
+    }
+
+    public static Warehouse getWarehouse(String warehouseCode, String warehouseName) {
+        return Warehouse.of(warehouseCode, warehouseName);
     }
 }

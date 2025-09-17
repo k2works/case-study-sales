@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.sms.infrastructure.datasource.master.warehouse.WarehouseCustomMapper">
+    <resultMap id="BaseResultMap"
+               type="com.example.sms.infrastructure.datasource.master.warehouse.WarehouseCustomEntity"
+               extends="com.example.sms.infrastructure.datasource.autogen.mapper.倉庫マスタMapper.BaseResultMap"
+    >
+    </resultMap>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.倉庫マスタMapper.Base_Column_List" />
+        from public.倉庫マスタ
+        where 倉庫コード = #{warehouseCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectAll"
+            parameterType="java.lang.String"
+            resultMap="BaseResultMap">
+
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.倉庫マスタMapper.Base_Column_List"/>
+        from public.倉庫マスタ
+    </select>
+
+    <select id="selectByWarehouseCode"
+            parameterType="java.lang.String"
+            resultMap="BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.倉庫マスタMapper.Base_Column_List"/>
+        from public.倉庫マスタ
+        where 倉庫コード = #{warehouseCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByCriteria" resultMap="BaseResultMap">
+        SELECT
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.倉庫マスタMapper.Base_Column_List"/>
+        FROM public.倉庫マスタ
+        <where>
+            <if test="warehouseName != null and warehouseName != ''">
+                AND 倉庫名 = #{warehouseName}
+            </if>
+
+            <if test="warehouseCode != null and warehouseCode != ''">
+                AND 倉庫コード = #{warehouseCode}
+            </if>
+        </where>
+    </select>
+</mapper>
