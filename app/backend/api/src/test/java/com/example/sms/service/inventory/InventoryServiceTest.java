@@ -33,7 +33,7 @@ class InventoryServiceTest {
     private InventoryDomainService inventoryDomainService;
 
     @InjectMocks
-    private InventoryServiceImpl inventoryService;
+    private InventoryService inventoryService;
 
     private Inventory getInventory() {
         return Inventory.of(

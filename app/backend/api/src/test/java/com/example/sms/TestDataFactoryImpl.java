@@ -317,7 +317,10 @@ public class TestDataFactoryImpl implements TestDataFactory {
             setUpForPaymentIncomingService();
 
             // 在庫データの準備
-            setUpForInventoryService();
+            inventoryRepository.deleteAll();
+            inventoryRepository.save(getInventory("WH2", "99999999", "LOT002"));
+            inventoryRepository.save(getInventory("WH3", "99999999", "LOT003"));
+            inventoryRepository.save(getInventory("WH1", "99999999", "LOT004"));
         });
     }
 
