@@ -21,7 +21,8 @@ public enum DownloadTarget {
     請求("invoice"),
     入金("payment"),
     口座("payment_account"),
-    発注("purchase_order");
+    発注("purchase_order"),
+    在庫("inventory");
 
     private final String value;
 

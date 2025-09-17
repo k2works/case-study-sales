@@ -41,7 +41,6 @@ import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType
 import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag;
 import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.domain.model.inventory.Inventory;
-import com.example.sms.domain.model.inventory.InventoryKey;
 import com.example.sms.service.inventory.InventoryRepository;
 import com.example.sms.service.master.payment.PaymentAccountRepository;
 import com.example.sms.service.master.region.RegionRepository;
@@ -316,6 +315,9 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
             // 入金データの準備
             setUpForPaymentIncomingService();
+
+            // 在庫データの準備
+            setUpForInventoryService();
         });
     }
 

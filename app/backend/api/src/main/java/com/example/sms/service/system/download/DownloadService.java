@@ -15,6 +15,7 @@ import com.example.sms.domain.model.sales.payment.incoming.PaymentList;
 import com.example.sms.domain.model.procurement.purchase.PurchaseOrderList;
 import com.example.sms.domain.model.sales.sales.SalesList;
 import com.example.sms.domain.model.sales.shipping.ShippingList;
+import com.example.sms.domain.model.inventory.InventoryList;
 import com.example.sms.domain.model.system.download.DownloadCriteria;
 import com.example.sms.infrastructure.datasource.system.download.*;
 import com.example.sms.infrastructure.datasource.system.download.PaymentDownloadCSV;
@@ -47,8 +48,9 @@ public class DownloadService {
     private final InvoiceCSVRepository invoiceCSVRepository;
     private final PaymentCSVRepository paymentCSVRepository;
     private final PaymentAccountCSVRepository paymentAccountCSVRepository;
+    private final InventoryCSVRepository inventoryCSVRepository;
 
-    public DownloadService(DepartmentCSVRepository departmentCSVRepository, EmployeeCSVRepository employeeCSVRepository, ProductCategoryCSVRepository productCategoryCSVRepository, ProductCSVRepository productCSVRepository, PartnerGroupCSVRepository partnerGroupCSVRepository, PartnerCSVRepository partnerCSVRepository, CustomerCSVRepository customerCSVRepository, VendorCSVRepository vendorCSVRepository, OrderCSVRepository orderCSVRepository, ShippingCSVRepository shippingCSVRepository, SalesCSVRepository salesCSVRepository, PurchaseOrderCSVRepository purchaseOrderCSVRepository, InvoiceCSVRepository invoiceCSVRepository, PaymentCSVRepository paymentCSVRepository, PaymentAccountCSVRepository paymentAccountCSVRepository) {
+    public DownloadService(DepartmentCSVRepository departmentCSVRepository, EmployeeCSVRepository employeeCSVRepository, ProductCategoryCSVRepository productCategoryCSVRepository, ProductCSVRepository productCSVRepository, PartnerGroupCSVRepository partnerGroupCSVRepository, PartnerCSVRepository partnerCSVRepository, CustomerCSVRepository customerCSVRepository, VendorCSVRepository vendorCSVRepository, OrderCSVRepository orderCSVRepository, ShippingCSVRepository shippingCSVRepository, SalesCSVRepository salesCSVRepository, PurchaseOrderCSVRepository purchaseOrderCSVRepository, InvoiceCSVRepository invoiceCSVRepository, PaymentCSVRepository paymentCSVRepository, PaymentAccountCSVRepository paymentAccountCSVRepository, InventoryCSVRepository inventoryCSVRepository) {
         this.departmentCSVRepository = departmentCSVRepository;
         this.employeeCSVRepository = employeeCSVRepository;
         this.productCategoryCSVRepository = productCategoryCSVRepository;
@@ -64,6 +66,7 @@ public class DownloadService {
         this.invoiceCSVRepository = invoiceCSVRepository;
         this.paymentCSVRepository = paymentCSVRepository;
         this.paymentAccountCSVRepository = paymentAccountCSVRepository;
+        this.inventoryCSVRepository = inventoryCSVRepository;
     }
 
     /**
@@ -125,6 +128,9 @@ public class DownloadService {
                 checkPermission("ROLE_ADMIN");
                 yield countPaymentAccount(condition);
             }
+            case 在庫 -> {
+                yield countInventory(condition);
+            }
         };
     }
 
@@ -148,6 +154,7 @@ public class DownloadService {
             case 請求 -> writeCsv(InvoiceDownloadCSV.class).accept(streamWriter, convert(condition));
             case 入金 -> writeCsv(PaymentDownloadCSV.class).accept(streamWriter, convert(condition));
             case 口座 -> writeCsv(PaymentAccountDownloadCSV.class).accept(streamWriter, convert(condition));
+            case 在庫 -> writeCsv(InventoryDownloadCSV.class).accept(streamWriter, convert(condition));
         }
     }
 
@@ -171,6 +178,7 @@ public class DownloadService {
             case 請求 -> (List<T>) convertInvoice(condition);
             case 入金 -> (List<T>) convertPayment(condition);
             case 口座 -> (List<T>) convertPaymentAccount(condition);
+            case 在庫 -> (List<T>) convertInventory(condition);
         };
     }
 
@@ -372,6 +380,13 @@ public class DownloadService {
     }
 
     /**
+     * 在庫ダウンロード件数取得
+     */
+    private int countInventory(DownloadCriteria condition) {
+        return inventoryCSVRepository.countBy(condition);
+    }
+
+    /**
      * 請求CSV変換
      */
     private List<InvoiceDownloadCSV> convertInvoice(DownloadCriteria condition) {
@@ -393,5 +408,13 @@ public class DownloadService {
     private List<PaymentAccountDownloadCSV> convertPaymentAccount(DownloadCriteria condition) {
         PaymentAccountList paymentAccountList = paymentAccountCSVRepository.selectBy(condition);
         return paymentAccountCSVRepository.convert(paymentAccountList);
+    }
+
+    /**
+     * 在庫CSV変換
+     */
+    private List<InventoryDownloadCSV> convertInventory(DownloadCriteria condition) {
+        InventoryList inventoryList = inventoryCSVRepository.selectBy(condition);
+        return inventoryCSVRepository.convert(inventoryList);
     }
 }
