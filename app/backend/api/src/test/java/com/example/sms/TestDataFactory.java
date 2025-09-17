@@ -72,4 +72,6 @@ public interface TestDataFactory {
     MultipartFile createInventoryFile();
 
     MultipartFile createInventoryInvalidFile();
+
+    MultipartFile createInventoryForCheckFile();
 }

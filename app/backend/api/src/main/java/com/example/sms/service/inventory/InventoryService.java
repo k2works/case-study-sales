@@ -3,6 +3,7 @@ package com.example.sms.service.inventory;
 import com.example.sms.domain.model.inventory.Inventory;
 import com.example.sms.domain.model.inventory.InventoryKey;
 import com.example.sms.domain.model.inventory.InventoryList;
+import com.example.sms.domain.model.inventory.rule.InventoryRuleCheckList;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -83,4 +84,9 @@ public interface InventoryService {
      * CSVファイルから在庫データを一括登録
      */
     InventoryUploadErrorList uploadCsvFile(MultipartFile file);
+
+    /**
+     * 在庫ルールをチェック
+     */
+    InventoryRuleCheckList checkRule();
 }

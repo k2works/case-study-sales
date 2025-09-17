@@ -2,6 +2,7 @@ package com.example.sms.presentation.api.inventory;
 
 import com.example.sms.domain.model.inventory.Inventory;
 import com.example.sms.domain.model.inventory.InventoryKey;
+import com.example.sms.domain.model.inventory.rule.InventoryRuleCheckList;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType;
 import com.example.sms.presentation.Message;
@@ -253,6 +254,21 @@ public class InventoryApiController {
             InventoryKey key = InventoryKey.of(warehouseCode, productCode, lotNumber, stockCategory, qualityCategory);
             inventoryService.receiveStock(key, receiptQuantity);
             return ResponseEntity.ok(new MessageResponse(message.getMessage("success.inventory.received")));
+        } catch (BusinessException | IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
+    }
+
+    @Operation(summary = "在庫ルールチェック", description = "在庫業務ルールをチェックします。")
+    @PostMapping("/check")
+    @AuditAnnotation(process = ApplicationExecutionProcessType.在庫ルールチェック, type = ApplicationExecutionHistoryType.同期)
+    public ResponseEntity<?> checkInventoryRules(@RequestBody String requestBody) {
+        try {
+            InventoryRuleCheckList result = inventoryService.checkRule();
+            if (!result.hasErrors()) {
+                return ResponseEntity.ok(new MessageResponseWithDetail(message.getMessage("success.inventory.rule.check.no.issues"), result.getCheckList()));
+            }
+            return ResponseEntity.ok(new MessageResponseWithDetail(message.getMessage("success.inventory.rule.check.with.issues"), result.getCheckList()));
         } catch (BusinessException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }

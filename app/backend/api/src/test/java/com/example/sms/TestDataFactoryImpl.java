@@ -1366,6 +1366,21 @@ public class TestDataFactoryImpl implements TestDataFactory {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public MultipartFile createInventoryForCheckFile() {
+        InputStream is = getClass().getResourceAsStream("/csv/inventory/inventory_valid_for_check.csv");
+        try {
+            return new MockMultipartFile(
+                    "inventory_valid_for_check.csv",
+                    "inventory_valid_for_check.csv",
+                    "text/csv",
+                    is
+            );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
     
     public static Inventory getInventory(String warehouseCode, String productCode, String lotNumber) {
         return Inventory.of(

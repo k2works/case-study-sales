@@ -3,6 +3,8 @@ package com.example.sms.service.inventory;
 import com.example.sms.domain.model.inventory.Inventory;
 import com.example.sms.domain.model.inventory.InventoryKey;
 import com.example.sms.domain.model.inventory.InventoryList;
+import com.example.sms.domain.model.inventory.rule.InventoryRuleCheckList;
+import com.example.sms.domain.service.inventory.InventoryDomainService;
 import com.example.sms.infrastructure.Pattern2ReadCSVUtil;
 import com.example.sms.infrastructure.datasource.inventory.InventoryUploadCSV;
 import com.github.pagehelper.PageInfo;
@@ -26,9 +28,12 @@ import static org.apache.commons.lang3.Validate.isTrue;
 public class InventoryServiceImpl implements InventoryService {
 
     private final InventoryRepository inventoryRepository;
+    private final InventoryDomainService inventoryDomainService;
 
-    public InventoryServiceImpl(InventoryRepository inventoryRepository) {
+    public InventoryServiceImpl(InventoryRepository inventoryRepository,
+                               InventoryDomainService inventoryDomainService) {
         this.inventoryRepository = inventoryRepository;
+        this.inventoryDomainService = inventoryDomainService;
     }
 
     @Override
@@ -354,5 +359,11 @@ public class InventoryServiceImpl implements InventoryService {
         }
         
         return inventoryList;
+    }
+
+    @Override
+    public InventoryRuleCheckList checkRule() {
+        InventoryList inventories = inventoryRepository.selectAll();
+        return inventoryDomainService.checkRule(inventories);
     }
 }

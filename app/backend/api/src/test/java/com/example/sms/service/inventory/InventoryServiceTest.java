@@ -3,6 +3,8 @@ package com.example.sms.service.inventory;
 import com.example.sms.domain.model.inventory.Inventory;
 import com.example.sms.domain.model.inventory.InventoryKey;
 import com.example.sms.domain.model.inventory.InventoryList;
+import com.example.sms.domain.model.inventory.rule.InventoryRuleCheckList;
+import com.example.sms.domain.service.inventory.InventoryDomainService;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.*;
 import org.mockito.InjectMocks;
@@ -11,7 +13,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,6 +28,9 @@ class InventoryServiceTest {
 
     @Mock
     private InventoryRepository inventoryRepository;
+
+    @Mock
+    private InventoryDomainService inventoryDomainService;
 
     @InjectMocks
     private InventoryServiceImpl inventoryService;
@@ -38,6 +45,32 @@ class InventoryServiceTest {
                 100,
                 90,
                 LocalDateTime.now()
+        );
+    }
+
+    private Inventory getZeroStockInventory() {
+        return Inventory.of(
+                "WH1",
+                "99999002",
+                "LOT005",
+                "1",
+                "G",
+                0,
+                0,
+                null
+        );
+    }
+
+    private Inventory getStockLevelIssueInventory() {
+        return Inventory.of(
+                "WH2",
+                "99999003",
+                "LOT006",
+                "1",
+                "G",
+                5, // 実在庫数が閾値(10)を下回っている
+                5, // 有効在庫数も同じく少ない
+                null
         );
     }
 
@@ -352,6 +385,105 @@ class InventoryServiceTest {
             inventoryService.deleteAll();
 
             verify(inventoryRepository).deleteAll();
+        }
+    }
+
+    @Nested
+    @DisplayName("在庫ルールチェック")
+    class RuleCheckTest {
+
+        @Test
+        @DisplayName("在庫ルールチェックで問題がない場合")
+        void shouldReturnNoErrorsWhenNoRuleViolations() {
+            // 正常な在庫データのセットアップ
+            Inventory normalInventory = getInventory();
+            InventoryList inventoryList = InventoryList.of(List.of(normalInventory));
+            InventoryRuleCheckList noErrors = new InventoryRuleCheckList(List.of());
+
+            when(inventoryRepository.selectAll()).thenReturn(inventoryList);
+            when(inventoryDomainService.checkRule(inventoryList)).thenReturn(noErrors);
+
+            InventoryRuleCheckList result = inventoryService.checkRule();
+
+            assertNotNull(result);
+            assertFalse(result.hasErrors());
+            assertEquals(0, result.getErrorCount());
+            verify(inventoryRepository).selectAll();
+            verify(inventoryDomainService).checkRule(inventoryList);
+        }
+
+        @Test
+        @DisplayName("ゼロ在庫でルールチェックエラーが発生する")
+        void shouldReturnErrorsWhenZeroStockFound() {
+            // ゼロ在庫データのセットアップ
+            Inventory zeroStockInventory = getZeroStockInventory();
+            InventoryList inventoryList = InventoryList.of(List.of(zeroStockInventory));
+
+            Map<String, String> error = new HashMap<>();
+            error.put("WH1-99999002-LOT005", "在庫数量がゼロです。");
+            InventoryRuleCheckList errors = new InventoryRuleCheckList(List.of(error));
+
+            when(inventoryRepository.selectAll()).thenReturn(inventoryList);
+            when(inventoryDomainService.checkRule(inventoryList)).thenReturn(errors);
+
+            InventoryRuleCheckList result = inventoryService.checkRule();
+
+            assertNotNull(result);
+            assertTrue(result.hasErrors());
+            assertEquals(1, result.getErrorCount());
+            assertEquals("在庫数量がゼロです。", result.getCheckList().get(0).get("WH1-99999002-LOT005"));
+            verify(inventoryRepository).selectAll();
+            verify(inventoryDomainService).checkRule(inventoryList);
+        }
+
+        @Test
+        @DisplayName("在庫レベル異常でルールチェックエラーが発生する")
+        void shouldReturnErrorsWhenStockLevelIssueFound() {
+            // 在庫レベル異常データのセットアップ
+            Inventory stockLevelIssueInventory = getStockLevelIssueInventory();
+            InventoryList inventoryList = InventoryList.of(List.of(stockLevelIssueInventory));
+
+            Map<String, String> error = new HashMap<>();
+            error.put("WH2-99999003-LOT006", "在庫数量が不足しています。");
+            InventoryRuleCheckList errors = new InventoryRuleCheckList(List.of(error));
+
+            when(inventoryRepository.selectAll()).thenReturn(inventoryList);
+            when(inventoryDomainService.checkRule(inventoryList)).thenReturn(errors);
+
+            InventoryRuleCheckList result = inventoryService.checkRule();
+
+            assertNotNull(result);
+            assertTrue(result.hasErrors());
+            assertEquals(1, result.getErrorCount());
+            assertEquals("在庫数量が不足しています。", result.getCheckList().get(0).get("WH2-99999003-LOT006"));
+            verify(inventoryRepository).selectAll();
+            verify(inventoryDomainService).checkRule(inventoryList);
+        }
+
+        @Test
+        @DisplayName("複数の在庫ルールエラーが発生する")
+        void shouldReturnMultipleErrorsWhenMultipleRuleViolations() {
+            // 複数の問題がある在庫データのセットアップ
+            Inventory zeroStockInventory = getZeroStockInventory();
+            Inventory stockLevelIssueInventory = getStockLevelIssueInventory();
+            InventoryList inventoryList = InventoryList.of(List.of(zeroStockInventory, stockLevelIssueInventory));
+
+            Map<String, String> error1 = new HashMap<>();
+            error1.put("WH1-99999002-LOT005", "在庫数量がゼロです。");
+            Map<String, String> error2 = new HashMap<>();
+            error2.put("WH2-99999003-LOT006", "在庫数量が不足しています。");
+            InventoryRuleCheckList errors = new InventoryRuleCheckList(List.of(error1, error2));
+
+            when(inventoryRepository.selectAll()).thenReturn(inventoryList);
+            when(inventoryDomainService.checkRule(inventoryList)).thenReturn(errors);
+
+            InventoryRuleCheckList result = inventoryService.checkRule();
+
+            assertNotNull(result);
+            assertTrue(result.hasErrors());
+            assertEquals(2, result.getErrorCount());
+            verify(inventoryRepository).selectAll();
+            verify(inventoryDomainService).checkRule(inventoryList);
         }
     }
 }

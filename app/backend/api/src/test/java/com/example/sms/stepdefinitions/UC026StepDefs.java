@@ -52,11 +52,14 @@ public class UC026StepDefs extends SpringAcceptanceTest {
     @前提(":UC026 {string} が登録されている")
     public void init(String data) {
         switch (data) {
-            case "取引先データ":
-                testDataFactory.setUpForPartnerService();
+            case "部門データ":
+                testDataFactory.setUpForDepartmentService();
                 break;
             case "社員データ":
                 testDataFactory.setUpForEmployeeService();
+                break;
+            case "取引先データ":
+                testDataFactory.setUpForPartnerService();
                 break;
             case "商品データ":
                 testDataFactory.setUpForProductService();
@@ -64,6 +67,10 @@ public class UC026StepDefs extends SpringAcceptanceTest {
             case "倉庫データ":
                 // 倉庫データのセットアップは必要に応じて実装
                 System.out.println("倉庫データセットアップをスキップ");
+                break;
+            case "棚番データ":
+                // 棚番データのセットアップは必要に応じて実装
+                System.out.println("棚番データセットアップをスキップ");
                 break;
             case "在庫データ":
                 testDataFactory.setUpForInventoryService();
@@ -385,15 +392,41 @@ public class UC026StepDefs extends SpringAcceptanceTest {
     public void uploadDuplicateInventoryCSV(String fileName) throws IOException {
         ClassPathResource resource = new ClassPathResource("csv/inventory/" + fileName);
         byte[] fileContent = Files.readAllBytes(resource.getFile().toPath());
-        
+
         MockMultipartFile csvFile = new MockMultipartFile(
-            "file", 
-            fileName, 
-            "text/csv", 
+            "file",
+            fileName,
+            "text/csv",
             fileContent
         );
-        
+
         executePost(INVENTORY_API_URL + "/upload", csvFile);
+    }
+
+    @もし(":UC026 確認内容のある {string} をアップロードする")
+    public void uploadInventoryForCheck(String data) {
+        if (data.equals("在庫データ")) {
+            try {
+                MultipartFile file = testDataFactory.createInventoryForCheckFile();
+                uploadFile(INVENTORY_API_URL + "/upload", file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @もし(":UC026 {string} を確認する\\(確認項目なし)")
+    public void checkRuleNoItems(String rule) {
+        if (rule.equals("在庫ルール")) {
+            executePost(INVENTORY_API_URL + "/check", "{}");
+        }
+    }
+
+    @もし(":UC026 {string} を確認する\\(確認項目あり)")
+    public void checkRuleWithItems(String rule) {
+        if (rule.equals("在庫ルール")) {
+            executePost(INVENTORY_API_URL + "/check", "{}");
+        }
     }
 
     @ならば(":UC026 バリデーションエラー詳細が表示される")
