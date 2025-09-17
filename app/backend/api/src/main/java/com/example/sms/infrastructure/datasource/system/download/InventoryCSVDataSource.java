@@ -34,12 +34,7 @@ public class InventoryCSVDataSource implements InventoryCSVRepository {
                         inv.getQualityCategory(),
                         inv.getActualStockQuantity(),
                         inv.getAvailableStockQuantity(),
-                        inv.getLastShipmentDate(),
-                        inv.getCreatedDateTime(),
-                        inv.getCreatedBy(),
-                        inv.getUpdatedDateTime(),
-                        inv.getUpdatedBy(),
-                        inv.getVersion()
+                        inv.getLastShipmentDate()
                 )).toList();
     }
 

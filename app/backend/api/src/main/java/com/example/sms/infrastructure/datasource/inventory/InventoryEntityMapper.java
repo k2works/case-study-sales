@@ -46,11 +46,6 @@ public class InventoryEntityMapper {
                 .actualStockQuantity(entity.get実在庫数())
                 .availableStockQuantity(entity.get有効在庫数())
                 .lastShipmentDate(entity.get最終出荷日())
-                .createdDateTime(entity.get作成日時())
-                .createdBy(entity.get作成者名())
-                .updatedDateTime(entity.get更新日時())
-                .updatedBy(entity.get更新者名())
-                .version(entity.getVersion())
                 .productName(entity.get商品名())
                 .warehouseName(entity.get倉庫名())
                 .build();
@@ -81,11 +76,6 @@ public class InventoryEntityMapper {
         entity.set実在庫数(model.getActualStockQuantity());
         entity.set有効在庫数(model.getAvailableStockQuantity());
         entity.set最終出荷日(model.getLastShipmentDate());
-        entity.set作成日時(model.getCreatedDateTime());
-        entity.set作成者名(model.getCreatedBy());
-        entity.set更新日時(model.getUpdatedDateTime());
-        entity.set更新者名(model.getUpdatedBy());
-        entity.setVersion(model.getVersion());
         return entity;
     }
 

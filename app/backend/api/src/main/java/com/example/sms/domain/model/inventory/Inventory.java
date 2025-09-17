@@ -27,11 +27,6 @@ public class Inventory {
     Integer actualStockQuantity; // 実在庫数
     Integer availableStockQuantity; // 有効在庫数
     LocalDateTime lastShipmentDate; // 最終出荷日
-    LocalDateTime createdDateTime; // 作成日時
-    String createdBy; // 作成者名
-    LocalDateTime updatedDateTime; // 更新日時
-    String updatedBy; // 更新者名
-    Integer version; // バージョン（楽観的排他制御用）
     String productName; // 商品名
     String warehouseName; // 倉庫名
 

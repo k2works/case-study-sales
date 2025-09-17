@@ -72,11 +72,6 @@ public class InventoryResource {
         resource.setActualStockQuantity(inventory.getActualStockQuantity());
         resource.setAvailableStockQuantity(inventory.getAvailableStockQuantity());
         resource.setLastShipmentDate(inventory.getLastShipmentDate());
-        resource.setCreatedDateTime(inventory.getCreatedDateTime());
-        resource.setCreatedBy(inventory.getCreatedBy());
-        resource.setUpdatedDateTime(inventory.getUpdatedDateTime());
-        resource.setUpdatedBy(inventory.getUpdatedBy());
-        resource.setVersion(inventory.getVersion());
         resource.setProductName(inventory.getProductName());
         resource.setWarehouseName(inventory.getWarehouseName());
         return resource;

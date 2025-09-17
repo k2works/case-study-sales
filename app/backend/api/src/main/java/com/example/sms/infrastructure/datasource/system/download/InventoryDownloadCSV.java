@@ -52,26 +52,6 @@ public class InventoryDownloadCSV {
     @CsvBindByName(column = "最終出荷日", required = false)
     private LocalDateTime lastShipmentDate;
 
-    @CsvBindByPosition(position = 10)
-    @CsvBindByName(column = "作成日時", required = false)
-    private LocalDateTime createdDateTime;
-
-    @CsvBindByPosition(position = 11)
-    @CsvBindByName(column = "作成者名", required = false)
-    private String createdBy;
-
-    @CsvBindByPosition(position = 12)
-    @CsvBindByName(column = "更新日時", required = false)
-    private LocalDateTime updatedDateTime;
-
-    @CsvBindByPosition(position = 13)
-    @CsvBindByName(column = "更新者名", required = false)
-    private String updatedBy;
-
-    @CsvBindByPosition(position = 14)
-    @CsvBindByName(column = "バージョン", required = false)
-    private Integer version;
-
     public InventoryDownloadCSV(String warehouseCode,
                                 String warehouseName,
                                 String productCode,
@@ -81,12 +61,7 @@ public class InventoryDownloadCSV {
                                 String qualityCategory,
                                 Integer actualStockQuantity,
                                 Integer availableStockQuantity,
-                                LocalDateTime lastShipmentDate,
-                                LocalDateTime createdDateTime,
-                                String createdBy,
-                                LocalDateTime updatedDateTime,
-                                String updatedBy,
-                                Integer version) {
+                                LocalDateTime lastShipmentDate) {
         this.warehouseCode = warehouseCode;
         this.warehouseName = warehouseName;
         this.productCode = productCode;
@@ -97,11 +72,6 @@ public class InventoryDownloadCSV {
         this.actualStockQuantity = actualStockQuantity;
         this.availableStockQuantity = availableStockQuantity;
         this.lastShipmentDate = lastShipmentDate;
-        this.createdDateTime = createdDateTime;
-        this.createdBy = createdBy;
-        this.updatedDateTime = updatedDateTime;
-        this.updatedBy = updatedBy;
-        this.version = version;
     }
 
     @Override
