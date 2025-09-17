@@ -44,6 +44,7 @@ import com.example.sms.domain.model.inventory.Inventory;
 import com.example.sms.domain.model.master.warehouse.Warehouse;
 import com.example.sms.service.inventory.InventoryRepository;
 import com.example.sms.service.master.payment.PaymentAccountRepository;
+import com.example.sms.service.master.warehouse.WarehouseRepository;
 import com.example.sms.service.master.region.RegionRepository;
 import com.example.sms.service.master.department.DepartmentRepository;
 import com.example.sms.service.master.employee.EmployeeRepository;
@@ -108,6 +109,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
     PurchaseOrderRepository purchaseOrderRepository;
     @Autowired
     InventoryRepository inventoryRepository;
+    @Autowired
+    WarehouseRepository warehouseRepository;
 
     @Override
     public void setUpForAuthApiService() {
@@ -1159,7 +1162,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
     public void setUpForInventoryService() {
         // 在庫データをクリア
         inventoryRepository.deleteAll();
-        
+
         // 商品マスタデータの準備
         productRepository.deleteAll();
         productRepository.save(Product.of("10101001", "商品1", "商品1", "しょうひん1", ProductType.その他, 1000, 900, 100, TaxType.外税, "カテゴリ1", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "001", 1));
@@ -1169,12 +1172,28 @@ public class TestDataFactoryImpl implements TestDataFactory {
         productRepository.save(Product.of("99999001", "テスト商品1", "テスト商品1", "てすとしょうひん1", ProductType.その他, 1000, 900, 100, TaxType.外税, "カテゴリ1", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "T01", 1));
         productRepository.save(Product.of("99999002", "テスト商品2", "テスト商品2", "てすとしょうひん2", ProductType.その他, 2000, 1800, 200, TaxType.内税, "カテゴリ1", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "T02", 2));
         productRepository.save(Product.of("99999003", "テスト商品3", "テスト商品3", "てすとしょうひん3", ProductType.その他, 3000, 2700, 300, TaxType.非課税, "カテゴリ1", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "T03", 3));
-        
+
         // 既存の在庫データを作成（テスト用）
         // テストシナリオで使用される WH1/10101001/LOT001 とは異なるデータを作成
         inventoryRepository.save(getInventory("WH2", "10101001", "LOT002"));
         inventoryRepository.save(getInventory("WH3", "10101002", "LOT003"));
         inventoryRepository.save(getInventory("WH1", "10103001", "LOT004"));
+    }
+
+    @Override
+    public void setUpForWarehouseService() {
+        setUpUser();
+
+        // 部門データの準備（倉庫部門マスタの外部キー制約のため）
+        departmentRepository.deleteAll();
+        departmentRepository.save(getDepartment("10000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門1"));
+        departmentRepository.save(getDepartment("20000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門2"));
+
+        // 倉庫データをクリア
+        warehouseRepository.deleteAll();
+
+        // 既存の倉庫データを作成（テスト用）
+        warehouseRepository.save(getWarehouse("W01", "本社倉庫"));
     }
 
     private List<PurchaseOrder> getPurchaseOrders() {

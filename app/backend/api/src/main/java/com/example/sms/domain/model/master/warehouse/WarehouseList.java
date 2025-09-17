@@ -15,4 +15,8 @@ public class WarehouseList {
     public boolean isEmpty() {
         return warehouses.isEmpty();
     }
+
+    public List<Warehouse> asList() {
+        return warehouses;
+    }
 }
