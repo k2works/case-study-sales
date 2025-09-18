@@ -17,6 +17,7 @@ import com.example.sms.domain.model.sales.sales.SalesList;
 import com.example.sms.domain.model.sales.shipping.ShippingList;
 import com.example.sms.domain.model.inventory.InventoryList;
 import com.example.sms.domain.model.master.warehouse.WarehouseList;
+import com.example.sms.domain.model.master.locationnumber.LocationNumberList;
 import com.example.sms.domain.model.system.download.DownloadCriteria;
 import com.example.sms.infrastructure.datasource.system.download.*;
 import com.example.sms.infrastructure.datasource.system.download.PaymentDownloadCSV;
@@ -51,8 +52,9 @@ public class DownloadService {
     private final PaymentAccountCSVRepository paymentAccountCSVRepository;
     private final InventoryCSVRepository inventoryCSVRepository;
     private final WarehouseCSVRepository warehouseCSVRepository;
+    private final LocationNumberCSVRepository locationNumberCSVRepository;
 
-    public DownloadService(DepartmentCSVRepository departmentCSVRepository, EmployeeCSVRepository employeeCSVRepository, ProductCategoryCSVRepository productCategoryCSVRepository, ProductCSVRepository productCSVRepository, PartnerGroupCSVRepository partnerGroupCSVRepository, PartnerCSVRepository partnerCSVRepository, CustomerCSVRepository customerCSVRepository, VendorCSVRepository vendorCSVRepository, OrderCSVRepository orderCSVRepository, ShippingCSVRepository shippingCSVRepository, SalesCSVRepository salesCSVRepository, PurchaseOrderCSVRepository purchaseOrderCSVRepository, InvoiceCSVRepository invoiceCSVRepository, PaymentCSVRepository paymentCSVRepository, PaymentAccountCSVRepository paymentAccountCSVRepository, InventoryCSVRepository inventoryCSVRepository, WarehouseCSVRepository warehouseCSVRepository) {
+    public DownloadService(DepartmentCSVRepository departmentCSVRepository, EmployeeCSVRepository employeeCSVRepository, ProductCategoryCSVRepository productCategoryCSVRepository, ProductCSVRepository productCSVRepository, PartnerGroupCSVRepository partnerGroupCSVRepository, PartnerCSVRepository partnerCSVRepository, CustomerCSVRepository customerCSVRepository, VendorCSVRepository vendorCSVRepository, OrderCSVRepository orderCSVRepository, ShippingCSVRepository shippingCSVRepository, SalesCSVRepository salesCSVRepository, PurchaseOrderCSVRepository purchaseOrderCSVRepository, InvoiceCSVRepository invoiceCSVRepository, PaymentCSVRepository paymentCSVRepository, PaymentAccountCSVRepository paymentAccountCSVRepository, InventoryCSVRepository inventoryCSVRepository, WarehouseCSVRepository warehouseCSVRepository, LocationNumberCSVRepository locationNumberCSVRepository) {
         this.departmentCSVRepository = departmentCSVRepository;
         this.employeeCSVRepository = employeeCSVRepository;
         this.productCategoryCSVRepository = productCategoryCSVRepository;
@@ -70,6 +72,7 @@ public class DownloadService {
         this.paymentAccountCSVRepository = paymentAccountCSVRepository;
         this.inventoryCSVRepository = inventoryCSVRepository;
         this.warehouseCSVRepository = warehouseCSVRepository;
+        this.locationNumberCSVRepository = locationNumberCSVRepository;
     }
 
     /**
@@ -138,6 +141,10 @@ public class DownloadService {
                 checkPermission("ROLE_ADMIN");
                 yield countWarehouse(condition);
             }
+            case 棚番 -> {
+                checkPermission("ROLE_ADMIN");
+                yield countLocationNumber(condition);
+            }
         };
     }
 
@@ -163,6 +170,7 @@ public class DownloadService {
             case 口座 -> writeCsv(PaymentAccountDownloadCSV.class).accept(streamWriter, convert(condition));
             case 在庫 -> writeCsv(InventoryDownloadCSV.class).accept(streamWriter, convert(condition));
             case 倉庫 -> writeCsv(WarehouseDownloadCSV.class).accept(streamWriter, convert(condition));
+            case 棚番 -> writeCsv(LocationNumberDownloadCSV.class).accept(streamWriter, convert(condition));
         }
     }
 
@@ -188,6 +196,7 @@ public class DownloadService {
             case 口座 -> (List<T>) convertPaymentAccount(condition);
             case 在庫 -> (List<T>) convertInventory(condition);
             case 倉庫 -> (List<T>) convertWarehouse(condition);
+            case 棚番 -> (List<T>) convertLocationNumber(condition);
         };
     }
 
@@ -440,5 +449,20 @@ public class DownloadService {
     private List<WarehouseDownloadCSV> convertWarehouse(DownloadCriteria condition) {
         WarehouseList warehouseList = warehouseCSVRepository.selectBy(condition);
         return warehouseCSVRepository.convert(warehouseList);
+    }
+
+    /**
+     * 棚番ダウンロード件数取得
+     */
+    private int countLocationNumber(DownloadCriteria condition) {
+        return locationNumberCSVRepository.countBy(condition);
+    }
+
+    /**
+     * 棚番CSV変換
+     */
+    private List<LocationNumberDownloadCSV> convertLocationNumber(DownloadCriteria condition) {
+        LocationNumberList locationNumberList = locationNumberCSVRepository.selectBy(condition);
+        return locationNumberCSVRepository.convert(locationNumberList);
     }
 }

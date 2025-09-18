@@ -34,6 +34,7 @@ public class DownloadCriteriaResource {
             case 口座 -> PaymentAccount.of();
             case 在庫 -> Inventory.of();
             case 倉庫 -> Warehouse.of();
+            case 棚番 -> LocationNumber.of();
         };
     }
 }

@@ -23,7 +23,8 @@ public enum DownloadTarget {
     口座("payment_account"),
     発注("purchase_order"),
     在庫("inventory"),
-    倉庫("warehouse");
+    倉庫("warehouse"),
+    棚番("location_number");
 
     private final String value;
 
