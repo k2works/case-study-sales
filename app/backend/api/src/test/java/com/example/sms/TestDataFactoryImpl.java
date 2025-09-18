@@ -60,6 +60,7 @@ import com.example.sms.service.sales.order.SalesOrderRepository;
 import com.example.sms.service.procurement.purchase.PurchaseOrderRepository;
 import com.example.sms.service.system.audit.AuditRepository;
 import com.example.sms.service.system.user.UserRepository;
+import com.example.sms.infrastructure.datasource.autogen.mapper.棚番マスタMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Component;
@@ -111,6 +112,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
     InventoryRepository inventoryRepository;
     @Autowired
     WarehouseRepository warehouseRepository;
+    @Autowired
+    棚番マスタMapper 棚番マスタMapper;
 
     @Override
     public void setUpForAuthApiService() {
@@ -808,7 +811,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
     }
 
     public static User getAdmin() {
-        return User.of("U888888", "$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK", "first", "last", RoleName.USER);
+        return User.of("U888888", "$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK", "first", "last", RoleName.ADMIN);
     }
 
     public static Department getDepartment(String departmentId, LocalDateTime startDate, String departmentName) {
@@ -1189,8 +1192,13 @@ public class TestDataFactoryImpl implements TestDataFactory {
         departmentRepository.save(getDepartment("10000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門1"));
         departmentRepository.save(getDepartment("20000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門2"));
 
+        // 在庫データを先にクリア（倉庫マスタへの外部キー制約対策）
+        inventoryRepository.deleteAll();
+
+        //TODO:棚番データをクリア
+
         // 倉庫データをクリア
-        warehouseRepository.deleteAll();
+        // warehouseRepository.deleteAll();
 
         // 既存の倉庫データを作成（テスト用）
         warehouseRepository.save(getWarehouse("W01", "本社倉庫"));

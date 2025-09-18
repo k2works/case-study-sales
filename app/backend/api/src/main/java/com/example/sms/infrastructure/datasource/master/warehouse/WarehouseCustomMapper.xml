@@ -38,7 +38,7 @@
         FROM public.倉庫マスタ
         <where>
             <if test="warehouseName != null and warehouseName != ''">
-                AND 倉庫名 = #{warehouseName}
+                AND 倉庫名 LIKE CONCAT('%', #{warehouseName}, '%')
             </if>
 
             <if test="warehouseCode != null and warehouseCode != ''">
