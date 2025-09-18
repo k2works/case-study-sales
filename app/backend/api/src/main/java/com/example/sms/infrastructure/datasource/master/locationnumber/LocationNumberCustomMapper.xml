@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.sms.infrastructure.datasource.master.locationnumber.LocationNumberCustomMapper">
+    <resultMap id="BaseResultMap" type="com.example.sms.infrastructure.datasource.master.locationnumber.LocationNumberCustomEntity">
+        <id column="倉庫コード" jdbcType="VARCHAR" property="倉庫コード" />
+        <id column="棚番コード" jdbcType="VARCHAR" property="棚番コード" />
+        <id column="商品コード" jdbcType="VARCHAR" property="商品コード" />
+        <result column="作成日時" jdbcType="TIMESTAMP" property="作成日時" />
+        <result column="作成者名" jdbcType="VARCHAR" property="作成者名" />
+        <result column="更新日時" jdbcType="TIMESTAMP" property="更新日時" />
+        <result column="更新者名" jdbcType="VARCHAR" property="更新者名" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        倉庫コード, 棚番コード, 商品コード, 作成日時, 作成者名, 更新日時, 更新者名
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="com.example.sms.infrastructure.datasource.autogen.model.棚番マスタKey" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM 棚番マスタ
+        WHERE 倉庫コード = #{倉庫コード,jdbcType=VARCHAR}
+          AND 棚番コード = #{棚番コード,jdbcType=VARCHAR}
+          AND 商品コード = #{商品コード,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM 棚番マスタ
+        ORDER BY 倉庫コード, 棚番コード, 商品コード
+    </select>
+
+    <select id="selectByWarehouseCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM 棚番マスタ
+        WHERE 倉庫コード = #{warehouseCode,jdbcType=VARCHAR}
+        ORDER BY 棚番コード, 商品コード
+    </select>
+
+    <select id="selectByLocationNumberCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM 棚番マスタ
+        WHERE 棚番コード = #{locationNumberCode,jdbcType=VARCHAR}
+        ORDER BY 倉庫コード, 商品コード
+    </select>
+
+    <select id="selectByCriteria" parameterType="com.example.sms.service.master.locationnumber.LocationNumberCriteria" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM 棚番マスタ
+        <where>
+            <if test="warehouseCode != null and warehouseCode != ''">
+                AND 倉庫コード LIKE CONCAT('%', #{warehouseCode}, '%')
+            </if>
+            <if test="locationNumberCode != null and locationNumberCode != ''">
+                AND 棚番コード LIKE CONCAT('%', #{locationNumberCode}, '%')
+            </if>
+            <if test="productCode != null and productCode != ''">
+                AND 商品コード LIKE CONCAT('%', #{productCode}, '%')
+            </if>
+        </where>
+        ORDER BY 倉庫コード, 棚番コード, 商品コード
+    </select>
+</mapper>

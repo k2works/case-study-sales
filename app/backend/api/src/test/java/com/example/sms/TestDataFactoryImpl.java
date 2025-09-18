@@ -1431,4 +1431,16 @@ public class TestDataFactoryImpl implements TestDataFactory {
     public static Warehouse getWarehouse(String warehouseCode, String warehouseName) {
         return Warehouse.of(warehouseCode, warehouseName);
     }
+
+    public static com.example.sms.domain.model.master.locationnumber.LocationNumber getLocationNumber(String warehouseCode, String locationNumberCode, String productCode) {
+        return com.example.sms.domain.model.master.locationnumber.LocationNumber.of(warehouseCode, locationNumberCode, productCode);
+    }
+
+    public static com.example.sms.infrastructure.datasource.autogen.model.棚番マスタKey getLocationNumberKey(String warehouseCode, String locationNumberCode, String productCode) {
+        com.example.sms.infrastructure.datasource.autogen.model.棚番マスタKey key = new com.example.sms.infrastructure.datasource.autogen.model.棚番マスタKey();
+        key.set倉庫コード(warehouseCode);
+        key.set棚番コード(locationNumberCode);
+        key.set商品コード(productCode);
+        return key;
+    }
 }
