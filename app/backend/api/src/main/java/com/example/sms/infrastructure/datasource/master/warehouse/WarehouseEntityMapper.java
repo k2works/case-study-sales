@@ -3,6 +3,7 @@ package com.example.sms.infrastructure.datasource.master.warehouse;
 import com.example.sms.domain.model.master.warehouse.Warehouse;
 import com.example.sms.domain.model.master.warehouse.WarehouseCode;
 import com.example.sms.infrastructure.datasource.autogen.model.倉庫マスタ;
+import com.example.sms.infrastructure.datasource.system.download.WarehouseDownloadCSV;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,6 +20,13 @@ public class WarehouseEntityMapper {
         return new Warehouse(
                 WarehouseCode.of(warehouseEntity.get倉庫コード()),
                 warehouseEntity.get倉庫名()
+        );
+    }
+
+    public WarehouseDownloadCSV mapToCsvModel(Warehouse warehouse) {
+        return new WarehouseDownloadCSV(
+                warehouse.getWarehouseCode().getValue(),
+                warehouse.getWarehouseName()
         );
     }
 }
