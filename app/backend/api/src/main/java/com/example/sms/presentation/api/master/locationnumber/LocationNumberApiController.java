@@ -1,10 +1,10 @@
 package com.example.sms.presentation.api.master.locationnumber;
 
 import com.example.sms.domain.model.master.locationnumber.LocationNumber;
+import com.example.sms.domain.model.master.locationnumber.LocationNumberKey;
 import com.example.sms.domain.model.master.locationnumber.LocationNumberList;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType;
-import com.example.sms.infrastructure.datasource.autogen.model.棚番マスタKey;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
@@ -65,10 +65,7 @@ public class LocationNumberApiController {
             @PathVariable String locationNumberCode,
             @PathVariable String productCode) {
         try {
-            棚番マスタKey key = new 棚番マスタKey();
-            key.set倉庫コード(warehouseCode);
-            key.set棚番コード(locationNumberCode);
-            key.set商品コード(productCode);
+            LocationNumberKey key = LocationNumberKey.of(warehouseCode, locationNumberCode, productCode);
 
             LocationNumber locationNumber = locationNumberService.find(key);
             if (locationNumber == null) {
@@ -87,10 +84,11 @@ public class LocationNumberApiController {
         try {
             LocationNumber locationNumber = convertToEntity(resource);
 
-            棚番マスタKey key = new 棚番マスタKey();
-            key.set倉庫コード(resource.getWarehouseCode());
-            key.set棚番コード(resource.getLocationNumberCode());
-            key.set商品コード(resource.getProductCode());
+            LocationNumberKey key = LocationNumberKey.of(
+                    resource.getWarehouseCode(),
+                    resource.getLocationNumberCode(),
+                    resource.getProductCode()
+            );
 
             LocationNumber existingLocationNumber = locationNumberService.find(key);
             if (existingLocationNumber != null) {
@@ -131,10 +129,7 @@ public class LocationNumberApiController {
             @PathVariable String locationNumberCode,
             @PathVariable String productCode) {
         try {
-            棚番マスタKey key = new 棚番マスタKey();
-            key.set倉庫コード(warehouseCode);
-            key.set棚番コード(locationNumberCode);
-            key.set商品コード(productCode);
+            LocationNumberKey key = LocationNumberKey.of(warehouseCode, locationNumberCode, productCode);
 
             LocationNumber locationNumber = locationNumberService.find(key);
             if (locationNumber == null) {

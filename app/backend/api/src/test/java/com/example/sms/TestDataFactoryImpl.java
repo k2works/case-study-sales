@@ -42,9 +42,11 @@ import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag
 import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.domain.model.inventory.Inventory;
 import com.example.sms.domain.model.master.warehouse.Warehouse;
+import com.example.sms.domain.model.master.locationnumber.LocationNumber;
 import com.example.sms.service.inventory.InventoryRepository;
 import com.example.sms.service.master.payment.PaymentAccountRepository;
 import com.example.sms.service.master.warehouse.WarehouseRepository;
+import com.example.sms.service.master.locationnumber.LocationNumberRepository;
 import com.example.sms.service.master.region.RegionRepository;
 import com.example.sms.service.master.department.DepartmentRepository;
 import com.example.sms.service.master.employee.EmployeeRepository;
@@ -112,6 +114,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
     InventoryRepository inventoryRepository;
     @Autowired
     WarehouseRepository warehouseRepository;
+    @Autowired
+    LocationNumberRepository locationNumberRepository;
     @Autowired
     棚番マスタMapper 棚番マスタMapper;
 
@@ -323,11 +327,26 @@ public class TestDataFactoryImpl implements TestDataFactory {
             // 入金データの準備
             setUpForPaymentIncomingService();
 
-            // 在庫データの準備
+            // 在庫データを先にクリア（倉庫マスタへの外部キー制約対策）
             inventoryRepository.deleteAll();
-            inventoryRepository.save(getInventory("WH2", "99999999", "LOT002"));
-            inventoryRepository.save(getInventory("WH3", "99999999", "LOT003"));
-            inventoryRepository.save(getInventory("WH1", "99999999", "LOT004"));
+
+            // 棚番データをクリア
+            locationNumberRepository.deleteAll();
+
+            // 倉庫データをクリア・作成（棚番の外部キー制約のため）
+            warehouseRepository.deleteAll();
+            warehouseRepository.save(getWarehouse("W01", "本社倉庫"));
+            warehouseRepository.save(getWarehouse("W02", "第二倉庫"));
+
+            // 既存の棚番データを作成（テスト用）
+            locationNumberRepository.save(getLocationNumber("W01", "A001", "P001"));
+            locationNumberRepository.save(getLocationNumber("W01", "A002", "P002"));
+            locationNumberRepository.save(getLocationNumber("W01", "A003", "P003"));
+
+            // 在庫データを作成
+            inventoryRepository.save(getInventory("W01", "99999999", "LOT001"));
+            inventoryRepository.save(getInventory("W01", "99999999", "LOT002"));
+            inventoryRepository.save(getInventory("W02", "99999999", "LOT003"));
         });
     }
 
@@ -1176,6 +1195,15 @@ public class TestDataFactoryImpl implements TestDataFactory {
         productRepository.save(Product.of("99999002", "テスト商品2", "テスト商品2", "てすとしょうひん2", ProductType.その他, 2000, 1800, 200, TaxType.内税, "カテゴリ1", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "T02", 2));
         productRepository.save(Product.of("99999003", "テスト商品3", "テスト商品3", "てすとしょうひん3", ProductType.その他, 3000, 2700, 300, TaxType.非課税, "カテゴリ1", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "T03", 3));
 
+        //棚番データをクリア
+        locationNumberRepository.deleteAll();
+
+        // 倉庫データをクリア・作成（棚番の外部キー制約のため）
+        warehouseRepository.deleteAll();
+        warehouseRepository.save(getWarehouse("WH1", "第一倉庫"));
+        warehouseRepository.save(getWarehouse("WH2", "本社倉庫"));
+        warehouseRepository.save(getWarehouse("WH3", "第二倉庫"));
+
         // 既存の在庫データを作成（テスト用）
         // テストシナリオで使用される WH1/10101001/LOT001 とは異なるデータを作成
         inventoryRepository.save(getInventory("WH2", "10101001", "LOT002"));
@@ -1195,13 +1223,45 @@ public class TestDataFactoryImpl implements TestDataFactory {
         // 在庫データを先にクリア（倉庫マスタへの外部キー制約対策）
         inventoryRepository.deleteAll();
 
-        //TODO:棚番データをクリア
+        //棚番データをクリア
+        locationNumberRepository.deleteAll();
 
         // 倉庫データをクリア
-        // warehouseRepository.deleteAll();
+        warehouseRepository.deleteAll();
 
         // 既存の倉庫データを作成（テスト用）
         warehouseRepository.save(getWarehouse("W01", "本社倉庫"));
+    }
+
+    @Override
+    public void setUpForLocationNumberService() {
+        setUpUser();
+
+        // 部門データの準備（倉庫部門マスタの外部キー制約のため）
+        departmentRepository.deleteAll();
+        departmentRepository.save(getDepartment("10000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門1"));
+        departmentRepository.save(getDepartment("20000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門2"));
+
+        // 在庫データを先にクリア（倉庫マスタへの外部キー制約対策）
+        inventoryRepository.deleteAll();
+
+        // 棚番データをクリア
+        locationNumberRepository.deleteAll();
+
+        // 倉庫データをクリア・作成（棚番の外部キー制約のため）
+        warehouseRepository.deleteAll();
+        warehouseRepository.save(getWarehouse("W01", "本社倉庫"));
+        warehouseRepository.save(getWarehouse("W02", "第二倉庫"));
+
+        // 商品データ作成（棚番の外部キー制約のため）
+        productRepository.save(Product.of("P001", "商品1", "商品1", "ショウヒンイチ", ProductType.その他, 900, 810, 90, TaxType.その他, "カテゴリ1", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "001", 1));
+        productRepository.save(Product.of("P002", "商品2", "商品2", "ショウヒン二", ProductType.その他, 800, 720, 80, TaxType.その他, "カテゴリ2", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "002", 2));
+        productRepository.save(Product.of("P003", "商品3", "商品3", "ショウヒンサン", ProductType.その他, 700, 630, 70, TaxType.その他, "カテゴリ3", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "003", 3));
+
+        // 既存の棚番データを作成（テスト用）
+        locationNumberRepository.save(getLocationNumber("W01", "A001", "P001"));
+        locationNumberRepository.save(getLocationNumber("W01", "A002", "P002"));
+        locationNumberRepository.save(getLocationNumber("W01", "A003", "P003"));
     }
 
     private List<PurchaseOrder> getPurchaseOrders() {

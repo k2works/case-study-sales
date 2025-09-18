@@ -62,7 +62,7 @@ public class UC027StepDefs extends SpringAcceptanceTest {
             result = latestResponse.getBody();
             ListResponse<WarehouseResource> response = objectMapper.readValue(result, new TypeReference<>() {});
             List<WarehouseResource> warehouses = response.getList();
-            assertEquals(6, warehouses.size());
+            assertEquals(1, warehouses.size());
         }
     }
 

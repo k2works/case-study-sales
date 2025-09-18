@@ -2,8 +2,8 @@ package com.example.sms.presentation.api.master.locationnumber;
 
 import com.example.sms.PresentationTest;
 import com.example.sms.domain.model.master.locationnumber.LocationNumber;
+import com.example.sms.domain.model.master.locationnumber.LocationNumberKey;
 import com.example.sms.domain.model.master.locationnumber.LocationNumberList;
-import com.example.sms.infrastructure.datasource.autogen.model.棚番マスタKey;
 import com.example.sms.service.master.locationnumber.LocationNumberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
@@ -48,17 +48,14 @@ public class LocationNumberApiControllerTest {
 
     private LocationNumber testLocationNumber;
     private LocationNumberResource testLocationNumberResource;
-    private 棚番マスタKey testKey;
+    private LocationNumberKey testKey;
 
     @BeforeEach
     void setUp() {
         testLocationNumber = LocationNumber.of("W01", "A001", "P001");
         testLocationNumberResource = LocationNumberResource.from(testLocationNumber);
 
-        testKey = new 棚番マスタKey();
-        testKey.set倉庫コード("W01");
-        testKey.set棚番コード("A001");
-        testKey.set商品コード("P001");
+        testKey = LocationNumberKey.of("W01", "A001", "P001");
 
         // PageInfoのモック設定
         PageInfo<LocationNumber> mockPageInfo = new PageInfo<>(List.of(testLocationNumber));
@@ -108,7 +105,7 @@ public class LocationNumberApiControllerTest {
         @WithMockUser(username = "admin", roles = {"ADMIN"})
         @DisplayName("管理者が棚番詳細を取得できる")
         void shouldRetrieveLocationNumberAsAdmin() throws Exception {
-            when(locationNumberService.find(any(棚番マスタKey.class))).thenReturn(testLocationNumber);
+            when(locationNumberService.find(any(LocationNumberKey.class))).thenReturn(testLocationNumber);
 
             mockMvc.perform(get("/api/locationnumbers/W01/A001/P001"))
                     .andExpect(status().isOk())
@@ -116,19 +113,19 @@ public class LocationNumberApiControllerTest {
                     .andExpect(jsonPath("$.locationNumberCode").value("A001"))
                     .andExpect(jsonPath("$.productCode").value("P001"));
 
-            verify(locationNumberService).find(any(棚番マスタKey.class));
+            verify(locationNumberService).find(any(LocationNumberKey.class));
         }
 
         @Test
         @WithMockUser(username = "admin", roles = {"ADMIN"})
         @DisplayName("存在しない棚番を取得しようとした場合400エラーが返る")
         void shouldReturn400WhenLocationNumberNotFound() throws Exception {
-            when(locationNumberService.find(any(棚番マスタKey.class))).thenReturn(null);
+            when(locationNumberService.find(any(LocationNumberKey.class))).thenReturn(null);
 
             mockMvc.perform(get("/api/locationnumbers/W99/Z999/P999"))
                     .andExpect(status().isBadRequest());
 
-            verify(locationNumberService).find(any(棚番マスタKey.class));
+            verify(locationNumberService).find(any(LocationNumberKey.class));
         }
     }
 
@@ -140,7 +137,7 @@ public class LocationNumberApiControllerTest {
         @WithMockUser(username = "admin", roles = {"ADMIN"})
         @DisplayName("管理者が棚番を登録できる")
         void shouldCreateLocationNumberAsAdmin() throws Exception {
-            when(locationNumberService.find(any(棚番マスタKey.class))).thenReturn(null);
+            when(locationNumberService.find(any(LocationNumberKey.class))).thenReturn(null);
 
             mockMvc.perform(post("/api/locationnumbers")
                     .contentType(MediaType.APPLICATION_JSON)
@@ -154,7 +151,7 @@ public class LocationNumberApiControllerTest {
         @WithMockUser(username = "admin", roles = {"ADMIN"})
         @DisplayName("既存の棚番を登録しようとした場合400エラーが返る")
         void shouldReturn400WhenLocationNumberAlreadyExists() throws Exception {
-            when(locationNumberService.find(any(棚番マスタKey.class))).thenReturn(testLocationNumber);
+            when(locationNumberService.find(any(LocationNumberKey.class))).thenReturn(testLocationNumber);
 
             mockMvc.perform(post("/api/locationnumbers")
                     .contentType(MediaType.APPLICATION_JSON)
@@ -190,24 +187,24 @@ public class LocationNumberApiControllerTest {
         @WithMockUser(username = "admin", roles = {"ADMIN"})
         @DisplayName("管理者が棚番を削除できる")
         void shouldDeleteLocationNumberAsAdmin() throws Exception {
-            when(locationNumberService.find(any(棚番マスタKey.class))).thenReturn(testLocationNumber);
+            when(locationNumberService.find(any(LocationNumberKey.class))).thenReturn(testLocationNumber);
 
             mockMvc.perform(delete("/api/locationnumbers/W01/A001/P001"))
                     .andExpect(status().isOk());
 
-            verify(locationNumberService).delete(any(棚番マスタKey.class));
+            verify(locationNumberService).delete(any(LocationNumberKey.class));
         }
 
         @Test
         @WithMockUser(username = "admin", roles = {"ADMIN"})
         @DisplayName("存在しない棚番を削除しようとした場合400エラーが返る")
         void shouldReturn400WhenLocationNumberNotFoundForDelete() throws Exception {
-            when(locationNumberService.find(any(棚番マスタKey.class))).thenReturn(null);
+            when(locationNumberService.find(any(LocationNumberKey.class))).thenReturn(null);
 
             mockMvc.perform(delete("/api/locationnumbers/W99/Z999/P999"))
                     .andExpect(status().isBadRequest());
 
-            verify(locationNumberService, never()).delete(any(棚番マスタKey.class));
+            verify(locationNumberService, never()).delete(any(LocationNumberKey.class));
         }
     }
 
