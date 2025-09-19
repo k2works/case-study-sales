@@ -1,0 +1,1 @@
+package com.example.sms.domain.event.sales;

@@ -1,5 +1,7 @@
 package com.example.sms.infrastructure.datasource.sales.shipping;
 
+import com.example.sms.domain.event.sales.shipping.Shipped;
+import com.example.sms.domain.event.sales.shipping.ShippingAggregate;
 import com.example.sms.domain.model.sales.order.CompletionFlag;
 import com.example.sms.domain.model.sales.order.ShippingDate;
 import com.example.sms.domain.model.sales.shipping.Shipping;
@@ -18,6 +20,7 @@ import com.example.sms.service.sales.order.SalesOrderCriteria;
 import com.example.sms.service.sales.shipping.ShippingCriteria;
 import com.example.sms.service.sales.shipping.ShippingRepository;
 import com.github.pagehelper.PageInfo;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
@@ -35,13 +38,15 @@ public class ShippingDataSource implements ShippingRepository {
     final 受注データ明細Mapper salesOrderLineMapper;
     final OrderLineCustomMapper orderLineCustomMapper;
     final ShippingEntityMapper shippingEntityMapper;
+    final ApplicationEventPublisher eventPublisher;
 
-    public ShippingDataSource(受注データMapper salesOrderMapper, OrderCustomMapper orderCustomMapper, 受注データ明細Mapper salesOrderLineMapper, OrderLineCustomMapper orderLineCustomMapper, ShippingEntityMapper shippingEntityMapper) {
+    public ShippingDataSource(受注データMapper salesOrderMapper, OrderCustomMapper orderCustomMapper, 受注データ明細Mapper salesOrderLineMapper, OrderLineCustomMapper orderLineCustomMapper, ShippingEntityMapper shippingEntityMapper, ApplicationEventPublisher eventPublisher) {
         this.salesOrderMapper = salesOrderMapper;
         this.orderCustomMapper = orderCustomMapper;
         this.salesOrderLineMapper = salesOrderLineMapper;
         this.orderLineCustomMapper = orderLineCustomMapper;
         this.shippingEntityMapper = shippingEntityMapper;
+        this.eventPublisher = eventPublisher;
     }
 
     @Override
@@ -276,6 +281,9 @@ public class ShippingDataSource implements ShippingRepository {
                     salesOrderEntity.get受注データ明細().forEach(
                         salesOrderLineEntity -> {
                             if (salesOrderLineEntity.get受注行番号().equals(shipping.getOrderLineNumber())) {
+                                // 更新前の出荷済数量を保存
+                                Integer previousShippedQuantity = salesOrderLineEntity.get出荷済数量();
+
                                 orderLineCustomMapper.deleteBySalesOrderNumberAndLineNumber(shipping.getOrderNumber().getValue(), shipping.getOrderLineNumber());
 
                                 受注データ明細Key key = new 受注データ明細Key();
@@ -293,6 +301,14 @@ public class ShippingDataSource implements ShippingRepository {
                                 salesOrderLineData.set更新日時(LocalDateTime.now());
                                 salesOrderLineData.set更新者名(username);
                                 salesOrderLineMapper.insert(salesOrderLineData);
+
+                                // 出荷済数量が増加した場合（新しい出荷があった場合）にイベントを発行
+                                int currentShippedQuantity = shipping.getShippedQuantity().getAmount();
+                                if (currentShippedQuantity > (previousShippedQuantity != null ? previousShippedQuantity : 0)) {
+                                    // domain.event.ShippingAggregateを作成してShippedイベントを発行
+                                    ShippingAggregate aggregate = ShippingAggregate.fromDomainModel(shipping);
+                                    eventPublisher.publishEvent(new Shipped(aggregate));
+                                }
                             }
                         }
                     );

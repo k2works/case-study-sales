@@ -1,5 +1,7 @@
 package com.example.sms.service.inventory;
 
+import com.example.sms.domain.event.sales.shipping.Shipped;
+import com.example.sms.domain.event.sales.shipping.ShippingAggregate;
 import com.example.sms.domain.model.inventory.Inventory;
 import com.example.sms.domain.model.inventory.InventoryKey;
 import com.example.sms.domain.model.inventory.InventoryList;
@@ -36,6 +38,9 @@ public class InventoryService {
         this.inventoryDomainService = inventoryDomainService;
     }
 
+    /**
+     * 在庫登録
+     */
     public Inventory register(Inventory inventory) {
         notNull(inventory, "在庫情報は必須です");
 
@@ -53,6 +58,9 @@ public class InventoryService {
         return saved;
     }
 
+    /**
+     * 在庫更新
+     */
     public Inventory update(Inventory inventory) {
         notNull(inventory, "在庫情報は必須です");
 
@@ -70,6 +78,9 @@ public class InventoryService {
         return saved;
     }
 
+    /**
+     * 在庫検索
+     */
     @Transactional(readOnly = true)
     public Optional<Inventory> findByKey(InventoryKey key) {
         notNull(key, "在庫キーは必須です");
@@ -78,18 +89,27 @@ public class InventoryService {
         return inventoryRepository.findByKey(key);
     }
 
+    /**
+     * 在庫検索
+     */
     @Transactional(readOnly = true)
     public InventoryList findAll() {
         log.debug("全在庫取得");
         return inventoryRepository.selectAll();
     }
 
+    /**
+     * 在庫検索（ページネーション）
+     */
     @Transactional(readOnly = true)
     public PageInfo<Inventory> findAllWithPageInfo() {
         log.debug("全在庫取得（ページ情報付き）");
         return inventoryRepository.selectAllWithPageInfo();
     }
 
+    /**
+     * 在庫検索（検索条件）
+     */
     @Transactional(readOnly = true)
     public InventoryList searchByCriteria(InventoryCriteria criteria) {
         notNull(criteria, "検索条件は必須です");
@@ -98,6 +118,9 @@ public class InventoryService {
         return inventoryRepository.searchByCriteria(criteria);
     }
 
+    /**
+     * 在庫検索（検索条件・ページネーション）
+     */
     @Transactional(readOnly = true)
     public PageInfo<Inventory> searchWithPageInfo(InventoryCriteria criteria) {
         notNull(criteria, "検索条件は必須です");
@@ -106,6 +129,9 @@ public class InventoryService {
         return inventoryRepository.searchWithPageInfo(criteria);
     }
 
+    /**
+     * 在庫調整
+     */
     public Inventory adjustStock(InventoryKey key, Integer adjustmentQuantity) {
         notNull(key, "在庫キーは必須です");
         notNull(adjustmentQuantity, "調整数量は必須です");
@@ -124,6 +150,9 @@ public class InventoryService {
         return saved;
     }
 
+    /**
+     * 在庫予約
+     */
     public Inventory reserveStock(InventoryKey key, Integer reserveQuantity) {
         notNull(key, "在庫キーは必須です");
         notNull(reserveQuantity, "予約数量は必須です");
@@ -142,6 +171,9 @@ public class InventoryService {
         return saved;
     }
 
+    /**
+     * 在庫出荷
+     */
     public Inventory shipStock(InventoryKey key, Integer shipmentQuantity, LocalDateTime shipmentDate) {
         notNull(key, "在庫キーは必須です");
         notNull(shipmentQuantity, "出荷数量は必須です");
@@ -161,6 +193,9 @@ public class InventoryService {
         return saved;
     }
 
+    /**
+     * 在庫受入
+     */
     public Inventory receiveStock(InventoryKey key, Integer receiptQuantity) {
         notNull(key, "在庫キーは必須です");
         notNull(receiptQuantity, "入荷数量は必須です");
@@ -179,6 +214,9 @@ public class InventoryService {
         return saved;
     }
 
+    /**
+     * 在庫削除
+     */
     public void delete(InventoryKey key) {
         notNull(key, "在庫キーは必須です");
 
@@ -200,6 +238,9 @@ public class InventoryService {
         log.info("全在庫削除完了");
     }
 
+    /**
+     * 在庫一括登録
+     */
     public InventoryUploadErrorList uploadCsvFile(MultipartFile file) {
         notNull(file, "アップロードファイルは必須です。");
         isTrue(!file.isEmpty(), "CSVファイルの読み込みに失敗しました");
@@ -350,5 +391,42 @@ public class InventoryService {
     public InventoryRuleCheckList checkRule() {
         InventoryList inventories = inventoryRepository.selectAll();
         return inventoryDomainService.checkRule(inventories);
+    }
+
+    /**
+     * 出荷完了イベントを処理して在庫を減らす
+     */
+    public Inventory processShipment(Shipped event) {
+        notNull(event, "出荷イベントは必須です");
+
+        log.info("出荷イベント処理開始: {}", event);
+
+        // Shippedイベントから出荷情報を取得
+        ShippingAggregate shipping = event.getShipping();
+
+        // ShippingからInventoryKeyを構築
+        // 注意: ロット番号、在庫区分、品質区分は実際の要件に応じて設定
+        InventoryKey inventoryKey = InventoryKey.of(
+                shipping.getWarehouseCode(),
+                shipping.getProductCode().getValue(),
+                "DEFAULT_LOT", // デフォルトロット番号（実際の実装では適切な値を設定）
+                "1", // デフォルト在庫区分（実際の実装では適切な値を設定）
+                "1"  // デフォルト品質区分（実際の実装では適切な値を設定）
+        );
+
+        // 出荷数量を取得
+        Integer shipmentQuantity = shipping.getShippedQuantity().getAmount();
+
+        // 出荷日時を取得（出荷日が設定されていない場合は現在時刻を使用）
+        LocalDateTime shipmentDateTime = shipping.getShippingDate() != null ?
+                shipping.getShippingDate().getValue() :
+                LocalDateTime.now();
+
+        // 既存のshipStockメソッドを使用して在庫を減らす
+        Inventory result = shipStock(inventoryKey, shipmentQuantity, shipmentDateTime);
+
+        log.info("出荷イベント処理完了: キー={}, 出荷数量={}", inventoryKey, shipmentQuantity);
+
+        return result;
     }
 }
