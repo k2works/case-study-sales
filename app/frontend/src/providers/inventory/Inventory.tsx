@@ -47,7 +47,6 @@ type InventoryContextType = {
     uploadResults: UploadResultType[];
     setUploadResults: Dispatch<SetStateAction<UploadResultType[]>>;
     uploadInventories: (file: File) => Promise<void>;
-    downloadInventories: () => Promise<void>;
 };
 
 const InventoryContext = createContext<InventoryContextType | undefined>(undefined);
@@ -159,25 +158,6 @@ export const InventoryProvider: React.FC<Props> = ({ children }) => {
         }
     };
 
-    const downloadInventories = async () => {
-        try {
-            setLoading(true);
-            const blob = await inventoryService.download();
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `inventory_${new Date().toISOString().split('T')[0]}.csv`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            window.URL.revokeObjectURL(url);
-            setMessage("在庫データのダウンロードが完了しました。");
-        } catch (error: any) {
-            setError(`在庫データのダウンロードに失敗しました: ${error?.message}`);
-        } finally {
-            setLoading(false);
-        }
-    };
 
     const value = useMemo(
         () => ({
@@ -215,7 +195,6 @@ export const InventoryProvider: React.FC<Props> = ({ children }) => {
             uploadResults,
             setUploadResults,
             uploadInventories,
-            downloadInventories,
         }),
         [loading, message, setMessage, error, setError, pageNation, criteria, modalIsOpen, searchModalIsOpen, uploadModalIsOpen, isEditing, editId, newInventory, inventories, searchInventoryCriteria, searchCriteria, uploadResults, inventoryService]
     );

@@ -102,7 +102,6 @@ interface InventoryCollectionViewProps {
         handleOpenModal: (inventory?: InventoryType) => void;
         handleCheckToggleCollection: () => void;
         handleDeleteCheckedCollection: () => void;
-        handleDownloadInventories: () => void;
     }
     collectionItems: {
         inventories: InventoryType[];
@@ -121,7 +120,7 @@ export const InventoryCollectionView: React.FC<InventoryCollectionViewProps> = (
     error,
     message,
     searchItems: {searchInventoryCriteria, setSearchInventoryCriteria, handleOpenSearchModal},
-    headerItems: {handleOpenModal, handleCheckToggleCollection, handleDeleteCheckedCollection, handleDownloadInventories},
+    headerItems: {handleOpenModal, handleCheckToggleCollection, handleDeleteCheckedCollection},
     collectionItems: { inventories, handleDeleteInventory, handleCheckInventory },
     pageNationItems: { pageNation, criteria, fetchInventories }
 }) => (
@@ -148,9 +147,6 @@ export const InventoryCollectionView: React.FC<InventoryCollectionViewProps> = (
                     </button>
                     <button className="action-button" onClick={() => handleDeleteCheckedCollection()} id="deleteAll">
                         一括削除
-                    </button>
-                    <button className="action-button" onClick={() => handleDownloadInventories()} id="download">
-                        ダウンロード
                     </button>
                 </div>
                 <InventoryList

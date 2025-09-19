@@ -26,7 +26,6 @@ export const InventoryCollection: React.FC = () => {
         fetchInventories,
         inventoryService,
         setSearchModalIsOpen,
-        downloadInventories,
     } = useInventoryContext();
 
     const handleOpenModal = (inventory?: InventoryType) => {
@@ -113,8 +112,7 @@ export const InventoryCollection: React.FC = () => {
                 headerItems={{
                     handleOpenModal,
                     handleCheckToggleCollection,
-                    handleDeleteCheckedCollection,
-                    handleDownloadInventories: downloadInventories
+                    handleDeleteCheckedCollection
                 }}
                 collectionItems={{
                     inventories,

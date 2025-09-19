@@ -29,7 +29,6 @@ export interface InventoryServiceType {
     search: (criteria: InventoryCriteriaType, page?: number, pageSize?: number) => Promise<InventoryFetchType>;
     upload: (file: File) => Promise<UploadResultType[]>;
     check: () => Promise<RuleCheckResultType[]>;
-    download: () => Promise<Blob>;
 }
 
 export const InventoryService = () => {
@@ -80,10 +79,6 @@ export const InventoryService = () => {
         return Array.isArray(response) ? response : [response];
     };
 
-    const download = async (): Promise<Blob> => {
-        const url = `${endPoint}/download`;
-        return await apiUtils.fetchGetDownload(url);
-    };
 
     return {
         select,
@@ -93,7 +88,6 @@ export const InventoryService = () => {
         destroy,
         search,
         upload,
-        check,
-        download
+        check
     };
 };
