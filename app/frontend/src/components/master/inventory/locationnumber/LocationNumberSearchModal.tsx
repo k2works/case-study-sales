@@ -1,9 +1,9 @@
 import React from "react";
 import Modal from "react-modal";
-import {LocationNumberSearchSingleView} from "../../../views/master/locationnumber/LocationNumberSearch.tsx";
-import {showErrorMessage} from "../../application/utils.ts";
-import {useLocationNumberContext} from "../../../providers/master/LocationNumber.tsx";
-import {LocationNumberCriteriaType} from "../../../models/master/locationnumber.ts";
+import {LocationNumberSearchSingleView} from "../../../../views/master/locationnumber/LocationNumberSearch.tsx";
+import {showErrorMessage} from "../../../application/utils.ts";
+import {useLocationNumberContext} from "../../../../providers/master/LocationNumber.tsx";
+import {LocationNumberCriteriaType} from "../../../../models/master/locationnumber.ts";
 
 export const LocationNumberSearchModal: React.FC = () => {
     const {

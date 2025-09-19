@@ -1,8 +1,7 @@
 import React, {useEffect} from "react";
-import {showErrorMessage} from "../../application/utils.ts";
-import {SiteLayout} from "../../../views/SiteLayout.tsx";
-import LoadingIndicator from "../../../views/application/LoadingIndicatior.tsx";
-import {WarehouseProvider, useWarehouseContext} from "../../../providers/master/Warehouse.tsx";
+import {showErrorMessage} from "../../../application/utils.ts";
+import LoadingIndicator from "../../../../views/application/LoadingIndicatior.tsx";
+import {WarehouseProvider, useWarehouseContext} from "../../../../providers/master/Warehouse.tsx";
 import {WarehouseCollection} from "./WarehouseCollection.tsx";
 
 export const WarehouseContainer: React.FC = () => {
@@ -35,10 +34,8 @@ export const WarehouseContainer: React.FC = () => {
     };
 
     return (
-        <SiteLayout>
-            <WarehouseProvider>
-                <Content/>
-            </WarehouseProvider>
-        </SiteLayout>
+        <WarehouseProvider>
+            <Content/>
+        </WarehouseProvider>
     );
 };

@@ -1,7 +1,7 @@
 import React from "react";
-import {showErrorMessage} from "../../application/utils.ts";
-import {WarehouseSingleView} from "../../../views/master/warehouse/WarehouseSingle.tsx";
-import {useWarehouseContext} from "../../../providers/master/Warehouse.tsx";
+import {showErrorMessage} from "../../../application/utils.ts";
+import {WarehouseSingleView} from "../../../../views/master/warehouse/WarehouseSingle.tsx";
+import {useWarehouseContext} from "../../../../providers/master/Warehouse.tsx";
 
 export const WarehouseSingle: React.FC = () => {
     const {

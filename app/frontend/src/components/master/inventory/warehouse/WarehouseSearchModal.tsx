@@ -1,9 +1,9 @@
 import React from "react";
 import Modal from "react-modal";
-import {WarehouseSearchSingleView} from "../../../views/master/warehouse/WarehouseSearch.tsx";
-import {showErrorMessage} from "../../application/utils.ts";
-import {useWarehouseContext} from "../../../providers/master/Warehouse.tsx";
-import {WarehouseCriteriaType} from "../../../models/master/warehouse.ts";
+import {WarehouseSearchSingleView} from "../../../../views/master/warehouse/WarehouseSearch.tsx";
+import {showErrorMessage} from "../../../application/utils.ts";
+import {useWarehouseContext} from "../../../../providers/master/Warehouse.tsx";
+import {WarehouseCriteriaType} from "../../../../models/master/warehouse.ts";
 
 export const WarehouseSearchModal: React.FC = () => {
     const {

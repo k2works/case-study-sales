@@ -2,10 +2,10 @@ import {useState} from "react";
 import {
     WarehouseCriteriaType,
     WarehouseType
-} from "../../../../models/master/warehouse.ts";
-import {WarehouseService, WarehouseServiceType} from "../../../../services/master/warehouse.ts";
-import {PageNationType} from "../../../../views/application/PageNation.tsx";
-import {useFetchEntities} from "../../../application/hooks.ts";
+} from "../../../../../models/master/warehouse.ts";
+import {WarehouseService, WarehouseServiceType} from "../../../../../services/master/warehouse.ts";
+import {PageNationType} from "../../../../../views/application/PageNation.tsx";
+import {useFetchEntities} from "../../../../application/hooks.ts";
 
 export const useWarehouse = () => {
     const initialWarehouse = {

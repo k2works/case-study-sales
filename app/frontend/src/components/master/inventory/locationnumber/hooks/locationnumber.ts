@@ -2,10 +2,10 @@ import {useState} from "react";
 import {
     LocationNumberCriteriaType,
     LocationNumberType
-} from "../../../../models/master/locationnumber.ts";
-import {LocationNumberService, LocationNumberServiceType} from "../../../../services/master/locationnumber.ts";
-import {PageNationType} from "../../../../views/application/PageNation.tsx";
-import {useFetchEntities} from "../../../application/hooks.ts";
+} from "../../../../../models/master/locationnumber.ts";
+import {LocationNumberService, LocationNumberServiceType} from "../../../../../services/master/locationnumber.ts";
+import {PageNationType} from "../../../../../views/application/PageNation.tsx";
+import {useFetchEntities} from "../../../../application/hooks.ts";
 
 export const useLocationNumber = () => {
     const initialLocationNumber = {

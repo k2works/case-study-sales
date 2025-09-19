@@ -132,8 +132,13 @@ const NaveItems: React.FC = () => {
                                 </ul>
                             )}
                             <SubNavItem id="side-nav-account-nav" to="/account">口座</SubNavItem>
-                            <SubNavItem id="side-nav-warehouse-nav" to="/warehouse">倉庫</SubNavItem>
-                            <SubNavItem id="side-nav-locationnumber-nav" to="/locationnumber">棚番</SubNavItem>
+                            <SubNavItem id="side-nav-inventory-master-nav" to="/inventory-master">在庫</SubNavItem>
+                            {!Env.isProduction() && (
+                                <ul className="nav-sub-list">
+                                    <SubNavItem id="side-nav-warehouse-nav" to="/warehouse">倉庫</SubNavItem>
+                                    <SubNavItem id="side-nav-locationnumber-nav" to="/locationnumber">棚番</SubNavItem>
+                                </ul>
+                            )}
                             <SubNavItem id="side-nav-code-nav" to="/code">コード</SubNavItem>
                             {!Env.isProduction() && (
                                 <ul className="nav-sub-list">

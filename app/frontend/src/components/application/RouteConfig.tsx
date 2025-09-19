@@ -9,7 +9,7 @@ import {SiteLayout} from "../../views/SiteLayout.tsx";
 import {DownloadContainer} from "../system/download/DownloadContainer.tsx";
 import {DepartmentContainer} from "../master/department/DepartmentContainer.tsx";
 import {EmployeeContainer} from "../master/employee/EmployeeContainer.tsx";
-import {WarehouseContainer} from "../master/warehouse/WarehouseContainer.tsx";
+import {WarehouseContainer} from "../master/inventory/warehouse/WarehouseContainer.tsx";
 import {ProductContainer} from "../master/product/ProductContainer.tsx";
 import {ProductItemContainer} from "../master/product/item/ProductItemContainer.tsx";
 import {ProductCategoryContainer} from "../master/product/category/ProductCategoryContainer.tsx";
@@ -50,7 +50,8 @@ import {InventoryTabContainer} from "../inventory/InventoryTabContainer.tsx";
 import {InventoryContainer} from "../inventory/list/InventoryContainer.tsx";
 import {InventoryUploadContainer} from "../inventory/upload/InventoryUploadContainer.tsx";
 import {InventoryRuleContainer} from "../inventory/rule/InventoryRuleContainer.tsx";
-import {LocationNumberContainer} from "../master/locationnumber/LocationNumberContainer.tsx";
+import {LocationNumberContainer} from "../master/inventory/locationnumber/LocationNumberContainer.tsx";
+import {InventoryMasterContainer} from "../master/inventory/InventoryMasterContainer.tsx";
 
 export const RouteConfig: React.FC = () => {
     const ProductCategoryPage = () => {
@@ -269,6 +270,22 @@ export const RouteConfig: React.FC = () => {
         )
     }
 
+    const WarehousePage = () => {
+        return (
+            <SiteLayout>
+                <WarehouseContainer/>
+            </SiteLayout>
+        )
+    }
+
+    const LocationNumberPage = () => {
+        return (
+            <SiteLayout>
+                <LocationNumberContainer/>
+            </SiteLayout>
+        )
+    }
+
 
 
 
@@ -337,10 +354,12 @@ export const RouteConfig: React.FC = () => {
                                                                    allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/employee" element={<RouteAuthGuard component={<EmployeeContainer/>} redirectPath="/"
                                                                  allowedRoles={[RoleType.ADMIN]}/>}/>
-                <Route path="/warehouse" element={<RouteAuthGuard component={<WarehouseContainer/>} redirectPath="/"
+                <Route path="/inventory-master" element={<RouteAuthGuard component={<InventoryMasterContainer/>} redirectPath="/"
                                                                  allowedRoles={[RoleType.ADMIN]}/>}/>
-                <Route path="/locationnumber" element={<RouteAuthGuard component={<LocationNumberContainer/>} redirectPath="/"
-                                                                allowedRoles={[RoleType.ADMIN]}/>}/>
+                <Route path="/warehouse" element={<RouteAuthGuard component={<WarehousePage/>} redirectPath="/"
+                                                                 allowedRoles={[RoleType.ADMIN]}/>}/>
+                <Route path="/locationnumber" element={<RouteAuthGuard component={<LocationNumberPage/>} redirectPath="/"
+                                                                 allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/product" element={<RouteAuthGuard component={<ProductContainer/>} redirectPath="/"
                                                                 allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/product-category" element={<RouteAuthGuard component={<ProductCategoryPage/>} redirectPath="/"

@@ -1,8 +1,8 @@
 import React from "react";
-import {useWarehouseContext} from "../../../providers/master/Warehouse.tsx";
-import {WarehouseCollectionView} from "../../../views/master/warehouse/WarehouseCollection.tsx";
-import {WarehouseType} from "../../../models/master/warehouse.ts";
-import {showErrorMessage} from "../../application/utils.ts";
+import {useWarehouseContext} from "../../../../providers/master/Warehouse.tsx";
+import {WarehouseCollectionView} from "../../../../views/master/warehouse/WarehouseCollection.tsx";
+import {WarehouseType} from "../../../../models/master/warehouse.ts";
+import {showErrorMessage} from "../../../application/utils.ts";
 import {WarehouseSearchModal} from "./WarehouseSearchModal.tsx";
 import {WarehouseEditModal} from "./WarehouseEditModal.tsx";
 

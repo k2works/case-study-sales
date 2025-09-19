@@ -1,7 +1,7 @@
 import React from "react";
 import Modal from "react-modal";
 import {LocationNumberSingle} from "./LocationNumberSingle.tsx";
-import {useLocationNumberContext} from "../../../providers/master/LocationNumber.tsx";
+import {useLocationNumberContext} from "../../../../providers/master/LocationNumber.tsx";
 
 export const LocationNumberEditModal: React.FC = () => {
     const {

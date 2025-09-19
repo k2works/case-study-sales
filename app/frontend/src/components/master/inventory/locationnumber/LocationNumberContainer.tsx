@@ -1,8 +1,7 @@
 import React, {useEffect} from "react";
-import {showErrorMessage} from "../../application/utils.ts";
-import {SiteLayout} from "../../../views/SiteLayout.tsx";
-import LoadingIndicator from "../../../views/application/LoadingIndicatior.tsx";
-import {LocationNumberProvider, useLocationNumberContext} from "../../../providers/master/LocationNumber.tsx";
+import {showErrorMessage} from "../../../application/utils.ts";
+import LoadingIndicator from "../../../../views/application/LoadingIndicatior.tsx";
+import {LocationNumberProvider, useLocationNumberContext} from "../../../../providers/master/LocationNumber.tsx";
 import {LocationNumberCollection} from "./LocationNumberCollection.tsx";
 
 export const LocationNumberContainer: React.FC = () => {
@@ -35,10 +34,8 @@ export const LocationNumberContainer: React.FC = () => {
     };
 
     return (
-        <SiteLayout>
-            <LocationNumberProvider>
-                <Content/>
-            </LocationNumberProvider>
-        </SiteLayout>
+        <LocationNumberProvider>
+            <Content/>
+        </LocationNumberProvider>
     );
 };

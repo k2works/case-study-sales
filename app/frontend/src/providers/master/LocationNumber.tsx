@@ -2,7 +2,7 @@ import React, {createContext, useContext, ReactNode, Dispatch, SetStateAction, u
 import {PageNationType, usePageNation} from "../../views/application/PageNation.tsx";
 import {LocationNumberCriteriaType, LocationNumberType, LocationNumberSearchCriteriaType} from "../../models/master/locationnumber.ts";
 import { useModal } from "../../components/application/hooks.ts";
-import { useLocationNumber, useFetchLocationNumbers } from "../../components/master/locationnumber/hooks";
+import { useLocationNumber, useFetchLocationNumbers } from "../../components/master/inventory/locationnumber/hooks";
 import { showErrorMessage } from "../../components/application/utils.ts";
 import { useMessage } from "../../components/application/Message.tsx";
 import {LocationNumberServiceType} from "../../services/master/locationnumber.ts";

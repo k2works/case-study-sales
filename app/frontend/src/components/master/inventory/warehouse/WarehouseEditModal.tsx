@@ -1,7 +1,7 @@
 import React from "react";
 import Modal from "react-modal";
 import {WarehouseSingle} from "./WarehouseSingle.tsx";
-import {useWarehouseContext} from "../../../providers/master/Warehouse.tsx";
+import {useWarehouseContext} from "../../../../providers/master/Warehouse.tsx";
 
 export const WarehouseEditModal: React.FC = () => {
     const {

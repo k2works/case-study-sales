@@ -2,7 +2,7 @@ import React, {createContext, useContext, ReactNode, Dispatch, SetStateAction, u
 import {PageNationType, usePageNation} from "../../views/application/PageNation.tsx";
 import {WarehouseCriteriaType, WarehouseType, WarehouseSearchCriteriaType} from "../../models/master/warehouse.ts";
 import { useModal } from "../../components/application/hooks.ts";
-import { useWarehouse, useFetchWarehouses } from "../../components/master/warehouse/hooks";
+import { useWarehouse, useFetchWarehouses } from "../../components/master/inventory/warehouse/hooks";
 import { showErrorMessage } from "../../components/application/utils.ts";
 import { useMessage } from "../../components/application/Message.tsx";
 import {WarehouseServiceType} from "../../services/master/warehouse.ts";
