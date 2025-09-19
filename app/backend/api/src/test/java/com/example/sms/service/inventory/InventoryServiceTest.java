@@ -264,8 +264,8 @@ class InventoryServiceTest {
             Inventory result = inventoryService.adjustStock(key, 50);
 
             assertNotNull(result);
-            assertEquals(150, result.getActualStockQuantity()); // 100 + 50
-            assertEquals(140, result.getAvailableStockQuantity()); // 90 + 50
+            assertEquals(150, result.getActualStockQuantity().getAmount()); // 100 + 50
+            assertEquals(140, result.getAvailableStockQuantity().getAmount()); // 90 + 50
             verify(inventoryRepository).findByKey(key);
             verify(inventoryRepository).save(adjusted);
         }
@@ -283,8 +283,8 @@ class InventoryServiceTest {
             Inventory result = inventoryService.reserveStock(key, 30);
 
             assertNotNull(result);
-            assertEquals(100, result.getActualStockQuantity()); // 変化なし
-            assertEquals(60, result.getAvailableStockQuantity()); // 90 - 30
+            assertEquals(100, result.getActualStockQuantity().getAmount()); // 変化なし
+            assertEquals(60, result.getAvailableStockQuantity().getAmount()); // 90 - 30
             verify(inventoryRepository).findByKey(key);
             verify(inventoryRepository).save(reserved);
         }
@@ -303,8 +303,8 @@ class InventoryServiceTest {
             Inventory result = inventoryService.shipStock(key, 20, shipmentDate);
 
             assertNotNull(result);
-            assertEquals(80, result.getActualStockQuantity()); // 100 - 20
-            assertEquals(80, result.getAvailableStockQuantity()); // Math.min(90, 80) = 80
+            assertEquals(80, result.getActualStockQuantity().getAmount()); // 100 - 20
+            assertEquals(80, result.getAvailableStockQuantity().getAmount()); // Math.min(90, 80) = 80
             assertEquals(shipmentDate, result.getLastShipmentDate());
             verify(inventoryRepository).findByKey(key);
             verify(inventoryRepository).save(shipped);
@@ -323,8 +323,8 @@ class InventoryServiceTest {
             Inventory result = inventoryService.receiveStock(key, 40);
 
             assertNotNull(result);
-            assertEquals(140, result.getActualStockQuantity()); // 100 + 40
-            assertEquals(130, result.getAvailableStockQuantity()); // 90 + 40
+            assertEquals(140, result.getActualStockQuantity().getAmount()); // 100 + 40
+            assertEquals(130, result.getAvailableStockQuantity().getAmount()); // 90 + 40
             verify(inventoryRepository).findByKey(key);
             verify(inventoryRepository).save(received);
         }

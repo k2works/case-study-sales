@@ -25,15 +25,15 @@ public class InventoryCSVDataSource implements InventoryCSVRepository {
         if (inventoryList == null) return List.of();
         return inventoryList.asList().stream()
                 .map(inv -> new InventoryDownloadCSV(
-                        inv.getWarehouseCode(),
+                        inv.getWarehouseCode().getValue(),
                         inv.getWarehouseName(),
                         inv.getProductCode() != null ? inv.getProductCode().getValue() : null,
                         inv.getProductName(),
                         inv.getLotNumber(),
                         inv.getStockCategory(),
                         inv.getQualityCategory(),
-                        inv.getActualStockQuantity(),
-                        inv.getAvailableStockQuantity(),
+                        inv.getActualStockQuantity().getAmount(),
+                        inv.getAvailableStockQuantity().getAmount(),
                         inv.getLastShipmentDate()
                 )).toList();
     }

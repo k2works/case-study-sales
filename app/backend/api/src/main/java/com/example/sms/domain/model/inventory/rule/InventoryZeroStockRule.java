@@ -10,6 +10,6 @@ public class InventoryZeroStockRule extends InventoryRule {
 
     @Override
     public boolean isSatisfiedBy(Inventory inventory) {
-        return inventory.getActualStockQuantity() == 0;
+        return inventory.getActualStockQuantity().getAmount() == 0;
     }
 }

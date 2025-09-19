@@ -98,7 +98,7 @@ public class InventoryList {
      */
     public Integer getTotalActualStock() {
         return items.stream()
-                .mapToInt(Inventory::getActualStockQuantity)
+                .mapToInt(inventory -> inventory.getActualStockQuantity().getAmount())
                 .sum();
     }
 
@@ -107,7 +107,7 @@ public class InventoryList {
      */
     public Integer getTotalAvailableStock() {
         return items.stream()
-                .mapToInt(Inventory::getAvailableStockQuantity)
+                .mapToInt(inventory -> inventory.getAvailableStockQuantity().getAmount())
                 .sum();
     }
 }

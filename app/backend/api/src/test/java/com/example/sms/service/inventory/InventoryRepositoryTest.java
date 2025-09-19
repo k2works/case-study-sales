@@ -115,7 +115,7 @@ class InventoryRepositoryTest {
             assertTrue(pageInfo.getList().size() >= 1);
             // 初期データまたはテストデータにWH1が含まれていることを確認
             boolean foundWH1 = pageInfo.getList().stream()
-                    .anyMatch(inv -> "WH1".equals(inv.getWarehouseCode()));
+                    .anyMatch(inv -> "WH1".equals(inv.getWarehouseCode().getValue()));
             assertTrue(foundWH1);
         }
 
@@ -140,7 +140,7 @@ class InventoryRepositoryTest {
             repository.save(updatedInventory);
             
             // 現在は保存処理の確認のみ
-            assertEquals("WH1", updatedInventory.getWarehouseCode());
+            assertEquals("WH1", updatedInventory.getWarehouseCode().getValue());
         }
 
         @Test
@@ -205,8 +205,8 @@ class InventoryRepositoryTest {
             repository.save(adjusted);
             
             Optional<Inventory> actual = repository.findByKey(inventory.getKey());
-            assertEquals(150, actual.get().getActualStockQuantity()); // 100 + 50
-            assertEquals(140, actual.get().getAvailableStockQuantity()); // 90 + 50
+            assertEquals(150, actual.get().getActualStockQuantity().getAmount()); // 100 + 50
+            assertEquals(140, actual.get().getAvailableStockQuantity().getAmount()); // 90 + 50
         }
 
         @Test
@@ -219,8 +219,8 @@ class InventoryRepositoryTest {
             repository.save(reserved);
 
             Optional<Inventory> actual = repository.findByKey(inventory.getKey());
-            assertEquals(100, actual.get().getActualStockQuantity()); // 変化なし
-            assertEquals(60, actual.get().getAvailableStockQuantity()); // 90 - 30
+            assertEquals(100, actual.get().getActualStockQuantity().getAmount()); // 変化なし
+            assertEquals(60, actual.get().getAvailableStockQuantity().getAmount()); // 90 - 30
         }
 
         @Test
@@ -234,8 +234,8 @@ class InventoryRepositoryTest {
             repository.save(shipped);
 
             Optional<Inventory> actual = repository.findByKey(inventory.getKey());
-            assertEquals(80, actual.get().getActualStockQuantity()); // 100 - 20
-            assertEquals(80, actual.get().getAvailableStockQuantity()); // Math.min(90, 80) = 80
+            assertEquals(80, actual.get().getActualStockQuantity().getAmount()); // 100 - 20
+            assertEquals(80, actual.get().getAvailableStockQuantity().getAmount()); // Math.min(90, 80) = 80
             assertEquals(shipmentDate, actual.get().getLastShipmentDate().truncatedTo(java.time.temporal.ChronoUnit.SECONDS));
         }
 
@@ -249,8 +249,8 @@ class InventoryRepositoryTest {
             repository.save(received);
 
             Optional<Inventory> actual = repository.findByKey(inventory.getKey());
-            assertEquals(140, actual.get().getActualStockQuantity()); // 100 + 40
-            assertEquals(130, actual.get().getAvailableStockQuantity()); // 90 + 40
+            assertEquals(140, actual.get().getActualStockQuantity().getAmount()); // 100 + 40
+            assertEquals(130, actual.get().getAvailableStockQuantity().getAmount()); // 90 + 40
         }
     }
 }

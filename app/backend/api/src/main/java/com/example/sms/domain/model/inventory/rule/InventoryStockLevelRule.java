@@ -12,6 +12,6 @@ public class InventoryStockLevelRule extends InventoryRule {
 
     @Override
     public boolean isSatisfiedBy(Inventory inventory) {
-        return inventory.getActualStockQuantity() < LOW_STOCK_THRESHOLD;
+        return inventory.getActualStockQuantity().getAmount() < LOW_STOCK_THRESHOLD;
     }
 }

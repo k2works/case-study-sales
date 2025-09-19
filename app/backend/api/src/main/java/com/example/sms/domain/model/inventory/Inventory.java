@@ -1,6 +1,8 @@
 package com.example.sms.domain.model.inventory;
 
 import com.example.sms.domain.model.master.product.ProductCode;
+import com.example.sms.domain.model.master.warehouse.WarehouseCode;
+import com.example.sms.domain.type.quantity.Quantity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -19,13 +21,13 @@ import static org.apache.commons.lang3.Validate.isTrue;
 @NoArgsConstructor(force = true)
 @Builder(toBuilder = true)
 public class Inventory {
-    String warehouseCode; // 倉庫コード
+    WarehouseCode warehouseCode; // 倉庫コード
     ProductCode productCode; // 商品コード
     String lotNumber; // ロット番号
     String stockCategory; // 在庫区分
     String qualityCategory; // 良品区分
-    Integer actualStockQuantity; // 実在庫数
-    Integer availableStockQuantity; // 有効在庫数
+    Quantity actualStockQuantity; // 実在庫数
+    Quantity availableStockQuantity; // 有効在庫数
     LocalDateTime lastShipmentDate; // 最終出荷日
     String productName; // 商品名
     String warehouseName; // 倉庫名
@@ -53,13 +55,13 @@ public class Inventory {
         isTrue(availableStockQuantity <= actualStockQuantity, "有効在庫数は実在庫数以下である必要があります");
         
         return Inventory.builder()
-                .warehouseCode(warehouseCode)
+                .warehouseCode(WarehouseCode.of(warehouseCode))
                 .productCode(ProductCode.of(productCode))
                 .lotNumber(lotNumber)
                 .stockCategory(stockCategory)
                 .qualityCategory(qualityCategory)
-                .actualStockQuantity(actualStockQuantity)
-                .availableStockQuantity(availableStockQuantity)
+                .actualStockQuantity(Quantity.of(actualStockQuantity))
+                .availableStockQuantity(Quantity.of(availableStockQuantity))
                 .lastShipmentDate(lastShipmentDate)
                 .build();
     }
@@ -69,7 +71,7 @@ public class Inventory {
      */
     public InventoryKey getKey() {
         return InventoryKey.of(
-                warehouseCode,
+                warehouseCode.getValue(),
                 productCode.getValue(),
                 lotNumber,
                 stockCategory,
@@ -81,12 +83,17 @@ public class Inventory {
      * 在庫を調整
      */
     public Inventory adjustStock(Integer adjustmentQuantity) {
-        Integer newActualStock = actualStockQuantity + adjustmentQuantity;
-        Integer newAvailableStock = availableStockQuantity + adjustmentQuantity;
-        
-        isTrue(newActualStock >= 0, "調整後の実在庫数が負になります");
-        isTrue(newAvailableStock >= 0, "調整後の有効在庫数が負になります");
-        
+        Quantity adjustment = Quantity.of(Math.abs(adjustmentQuantity));
+        Quantity newActualStock = adjustmentQuantity >= 0
+            ? actualStockQuantity.plus(adjustment)
+            : actualStockQuantity.minus(adjustment);
+        Quantity newAvailableStock = adjustmentQuantity >= 0
+            ? availableStockQuantity.plus(adjustment)
+            : availableStockQuantity.minus(adjustment);
+
+        isTrue(newActualStock.getAmount() >= 0, "調整後の実在庫数が負になります");
+        isTrue(newAvailableStock.getAmount() >= 0, "調整後の有効在庫数が負になります");
+
         return this.toBuilder()
                 .actualStockQuantity(newActualStock)
                 .availableStockQuantity(newAvailableStock)
@@ -98,10 +105,11 @@ public class Inventory {
      */
     public Inventory reserve(Integer reserveQuantity) {
         isTrue(reserveQuantity > 0, "予約数量は正の数である必要があります");
-        isTrue(availableStockQuantity >= reserveQuantity, "有効在庫数が不足しています");
-        
+        isTrue(availableStockQuantity.getAmount() >= reserveQuantity, "有効在庫数が不足しています");
+
+        Quantity reserve = Quantity.of(reserveQuantity);
         return this.toBuilder()
-                .availableStockQuantity(availableStockQuantity - reserveQuantity)
+                .availableStockQuantity(availableStockQuantity.minus(reserve))
                 .build();
     }
 
@@ -110,11 +118,15 @@ public class Inventory {
      */
     public Inventory ship(Integer shipmentQuantity, LocalDateTime shipmentDate) {
         isTrue(shipmentQuantity > 0, "出荷数量は正の数である必要があります");
-        isTrue(actualStockQuantity >= shipmentQuantity, "実在庫数が不足しています");
-        
+        isTrue(actualStockQuantity.getAmount() >= shipmentQuantity, "実在庫数が不足しています");
+
+        Quantity shipment = Quantity.of(shipmentQuantity);
+        Quantity newActualStock = actualStockQuantity.minus(shipment);
+        Quantity newAvailableStock = Quantity.of(Math.min(availableStockQuantity.getAmount(), newActualStock.getAmount()));
+
         return this.toBuilder()
-                .actualStockQuantity(actualStockQuantity - shipmentQuantity)
-                .availableStockQuantity(Math.min(availableStockQuantity, actualStockQuantity - shipmentQuantity))
+                .actualStockQuantity(newActualStock)
+                .availableStockQuantity(newAvailableStock)
                 .lastShipmentDate(shipmentDate)
                 .build();
     }
@@ -124,10 +136,11 @@ public class Inventory {
      */
     public Inventory receive(Integer receiptQuantity) {
         isTrue(receiptQuantity > 0, "入荷数量は正の数である必要があります");
-        
+
+        Quantity receipt = Quantity.of(receiptQuantity);
         return this.toBuilder()
-                .actualStockQuantity(actualStockQuantity + receiptQuantity)
-                .availableStockQuantity(availableStockQuantity + receiptQuantity)
+                .actualStockQuantity(actualStockQuantity.plus(receipt))
+                .availableStockQuantity(availableStockQuantity.plus(receipt))
                 .build();
     }
 
@@ -135,13 +148,13 @@ public class Inventory {
      * 在庫が利用可能か判定
      */
     public boolean isAvailable() {
-        return availableStockQuantity > 0;
+        return availableStockQuantity.getAmount() > 0;
     }
 
     /**
      * 在庫が存在するか判定
      */
     public boolean hasStock() {
-        return actualStockQuantity > 0;
+        return actualStockQuantity.getAmount() > 0;
     }
 }
