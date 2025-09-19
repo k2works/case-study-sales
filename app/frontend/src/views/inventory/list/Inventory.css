@@ -116,16 +116,3 @@
     }
 }
 
-/* Empty state for inventory collection */
-/* ==================================== */
-.collection-object-list:empty::after {
-    content: "在庫データがありません。検索条件を設定して検索してください。";
-    display: block;
-    text-align: center;
-    color: #6b7280;
-    font-style: italic;
-    padding: 3rem;
-    border: 1px dashed #d1d5db;
-    border-radius: 8px;
-    background-color: #f9fafb;
-}
