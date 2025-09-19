@@ -1,80 +1,135 @@
 import React from "react";
+import { useInventoryContext } from "../../../providers/inventory/Inventory.tsx";
+import { InventoryCollectionView } from "../../../views/inventory/list/InventoryCollection.tsx";
+import { InventoryType } from "../../../models/inventory/inventory.ts";
+import { showErrorMessage } from "../../application/utils.ts";
+import { InventorySearchModal } from "./InventorySearchModal.tsx";
+import { InventoryEditModal } from "./InventoryEditModal.tsx";
 
 export const InventoryCollection: React.FC = () => {
-    return (
-        <div className="container-fluid">
-            <div className="row">
-                <div className="col-12">
-                    <div className="card">
-                        <div className="card-header">
-                            <h5 className="card-title">在庫検索</h5>
-                        </div>
-                        <div className="card-body">
-                            <form>
-                                <div className="row">
-                                    <div className="col-md-3">
-                                        <label htmlFor="warehouseCode" className="form-label">倉庫コード</label>
-                                        <input type="text" className="form-control" id="warehouseCode" />
-                                    </div>
-                                    <div className="col-md-3">
-                                        <label htmlFor="productCode" className="form-label">商品コード</label>
-                                        <input type="text" className="form-control" id="productCode" />
-                                    </div>
-                                    <div className="col-md-3">
-                                        <label htmlFor="lotNumber" className="form-label">ロット番号</label>
-                                        <input type="text" className="form-control" id="lotNumber" />
-                                    </div>
-                                    <div className="col-md-3">
-                                        <button type="submit" className="btn btn-primary mt-4">検索</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    const {
+        message,
+        setMessage,
+        error,
+        setError,
+        pageNation,
+        criteria,
+        setModalIsOpen,
+        setIsEditing,
+        setEditId,
+        initialInventory,
+        inventories,
+        setInventories,
+        setNewInventory,
+        searchInventoryCriteria,
+        setSearchInventoryCriteria,
+        fetchInventories,
+        inventoryService,
+        setSearchModalIsOpen,
+        downloadInventories,
+    } = useInventoryContext();
 
-            <div className="row mt-3">
-                <div className="col-12">
-                    <div className="card">
-                        <div className="card-header d-flex justify-content-between">
-                            <h5 className="card-title">在庫一覧</h5>
-                            <div>
-                                <button className="btn btn-success me-2">新規登録</button>
-                                <button className="btn btn-info">ダウンロード</button>
-                            </div>
-                        </div>
-                        <div className="card-body">
-                            <div className="table-responsive">
-                                <table className="table table-striped table-hover">
-                                    <thead className="table-light">
-                                        <tr>
-                                            <th>倉庫コード</th>
-                                            <th>倉庫名</th>
-                                            <th>商品コード</th>
-                                            <th>商品名</th>
-                                            <th>ロット番号</th>
-                                            <th>在庫区分</th>
-                                            <th>良品区分</th>
-                                            <th>実在庫数</th>
-                                            <th>有効在庫数</th>
-                                            <th>最終出荷日</th>
-                                            <th>操作</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td colSpan={11} className="text-center text-muted">
-                                                データがありません。検索条件を設定して検索してください。
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    const handleOpenModal = (inventory?: InventoryType) => {
+        setMessage("");
+        setError("");
+        if (inventory) {
+            setNewInventory(inventory);
+            setEditId(`${inventory.warehouseCode}-${inventory.productCode}-${inventory.lotNumber}`);
+            setIsEditing(true);
+        } else {
+            setNewInventory(initialInventory);
+            setIsEditing(false);
+        }
+        setModalIsOpen(true);
+    };
+
+    const handleOpenSearchModal = () => {
+        setSearchModalIsOpen(true);
+    };
+
+    const handleDeleteInventory = async (warehouseCode: string, productCode: string, lotNumber: string, stockCategory: string, qualityCategory: string) => {
+        if (window.confirm("本当に削除しますか？")) {
+            try {
+                await inventoryService.destroy(warehouseCode, productCode, lotNumber, stockCategory, qualityCategory);
+                setInventories(inventories.filter(inv =>
+                    !(inv.warehouseCode === warehouseCode &&
+                      inv.productCode === productCode &&
+                      inv.lotNumber === lotNumber &&
+                      inv.stockCategory === stockCategory &&
+                      inv.qualityCategory === qualityCategory)
+                ));
+                setMessage("在庫データを削除しました。");
+            } catch (error: any) {
+                showErrorMessage(`在庫データの削除に失敗しました: ${error?.message}`, setError);
+            }
+        }
+    };
+
+    const handleCheckInventory = (inventory: InventoryType) => {
+        setInventories(inventories.map(inv =>
+            (inv.warehouseCode === inventory.warehouseCode &&
+             inv.productCode === inventory.productCode &&
+             inv.lotNumber === inventory.lotNumber)
+                ? { ...inv, checked: !inv.checked }
+                : inv
+        ));
+    };
+
+    const handleCheckToggleCollection = () => {
+        const allChecked = inventories.every(inv => inv.checked);
+        setInventories(inventories.map(inv => ({ ...inv, checked: !allChecked })));
+    };
+
+    const handleDeleteCheckedCollection = async () => {
+        const checkedInventories = inventories.filter(inv => inv.checked);
+        if (checkedInventories.length === 0) {
+            setMessage("削除する在庫が選択されていません。");
+            return;
+        }
+
+        if (window.confirm(`選択された${checkedInventories.length}件の在庫を削除しますか？`)) {
+            try {
+                for (const inventory of checkedInventories) {
+                    await inventoryService.destroy(inventory.warehouseCode, inventory.productCode, inventory.lotNumber, inventory.stockCategory, inventory.qualityCategory);
+                }
+                setInventories(inventories.filter(inv => !inv.checked));
+                setMessage(`${checkedInventories.length}件の在庫データを削除しました。`);
+            } catch (error: any) {
+                showErrorMessage(`在庫データの一括削除に失敗しました: ${error?.message}`, setError);
+            }
+        }
+    };
+
+    return (
+        <>
+            <InventoryCollectionView
+                error={error}
+                message={message}
+                searchItems={{
+                    searchInventoryCriteria,
+                    setSearchInventoryCriteria,
+                    handleOpenSearchModal
+                }}
+                headerItems={{
+                    handleOpenModal,
+                    handleCheckToggleCollection,
+                    handleDeleteCheckedCollection,
+                    handleDownloadInventories: downloadInventories
+                }}
+                collectionItems={{
+                    inventories,
+                    handleOpenModal,
+                    handleDeleteInventory,
+                    handleCheckInventory
+                }}
+                pageNationItems={{
+                    pageNation,
+                    criteria,
+                    fetchInventories
+                }}
+            />
+            <InventorySearchModal />
+            <InventoryEditModal />
+        </>
     );
 };

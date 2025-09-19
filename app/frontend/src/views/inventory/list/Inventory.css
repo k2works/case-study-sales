@@ -1,0 +1,131 @@
+/* Inventory Styles - Based on procurement/purchase/list structure */
+/* ============================================================== */
+
+/* Import base collection styles from index.css - these are already included in the app */
+/* This file only contains inventory-specific overrides */
+/* Modal styles are handled by react-modal library */
+
+/* Inventory-specific collection item styling */
+/* ========================================== */
+.collection-object-item-checkbox {
+    margin-right: 10px;
+    transform: scale(1.2);
+}
+
+/* Inventory status indicators */
+/* =========================== */
+.inventory-status-normal {
+    color: #059669;
+    font-weight: 500;
+}
+
+.inventory-status-safety {
+    color: #0891b2;
+    font-weight: 500;
+}
+
+.inventory-status-disposal {
+    color: #ef4444;
+    font-weight: 500;
+}
+
+.inventory-quality-good {
+    color: #059669;
+    font-weight: 500;
+}
+
+.inventory-quality-defective {
+    color: #ef4444;
+    font-weight: 500;
+}
+
+.inventory-quality-return {
+    color: #f59e0b;
+    font-weight: 500;
+}
+
+/* Inventory quantity formatting */
+/* ============================= */
+.inventory-quantity {
+    font-family: 'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+    font-weight: 500;
+    text-align: right;
+}
+
+/* Override collection item hover for inventory */
+/* ============================================ */
+.collection-object-item:hover {
+    background-color: #f8fafc;
+    border-color: #e2e8f0;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Inventory-specific action button styling */
+/* ======================================== */
+.collection-object-item-actions .action-button {
+    margin: 0 2px;
+    padding: 6px 12px;
+    font-size: 13px;
+    /* Use default #007aff background color from index.css */
+}
+
+/* All buttons use the same default #007aff color for consistency */
+/* No color overrides needed - using base action-button styles */
+
+/* Collection content details for inventory */
+/* ======================================== */
+.collection-object-item-content-details {
+    color: #6b7280;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.collection-object-item-content-name {
+    color: #111827;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-top: 2px;
+}
+
+/* Responsive adjustments for inventory collection */
+/* =============================================== */
+@media screen and (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        margin: 1rem;
+    }
+
+    .collection-object-item {
+        padding: 0.75rem;
+    }
+
+    .collection-object-item-content {
+        margin-bottom: 0.5rem;
+    }
+
+    .collection-object-item-actions {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .collection-object-item-actions .action-button {
+        width: 100%;
+        margin: 0;
+    }
+}
+
+/* Empty state for inventory collection */
+/* ==================================== */
+.collection-object-list:empty::after {
+    content: "在庫データがありません。検索条件を設定して検索してください。";
+    display: block;
+    text-align: center;
+    color: #6b7280;
+    font-style: italic;
+    padding: 3rem;
+    border: 1px dashed #d1d5db;
+    border-radius: 8px;
+    background-color: #f9fafb;
+}
