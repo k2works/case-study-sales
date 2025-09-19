@@ -38,21 +38,6 @@ public class InventoryResource {
     @Schema(description = "最終出荷日")
     private LocalDateTime lastShipmentDate;
 
-    @Schema(description = "作成日時")
-    private LocalDateTime createdDateTime;
-
-    @Schema(description = "作成者名")
-    private String createdBy;
-
-    @Schema(description = "更新日時")
-    private LocalDateTime updatedDateTime;
-
-    @Schema(description = "更新者名")
-    private String updatedBy;
-
-    @Schema(description = "バージョン")
-    private Integer version;
-
     @Schema(description = "商品名")
     private String productName;
 

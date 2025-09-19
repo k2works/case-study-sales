@@ -74,7 +74,7 @@ VALUES
     ('WH1', '10103003', 'LOT202501005', '1', 'G', 120, 110, DATEADD(DAY, -4, CURRENT_DATE), CURRENT_DATE, 'システム', CURRENT_DATE, 'システム'),
     
     -- 不良品在庫の例
-    ('WH1', '10101001', 'LOT202501001', '1', 'F', 5, 0, NULL, CURRENT_DATE, 'システム', CURRENT_DATE, 'システム'),
+    ('WH1', '10101001', 'LOT202501001', '1', 'B', 5, 0, NULL, CURRENT_DATE, 'システム', CURRENT_DATE, 'システム'),
 
     -- 第二倉庫（WH2）の在庫（豚肉類・調味料類）
     ('WH2', '10102001', 'LOT202501006', '1', 'G', 60, 55, DATEADD(DAY, -1, CURRENT_DATE), CURRENT_DATE, 'システム', CURRENT_DATE, 'システム'),
@@ -93,7 +93,7 @@ VALUES
     ('WH3', '10104003', 'LOT202501015', '1', 'G', 15, 10, DATEADD(DAY, -3, CURRENT_DATE), CURRENT_DATE, 'システム', CURRENT_DATE, 'システム'),
 
     -- 未検品在庫の例
-    ('WH3', '10104001', 'LOT202501016', '1', 'U', 10, 0, NULL, CURRENT_DATE, 'システム', CURRENT_DATE, 'システム');
+    ('WH3', '10104001', 'LOT202501016', '1', 'R', 10, 0, NULL, CURRENT_DATE, 'システム', CURRENT_DATE, 'システム');
 
 -- 倉庫部門マスタ（テスト環境では一時的にコメントアウト）
 -- V2.01で既存の部門マスタとの整合性を確保するため、倉庫部門マスタの挿入は一時的に無効化
