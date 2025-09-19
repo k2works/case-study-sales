@@ -50,6 +50,7 @@ import {InventoryTabContainer} from "../inventory/InventoryTabContainer.tsx";
 import {InventoryContainer} from "../inventory/list/InventoryContainer.tsx";
 import {InventoryUploadContainer} from "../inventory/upload/InventoryUploadContainer.tsx";
 import {InventoryRuleContainer} from "../inventory/rule/InventoryRuleContainer.tsx";
+import {LocationNumberContainer} from "../master/locationnumber/LocationNumberContainer.tsx";
 
 export const RouteConfig: React.FC = () => {
     const ProductCategoryPage = () => {
@@ -338,6 +339,8 @@ export const RouteConfig: React.FC = () => {
                                                                  allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/warehouse" element={<RouteAuthGuard component={<WarehouseContainer/>} redirectPath="/"
                                                                  allowedRoles={[RoleType.ADMIN]}/>}/>
+                <Route path="/locationnumber" element={<RouteAuthGuard component={<LocationNumberContainer/>} redirectPath="/"
+                                                                allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/product" element={<RouteAuthGuard component={<ProductContainer/>} redirectPath="/"
                                                                 allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/product-category" element={<RouteAuthGuard component={<ProductCategoryPage/>} redirectPath="/"
