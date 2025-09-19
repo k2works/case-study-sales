@@ -24,8 +24,8 @@ public class Inventory {
     WarehouseCode warehouseCode; // 倉庫コード
     ProductCode productCode; // 商品コード
     String lotNumber; // ロット番号
-    String stockCategory; // 在庫区分
-    String qualityCategory; // 良品区分
+    StockCategory stockCategory; // 在庫区分
+    QualityCategory qualityCategory; // 良品区分
     Quantity actualStockQuantity; // 実在庫数
     Quantity availableStockQuantity; // 有効在庫数
     LocalDateTime lastShipmentDate; // 最終出荷日
@@ -58,8 +58,8 @@ public class Inventory {
                 .warehouseCode(WarehouseCode.of(warehouseCode))
                 .productCode(ProductCode.of(productCode))
                 .lotNumber(lotNumber)
-                .stockCategory(stockCategory)
-                .qualityCategory(qualityCategory)
+                .stockCategory(StockCategory.of(stockCategory))
+                .qualityCategory(QualityCategory.of(qualityCategory))
                 .actualStockQuantity(Quantity.of(actualStockQuantity))
                 .availableStockQuantity(Quantity.of(availableStockQuantity))
                 .lastShipmentDate(lastShipmentDate)
@@ -74,8 +74,8 @@ public class Inventory {
                 warehouseCode.getValue(),
                 productCode.getValue(),
                 lotNumber,
-                stockCategory,
-                qualityCategory
+                stockCategory.getCode(),
+                qualityCategory.getCode()
         );
     }
 

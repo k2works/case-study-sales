@@ -40,8 +40,8 @@ public class InventoryResourceDTOMapper {
         resource.setWarehouseCode(inventory.getWarehouseCode().getValue());
         resource.setProductCode(inventory.getProductCode().getValue());
         resource.setLotNumber(inventory.getLotNumber());
-        resource.setStockCategory(inventory.getStockCategory());
-        resource.setQualityCategory(inventory.getQualityCategory());
+        resource.setStockCategory(inventory.getStockCategory().getCode());
+        resource.setQualityCategory(inventory.getQualityCategory().getCode());
         resource.setActualStockQuantity(inventory.getActualStockQuantity().getAmount());
         resource.setAvailableStockQuantity(inventory.getAvailableStockQuantity().getAmount());
         resource.setLastShipmentDate(inventory.getLastShipmentDate());

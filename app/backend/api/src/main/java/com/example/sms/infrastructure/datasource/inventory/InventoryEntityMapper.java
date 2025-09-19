@@ -2,6 +2,8 @@ package com.example.sms.infrastructure.datasource.inventory;
 
 import com.example.sms.domain.model.inventory.Inventory;
 import com.example.sms.domain.model.inventory.InventoryKey;
+import com.example.sms.domain.model.inventory.QualityCategory;
+import com.example.sms.domain.model.inventory.StockCategory;
 import com.example.sms.domain.model.master.product.ProductCode;
 import com.example.sms.domain.model.master.warehouse.WarehouseCode;
 import com.example.sms.domain.type.quantity.Quantity;
@@ -43,8 +45,8 @@ public class InventoryEntityMapper {
                 .warehouseCode(WarehouseCode.of(entity.get倉庫コード()))
                 .productCode(ProductCode.of(entity.get商品コード()))
                 .lotNumber(entity.getロット番号())
-                .stockCategory(entity.get在庫区分())
-                .qualityCategory(entity.get良品区分())
+                .stockCategory(StockCategory.of(entity.get在庫区分()))
+                .qualityCategory(QualityCategory.of(entity.get良品区分()))
                 .actualStockQuantity(Quantity.of(entity.get実在庫数()))
                 .availableStockQuantity(Quantity.of(entity.get有効在庫数()))
                 .lastShipmentDate(entity.get最終出荷日())
@@ -73,8 +75,8 @@ public class InventoryEntityMapper {
         entity.set倉庫コード(model.getWarehouseCode().getValue());
         entity.set商品コード(model.getProductCode().getValue());
         entity.setロット番号(model.getLotNumber());
-        entity.set在庫区分(model.getStockCategory());
-        entity.set良品区分(model.getQualityCategory());
+        entity.set在庫区分(model.getStockCategory().getCode());
+        entity.set良品区分(model.getQualityCategory().getCode());
         entity.set実在庫数(model.getActualStockQuantity().getAmount());
         entity.set有効在庫数(model.getAvailableStockQuantity().getAmount());
         entity.set最終出荷日(model.getLastShipmentDate());

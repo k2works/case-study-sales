@@ -38,10 +38,10 @@ class InventoryServiceTest {
     private Inventory getInventory() {
         return Inventory.of(
                 "001",
-                "10101001", 
+                "10101001",
                 "LOT001",
                 "1",
-                "1",
+                "G",
                 100,
                 90,
                 LocalDateTime.now()
@@ -75,7 +75,7 @@ class InventoryServiceTest {
     }
 
     private InventoryKey getInventoryKey() {
-        return InventoryKey.of("001", "10101001", "LOT001", "1", "1");
+        return InventoryKey.of("001", "10101001", "LOT001", "1", "G");
     }
 
     @Nested

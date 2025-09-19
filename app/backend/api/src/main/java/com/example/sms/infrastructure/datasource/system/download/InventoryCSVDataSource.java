@@ -30,8 +30,8 @@ public class InventoryCSVDataSource implements InventoryCSVRepository {
                         inv.getProductCode() != null ? inv.getProductCode().getValue() : null,
                         inv.getProductName(),
                         inv.getLotNumber(),
-                        inv.getStockCategory(),
-                        inv.getQualityCategory(),
+                        inv.getStockCategory().getCode(),
+                        inv.getQualityCategory().getCode(),
                         inv.getActualStockQuantity().getAmount(),
                         inv.getAvailableStockQuantity().getAmount(),
                         inv.getLastShipmentDate()
