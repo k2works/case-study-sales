@@ -547,6 +547,43 @@ public class TestDataFactoryImpl implements TestDataFactory {
     }
 
     @Override
+    public void setUpForShippingOrderConfirmService() {
+        setUpForOrderService();
+
+        OrderList orderList = salesOrderRepository.selectAll();
+
+        salesOrderRepository.deleteAll();
+
+        orderList.asList().forEach(
+                salesOrder -> {
+                    List<OrderLine> lines = salesOrder.getOrderLines();
+                    List<OrderLine> newLines = new ArrayList<>();
+                    for (OrderLine line : lines) {
+                        OrderLine newLine = OrderLine.of(
+                                line.getOrderNumber().getValue(),  // orderNumber（受注番号）
+                                line.getOrderLineNumber(),  // orderLineNumber（受注行番号）
+                                "99999999",  // productCode（商品コード）
+                                "商品1",  // productName（商品名）
+                                1000,  // salesUnitPrice（販売単価）
+                                10,  // orderQuantity（受注数量）
+                                10,  // taxRate（消費税率）
+                                10,  // allocationQuantity（引当数量）
+                                0,  // shipmentInstructionQuantity（出荷指示数量）
+                                0,  // shippedQuantity（出荷済数量）
+                                0,  // completionFlag（完了フラグ）
+                                10,  // discountAmount（値引金額）
+                                LocalDateTime.of(2021, 1, 1, 0, 0),  // deliveryDate（納期）
+                                null // shippingDate（出荷日）
+                        );
+                        newLines.add(newLine);
+                    }
+                    Order newOrder = Order.of(salesOrder, newLines);
+                    salesOrderRepository.save(newOrder);
+                }
+        );
+    }
+
+    @Override
     public void setUpForSalesService() {
         // 部門データの準備
         Department department = getDepartment("10000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門1");

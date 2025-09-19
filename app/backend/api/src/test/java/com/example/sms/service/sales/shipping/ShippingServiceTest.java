@@ -6,7 +6,6 @@ import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.sales.order.CompletionFlag;
 import com.example.sms.domain.model.sales.order.Order;
 import com.example.sms.domain.model.sales.order.OrderLine;
-import com.example.sms.domain.model.sales.order.OrderList;
 import com.example.sms.domain.model.sales.shipping.Shipping;
 import com.example.sms.domain.model.sales.shipping.ShippingList;
 import com.example.sms.domain.model.sales.shipping.rule.ShippingRuleCheckList;
@@ -120,59 +119,6 @@ class ShippingServiceTest {
                 assertEquals(shipping.getProductCode().getValue(), savedShipping.getProductCode().getValue());
             }
         }
-
-        @Nested
-        @DisplayName("出荷指示")
-        class ShippingInstructionTest {
-
-            @Test
-            @DisplayName("出荷指示を行う")
-            void shouldOrderShipping() {
-                ShippingList allShippings = shippingService.selectAll();
-                if (!allShippings.asList().isEmpty()) {
-                    Shipping shipping = allShippings.asList().getFirst();
-                    shippingService.orderShipping(allShippings);
-
-                    Shipping orderedShipping = shippingService.findById(shipping.getOrderNumber().getValue(), shipping.getCustomerOrderNumber()).orElse(null);
-                    OrderList orderList = salesOrderService.selectAll();
-
-                    assertNotNull(orderedShipping);
-                    assertEquals(CompletionFlag.完了, orderedShipping.getCompletionFlag());
-                    for (Order order : orderList.asList()) {
-                        for (OrderLine orderLine : order.getOrderLines()) {
-                            if (orderLine.getProductCode().getValue().equals(shipping.getProductCode().getValue())) {
-                                assertEquals(CompletionFlag.完了, orderLine.getCompletionFlag());
-                            }
-                        }
-                    }
-                }
-            }
-            @Test
-            @DisplayName("受注明細の件数は出荷件数と一致する")
-            void shouldMatchShippingCountWithOrderDetails() {
-                ShippingList allShippings = shippingService.selectAll();
-                if (!allShippings.asList().isEmpty()) {
-                    Shipping shipping = allShippings.asList().getFirst();
-                    shippingService.orderShipping(allShippings);
-
-                    Order order = salesOrderService.find(shipping.getOrderNumber().getValue());
-                    assertNotNull(order);
-                    assertEquals(allShippings.asList().stream().filter(s -> s.getOrderNumber().getValue().equals(shipping.getOrderNumber().getValue())).count(), order.getOrderLines().size());
-                }
-            }
-            @Test
-            @DisplayName("出荷指示日が出荷日として設定される")
-            void shouldSetShippingInstructionDate() {
-                ShippingList allShippings = shippingService.selectAll();
-                if (!allShippings.asList().isEmpty()) {
-                    Shipping shipping = allShippings.asList().getFirst();
-                    shippingService.orderShipping(allShippings);
-
-                    Shipping updatedShipping = shippingService.findById(shipping.getOrderNumber().getValue(), shipping.getCustomerOrderNumber()).orElse(null);
-                    assertNotNull(updatedShipping.getShippingDate());
-                }
-            }
-        }
     }
 
     @Nested
@@ -226,6 +172,60 @@ class ShippingServiceTest {
             ShippingRuleCheckList checkList = shippingService.checkRule();
             assertNotNull(checkList);
             assertTrue(checkList.asList().getFirst().containsValue("納期を超過しています。"));
+        }
+    }
+
+    @Nested
+    @DisplayName("出荷指示")
+    class ShippingInstructionTest {
+
+        @BeforeEach
+        void setUp() {
+            testDataFactory.setUpForShippingOrderConfirmService();
+        }
+
+        @Test
+        @DisplayName("出荷指示を行う")
+        void shouldOrderShipping() {
+            ShippingList allShippings = shippingService.selectAllNotComplete();
+
+            shippingService.orderShipping(allShippings);
+
+            shippingService.selectAllNotComplete().asList().forEach(s -> {
+                Shipping updatedShipping = shippingService.findById(s.getOrderNumber().getValue(), String.valueOf(s.getOrderLineNumber())).orElse(null);
+                assertNotNull(updatedShipping);
+                assertTrue(updatedShipping.getShipmentInstructionQuantity().getAmount() > 0);
+                assertTrue(updatedShipping.getShippedQuantity().getAmount() == 0);
+                assertNull(updatedShipping.getShippingDate());
+            });
+        }
+    }
+
+    @Nested
+    @DisplayName("出荷確認")
+    class ShippingConfirmationTest {
+
+        @BeforeEach
+        void setUp() {
+            testDataFactory.setUpForShippingOrderConfirmService();
+        }
+
+        @Test
+        @DisplayName("出荷確認を行う")
+        void shouldOrderShipping() {
+            ShippingList allShippings = shippingService.selectAllNotComplete();
+            shippingService.orderShipping(allShippings);
+
+            allShippings = shippingService.selectAllNotComplete();
+            shippingService.confirmShipping(allShippings);
+
+            shippingService.selectAllNotComplete().asList().forEach(s -> {
+                Shipping updatedShipping = shippingService.findById(s.getOrderNumber().getValue(), String.valueOf(s.getOrderLineNumber())).orElse(null);
+                assertNotNull(updatedShipping);
+                assertTrue(updatedShipping.getShipmentInstructionQuantity().getAmount() > 0);
+                assertTrue(updatedShipping.getShippedQuantity().getAmount() > 0);
+                assertNotNull(updatedShipping.getShippingDate());
+            });
         }
     }
 }

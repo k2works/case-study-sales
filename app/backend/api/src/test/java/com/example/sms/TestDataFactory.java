@@ -39,6 +39,8 @@ public interface TestDataFactory {
 
     void setUpForShippingRuleCheckService();
 
+    void setUpForShippingOrderConfirmService();
+
     void setUpForSalesService();
 
     void setUpForSalesServiceForAggregate();
@@ -78,4 +80,5 @@ public interface TestDataFactory {
     MultipartFile createInventoryInvalidFile();
 
     MultipartFile createInventoryForCheckFile();
+
 }

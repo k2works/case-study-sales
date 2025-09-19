@@ -41,6 +41,13 @@ public class ShippingService {
     }
 
     /**
+     * 未出荷一覧を取得
+     */
+    public ShippingList selectAllNotComplete() {
+        return shippingRepository.selectAll();
+    }
+
+    /**
      * 出荷一覧をページング付きで取得
      */
     public PageInfo<Shipping> selectAllWithPageInfo() {

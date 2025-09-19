@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
-@DisplayName("ShippingEventHandlerテスト")
+@DisplayName("出荷イベント")
 @ExtendWith(MockitoExtension.class)
 class ShippingEventHandlerTest {
 
