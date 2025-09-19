@@ -32,8 +32,8 @@ const InventoryItem: React.FC<InventoryItemProps> = ({inventory, onEdit, onDelet
     };
 
     return (
-        <li className="collection-object-item" key={`${inventory.warehouseCode}-${inventory.productCode}-${inventory.lotNumber}`}>
-            <div className="collection-object-item-content" data-id={`${inventory.warehouseCode}-${inventory.productCode}-${inventory.lotNumber}`}>
+        <li className="collection-object-item" key={`${inventory.warehouseCode}-${inventory.productCode}-${inventory.lotNumber}-${inventory.stockCategory}-${inventory.qualityCategory}`}>
+            <div className="collection-object-item-content" data-id={`${inventory.warehouseCode}-${inventory.productCode}-${inventory.lotNumber}-${inventory.stockCategory}-${inventory.qualityCategory}`}>
                 <input type="checkbox" className="collection-object-item-checkbox" checked={inventory.checked}
                        onChange={() => onCheck(inventory)}/>
             </div>
@@ -79,7 +79,7 @@ const InventoryList: React.FC<InventoryListProps> = ({inventories, onEdit, onDel
         <ul className="collection-object-list">
             {inventories.map(inventory => (
                 <InventoryItem
-                    key={`${inventory.warehouseCode}-${inventory.productCode}-${inventory.lotNumber}`}
+                    key={`${inventory.warehouseCode}-${inventory.productCode}-${inventory.lotNumber}-${inventory.stockCategory}-${inventory.qualityCategory}`}
                     inventory={inventory}
                     onEdit={onEdit}
                     onDelete={onDelete}

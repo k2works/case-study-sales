@@ -8,10 +8,12 @@ interface FormProps {
     setCondition: (criteria: InventorySearchCriteriaType) => void,
     handleClick: (e: React.MouseEvent<HTMLButtonElement>) => void,
     handleClose: (e: React.MouseEvent<HTMLButtonElement>) => void,
-    onClearSearch: () => void
+    onClearSearch: () => void,
+    handleWarehouseSelect: () => void,
+    handleProductSelect: () => void
 }
 
-const Form = ({criteria, setCondition, handleClick, handleClose, onClearSearch}: FormProps) => {
+const Form = ({criteria, setCondition, handleClick, handleClose, onClearSearch, handleWarehouseSelect, handleProductSelect}: FormProps) => {
     return (
         <div className="single-view-content-item-form">
             <FormInput
@@ -22,7 +24,9 @@ const Form = ({criteria, setCondition, handleClick, handleClose, onClearSearch}:
                 value={criteria.warehouseCode || ""}
                 onChange={(e) => setCondition(
                     {...criteria, warehouseCode: e.target.value}
-                )}/>
+                )}
+                onClick={handleWarehouseSelect}
+            />
             <FormInput
                 id={"search-product-code"}
                 type="text"
@@ -31,7 +35,9 @@ const Form = ({criteria, setCondition, handleClick, handleClose, onClearSearch}:
                 value={criteria.productCode || ""}
                 onChange={(e) => setCondition(
                     {...criteria, productCode: e.target.value}
-                )}/>
+                )}
+                onClick={handleProductSelect}
+            />
             <FormInput
                 id={"search-lot-number"}
                 type="text"
@@ -59,24 +65,6 @@ const Form = ({criteria, setCondition, handleClick, handleClose, onClearSearch}:
                 onChange={(e) => setCondition(
                     {...criteria, qualityCategory: e.target.value}
                 )}/>
-            <FormInput
-                id={"search-product-name"}
-                type="text"
-                className="single-view-content-item-form-item-input"
-                label={"商品名"}
-                value={criteria.productName || ""}
-                onChange={(e) => setCondition(
-                    {...criteria, productName: e.target.value}
-                )}/>
-            <FormInput
-                id={"search-warehouse-name"}
-                type="text"
-                className="single-view-content-item-form-item-input"
-                label={"倉庫名"}
-                value={criteria.warehouseName || ""}
-                onChange={(e) => setCondition(
-                    {...criteria, warehouseName: e.target.value}
-                )}/>
 
             <div className="button-container">
                 <button className="action-button" id="search-all" onClick={handleClick}>
@@ -100,6 +88,8 @@ interface InventorySearchModalViewProps {
     setSearchCriteria: (criteria: InventorySearchCriteriaType) => void;
     onSearch: () => Promise<void>;
     onClearSearch: () => void;
+    handleWarehouseSelect: () => void;
+    handleProductSelect: () => void;
 }
 
 export const InventorySearchModalView: React.FC<InventorySearchModalViewProps> = ({
@@ -108,6 +98,8 @@ export const InventorySearchModalView: React.FC<InventorySearchModalViewProps> =
     setSearchCriteria,
     onSearch,
     onClearSearch,
+    handleWarehouseSelect,
+    handleProductSelect,
 }) => {
     const handleClick: MouseEventHandler<HTMLButtonElement> = async(e) => {
         e.preventDefault();
@@ -136,6 +128,8 @@ export const InventorySearchModalView: React.FC<InventorySearchModalViewProps> =
                             handleClick={handleClick}
                             handleClose={handleCancel}
                             onClearSearch={onClearSearch}
+                            handleWarehouseSelect={handleWarehouseSelect}
+                            handleProductSelect={handleProductSelect}
                         />
                     </div>
                 </div>

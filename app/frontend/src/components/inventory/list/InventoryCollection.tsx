@@ -33,7 +33,7 @@ export const InventoryCollection: React.FC = () => {
         setError("");
         if (inventory) {
             setNewInventory(inventory);
-            setEditId(`${inventory.warehouseCode}-${inventory.productCode}-${inventory.lotNumber}`);
+            setEditId(`${inventory.warehouseCode}-${inventory.productCode}-${inventory.lotNumber}-${inventory.stockCategory}-${inventory.qualityCategory}`);
             setIsEditing(true);
         } else {
             setNewInventory(initialInventory);
@@ -68,7 +68,9 @@ export const InventoryCollection: React.FC = () => {
         setInventories(inventories.map(inv =>
             (inv.warehouseCode === inventory.warehouseCode &&
              inv.productCode === inventory.productCode &&
-             inv.lotNumber === inventory.lotNumber)
+             inv.lotNumber === inventory.lotNumber &&
+             inv.stockCategory === inventory.stockCategory &&
+             inv.qualityCategory === inventory.qualityCategory)
                 ? { ...inv, checked: !inv.checked }
                 : inv
         ));
