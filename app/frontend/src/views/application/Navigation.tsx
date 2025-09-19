@@ -97,6 +97,17 @@ const NaveItems: React.FC = () => {
                                 </ul>
                             )}
                         </ul>
+                        在庫
+                        <ul className="nav-sub-list">
+                            <SubNavItem id="side-nav-inventory-nav" to="/inventory">在庫</SubNavItem>
+                            {!Env.isProduction() && (
+                                <ul className="nav-sub-list">
+                                    <SubNavItem id="side-nav-inventory-nav" to="/inventory-list">一覧</SubNavItem>
+                                    <SubNavItem id="side-nav-inventory-nav" to="/inventory-upload">一括登録</SubNavItem>
+                                    <SubNavItem id="side-nav-inventory-nav" to="/inventory-rule">ルール</SubNavItem>
+                                </ul>
+                            )}
+                        </ul>
                     </li>
                     <li className="nav-item">
                         マスタ
@@ -187,6 +198,17 @@ const NaveItems: React.FC = () => {
                                     <SubNavItem id="side-nav-purchase-order-nav" to="/purchase-order-list">一覧</SubNavItem>
                                     <SubNavItem id="side-nav-purchase-order-nav" to="/purchase-order-upload">一括登録</SubNavItem>
                                     <SubNavItem id="side-nav-purchase-order-nav" to="/purchase-order-rule">ルール</SubNavItem>
+                                </ul>
+                            )}
+                        </ul>
+                        在庫
+                        <ul className="nav-sub-list">
+                            <SubNavItem id="side-nav-inventory-nav" to="/inventory">在庫</SubNavItem>
+                            {!Env.isProduction() && (
+                                <ul className="nav-sub-list">
+                                    <SubNavItem id="side-nav-inventory-nav" to="/inventory-list">一覧</SubNavItem>
+                                    <SubNavItem id="side-nav-inventory-nav" to="/inventory-upload">一括登録</SubNavItem>
+                                    <SubNavItem id="side-nav-inventory-nav" to="/inventory-rule">ルール</SubNavItem>
                                 </ul>
                             )}
                         </ul>

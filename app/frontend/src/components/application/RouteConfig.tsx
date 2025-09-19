@@ -45,6 +45,10 @@ import {PurchaseOrderTabContainer} from "../procurement/purchase/PurchaseOrderTa
 import {PurchaseOrderContainer} from "../procurement/purchase/list/PurchaseOrderContainer.tsx";
 import {PurchaseOrderUploadContainer} from "../procurement/purchase/upload/PurchaseOrderUploadContainer.tsx";
 import {PurchaseOrderRuleContainer} from "../procurement/purchase/rule/PurchaseOrderRuleContainer.tsx";
+import {InventoryTabContainer} from "../inventory/InventoryTabContainer.tsx";
+import {InventoryContainer} from "../inventory/list/InventoryContainer.tsx";
+import {InventoryUploadContainer} from "../inventory/upload/InventoryUploadContainer.tsx";
+import {InventoryRuleContainer} from "../inventory/rule/InventoryRuleContainer.tsx";
 
 export const RouteConfig: React.FC = () => {
     const ProductCategoryPage = () => {
@@ -239,6 +243,32 @@ export const RouteConfig: React.FC = () => {
         )
     }
 
+    const InventoryListPage = () => {
+        return (
+            <SiteLayout>
+                <InventoryContainer/>
+            </SiteLayout>
+        )
+    }
+
+    const InventoryUploadPage = () => {
+        return (
+            <SiteLayout>
+                <InventoryUploadContainer/>
+            </SiteLayout>
+        )
+    }
+
+    const InventoryRulePage = () => {
+        return (
+            <SiteLayout>
+                <InventoryRuleContainer/>
+            </SiteLayout>
+        )
+    }
+
+
+
 
     return (
             <Routes>
@@ -292,6 +322,14 @@ export const RouteConfig: React.FC = () => {
                 <Route path="/purchase-order-upload" element={<RouteAuthGuard component={<PurchaseOrderUploadPage/>} redirectPath="/"
                                                                            allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/purchase-order-rule" element={<RouteAuthGuard component={<PurchaseOrderRulePage/>} redirectPath="/"
+                                                                           allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/inventory" element={<RouteAuthGuard component={<InventoryTabContainer/>} redirectPath="/"
+                                                                     allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/inventory-list" element={<RouteAuthGuard component={<InventoryListPage/>} redirectPath="/"
+                                                                           allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/inventory-upload" element={<RouteAuthGuard component={<InventoryUploadPage/>} redirectPath="/"
+                                                                           allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/inventory-rule" element={<RouteAuthGuard component={<InventoryRulePage/>} redirectPath="/"
                                                                            allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/department" element={<RouteAuthGuard component={<DepartmentContainer/>} redirectPath="/"
                                                                    allowedRoles={[RoleType.ADMIN]}/>}/>
