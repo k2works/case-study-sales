@@ -1,7 +1,7 @@
 import React from "react";
-import { InventoryType, InventorySearchCriteriaType, InventoryCriteriaType, InventoryFetchType } from "../../../models/inventory/inventory.ts";
+import { InventoryType, InventorySearchCriteriaType, InventoryCriteriaType } from "../../../models/inventory/inventory.ts";
 import { Message } from "../../../components/application/Message.tsx";
-import { PageNation } from "../../application/PageNation.tsx";
+import { PageNation, PageNationType } from "../../application/PageNation.tsx";
 import { Search } from "../../Common.tsx";
 import "./Inventory.css";
 
@@ -110,9 +110,9 @@ interface InventoryCollectionViewProps {
         handleCheckInventory: (inventory: InventoryType) => void;
     }
     pageNationItems: {
-        pageNation: InventoryFetchType | null;
+        pageNation: PageNationType | null;
         criteria: InventoryCriteriaType | null;
-        fetchInventories: (pageNumber?: number, searchCriteria?: InventoryCriteriaType) => Promise<void>;
+        fetchInventories: { load: (page?: number, criteria?: InventoryCriteriaType) => Promise<void> };
     }
 }
 
@@ -155,11 +155,7 @@ export const InventoryCollectionView: React.FC<InventoryCollectionViewProps> = (
                     onDelete={handleDeleteInventory}
                     onCheck={handleCheckInventory}
                 />
-                <PageNation
-                    pageNation={pageNation}
-                    callBack={(page: number, criteria?: InventoryCriteriaType) => fetchInventories(page, criteria)}
-                    criteria={criteria || undefined}
-                />
+                <PageNation pageNation={pageNation} callBack={fetchInventories.load} criteria={criteria || undefined}/>
             </div>
         </div>
     </div>

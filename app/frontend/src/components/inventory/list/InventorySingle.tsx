@@ -30,7 +30,7 @@ export const InventorySingle: React.FC = () => {
                 await inventoryService.create(newInventory);
                 setMessage("在庫データを登録しました。");
             }
-            await fetchInventories();
+            await fetchInventories.load();
             setModalIsOpen(false);
         } catch (error: any) {
             showErrorMessage(`在庫データの${isEditing ? '更新' : '登録'}に失敗しました: ${error?.message}`, setError);

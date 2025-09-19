@@ -7,10 +7,11 @@ interface FormProps {
     criteria: InventorySearchCriteriaType,
     setCondition: (criteria: InventorySearchCriteriaType) => void,
     handleClick: (e: React.MouseEvent<HTMLButtonElement>) => void,
-    handleClose: (e: React.MouseEvent<HTMLButtonElement>) => void
+    handleClose: (e: React.MouseEvent<HTMLButtonElement>) => void,
+    onClearSearch: () => void
 }
 
-const Form = ({criteria, setCondition, handleClick, handleClose}: FormProps) => {
+const Form = ({criteria, setCondition, handleClick, handleClose, onClearSearch}: FormProps) => {
     return (
         <div className="single-view-content-item-form">
             <FormInput
@@ -18,7 +19,7 @@ const Form = ({criteria, setCondition, handleClick, handleClose}: FormProps) => 
                 type="text"
                 className="single-view-content-item-form-item-input"
                 label={"倉庫コード"}
-                value={criteria.warehouseCode}
+                value={criteria.warehouseCode || ""}
                 onChange={(e) => setCondition(
                     {...criteria, warehouseCode: e.target.value}
                 )}/>
@@ -27,7 +28,7 @@ const Form = ({criteria, setCondition, handleClick, handleClose}: FormProps) => 
                 type="text"
                 className="single-view-content-item-form-item-input"
                 label={"商品コード"}
-                value={criteria.productCode}
+                value={criteria.productCode || ""}
                 onChange={(e) => setCondition(
                     {...criteria, productCode: e.target.value}
                 )}/>
@@ -36,7 +37,7 @@ const Form = ({criteria, setCondition, handleClick, handleClose}: FormProps) => 
                 type="text"
                 className="single-view-content-item-form-item-input"
                 label={"ロット番号"}
-                value={criteria.lotNumber}
+                value={criteria.lotNumber || ""}
                 onChange={(e) => setCondition(
                     {...criteria, lotNumber: e.target.value}
                 )}/>
@@ -45,7 +46,7 @@ const Form = ({criteria, setCondition, handleClick, handleClose}: FormProps) => 
                 type="text"
                 className="single-view-content-item-form-item-input"
                 label={"在庫区分"}
-                value={criteria.stockCategory}
+                value={criteria.stockCategory || ""}
                 onChange={(e) => setCondition(
                     {...criteria, stockCategory: e.target.value}
                 )}/>
@@ -54,7 +55,7 @@ const Form = ({criteria, setCondition, handleClick, handleClose}: FormProps) => 
                 type="text"
                 className="single-view-content-item-form-item-input"
                 label={"良品区分"}
-                value={criteria.qualityCategory}
+                value={criteria.qualityCategory || ""}
                 onChange={(e) => setCondition(
                     {...criteria, qualityCategory: e.target.value}
                 )}/>
@@ -63,7 +64,7 @@ const Form = ({criteria, setCondition, handleClick, handleClose}: FormProps) => 
                 type="text"
                 className="single-view-content-item-form-item-input"
                 label={"商品名"}
-                value={criteria.productName}
+                value={criteria.productName || ""}
                 onChange={(e) => setCondition(
                     {...criteria, productName: e.target.value}
                 )}/>
@@ -72,7 +73,7 @@ const Form = ({criteria, setCondition, handleClick, handleClose}: FormProps) => 
                 type="text"
                 className="single-view-content-item-form-item-input"
                 label={"倉庫名"}
-                value={criteria.warehouseName}
+                value={criteria.warehouseName || ""}
                 onChange={(e) => setCondition(
                     {...criteria, warehouseName: e.target.value}
                 )}/>
@@ -80,6 +81,9 @@ const Form = ({criteria, setCondition, handleClick, handleClose}: FormProps) => 
             <div className="button-container">
                 <button className="action-button" id="search-all" onClick={handleClick}>
                     検索
+                </button>
+                <button className="action-button" onClick={() => onClearSearch()} id="clear">
+                    クリア
                 </button>
                 <button className="action-button" onClick={handleClose} id="cancel">
                     キャンセル
@@ -116,11 +120,6 @@ export const InventorySearchModalView: React.FC<InventorySearchModalViewProps> =
         onClose();
     }
 
-    const handleClear: MouseEventHandler<HTMLButtonElement> = (e) => {
-        e.preventDefault();
-        onClearSearch();
-    }
-
     return (
         <div className="single-view-object-container">
             <div className="single-view-header">
@@ -136,12 +135,8 @@ export const InventorySearchModalView: React.FC<InventorySearchModalViewProps> =
                             setCondition={setSearchCriteria}
                             handleClick={handleClick}
                             handleClose={handleCancel}
+                            onClearSearch={onClearSearch}
                         />
-                        <div className="button-container">
-                            <button className="action-button" onClick={handleClear}>
-                                クリア
-                            </button>
-                        </div>
                     </div>
                 </div>
             </div>

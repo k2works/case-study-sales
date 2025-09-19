@@ -1,16 +1,11 @@
-import React, { createContext, useContext, useState, useMemo, useEffect, Dispatch, SetStateAction } from "react";
-import {
-    InventoryType,
-    InventoryCriteriaType,
-    InventorySearchCriteriaType,
-    InventoryFetchType
-} from "../../models/inventory/inventory.ts";
-import { InventoryService, UploadResultType } from "../../services/inventory/inventory.ts";
+import React, {createContext, useContext, ReactNode, Dispatch, SetStateAction, useState, useMemo, useEffect} from "react";
+import {PageNationType, usePageNation} from "../../views/application/PageNation.tsx";
+import {InventoryCriteriaType, InventoryType, InventorySearchCriteriaType} from "../../models/inventory/inventory.ts";
+import { useModal } from "../../components/application/hooks.ts";
+import { useInventory, useFetchInventories } from "../../components/inventory/list/hooks";
+import { showErrorMessage } from "../../components/application/utils.ts";
 import { useMessage } from "../../components/application/Message.tsx";
-
-type Props = {
-    children: React.ReactNode;
-};
+import {InventoryServiceType, UploadResultType} from "../../services/inventory/inventory.ts";
 
 type InventoryContextType = {
     loading: boolean;
@@ -19,29 +14,27 @@ type InventoryContextType = {
     setMessage: Dispatch<SetStateAction<string | null>>;
     error: string | null;
     setError: Dispatch<SetStateAction<string | null>>;
-    pageNation: InventoryFetchType;
-    criteria: InventoryCriteriaType;
-    setCriteria: Dispatch<SetStateAction<InventoryCriteriaType>>;
-    setPageNation: Dispatch<SetStateAction<InventoryFetchType>>;
-    modalIsOpen: boolean;
-    setModalIsOpen: Dispatch<SetStateAction<boolean>>;
+    pageNation: PageNationType | null;
+    setPageNation: Dispatch<SetStateAction<PageNationType | null>>;
+    criteria: InventoryCriteriaType | null;
+    setCriteria: Dispatch<SetStateAction<InventoryCriteriaType | null>>;
     searchModalIsOpen: boolean;
     setSearchModalIsOpen: Dispatch<SetStateAction<boolean>>;
+    modalIsOpen: boolean;
+    setModalIsOpen: Dispatch<SetStateAction<boolean>>;
     isEditing: boolean;
     setIsEditing: Dispatch<SetStateAction<boolean>>;
     editId: string | null;
     setEditId: Dispatch<SetStateAction<string | null>>;
     initialInventory: InventoryType;
-    newInventory: InventoryType;
-    setNewInventory: Dispatch<SetStateAction<InventoryType>>;
     inventories: InventoryType[];
     setInventories: Dispatch<SetStateAction<InventoryType[]>>;
+    newInventory: InventoryType;
+    setNewInventory: Dispatch<SetStateAction<InventoryType>>;
     searchInventoryCriteria: InventorySearchCriteriaType;
     setSearchInventoryCriteria: Dispatch<SetStateAction<InventorySearchCriteriaType>>;
-    searchCriteria: InventorySearchCriteriaType;
-    setSearchCriteria: Dispatch<SetStateAction<InventorySearchCriteriaType>>;
-    fetchInventories: (pageNumber?: number, searchCriteria?: InventoryCriteriaType) => Promise<void>;
-    inventoryService: ReturnType<typeof InventoryService>;
+    fetchInventories: { load: (page?: number, criteria?: InventoryCriteriaType) => Promise<void> };
+    inventoryService: InventoryServiceType;
     uploadModalIsOpen: boolean;
     setUploadModalIsOpen: Dispatch<SetStateAction<boolean>>;
     uploadResults: UploadResultType[];
@@ -51,98 +44,57 @@ type InventoryContextType = {
 
 const InventoryContext = createContext<InventoryContextType | undefined>(undefined);
 
+export const useInventoryContext = () => {
+    const context = useContext(InventoryContext);
+    if (!context) {
+        throw new Error("useInventoryContext must be used within a InventoryProvider");
+    }
+    return context;
+};
+
+type Props = {
+    children: ReactNode;
+};
+
 export const InventoryProvider: React.FC<Props> = ({ children }) => {
     const [loading, setLoading] = useState<boolean>(false);
     const { message, setMessage, error, setError } = useMessage();
-    const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
-    const [searchModalIsOpen, setSearchModalIsOpen] = useState<boolean>(false);
-    const [uploadModalIsOpen, setUploadModalIsOpen] = useState<boolean>(false);
-    const [isEditing, setIsEditing] = useState<boolean>(false);
-    const [editId, setEditId] = useState<string | null>(null);
-    const [inventories, setInventories] = useState<InventoryType[]>([]);
-    const [pageNation, setPageNation] = useState<InventoryFetchType>({
-        list: [],
-        endRow: 0,
-        hasNextPage: false,
-        hasPreviousPage: false,
-        isFirstPage: true,
-        isLastPage: true,
-        navigateFirstPage: 1,
-        navigateLastPage: 1,
-        navigatePages: 8,
-        navigatepageNums: [],
-        nextPage: 0,
-        pageNum: 1,
-        pageSize: 20,
-        pages: 0,
-        prePage: 0,
-        size: 0,
-        startRow: 0,
-        total: 0
-    });
+    const { pageNation, setPageNation, criteria, setCriteria } = usePageNation<InventoryCriteriaType | null>();
+    const { modalIsOpen: searchModalIsOpen, setModalIsOpen: setSearchModalIsOpen } = useModal();
+    const { modalIsOpen: uploadModalIsOpen, setModalIsOpen: setUploadModalIsOpen } = useModal();
 
-    const initialInventory: InventoryType = {
-        warehouseCode: "",
-        productCode: "",
-        lotNumber: "",
-        stockCategory: "1",
-        qualityCategory: "G",
-        actualStockQuantity: 0,
-        availableStockQuantity: 0,
-        lastShipmentDate: undefined,
-        productName: "",
-        warehouseName: ""
-    };
+    const { modalIsOpen, setModalIsOpen, isEditing, setIsEditing, editId, setEditId } = useModal();
+    const {
+        initialInventory,
+        inventories,
+        setInventories,
+        newInventory,
+        setNewInventory,
+        searchInventoryCriteria,
+        setSearchInventoryCriteria,
+        inventoryService
+    } = useInventory();
+    const fetchInventories = useFetchInventories(
+        setLoading,
+        setInventories,
+        setPageNation,
+        setError,
+        showErrorMessage,
+        inventoryService
+    );
+    const defaultCriteria: InventoryCriteriaType = {};
 
-    const [newInventory, setNewInventory] = useState<InventoryType>(initialInventory);
-    const [searchInventoryCriteria, setSearchInventoryCriteria] = useState<InventorySearchCriteriaType>({});
-    const [searchCriteria, setSearchCriteria] = useState<InventorySearchCriteriaType>({});
-    const [criteria, setCriteria] = useState<InventoryCriteriaType>({});
     const [uploadResults, setUploadResults] = useState<UploadResultType[]>([]);
 
-    const inventoryService = InventoryService();
-
-    const fetchInventories = async (pageNumber: number = 1, searchCriteria?: InventoryCriteriaType) => {
-        setLoading(true);
-        try {
-            let response: InventoryFetchType;
-
-            // 引数で渡された検索条件があるか、または現在の検索条件が設定されているかチェック
-            const currentCriteria = searchCriteria || criteria;
-            const hasSearchCriteria = Object.values(currentCriteria).some(value =>
-                value !== undefined &&
-                value !== null &&
-                value !== "" &&
-                value !== false
-            );
-
-            if (hasSearchCriteria) {
-                response = await inventoryService.search(currentCriteria, pageNumber, 20);
-            } else {
-                response = await inventoryService.select(pageNumber, 20);
-            }
-
-            setInventories(response.list.map((inventory: InventoryType) => ({ ...inventory, checked: false })));
-            setPageNation(response);
-        } finally {
-            setLoading(false);
-        }
-    };
-
+    // 検索条件の変換用useEffect
     useEffect(() => {
-        // 検索条件をマッピング
         const mappedCriteria: InventoryCriteriaType = {
             ...searchInventoryCriteria,
             hasStock: searchInventoryCriteria.hasStock === "true",
             isAvailable: searchInventoryCriteria.isAvailable === "true"
         };
         setCriteria(mappedCriteria);
-    }, [searchInventoryCriteria]);
-
-    // 初回ロード
-    useEffect(() => {
-        fetchInventories(1);
-    }, []);
+    }, [searchInventoryCriteria, setCriteria]);
 
     const uploadInventories = async (file: File) => {
         try {
@@ -158,54 +110,44 @@ export const InventoryProvider: React.FC<Props> = ({ children }) => {
         }
     };
 
+    const value = useMemo(() => ({
+        loading,
+        setLoading,
+        message,
+        setMessage,
+        error,
+        setError,
+        pageNation,
+        setPageNation,
+        criteria: criteria ?? defaultCriteria,
+        setCriteria,
+        searchModalIsOpen,
+        setSearchModalIsOpen,
+        modalIsOpen,
+        setModalIsOpen,
+        isEditing,
+        setIsEditing,
+        editId,
+        setEditId,
+        initialInventory,
+        inventories,
+        setInventories,
+        newInventory,
+        setNewInventory,
+        searchInventoryCriteria,
+        setSearchInventoryCriteria,
+        fetchInventories,
+        inventoryService,
+        uploadModalIsOpen,
+        setUploadModalIsOpen,
+        uploadResults,
+        setUploadResults,
+        uploadInventories,
+    }), [criteria, defaultCriteria, inventoryService, inventories, editId, error, fetchInventories, initialInventory, isEditing, loading, message, modalIsOpen, newInventory, pageNation, searchInventoryCriteria, searchModalIsOpen, uploadModalIsOpen, uploadResults, setCriteria, setInventories, setEditId, setError, setIsEditing, setMessage, setModalIsOpen, setNewInventory, setPageNation, setSearchInventoryCriteria, setSearchModalIsOpen, setUploadModalIsOpen, setUploadResults])
 
-    const value = useMemo(
-        () => ({
-            loading,
-            setLoading,
-            message,
-            setMessage,
-            error,
-            setError,
-            pageNation,
-            setPageNation,
-            criteria,
-            setCriteria,
-            modalIsOpen,
-            setModalIsOpen,
-            searchModalIsOpen,
-            setSearchModalIsOpen,
-            isEditing,
-            setIsEditing,
-            editId,
-            setEditId,
-            initialInventory,
-            newInventory,
-            setNewInventory,
-            inventories,
-            setInventories,
-            searchInventoryCriteria,
-            setSearchInventoryCriteria,
-            searchCriteria,
-            setSearchCriteria,
-            fetchInventories,
-            inventoryService,
-            uploadModalIsOpen,
-            setUploadModalIsOpen,
-            uploadResults,
-            setUploadResults,
-            uploadInventories,
-        }),
-        [loading, message, setMessage, error, setError, pageNation, criteria, modalIsOpen, searchModalIsOpen, uploadModalIsOpen, isEditing, editId, newInventory, inventories, searchInventoryCriteria, searchCriteria, uploadResults, inventoryService]
+    return (
+        <InventoryContext.Provider value={value}>
+            {children}
+        </InventoryContext.Provider>
     );
-
-    return <InventoryContext.Provider value={value}>{children}</InventoryContext.Provider>;
-};
-
-export const useInventoryContext = () => {
-    const context = useContext(InventoryContext);
-    if (context === undefined) {
-        throw new Error("useInventoryContext must be used within a InventoryProvider");
-    }
-    return context;
 };

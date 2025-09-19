@@ -26,13 +26,7 @@ export const InventorySearchModal: React.FC = () => {
         }
         try {
             // 検索条件をマッピング
-            const mappedCriteria: InventoryCriteriaType = {
-                ...searchInventoryCriteria,
-                hasStock: searchInventoryCriteria.hasStock === "true",
-                isAvailable: searchInventoryCriteria.isAvailable === "true"
-            };
-
-            await fetchInventories(1, mappedCriteria);
+            await fetchInventories.load(1);
             setMessage("");
             setError("");
             setSearchModalIsOpen(false);
