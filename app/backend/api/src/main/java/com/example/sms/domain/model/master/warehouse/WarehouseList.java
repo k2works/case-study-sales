@@ -4,6 +4,9 @@ import lombok.Value;
 
 import java.util.List;
 
+/**
+ * 倉庫一覧
+ */
 @Value
 public class WarehouseList {
     List<Warehouse> warehouses;

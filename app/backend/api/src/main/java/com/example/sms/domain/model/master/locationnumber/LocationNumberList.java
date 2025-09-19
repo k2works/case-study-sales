@@ -5,6 +5,9 @@ import lombok.Getter;
 
 import java.util.List;
 
+/**
+ * 棚番一覧
+ */
 @Getter
 @AllArgsConstructor
 public class LocationNumberList {

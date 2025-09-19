@@ -5,6 +5,9 @@ import com.example.sms.domain.model.master.product.ProductCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * 棚番キー
+ */
 @Getter
 @AllArgsConstructor
 public class LocationNumberKey {

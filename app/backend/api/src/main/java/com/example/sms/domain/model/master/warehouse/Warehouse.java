@@ -2,6 +2,9 @@ package com.example.sms.domain.model.master.warehouse;
 
 import lombok.Value;
 
+/**
+ * 倉庫
+ */
 @Value
 public class Warehouse {
     WarehouseCode warehouseCode;
