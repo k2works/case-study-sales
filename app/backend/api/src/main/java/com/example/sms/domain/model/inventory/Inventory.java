@@ -23,7 +23,7 @@ import static org.apache.commons.lang3.Validate.isTrue;
 public class Inventory {
     WarehouseCode warehouseCode; // 倉庫コード
     ProductCode productCode; // 商品コード
-    String lotNumber; // ロット番号
+    LotNumber lotNumber; // ロット番号
     StockCategory stockCategory; // 在庫区分
     QualityCategory qualityCategory; // 良品区分
     Quantity actualStockQuantity; // 実在庫数
@@ -57,7 +57,7 @@ public class Inventory {
         return Inventory.builder()
                 .warehouseCode(WarehouseCode.of(warehouseCode))
                 .productCode(ProductCode.of(productCode))
-                .lotNumber(lotNumber)
+                .lotNumber(LotNumber.of(lotNumber))
                 .stockCategory(StockCategory.of(stockCategory))
                 .qualityCategory(QualityCategory.of(qualityCategory))
                 .actualStockQuantity(Quantity.of(actualStockQuantity))
@@ -73,7 +73,7 @@ public class Inventory {
         return InventoryKey.of(
                 warehouseCode.getValue(),
                 productCode.getValue(),
-                lotNumber,
+                lotNumber.getValue(),
                 stockCategory.getCode(),
                 qualityCategory.getCode()
         );
