@@ -1,7 +1,7 @@
 import React from "react";
-import {LocationNumberCriteriaType, LocationNumberType, LocationNumberFetchType, LocationNumberSearchCriteriaType} from "../../../models/master/locationnumber.ts";
+import {LocationNumberCriteriaType, LocationNumberType, LocationNumberSearchCriteriaType} from "../../../models/master/locationnumber.ts";
 import {Message} from "../../../components/application/Message.tsx";
-import {PageNation} from "../../application/PageNation.tsx";
+import {PageNation, PageNationType} from "../../application/PageNation.tsx";
 import {Search} from "../../Common.tsx";
 
 interface LocationNumberItemProps {
@@ -81,9 +81,9 @@ interface LocationNumberCollectionViewProps {
         handleCheckLocationNumber: (locationNumber: LocationNumberType) => void;
     }
     pageNationItems: {
-        pageNation: LocationNumberFetchType | null;
+        pageNation: PageNationType | null;
         criteria: LocationNumberCriteriaType | null;
-        fetchLocationNumbers: (pageNumber?: number, searchCriteria?: LocationNumberCriteriaType) => Promise<void>;
+        fetchLocationNumbers: { load: (page?: number, criteria?: LocationNumberCriteriaType) => Promise<void> };
     }
 }
 
@@ -126,11 +126,7 @@ export const LocationNumberCollectionView: React.FC<LocationNumberCollectionView
                     onDelete={handleDeleteLocationNumber}
                     onCheck={handleCheckLocationNumber}
                 />
-                <PageNation
-                    pageNation={pageNation}
-                    callBack={(page: number, criteria?: LocationNumberCriteriaType) => fetchLocationNumbers(page, criteria)}
-                    criteria={criteria || undefined}
-                />
+                <PageNation pageNation={pageNation} callBack={fetchLocationNumbers.load} criteria={criteria || undefined}/>
             </div>
         </div>
     </div>

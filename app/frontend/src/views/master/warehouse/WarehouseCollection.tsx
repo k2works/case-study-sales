@@ -1,7 +1,7 @@
 import React from "react";
-import {WarehouseCriteriaType, WarehouseType, WarehouseFetchType, WarehouseSearchCriteriaType} from "../../../models/master/warehouse.ts";
+import {WarehouseCriteriaType, WarehouseType, WarehouseSearchCriteriaType} from "../../../models/master/warehouse.ts";
 import {Message} from "../../../components/application/Message.tsx";
-import {PageNation} from "../../application/PageNation.tsx";
+import {PageNation, PageNationType} from "../../application/PageNation.tsx";
 import {Search} from "../../Common.tsx";
 
 interface WarehouseItemProps {
@@ -78,9 +78,9 @@ interface WarehouseCollectionViewProps {
         handleCheckWarehouse: (warehouse: WarehouseType) => void;
     }
     pageNationItems: {
-        pageNation: WarehouseFetchType | null;
+        pageNation: PageNationType | null;
         criteria: WarehouseCriteriaType | null;
-        fetchWarehouses: (pageNumber?: number, searchCriteria?: WarehouseCriteriaType) => Promise<void>;
+        fetchWarehouses: { load: (page?: number, criteria?: WarehouseCriteriaType) => Promise<void> };
     }
 }
 
@@ -125,7 +125,7 @@ export const WarehouseCollectionView: React.FC<WarehouseCollectionViewProps> = (
                 />
                 <PageNation
                     pageNation={pageNation}
-                    callBack={(page: number, criteria?: WarehouseCriteriaType) => fetchWarehouses(page, criteria)}
+                    callBack={(page: number, criteria?: WarehouseCriteriaType) => fetchWarehouses.load(page, criteria)}
                     criteria={criteria || undefined}
                 />
             </div>

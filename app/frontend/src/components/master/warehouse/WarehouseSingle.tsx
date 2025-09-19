@@ -46,7 +46,7 @@ export const WarehouseSingle: React.FC = () => {
                 await warehouseService.create(newWarehouse);
             }
             setNewWarehouse(initialWarehouse);
-            await fetchWarehouses();
+            await fetchWarehouses.load();
             if (isEditing) {
                 setMessage("倉庫を更新しました。");
             } else {

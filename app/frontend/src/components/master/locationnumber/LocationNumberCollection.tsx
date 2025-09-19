@@ -50,7 +50,7 @@ export const LocationNumberCollection: React.FC = () => {
         try {
             if (!window.confirm(`棚番:${warehouseCode}-${locationNumberCode}-${productCode} を削除しますか？`)) return;
             await locationNumberService.remove(warehouseCode, locationNumberCode, productCode);
-            await fetchLocationNumbers();
+            await fetchLocationNumbers.load(pageNation?.pageNum, criteria || undefined);
             setMessage("棚番を削除しました。");
         } catch (error: any) {
             showErrorMessage(`棚番の削除に失敗しました: ${error?.message}`, setError);
@@ -93,7 +93,7 @@ export const LocationNumberCollection: React.FC = () => {
             if (!window.confirm("選択した棚番を削除しますか？")) return;
             await Promise.all(checkedLocationNumbers.map((ln: LocationNumberType) =>
                 locationNumberService.remove(ln.warehouseCode, ln.locationNumberCode, ln.productCode)));
-            await fetchLocationNumbers();
+            await fetchLocationNumbers.load(pageNation?.pageNum, criteria || undefined);
             setMessage("選択した棚番を削除しました。");
         } catch (error: any) {
             showErrorMessage(`選択した棚番の削除に失敗しました: ${error?.message}`, setError);

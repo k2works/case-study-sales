@@ -29,7 +29,7 @@ export const WarehouseSearchModal: React.FC = () => {
                 ...searchWarehouseCriteria
             };
 
-            await fetchWarehouses(1, mappedCriteria);
+            await fetchWarehouses.load(1, mappedCriteria);
             setMessage("");
             setError("");
             setSearchModalIsOpen(false);

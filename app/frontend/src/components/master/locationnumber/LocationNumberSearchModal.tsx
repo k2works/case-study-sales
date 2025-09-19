@@ -29,7 +29,7 @@ export const LocationNumberSearchModal: React.FC = () => {
                 ...searchLocationNumberCriteria
             };
 
-            await fetchLocationNumbers(1, mappedCriteria);
+            await fetchLocationNumbers.load(1, mappedCriteria);
             setMessage("");
             setError("");
             setSearchModalIsOpen(false);

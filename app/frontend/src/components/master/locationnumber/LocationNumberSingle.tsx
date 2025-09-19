@@ -48,7 +48,7 @@ export const LocationNumberSingle: React.FC = () => {
                 await locationNumberService.save(newLocationNumber);
             }
             setNewLocationNumber(initialLocationNumber);
-            await fetchLocationNumbers();
+            await fetchLocationNumbers.load(1);
             if (isEditing) {
                 setMessage("棚番を更新しました。");
             } else {

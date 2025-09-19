@@ -50,7 +50,7 @@ export const WarehouseCollection: React.FC = () => {
         try {
             if (!window.confirm(`倉庫コード:${warehouseCode} を削除しますか？`)) return;
             await warehouseService.destroy(warehouseCode);
-            await fetchWarehouses();
+            await fetchWarehouses.load();
             setMessage("倉庫を削除しました。");
         } catch (error: any) {
             showErrorMessage(`倉庫の削除に失敗しました: ${error?.message}`, setError);
@@ -90,7 +90,7 @@ export const WarehouseCollection: React.FC = () => {
         try {
             if (!window.confirm("選択した倉庫を削除しますか？")) return;
             await Promise.all(checkedWarehouses.map((w: WarehouseType) => warehouseService.destroy(w.warehouseCode)));
-            await fetchWarehouses();
+            await fetchWarehouses.load();
             setMessage("選択した倉庫を削除しました。");
         } catch (error: any) {
             showErrorMessage(`選択した倉庫の削除に失敗しました: ${error?.message}`, setError);
