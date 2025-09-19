@@ -9,6 +9,7 @@ import {SiteLayout} from "../../views/SiteLayout.tsx";
 import {DownloadContainer} from "../system/download/DownloadContainer.tsx";
 import {DepartmentContainer} from "../master/department/DepartmentContainer.tsx";
 import {EmployeeContainer} from "../master/employee/EmployeeContainer.tsx";
+import {WarehouseContainer} from "../master/warehouse/WarehouseContainer.tsx";
 import {ProductContainer} from "../master/product/ProductContainer.tsx";
 import {ProductItemContainer} from "../master/product/item/ProductItemContainer.tsx";
 import {ProductCategoryContainer} from "../master/product/category/ProductCategoryContainer.tsx";
@@ -334,6 +335,8 @@ export const RouteConfig: React.FC = () => {
                 <Route path="/department" element={<RouteAuthGuard component={<DepartmentContainer/>} redirectPath="/"
                                                                    allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/employee" element={<RouteAuthGuard component={<EmployeeContainer/>} redirectPath="/"
+                                                                 allowedRoles={[RoleType.ADMIN]}/>}/>
+                <Route path="/warehouse" element={<RouteAuthGuard component={<WarehouseContainer/>} redirectPath="/"
                                                                  allowedRoles={[RoleType.ADMIN]}/>}/>
                 <Route path="/product" element={<RouteAuthGuard component={<ProductContainer/>} redirectPath="/"
                                                                 allowedRoles={[RoleType.ADMIN]}/>}/>
