@@ -1,6 +1,6 @@
 import React from "react";
 import {showErrorMessage} from "../../../application/utils.ts";
-import {LocationNumberSingleView} from "../../../../views/master/locationnumber/LocationNumberSingle.tsx";
+import {LocationNumberSingleView} from "../../../../views/master/inventory/locationnumber/LocationNumberSingle.tsx";
 import {useLocationNumberContext} from "../../../../providers/master/LocationNumber.tsx";
 
 export const LocationNumberSingle: React.FC = () => {

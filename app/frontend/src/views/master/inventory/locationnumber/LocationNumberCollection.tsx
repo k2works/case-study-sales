@@ -1,8 +1,8 @@
 import React from "react";
-import {LocationNumberCriteriaType, LocationNumberType, LocationNumberSearchCriteriaType} from "../../../models/master/locationnumber.ts";
-import {Message} from "../../../components/application/Message.tsx";
-import {PageNation, PageNationType} from "../../application/PageNation.tsx";
-import {Search} from "../../Common.tsx";
+import {LocationNumberCriteriaType, LocationNumberType, LocationNumberSearchCriteriaType} from "../../../../models/master/locationnumber.ts";
+import {Message} from "../../../../components/application/Message.tsx";
+import {PageNation, PageNationType} from "../../../application/PageNation.tsx";
+import {Search} from "../../../Common.tsx";
 
 interface LocationNumberItemProps {
     locationNumber: LocationNumberType;

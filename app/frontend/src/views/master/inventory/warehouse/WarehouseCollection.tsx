@@ -1,8 +1,8 @@
 import React from "react";
-import {WarehouseCriteriaType, WarehouseType, WarehouseSearchCriteriaType} from "../../../models/master/warehouse.ts";
-import {Message} from "../../../components/application/Message.tsx";
-import {PageNation, PageNationType} from "../../application/PageNation.tsx";
-import {Search} from "../../Common.tsx";
+import {WarehouseCriteriaType, WarehouseType, WarehouseSearchCriteriaType} from "../../../../models/master/warehouse.ts";
+import {Message} from "../../../../components/application/Message.tsx";
+import {PageNation, PageNationType} from "../../../application/PageNation.tsx";
+import {Search} from "../../../Common.tsx";
 
 interface WarehouseItemProps {
     warehouse: WarehouseType;

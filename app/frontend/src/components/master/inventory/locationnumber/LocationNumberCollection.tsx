@@ -1,6 +1,6 @@
 import React from "react";
 import {useLocationNumberContext} from "../../../../providers/master/LocationNumber.tsx";
-import {LocationNumberCollectionView} from "../../../../views/master/locationnumber/LocationNumberCollection.tsx";
+import {LocationNumberCollectionView} from "../../../../views/master/inventory/locationnumber/LocationNumberCollection.tsx";
 import {LocationNumberType} from "../../../../models/master/locationnumber.ts";
 import {showErrorMessage} from "../../../application/utils.ts";
 import {LocationNumberSearchModal} from "./LocationNumberSearchModal.tsx";

@@ -1,6 +1,6 @@
 import React from "react";
 import Modal from "react-modal";
-import { WarehouseCollectionSelectView } from "../../../views/master/warehouse/WarehouseSelect.tsx";
+import { WarehouseCollectionSelectView } from "../../../views/master/inventory/warehouse/WarehouseSelect.tsx";
 import { useWarehouseContext } from "../../../providers/master/Warehouse.tsx";
 import { useInventoryContext } from "../../../providers/inventory/Inventory.tsx";
 import { WarehouseType } from "../../../models/master/warehouse.ts";

@@ -1,7 +1,7 @@
 import React from "react";
 import { FaTimes } from "react-icons/fa";
-import { PageNationType, PageNation } from "../../application/PageNation.tsx";
-import { WarehouseType } from "../../../models/master/warehouse.ts";
+import { PageNationType, PageNation } from "../../../application/PageNation.tsx";
+import { WarehouseType } from "../../../../models/master/warehouse.ts";
 
 interface WarehouseCollectionSelectProps {
     warehouses: WarehouseType[];

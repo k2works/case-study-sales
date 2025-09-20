@@ -1,6 +1,6 @@
 import React, {MouseEventHandler} from "react";
-import {FormInput, SingleViewHeaderItem} from "../../Common.tsx";
-import {WarehouseSearchCriteriaType} from "../../../models/master/warehouse.ts";
+import {FormInput, SingleViewHeaderItem} from "../../../Common.tsx";
+import {WarehouseSearchCriteriaType} from "../../../../models/master/warehouse.ts";
 
 interface FormProps {
     criteria: WarehouseSearchCriteriaType,

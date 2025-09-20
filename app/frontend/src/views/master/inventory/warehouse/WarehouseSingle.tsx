@@ -1,7 +1,7 @@
 import React from 'react';
-import {Message} from "../../../components/application/Message.tsx";
-import {WarehouseType} from "../../../models/master/warehouse.ts";
-import {FormInput, SingleViewHeaderActions, SingleViewHeaderItem} from "../../Common.tsx";
+import {Message} from "../../../../components/application/Message.tsx";
+import {WarehouseType} from "../../../../models/master/warehouse.ts";
+import {FormInput, SingleViewHeaderActions, SingleViewHeaderItem} from "../../../Common.tsx";
 
 interface HeaderProps {
     title: string;

@@ -1,6 +1,6 @@
 import React, {MouseEventHandler} from "react";
-import {FormInput, SingleViewHeaderItem} from "../../Common.tsx";
-import {LocationNumberSearchCriteriaType} from "../../../models/master/locationnumber.ts";
+import {FormInput, SingleViewHeaderItem} from "../../../Common.tsx";
+import {LocationNumberSearchCriteriaType} from "../../../../models/master/locationnumber.ts";
 
 interface FormProps {
     criteria: LocationNumberSearchCriteriaType,
