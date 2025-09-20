@@ -63,6 +63,7 @@ const Form = ({ isEditing, inventory, setInventory, handleWarehouseSelect, handl
                     ...inventory,
                     warehouseName: e.target.value
                 })}
+                disabled={isEditing}
             />
             <FormInput
                 label="商品コード"
@@ -87,6 +88,7 @@ const Form = ({ isEditing, inventory, setInventory, handleWarehouseSelect, handl
                     ...inventory,
                     productName: e.target.value
                 })}
+                disabled={isEditing}
             />
             <FormInput
                 label="ロット番号"
@@ -112,6 +114,7 @@ const Form = ({ isEditing, inventory, setInventory, handleWarehouseSelect, handl
                         ...inventory,
                         stockCategory: e.target.value
                     })}
+                    disabled={isEditing}
                 >
                     <option value={StockCategoryEnumType.通常在庫}>通常在庫</option>
                     <option value={StockCategoryEnumType.安全在庫}>安全在庫</option>
@@ -130,6 +133,7 @@ const Form = ({ isEditing, inventory, setInventory, handleWarehouseSelect, handl
                         ...inventory,
                         qualityCategory: e.target.value
                     })}
+                    disabled={isEditing}
                 >
                     <option value={QualityCategoryEnumType.良品}>良品</option>
                     <option value={QualityCategoryEnumType.不良品}>不良品</option>
