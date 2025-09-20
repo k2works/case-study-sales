@@ -1,6 +1,7 @@
 package com.example.sms;
 
 import com.example.sms.domain.model.master.employee.EmployeeCode;
+import com.example.sms.domain.model.master.warehouse.WarehouseCode;
 import com.example.sms.domain.model.master.partner.billing.Billing;
 import com.example.sms.domain.model.master.partner.billing.ClosingBilling;
 import com.example.sms.domain.model.master.partner.customer.Customer;
@@ -1335,7 +1336,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 .supplierCode(SupplierCode.of("001", 0))
                 .purchaseManagerCode(EmployeeCode.of("EMP001"))
                 .designatedDeliveryDate(DesignatedDeliveryDate.of(now.plusDays(30)))
-                .warehouseCode("001")
+                .warehouseCode(WarehouseCode.of("001"))
                 .totalPurchaseAmount(Money.of(6000000)) // 600万円でルール違反
                 .totalConsumptionTax(Money.of(600000))
                 .remarks("金額超過テストデータ")
@@ -1359,7 +1360,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 .supplierCode(SupplierCode.of("001", 0))
                 .purchaseManagerCode(EmployeeCode.of("EMP001"))
                 .designatedDeliveryDate(DesignatedDeliveryDate.of(pastDeliveryDate)) // 過去の日付
-                .warehouseCode("001")
+                .warehouseCode(WarehouseCode.of("001"))
                 .totalPurchaseAmount(Money.of(100000))
                 .totalConsumptionTax(Money.of(10000))
                 .remarks("納期エラーテストデータ")

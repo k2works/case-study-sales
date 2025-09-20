@@ -61,7 +61,7 @@ class PurchaseOrderResourceDTOMapperTest {
         assertEquals(0, result.getSupplierCode().getBranchNumber());
         assertEquals("EMP001", result.getPurchaseManagerCode().getValue());
         assertEquals(now.plusDays(1), result.getDesignatedDeliveryDate().getValue());
-        assertEquals("001", result.getWarehouseCode());
+        assertEquals("001", result.getWarehouseCode().getValue());
         assertEquals(10000, result.getTotalPurchaseAmount().getAmount());
         assertEquals(1000, result.getTotalConsumptionTax().getAmount()); // 10000円 × 10% = 1000円
         assertEquals("備考", result.getRemarks());

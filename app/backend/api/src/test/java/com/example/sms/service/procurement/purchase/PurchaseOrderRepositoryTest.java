@@ -208,7 +208,7 @@ class PurchaseOrderRepositoryTest {
                     order.getSupplierCode().getBranchNumber(),
                     order.getPurchaseManagerCode().getValue(),
                     order.getDesignatedDeliveryDate().getValue(),
-                    order.getWarehouseCode(),
+                    order.getWarehouseCode().getValue(),
                     100000, // 10明細計算: 1000円 × 10数量 × 10明細 = 100000円
                     10000, // 消費税（100000円 × 10% = 10000円）
                     order.getRemarks(),
@@ -233,7 +233,7 @@ class PurchaseOrderRepositoryTest {
                     order.getSupplierCode().getBranchNumber(),
                     order.getPurchaseManagerCode().getValue(),
                     order.getDesignatedDeliveryDate().getValue(),
-                    order.getWarehouseCode(),
+                    order.getWarehouseCode().getValue(),
                     order.getTotalPurchaseAmount().getAmount(),
                     order.getTotalConsumptionTax().getAmount(),
                     order.getRemarks(),
@@ -258,7 +258,7 @@ class PurchaseOrderRepositoryTest {
                     order.getSupplierCode().getBranchNumber(),
                     order.getPurchaseManagerCode().getValue(),
                     order.getDesignatedDeliveryDate().getValue(),
-                    order.getWarehouseCode(),
+                    order.getWarehouseCode().getValue(),
                     order.getTotalPurchaseAmount().getAmount(),
                     order.getTotalConsumptionTax().getAmount(),
                     order.getRemarks(),
@@ -277,7 +277,7 @@ class PurchaseOrderRepositoryTest {
                     newOrder.getSupplierCode().getBranchNumber(),
                     newOrder.getPurchaseManagerCode().getValue(),
                     newOrder.getDesignatedDeliveryDate().getValue(),
-                    newOrder.getWarehouseCode(),
+                    newOrder.getWarehouseCode().getValue(),
                     15000, // 更新後明細計算: 3000円 × 5 = 15000円
                     1500, // 消費税（15000円 × 10% = 1500円）
                     newOrder.getRemarks(),
@@ -302,7 +302,7 @@ class PurchaseOrderRepositoryTest {
                     order.getSupplierCode().getBranchNumber(),
                     order.getPurchaseManagerCode().getValue(),
                     order.getDesignatedDeliveryDate().getValue(),
-                    order.getWarehouseCode(),
+                    order.getWarehouseCode().getValue(),
                     order.getTotalPurchaseAmount().getAmount(),
                     order.getTotalConsumptionTax().getAmount(),
                     order.getRemarks(),

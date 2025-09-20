@@ -93,7 +93,7 @@ public class PurchaseOrderEntityMapper {
         entity.set仕入先枝番(model.getSupplierCode().getBranchNumber());
         entity.set発注担当者コード(model.getPurchaseManagerCode().getValue());
         entity.set指定納期(model.getDesignatedDeliveryDate().getValue());
-        entity.set倉庫コード(model.getWarehouseCode());
+        entity.set倉庫コード(model.getWarehouseCode().getValue());
         entity.set発注金額合計(model.getTotalPurchaseAmount().getAmount());
         entity.set消費税合計(model.getTotalConsumptionTax().getAmount());
         entity.set備考(model.getRemarks());
@@ -168,7 +168,7 @@ public class PurchaseOrderEntityMapper {
                 purchaseOrder.getPurchaseManagerCode().getValue(),
                 purchaseOrder.getDesignatedDeliveryDate().getValue(),
                 null, // 仕入先注文番号（現在の発注データには含まれていない）
-                purchaseOrder.getWarehouseCode(),
+                purchaseOrder.getWarehouseCode().getValue(),
                 purchaseOrder.getTotalPurchaseAmount().getAmount(),
                 purchaseOrder.getTotalConsumptionTax().getAmount(),
                 purchaseOrder.getRemarks(),

@@ -93,7 +93,7 @@ public class PurchaseOrderService {
                     purchaseOrder.getSupplierCode().getBranchNumber(),
                     Objects.requireNonNull(purchaseOrder.getPurchaseManagerCode().getValue()),
                     Objects.requireNonNull(purchaseOrder.getDesignatedDeliveryDate().getValue()),
-                    purchaseOrder.getWarehouseCode(),
+                    purchaseOrder.getWarehouseCode().getValue(),
                     totalPurchaseAmount.getAmount(),
                     totalConsumptionTax.getAmount(),
                     purchaseOrder.getRemarks(),
