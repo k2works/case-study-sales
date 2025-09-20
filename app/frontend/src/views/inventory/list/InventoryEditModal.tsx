@@ -33,9 +33,11 @@ interface FormProps {
     isEditing: boolean;
     inventory: InventoryType;
     setInventory: React.Dispatch<React.SetStateAction<InventoryType>>;
+    handleWarehouseSelect?: () => void;
+    handleProductSelect?: () => void;
 }
 
-const Form = ({ isEditing, inventory, setInventory }: FormProps) => {
+const Form = ({ isEditing, inventory, setInventory, handleWarehouseSelect, handleProductSelect }: FormProps) => {
     return (
         <div className="single-view-content-item-form">
             <FormInput
@@ -48,6 +50,7 @@ const Form = ({ isEditing, inventory, setInventory }: FormProps) => {
                     ...inventory,
                     warehouseCode: e.target.value
                 })}
+                onClick={handleWarehouseSelect}
                 disabled={isEditing}
             />
             <FormInput
@@ -71,6 +74,7 @@ const Form = ({ isEditing, inventory, setInventory }: FormProps) => {
                     ...inventory,
                     productCode: e.target.value
                 })}
+                onClick={handleProductSelect}
                 disabled={isEditing}
             />
             <FormInput
@@ -178,6 +182,8 @@ interface InventoryEditModalViewProps {
     onSave: () => void;
     error: string | null;
     message: string | null;
+    handleWarehouseSelect?: () => void;
+    handleProductSelect?: () => void;
 }
 
 export const InventoryEditModalView: React.FC<InventoryEditModalViewProps> = ({
@@ -188,6 +194,8 @@ export const InventoryEditModalView: React.FC<InventoryEditModalViewProps> = ({
     onSave,
     error,
     message,
+    handleWarehouseSelect,
+    handleProductSelect,
 }) => {
     return (
         <div className="single-view-object-container">
@@ -208,6 +216,8 @@ export const InventoryEditModalView: React.FC<InventoryEditModalViewProps> = ({
                             isEditing={isEditing}
                             inventory={inventory}
                             setInventory={setInventory}
+                            handleWarehouseSelect={handleWarehouseSelect}
+                            handleProductSelect={handleProductSelect}
                         />
                     </div>
                 </div>

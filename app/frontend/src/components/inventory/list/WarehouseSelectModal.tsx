@@ -6,16 +6,20 @@ import { useInventoryContext } from "../../../providers/inventory/Inventory.tsx"
 import { WarehouseType } from "../../../models/master/warehouse.ts";
 
 type WarehouseSelectModalProps = {
-    type: "search";
+    type: "edit" | "search";
 };
 
 export const WarehouseSelectModal: React.FC<WarehouseSelectModalProps> = ({ type }) => {
     const {
+        newInventory,
+        setNewInventory,
         searchInventoryCriteria,
         setSearchInventoryCriteria,
     } = useInventoryContext();
 
     const {
+        modalIsOpen: warehouseModalIsOpen,
+        setModalIsOpen: setWarehouseModalIsOpen,
         searchModalIsOpen: warehouseSearchModalIsOpen,
         setSearchModalIsOpen: setWarehouseSearchModalIsOpen,
         warehouses,
@@ -23,10 +27,42 @@ export const WarehouseSelectModal: React.FC<WarehouseSelectModalProps> = ({ type
         pageNation: warehousePageNation,
     } = useWarehouseContext();
 
+    // 編集モーダルを閉じる
+    const handleCloseEditModal = () => {
+        setWarehouseModalIsOpen(false);
+    };
+
     // 検索モーダルを閉じる
     const handleCloseSearchModal = () => {
         setWarehouseSearchModalIsOpen(false);
     };
+
+    // 編集モード用モーダルビュー
+    const warehouseEditModalView = () => (
+        <Modal
+            isOpen={warehouseModalIsOpen}
+            onRequestClose={handleCloseEditModal}
+            contentLabel="倉庫情報を選択"
+            className="modal"
+            overlayClassName="modal-overlay"
+            bodyOpenClassName="modal-open"
+        >
+            <WarehouseCollectionSelectView
+                warehouses={warehouses}
+                handleSelect={(warehouse: WarehouseType) => {
+                    setNewInventory({
+                        ...newInventory,
+                        warehouseCode: warehouse.warehouseCode,
+                        warehouseName: warehouse.warehouseName
+                    });
+                    setWarehouseModalIsOpen(false);
+                }}
+                handleClose={handleCloseEditModal}
+                pageNation={warehousePageNation}
+                fetchWarehouses={fetchWarehouses.load}
+            />
+        </Modal>
+    );
 
     // 検索モード用モーダルビュー
     const warehouseSearchModalView = () => (
@@ -57,6 +93,7 @@ export const WarehouseSelectModal: React.FC<WarehouseSelectModalProps> = ({ type
 
     return (
         <>
+            {type === "edit" ? warehouseEditModalView() : null}
             {type === "search" ? warehouseSearchModalView() : null}
         </>
     );

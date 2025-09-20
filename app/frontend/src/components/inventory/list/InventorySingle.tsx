@@ -2,6 +2,8 @@ import React from "react";
 import { useInventoryContext } from "../../../providers/inventory/Inventory.tsx";
 import { InventoryEditModalView } from "../../../views/inventory/list/InventoryEditModal.tsx";
 import { showErrorMessage } from "../../application/utils.ts";
+import { useWarehouseContext } from "../../../providers/master/Warehouse.tsx";
+import { useProductItemContext } from "../../../providers/master/product/ProductItem.tsx";
 
 export const InventorySingle: React.FC = () => {
     const {
@@ -17,8 +19,24 @@ export const InventorySingle: React.FC = () => {
         setModalIsOpen,
     } = useInventoryContext();
 
+    const {
+        setModalIsOpen: setWarehouseModalIsOpen,
+    } = useWarehouseContext();
+
+    const {
+        setModalIsOpen: setProductModalIsOpen,
+    } = useProductItemContext();
+
     const handleCloseModal = () => {
         setModalIsOpen(false);
+    };
+
+    const handleWarehouseSelect = () => {
+        setWarehouseModalIsOpen(true);
+    };
+
+    const handleProductSelect = () => {
+        setProductModalIsOpen(true);
     };
 
     const handleSaveInventory = async () => {
@@ -47,6 +65,8 @@ export const InventorySingle: React.FC = () => {
             onSave={handleSaveInventory}
             error={error}
             message={message}
+            handleWarehouseSelect={handleWarehouseSelect}
+            handleProductSelect={handleProductSelect}
         />
     );
 };
