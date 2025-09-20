@@ -1,6 +1,6 @@
 import React, { MouseEventHandler } from "react";
 import { FormInput, SingleViewHeaderItem } from "../../Common.tsx";
-import { InventorySearchCriteriaType } from "../../../models/inventory/inventory.ts";
+import { InventorySearchCriteriaType, StockCategoryEnumType, QualityCategoryEnumType } from "../../../models/inventory/inventory.ts";
 import "./Inventory.css";
 
 interface FormProps {
@@ -47,24 +47,44 @@ const Form = ({criteria, setCondition, handleClick, handleClose, onClearSearch, 
                 onChange={(e) => setCondition(
                     {...criteria, lotNumber: e.target.value}
                 )}/>
-            <FormInput
-                id={"search-stock-category"}
-                type="text"
-                className="single-view-content-item-form-item-input"
-                label={"在庫区分"}
-                value={criteria.stockCategory || ""}
-                onChange={(e) => setCondition(
-                    {...criteria, stockCategory: e.target.value}
-                )}/>
-            <FormInput
-                id={"search-quality-category"}
-                type="text"
-                className="single-view-content-item-form-item-input"
-                label={"良品区分"}
-                value={criteria.qualityCategory || ""}
-                onChange={(e) => setCondition(
-                    {...criteria, qualityCategory: e.target.value}
-                )}/>
+            <div className="single-view-content-item-form-item">
+                <label htmlFor="search-stock-category" className="single-view-content-item-form-item-label">
+                    在庫区分
+                </label>
+                <select
+                    id="search-stock-category"
+                    className="single-view-content-item-form-item-input"
+                    value={criteria.stockCategory || ""}
+                    onChange={(e) => setCondition({
+                        ...criteria,
+                        stockCategory: e.target.value
+                    })}
+                >
+                    <option value="">選択してください</option>
+                    <option value={StockCategoryEnumType.通常在庫}>通常在庫</option>
+                    <option value={StockCategoryEnumType.安全在庫}>安全在庫</option>
+                    <option value={StockCategoryEnumType.廃棄予定}>廃棄予定</option>
+                </select>
+            </div>
+            <div className="single-view-content-item-form-item">
+                <label htmlFor="search-quality-category" className="single-view-content-item-form-item-label">
+                    良品区分
+                </label>
+                <select
+                    id="search-quality-category"
+                    className="single-view-content-item-form-item-input"
+                    value={criteria.qualityCategory || ""}
+                    onChange={(e) => setCondition({
+                        ...criteria,
+                        qualityCategory: e.target.value
+                    })}
+                >
+                    <option value="">選択してください</option>
+                    <option value={QualityCategoryEnumType.良品}>良品</option>
+                    <option value={QualityCategoryEnumType.不良品}>不良品</option>
+                    <option value={QualityCategoryEnumType.返品}>返品</option>
+                </select>
+            </div>
 
             <div className="button-container">
                 <button className="action-button" id="search-all" onClick={handleClick}>
