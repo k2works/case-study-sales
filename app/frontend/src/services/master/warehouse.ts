@@ -5,7 +5,8 @@ import {
     WarehouseFetchType,
     WarehouseType,
     mapToWarehouseCriteriaResource,
-    mapToWarehouseResource
+    mapToWarehouseResource,
+    mapFromWarehouseResource
 } from "../../models/master/warehouse.ts";
 
 export interface WarehouseServiceType {
@@ -24,12 +25,21 @@ export const WarehouseService = () => {
 
     const select = async (page?: number, pageSize?: number): Promise<WarehouseFetchType> => {
         const url = Utils.buildUrlWithPaging(endPoint, page, pageSize);
-        return await apiUtils.fetchGet<WarehouseFetchType>(url);
+        const response = await apiUtils.fetchGet<WarehouseFetchType>(url);
+
+        // レスポンスのwarehouseCategoryをUI表示用に変換
+        const convertedList = response.list.map(warehouse => mapFromWarehouseResource(warehouse));
+
+        return {
+            ...response,
+            list: convertedList
+        };
     };
 
     const find = async (warehouseCode: string): Promise<WarehouseType> => {
         const url = `${endPoint}/${warehouseCode}`;
-        return await apiUtils.fetchGet<WarehouseType>(url);
+        const response = await apiUtils.fetchGet<WarehouseType>(url);
+        return mapFromWarehouseResource(response);
     };
 
     const create = async (warehouse: WarehouseType): Promise<void> => {
@@ -43,7 +53,15 @@ export const WarehouseService = () => {
 
     const search = async (criteria: WarehouseCriteriaType, page?: number, pageSize?: number): Promise<WarehouseFetchType> => {
         const url = Utils.buildUrlWithPaging(`${endPoint}/search`, page, pageSize);
-        return await apiUtils.fetchPost<WarehouseFetchType>(url, mapToWarehouseCriteriaResource(criteria));
+        const response = await apiUtils.fetchPost<WarehouseFetchType>(url, mapToWarehouseCriteriaResource(criteria));
+
+        // レスポンスのwarehouseCategoryをUI表示用に変換
+        const convertedList = response.list.map(warehouse => mapFromWarehouseResource(warehouse));
+
+        return {
+            ...response,
+            list: convertedList
+        };
     };
 
     const destroy = async (warehouseCode: string): Promise<void> => {

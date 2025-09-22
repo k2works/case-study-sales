@@ -118,3 +118,13 @@ export enum PaymentMethodEnumType {
     手形 = "手形",
 }
 
+// 倉庫区分型
+export enum WarehouseCategoryEnumType {
+    通常倉庫 = "通常倉庫",
+    得意先 = "得意先",
+    仕入先 = "仕入先",
+    部門倉庫 = "部門倉庫",
+    製品倉庫 = "製品倉庫",
+    原材料倉庫 = "原材料倉庫",
+}
+

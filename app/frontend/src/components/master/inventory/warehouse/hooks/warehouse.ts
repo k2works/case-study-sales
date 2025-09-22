@@ -11,6 +11,11 @@ export const useWarehouse = () => {
     const initialWarehouse = {
         warehouseCode: "",
         warehouseName: "",
+        warehouseCategory: undefined,
+        postalCode: undefined,
+        prefecture: undefined,
+        address1: undefined,
+        address2: undefined,
         checked: false
     };
 

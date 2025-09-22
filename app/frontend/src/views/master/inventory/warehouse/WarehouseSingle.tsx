@@ -1,7 +1,8 @@
 import React from 'react';
 import {Message} from "../../../../components/application/Message.tsx";
 import {WarehouseType} from "../../../../models/master/warehouse.ts";
-import {FormInput, SingleViewHeaderActions, SingleViewHeaderItem} from "../../../Common.tsx";
+import {FormInput, FormSelect, SingleViewHeaderActions, SingleViewHeaderItem} from "../../../Common.tsx";
+import {PrefectureEnumType, WarehouseCategoryEnumType} from "../../../../models/master/shared.ts";
 
 interface HeaderProps {
     title: string;
@@ -61,6 +62,76 @@ const Form = ({isEditing, newWarehouse, setNewWarehouse}: FormProps) => {
                     ...newWarehouse,
                     warehouseName: e.target.value
                 })}
+            />
+
+            {/* 倉庫区分 */}
+            <FormSelect
+                id="warehouseCategory"
+                label="倉庫区分"
+                value={newWarehouse.warehouseCategory}
+                options={WarehouseCategoryEnumType}
+                onChange={(e) => {
+                    setNewWarehouse({
+                        ...newWarehouse,
+                        warehouseCategory: e,
+                    });
+                }}
+            />
+
+            {/* 住所 */}
+            <FormInput
+                label="郵便番号"
+                id="postalCode"
+                type="text"
+                className="single-view-content-item-form-item-input"
+                placeholder="郵便番号"
+                value={newWarehouse.postalCode ?? ""}
+                onChange={(e) =>
+                    setNewWarehouse({
+                        ...newWarehouse,
+                        postalCode: e.target.value,
+                    })
+                }
+            />
+            <FormSelect
+                id="prefecture"
+                label="都道府県"
+                value={newWarehouse.prefecture ?? ""}
+                options={PrefectureEnumType}
+                onChange={(e) => {
+                    setNewWarehouse({
+                        ...newWarehouse,
+                        prefecture: e,
+                    });
+                }}
+            />
+            <FormInput
+                label="住所1"
+                id="address1"
+                type="text"
+                className="single-view-content-item-form-item-input"
+                placeholder="住所1"
+                value={newWarehouse.address1 ?? ""}
+                onChange={(e) =>
+                    setNewWarehouse({
+                        ...newWarehouse,
+                        address1: e.target.value,
+                    })
+                }
+            />
+            <FormInput
+                label="住所2"
+                id="address2"
+                type="text"
+                className="single-view-content-item-form-item-input"
+                placeholder="住所2"
+                value={newWarehouse.address2 ?? ""}
+                onChange={(e) =>
+                    setNewWarehouse({
+                        ...newWarehouse,
+                        address2: e.target.value,
+                    })
+                }
             />
         </div>
     );
