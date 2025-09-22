@@ -62,7 +62,7 @@ describe('在庫管理', () => {
                 cy.get(':nth-child(1) > .collection-object-item-actions > #select-warehouse').click();
                 cy.wait(1000);
                 cy.get('#search-all').click();
-                cy.get('.collection-object-item-content-name').contains('WH1');
+                cy.get('.collection-object-item-content-name').contains('W01');
             });
 
             it('在庫区分での検索', () => {
@@ -189,7 +189,7 @@ describe('在庫管理', () => {
                 cy.get(':nth-child(1) > .collection-object-item-actions > #select-warehouse').click();
                 cy.wait(1000);
                 cy.get('#search-all').click();
-                cy.get('.collection-object-item-content-name').contains('WH1');
+                cy.get('.collection-object-item-content-name').contains('W01');
             });
         });
 

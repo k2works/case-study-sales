@@ -21,13 +21,13 @@ describe('棚番管理', () => {
         it('新規登録', () => {
             warehousePage();
             cy.get('#new').click();
-            cy.get('#warehouseCode').type('W99');
+            cy.get('#warehouseCode').type('W90');
             cy.get('#warehouseName').type('テスト倉庫');
             cy.get('#save').click();
 
             locationNumberPage();
             cy.get('#new').click();
-            cy.get('#warehouseCode').type('W99');
+            cy.get('#warehouseCode').type('W90');
             cy.get('#locationNumberCode').type('L99');
             cy.get('#productCode').type('123');
             cy.get('#save').click();
@@ -39,10 +39,10 @@ describe('棚番管理', () => {
         it('検索', () => {
             locationNumberPage();
             cy.get('#search').click();
-            cy.get('#search-location-number-warehouse-code').type('W99');
+            cy.get('#search-location-number-warehouse-code').type('W90');
             cy.wait(1000);
             cy.get('#search-all').click();
-            cy.get('.collection-object-item-content-name').contains('W99');
+            cy.get('.collection-object-item-content-name').contains('W90');
         });
     });
 
@@ -50,7 +50,7 @@ describe('棚番管理', () => {
         it('登録情報編集', () => {
             locationNumberPage();
             cy.get('#search').click();
-            cy.get('#search-location-number-warehouse-code').type('W99');
+            cy.get('#search-location-number-warehouse-code').type('W90');
             cy.wait(1000);
             cy.get('#search-all').click();
             cy.wait(1000);
@@ -64,7 +64,7 @@ describe('棚番管理', () => {
         it('削除', () => {
             warehousePage();
             cy.get('#search').click();
-            cy.get('#search-warehouse-code').type('W99');
+            cy.get('#search-warehouse-code').type('W90');
             cy.wait(1000);
             cy.get('#search-all').click();
             cy.wait(1000);
@@ -72,7 +72,7 @@ describe('棚番管理', () => {
 
             locationNumberPage();
             cy.get('#search').click();
-            cy.get('#search-location-number-warehouse-code').type('W99');
+            cy.get('#search-location-number-warehouse-code').type('W90');
             cy.wait(1000);
             cy.get('#search-all').click();
             cy.wait(1000);
