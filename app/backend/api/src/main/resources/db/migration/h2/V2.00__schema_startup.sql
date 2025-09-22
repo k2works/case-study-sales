@@ -130,22 +130,3 @@ create table if not exists 部品表
     primary key (商品コード, 部品コード)
     );
 
-comment on column 倉庫マスタ.倉庫区分 is 'N:通常倉庫, C:得意先, S:仕入先, D:部門倉庫, P:製品倉庫, M:原材料倉庫';
-
-create table if not exists 倉庫部門マスタ
-(
-    倉庫コード varchar(3)                        not null
-    references 倉庫マスタ
-    on update cascade on delete restrict,
-    部門コード varchar(6)                        not null,
-    開始日     timestamp(6) default CURRENT_DATE not null,
-    作成日時   timestamp(6) default CURRENT_DATE not null,
-    作成者名   varchar(12),
-    更新日時   timestamp(6) default CURRENT_DATE not null,
-    更新者名   varchar(12),
-    constraint pk_wh_dept_mst
-    primary key (倉庫コード, 部門コード, 開始日),
-    foreign key (部門コード, 開始日) references 部門マスタ
-    on update cascade on delete restrict
-    );
-

@@ -22,7 +22,7 @@ import java.util.stream.IntStream;
 import static org.junit.jupiter.api.Assertions.*;
 
 @IntegrationTest
-@DisplayName("ConsolidatedBillingProcessor")
+@DisplayName("締め処理")
 class ConsolidatedBillingProcessorTest {
 
     private static final String CUSTOMER_CODE_VALUE = "010";

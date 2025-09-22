@@ -33,7 +33,7 @@ describe('発注管理', () => {
                 cy.get('.close-modal-button').click();
                 cy.get('#purchaseManagerCode').type('EMP001');
                 cy.get('#designatedDeliveryDate').type('2024-01-31');
-                cy.get('#warehouseCode').type('001');
+                cy.get('#warehouseCode').type('W01');
                 cy.get('#remarks').type('テスト発注');
 
                 // 明細行を追加
@@ -152,7 +152,7 @@ describe('発注管理', () => {
                 cy.get('.close-modal-button').click();
                 cy.get('#purchaseManagerCode').type('EMP001');
                 cy.get('#designatedDeliveryDate').type('2024-01-31');
-                cy.get('#warehouseCode').type('001');
+                cy.get('#warehouseCode').type('W01');
                 cy.get('#remarks').type('テスト発注');
 
                 // 明細行を追加

@@ -105,6 +105,7 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+	jvmArgs '-Xmx2g', '-Xms1g'
 }
 
 flyway {

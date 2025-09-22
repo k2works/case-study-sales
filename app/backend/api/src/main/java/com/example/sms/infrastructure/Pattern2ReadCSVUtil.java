@@ -35,7 +35,6 @@ public class Pattern2ReadCSVUtil<T> {
             // CsvToBeanBuilderを使ってパース処理を設定
             CsvToBean<T> csvToBean = new CsvToBeanBuilder<T>(csvReader)
                     .withType(bean)              // マッピングするクラス
-                    .withSkipLines(1)            // 1行目（ヘッダー）をスキップ
                     .withThrowExceptions(false)  // エラー時はExceptionを抑制して収集
                     .build();
 

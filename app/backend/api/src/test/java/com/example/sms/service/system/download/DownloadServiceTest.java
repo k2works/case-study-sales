@@ -594,4 +594,77 @@ class DownloadServiceTest {
             }
         }
     }
+
+    @Nested
+    @DisplayName("在庫データ")
+    @WithMockUser(username = "admin", roles = "ADMIN")
+    class InventoryDownload {
+        @Test
+        @DisplayName("件数取得")
+        void testCount() {
+            DownloadCriteria condition = Inventory.of();
+            int result = downloadService.count(condition);
+            assertTrue(result >= 0);
+        }
+
+        @Test
+        @DisplayName("データダウンロード変換")
+        void testDownload() {
+            DownloadCriteria condition = Inventory.of();
+            List<?> rawResult = downloadService.convert(condition);
+            List<InventoryDownloadCSV> result = rawResult.stream()
+                    .filter(InventoryDownloadCSV.class::isInstance)
+                    .map(InventoryDownloadCSV.class::cast)
+                    .toList();
+
+            // 結果の確認
+            assertNotNull(result, "結果がnullです");
+            // データが存在する場合の基本的なフィールドチェック
+            if (!result.isEmpty()) {
+                InventoryDownloadCSV firstResult = result.getFirst();
+                assertNotNull(firstResult, "最初のデータがnullです");
+                assertNotNull(firstResult.getWarehouseCode(), "倉庫コードがnullです");
+                assertNotNull(firstResult.getProductCode(), "商品コードがnullです");
+                assertNotNull(firstResult.getLotNumber(), "ロット番号がnullです");
+                assertNotNull(firstResult.getStockCategory(), "在庫区分がnullです");
+                assertNotNull(firstResult.getQualityCategory(), "良品区分がnullです");
+                assertNotNull(firstResult.getActualStockQuantity(), "実在庫数がnullです");
+                assertNotNull(firstResult.getAvailableStockQuantity(), "有効在庫数がnullです");
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("倉庫データ")
+    @WithMockUser(username = "admin", roles = "ADMIN")
+    class WarehouseDownload {
+        @Test
+        @DisplayName("件数取得")
+        void testCount() {
+            DownloadCriteria condition = com.example.sms.domain.model.system.download.Warehouse.of();
+            int result = downloadService.count(condition);
+            assertTrue(result >= 0);
+        }
+
+        @Test
+        @DisplayName("データダウンロード変換")
+        void testDownload() {
+            DownloadCriteria condition = com.example.sms.domain.model.system.download.Warehouse.of();
+            List<?> rawResult = downloadService.convert(condition);
+            List<WarehouseDownloadCSV> result = rawResult.stream()
+                    .filter(WarehouseDownloadCSV.class::isInstance)
+                    .map(WarehouseDownloadCSV.class::cast)
+                    .toList();
+
+            // 結果の確認
+            assertNotNull(result, "結果がnullです");
+            // データが存在する場合の基本的なフィールドチェック
+            if (!result.isEmpty()) {
+                WarehouseDownloadCSV firstResult = result.getFirst();
+                assertNotNull(firstResult, "最初のデータがnullです");
+                assertNotNull(firstResult.getWarehouseCode(), "倉庫コードがnullです");
+                assertNotNull(firstResult.getWarehouseName(), "倉庫名がnullです");
+            }
+        }
+    }
 }

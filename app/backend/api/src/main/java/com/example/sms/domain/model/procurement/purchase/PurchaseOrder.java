@@ -4,6 +4,7 @@ import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.master.employee.EmployeeCode;
 import com.example.sms.domain.model.master.partner.supplier.Supplier;
 import com.example.sms.domain.model.master.partner.supplier.SupplierCode;
+import com.example.sms.domain.model.master.warehouse.WarehouseCode;
 import com.example.sms.domain.model.sales.order.OrderNumber;
 import com.example.sms.domain.type.money.Money;
 import lombok.AllArgsConstructor;
@@ -30,7 +31,7 @@ public class PurchaseOrder {
     SupplierCode supplierCode; // 仕入先コード
     EmployeeCode purchaseManagerCode; // 発注担当者コード
     DesignatedDeliveryDate designatedDeliveryDate; // 指定納期
-    String warehouseCode; // 倉庫コード
+    WarehouseCode warehouseCode; // 倉庫コード
     Money totalPurchaseAmount; // 発注金額合計
     Money totalConsumptionTax; // 消費税合計
     String remarks; // 備考
@@ -56,7 +57,7 @@ public class PurchaseOrder {
                 .supplierCode(SupplierCode.of(supplierCode, supplierBranchNumber))
                 .purchaseManagerCode(EmployeeCode.of(purchaseManagerCode))
                 .designatedDeliveryDate(DesignatedDeliveryDate.of(designatedDeliveryDate))
-                .warehouseCode(warehouseCode)
+                .warehouseCode(WarehouseCode.of(warehouseCode))
                 .totalPurchaseAmount(calcTotalPurchaseAmount)
                 .totalConsumptionTax(calcTotalConsumptionTax)
                 .remarks(remarks)

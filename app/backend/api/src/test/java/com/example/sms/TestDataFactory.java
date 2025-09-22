@@ -39,6 +39,8 @@ public interface TestDataFactory {
 
     void setUpForShippingRuleCheckService();
 
+    void setUpForShippingOrderConfirmService();
+
     void setUpForSalesService();
 
     void setUpForSalesServiceForAggregate();
@@ -55,6 +57,12 @@ public interface TestDataFactory {
 
     void setUpForPurchaseOrderServiceWithErrors();
 
+    void setUpForInventoryService();
+
+    void setUpForWarehouseService();
+
+    void setUpForLocationNumberService();
+
     MultipartFile createOrderFile();
 
     MultipartFile createOrderInvalidFile();
@@ -66,4 +74,11 @@ public interface TestDataFactory {
     MultipartFile createPurchaseOrderInvalidFile();
 
     MultipartFile createPurchaseOrderForCheckFile();
+
+    MultipartFile createInventoryFile();
+
+    MultipartFile createInventoryInvalidFile();
+
+    MultipartFile createInventoryForCheckFile();
+
 }

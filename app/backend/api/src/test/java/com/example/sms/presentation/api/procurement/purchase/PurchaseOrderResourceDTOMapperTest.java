@@ -27,7 +27,7 @@ class PurchaseOrderResourceDTOMapperTest {
         resource.setSupplierBranchNumber(0);
         resource.setPurchaseManagerCode("EMP001");
         resource.setDesignatedDeliveryDate(now.plusDays(1)); // 発注日より後に設定
-        resource.setWarehouseCode("001");
+        resource.setWarehouseCode("W01");
         resource.setTotalPurchaseAmount(10000);
         resource.setTotalConsumptionTax(1000); // 10000円 × 10% = 1000円
         resource.setRemarks("備考");
@@ -61,7 +61,7 @@ class PurchaseOrderResourceDTOMapperTest {
         assertEquals(0, result.getSupplierCode().getBranchNumber());
         assertEquals("EMP001", result.getPurchaseManagerCode().getValue());
         assertEquals(now.plusDays(1), result.getDesignatedDeliveryDate().getValue());
-        assertEquals("001", result.getWarehouseCode());
+        assertEquals("W01", result.getWarehouseCode().getValue());
         assertEquals(10000, result.getTotalPurchaseAmount().getAmount());
         assertEquals(1000, result.getTotalConsumptionTax().getAmount()); // 10000円 × 10% = 1000円
         assertEquals("備考", result.getRemarks());
@@ -94,7 +94,7 @@ class PurchaseOrderResourceDTOMapperTest {
         resource.setSupplierBranchNumber(0);
         resource.setPurchaseManagerCode("EMP001");
         resource.setDesignatedDeliveryDate(now.plusDays(1)); // 発注日より後に設定
-        resource.setWarehouseCode("001");
+        resource.setWarehouseCode("W01");
         resource.setRemarks("備考");
 
         // Act
@@ -109,7 +109,7 @@ class PurchaseOrderResourceDTOMapperTest {
         assertEquals(0, result.getSupplierBranchNumber());
         assertEquals("EMP001", result.getPurchaseManagerCode());
         assertEquals(now.plusDays(1), result.getDesignatedDeliveryDate());
-        assertEquals("001", result.getWarehouseCode());
+        assertEquals("W01", result.getWarehouseCode());
         assertEquals("備考", result.getRemarks());
     }
 

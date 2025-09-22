@@ -27,7 +27,7 @@ public class SpringAcceptanceTest {
     @Autowired
     protected RestTemplate restTemplate;
 
-    String authHeader = null;
+    protected String authHeader = null;
 
     protected void signin(String userId, String password, String url) {
         RestTemplate restTemplate = new RestTemplate();
@@ -102,8 +102,6 @@ public class SpringAcceptanceTest {
         headers.set("Accept", "application/json");
 
         // executeの使用
-        // レスポンス処理
-        // ResponseResults型へ変換
         latestResponse = restTemplate.execute(
                 url,
                 HttpMethod.POST,
@@ -124,7 +122,13 @@ public class SpringAcceptanceTest {
                     new org.springframework.http.converter.FormHttpMessageConverter()
                             .write(body, MediaType.MULTIPART_FORM_DATA, request);
                 },
-                ResponseResults::new
+                response -> {
+                    if (errorHandler.hadError) {
+                        return errorHandler.getResults();
+                    } else {
+                        return new ResponseResults(response);
+                    }
+                }
         );
     }
 

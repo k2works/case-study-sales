@@ -117,6 +117,27 @@ describe('アプリケーションデータダウンロード', () => {
             cy.get('#download').click();
             cy.get('#message').contains('発注 データをダウンロードしました。');
         });
+
+        it('在庫データダウンロード', () => {
+            userPage();
+            cy.get('#downloadTarget').select('在庫');
+            cy.get('#download').click();
+            cy.get('#message').contains('在庫 データをダウンロードしました。');
+        });
+
+        it('倉庫データダウンロード', () => {
+            userPage();
+            cy.get('#downloadTarget').select('倉庫');
+            cy.get('#download').click();
+            cy.get('#message').contains('倉庫 データをダウンロードしました。');
+        });
+
+        it('棚番データダウンロード', () => {
+            userPage();
+            cy.get('#downloadTarget').select('棚番');
+            cy.get('#download').click();
+            cy.get('#message').contains('棚番 データをダウンロードしました。');
+        });
     });
 
     describe('利用者', () => {
@@ -236,6 +257,27 @@ describe('アプリケーションデータダウンロード', () => {
             cy.get('#downloadTarget').select('発注');
             cy.get('#download').click();
             cy.get('#message').contains('発注 データをダウンロードしました。');
+        });
+
+        it('在庫データダウンロード', () => {
+            userPage();
+            cy.get('#downloadTarget').select('在庫');
+            cy.get('#download').click();
+            cy.get('#message').contains('在庫 データをダウンロードしました。');
+        });
+
+        it('倉庫データダウンロード', () => {
+            userPage();
+            cy.get('#downloadTarget').select('倉庫');
+            cy.get('#download').click();
+            cy.get('#message').contains('ダウンロードに失敗しました: 権限がありません');
+        });
+
+        it('棚番データダウンロード', () => {
+            userPage();
+            cy.get('#downloadTarget').select('棚番');
+            cy.get('#download').click();
+            cy.get('#message').contains('ダウンロードに失敗しました: 権限がありません');
         });
     });
 });

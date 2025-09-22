@@ -12,6 +12,7 @@ import com.example.sms.stepdefinitions.utils.MessageResponseWithDetail;
 import com.example.sms.stepdefinitions.utils.SpringAcceptanceTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.cucumber.java.DataTableType;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class UC023StepDefs extends SpringAcceptanceTest {
 
@@ -236,6 +238,13 @@ public class UC023StepDefs extends SpringAcceptanceTest {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
 
+        // エラーレスポンスの場合はメッセージを確認
+        if (result.contains("\"message\"")) {
+            JsonNode jsonNode = objectMapper.readTree(result);
+            String message = jsonNode.get("message").asText();
+            fail("エラーが発生しました: " + message);
+        }
+
         PurchaseOrderResource purchaseOrderResource = objectMapper.readValue(result, PurchaseOrderResource.class);
         assertEquals(purchaseOrderNumber, purchaseOrderResource.getPurchaseOrderNumber());
     }
@@ -294,7 +303,7 @@ public class UC023StepDefs extends SpringAcceptanceTest {
         purchaseOrderResource.setSupplierBranchNumber(0);
         purchaseOrderResource.setPurchaseManagerCode(employeeCode);
         purchaseOrderResource.setDesignatedDeliveryDate(OffsetDateTime.parse(designatedDeliveryDate).toLocalDateTime());
-        purchaseOrderResource.setWarehouseCode("001");
+        purchaseOrderResource.setWarehouseCode("W01");
         purchaseOrderResource.setTotalPurchaseAmount(0); // 明細がない場合は0
         purchaseOrderResource.setTotalConsumptionTax(0); // 明細がない場合は0
         purchaseOrderResource.setRemarks(remarks);

@@ -1,0 +1,473 @@
+package com.example.sms.stepdefinitions;
+
+import com.example.sms.TestDataFactory;
+import com.example.sms.presentation.api.inventory.InventoryCriteriaResource;
+import com.example.sms.presentation.api.inventory.InventoryResource;
+import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
+import com.example.sms.stepdefinitions.utils.MessageResponseWithDetail;
+import com.example.sms.service.inventory.InventoryRepository;
+import com.example.sms.stepdefinitions.utils.SpringAcceptanceTest;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.github.pagehelper.PageInfo;
+import io.cucumber.java.ja.かつ;
+import io.cucumber.java.ja.ならば;
+import io.cucumber.java.ja.もし;
+import io.cucumber.java.ja.前提;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class UC026StepDefs extends SpringAcceptanceTest {
+
+    private static final String PORT = "8079";
+    private static final String HOST = "http://localhost:" + PORT;
+    private static final String INVENTORY_API_URL = HOST + "/api/inventory";
+
+    @Autowired
+    private TestDataFactory testDataFactory;
+
+    @Autowired
+    private InventoryRepository inventoryRepository;
+
+    @前提(":UC026 {string} である")
+    public void login(String user) {
+        String url = HOST + "/api/auth/signin";
+        if (user.equals("管理者")) {
+            signin("U888888", "demo", url);
+        } else {
+            signin("U999999", "demo", url);
+        }
+        System.out.println("Login completed for user: " + user + ", authHeader: " + (authHeader != null ? "Set" : "Null"));
+    }
+
+    @前提(":UC026 {string} が登録されている")
+    public void init(String data) {
+        switch (data) {
+            case "部門データ":
+                testDataFactory.setUpForDepartmentService();
+                break;
+            case "社員データ":
+                testDataFactory.setUpForEmployeeService();
+                break;
+            case "取引先データ":
+                testDataFactory.setUpForPartnerService();
+                break;
+            case "商品データ":
+                testDataFactory.setUpForProductService();
+                break;
+            case "倉庫データ":
+                // 倉庫データのセットアップは必要に応じて実装
+                System.out.println("倉庫データセットアップをスキップ");
+                break;
+            case "棚番データ":
+                // 棚番データのセットアップは必要に応じて実装
+                System.out.println("棚番データセットアップをスキップ");
+                break;
+            case "在庫データ":
+                testDataFactory.setUpForInventoryService();
+                break;
+            default:
+                break;
+        }
+    }
+
+    @もし(":UC026 {string} を取得する")
+    public void toGet(String list) {
+        if (list.equals("在庫一覧")) {
+            executeGet(INVENTORY_API_URL);
+        }
+    }
+
+    @もし(":UC026 倉庫コード {string} 商品コード {string} ロット番号 {string} 在庫区分 {string} 良品区分 {string} 実在庫数 {string} 有効在庫数 {string} で新規登録する")
+    public void registerInventory(String warehouseCode, String productCode, String lotNumber, String stockCategory, String qualityCategory, String actualStockQuantity, String availableStockQuantity) throws JsonProcessingException {
+        InventoryResource inventory = getInventoryResource(warehouseCode, productCode, lotNumber, stockCategory, qualityCategory, Integer.parseInt(actualStockQuantity), Integer.parseInt(availableStockQuantity));
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
+        String json = objectMapper.writeValueAsString(inventory);
+        System.out.println("Sending inventory data: " + json);
+        System.out.println("URL: " + INVENTORY_API_URL);
+        System.out.println("AuthHeader for POST: " + (authHeader != null ? "Set" : "Null"));
+        executePost(INVENTORY_API_URL, json);
+    }
+
+    @もし(":UC026 倉庫コード {string} 商品コード {string} ロット番号 {string} 在庫区分 {string} 良品区分 {string} で検索する")
+    public void search(String warehouseCode, String productCode, String lotNumber, String stockCategory, String qualityCategory) {
+        String url = INVENTORY_API_URL + "/" + warehouseCode + "/" + productCode + "/" + lotNumber + "/" + stockCategory + "/" + qualityCategory;
+        executeGet(url);
+    }
+
+    @かつ(":UC026 倉庫コード {string} 商品コード {string} ロット番号 {string} 在庫区分 {string} 良品区分 {string} の在庫情報を更新する \\(実在庫数 {string})")
+    public void updateInventory(String warehouseCode, String productCode, String lotNumber, String stockCategory, String qualityCategory, String actualStockQuantity) throws JsonProcessingException {
+        String url = INVENTORY_API_URL + "/" + warehouseCode + "/" + productCode + "/" + lotNumber + "/" + stockCategory + "/" + qualityCategory;
+        InventoryResource inventory = getInventoryResource(warehouseCode, productCode, lotNumber, stockCategory, qualityCategory, Integer.parseInt(actualStockQuantity), 100);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
+        String json = objectMapper.writeValueAsString(inventory);
+        executePut(url, json);
+    }
+
+    @かつ(":UC026 倉庫コード {string} 商品コード {string} ロット番号 {string} 在庫区分 {string} 良品区分 {string} を削除する")
+    public void deleteInventory(String warehouseCode, String productCode, String lotNumber, String stockCategory, String qualityCategory) {
+        String url = INVENTORY_API_URL + "/" + warehouseCode + "/" + productCode + "/" + lotNumber + "/" + stockCategory + "/" + qualityCategory;
+        executeDelete(url);
+    }
+
+    @もし(":UC026 商品コード {string} で在庫を検索する")
+    public void searchInventoryByCriteria(String productCode) throws JsonProcessingException {
+        InventoryCriteriaResource criteria = new InventoryCriteriaResource();
+        criteria.setProductCode(productCode);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
+        String json = objectMapper.writeValueAsString(criteria);
+        executePost(INVENTORY_API_URL + "/search", json);
+    }
+
+    @かつ(":UC026 倉庫コード {string} 商品コード {string} ロット番号 {string} 在庫区分 {string} 良品区分 {string} を調整数量 {string} で調整する")
+    public void adjustInventory(String warehouseCode, String productCode, String lotNumber, String stockCategory, String qualityCategory, String adjustmentQuantity) {
+        String url = INVENTORY_API_URL + "/" + warehouseCode + "/" + productCode + "/" + lotNumber + "/" + stockCategory + "/" + qualityCategory + "/adjust?adjustmentQuantity=" + adjustmentQuantity;
+        executePost(url, "");
+    }
+
+    @かつ(":UC026 倉庫コード {string} 商品コード {string} ロット番号 {string} 在庫区分 {string} 良品区分 {string} を予約数量 {string} で予約する")
+    public void reserveInventory(String warehouseCode, String productCode, String lotNumber, String stockCategory, String qualityCategory, String reserveQuantity) {
+        String url = INVENTORY_API_URL + "/" + warehouseCode + "/" + productCode + "/" + lotNumber + "/" + stockCategory + "/" + qualityCategory + "/reserve?reserveQuantity=" + reserveQuantity;
+        executePost(url, "");
+    }
+
+    @かつ(":UC026 倉庫コード {string} 商品コード {string} ロット番号 {string} 在庫区分 {string} 良品区分 {string} を出荷数量 {string} で出荷する")
+    public void shipInventory(String warehouseCode, String productCode, String lotNumber, String stockCategory, String qualityCategory, String shipmentQuantity) {
+        String url = INVENTORY_API_URL + "/" + warehouseCode + "/" + productCode + "/" + lotNumber + "/" + stockCategory + "/" + qualityCategory + "/ship?shipmentQuantity=" + shipmentQuantity;
+        executePost(url, "");
+    }
+
+    @かつ(":UC026 倉庫コード {string} 商品コード {string} ロット番号 {string} 在庫区分 {string} 良品区分 {string} を入荷数量 {string} で入荷する")
+    public void receiveInventory(String warehouseCode, String productCode, String lotNumber, String stockCategory, String qualityCategory, String receiptQuantity) {
+        String url = INVENTORY_API_URL + "/" + warehouseCode + "/" + productCode + "/" + lotNumber + "/" + stockCategory + "/" + qualityCategory + "/receive?receiptQuantity=" + receiptQuantity;
+        executePost(url, "");
+    }
+
+    @ならば(":UC026 {string} が表示される")
+    public void verifyMessage(String message) throws JsonProcessingException, IOException {
+        String result = latestResponse.getBody();
+        int statusCode = latestResponse.getTheResponse().getStatusCode().value();
+        System.out.println("Response status code: " + statusCode);
+        System.out.println("Response body: " + result);
+        System.out.println("Expected message: " + message);
+
+        if (result == null || result.trim().isEmpty()) {
+            if (statusCode >= 400) {
+                throw new AssertionError("HTTP error occurred. Status code: " + statusCode + ", Body is empty");
+            } else {
+                throw new AssertionError("Response body is empty. Status code: " + statusCode);
+            }
+        }
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
+        try {
+            // まず、レスポンスがdetailsフィールドを含むかどうかをチェック
+            if (result.contains("\"details\"")) {
+                // detailsフィールドが含まれている場合はMessageResponseWithDetailを使用
+                MessageResponseWithDetail response = objectMapper.readValue(result, MessageResponseWithDetail.class);
+                assertEquals(message, response.getMessage());
+            } else {
+                // detailsフィールドが含まれていない場合はMessageResponseを使用
+                MessageResponse response = objectMapper.readValue(result, MessageResponse.class);
+                assertEquals(message, response.getMessage());
+            }
+        } catch (JsonProcessingException e) {
+            // デシリアライズに失敗した場合のフォールバック処理
+            System.err.println("Failed to deserialize response. Trying alternative approach...");
+            System.err.println("Response content: " + result);
+
+            // 手動でメッセージを抽出してみる
+            try {
+                com.fasterxml.jackson.databind.JsonNode jsonNode = objectMapper.readTree(result);
+                String actualMessage = jsonNode.get("message").asText();
+                assertEquals(message, actualMessage);
+            } catch (Exception fallbackException) {
+                System.err.println("Fallback parsing also failed: " + fallbackException.getMessage());
+                throw new AssertionError("Could not parse response: " + result, e);
+            }
+        }
+    }
+
+    @ならば(":UC026 {string} を取得できる")
+    public void verifyInventoryList(String list) throws JsonProcessingException {
+        if (list.equals("在庫一覧")) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
+
+            String result = latestResponse.getBody();
+            PageInfo<InventoryResource> response = objectMapper.readValue(result, new TypeReference<>() {
+            });
+            assertNotNull(response);
+            assertNotNull(response.getList());
+        }
+    }
+
+    @ならば(":UC026 倉庫コード {string} 商品コード {string} ロット番号 {string} の在庫情報を取得できる")
+    public void verifyInventory(String warehouseCode, String productCode, String lotNumber) throws JsonProcessingException {
+        String result = latestResponse.getBody();
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
+        InventoryResource inventoryResource = objectMapper.readValue(result, InventoryResource.class);
+        assertEquals(warehouseCode, inventoryResource.getWarehouseCode());
+        assertEquals(productCode, inventoryResource.getProductCode());
+        assertEquals(lotNumber, inventoryResource.getLotNumber());
+    }
+
+    @ならば(":UC026 実在庫数 {string} を含む在庫情報が取得できる")
+    public void verifyInventoryWithActualStock(String actualStock) throws JsonProcessingException {
+        String result = latestResponse.getBody();
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
+        InventoryResource inventoryResource = objectMapper.readValue(result, InventoryResource.class);
+        assertEquals(Integer.valueOf(actualStock), inventoryResource.getActualStockQuantity());
+    }
+
+    @ならば(":UC026 検索結果として在庫一覧を取得できる")
+    public void verifySearchResult() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
+        String result = latestResponse.getBody();
+        PageInfo<InventoryResource> response = objectMapper.readValue(result, new TypeReference<>() {
+        });
+        assertNotNull(response);
+        assertNotNull(response.getList());
+        assertTrue(response.getList().size() > 0);
+    }
+
+    @もし(":UC026 {string} をアップロードする")
+    public void upload(String data) {
+        if (data.equals("在庫データ")) {
+            try {
+                MultipartFile file = testDataFactory.createInventoryFile();
+                uploadFile(INVENTORY_API_URL + "/upload", file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @もし(":UC026 エラーのある {string} をアップロードする")
+    public void uploadInvalid(String data) {
+        if (data.equals("在庫データ")) {
+            try {
+                MultipartFile file = testDataFactory.createInventoryInvalidFile();
+                uploadFile(INVENTORY_API_URL + "/upload", file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @もし(":UC026 正常な在庫CSVファイル {string} をアップロードする")
+    public void uploadValidInventoryCSV(String fileName) throws IOException {
+        ClassPathResource resource = new ClassPathResource("csv/inventory/" + fileName);
+        byte[] fileContent = Files.readAllBytes(resource.getFile().toPath());
+        
+        MockMultipartFile csvFile = new MockMultipartFile(
+            "file", 
+            fileName, 
+            "text/csv", 
+            fileContent
+        );
+        
+        executePost(INVENTORY_API_URL + "/upload", csvFile);
+    }
+
+    @もし(":UC026 不正な在庫CSVファイル {string} をアップロードする")
+    public void uploadInvalidInventoryCSV(String fileName) throws IOException {
+        ClassPathResource resource = new ClassPathResource("csv/inventory/" + fileName);
+        byte[] fileContent = Files.readAllBytes(resource.getFile().toPath());
+        
+        MockMultipartFile csvFile = new MockMultipartFile(
+            "file", 
+            fileName, 
+            "text/csv", 
+            fileContent
+        );
+        
+        executePost(INVENTORY_API_URL + "/upload", csvFile);
+    }
+
+    private void uploadFile(String url, MultipartFile file) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
+        executePost(url, file);
+    }
+
+    @もし(":UC026 空の在庫CSVファイル {string} をアップロードする")
+    public void uploadEmptyInventoryCSV(String fileName) throws IOException {
+        ClassPathResource resource = new ClassPathResource("csv/inventory/" + fileName);
+        byte[] fileContent = Files.readAllBytes(resource.getFile().toPath());
+        
+        MockMultipartFile csvFile = new MockMultipartFile(
+            "file", 
+            fileName, 
+            "text/csv", 
+            fileContent
+        );
+        
+        executePost(INVENTORY_API_URL + "/upload", csvFile);
+    }
+
+    @もし(":UC026 CSV以外のファイル {string} をアップロードする")
+    public void uploadNonCSVFile(String fileName) throws IOException {
+        ClassPathResource resource = new ClassPathResource("csv/inventory/" + fileName);
+        byte[] fileContent = Files.readAllBytes(resource.getFile().toPath());
+        
+        MockMultipartFile nonCsvFile = new MockMultipartFile(
+            "file", 
+            fileName, 
+            "text/plain", 
+            fileContent
+        );
+        
+        executePost(INVENTORY_API_URL + "/upload", nonCsvFile);
+    }
+
+    @もし(":UC026 ファイルを選択せずにアップロードする")
+    public void uploadWithoutFile() {
+        // まず、空のファイル名でアップロードを試行
+        MockMultipartFile emptyFile = new MockMultipartFile(
+                "file",
+                null,  // ファイル名をnull
+                "text/csv",
+                new byte[0]  // 空のコンテンツ
+        );
+
+        executePost(INVENTORY_API_URL + "/upload", emptyFile);
+    }
+
+    @もし(":UC026 大きすぎるファイル {string} をアップロードする")
+    public void uploadLargeFile(String fileName) throws IOException {
+        // サーバー側のMultipartFile.getSize()をモックしてテストするか、
+        // より現実的なサイズ（1.5MB）でテストする
+        byte[] moderateSizeContent = new byte[1500000]; // 1.5MB
+
+        // CSVヘッダーを追加してファイル形式を正しく保つ
+        String csvHeader = "warehouseCode,productCode,lotNumber,stockCategory,qualityCategory,actualStockQuantity,availableStockQuantity\n";
+        String csvData = csvHeader + "WH1,P001,LOT001,1,G,100,90\n"; // 有効なCSVデータ
+        byte[] csvBytes = csvData.getBytes();
+
+        // CSVデータの後に大きなダミーデータを追加
+        byte[] combinedContent = new byte[csvBytes.length + moderateSizeContent.length];
+        System.arraycopy(csvBytes, 0, combinedContent, 0, csvBytes.length);
+        System.arraycopy(moderateSizeContent, 0, combinedContent, csvBytes.length, moderateSizeContent.length);
+
+        MockMultipartFile largeFile = new MockMultipartFile(
+                "file",
+                fileName,
+                "text/csv",
+                combinedContent
+        );
+
+        System.out.println("Large file size: " + largeFile.getSize() + " bytes");
+        executePost(INVENTORY_API_URL + "/upload", largeFile);
+    }
+
+    @もし(":UC026 重複在庫キーを含む在庫CSVファイル {string} をアップロードする")
+    public void uploadDuplicateInventoryCSV(String fileName) throws IOException {
+        ClassPathResource resource = new ClassPathResource("csv/inventory/" + fileName);
+        byte[] fileContent = Files.readAllBytes(resource.getFile().toPath());
+
+        MockMultipartFile csvFile = new MockMultipartFile(
+            "file",
+            fileName,
+            "text/csv",
+            fileContent
+        );
+
+        executePost(INVENTORY_API_URL + "/upload", csvFile);
+    }
+
+    @もし(":UC026 確認内容のある {string} をアップロードする")
+    public void uploadInventoryForCheck(String data) {
+        if (data.equals("在庫データ")) {
+            try {
+                MultipartFile file = testDataFactory.createInventoryForCheckFile();
+                uploadFile(INVENTORY_API_URL + "/upload", file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @もし(":UC026 {string} を確認する\\(確認項目なし)")
+    public void checkRuleNoItems(String rule) {
+        if (rule.equals("在庫ルール")) {
+            executePost(INVENTORY_API_URL + "/check", "{}");
+        }
+    }
+
+    @もし(":UC026 {string} を確認する\\(確認項目あり)")
+    public void checkRuleWithItems(String rule) {
+        if (rule.equals("在庫ルール")) {
+            executePost(INVENTORY_API_URL + "/check", "{}");
+        }
+    }
+
+    @ならば(":UC026 バリデーションエラー詳細が表示される")
+    public void verifyValidationErrorDetails() throws JsonProcessingException {
+        String result = latestResponse.getBody();
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        
+        MessageResponseWithDetail response = objectMapper.readValue(result, MessageResponseWithDetail.class);
+        assertNotNull(response.getDetails());
+        assertTrue(response.getDetails().size() > 0);
+        System.out.println("Validation errors: " + response.getDetails());
+    }
+
+    @ならば(":UC026 重複エラー詳細が表示される")
+    public void verifyDuplicateErrorDetails() throws JsonProcessingException {
+        String result = latestResponse.getBody();
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        
+        MessageResponseWithDetail response = objectMapper.readValue(result, MessageResponseWithDetail.class);
+        assertNotNull(response.getDetails());
+        assertTrue(response.getDetails().size() > 0);
+        
+        // 重複エラーメッセージの確認
+        boolean hasDuplicateError = response.getDetails().stream()
+                .anyMatch(detail -> detail.toString().contains("既に存在") || detail.toString().contains("重複"));
+        assertTrue(hasDuplicateError, "重複エラーが検出されませんでした");
+        System.out.println("Duplicate errors: " + response.getDetails());
+    }
+
+    private InventoryResource getInventoryResource(String warehouseCode, String productCode, String lotNumber, String stockCategory, String qualityCategory, Integer actualStockQuantity, Integer availableStockQuantity) {
+        InventoryResource inventory = new InventoryResource();
+        inventory.setWarehouseCode(warehouseCode != null ? warehouseCode : "WH1");
+        inventory.setProductCode(productCode != null ? productCode : "10101001");
+        inventory.setLotNumber(lotNumber != null ? lotNumber : "LOT001");
+        inventory.setStockCategory(stockCategory != null ? stockCategory : "1");
+        inventory.setQualityCategory(qualityCategory != null ? qualityCategory : "G");
+        inventory.setActualStockQuantity(actualStockQuantity != null ? actualStockQuantity : 0);
+        inventory.setAvailableStockQuantity(availableStockQuantity != null ? availableStockQuantity : 0);
+        inventory.setLastShipmentDate(null); // LastShipmentDateはnullでも可
+        return inventory;
+    }
+}

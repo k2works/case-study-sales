@@ -6,6 +6,7 @@ import com.example.sms.domain.model.master.product.Product;
 import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.master.partner.supplier.SupplierCode;
 import com.example.sms.domain.model.master.product.ProductCode;
+import com.example.sms.domain.model.master.warehouse.WarehouseCode;
 import com.example.sms.domain.model.sales.order.CompletionFlag;
 import com.example.sms.domain.model.sales.order.OrderNumber;
 import com.example.sms.domain.model.procurement.purchase.*;
@@ -98,7 +99,7 @@ class PurchaseOrderServiceTest {
             0,
             "EMP001", // 社員コード
             now.plusDays(7),
-            "001", // 倉庫コード
+            "W01", // 倉庫コード
             10000,
             1000, // 消費税
             "備考",
@@ -133,7 +134,7 @@ class PurchaseOrderServiceTest {
                 .supplierCode(SupplierCode.of("001", 0))
                 .purchaseManagerCode(EmployeeCode.of("EMP001"))
                 .designatedDeliveryDate(DesignatedDeliveryDate.of(now.plusDays(7)))
-                .warehouseCode("001")
+                .warehouseCode(WarehouseCode.of("W01"))
                 .totalPurchaseAmount(Money.of(10000)) // 1000 × 10 = 10000
                 .totalConsumptionTax(Money.of(1000)) // 10000 × 10% = 1000
                 .remarks("備考")

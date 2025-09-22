@@ -1,6 +1,7 @@
 package com.example.sms;
 
 import com.example.sms.domain.model.master.employee.EmployeeCode;
+import com.example.sms.domain.model.master.warehouse.WarehouseCode;
 import com.example.sms.domain.model.master.partner.billing.Billing;
 import com.example.sms.domain.model.master.partner.billing.ClosingBilling;
 import com.example.sms.domain.model.master.partner.customer.Customer;
@@ -40,7 +41,12 @@ import com.example.sms.domain.model.system.user.User;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag;
 import com.example.sms.domain.model.system.user.RoleName;
+import com.example.sms.domain.model.inventory.Inventory;
+import com.example.sms.domain.model.master.warehouse.Warehouse;
+import com.example.sms.service.inventory.InventoryRepository;
 import com.example.sms.service.master.payment.PaymentAccountRepository;
+import com.example.sms.service.master.warehouse.WarehouseRepository;
+import com.example.sms.service.master.locationnumber.LocationNumberRepository;
 import com.example.sms.service.master.region.RegionRepository;
 import com.example.sms.service.master.department.DepartmentRepository;
 import com.example.sms.service.master.employee.EmployeeRepository;
@@ -56,6 +62,7 @@ import com.example.sms.service.sales.order.SalesOrderRepository;
 import com.example.sms.service.procurement.purchase.PurchaseOrderRepository;
 import com.example.sms.service.system.audit.AuditRepository;
 import com.example.sms.service.system.user.UserRepository;
+import com.example.sms.infrastructure.datasource.autogen.mapper.棚番マスタMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Component;
@@ -103,6 +110,14 @@ public class TestDataFactoryImpl implements TestDataFactory {
     PaymentRepository paymentIncomingRepository;
     @Autowired
     PurchaseOrderRepository purchaseOrderRepository;
+    @Autowired
+    InventoryRepository inventoryRepository;
+    @Autowired
+    WarehouseRepository warehouseRepository;
+    @Autowired
+    LocationNumberRepository locationNumberRepository;
+    @Autowired
+    棚番マスタMapper 棚番マスタMapper;
 
     @Override
     public void setUpForAuthApiService() {
@@ -311,6 +326,27 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
             // 入金データの準備
             setUpForPaymentIncomingService();
+
+            // 在庫データを先にクリア（倉庫マスタへの外部キー制約対策）
+            inventoryRepository.deleteAll();
+
+            // 棚番データをクリア
+            locationNumberRepository.deleteAll();
+
+            // 倉庫データをクリア・作成（棚番の外部キー制約のため）
+            warehouseRepository.deleteAll();
+            warehouseRepository.save(getWarehouse("W01", "本社倉庫"));
+            warehouseRepository.save(getWarehouse("W02", "第二倉庫"));
+
+            // 既存の棚番データを作成（テスト用）
+            locationNumberRepository.save(getLocationNumber("W01", "A001", "P001"));
+            locationNumberRepository.save(getLocationNumber("W01", "A002", "P002"));
+            locationNumberRepository.save(getLocationNumber("W01", "A003", "P003"));
+
+            // 在庫データを作成
+            inventoryRepository.save(getInventory("W01", "99999999", "LOT001"));
+            inventoryRepository.save(getInventory("W01", "99999999", "LOT002"));
+            inventoryRepository.save(getInventory("W02", "99999999", "LOT003"));
         });
     }
 
@@ -508,6 +544,43 @@ public class TestDataFactoryImpl implements TestDataFactory {
         setUpForProductService();
         setUpForPartnerService();
         setUpForEmployeeService();
+    }
+
+    @Override
+    public void setUpForShippingOrderConfirmService() {
+        setUpForOrderService();
+
+        OrderList orderList = salesOrderRepository.selectAll();
+
+        salesOrderRepository.deleteAll();
+
+        orderList.asList().forEach(
+                salesOrder -> {
+                    List<OrderLine> lines = salesOrder.getOrderLines();
+                    List<OrderLine> newLines = new ArrayList<>();
+                    for (OrderLine line : lines) {
+                        OrderLine newLine = OrderLine.of(
+                                line.getOrderNumber().getValue(),  // orderNumber（受注番号）
+                                line.getOrderLineNumber(),  // orderLineNumber（受注行番号）
+                                "99999999",  // productCode（商品コード）
+                                "商品1",  // productName（商品名）
+                                1000,  // salesUnitPrice（販売単価）
+                                10,  // orderQuantity（受注数量）
+                                10,  // taxRate（消費税率）
+                                10,  // allocationQuantity（引当数量）
+                                0,  // shipmentInstructionQuantity（出荷指示数量）
+                                0,  // shippedQuantity（出荷済数量）
+                                0,  // completionFlag（完了フラグ）
+                                10,  // discountAmount（値引金額）
+                                LocalDateTime.of(2021, 1, 1, 0, 0),  // deliveryDate（納期）
+                                null // shippingDate（出荷日）
+                        );
+                        newLines.add(newLine);
+                    }
+                    Order newOrder = Order.of(salesOrder, newLines);
+                    salesOrderRepository.save(newOrder);
+                }
+        );
     }
 
     @Override
@@ -794,7 +867,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
     }
 
     public static User getAdmin() {
-        return User.of("U888888", "$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK", "first", "last", RoleName.USER);
+        return User.of("U888888", "$2a$10$oxSJl.keBwxmsMLkcT9lPeAIxfNTPNQxpeywMrF7A3kVszwUTqfTK", "first", "last", RoleName.ADMIN);
     }
 
     public static Department getDepartment(String departmentId, LocalDateTime startDate, String departmentName) {
@@ -1144,6 +1217,90 @@ public class TestDataFactoryImpl implements TestDataFactory {
         });
     }
 
+    @Override
+    public void setUpForInventoryService() {
+        // 在庫データをクリア
+        inventoryRepository.deleteAll();
+
+        // 商品マスタデータの準備
+        productRepository.deleteAll();
+        productRepository.save(Product.of("10101001", "商品1", "商品1", "しょうひん1", ProductType.その他, 1000, 900, 100, TaxType.外税, "カテゴリ1", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "001", 1));
+        productRepository.save(Product.of("10101002", "商品2", "商品2", "しょうひん2", ProductType.その他, 2000, 1800, 200, TaxType.内税, "カテゴリ1", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "002", 2));
+        productRepository.save(Product.of("10103001", "商品3", "商品3", "しょうひん3", ProductType.その他, 3000, 2700, 300, TaxType.非課税, "カテゴリ2", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "003", 3));
+        // InventoryUploadTest用の商品データ
+        productRepository.save(Product.of("99999001", "テスト商品1", "テスト商品1", "てすとしょうひん1", ProductType.その他, 1000, 900, 100, TaxType.外税, "カテゴリ1", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "T01", 1));
+        productRepository.save(Product.of("99999002", "テスト商品2", "テスト商品2", "てすとしょうひん2", ProductType.その他, 2000, 1800, 200, TaxType.内税, "カテゴリ1", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "T02", 2));
+        productRepository.save(Product.of("99999003", "テスト商品3", "テスト商品3", "てすとしょうひん3", ProductType.その他, 3000, 2700, 300, TaxType.非課税, "カテゴリ1", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "T03", 3));
+
+        //棚番データをクリア
+        locationNumberRepository.deleteAll();
+
+        // 倉庫データをクリア・作成（棚番の外部キー制約のため）
+        warehouseRepository.deleteAll();
+        warehouseRepository.save(getWarehouse("W01", "第一倉庫"));
+        warehouseRepository.save(getWarehouse("W02", "本社倉庫"));
+        warehouseRepository.save(getWarehouse("W03", "第二倉庫"));
+
+        // 既存の在庫データを作成（テスト用）
+        // テストシナリオで使用される W01/10101001/LOT001 とは異なるデータを作成
+        inventoryRepository.save(getInventory("W02", "10101001", "LOT002"));
+        inventoryRepository.save(getInventory("W03", "10101002", "LOT003"));
+        inventoryRepository.save(getInventory("W01", "10103001", "LOT004"));
+    }
+
+    @Override
+    public void setUpForWarehouseService() {
+        setUpUser();
+
+        // 部門データの準備（倉庫部門マスタの外部キー制約のため）
+        departmentRepository.deleteAll();
+        departmentRepository.save(getDepartment("10000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門1"));
+        departmentRepository.save(getDepartment("20000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門2"));
+
+        // 在庫データを先にクリア（倉庫マスタへの外部キー制約対策）
+        inventoryRepository.deleteAll();
+
+        //棚番データをクリア
+        locationNumberRepository.deleteAll();
+
+        // 倉庫データをクリア
+        warehouseRepository.deleteAll();
+
+        // 既存の倉庫データを作成（テスト用）
+        warehouseRepository.save(getWarehouse("W01", "本社倉庫"));
+    }
+
+    @Override
+    public void setUpForLocationNumberService() {
+        setUpUser();
+
+        // 部門データの準備（倉庫部門マスタの外部キー制約のため）
+        departmentRepository.deleteAll();
+        departmentRepository.save(getDepartment("10000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門1"));
+        departmentRepository.save(getDepartment("20000", LocalDateTime.of(2021, 1, 1, 0, 0), "部門2"));
+
+        // 在庫データを先にクリア（倉庫マスタへの外部キー制約対策）
+        inventoryRepository.deleteAll();
+
+        // 棚番データをクリア
+        locationNumberRepository.deleteAll();
+
+        // 倉庫データをクリア・作成（棚番の外部キー制約のため）
+        warehouseRepository.deleteAll();
+        warehouseRepository.save(getWarehouse("W01", "本社倉庫"));
+        warehouseRepository.save(getWarehouse("W02", "第二倉庫"));
+
+        // 商品データ作成（棚番の外部キー制約のため）
+        productRepository.save(Product.of("P001", "商品1", "商品1", "ショウヒンイチ", ProductType.その他, 900, 810, 90, TaxType.その他, "カテゴリ1", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "001", 1));
+        productRepository.save(Product.of("P002", "商品2", "商品2", "ショウヒン二", ProductType.その他, 800, 720, 80, TaxType.その他, "カテゴリ2", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "002", 2));
+        productRepository.save(Product.of("P003", "商品3", "商品3", "ショウヒンサン", ProductType.その他, 700, 630, 70, TaxType.その他, "カテゴリ3", MiscellaneousType.適用外, StockManagementTargetType.対象, StockAllocationType.引当済, "003", 3));
+
+        // 既存の棚番データを作成（テスト用）
+        locationNumberRepository.save(getLocationNumber("W01", "A001", "P001"));
+        locationNumberRepository.save(getLocationNumber("W01", "A002", "P002"));
+        locationNumberRepository.save(getLocationNumber("W01", "A003", "P003"));
+    }
+
     private List<PurchaseOrder> getPurchaseOrders() {
         List<PurchaseOrder> purchaseOrders = new ArrayList<>();
         IntFunction<PurchaseOrder> getPurchaseOrder = i -> getPurchaseOrder("PO" + String.format("%08d", i));
@@ -1178,7 +1335,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 .supplierCode(SupplierCode.of("001", 0))
                 .purchaseManagerCode(EmployeeCode.of("EMP001"))
                 .designatedDeliveryDate(DesignatedDeliveryDate.of(now.plusDays(30)))
-                .warehouseCode("001")
+                .warehouseCode(WarehouseCode.of("W01"))
                 .totalPurchaseAmount(Money.of(6000000)) // 600万円でルール違反
                 .totalConsumptionTax(Money.of(600000))
                 .remarks("金額超過テストデータ")
@@ -1202,7 +1359,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 .supplierCode(SupplierCode.of("001", 0))
                 .purchaseManagerCode(EmployeeCode.of("EMP001"))
                 .designatedDeliveryDate(DesignatedDeliveryDate.of(pastDeliveryDate)) // 過去の日付
-                .warehouseCode("001")
+                .warehouseCode(WarehouseCode.of("W01"))
                 .totalPurchaseAmount(Money.of(100000))
                 .totalConsumptionTax(Money.of(10000))
                 .remarks("納期エラーテストデータ")
@@ -1241,7 +1398,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 0,
                 "EMP001", // 社員コード
                 now.plusDays(7),
-                "001", // 倉庫コード
+                "W01", // 倉庫コード
                 10000,
                 1000, // 消費税（10000円 × 10% = 1000円）
                 "備考",
@@ -1310,4 +1467,89 @@ public class TestDataFactoryImpl implements TestDataFactory {
         }
     }
 
+    @Override
+    public MultipartFile createInventoryFile() {
+        InputStream is = getClass().getResourceAsStream("/csv/inventory/valid_inventory.csv");
+        try {
+            return new MockMultipartFile(
+                    "valid_inventory.csv",
+                    "valid_inventory.csv",
+                    "text/csv",
+                    is
+            );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public MultipartFile createInventoryInvalidFile() {
+        InputStream is = getClass().getResourceAsStream("/csv/inventory/invalid_inventory.csv");
+        try {
+            return new MockMultipartFile(
+                    "invalid_inventory.csv",
+                    "invalid_inventory.csv",
+                    "text/csv",
+                    is
+            );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public MultipartFile createInventoryForCheckFile() {
+        InputStream is = getClass().getResourceAsStream("/csv/inventory/inventory_valid_for_check.csv");
+        try {
+            return new MockMultipartFile(
+                    "inventory_valid_for_check.csv",
+                    "inventory_valid_for_check.csv",
+                    "text/csv",
+                    is
+            );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    public static Inventory getInventory(String warehouseCode, String productCode, String lotNumber) {
+        return Inventory.of(
+                warehouseCode,
+                productCode,
+                lotNumber,
+                "1",  // 在庫区分
+                "G",  // 良品区分
+                100,  // 実在庫数
+                95,   // 有効在庫数
+                LocalDateTime.now().minusDays(1)  // 最終出荷日
+        );
+    }
+
+    public static Warehouse getWarehouse(String warehouseCode, String warehouseName) {
+        return Warehouse.of(
+                warehouseCode,
+                warehouseName,
+                "N",  // デフォルトは通常倉庫
+                "1234567",  // テスト用郵便番号
+                "東京都",   // テスト用都道府県
+                "千代田区",  // テスト用住所1
+                "1-1-1"     // テスト用住所2
+        );
+    }
+
+    public static com.example.sms.domain.model.master.locationnumber.LocationNumber getLocationNumber(String warehouseCode, String locationNumberCode, String productCode) {
+        return com.example.sms.domain.model.master.locationnumber.LocationNumber.of(
+            com.example.sms.domain.model.master.warehouse.WarehouseCode.of(warehouseCode),
+            com.example.sms.domain.model.master.locationnumber.LocationNumberCode.of(locationNumberCode),
+            com.example.sms.domain.model.master.product.ProductCode.of(productCode)
+        );
+    }
+
+    public static com.example.sms.infrastructure.datasource.autogen.model.棚番マスタKey getLocationNumberKey(String warehouseCode, String locationNumberCode, String productCode) {
+        com.example.sms.infrastructure.datasource.autogen.model.棚番マスタKey key = new com.example.sms.infrastructure.datasource.autogen.model.棚番マスタKey();
+        key.set倉庫コード(warehouseCode);
+        key.set棚番コード(locationNumberCode);
+        key.set商品コード(productCode);
+        return key;
+    }
 }

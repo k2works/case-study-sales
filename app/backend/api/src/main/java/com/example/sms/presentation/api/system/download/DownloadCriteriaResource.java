@@ -32,6 +32,9 @@ public class DownloadCriteriaResource {
             case 請求 -> Invoice.of();
             case 入金 -> Payment.of();
             case 口座 -> PaymentAccount.of();
+            case 在庫 -> Inventory.of();
+            case 倉庫 -> Warehouse.of();
+            case 棚番 -> LocationNumber.of();
         };
     }
 }
