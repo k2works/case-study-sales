@@ -37,7 +37,7 @@ class InventoryServiceTest {
 
     private Inventory getInventory() {
         return Inventory.of(
-                "001",
+                "W01",
                 "10101001",
                 "LOT001",
                 "1",
@@ -50,7 +50,7 @@ class InventoryServiceTest {
 
     private Inventory getZeroStockInventory() {
         return Inventory.of(
-                "WH1",
+                "W01",
                 "99999002",
                 "LOT005",
                 "1",
@@ -63,7 +63,7 @@ class InventoryServiceTest {
 
     private Inventory getStockLevelIssueInventory() {
         return Inventory.of(
-                "WH2",
+                "W02",
                 "99999003",
                 "LOT006",
                 "1",
@@ -75,7 +75,7 @@ class InventoryServiceTest {
     }
 
     private InventoryKey getInventoryKey() {
-        return InventoryKey.of("001", "10101001", "LOT001", "1", "G");
+        return InventoryKey.of("W01", "10101001", "LOT001", "1", "G");
     }
 
     @Nested
@@ -221,7 +221,7 @@ class InventoryServiceTest {
         @Test
         @DisplayName("条件で在庫を検索できる")
         void shouldSearchByCriteria() {
-            InventoryCriteria criteria = InventoryCriteria.byWarehouseCode("001");
+            InventoryCriteria criteria = InventoryCriteria.byWarehouseCode("W01");
             InventoryList inventoryList = InventoryList.of(List.of(getInventory()));
             when(inventoryRepository.searchByCriteria(criteria)).thenReturn(inventoryList);
 

@@ -72,7 +72,7 @@ class InventoryRepositoryTest {
         @DisplayName("在庫一覧を取得できる")
         void shouldRetrieveAllInventories() {
             // 既存のデータをクリアして、テストデータを追加
-            String[] warehouseCodes = {"WH1", "WH2", "WH3"};
+            String[] warehouseCodes = {"W01", "W02", "W03"};
             String[] productCodes = {"10101001", "10101002", "10102001"};
             
             IntStream.range(0, 3).forEach(i -> {
@@ -87,7 +87,7 @@ class InventoryRepositoryTest {
         @Test
         @DisplayName("在庫一覧をPageInfoで取得できる")
         void shouldRetrieveAllInventoriesWithPageInfo() {
-            String[] warehouseCodes = {"WH1", "WH2", "WH3", "WH1", "WH2"};
+            String[] warehouseCodes = {"W01", "W02", "W03", "W01", "W02"};
             String[] productCodes = {"10101001", "10101002", "10102001", "10103001", "10102002"};
             
             IntStream.range(0, 5).forEach(i -> {
@@ -101,7 +101,7 @@ class InventoryRepositoryTest {
         @Test
         @DisplayName("在庫を条件検索してPageInfoで取得できる")
         void shouldSearchInventoriesWithPageInfo() {
-            String[] warehouseCodes = {"WH1", "WH2", "WH3"};
+            String[] warehouseCodes = {"W01", "W02", "W03"};
             String[] productCodes = {"10101001", "10101002", "10102001"};
             
             IntStream.range(0, 3).forEach(i -> {
@@ -109,20 +109,20 @@ class InventoryRepositoryTest {
                 repository.save(inventory);
             });
             
-            InventoryCriteria criteria = InventoryCriteria.byWarehouseCode("WH1");
+            InventoryCriteria criteria = InventoryCriteria.byWarehouseCode("W01");
             
             PageInfo<Inventory> pageInfo = repository.searchWithPageInfo(criteria);
             assertTrue(pageInfo.getList().size() >= 1);
             // 初期データまたはテストデータにWH1が含まれていることを確認
             boolean foundWH1 = pageInfo.getList().stream()
-                    .anyMatch(inv -> "WH1".equals(inv.getWarehouseCode().getValue()));
+                    .anyMatch(inv -> "W01".equals(inv.getWarehouseCode().getValue()));
             assertTrue(foundWH1);
         }
 
         @Test
         @DisplayName("在庫を登録できる")
         void shouldRegisterInventory() {
-            Inventory inventory = getInventory("WH1", "10101001", "TESTLOT999");
+            Inventory inventory = getInventory("W01", "10101001", "TESTLOT999");
             repository.save(inventory);
             
             Optional<Inventory> actual = repository.findByKey(inventory.getKey());
@@ -133,20 +133,20 @@ class InventoryRepositoryTest {
         @Test
         @DisplayName("在庫を更新できる")
         void shouldUpdateInventory() {
-            Inventory inventory = getInventory("WH1", "10101001", "LOT001");
+            Inventory inventory = getInventory("W01", "10101001", "LOT001");
             repository.save(inventory);
             
             Inventory updatedInventory = inventory.adjustStock(50);
             repository.save(updatedInventory);
             
             // 現在は保存処理の確認のみ
-            assertEquals("WH1", updatedInventory.getWarehouseCode().getValue());
+            assertEquals("W01", updatedInventory.getWarehouseCode().getValue());
         }
 
         @Test
         @DisplayName("在庫を削除できる")
         void shouldDeleteInventory() {
-            Inventory inventory = getInventory("WH1", "10101001", "LOT001");
+            Inventory inventory = getInventory("W01", "10101001", "LOT001");
             repository.save(inventory);
             repository.delete(inventory.getKey());
             
@@ -158,8 +158,8 @@ class InventoryRepositoryTest {
         @DisplayName("在庫キーで検索できる")
         void findByInventoryKey() {
             // Given
-            InventoryKey key = getInventoryKey("WH1", "10101001", "LOT001");
-            Inventory inventory = getInventory("WH1", "10101001", "LOT001");
+            InventoryKey key = getInventoryKey("W01", "10101001", "LOT001");
+            Inventory inventory = getInventory("W01", "10101001", "LOT001");
             repository.save(inventory);
 
             // When
@@ -173,7 +173,7 @@ class InventoryRepositoryTest {
         @Test
         @DisplayName("条件で在庫を検索できる")
         void shouldSearchInventoryByCriteria() {
-            String[] warehouseCodes = {"WH1", "WH2", "WH3"};
+            String[] warehouseCodes = {"W01", "W02", "W03"};
             String[] productCodes = {"10101001", "10101002", "10102001"};
             
             IntStream.range(0, 3).forEach(i -> {
@@ -198,7 +198,7 @@ class InventoryRepositoryTest {
         @Test
         @DisplayName("在庫を調整できる")
         void shouldAdjustInventory() {
-            Inventory inventory = getInventory("WH1", "10101001", "LOT001");
+            Inventory inventory = getInventory("W01", "10101001", "LOT001");
             repository.save(inventory);
             
             Inventory adjusted = inventory.adjustStock(50);
@@ -212,7 +212,7 @@ class InventoryRepositoryTest {
         @Test
         @DisplayName("在庫を予約できる")
         void shouldReserveInventory() {
-            Inventory inventory = getInventory("WH1", "10101001", "LOT001");
+            Inventory inventory = getInventory("W01", "10101001", "LOT001");
             repository.save(inventory);
             
             Inventory reserved = inventory.reserve(30);
@@ -226,7 +226,7 @@ class InventoryRepositoryTest {
         @Test
         @DisplayName("在庫を出荷できる")
         void shouldShipInventory() {
-            Inventory inventory = getInventory("WH1", "10101001", "LOT001");
+            Inventory inventory = getInventory("W01", "10101001", "LOT001");
             repository.save(inventory);
             
             LocalDateTime shipmentDate = LocalDateTime.now().truncatedTo(java.time.temporal.ChronoUnit.SECONDS);
@@ -242,7 +242,7 @@ class InventoryRepositoryTest {
         @Test
         @DisplayName("在庫を入荷できる")
         void shouldReceiveInventory() {
-            Inventory inventory = getInventory("WH1", "10101001", "LOT001");
+            Inventory inventory = getInventory("W01", "10101001", "LOT001");
             repository.save(inventory);
             
             Inventory received = inventory.receive(40);

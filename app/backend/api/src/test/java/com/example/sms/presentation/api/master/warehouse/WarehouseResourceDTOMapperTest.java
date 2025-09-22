@@ -15,7 +15,7 @@ class WarehouseResourceDTOMapperTest {
     @DisplayName("倉庫リソースを倉庫エンティティに変換する")
     void testConvertToEntity_validResource_shouldReturnWarehouse() {
         // Arrange
-        String warehouseCode = "001";
+        String warehouseCode = "W01";
         String warehouseName = "第一倉庫";
 
         WarehouseResource resource = WarehouseResource.builder()
@@ -36,7 +36,7 @@ class WarehouseResourceDTOMapperTest {
     @DisplayName("倉庫検索条件リソースを倉庫検索条件に変換する")
     void testConvertToCriteria_validResource_shouldReturnWarehouseCriteria() {
         // Arrange
-        String warehouseCode = "001";
+        String warehouseCode = "W01";
         String warehouseName = "第一倉庫";
 
         WarehouseCriteriaResource resource = new WarehouseCriteriaResource();
@@ -72,7 +72,7 @@ class WarehouseResourceDTOMapperTest {
     void testConvertToCriteria_nullValuesInResource_shouldReturnCriteria() {
         // Arrange
         WarehouseCriteriaResource resource = new WarehouseCriteriaResource();
-        resource.setWarehouseCode("001");
+        resource.setWarehouseCode("W01");
         // warehouseNameはnull
 
         // Act
@@ -80,7 +80,7 @@ class WarehouseResourceDTOMapperTest {
 
         // Assert
         assertNotNull(criteria);
-        assertEquals("001", criteria.getWarehouseCode());
+        assertEquals("W01", criteria.getWarehouseCode());
         assertNull(criteria.getWarehouseName());
     }
 
@@ -89,7 +89,7 @@ class WarehouseResourceDTOMapperTest {
     void testFromMethod_validEntity_shouldReturnResource() {
         // Arrange
         Warehouse warehouse = Warehouse.of(
-                WarehouseCode.of("001"),
+                WarehouseCode.of("W01"),
                 "第一倉庫"
         );
 
@@ -98,7 +98,7 @@ class WarehouseResourceDTOMapperTest {
 
         // Assert
         assertNotNull(resource);
-        assertEquals("001", resource.getWarehouseCode());
+        assertEquals("W01", resource.getWarehouseCode());
         assertEquals("第一倉庫", resource.getWarehouseName());
     }
 
@@ -124,7 +124,7 @@ class WarehouseResourceDTOMapperTest {
     void testConvertToCriteria_partialCriteria_shouldReturnCriteria() {
         // Arrange
         WarehouseCriteriaResource resource = new WarehouseCriteriaResource();
-        resource.setWarehouseCode("001");
+        resource.setWarehouseCode("W01");
         // warehouseNameはnull
 
         // Act
@@ -132,7 +132,7 @@ class WarehouseResourceDTOMapperTest {
 
         // Assert
         assertNotNull(criteria);
-        assertEquals("001", criteria.getWarehouseCode());
+        assertEquals("W01", criteria.getWarehouseCode());
         assertNull(criteria.getWarehouseName());
     }
 

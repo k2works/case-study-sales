@@ -81,7 +81,7 @@ public class PurchaseOrderApiControllerTest {
             0,
             "EMP001",
             now.plusDays(7),
-            "001",
+            "W01",
             10000,
             1000,
             "備考",

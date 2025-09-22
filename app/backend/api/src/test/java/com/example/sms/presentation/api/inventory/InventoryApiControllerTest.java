@@ -56,7 +56,7 @@ public class InventoryApiControllerTest {
         LocalDateTime now = LocalDateTime.now();
 
         testInventory = Inventory.of(
-                "WH001",
+                "W01",
                 "PR001",
                 "LOT001",
                 "1",
@@ -95,7 +95,7 @@ public class InventoryApiControllerTest {
     void shouldRetrieveInventoryAsAdmin() throws Exception {
         when(inventoryService.findByKey(any(InventoryKey.class))).thenReturn(Optional.of(testInventory));
 
-        mockMvc.perform(get("/api/inventory/WH001/PR001/LOT001/1/G"))
+        mockMvc.perform(get("/api/inventory/W01/PR001/LOT001/1/G"))
                 .andExpect(status().isOk());
 
         verify(inventoryService).findByKey(any(InventoryKey.class));
@@ -108,7 +108,7 @@ public class InventoryApiControllerTest {
         when(inventoryService.register(any(Inventory.class))).thenReturn(testInventory);
 
         InventoryResource resource = new InventoryResource();
-        resource.setWarehouseCode("WH001");
+        resource.setWarehouseCode("W01");
         resource.setProductCode("PR001");
         resource.setLotNumber("LOT001");
         resource.setStockCategory("1");
@@ -131,13 +131,13 @@ public class InventoryApiControllerTest {
         when(inventoryService.update(any(Inventory.class))).thenReturn(testInventory);
 
         InventoryResource resource = new InventoryResource();
-        resource.setWarehouseCode("WH001");
+        resource.setWarehouseCode("W01");
         resource.setProductCode("PR001");
         resource.setLotNumber("LOT001");
         resource.setStockCategory("1");
         resource.setQualityCategory("G");
 
-        mockMvc.perform(put("/api/inventory/WH001/PR001/LOT001/1/G")
+        mockMvc.perform(put("/api/inventory/W01/PR001/LOT001/1/G")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(resource)))
                 .andExpect(status().isOk());
@@ -154,7 +154,7 @@ public class InventoryApiControllerTest {
         when(inventoryService.findByKey(any(InventoryKey.class))).thenReturn(Optional.of(testInventory));
         doNothing().when(inventoryService).delete(any(InventoryKey.class));
 
-        mockMvc.perform(delete("/api/inventory/WH001/PR001/LOT001/1/G"))
+        mockMvc.perform(delete("/api/inventory/W01/PR001/LOT001/1/G"))
                 .andExpect(status().isOk());
 
         verify(inventoryService).findByKey(any(InventoryKey.class));
@@ -169,7 +169,7 @@ public class InventoryApiControllerTest {
         when(inventoryService.searchWithPageInfo(any(InventoryCriteria.class))).thenReturn(searchPageInfo);
 
         InventoryCriteriaResource criteria = new InventoryCriteriaResource();
-        criteria.setWarehouseCode("WH001");
+        criteria.setWarehouseCode("W01");
 
         mockMvc.perform(post("/api/inventory/search")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -189,7 +189,7 @@ public class InventoryApiControllerTest {
                 "file",
                 "inventory.csv",
                 "text/csv",
-                "warehouseCode,productCode,lotNumber,stockCategory,qualityCategory,quantity,availableQuantity\nWH001,PR001,LOT001,1,G,100,90".getBytes()
+                "warehouseCode,productCode,lotNumber,stockCategory,qualityCategory,quantity,availableQuantity\nW01,PR001,LOT001,1,G,100,90".getBytes()
         );
 
         InventoryUploadErrorList errorList = new InventoryUploadErrorList(List.of());

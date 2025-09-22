@@ -1238,15 +1238,15 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
         // 倉庫データをクリア・作成（棚番の外部キー制約のため）
         warehouseRepository.deleteAll();
-        warehouseRepository.save(getWarehouse("WH1", "第一倉庫"));
-        warehouseRepository.save(getWarehouse("WH2", "本社倉庫"));
-        warehouseRepository.save(getWarehouse("WH3", "第二倉庫"));
+        warehouseRepository.save(getWarehouse("W01", "第一倉庫"));
+        warehouseRepository.save(getWarehouse("W02", "本社倉庫"));
+        warehouseRepository.save(getWarehouse("W03", "第二倉庫"));
 
         // 既存の在庫データを作成（テスト用）
-        // テストシナリオで使用される WH1/10101001/LOT001 とは異なるデータを作成
-        inventoryRepository.save(getInventory("WH2", "10101001", "LOT002"));
-        inventoryRepository.save(getInventory("WH3", "10101002", "LOT003"));
-        inventoryRepository.save(getInventory("WH1", "10103001", "LOT004"));
+        // テストシナリオで使用される W01/10101001/LOT001 とは異なるデータを作成
+        inventoryRepository.save(getInventory("W02", "10101001", "LOT002"));
+        inventoryRepository.save(getInventory("W03", "10101002", "LOT003"));
+        inventoryRepository.save(getInventory("W01", "10103001", "LOT004"));
     }
 
     @Override
@@ -1336,7 +1336,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 .supplierCode(SupplierCode.of("001", 0))
                 .purchaseManagerCode(EmployeeCode.of("EMP001"))
                 .designatedDeliveryDate(DesignatedDeliveryDate.of(now.plusDays(30)))
-                .warehouseCode(WarehouseCode.of("001"))
+                .warehouseCode(WarehouseCode.of("W01"))
                 .totalPurchaseAmount(Money.of(6000000)) // 600万円でルール違反
                 .totalConsumptionTax(Money.of(600000))
                 .remarks("金額超過テストデータ")
@@ -1360,7 +1360,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 .supplierCode(SupplierCode.of("001", 0))
                 .purchaseManagerCode(EmployeeCode.of("EMP001"))
                 .designatedDeliveryDate(DesignatedDeliveryDate.of(pastDeliveryDate)) // 過去の日付
-                .warehouseCode(WarehouseCode.of("001"))
+                .warehouseCode(WarehouseCode.of("W01"))
                 .totalPurchaseAmount(Money.of(100000))
                 .totalConsumptionTax(Money.of(10000))
                 .remarks("納期エラーテストデータ")
@@ -1399,7 +1399,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 0,
                 "EMP001", // 社員コード
                 now.plusDays(7),
-                "001", // 倉庫コード
+                "W01", // 倉庫コード
                 10000,
                 1000, // 消費税（10000円 × 10% = 1000円）
                 "備考",
@@ -1527,11 +1527,15 @@ public class TestDataFactoryImpl implements TestDataFactory {
     }
 
     public static Warehouse getWarehouse(String warehouseCode, String warehouseName) {
-        return Warehouse.of(warehouseCode, warehouseName);
+        return Warehouse.of(WarehouseCode.of(warehouseCode), warehouseName);
     }
 
     public static com.example.sms.domain.model.master.locationnumber.LocationNumber getLocationNumber(String warehouseCode, String locationNumberCode, String productCode) {
-        return com.example.sms.domain.model.master.locationnumber.LocationNumber.of(warehouseCode, locationNumberCode, productCode);
+        return com.example.sms.domain.model.master.locationnumber.LocationNumber.of(
+            com.example.sms.domain.model.master.warehouse.WarehouseCode.of(warehouseCode),
+            com.example.sms.domain.model.master.locationnumber.LocationNumberCode.of(locationNumberCode),
+            com.example.sms.domain.model.master.product.ProductCode.of(productCode)
+        );
     }
 
     public static com.example.sms.infrastructure.datasource.autogen.model.棚番マスタKey getLocationNumberKey(String warehouseCode, String locationNumberCode, String productCode) {

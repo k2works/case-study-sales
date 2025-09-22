@@ -32,8 +32,8 @@ public class InventoryUploadTest {
     @Test
     public void testUploadValidInventoryCSV() {
         // テスト用のCSVデータを作成（ヘッダー行なし、Position-based mapping用）
-        String csvContent = "WH1,99999001,LOT001,1,G,100,90\n" +
-                          "WH1,99999002,LOT002,1,G,200,180\n";
+        String csvContent = "W01,99999001,LOT001,1,G,100,90\n" +
+                          "W01,99999002,LOT002,1,G,200,180\n";
         
         MockMultipartFile csvFile = new MockMultipartFile(
             "file", 
@@ -58,7 +58,7 @@ public class InventoryUploadTest {
     public void testUploadInvalidInventoryCSV() {
         // 不正なデータのCSV（ヘッダー行なし、Position-based mapping用）
         String csvContent = ",99999001,LOT001,1,G,100,90\n" +  // 倉庫コードが空
-                          "WH1,,LOT002,1,G,200,180\n";       // 商品コードが空
+                          "W01,,LOT002,1,G,200,180\n";       // 商品コードが空
         
         MockMultipartFile csvFile = new MockMultipartFile(
             "file", 

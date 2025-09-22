@@ -18,7 +18,7 @@ class InventoryResourceDTOMapperTest {
         // Arrange
         LocalDateTime now = LocalDateTime.now();
         InventoryResource resource = new InventoryResource();
-        resource.setWarehouseCode("WH001");
+        resource.setWarehouseCode("W01");
         resource.setProductCode("PR001");
         resource.setLotNumber("LOT001");
         resource.setStockCategory("1");
@@ -34,7 +34,7 @@ class InventoryResourceDTOMapperTest {
 
         // Assert
         assertNotNull(result);
-        assertEquals("WH001", result.getWarehouseCode().getValue());
+        assertEquals("W01", result.getWarehouseCode().getValue());
         assertEquals("PR001", result.getProductCode().getValue());
         assertEquals("LOT001", result.getLotNumber().getValue());
         assertEquals("1", result.getStockCategory().getCode());
@@ -50,7 +50,7 @@ class InventoryResourceDTOMapperTest {
         // Arrange
         LocalDateTime now = LocalDateTime.now();
         Inventory inventory = Inventory.of(
-                "WH001",
+                "W01",
                 "PR001",
                 "LOT001",
                 "1",
@@ -65,7 +65,7 @@ class InventoryResourceDTOMapperTest {
 
         // Assert
         assertNotNull(result);
-        assertEquals("WH001", result.getWarehouseCode());
+        assertEquals("W01", result.getWarehouseCode());
         assertEquals("PR001", result.getProductCode());
         assertEquals("LOT001", result.getLotNumber());
         assertEquals("1", result.getStockCategory());
@@ -80,7 +80,7 @@ class InventoryResourceDTOMapperTest {
     void shouldConvertCriteriaResourceToCriteria() {
         // Arrange
         InventoryCriteriaResource resource = new InventoryCriteriaResource();
-        resource.setWarehouseCode("WH001");
+        resource.setWarehouseCode("W01");
         resource.setProductCode("PR001");
         resource.setLotNumber("LOT001");
         resource.setStockCategory("1");
@@ -95,7 +95,7 @@ class InventoryResourceDTOMapperTest {
 
         // Assert
         assertNotNull(result);
-        assertEquals("WH001", result.getWarehouseCode());
+        assertEquals("W01", result.getWarehouseCode());
         assertEquals("PR001", result.getProductCode());
         assertEquals("LOT001", result.getLotNumber());
         assertEquals("1", result.getStockCategory());
@@ -139,7 +139,7 @@ class InventoryResourceDTOMapperTest {
     void shouldConvertCriteriaResourceWithNullValues() {
         // Arrange
         InventoryCriteriaResource resource = new InventoryCriteriaResource();
-        resource.setWarehouseCode("WH001");
+        resource.setWarehouseCode("W01");
         // 他のフィールドはnull
 
         // Act
@@ -147,7 +147,7 @@ class InventoryResourceDTOMapperTest {
 
         // Assert
         assertNotNull(result);
-        assertEquals("WH001", result.getWarehouseCode());
+        assertEquals("W01", result.getWarehouseCode());
         assertNull(result.getProductCode());
         assertNull(result.getLotNumber());
         assertNull(result.getStockCategory());
@@ -163,7 +163,7 @@ class InventoryResourceDTOMapperTest {
     void shouldConvertResourceWithNullQuantities() {
         // Arrange
         InventoryResource resource = new InventoryResource();
-        resource.setWarehouseCode("WH001");
+        resource.setWarehouseCode("W01");
         resource.setProductCode("PR001");
         resource.setLotNumber("LOT001");
         resource.setStockCategory("1");
@@ -178,7 +178,7 @@ class InventoryResourceDTOMapperTest {
 
         // Assert
         assertNotNull(result);
-        assertEquals("WH001", result.getWarehouseCode().getValue());
+        assertEquals("W01", result.getWarehouseCode().getValue());
         assertEquals("PR001", result.getProductCode().getValue());
         assertEquals("LOT001", result.getLotNumber().getValue());
         assertEquals("1", result.getStockCategory().getCode());
@@ -194,7 +194,7 @@ class InventoryResourceDTOMapperTest {
         // Arrange
         LocalDateTime now = LocalDateTime.now();
         Inventory inventory = Inventory.of(
-                "WH001",
+                "W01",
                 "PR001",
                 "LOT001",
                 "1",
@@ -209,7 +209,7 @@ class InventoryResourceDTOMapperTest {
 
         // Assert
         assertNotNull(result);
-        assertEquals("WH001", result.getWarehouseCode());
+        assertEquals("W01", result.getWarehouseCode());
         assertEquals("PR001", result.getProductCode());
         assertEquals("LOT001", result.getLotNumber());
         assertEquals("1", result.getStockCategory());

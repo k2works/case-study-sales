@@ -14,7 +14,7 @@ class LocationNumberResourceDTOMapperTest {
     @DisplayName("棚番リソースを棚番エンティティに変換する")
     void testConvertToEntity_validResource_shouldReturnLocationNumber() {
         // Arrange
-        String warehouseCode = "001";
+        String warehouseCode = "W01";
         String locationNumberCode = "A001";
         String productCode = "P001";
 
@@ -38,7 +38,7 @@ class LocationNumberResourceDTOMapperTest {
     @DisplayName("棚番検索条件リソースを棚番検索条件に変換する")
     void testConvertToCriteria_validResource_shouldReturnLocationNumberCriteria() {
         // Arrange
-        String warehouseCode = "001";
+        String warehouseCode = "W01";
         String locationNumberCode = "A001";
         String productCode = "P001";
 
@@ -78,7 +78,7 @@ class LocationNumberResourceDTOMapperTest {
     void testConvertToCriteria_nullValuesInResource_shouldReturnCriteria() {
         // Arrange
         LocationNumberCriteriaResource resource = new LocationNumberCriteriaResource();
-        resource.setWarehouseCode("001");
+        resource.setWarehouseCode("W01");
         // 他のフィールドはnull
 
         // Act
@@ -86,7 +86,7 @@ class LocationNumberResourceDTOMapperTest {
 
         // Assert
         assertNotNull(criteria);
-        assertEquals("001", criteria.getWarehouseCode());
+        assertEquals("W01", criteria.getWarehouseCode());
         assertNull(criteria.getLocationNumberCode());
         assertNull(criteria.getProductCode());
     }
@@ -96,7 +96,7 @@ class LocationNumberResourceDTOMapperTest {
     void testFromMethod_validEntity_shouldReturnResource() {
         // Arrange
         LocationNumber locationNumber = LocationNumber.of(
-                com.example.sms.domain.model.master.warehouse.WarehouseCode.of("001"),
+                com.example.sms.domain.model.master.warehouse.WarehouseCode.of("W01"),
                 com.example.sms.domain.model.master.locationnumber.LocationNumberCode.of("A001"),
                 com.example.sms.domain.model.master.product.ProductCode.of("P001")
         );
@@ -106,7 +106,7 @@ class LocationNumberResourceDTOMapperTest {
 
         // Assert
         assertNotNull(resource);
-        assertEquals("001", resource.getWarehouseCode());
+        assertEquals("W01", resource.getWarehouseCode());
         assertEquals("A001", resource.getLocationNumberCode());
         assertEquals("P001", resource.getProductCode());
     }
@@ -135,7 +135,7 @@ class LocationNumberResourceDTOMapperTest {
     void testConvertToCriteria_partialCriteria_shouldReturnCriteria() {
         // Arrange
         LocationNumberCriteriaResource resource = new LocationNumberCriteriaResource();
-        resource.setWarehouseCode("001");
+        resource.setWarehouseCode("W01");
         resource.setLocationNumberCode("A001");
         // productCodeはnull
 
@@ -144,7 +144,7 @@ class LocationNumberResourceDTOMapperTest {
 
         // Assert
         assertNotNull(criteria);
-        assertEquals("001", criteria.getWarehouseCode());
+        assertEquals("W01", criteria.getWarehouseCode());
         assertEquals("A001", criteria.getLocationNumberCode());
         assertNull(criteria.getProductCode());
     }
