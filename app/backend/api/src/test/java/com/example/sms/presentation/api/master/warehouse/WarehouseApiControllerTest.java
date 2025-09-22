@@ -50,7 +50,7 @@ public class WarehouseApiControllerTest {
 
     @BeforeEach
     void setUp() {
-        testWarehouse = Warehouse.of(WarehouseCode.of("W01"), "本社倉庫");
+        testWarehouse = Warehouse.of("W01", "本社倉庫", "N", "1234567", "東京都", "千代田区", "1-1-1");
         testWarehouseResource = WarehouseResource.from(testWarehouse);
 
         // PageInfoのモック設定

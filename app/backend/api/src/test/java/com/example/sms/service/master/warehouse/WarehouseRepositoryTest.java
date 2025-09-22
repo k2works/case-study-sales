@@ -2,7 +2,6 @@ package com.example.sms.service.master.warehouse;
 
 import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.master.warehouse.Warehouse;
-import com.example.sms.domain.model.master.warehouse.WarehouseCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -76,7 +75,7 @@ class WarehouseRepositoryTest {
         Warehouse warehouse = getWarehouse();
         repository.save(warehouse);
 
-        Warehouse updateWarehouse = Warehouse.of(WarehouseCode.of("W01"), "支社倉庫");
+        Warehouse updateWarehouse = Warehouse.of("W01", "支社倉庫", "N", "1234567", "東京都", "千代田区", "1-1-1");
         repository.save(updateWarehouse);
 
         Warehouse actual = repository.findById(updateWarehouse.getWarehouseCode()).get();

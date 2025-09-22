@@ -1,7 +1,6 @@
 package com.example.sms.presentation.api.master.warehouse;
 
 import com.example.sms.domain.model.master.warehouse.Warehouse;
-import com.example.sms.domain.model.master.warehouse.WarehouseCode;
 import com.example.sms.service.master.warehouse.WarehouseCriteria;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -89,8 +88,13 @@ class WarehouseResourceDTOMapperTest {
     void testFromMethod_validEntity_shouldReturnResource() {
         // Arrange
         Warehouse warehouse = Warehouse.of(
-                WarehouseCode.of("W01"),
-                "第一倉庫"
+                "W01",
+                "第一倉庫",
+                "N",
+                "1234567",
+                "東京都",
+                "千代田区",
+                "1-1-1"
         );
 
         // Act

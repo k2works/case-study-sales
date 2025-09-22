@@ -43,7 +43,6 @@ import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessFlag
 import com.example.sms.domain.model.system.user.RoleName;
 import com.example.sms.domain.model.inventory.Inventory;
 import com.example.sms.domain.model.master.warehouse.Warehouse;
-import com.example.sms.domain.model.master.locationnumber.LocationNumber;
 import com.example.sms.service.inventory.InventoryRepository;
 import com.example.sms.service.master.payment.PaymentAccountRepository;
 import com.example.sms.service.master.warehouse.WarehouseRepository;
@@ -1527,7 +1526,15 @@ public class TestDataFactoryImpl implements TestDataFactory {
     }
 
     public static Warehouse getWarehouse(String warehouseCode, String warehouseName) {
-        return Warehouse.of(WarehouseCode.of(warehouseCode), warehouseName);
+        return Warehouse.of(
+                warehouseCode,
+                warehouseName,
+                "N",  // デフォルトは通常倉庫
+                "1234567",  // テスト用郵便番号
+                "東京都",   // テスト用都道府県
+                "千代田区",  // テスト用住所1
+                "1-1-1"     // テスト用住所2
+        );
     }
 
     public static com.example.sms.domain.model.master.locationnumber.LocationNumber getLocationNumber(String warehouseCode, String locationNumberCode, String productCode) {
