@@ -10,7 +10,6 @@ const mindmap = `
 ---- 仕入詳細
 ---- 仕入検索
 ---- 仕入編集
----- 仕入指示
 ---- 仕入確認
 ---- 仕入ルール確認
 --- 支払管理
@@ -51,7 +50,6 @@ const mindmap = `
 **** ナビゲーション
 **** 仕入一覧
 **** 仕入
-**** 仕入指示
 **** 仕入確認
 **** 支払一覧
 **** 支払
@@ -59,7 +57,6 @@ const mindmap = `
 **** ナビゲーション
 **** 仕入一覧
 **** 仕入
-**** 仕入指示
 **** 仕入確認
 **** 支払一覧
 **** 支払
@@ -67,7 +64,6 @@ const mindmap = `
 **** ナビゲーション
 **** 仕入一覧
 **** 仕入
-**** 仕入指示
 **** 仕入確認
 **** 支払一覧
 @endmindmap
@@ -90,7 +86,6 @@ const contents = `
         - [ ] 仕入詳細を実装する
         - [ ] 仕入検索を実装する
         - [ ] 仕入編集を実装する
-        - [ ] 仕入指示を実装する
         - [ ] 仕入確認を実装する
         - [ ] 仕入ルール確認を実装する
     - [ ] 仕入コントローラを実装する
@@ -98,7 +93,6 @@ const contents = `
         - [ ] 仕入詳細を実装する
         - [ ] 仕入検索を実装する
         - [ ] 仕入編集を実装する
-        - [ ] 仕入指示を実装する
         - [ ] 仕入確認を実装する
         - [ ] 仕入ルール確認を実装する
     - [ ] 仕入ドメインロジックを実装する
@@ -127,7 +121,6 @@ const contents = `
     - [ ] 仕入検索画面を作成する
     - [ ] 仕入編集画面を作成する
     - [ ] 仕入ルール確認画面を作成する
-    - [ ] 仕入指示画面を作成する
     - [ ] 仕入確認画面を作成する
     - [ ] E2Eテストを作成する
 - [ ] 支払画面を作成する
@@ -154,18 +147,17 @@ rectangle 仕入管理 {
     usecase UC2 as "仕入詳細"
     usecase UC3 as "仕入検索"
     usecase UC4 as "仕入編集"
-    usecase UC5 as "仕入指示"
-    usecase UC6 as "仕入確認"
-    usecase UC7 as "仕入ルール確認"
+    usecase UC5 as "仕入確認"
+    usecase UC6 as "仕入ルール確認"
 }
 rectangle 支払管理 {
-    usecase UC8 as "支払一覧"
-    usecase UC9 as "支払詳細"
-    usecase UC10 as "支払検索"
-    usecase UC11 as "支払登録"
-    usecase UC12 as "支払編集"
-    usecase UC13 as "支払削除"
-    usecase UC14 as "支払集計"
+    usecase UC7 as "支払一覧"
+    usecase UC8 as "支払詳細"
+    usecase UC9 as "支払検索"
+    usecase UC10 as "支払登録"
+    usecase UC11 as "支払編集"
+    usecase UC12 as "支払削除"
+    usecase UC13 as "支払集計"
 }
 admin --> UC1
 admin --> UC2
@@ -180,7 +172,6 @@ admin --> UC10
 admin --> UC11
 admin --> UC12
 admin --> UC13
-admin --> UC14
 member --> UC1
 member --> UC2
 member --> UC3
@@ -194,7 +185,6 @@ member --> UC10
 member --> UC11
 member --> UC12
 member --> UC13
-member --> UC14
 @enduml
 `;
 
@@ -270,6 +260,12 @@ together {
         商品名 : text
         単価 : number
     }
+    entity "部門マスタ" as department_master {
+        *部門ID : text
+        --
+        部門名 : text
+        部門コード : text
+    }
 }
 
 ' 右側のエンティティ
@@ -293,13 +289,7 @@ together {
         --
         支払日 : date
         支払金額 : number
-    }
-    entity "支払明細" as payment_detail {
-        *支払ID : text
-        *支払明細ID : text
-        --
-        商品ID : text
-        数量 : number
+        部門ID : text
     }
 }
 
@@ -318,12 +308,12 @@ purchase_order ||--o{ purchase_order_detail
 purchase_order ||-o{ purchase
 purchase ||--o{ purchase_detail
 purchase ||-o{ payment
-payment ||--o{ payment_detail
 purchase_order_detail }o-|| product_master
 purchase_detail }o-|| product_master
-payment_detail }o-|| product_master
 purchase_order }o-|| supplier_master
 purchase }o-|| supplier_master
+supplier_master ||--o{ product_master
+department_master ||--o{ payment
 @enduml
 `;
 
@@ -341,7 +331,7 @@ const ui = `
       } |
       {
         {
-          {/ <b>一覧 | ルール | 仕入指示 | 仕入確認 }
+          {/ <b>一覧 | ルール | 仕入確認 }
           [ 検索 ]
         }
       {+
@@ -379,7 +369,7 @@ const ui = `
       } |
       {
         {
-          {/ 一覧 | <b>ルール | 仕入指示 | 仕入確認 }
+          {/ 一覧 | <b>ルール | 仕入確認 }
           [ 確認 ]
         }
       {+
@@ -388,31 +378,6 @@ const ui = `
           仕入ルール | [削除]
           仕入ルール | [削除]
           仕入ルール | [削除]
-        }
-      }
-     }
-  }
-  ----------------
-  仕入指示画面（コレクション）
-  {+
-     {
-      ホーム
-      ユーザー
-      マスタ
-      発注
-      ログアウト
-      } |
-      {
-        {
-          {/ 一覧 | ルール | <b>仕入指示 | 仕入確認 }
-          [ 検索 ] | [  仕入指示  ]
-        }
-      {+
-        ---------------------
-        {
-          1xxxxxx | 商品1    | 1 | 0 | 0
-          1xxxxxx | 商品2    | 2 | 1 | 0
-          1xxxxxx | 商品3    | 3 | 2 | 0
         }
       }
      }
@@ -429,7 +394,7 @@ const ui = `
       } |
       {
         {
-          {/ 一覧 | ルール | 仕入指示 | <b>仕入確認 }
+          {/ 一覧 | ルール | <b>仕入確認 }
           [ 検索 ] | [  仕入確認  ]
         }
       {+
@@ -511,10 +476,6 @@ const uiModel = `
     class 仕入 {
         保存()
     }
-    class 仕入指示 {
-        検索()
-        仕入指示()
-    }
     class 仕入確認 {
         検索()
         仕入確認()
@@ -546,8 +507,6 @@ const uiModel = `
     ナビゲーション --* 仕入一覧
     仕入一覧 *-- 仕入
     ナビゲーション --* 仕入ルール
-    ナビゲーション --* 仕入指示
-    仕入指示 *-- 仕入
     ナビゲーション --* 仕入確認
     仕入確認 *-- 仕入
     ナビゲーション --* 支払一覧
@@ -561,9 +520,6 @@ const uiInteraction = `
     ログイン_シングル --> 仕入一覧_コレクション
     仕入一覧_コレクション --> 仕入_シングル
     仕入_シングル --> 仕入一覧_コレクション
-    ログイン_シングル --> 仕入指示_コレクション
-    仕入指示_コレクション --> 仕入ルール_シングル
-    仕入ルール_シングル --> 仕入指示_コレクション
     ログイン_シングル --> 仕入確認_コレクション
     仕入確認_コレクション --> 仕入_シングル
     仕入_シングル --> 仕入確認_コレクション
