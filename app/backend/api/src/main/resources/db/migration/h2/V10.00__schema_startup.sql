@@ -16,7 +16,8 @@ create table if not exists 仕入データ
     作成日時         timestamp(6) default CURRENT_DATE not null,
     作成者名         varchar(12),
     更新日時         timestamp(6) default CURRENT_DATE not null,
-    updater          varchar(12)
+    updater          varchar(12),
+    version          integer      default 1            not null
 );
 
 create table if not exists 仕入データ明細
@@ -36,6 +37,7 @@ create table if not exists 仕入データ明細
     作成者名       varchar(12),
     更新日時       timestamp(6) default CURRENT_DATE not null,
     更新者名       varchar(12),
+    version        integer      default 1            not null,
     constraint pk_pu_details
         primary key (仕入行番号, 仕入番号)
 );
