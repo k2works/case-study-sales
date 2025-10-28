@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.sms.infrastructure.datasource.procurement.receipt.PurchaseLineCustomMapper">
+  <resultMap
+          id="BaseResultMap"
+          type="com.example.sms.infrastructure.datasource.procurement.receipt.PurchaseLineCustomEntity"
+          extends="com.example.sms.infrastructure.datasource.autogen.mapper.仕入データ明細Mapper.BaseResultMap">
+      <association property="商品マスタ"
+                   javaType="com.example.sms.infrastructure.datasource.master.product.ProductCustomEntity"
+                   column="商品コード"
+                   select="com.example.sms.infrastructure.datasource.master.product.ProductCustomMapper.selectByPrimaryKey"
+                   fetchType="eager"
+      />
+  </resultMap>
+
+  <select id="selectByPurchaseNumber" parameterType="java.lang.String" resultMap="BaseResultMap">
+      select
+      <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.仕入データ明細Mapper.Base_Column_List"/>
+      from public.仕入データ明細
+      where 仕入番号 = #{仕入番号,jdbcType=VARCHAR}
+      order by 仕入行番号
+  </select>
+
+  <insert id="insert" parameterType="com.example.sms.infrastructure.datasource.autogen.model.仕入データ明細">
+      insert into public.仕入データ明細 (仕入番号, 仕入行番号, 仕入行表示番号,
+                                         発注行番号, 商品コード, 倉庫コード,
+                                         商品名, 仕入単価, 仕入数量,
+                                         作成日時, 作成者名, 更新日時,
+                                         更新者名)
+      values (#{仕入番号,jdbcType=VARCHAR}, #{仕入行番号,jdbcType=INTEGER}, #{仕入行表示番号,jdbcType=INTEGER},
+              #{発注行番号,jdbcType=INTEGER}, #{商品コード,jdbcType=VARCHAR}, #{倉庫コード,jdbcType=VARCHAR},
+              #{商品名,jdbcType=VARCHAR}, #{仕入単価,jdbcType=INTEGER}, #{仕入数量,jdbcType=INTEGER},
+              #{作成日時,jdbcType=TIMESTAMP}, #{作成者名,jdbcType=VARCHAR}, #{更新日時,jdbcType=TIMESTAMP},
+              #{更新者名,jdbcType=VARCHAR})
+  </insert>
+
+  <update id="updateByPrimaryKey" parameterType="com.example.sms.infrastructure.datasource.autogen.model.仕入データ明細">
+      update public.仕入データ明細
+      set 仕入行表示番号 = #{仕入行表示番号,jdbcType=INTEGER},
+          発注行番号 = #{発注行番号,jdbcType=INTEGER},
+          商品コード = #{商品コード,jdbcType=VARCHAR},
+          倉庫コード = #{倉庫コード,jdbcType=VARCHAR},
+          商品名 = #{商品名,jdbcType=VARCHAR},
+          仕入単価 = #{仕入単価,jdbcType=INTEGER},
+          仕入数量 = #{仕入数量,jdbcType=INTEGER},
+          作成日時 = #{作成日時,jdbcType=TIMESTAMP},
+          作成者名 = #{作成者名,jdbcType=VARCHAR},
+          更新日時 = #{更新日時,jdbcType=TIMESTAMP},
+          更新者名 = #{更新者名,jdbcType=VARCHAR}
+      where 仕入番号 = #{仕入番号,jdbcType=VARCHAR}
+      and 仕入行番号 = #{仕入行番号,jdbcType=INTEGER}
+  </update>
+
+  <delete id="deleteByPrimaryKey">
+      delete from public.仕入データ明細
+      where 仕入番号 = #{仕入番号,jdbcType=VARCHAR}
+      and 仕入行番号 = #{仕入行番号,jdbcType=INTEGER}
+  </delete>
+
+  <delete id="deleteByPurchaseNumber" parameterType="java.lang.String">
+      delete from public.仕入データ明細
+      where 仕入番号 = #{仕入番号,jdbcType=VARCHAR}
+  </delete>
+
+  <delete id="deleteAll">
+      delete from public.仕入データ明細
+  </delete>
+</mapper>
