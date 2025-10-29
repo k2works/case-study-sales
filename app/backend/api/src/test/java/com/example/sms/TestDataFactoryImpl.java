@@ -34,6 +34,7 @@ import com.example.sms.domain.model.procurement.purchase.PurchaseOrderNumber;
 import com.example.sms.domain.model.sales.order.OrderNumber;
 import com.example.sms.domain.model.procurement.purchase.PurchaseOrderDate;
 import com.example.sms.domain.model.procurement.purchase.DesignatedDeliveryDate;
+import com.example.sms.domain.model.procurement.payment.PurchasePayment;
 import com.example.sms.domain.model.master.partner.supplier.SupplierCode;
 import com.example.sms.domain.type.money.Money;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
@@ -60,6 +61,7 @@ import com.example.sms.service.sales.payment.incoming.PaymentRepository;
 import com.example.sms.service.sales.sales.SalesRepository;
 import com.example.sms.service.sales.order.SalesOrderRepository;
 import com.example.sms.service.procurement.purchase.PurchaseOrderRepository;
+import com.example.sms.service.procurement.payment.PurchasePaymentRepository;
 import com.example.sms.service.system.audit.AuditRepository;
 import com.example.sms.service.system.user.UserRepository;
 import com.example.sms.infrastructure.datasource.autogen.mapper.棚番マスタMapper;
@@ -110,6 +112,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
     PaymentRepository paymentIncomingRepository;
     @Autowired
     PurchaseOrderRepository purchaseOrderRepository;
+    @Autowired
+    PurchasePaymentRepository purchasePaymentRepository;
     @Autowired
     InventoryRepository inventoryRepository;
     @Autowired
@@ -1574,6 +1578,19 @@ public class TestDataFactoryImpl implements TestDataFactory {
         setUpForVendorService();
     }
 
+    @Override
+    public void setUpForPurchasePaymentService() {
+        setUpForUserManagementService();
+        setUpForDepartmentService();
+        setUpForEmployeeService();
+        setUpForRegionService();
+        setUpForPartnerGroupService();
+        setUpForPartnerCategoryService();
+        setUpForPartnerService();
+        setUpForSupplierService();
+        setUpPurchasePayment();
+    }
+
     private void setUpPurchase() {
         purchaseOrderRepository.deleteAll();
         List<PurchaseOrder> purchases = getPurchases();
@@ -1619,6 +1636,37 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 1000,
                 "テスト備考",
                 lines
+        );
+    }
+
+    private void setUpPurchasePayment() {
+        purchasePaymentRepository.deleteAll();
+        List<PurchasePayment> payments = getPurchasePayments();
+        payments.forEach(purchasePaymentRepository::save);
+    }
+
+    private List<PurchasePayment> getPurchasePayments() {
+        List<PurchasePayment> payments = new ArrayList<>();
+        IntFunction<PurchasePayment> getPayment = i -> getPurchasePayment("PAY" + String.format("%07d", i));
+        IntStream.range(1, 4).forEach(i -> payments.add(getPayment.apply(i)));
+        return payments;
+    }
+
+    private PurchasePayment getPurchasePayment(String paymentNumber) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime departmentStartDate = LocalDateTime.of(2021, 1, 1, 0, 0);
+
+        return PurchasePayment.of(
+                paymentNumber,
+                20231001, // paymentDate (YYYYMMDD形式)
+                "10000", // departmentCode
+                departmentStartDate,
+                "001", // supplierCode
+                1, // supplierBranchNumber
+                1, // paymentMethodType (現金=1)
+                100000, // paymentAmount
+                10000, // totalConsumptionTax
+                false // paymentCompletedFlag
         );
     }
 }
