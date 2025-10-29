@@ -1,6 +1,6 @@
-package com.example.sms.presentation.api.sales.payment.incoming;
+package com.example.sms.presentation.api.sales.payment;
 
-import com.example.sms.domain.model.sales.payment.incoming.PaymentMethodType;
+import com.example.sms.domain.model.sales.payment.PaymentMethodType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;

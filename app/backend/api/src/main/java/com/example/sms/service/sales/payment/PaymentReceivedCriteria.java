@@ -1,4 +1,4 @@
-package com.example.sms.service.sales.payment.incoming;
+package com.example.sms.service.sales.payment;
 
 import lombok.Builder;
 import lombok.Value;

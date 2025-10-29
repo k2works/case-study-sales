@@ -1,6 +1,6 @@
-package com.example.sms.infrastructure.datasource.sales.payment.incoming;
+package com.example.sms.infrastructure.datasource.sales.payment;
 
-import com.example.sms.service.sales.payment.incoming.PaymentReceivedCriteria;
+import com.example.sms.service.sales.payment.PaymentReceivedCriteria;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

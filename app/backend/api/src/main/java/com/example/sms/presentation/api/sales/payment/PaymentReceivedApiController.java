@@ -1,6 +1,6 @@
-package com.example.sms.presentation.api.sales.payment.incoming;
+package com.example.sms.presentation.api.sales.payment;
 
-import com.example.sms.domain.model.sales.payment.incoming.PaymentReceived;
+import com.example.sms.domain.model.sales.payment.PaymentReceived;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType;
 import com.example.sms.presentation.Message;
@@ -8,8 +8,8 @@ import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
 import com.example.sms.service.BusinessException;
 import com.example.sms.service.PageNationService;
-import com.example.sms.service.sales.payment.incoming.PaymentReceivedCriteria;
-import com.example.sms.service.sales.payment.incoming.PaymentReceivedService;
+import com.example.sms.service.sales.payment.PaymentReceivedCriteria;
+import com.example.sms.service.sales.payment.PaymentReceivedService;
 import com.example.sms.service.system.audit.AuditAnnotation;
 import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-import static com.example.sms.presentation.api.sales.payment.incoming.PaymentReceivedResourceDTOMapper.convertToEntity;
-import static com.example.sms.presentation.api.sales.payment.incoming.PaymentReceivedResourceDTOMapper.convertToCriteria;
+import static com.example.sms.presentation.api.sales.payment.PaymentReceivedResourceDTOMapper.convertToEntity;
+import static com.example.sms.presentation.api.sales.payment.PaymentReceivedResourceDTOMapper.convertToCriteria;
 
 /**
  * 入金データAPI

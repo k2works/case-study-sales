@@ -1,8 +1,8 @@
-package com.example.sms.service.sales.payment.incoming;
+package com.example.sms.service.sales.payment;
 
 import com.example.sms.TestDataFactoryImpl;
-import com.example.sms.domain.model.sales.payment.incoming.PaymentReceived;
-import com.example.sms.domain.model.sales.payment.incoming.PaymentReceivedNumber;
+import com.example.sms.domain.model.sales.payment.PaymentReceived;
+import com.example.sms.domain.model.sales.payment.PaymentReceivedNumber;
 import com.example.sms.domain.type.money.Money;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

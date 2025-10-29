@@ -1,4 +1,4 @@
-package com.example.sms.domain.model.sales.payment.incoming;
+package com.example.sms.domain.model.sales.payment;
 
 import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.partner.customer.Customer;

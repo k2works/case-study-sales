@@ -1,8 +1,8 @@
-package com.example.sms.service.sales.payment.incoming;
+package com.example.sms.service.sales.payment;
 
 import com.example.sms.domain.model.sales.invoice.Invoice;
-import com.example.sms.domain.model.sales.payment.incoming.PaymentReceived;
-import com.example.sms.domain.model.sales.payment.incoming.PaymentReceivedList;
+import com.example.sms.domain.model.sales.payment.PaymentReceived;
+import com.example.sms.domain.model.sales.payment.PaymentReceivedList;
 import com.example.sms.service.sales.invoice.InvoiceRepository;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;

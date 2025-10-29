@@ -1,12 +1,12 @@
-package com.example.sms.presentation.api.sales.payment.incoming;
+package com.example.sms.presentation.api.sales.payment;
 
 import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.partner.customer.CustomerCode;
-import com.example.sms.domain.model.sales.payment.incoming.PaymentReceived;
-import com.example.sms.domain.model.sales.payment.incoming.PaymentMethodType;
-import com.example.sms.domain.model.sales.payment.incoming.PaymentReceivedNumber;
+import com.example.sms.domain.model.sales.payment.PaymentReceived;
+import com.example.sms.domain.model.sales.payment.PaymentMethodType;
+import com.example.sms.domain.model.sales.payment.PaymentReceivedNumber;
 import com.example.sms.domain.type.money.Money;
-import com.example.sms.service.sales.payment.incoming.PaymentReceivedCriteria;
+import com.example.sms.service.sales.payment.PaymentReceivedCriteria;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

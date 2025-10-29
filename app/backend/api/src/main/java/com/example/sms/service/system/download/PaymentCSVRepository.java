@@ -1,6 +1,6 @@
 package com.example.sms.service.system.download;
 
-import com.example.sms.domain.model.sales.payment.incoming.PaymentReceivedList;
+import com.example.sms.domain.model.sales.payment.PaymentReceivedList;
 import com.example.sms.domain.model.system.download.DownloadCriteria;
 import com.example.sms.infrastructure.datasource.system.download.PaymentDownloadCSV;
 import java.util.List;

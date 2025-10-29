@@ -1,4 +1,4 @@
-package com.example.sms.domain.model.sales.payment.incoming;
+package com.example.sms.domain.model.sales.payment;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

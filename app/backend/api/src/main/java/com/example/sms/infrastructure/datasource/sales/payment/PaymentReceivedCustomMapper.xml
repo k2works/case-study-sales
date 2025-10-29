@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.sms.infrastructure.datasource.sales.payment.incoming.PaymentReceivedCustomMapper">
+<mapper namespace="com.example.sms.infrastructure.datasource.sales.payment.PaymentReceivedCustomMapper">
 
     <!-- BaseResultMap -->
     <resultMap
             id="BaseResultMap"
-            type="com.example.sms.infrastructure.datasource.sales.payment.incoming.PaymentReceivedCustomEntity"
+            type="com.example.sms.infrastructure.datasource.sales.payment.PaymentReceivedCustomEntity"
             extends="com.example.sms.infrastructure.datasource.autogen.mapper.入金データMapper.BaseResultMap">
         <association property="部門マスタ"
                      javaType="com.example.sms.infrastructure.datasource.master.department.DepartmentCustomEntity"
@@ -57,7 +57,7 @@
     </select>
 
     <!-- insert -->
-    <insert id="insert" parameterType="com.example.sms.infrastructure.datasource.sales.payment.incoming.PaymentReceivedCustomEntity">
+    <insert id="insert" parameterType="com.example.sms.infrastructure.datasource.sales.payment.PaymentReceivedCustomEntity">
         insert into public.入金データ (
             入金番号,
             入金日,
@@ -99,7 +99,7 @@
     </insert>
 
     <!-- updateByPrimaryKeyForOptimisticLock -->
-    <update id="updateByPrimaryKeyForOptimisticLock" parameterType="com.example.sms.infrastructure.datasource.sales.payment.incoming.PaymentReceivedCustomEntity">
+    <update id="updateByPrimaryKeyForOptimisticLock" parameterType="com.example.sms.infrastructure.datasource.sales.payment.PaymentReceivedCustomEntity">
         update public.入金データ
         set 入金日 = #{入金日,jdbcType=TIMESTAMP},
             部門コード = #{部門コード,jdbcType=VARCHAR},

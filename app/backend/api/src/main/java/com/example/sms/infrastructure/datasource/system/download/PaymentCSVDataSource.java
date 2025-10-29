@@ -1,11 +1,11 @@
 package com.example.sms.infrastructure.datasource.system.download;
 
-import com.example.sms.domain.model.sales.payment.incoming.PaymentReceived;
-import com.example.sms.domain.model.sales.payment.incoming.PaymentReceivedList;
+import com.example.sms.domain.model.sales.payment.PaymentReceived;
+import com.example.sms.domain.model.sales.payment.PaymentReceivedList;
 import com.example.sms.domain.model.system.download.DownloadCriteria;
-import com.example.sms.infrastructure.datasource.sales.payment.incoming.PaymentReceivedCustomEntity;
-import com.example.sms.infrastructure.datasource.sales.payment.incoming.PaymentReceivedCustomMapper;
-import com.example.sms.infrastructure.datasource.sales.payment.incoming.PaymentReceivedEntityMapper;
+import com.example.sms.infrastructure.datasource.sales.payment.PaymentReceivedCustomEntity;
+import com.example.sms.infrastructure.datasource.sales.payment.PaymentReceivedCustomMapper;
+import com.example.sms.infrastructure.datasource.sales.payment.PaymentReceivedEntityMapper;
 import com.example.sms.service.system.download.PaymentCSVRepository;
 import org.springframework.stereotype.Repository;
 

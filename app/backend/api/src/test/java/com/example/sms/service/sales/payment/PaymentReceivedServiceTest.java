@@ -1,4 +1,4 @@
-package com.example.sms.service.sales.payment.incoming;
+package com.example.sms.service.sales.payment;
 
 import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactory;
@@ -6,7 +6,7 @@ import com.example.sms.TestDataFactoryImpl;
 import com.example.sms.domain.model.sales.invoice.Invoice;
 import com.example.sms.domain.model.sales.invoice.InvoiceDate;
 import com.example.sms.domain.model.sales.invoice.InvoiceLine;
-import com.example.sms.domain.model.sales.payment.incoming.PaymentReceived;
+import com.example.sms.domain.model.sales.payment.PaymentReceived;
 import com.example.sms.domain.type.money.Money;
 import com.example.sms.service.sales.invoice.InvoiceRepository;
 import com.github.pagehelper.PageInfo;

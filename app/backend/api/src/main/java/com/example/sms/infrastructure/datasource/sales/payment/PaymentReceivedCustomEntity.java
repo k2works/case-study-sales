@@ -1,4 +1,4 @@
-package com.example.sms.infrastructure.datasource.sales.payment.incoming;
+package com.example.sms.infrastructure.datasource.sales.payment;
 
 import com.example.sms.infrastructure.datasource.autogen.model.入金データ;
 import com.example.sms.infrastructure.datasource.master.department.DepartmentCustomEntity;

@@ -1,4 +1,4 @@
 /**
- * 入出金
+ * 入金
  */
 package com.example.sms.domain.model.sales.payment;

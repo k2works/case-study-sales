@@ -1,11 +1,11 @@
 package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
-import com.example.sms.domain.model.sales.payment.incoming.PaymentMethodType;
+import com.example.sms.domain.model.sales.payment.PaymentMethodType;
 import com.example.sms.presentation.api.sales.invoice.InvoiceResource;
-import com.example.sms.presentation.api.sales.payment.incoming.PaymentReceivedCriteriaResource;
-import com.example.sms.presentation.api.sales.payment.incoming.PaymentReceivedResource;
-import com.example.sms.service.sales.payment.incoming.PaymentReceivedService;
+import com.example.sms.presentation.api.sales.payment.PaymentReceivedCriteriaResource;
+import com.example.sms.presentation.api.sales.payment.PaymentReceivedResource;
+import com.example.sms.service.sales.payment.PaymentReceivedService;
 import com.example.sms.stepdefinitions.utils.MessageResponse;
 import com.example.sms.stepdefinitions.utils.SpringAcceptanceTest;
 import com.fasterxml.jackson.core.JsonProcessingException;

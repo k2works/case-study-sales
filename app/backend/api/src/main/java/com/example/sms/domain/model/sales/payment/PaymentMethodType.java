@@ -1,4 +1,4 @@
-package com.example.sms.domain.model.sales.payment.incoming;
+package com.example.sms.domain.model.sales.payment;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,7 +35,7 @@ public enum PaymentMethodType {
                 return type;
             }
         }
-        
+
         return 振込;
     }
 }

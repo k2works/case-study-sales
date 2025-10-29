@@ -1,7 +1,7 @@
-package com.example.sms.presentation.api.sales.payment.incoming;
+package com.example.sms.presentation.api.sales.payment;
 
-import com.example.sms.domain.model.sales.payment.incoming.PaymentReceived;
-import com.example.sms.service.sales.payment.incoming.PaymentReceivedCriteria;
+import com.example.sms.domain.model.sales.payment.PaymentReceived;
+import com.example.sms.service.sales.payment.PaymentReceivedCriteria;
 
 public class PaymentReceivedResourceDTOMapper {
 
