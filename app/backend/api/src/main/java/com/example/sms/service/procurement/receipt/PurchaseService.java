@@ -3,8 +3,11 @@ package com.example.sms.service.procurement.receipt;
 import com.example.sms.domain.model.procurement.order.PurchaseOrder;
 import com.example.sms.domain.model.procurement.order.PurchaseOrderList;
 import com.example.sms.domain.model.procurement.order.PurchaseOrderNumber;
+import com.example.sms.domain.model.procurement.receipt.PurchaseList;
+import com.example.sms.domain.model.procurement.receipt.rule.PurchaseRuleCheckList;
 import com.example.sms.domain.model.system.autonumber.AutoNumber;
 import com.example.sms.domain.model.system.autonumber.DocumentTypeCode;
+import com.example.sms.domain.service.procurement.receipt.PurchaseDomainService;
 import com.example.sms.service.master.department.DepartmentRepository;
 import com.example.sms.service.master.employee.EmployeeRepository;
 import com.example.sms.service.master.partner.PartnerRepository;
@@ -31,6 +34,8 @@ import java.util.Objects;
 public class PurchaseService {
     final PurchaseOrderRepository purchaseOrderRepository;
     final PurchasePaymentRepository purchasePaymentRepository;
+    final PurchaseRepository purchaseRepository;
+    final PurchaseDomainService purchaseDomainService;
     final ProductRepository productRepository;
     final DepartmentRepository departmentRepository;
     final PartnerRepository partnerRepository;
@@ -40,6 +45,8 @@ public class PurchaseService {
     public PurchaseService(
             PurchaseOrderRepository purchaseOrderRepository,
             PurchasePaymentRepository purchasePaymentRepository,
+            PurchaseRepository purchaseRepository,
+            PurchaseDomainService purchaseDomainService,
             ProductRepository productRepository,
             DepartmentRepository departmentRepository,
             PartnerRepository partnerRepository,
@@ -47,6 +54,8 @@ public class PurchaseService {
             AutoNumberService autoNumberService) {
         this.purchaseOrderRepository = purchaseOrderRepository;
         this.purchasePaymentRepository = purchasePaymentRepository;
+        this.purchaseRepository = purchaseRepository;
+        this.purchaseDomainService = purchaseDomainService;
         this.productRepository = productRepository;
         this.departmentRepository = departmentRepository;
         this.partnerRepository = partnerRepository;
@@ -133,5 +142,13 @@ public class PurchaseService {
         autoNumberService.save(AutoNumber.of(code, yearMonth, autoNumber));
         autoNumberService.incrementDocumentNumber(code, yearMonth);
         return purchaseOrderNumber;
+    }
+
+    /**
+     * 仕入ルールチェック
+     */
+    public PurchaseRuleCheckList checkRule() {
+        PurchaseList purchases = purchaseRepository.selectAll();
+        return purchaseDomainService.checkRule(purchases);
     }
 }

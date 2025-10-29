@@ -1,11 +1,13 @@
 package com.example.sms.presentation.api.procurement.receipt;
 
 import com.example.sms.domain.model.procurement.order.PurchaseOrder;
+import com.example.sms.domain.model.procurement.receipt.rule.PurchaseRuleCheckList;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType;
 import com.example.sms.presentation.Message;
 import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
+import com.example.sms.presentation.api.system.auth.payload.response.MessageResponseWithDetail;
 import com.example.sms.service.BusinessException;
 import com.example.sms.service.PageNationService;
 import com.example.sms.service.procurement.order.PurchaseOrderCriteria;
@@ -130,6 +132,21 @@ public class PurchaseApiController {
             PageInfo<PurchaseResource> result = pageNationService.getPageInfo(entity, PurchaseResource::from);
             return ResponseEntity.ok(result);
         } catch (BusinessException | IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
+    }
+
+    @Operation(summary = "仕入ルールを確認する", description = "仕入ルール確認を実行する")
+    @PostMapping("/check")
+    @AuditAnnotation(process = ApplicationExecutionProcessType.仕入登録, type = ApplicationExecutionHistoryType.同期)
+    public ResponseEntity<?> check() {
+        try {
+            PurchaseRuleCheckList result = purchaseService.checkRule();
+            if (!result.hasErrors()) {
+                return ResponseEntity.ok(new MessageResponseWithDetail(message.getMessage("success.purchase.check"), result.getCheckList()));
+            }
+            return ResponseEntity.ok(new MessageResponseWithDetail(message.getMessage("error.purchase.check"), result.getCheckList()));
+        } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
