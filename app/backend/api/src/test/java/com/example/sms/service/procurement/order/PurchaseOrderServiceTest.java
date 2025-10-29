@@ -13,7 +13,7 @@ import com.example.sms.domain.model.procurement.order.*;
 import com.example.sms.domain.type.money.Money;
 import com.example.sms.domain.type.quantity.Quantity;
 import com.example.sms.domain.model.procurement.order.rule.PurchaseOrderRuleCheckList;
-import com.example.sms.domain.service.procurement.purchase.PurchaseOrderDomainService;
+import com.example.sms.domain.service.procurement.order.PurchaseOrderDomainService;
 import com.example.sms.service.system.autonumber.AutoNumberService;
 import com.example.sms.service.master.partner.PartnerRepository;
 import com.example.sms.service.master.product.ProductRepository;

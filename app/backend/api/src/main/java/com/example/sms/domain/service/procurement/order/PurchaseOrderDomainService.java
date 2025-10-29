@@ -1,4 +1,4 @@
-package com.example.sms.domain.service.procurement.purchase;
+package com.example.sms.domain.service.procurement.order;
 
 import com.example.sms.domain.model.procurement.order.PurchaseOrder;
 import com.example.sms.domain.model.procurement.order.PurchaseOrderList;

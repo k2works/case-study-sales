@@ -465,7 +465,7 @@
 </g>
 <!-- com.example.sms.domain.service.procurement.purchase.PurchaseOrderDomainService#calculateTotalPurchaseAmount(com.example.sms.domain.model.procurement.purchase.PurchaseOrder) -->
 <g id="node40" class="node">
-<title>com.example.sms.domain.service.procurement.purchase.PurchaseOrderDomainService#calculateTotalPurchaseAmount(com.example.sms.domain.model.procurement.order.PurchaseOrder)</title>
+<title>com.example.sms.domain.service.procurement.order.PurchaseOrderDomainService#calculateTotalPurchaseAmount(com.example.sms.domain.model.procurement.order.PurchaseOrder)</title>
 <g id="a_node40"><a xlink:href="./application.html#com.example.sms.domain.service.procurement.purchase.PurchaseOrderDomainService" xlink:title="PurchaseOrderDomainService.calculateTotalPurchaseAmount(PurchaseOrder)">
 <ellipse fill="lemonchiffon" stroke="black" cx="372.23" cy="-9552.25" rx="97.95" ry="18"/>
 <text text-anchor="middle" x="372.23" y="-9546.08" font-family="Times New Roman,serif" font-size="14.00">発注金額合計計算</text>
@@ -484,7 +484,7 @@
 </g>
 <!-- com.example.sms.domain.service.procurement.purchase.PurchaseOrderDomainService#calculateTotalPurchaseAmount(com.example.sms.domain.model.procurement.purchase.PurchaseOrder)&#45;&gt;com.example.sms.domain.model.procurement.purchase.PurchaseOrder -->
 <g id="edge376" class="edge">
-<title>com.example.sms.domain.service.procurement.purchase.PurchaseOrderDomainService#calculateTotalPurchaseAmount(com.example.sms.domain.model.procurement.order.PurchaseOrder)&#45;&gt;com.example.sms.domain.model.procurement.order.PurchaseOrder</title>
+<title>com.example.sms.domain.service.procurement.order.PurchaseOrderDomainService#calculateTotalPurchaseAmount(com.example.sms.domain.model.procurement.order.PurchaseOrder)&#45;&gt;com.example.sms.domain.model.procurement.order.PurchaseOrder</title>
 <path fill="none" stroke="black" d="M470.43,-9552.55C545.93,-9551.02 652.87,-9544.98 744.47,-9525.25 746.71,-9524.77 1053.16,-9412.27 1055.22,-9411.25 1072.23,-9402.82 1073.63,-9395.4 1091.22,-9388.25 1184.97,-9350.15 1223.41,-9386.92 1314.22,-9342.25 1371.38,-9314.13 1424.77,-9261.27 1454.23,-9228.87"/>
 <polygon fill="black" stroke="black" points="1456.46,-9231.61 1460.53,-9221.83 1451.25,-9226.94 1456.46,-9231.61"/>
 </g>
@@ -500,7 +500,7 @@
 </g>
 <!-- com.example.sms.domain.service.procurement.purchase.PurchaseOrderDomainService#calculateTotalPurchaseAmount(com.example.sms.domain.model.procurement.purchase.PurchaseOrder)&#45;&gt;com.example.sms.domain.model.procurement.purchase.PurchaseOrderLine -->
 <g id="edge377" class="edge">
-<title>com.example.sms.domain.service.procurement.purchase.PurchaseOrderDomainService#calculateTotalPurchaseAmount(com.example.sms.domain.model.procurement.order.PurchaseOrder)&#45;&gt;com.example.sms.domain.model.procurement.order.PurchaseOrderLine</title>
+<title>com.example.sms.domain.service.procurement.order.PurchaseOrderDomainService#calculateTotalPurchaseAmount(com.example.sms.domain.model.procurement.order.PurchaseOrder)&#45;&gt;com.example.sms.domain.model.procurement.order.PurchaseOrderLine</title>
 <path fill="none" stroke="black" d="M468.58,-9555.77C765.27,-9566.72 1667.74,-9600.01 1928.24,-9609.63"/>
 <polygon fill="black" stroke="black" points="1927.8,-9613.11 1937.92,-9609.98 1928.05,-9606.12 1927.8,-9613.11"/>
 </g>
@@ -516,13 +516,13 @@
 </g>
 <!-- com.example.sms.domain.service.procurement.purchase.PurchaseOrderDomainService#calculateTotalPurchaseAmount(com.example.sms.domain.model.procurement.purchase.PurchaseOrder)&#45;&gt;com.example.sms.domain.type.money.Money -->
 <g id="edge378" class="edge">
-<title>com.example.sms.domain.service.procurement.purchase.PurchaseOrderDomainService#calculateTotalPurchaseAmount(com.example.sms.domain.model.procurement.order.PurchaseOrder)&#45;&gt;com.example.sms.domain.type.money.Money</title>
+<title>com.example.sms.domain.service.procurement.order.PurchaseOrderDomainService#calculateTotalPurchaseAmount(com.example.sms.domain.model.procurement.order.PurchaseOrder)&#45;&gt;com.example.sms.domain.type.money.Money</title>
 <path fill="none" stroke="black" d="M470.46,-9551.26C683.18,-9549.12 1205.88,-9543.92 1643.72,-9540.25 1696.69,-9539.81 2544.61,-9539.45 2597.22,-9533.25 2654.07,-9526.56 2674.42,-9534.99 2722.72,-9504.25 2744.62,-9490.31 2739.48,-9475.68 2758.72,-9458.25 2828.74,-9394.78 2889.22,-9425.06 2938.22,-9344.25 2990.13,-9258.63 3017.85,-8526.34 3023.33,-8366.14"/>
 <polygon fill="black" stroke="black" points="3026.82,-8366.43 3023.66,-8356.31 3019.82,-8366.19 3026.82,-8366.43"/>
 </g>
 <!-- com.example.sms.domain.service.procurement.purchase.PurchaseOrderDomainService#calculateTotalConsumptionTax(com.example.sms.domain.model.procurement.purchase.PurchaseOrder) -->
 <g id="node41" class="node">
-<title>com.example.sms.domain.service.procurement.purchase.PurchaseOrderDomainService#calculateTotalConsumptionTax(com.example.sms.domain.model.procurement.order.PurchaseOrder)</title>
+<title>com.example.sms.domain.service.procurement.order.PurchaseOrderDomainService#calculateTotalConsumptionTax(com.example.sms.domain.model.procurement.order.PurchaseOrder)</title>
 <g id="a_node41"><a xlink:href="./application.html#com.example.sms.domain.service.procurement.purchase.PurchaseOrderDomainService" xlink:title="PurchaseOrderDomainService.calculateTotalConsumptionTax(PurchaseOrder)">
 <ellipse fill="lemonchiffon" stroke="black" cx="372.23" cy="-9640.25" rx="108.92" ry="18"/>
 <text text-anchor="middle" x="372.23" y="-9634.08" font-family="Times New Roman,serif" font-size="14.00">発注消費税合計計算</text>
@@ -531,25 +531,25 @@
 </g>
 <!-- com.example.sms.domain.service.procurement.purchase.PurchaseOrderDomainService#calculateTotalConsumptionTax(com.example.sms.domain.model.procurement.purchase.PurchaseOrder)&#45;&gt;com.example.sms.domain.model.procurement.purchase.PurchaseOrder -->
 <g id="edge379" class="edge">
-<title>com.example.sms.domain.service.procurement.purchase.PurchaseOrderDomainService#calculateTotalConsumptionTax(com.example.sms.domain.model.procurement.order.PurchaseOrder)&#45;&gt;com.example.sms.domain.model.procurement.order.PurchaseOrder</title>
+<title>com.example.sms.domain.service.procurement.order.PurchaseOrderDomainService#calculateTotalConsumptionTax(com.example.sms.domain.model.procurement.order.PurchaseOrder)&#45;&gt;com.example.sms.domain.model.procurement.order.PurchaseOrder</title>
 <path fill="none" stroke="black" d="M461.8,-9629.76C537.52,-9619.82 649.05,-9602.89 744.47,-9579.25 885.83,-9544.22 917.86,-9523.68 1055.22,-9475.25 1170.99,-9434.43 1212.28,-9447.65 1314.22,-9379.25 1375.77,-9337.94 1430.3,-9268.96 1458.22,-9230.11"/>
 <polygon fill="black" stroke="black" points="1460.93,-9232.34 1463.86,-9222.16 1455.22,-9228.29 1460.93,-9232.34"/>
 </g>
 <!-- com.example.sms.domain.service.procurement.purchase.PurchaseOrderDomainService#calculateTotalConsumptionTax(com.example.sms.domain.model.procurement.purchase.PurchaseOrder)&#45;&gt;com.example.sms.domain.model.procurement.purchase.PurchaseOrderLine -->
 <g id="edge380" class="edge">
-<title>com.example.sms.domain.service.procurement.purchase.PurchaseOrderDomainService#calculateTotalConsumptionTax(com.example.sms.domain.model.procurement.order.PurchaseOrder)&#45;&gt;com.example.sms.domain.model.procurement.order.PurchaseOrderLine</title>
+<title>com.example.sms.domain.service.procurement.order.PurchaseOrderDomainService#calculateTotalConsumptionTax(com.example.sms.domain.model.procurement.order.PurchaseOrder)&#45;&gt;com.example.sms.domain.model.procurement.order.PurchaseOrderLine</title>
 <path fill="none" stroke="black" d="M477.83,-9644.83C560.07,-9648.2 677.55,-9652.48 780.47,-9654.25 1216.71,-9661.75 1740.38,-9629.96 1928.09,-9617.28"/>
 <polygon fill="black" stroke="black" points="1928.18,-9620.78 1937.92,-9616.61 1927.71,-9613.79 1928.18,-9620.78"/>
 </g>
 <!-- com.example.sms.domain.service.procurement.purchase.PurchaseOrderDomainService#calculateTotalConsumptionTax(com.example.sms.domain.model.procurement.purchase.PurchaseOrder)&#45;&gt;com.example.sms.domain.type.money.Money -->
 <g id="edge381" class="edge">
-<title>com.example.sms.domain.service.procurement.purchase.PurchaseOrderDomainService#calculateTotalConsumptionTax(com.example.sms.domain.model.procurement.order.PurchaseOrder)&#45;&gt;com.example.sms.domain.type.money.Money</title>
+<title>com.example.sms.domain.service.procurement.order.PurchaseOrderDomainService#calculateTotalConsumptionTax(com.example.sms.domain.model.procurement.order.PurchaseOrder)&#45;&gt;com.example.sms.domain.type.money.Money</title>
 <path fill="none" stroke="black" d="M479.19,-9636.55C892.68,-9622.02 2385.39,-9568.72 2597.22,-9549.25 2653.33,-9544.09 2673.79,-9559.21 2722.72,-9531.25 2744.95,-9518.54 2738.12,-9501.47 2758.72,-9486.25 2827.72,-9435.27 2887.2,-9484.22 2938.22,-9415.25 3002.19,-9328.76 3020.6,-8534.35 3023.8,-8366.36"/>
 <polygon fill="black" stroke="black" points="3027.29,-8366.52 3023.98,-8356.46 3020.29,-8366.39 3027.29,-8366.52"/>
 </g>
 <!-- com.example.sms.domain.service.procurement.purchase.PurchaseOrderDomainService#checkRule(com.example.sms.domain.model.procurement.purchase.PurchaseOrderList) -->
 <g id="node42" class="node">
-<title>com.example.sms.domain.service.procurement.purchase.PurchaseOrderDomainService#checkRule(com.example.sms.domain.model.procurement.order.PurchaseOrderList)</title>
+<title>com.example.sms.domain.service.procurement.order.PurchaseOrderDomainService#checkRule(com.example.sms.domain.model.procurement.order.PurchaseOrderList)</title>
 <g id="a_node42"><a xlink:href="./application.html#com.example.sms.domain.service.procurement.purchase.PurchaseOrderDomainService" xlink:title="PurchaseOrderDomainService.checkRule(PurchaseOrderList)">
 <ellipse fill="lemonchiffon" stroke="black" cx="372.23" cy="-9750.25" rx="108.92" ry="18"/>
 <text text-anchor="middle" x="372.23" y="-9744.08" font-family="Times New Roman,serif" font-size="14.00">発注ルールチェック</text>
@@ -558,7 +558,7 @@
 </g>
 <!-- com.example.sms.domain.service.procurement.purchase.PurchaseOrderDomainService#checkRule(com.example.sms.domain.model.procurement.purchase.PurchaseOrderList)&#45;&gt;com.example.sms.domain.model.procurement.purchase.PurchaseOrder -->
 <g id="edge382" class="edge">
-<title>com.example.sms.domain.service.procurement.purchase.PurchaseOrderDomainService#checkRule(com.example.sms.domain.model.procurement.order.PurchaseOrderList)&#45;&gt;com.example.sms.domain.model.procurement.order.PurchaseOrder</title>
+<title>com.example.sms.domain.service.procurement.order.PurchaseOrderDomainService#checkRule(com.example.sms.domain.model.procurement.order.PurchaseOrderList)&#45;&gt;com.example.sms.domain.model.procurement.order.PurchaseOrder</title>
 <path fill="none" stroke="black" d="M450.02,-9737.24C525.84,-9723.43 644.6,-9699.18 744.47,-9667.25 887.23,-9621.6 935.18,-9626 1055.22,-9536.25 1075.45,-9521.12 1069.91,-9505.83 1091.22,-9492.25 1177.47,-9437.25 1230.09,-9493.45 1314.22,-9435.25 1390.6,-9382.4 1442.88,-9281.6 1465.43,-9231.32"/>
 <polygon fill="black" stroke="black" points="1468.61,-9232.77 1469.42,-9222.21 1462.2,-9229.96 1468.61,-9232.77"/>
 </g>
@@ -574,7 +574,7 @@
 </g>
 <!-- com.example.sms.domain.service.procurement.purchase.PurchaseOrderDomainService#checkRule(com.example.sms.domain.model.procurement.purchase.PurchaseOrderList)&#45;&gt;com.example.sms.domain.model.procurement.purchase.PurchaseOrderList -->
 <g id="edge383" class="edge">
-<title>com.example.sms.domain.service.procurement.purchase.PurchaseOrderDomainService#checkRule(com.example.sms.domain.model.procurement.order.PurchaseOrderList)&#45;&gt;com.example.sms.domain.model.procurement.order.PurchaseOrderList</title>
+<title>com.example.sms.domain.service.procurement.order.PurchaseOrderDomainService#checkRule(com.example.sms.domain.model.procurement.order.PurchaseOrderList)&#45;&gt;com.example.sms.domain.model.procurement.order.PurchaseOrderList</title>
 <path fill="none" stroke="black" d="M479.02,-9754.19C561.58,-9751.44 673.77,-9734.02 744.47,-9667.25 831.07,-9585.46 895.09,-9204.15 912.26,-9092.22"/>
 <polygon fill="black" stroke="black" points="915.68,-9092.99 913.72,-9082.58 908.76,-9091.94 915.68,-9092.99"/>
 </g>
@@ -590,7 +590,7 @@
 </g>
 <!-- com.example.sms.domain.service.procurement.purchase.PurchaseOrderDomainService#checkRule(com.example.sms.domain.model.procurement.purchase.PurchaseOrderList)&#45;&gt;com.example.sms.domain.model.procurement.purchase.rule.PurchaseOrderAmountRule -->
 <g id="edge384" class="edge">
-<title>com.example.sms.domain.service.procurement.purchase.PurchaseOrderDomainService#checkRule(com.example.sms.domain.model.procurement.order.PurchaseOrderList)&#45;&gt;com.example.sms.domain.model.procurement.order.rule.PurchaseOrderAmountRule</title>
+<title>com.example.sms.domain.service.procurement.order.PurchaseOrderDomainService#checkRule(com.example.sms.domain.model.procurement.order.PurchaseOrderList)&#45;&gt;com.example.sms.domain.model.procurement.order.rule.PurchaseOrderAmountRule</title>
 <path fill="none" stroke="black" d="M478.69,-9754.32C578.53,-9758.18 727.02,-9763.92 822.89,-9767.62"/>
 <polygon fill="black" stroke="black" points="822.67,-9771.11 832.8,-9768 822.94,-9764.12 822.67,-9771.11"/>
 </g>
@@ -606,7 +606,7 @@
 </g>
 <!-- com.example.sms.domain.service.procurement.purchase.PurchaseOrderDomainService#checkRule(com.example.sms.domain.model.procurement.purchase.PurchaseOrderList)&#45;&gt;com.example.sms.domain.model.procurement.purchase.rule.PurchaseOrderDeliveryOverDueRule -->
 <g id="edge385" class="edge">
-<title>com.example.sms.domain.service.procurement.purchase.PurchaseOrderDomainService#checkRule(com.example.sms.domain.model.procurement.order.PurchaseOrderList)&#45;&gt;com.example.sms.domain.model.procurement.order.rule.PurchaseOrderDeliveryOverDueRule</title>
+<title>com.example.sms.domain.service.procurement.order.PurchaseOrderDomainService#checkRule(com.example.sms.domain.model.procurement.order.PurchaseOrderList)&#45;&gt;com.example.sms.domain.model.procurement.order.rule.PurchaseOrderDeliveryOverDueRule</title>
 <path fill="none" stroke="black" d="M468.35,-9741.5C545.56,-9738.02 655.78,-9741.45 744.47,-9777.25 763.78,-9785.05 761.99,-9797.64 780.47,-9807.25 786.11,-9810.19 792.01,-9812.91 798.06,-9815.43"/>
 <polygon fill="black" stroke="black" points="796.37,-9818.53 806.95,-9818.93 798.93,-9812.01 796.37,-9818.53"/>
 </g>
@@ -622,7 +622,7 @@
 </g>
 <!-- com.example.sms.domain.service.procurement.purchase.PurchaseOrderDomainService#checkRule(com.example.sms.domain.model.procurement.purchase.PurchaseOrderList)&#45;&gt;com.example.sms.domain.model.procurement.purchase.rule.PurchaseOrderDeliveryRule -->
 <g id="edge386" class="edge">
-<title>com.example.sms.domain.service.procurement.purchase.PurchaseOrderDomainService#checkRule(com.example.sms.domain.model.procurement.order.PurchaseOrderList)&#45;&gt;com.example.sms.domain.model.procurement.order.rule.PurchaseOrderDeliveryRule</title>
+<title>com.example.sms.domain.service.procurement.order.PurchaseOrderDomainService#checkRule(com.example.sms.domain.model.procurement.order.PurchaseOrderList)&#45;&gt;com.example.sms.domain.model.procurement.order.rule.PurchaseOrderDeliveryRule</title>
 <path fill="none" stroke="black" d="M437.36,-9735.42C517.78,-9720.81 655.84,-9709.37 744.47,-9777.25 782.97,-9806.74 744.98,-9847.2 780.47,-9880.25 792.28,-9891.25 807.04,-9899.04 822.44,-9904.55"/>
 <polygon fill="black" stroke="black" points="821.14,-9907.81 831.73,-9907.54 823.28,-9901.14 821.14,-9907.81"/>
 </g>
