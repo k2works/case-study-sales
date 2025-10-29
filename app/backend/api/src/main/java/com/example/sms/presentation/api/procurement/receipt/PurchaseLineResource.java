@@ -1,7 +1,7 @@
 package com.example.sms.presentation.api.procurement.receipt;
 
 import com.example.sms.domain.model.sales.order.CompletionFlag;
-import com.example.sms.domain.model.procurement.purchase.PurchaseOrderLine;
+import com.example.sms.domain.model.procurement.order.PurchaseOrderLine;
 import lombok.Getter;
 import lombok.Setter;
 

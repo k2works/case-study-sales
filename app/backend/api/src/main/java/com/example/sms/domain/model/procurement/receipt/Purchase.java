@@ -5,7 +5,7 @@ import com.example.sms.domain.model.master.employee.Employee;
 import com.example.sms.domain.model.master.employee.EmployeeCode;
 import com.example.sms.domain.model.master.partner.supplier.Supplier;
 import com.example.sms.domain.model.master.partner.supplier.SupplierCode;
-import com.example.sms.domain.model.procurement.purchase.PurchaseOrderNumber;
+import com.example.sms.domain.model.procurement.order.PurchaseOrderNumber;
 import com.example.sms.domain.type.money.Money;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

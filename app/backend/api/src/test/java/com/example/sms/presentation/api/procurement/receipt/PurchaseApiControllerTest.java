@@ -1,8 +1,8 @@
 package com.example.sms.presentation.api.procurement.receipt;
 
 import com.example.sms.PresentationTest;
-import com.example.sms.domain.model.procurement.purchase.PurchaseOrder;
-import com.example.sms.domain.model.procurement.purchase.PurchaseOrderLine;
+import com.example.sms.domain.model.procurement.order.PurchaseOrder;
+import com.example.sms.domain.model.procurement.order.PurchaseOrderLine;
 import com.example.sms.service.procurement.receipt.PurchaseService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;

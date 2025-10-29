@@ -2,10 +2,10 @@ package com.example.sms.service.procurement.receipt;
 
 import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactory;
-import com.example.sms.domain.model.procurement.purchase.PurchaseOrder;
-import com.example.sms.domain.model.procurement.purchase.PurchaseOrderLine;
-import com.example.sms.domain.model.procurement.purchase.PurchaseOrderList;
-import com.example.sms.service.procurement.purchase.PurchaseOrderCriteria;
+import com.example.sms.domain.model.procurement.order.PurchaseOrder;
+import com.example.sms.domain.model.procurement.order.PurchaseOrderLine;
+import com.example.sms.domain.model.procurement.order.PurchaseOrderList;
+import com.example.sms.service.procurement.order.PurchaseOrderCriteria;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -179,11 +179,11 @@ class PurchaseServiceTest {
         if (purchaseOrderNumber == null) {
             return PurchaseOrder.builder()
                     .purchaseOrderNumber(null)
-                    .purchaseOrderDate(com.example.sms.domain.model.procurement.purchase.PurchaseOrderDate.of(LocalDateTime.now()))
+                    .purchaseOrderDate(com.example.sms.domain.model.procurement.order.PurchaseOrderDate.of(LocalDateTime.now()))
                     .salesOrderNumber(com.example.sms.domain.model.sales.order.OrderNumber.of("OD00000001"))
                     .supplierCode(com.example.sms.domain.model.master.partner.supplier.SupplierCode.of("001", 0))
                     .purchaseManagerCode(com.example.sms.domain.model.master.employee.EmployeeCode.of("EMP001"))
-                    .designatedDeliveryDate(com.example.sms.domain.model.procurement.purchase.DesignatedDeliveryDate.of(LocalDateTime.now().plusDays(7)))
+                    .designatedDeliveryDate(com.example.sms.domain.model.procurement.order.DesignatedDeliveryDate.of(LocalDateTime.now().plusDays(7)))
                     .warehouseCode(com.example.sms.domain.model.master.warehouse.WarehouseCode.of("W01"))
                     .totalPurchaseAmount(com.example.sms.domain.type.money.Money.of(30000))
                     .totalConsumptionTax(com.example.sms.domain.type.money.Money.of(3000))

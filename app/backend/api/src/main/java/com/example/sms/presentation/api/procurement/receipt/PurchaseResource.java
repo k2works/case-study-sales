@@ -1,6 +1,6 @@
 package com.example.sms.presentation.api.procurement.receipt;
 
-import com.example.sms.domain.model.procurement.purchase.PurchaseOrder;
+import com.example.sms.domain.model.procurement.order.PurchaseOrder;
 import lombok.Getter;
 import lombok.Setter;
 

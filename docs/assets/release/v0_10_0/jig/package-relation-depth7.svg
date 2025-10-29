@@ -184,7 +184,7 @@
 </g>
 <!-- com.example.sms.domain.model.procurement.purchase -->
 <g id="node6" class="node">
-<title>com.example.sms.domain.model.procurement.purchase</title>
+<title>com.example.sms.domain.model.procurement.order</title>
 <g id="a_node6"><a xlink:href="./domain.html#com.example.sms.domain.model.procurement.purchase" xlink:title="発注\npurchase">
 <polygon fill="#eedd82" stroke="black" points="737.75,-328 673.75,-328 673.75,-289.25 737.75,-289.25 737.75,-328"/>
 <text text-anchor="middle" x="705.75" y="-310.7" font-family="Times New Roman,serif" font-size="14.00">発注</text>

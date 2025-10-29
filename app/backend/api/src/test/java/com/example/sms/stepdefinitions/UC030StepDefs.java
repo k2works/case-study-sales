@@ -5,7 +5,7 @@ import com.example.sms.presentation.api.procurement.receipt.PurchaseCriteriaReso
 import com.example.sms.presentation.api.procurement.receipt.PurchaseLineResource;
 import com.example.sms.presentation.api.procurement.receipt.PurchaseResource;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
-import com.example.sms.service.procurement.purchase.PurchaseOrderRepository;
+import com.example.sms.service.procurement.order.PurchaseOrderRepository;
 import com.example.sms.stepdefinitions.utils.ListResponse;
 import com.example.sms.stepdefinitions.utils.SpringAcceptanceTest;
 import com.fasterxml.jackson.core.JsonProcessingException;

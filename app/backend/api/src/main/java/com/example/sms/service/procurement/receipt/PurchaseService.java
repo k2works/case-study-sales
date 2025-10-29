@@ -1,8 +1,8 @@
 package com.example.sms.service.procurement.receipt;
 
-import com.example.sms.domain.model.procurement.purchase.PurchaseOrder;
-import com.example.sms.domain.model.procurement.purchase.PurchaseOrderList;
-import com.example.sms.domain.model.procurement.purchase.PurchaseOrderNumber;
+import com.example.sms.domain.model.procurement.order.PurchaseOrder;
+import com.example.sms.domain.model.procurement.order.PurchaseOrderList;
+import com.example.sms.domain.model.procurement.order.PurchaseOrderNumber;
 import com.example.sms.domain.model.system.autonumber.AutoNumber;
 import com.example.sms.domain.model.system.autonumber.DocumentTypeCode;
 import com.example.sms.service.master.department.DepartmentRepository;
@@ -10,8 +10,8 @@ import com.example.sms.service.master.employee.EmployeeRepository;
 import com.example.sms.service.master.partner.PartnerRepository;
 import com.example.sms.service.master.product.ProductRepository;
 import com.example.sms.service.procurement.payment.PurchasePaymentRepository;
-import com.example.sms.service.procurement.purchase.PurchaseOrderCriteria;
-import com.example.sms.service.procurement.purchase.PurchaseOrderRepository;
+import com.example.sms.service.procurement.order.PurchaseOrderCriteria;
+import com.example.sms.service.procurement.order.PurchaseOrderRepository;
 import com.example.sms.service.system.autonumber.AutoNumberService;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;

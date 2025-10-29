@@ -1,8 +1,8 @@
 package com.example.sms.domain.service.procurement.purchase;
 
-import com.example.sms.domain.model.procurement.purchase.PurchaseOrder;
-import com.example.sms.domain.model.procurement.purchase.PurchaseOrderList;
-import com.example.sms.domain.model.procurement.purchase.rule.*;
+import com.example.sms.domain.model.procurement.order.PurchaseOrder;
+import com.example.sms.domain.model.procurement.order.PurchaseOrderList;
+import com.example.sms.domain.model.procurement.order.rule.*;
 import com.example.sms.domain.type.money.Money;
 import org.springframework.stereotype.Service;
 

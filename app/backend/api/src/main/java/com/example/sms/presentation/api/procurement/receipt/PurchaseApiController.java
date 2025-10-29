@@ -1,6 +1,6 @@
 package com.example.sms.presentation.api.procurement.receipt;
 
-import com.example.sms.domain.model.procurement.purchase.PurchaseOrder;
+import com.example.sms.domain.model.procurement.order.PurchaseOrder;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistoryType;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionProcessType;
 import com.example.sms.presentation.Message;
@@ -8,7 +8,7 @@ import com.example.sms.presentation.PageNation;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
 import com.example.sms.service.BusinessException;
 import com.example.sms.service.PageNationService;
-import com.example.sms.service.procurement.purchase.PurchaseOrderCriteria;
+import com.example.sms.service.procurement.order.PurchaseOrderCriteria;
 import com.example.sms.service.procurement.receipt.PurchaseService;
 import com.example.sms.service.system.audit.AuditAnnotation;
 import com.github.pagehelper.PageInfo;

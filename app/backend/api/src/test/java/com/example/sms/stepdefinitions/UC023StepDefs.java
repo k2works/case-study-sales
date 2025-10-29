@@ -2,11 +2,11 @@ package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
 import com.example.sms.domain.model.sales.order.CompletionFlag;
-import com.example.sms.presentation.api.procurement.purchase.PurchaseOrderCriteriaResource;
-import com.example.sms.presentation.api.procurement.purchase.PurchaseOrderLineResource;
-import com.example.sms.presentation.api.procurement.purchase.PurchaseOrderResource;
+import com.example.sms.presentation.api.procurement.order.PurchaseOrderCriteriaResource;
+import com.example.sms.presentation.api.procurement.order.PurchaseOrderLineResource;
+import com.example.sms.presentation.api.procurement.order.PurchaseOrderResource;
 import com.example.sms.presentation.api.system.auth.payload.response.MessageResponse;
-import com.example.sms.service.procurement.purchase.PurchaseOrderRepository;
+import com.example.sms.service.procurement.order.PurchaseOrderRepository;
 import com.example.sms.stepdefinitions.utils.ListResponse;
 import com.example.sms.stepdefinitions.utils.MessageResponseWithDetail;
 import com.example.sms.stepdefinitions.utils.SpringAcceptanceTest;

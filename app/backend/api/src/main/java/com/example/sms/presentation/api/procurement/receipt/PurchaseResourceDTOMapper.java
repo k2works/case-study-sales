@@ -3,10 +3,10 @@ package com.example.sms.presentation.api.procurement.receipt;
 import com.example.sms.domain.model.master.employee.EmployeeCode;
 import com.example.sms.domain.model.master.partner.supplier.SupplierCode;
 import com.example.sms.domain.model.master.warehouse.WarehouseCode;
-import com.example.sms.domain.model.procurement.purchase.*;
+import com.example.sms.domain.model.procurement.order.*;
 import com.example.sms.domain.model.sales.order.OrderNumber;
 import com.example.sms.domain.type.money.Money;
-import com.example.sms.service.procurement.purchase.PurchaseOrderCriteria;
+import com.example.sms.service.procurement.order.PurchaseOrderCriteria;
 
 import java.time.LocalDateTime;
 import java.util.List;
