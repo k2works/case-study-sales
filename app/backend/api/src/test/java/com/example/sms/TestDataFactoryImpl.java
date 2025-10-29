@@ -1552,4 +1552,73 @@ public class TestDataFactoryImpl implements TestDataFactory {
         key.set商品コード(productCode);
         return key;
     }
+
+    @Override
+    public void setUpForPurchaseService() {
+        setUpForUserManagementService();
+        setUpForDepartmentService();
+        setUpForEmployeeService();
+        setUpForRegionService();
+        setUpForPartnerGroupService();
+        setUpForPartnerCategoryService();
+        setUpForPartnerService();
+        setUpForProductService();
+        setUpForSupplierService();
+        setUpForWarehouseService();
+        setUpPurchase();
+    }
+
+    @Override
+    public void setUpForSupplierService() {
+        // 仕入先は取引先の一種なので、VendorServiceのセットアップを使用
+        setUpForVendorService();
+    }
+
+    private void setUpPurchase() {
+        purchaseOrderRepository.deleteAll();
+        List<PurchaseOrder> purchases = getPurchases();
+        purchases.forEach(purchaseOrderRepository::save);
+    }
+
+    private List<PurchaseOrder> getPurchases() {
+        List<PurchaseOrder> purchases = new ArrayList<>();
+        IntFunction<PurchaseOrder> getPurchase = i -> getPurchase("PU" + String.format("%08d", i));
+        IntStream.range(1, 4).forEach(i -> purchases.add(getPurchase.apply(i)));
+        return purchases;
+    }
+
+    private PurchaseOrder getPurchase(String purchaseNumber) {
+        LocalDateTime now = LocalDateTime.now();
+
+        List<PurchaseOrderLine> lines = List.of(
+                PurchaseOrderLine.of(
+                        purchaseNumber,
+                        1,
+                        1,
+                        "OD25010001",
+                        1,
+                        "10101001",
+                        "商品1",
+                        1000,
+                        10,
+                        0,
+                        0
+                )
+        );
+
+        return PurchaseOrder.of(
+                purchaseNumber,
+                now,
+                "OD25010001",
+                "001",
+                1,  // 枝番を1に変更（テストデータに合わせる）
+                "EMP001",
+                now.plusDays(7),
+                "W01",
+                10000,
+                1000,
+                "テスト備考",
+                lines
+        );
+    }
 }
