@@ -24,7 +24,7 @@ import com.example.sms.domain.model.sales.order.Order;
 import com.example.sms.domain.model.sales.order.OrderLine;
 import com.example.sms.domain.model.sales.order.OrderList;
 import com.example.sms.domain.model.sales.order.TaxRateType;
-import com.example.sms.domain.model.sales.payment.incoming.Payment;
+import com.example.sms.domain.model.sales.payment.incoming.PaymentReceived;
 import com.example.sms.domain.model.sales.payment.incoming.PaymentMethodType;
 import com.example.sms.domain.model.sales.sales.Sales;
 import com.example.sms.domain.model.sales.sales.SalesLine;
@@ -57,7 +57,7 @@ import com.example.sms.service.master.partner.PartnerRepository;
 import com.example.sms.service.master.product.ProductCategoryRepository;
 import com.example.sms.service.master.product.ProductRepository;
 import com.example.sms.service.sales.invoice.InvoiceRepository;
-import com.example.sms.service.sales.payment.incoming.PaymentRepository;
+import com.example.sms.service.sales.payment.incoming.PaymentReceivedRepository;
 import com.example.sms.service.sales.sales.SalesRepository;
 import com.example.sms.service.sales.order.SalesOrderRepository;
 import com.example.sms.service.procurement.order.PurchaseOrderRepository;
@@ -109,7 +109,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
     @Autowired
     PaymentAccountRepository paymentAccountRepository;
     @Autowired
-    PaymentRepository paymentIncomingRepository;
+    PaymentReceivedRepository paymentIncomingRepository;
     @Autowired
     PurchaseOrderRepository purchaseOrderRepository;
     @Autowired
@@ -816,7 +816,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
     public void setUpForPaymentIncomingService() {
         paymentIncomingRepository.deleteAll();
         IntStream.range(0, 3).forEach(i -> {
-            Payment paymentIncoming = getPaymentData(String.format("PAY%03d", i));
+            PaymentReceived paymentIncoming = getPaymentData(String.format("PAY%03d", i));
             paymentIncomingRepository.save(paymentIncoming);
         });
     }
@@ -1131,8 +1131,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
         );
     }
 
-    public static Payment getPaymentData(String paymentNumber) {
-        return Payment.of(
+    public static PaymentReceived getPaymentData(String paymentNumber) {
+        return PaymentReceived.of(
                 paymentNumber,
                 LocalDateTime.of(2022, 1, 1, 0, 0),
                 "10000",
@@ -1146,8 +1146,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
         );
     }
 
-    public static Payment getPaymentWithCustomer(String paymentNumber, String customerCode, Integer branchNumber) {
-        return Payment.of(
+    public static PaymentReceived getPaymentWithCustomer(String paymentNumber, String customerCode, Integer branchNumber) {
+        return PaymentReceived.of(
                 paymentNumber,
                 LocalDateTime.now(),
                 "10000",
@@ -1161,8 +1161,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
         );
     }
 
-    public static Payment getPaymentWithAccount(String paymentNumber, String accountCode) {
-        return Payment.of(
+    public static PaymentReceived getPaymentWithAccount(String paymentNumber, String accountCode) {
+        return PaymentReceived.of(
                 paymentNumber,
                 LocalDateTime.now(),
                 "10000",

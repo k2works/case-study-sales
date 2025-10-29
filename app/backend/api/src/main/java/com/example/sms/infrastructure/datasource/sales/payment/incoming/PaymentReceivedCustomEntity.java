@@ -13,7 +13,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class PaymentCustomEntity extends 入金データ {
+public class PaymentReceivedCustomEntity extends 入金データ {
     // 関連エンティティ
     private DepartmentCustomEntity 部門マスタ;
     private CustomerCustomEntity 顧客マスタ;

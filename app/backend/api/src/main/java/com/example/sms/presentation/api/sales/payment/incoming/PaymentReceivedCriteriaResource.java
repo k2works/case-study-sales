@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Schema(description = "入金検索条件リソース")
-public class PaymentCriteriaResource {
+public class PaymentReceivedCriteriaResource {
     @Schema(description = "入金番号")
     private String paymentNumber;
 

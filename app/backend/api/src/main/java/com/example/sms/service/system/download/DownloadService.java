@@ -11,7 +11,7 @@ import com.example.sms.domain.model.master.product.ProductCategoryList;
 import com.example.sms.domain.model.master.product.ProductList;
 import com.example.sms.domain.model.sales.invoice.InvoiceList;
 import com.example.sms.domain.model.sales.order.OrderList;
-import com.example.sms.domain.model.sales.payment.incoming.PaymentList;
+import com.example.sms.domain.model.sales.payment.incoming.PaymentReceivedList;
 import com.example.sms.domain.model.procurement.order.PurchaseOrderList;
 import com.example.sms.domain.model.sales.sales.SalesList;
 import com.example.sms.domain.model.sales.shipping.ShippingList;
@@ -416,8 +416,8 @@ public class DownloadService {
      * 入金CSV変換
      */
     private List<PaymentDownloadCSV> convertPayment(DownloadCriteria condition) {
-        PaymentList paymentList = paymentCSVRepository.selectBy(condition);
-        return paymentCSVRepository.convert(paymentList);
+        PaymentReceivedList paymentReceivedList = paymentCSVRepository.selectBy(condition);
+        return paymentCSVRepository.convert(paymentReceivedList);
     }
 
     /**

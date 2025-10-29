@@ -1,6 +1,6 @@
 package com.example.sms.infrastructure.datasource.sales.payment.incoming;
 
-import com.example.sms.service.sales.payment.incoming.PaymentCriteria;
+import com.example.sms.service.sales.payment.incoming.PaymentReceivedCriteria;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -11,22 +11,22 @@ import java.util.List;
  * 入金データのカスタムマッパー
  */
 @Mapper
-public interface PaymentCustomMapper {
+public interface PaymentReceivedCustomMapper {
 
     /**
      * 主キーで入金データを検索する
      *
-     * @param paymentNumber 入金番号
+     * @param paymentReceivedNumber 入金番号
      * @return 入金データのカスタムエンティティ
      */
-    PaymentCustomEntity selectByPrimaryKey(String paymentNumber);
+    PaymentReceivedCustomEntity selectByPrimaryKey(String paymentReceivedNumber);
 
     /**
      * 全ての入金データを取得する
      *
      * @return 入金データのカスタムエンティティのリスト
      */
-    List<PaymentCustomEntity> selectAll();
+    List<PaymentReceivedCustomEntity> selectAll();
 
     /**
      * 全ての入金データを削除する
@@ -39,7 +39,7 @@ public interface PaymentCustomMapper {
      *
      * @param entity 入金データのカスタムエンティティ
      */
-    void insert(PaymentCustomEntity entity);
+    void insert(PaymentReceivedCustomEntity entity);
 
     /**
      * 楽観的ロックを使用して入金データを更新する
@@ -47,7 +47,7 @@ public interface PaymentCustomMapper {
      * @param entity 入金データのエンティティ
      * @return 更新された行数
      */
-    int updateByPrimaryKeyForOptimisticLock(PaymentCustomEntity entity);
+    int updateByPrimaryKeyForOptimisticLock(PaymentReceivedCustomEntity entity);
 
     /**
      * 顧客コードで入金データを検索する
@@ -56,7 +56,7 @@ public interface PaymentCustomMapper {
      * @param branchNumber 顧客枝番
      * @return 入金データのカスタムエンティティのリスト
      */
-    List<PaymentCustomEntity> selectByCustomer(@Param("customerCode") String customerCode, @Param("branchNumber") Integer branchNumber);
+    List<PaymentReceivedCustomEntity> selectByCustomer(@Param("customerCode") String customerCode, @Param("branchNumber") Integer branchNumber);
 
     /**
      * 入金口座コードで入金データを検索する
@@ -64,7 +64,7 @@ public interface PaymentCustomMapper {
      * @param accountCode 入金口座コード
      * @return 入金データのカスタムエンティティのリスト
      */
-    List<PaymentCustomEntity> selectByAccount(String accountCode);
+    List<PaymentReceivedCustomEntity> selectByAccount(String accountCode);
 
-    List<PaymentCustomEntity> selectByCriteria(PaymentCriteria criteria);
+    List<PaymentReceivedCustomEntity> selectByCriteria(PaymentReceivedCriteria criteria);
 }

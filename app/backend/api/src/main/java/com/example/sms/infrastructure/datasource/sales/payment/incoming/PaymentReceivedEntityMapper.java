@@ -2,7 +2,7 @@ package com.example.sms.infrastructure.datasource.sales.payment.incoming;
 
 import com.example.sms.domain.model.master.partner.customer.Customer;
 import com.example.sms.domain.model.master.payment.account.incoming.PaymentAccount;
-import com.example.sms.domain.model.sales.payment.incoming.Payment;
+import com.example.sms.domain.model.sales.payment.incoming.PaymentReceived;
 import com.example.sms.infrastructure.datasource.autogen.model.入金口座マスタ;
 import com.example.sms.infrastructure.datasource.autogen.model.入金データ;
 import com.example.sms.infrastructure.datasource.master.partner.customer.CustomerCustomEntity;
@@ -16,30 +16,30 @@ import java.util.function.Function;
  * 入金データと入金口座マスタのエンティティマッパー
  */
 @Component
-public class PaymentEntityMapper {
+public class PaymentReceivedEntityMapper {
 
     /**
      * 入金データドメインモデルをエンティティに変換する
      *
-     * @param payment 入金データドメインモデル
+     * @param paymentReceived 入金データドメインモデル
      * @return 入金データエンティティ
      */
-    public 入金データ mapToEntity(Payment payment) {
-        if (payment == null) {
+    public 入金データ mapToEntity(PaymentReceived paymentReceived) {
+        if (paymentReceived == null) {
             return new 入金データ();
         }
 
         入金データ entity = new 入金データ();
-        entity.set入金番号(payment.getPaymentNumber().getValue());
-        entity.set入金日(payment.getPaymentDate());
-        entity.set部門コード(payment.getDepartmentId().getDeptCode().getValue());
-        entity.set開始日(payment.getDepartmentId().getDepartmentStartDate().getValue());
-        entity.set顧客コード(payment.getCustomerCode().getCode().getValue());
-        entity.set顧客枝番(payment.getCustomerCode().getBranchNumber());
-        entity.set支払方法区分(payment.getPaymentMethodType().getCode());
-        entity.set入金口座コード(payment.getPaymentAccountCode());
-        entity.set入金金額(payment.getPaymentAmount().getAmount());
-        entity.set消込金額(payment.getOffsetAmount().getAmount());
+        entity.set入金番号(paymentReceived.getPaymentNumber().getValue());
+        entity.set入金日(paymentReceived.getPaymentDate());
+        entity.set部門コード(paymentReceived.getDepartmentId().getDeptCode().getValue());
+        entity.set開始日(paymentReceived.getDepartmentId().getDepartmentStartDate().getValue());
+        entity.set顧客コード(paymentReceived.getCustomerCode().getCode().getValue());
+        entity.set顧客枝番(paymentReceived.getCustomerCode().getBranchNumber());
+        entity.set支払方法区分(paymentReceived.getPaymentMethodType().getCode());
+        entity.set入金口座コード(paymentReceived.getPaymentAccountCode());
+        entity.set入金金額(paymentReceived.getPaymentAmount().getAmount());
+        entity.set消込金額(paymentReceived.getOffsetAmount().getAmount());
 
         return entity;
     }
@@ -79,7 +79,7 @@ public class PaymentEntityMapper {
      * @param entity 入金データエンティティ
      * @return 入金データドメインモデル
      */
-    public Payment mapToDomainModel(PaymentCustomEntity entity) {
+    public PaymentReceived mapToDomainModel(PaymentReceivedCustomEntity entity) {
         if (entity == null) {
             return null;
         }
@@ -141,7 +141,7 @@ public class PaymentEntityMapper {
             );
         };
 
-        Payment payment = Payment.of(
+        PaymentReceived paymentReceived = PaymentReceived.of(
                 entity.get入金番号(),
                 entity.get入金日(),
                 entity.get部門コード(),
@@ -154,8 +154,8 @@ public class PaymentEntityMapper {
                 entity.get消込金額()
         );
 
-        return Payment.of(
-                payment,
+        return PaymentReceived.of(
+                paymentReceived,
                 Optional.ofNullable(entity.get顧客マスタ()).map(mapToCustomer).orElse(null),
                 Optional.ofNullable(entity.get入金口座マスタ()).map(mapToPaymentAccount).orElse(null)
         );

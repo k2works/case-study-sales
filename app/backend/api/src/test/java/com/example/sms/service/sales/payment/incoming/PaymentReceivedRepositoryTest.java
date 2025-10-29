@@ -1,8 +1,8 @@
 package com.example.sms.service.sales.payment.incoming;
 
 import com.example.sms.TestDataFactoryImpl;
-import com.example.sms.domain.model.sales.payment.incoming.Payment;
-import com.example.sms.domain.model.sales.payment.incoming.PaymentNumber;
+import com.example.sms.domain.model.sales.payment.incoming.PaymentReceived;
+import com.example.sms.domain.model.sales.payment.incoming.PaymentReceivedNumber;
 import com.example.sms.domain.type.money.Money;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Testcontainers
 @ActiveProfiles("container")
 @DisplayName("入金リポジトリ")
-class PaymentRepositoryTest {
+class PaymentReceivedRepositoryTest {
     @Container
     private static final PostgreSQLContainer<?> postgres =
             new PostgreSQLContainer<>(DockerImageName.parse("postgres:15"))
@@ -42,27 +42,27 @@ class PaymentRepositoryTest {
     }
 
     @Autowired
-    private PaymentRepository paymentRepository;
+    private PaymentReceivedRepository paymentReceivedRepository;
 
     @BeforeEach
     void setUp() {
-        paymentRepository.deleteAll();
+        paymentReceivedRepository.deleteAll();
     }
 
     @AfterEach
     void tearDown() {
-        paymentRepository.deleteAll();
+        paymentReceivedRepository.deleteAll();
     }
 
     @Test
     @DisplayName("入金データを保存して取得できること")
-    void testSaveAndFindPaymentData() {
+    void testSaveAndFindPaymentReceivedData() {
         // Given
-        Payment payment = getPaymentData("TEST001");
+        PaymentReceived paymentReceived = getPaymentReceivedData("TEST001");
 
         // When
-        paymentRepository.save(payment);
-        Optional<Payment> found = paymentRepository.findById("TEST001");
+        paymentReceivedRepository.save(paymentReceived);
+        Optional<PaymentReceived> found = paymentReceivedRepository.findById("TEST001");
 
         // Then
         assertThat(found).isPresent();
@@ -72,61 +72,61 @@ class PaymentRepositoryTest {
 
     @Test
     @DisplayName("入金データを更新できること")
-    void testUpdatePaymentData() {
+    void testUpdatePaymentReceivedData() {
         // Given
-        Payment payment = getPaymentData("TEST002");
-        paymentRepository.save(payment);
+        PaymentReceived paymentReceived = getPaymentReceivedData("TEST002");
+        paymentReceivedRepository.save(paymentReceived);
 
         // When
-        Payment updatedData = Payment.builder()
-                .paymentNumber(PaymentNumber.of("TEST002"))
+        PaymentReceived updatedData = PaymentReceived.builder()
+                .paymentNumber(PaymentReceivedNumber.of("TEST002"))
                 .paymentDate(LocalDateTime.now())
-                .departmentId(payment.getDepartmentId())
-                .customerCode(payment.getCustomerCode())
-                .paymentMethodType(payment.getPaymentMethodType())
-                .paymentAccountCode(payment.getPaymentAccountCode())
-                .paymentAmount(payment.getPaymentAmount())
-                .offsetAmount(payment.getOffsetAmount().plusMoney(Money.of(5000))) // 消込金額を更新
+                .departmentId(paymentReceived.getDepartmentId())
+                .customerCode(paymentReceived.getCustomerCode())
+                .paymentMethodType(paymentReceived.getPaymentMethodType())
+                .paymentAccountCode(paymentReceived.getPaymentAccountCode())
+                .paymentAmount(paymentReceived.getPaymentAmount())
+                .offsetAmount(paymentReceived.getOffsetAmount().plusMoney(Money.of(5000))) // 消込金額を更新
                 .build();
-        paymentRepository.save(updatedData);
+        paymentReceivedRepository.save(updatedData);
 
         // Then
-        Optional<Payment> found = paymentRepository.findById("TEST002");
+        Optional<PaymentReceived> found = paymentReceivedRepository.findById("TEST002");
         assertThat(found).isPresent();
         assertThat(found.get().getOffsetAmount().getAmount()).isEqualTo(5000);
     }
 
     @Test
     @DisplayName("入金データを削除できること")
-    void testDeletePaymentData() {
+    void testDeletePaymentReceivedData() {
         // Given
-        Payment payment = getPaymentData("TEST003");
-        paymentRepository.save(payment);
+        PaymentReceived paymentReceived = getPaymentReceivedData("TEST003");
+        paymentReceivedRepository.save(paymentReceived);
 
         // When
-        paymentRepository.delete(payment);
+        paymentReceivedRepository.delete(paymentReceived);
 
         // Then
-        Optional<Payment> found = paymentRepository.findById("TEST003");
+        Optional<PaymentReceived> found = paymentReceivedRepository.findById("TEST003");
         assertThat(found).isEmpty();
     }
 
     @Test
     @DisplayName("全ての入金データを取得できること")
-    void testSelectAllPaymentData() {
+    void testSelectAllPaymentReceivedData() {
         // Given
-        paymentRepository.save(getPaymentData("TEST004"));
-        paymentRepository.save(getPaymentData("TEST005"));
+        paymentReceivedRepository.save(getPaymentReceivedData("TEST004"));
+        paymentReceivedRepository.save(getPaymentReceivedData("TEST005"));
 
         // When
-        List<Payment> allPayments = paymentRepository.selectAll().asList();
+        List<PaymentReceived> allPaymentReceiveds = paymentReceivedRepository.selectAll().asList();
 
         // Then
-        assertThat(allPayments).hasSize(2);
+        assertThat(allPaymentReceiveds).hasSize(2);
     }
 
 
-    private Payment getPaymentData(String paymentNumber) {
-        return TestDataFactoryImpl.getPaymentData(paymentNumber);
+    private PaymentReceived getPaymentReceivedData(String paymentReceivedNumber) {
+        return TestDataFactoryImpl.getPaymentData(paymentReceivedNumber);
     }
 }

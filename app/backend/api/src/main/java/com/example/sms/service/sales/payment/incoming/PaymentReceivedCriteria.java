@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  */
 @Value
 @Builder
-public class PaymentCriteria {
+public class PaymentReceivedCriteria {
     String paymentNumber; // 入金番号
     LocalDateTime paymentDate; // 入金日
     String departmentCode; // 部門ID

@@ -9,7 +9,7 @@ import lombok.Value;
  */
 @Value
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class PaymentNumber {
+public class PaymentReceivedNumber {
     String value;
 
     /**
@@ -18,10 +18,10 @@ public class PaymentNumber {
      * @param value 入金番号
      * @return 入金番号の値オブジェクト
      */
-    public static PaymentNumber of(String value) {
+    public static PaymentReceivedNumber of(String value) {
         if (value == null || value.isEmpty()) {
             throw new IllegalArgumentException("入金番号は必須です");
         }
-        return new PaymentNumber(value);
+        return new PaymentReceivedNumber(value);
     }
 }

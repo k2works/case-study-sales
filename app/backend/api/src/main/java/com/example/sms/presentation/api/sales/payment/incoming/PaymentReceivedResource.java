@@ -1,6 +1,6 @@
 package com.example.sms.presentation.api.sales.payment.incoming;
 
-import com.example.sms.domain.model.sales.payment.incoming.Payment;
+import com.example.sms.domain.model.sales.payment.incoming.PaymentReceived;
 import com.example.sms.domain.model.sales.payment.incoming.PaymentMethodType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PaymentResource {
+public class PaymentReceivedResource {
     @NotNull
     @Schema(description = "入金番号")
     private String paymentNumber;
@@ -62,20 +62,20 @@ public class PaymentResource {
     @Schema(description = "入金口座名")
     private String paymentAccountName;
 
-    public static PaymentResource from(Payment payment) {
-        return PaymentResource.builder()
-                .paymentNumber(payment.getPaymentNumber().getValue())
-                .paymentDate(payment.getPaymentDate())
-                .departmentCode(payment.getDepartmentId().getDeptCode().getValue())
-                .departmentStartDate(payment.getDepartmentId().getDepartmentStartDate().getValue())
-                .customerCode(payment.getCustomerCode().getCode().getValue())
-                .customerBranchNumber(payment.getCustomerCode().getBranchNumber())
-                .paymentMethodType(payment.getPaymentMethodType())
-                .paymentAccountCode(payment.getPaymentAccountCode())
-                .paymentAmount(payment.getPaymentAmount().getAmount())
-                .offsetAmount(payment.getOffsetAmount().getAmount())
-                .customerName(payment.getCustomer() != null ? payment.getCustomer().getCustomerName().getValue().getName() : null)
-                .paymentAccountName(payment.getPaymentAccount() != null ? payment.getPaymentAccount().getAccountName() : null)
+    public static PaymentReceivedResource from(PaymentReceived paymentReceived) {
+        return PaymentReceivedResource.builder()
+                .paymentNumber(paymentReceived.getPaymentNumber().getValue())
+                .paymentDate(paymentReceived.getPaymentDate())
+                .departmentCode(paymentReceived.getDepartmentId().getDeptCode().getValue())
+                .departmentStartDate(paymentReceived.getDepartmentId().getDepartmentStartDate().getValue())
+                .customerCode(paymentReceived.getCustomerCode().getCode().getValue())
+                .customerBranchNumber(paymentReceived.getCustomerCode().getBranchNumber())
+                .paymentMethodType(paymentReceived.getPaymentMethodType())
+                .paymentAccountCode(paymentReceived.getPaymentAccountCode())
+                .paymentAmount(paymentReceived.getPaymentAmount().getAmount())
+                .offsetAmount(paymentReceived.getOffsetAmount().getAmount())
+                .customerName(paymentReceived.getCustomer() != null ? paymentReceived.getCustomer().getCustomerName().getValue().getName() : null)
+                .paymentAccountName(paymentReceived.getPaymentAccount() != null ? paymentReceived.getPaymentAccount().getAccountName() : null)
                 .build();
     }
 }

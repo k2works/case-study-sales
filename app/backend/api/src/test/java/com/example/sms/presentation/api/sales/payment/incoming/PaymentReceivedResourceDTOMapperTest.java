@@ -2,11 +2,11 @@ package com.example.sms.presentation.api.sales.payment.incoming;
 
 import com.example.sms.domain.model.master.department.DepartmentId;
 import com.example.sms.domain.model.master.partner.customer.CustomerCode;
-import com.example.sms.domain.model.sales.payment.incoming.Payment;
+import com.example.sms.domain.model.sales.payment.incoming.PaymentReceived;
 import com.example.sms.domain.model.sales.payment.incoming.PaymentMethodType;
-import com.example.sms.domain.model.sales.payment.incoming.PaymentNumber;
+import com.example.sms.domain.model.sales.payment.incoming.PaymentReceivedNumber;
 import com.example.sms.domain.type.money.Money;
-import com.example.sms.service.sales.payment.incoming.PaymentCriteria;
+import com.example.sms.service.sales.payment.incoming.PaymentReceivedCriteria;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -15,13 +15,13 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("入金データDTOマッパーテスト")
-class PaymentResourceDTOMapperTest {
+class PaymentReceivedResourceDTOMapperTest {
 
     @Test
     @DisplayName("入金データリソースを入金データエンティティに変換する")
-    void testConvertToEntity_validResource_shouldReturnPayment() {
+    void testConvertToEntity_validResource_shouldReturnPaymentReceived() {
         // Arrange
-        String paymentNumber = "PAY001";
+        String paymentReceivedNumber = "PAY001";
         LocalDateTime paymentDate = LocalDateTime.of(2023,1,1,0,0);
         String departmentCode = "10000";
         LocalDateTime departmentStartDate = LocalDateTime.of(2023,1,1,0,0);
@@ -32,8 +32,8 @@ class PaymentResourceDTOMapperTest {
         Integer paymentAmount = 10000;
         Integer offsetAmount = 5000;
 
-        PaymentResource resource = PaymentResource.builder()
-                .paymentNumber(paymentNumber)
+        PaymentReceivedResource resource = PaymentReceivedResource.builder()
+                .paymentNumber(paymentReceivedNumber)
                 .paymentDate(paymentDate)
                 .departmentCode(departmentCode)
                 .departmentStartDate(departmentStartDate)
@@ -46,27 +46,27 @@ class PaymentResourceDTOMapperTest {
                 .build();
 
         // Act
-        Payment payment = PaymentResourceDTOMapper.convertToEntity(resource);
+        PaymentReceived paymentReceived = PaymentReceivedResourceDTOMapper.convertToEntity(resource);
 
         // Assert
-        assertNotNull(payment);
-        assertEquals(PaymentNumber.of(paymentNumber), payment.getPaymentNumber());
-        assertEquals(paymentDate, payment.getPaymentDate());
-        assertEquals(DepartmentId.of(departmentCode, departmentStartDate), payment.getDepartmentId());
-        assertEquals(CustomerCode.of(customerCode, customerBranchNumber), payment.getCustomerCode());
-        assertEquals(PaymentMethodType.fromCode(Integer.parseInt(paymentMethodType)), payment.getPaymentMethodType());
-        assertEquals(paymentAccountCode, payment.getPaymentAccountCode());
-        assertEquals(Money.of(paymentAmount), payment.getPaymentAmount());
-        assertEquals(Money.of(offsetAmount), payment.getOffsetAmount());
-        assertNull(payment.getCustomer());
-        assertNull(payment.getPaymentAccount());
+        assertNotNull(paymentReceived);
+        assertEquals(PaymentReceivedNumber.of(paymentReceivedNumber), paymentReceived.getPaymentNumber());
+        assertEquals(paymentDate, paymentReceived.getPaymentDate());
+        assertEquals(DepartmentId.of(departmentCode, departmentStartDate), paymentReceived.getDepartmentId());
+        assertEquals(CustomerCode.of(customerCode, customerBranchNumber), paymentReceived.getCustomerCode());
+        assertEquals(PaymentMethodType.fromCode(Integer.parseInt(paymentMethodType)), paymentReceived.getPaymentMethodType());
+        assertEquals(paymentAccountCode, paymentReceived.getPaymentAccountCode());
+        assertEquals(Money.of(paymentAmount), paymentReceived.getPaymentAmount());
+        assertEquals(Money.of(offsetAmount), paymentReceived.getOffsetAmount());
+        assertNull(paymentReceived.getCustomer());
+        assertNull(paymentReceived.getPaymentAccount());
     }
 
     @Test
     @DisplayName("入金データリソースにnull値がある場合は例外をスローする")
     void testConvertToEntity_nullValuesInResource_shouldThrowException() {
         // Arrange
-        PaymentResource resource = PaymentResource.builder()
+        PaymentReceivedResource resource = PaymentReceivedResource.builder()
                 .paymentNumber(null)
                 .paymentDate(null)
                 .departmentCode(null)
@@ -81,7 +81,7 @@ class PaymentResourceDTOMapperTest {
 
         // Act & Assert
         assertThrows(NullPointerException.class, () -> {
-            PaymentResourceDTOMapper.convertToEntity(resource);
+            PaymentReceivedResourceDTOMapper.convertToEntity(resource);
         });
     }
 
@@ -89,7 +89,7 @@ class PaymentResourceDTOMapperTest {
     @DisplayName("入金データリソースの支払方法区分が無効な場合は例外をスローする")
     void testConvertToEntity_invalidPaymentMethodType_shouldThrowException() {
         // Arrange
-        PaymentResource resource = PaymentResource.builder()
+        PaymentReceivedResource resource = PaymentReceivedResource.builder()
                 .paymentNumber("PAY001")
                 .paymentDate(LocalDateTime.of(2023,1,1,0,0))
                 .departmentCode("10000")
@@ -104,23 +104,23 @@ class PaymentResourceDTOMapperTest {
 
         // Act & Assert
         assertThrows(NullPointerException.class, () -> {
-            PaymentResourceDTOMapper.convertToEntity(resource);
+            PaymentReceivedResourceDTOMapper.convertToEntity(resource);
         });
     }
 
     @Test
     @DisplayName("入金検索条件リソースを入金検索条件に変換する")
-    void testConvertToCriteria_validResource_shouldReturnPaymentCriteria() {
+    void testConvertToCriteria_validResource_shouldReturnPaymentReceivedCriteria() {
         // Arrange
-        String paymentNumber = "PAY001";
+        String paymentReceivedNumber = "PAY001";
         LocalDateTime paymentDate = LocalDateTime.of(2023,1,1,0,0);
         String departmentCode = "10000";
         String customerCode = "101";
         PaymentMethodType paymentMethodType = PaymentMethodType.振込;
         String paymentAccountCode = "ACC001";
 
-        PaymentCriteriaResource resource = new PaymentCriteriaResource();
-        resource.setPaymentNumber(paymentNumber);
+        PaymentReceivedCriteriaResource resource = new PaymentReceivedCriteriaResource();
+        resource.setPaymentNumber(paymentReceivedNumber);
         resource.setPaymentDate(paymentDate);
         resource.setDepartmentCode(departmentCode);
         resource.setCustomerCode(customerCode);
@@ -128,11 +128,11 @@ class PaymentResourceDTOMapperTest {
         resource.setPaymentAccountCode(paymentAccountCode);
 
         // Act
-        PaymentCriteria criteria = PaymentResourceDTOMapper.convertToCriteria(resource);
+        PaymentReceivedCriteria criteria = PaymentReceivedResourceDTOMapper.convertToCriteria(resource);
 
         // Assert
         assertNotNull(criteria);
-        assertEquals(paymentNumber, criteria.getPaymentNumber());
+        assertEquals(paymentReceivedNumber, criteria.getPaymentNumber());
         assertEquals(paymentDate, criteria.getPaymentDate());
         assertEquals(departmentCode, criteria.getDepartmentCode());
         assertEquals(customerCode, criteria.getCustomerCode());
@@ -144,10 +144,10 @@ class PaymentResourceDTOMapperTest {
     @DisplayName("入金検索条件リソースがnullの場合はnullを返す")
     void testConvertToCriteria_nullResource_shouldReturnNull() {
         // Arrange
-        PaymentCriteriaResource resource = null;
+        PaymentReceivedCriteriaResource resource = null;
 
         // Act
-        PaymentCriteria criteria = PaymentResourceDTOMapper.convertToCriteria(resource);
+        PaymentReceivedCriteria criteria = PaymentReceivedResourceDTOMapper.convertToCriteria(resource);
 
         // Assert
         assertNull(criteria);
@@ -157,11 +157,11 @@ class PaymentResourceDTOMapperTest {
     @DisplayName("入金検索条件リソースのフィールドがnullの場合も正常に変換する")
     void testConvertToCriteria_nullFieldsInResource_shouldHandleNullFields() {
         // Arrange
-        PaymentCriteriaResource resource = new PaymentCriteriaResource();
+        PaymentReceivedCriteriaResource resource = new PaymentReceivedCriteriaResource();
         // すべてのフィールドがnull
 
         // Act
-        PaymentCriteria criteria = PaymentResourceDTOMapper.convertToCriteria(resource);
+        PaymentReceivedCriteria criteria = PaymentReceivedResourceDTOMapper.convertToCriteria(resource);
 
         // Assert
         assertNotNull(criteria);

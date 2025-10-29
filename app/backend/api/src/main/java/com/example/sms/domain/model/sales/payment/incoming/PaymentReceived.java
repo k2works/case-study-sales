@@ -19,8 +19,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 @Builder(toBuilder = true)
-public class Payment {
-    PaymentNumber paymentNumber; // 入金番号
+public class PaymentReceived {
+    PaymentReceivedNumber paymentNumber; // 入金番号
     LocalDateTime paymentDate; // 入金日
     DepartmentId departmentId; // 部門ID
     CustomerCode customerCode; // 顧客コード
@@ -36,11 +36,11 @@ public class Payment {
     /**
      * ファクトリーメソッド
      */
-    public static Payment of(String paymentNumber, LocalDateTime paymentDate, String departmentCode, LocalDateTime departmentStartDate,
+    public static PaymentReceived of(String paymentNumber, LocalDateTime paymentDate, String departmentCode, LocalDateTime departmentStartDate,
                              String customerCode, Integer customerBranchNumber, Integer paymentMethodType,
                              String paymentAccountCode, Integer paymentAmount, Integer offsetAmount) {
-        return new Payment(
-                PaymentNumber.of(paymentNumber),
+        return new PaymentReceived(
+                PaymentReceivedNumber.of(paymentNumber),
                 paymentDate,
                 DepartmentId.of(departmentCode, departmentStartDate),
                 CustomerCode.of(customerCode, customerBranchNumber),
@@ -56,8 +56,8 @@ public class Payment {
     /**
      * 関連エンティティを含むファクトリーメソッド
      */
-    public static Payment of(Payment payment, Customer customer, PaymentAccount paymentAccount) {
-        return new Payment(
+    public static PaymentReceived of(PaymentReceived payment, Customer customer, PaymentAccount paymentAccount) {
+        return new PaymentReceived(
                 payment.getPaymentNumber(),
                 payment.getPaymentDate(),
                 payment.getDepartmentId(),

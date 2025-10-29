@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.sms.infrastructure.datasource.sales.payment.incoming.PaymentCustomMapper">
-    
+<mapper namespace="com.example.sms.infrastructure.datasource.sales.payment.incoming.PaymentReceivedCustomMapper">
+
     <!-- BaseResultMap -->
     <resultMap
             id="BaseResultMap"
-            type="com.example.sms.infrastructure.datasource.sales.payment.incoming.PaymentCustomEntity"
+            type="com.example.sms.infrastructure.datasource.sales.payment.incoming.PaymentReceivedCustomEntity"
             extends="com.example.sms.infrastructure.datasource.autogen.mapper.入金データMapper.BaseResultMap">
         <association property="部門マスタ"
                      javaType="com.example.sms.infrastructure.datasource.master.department.DepartmentCustomEntity"
@@ -26,7 +26,7 @@
 
     <!-- selectByPrimaryKey -->
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select 
+        select
         <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.入金データMapper.Base_Column_List" />
         from public.入金データ
         where 入金番号 = #{入金番号,jdbcType=VARCHAR}
@@ -34,14 +34,14 @@
 
     <!-- selectAll -->
     <select id="selectAll" resultMap="BaseResultMap">
-        select 
+        select
         <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.入金データMapper.Base_Column_List" />
         from public.入金データ
     </select>
 
     <!-- selectByCustomer -->
     <select id="selectByCustomer" resultMap="BaseResultMap">
-        select 
+        select
         <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.入金データMapper.Base_Column_List" />
         from public.入金データ
         where 顧客コード = #{customerCode,jdbcType=VARCHAR}
@@ -50,14 +50,14 @@
 
     <!-- selectByAccount -->
     <select id="selectByAccount" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select 
+        select
         <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.入金データMapper.Base_Column_List" />
         from public.入金データ
         where 入金口座コード = #{accountCode,jdbcType=VARCHAR}
     </select>
 
     <!-- insert -->
-    <insert id="insert" parameterType="com.example.sms.infrastructure.datasource.sales.payment.incoming.PaymentCustomEntity">
+    <insert id="insert" parameterType="com.example.sms.infrastructure.datasource.sales.payment.incoming.PaymentReceivedCustomEntity">
         insert into public.入金データ (
             入金番号,
             入金日,
@@ -99,7 +99,7 @@
     </insert>
 
     <!-- updateByPrimaryKeyForOptimisticLock -->
-    <update id="updateByPrimaryKeyForOptimisticLock" parameterType="com.example.sms.infrastructure.datasource.sales.payment.incoming.PaymentCustomEntity">
+    <update id="updateByPrimaryKeyForOptimisticLock" parameterType="com.example.sms.infrastructure.datasource.sales.payment.incoming.PaymentReceivedCustomEntity">
         update public.入金データ
         set 入金日 = #{入金日,jdbcType=TIMESTAMP},
             部門コード = #{部門コード,jdbcType=VARCHAR},
@@ -126,7 +126,7 @@
         select
         <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.入金データMapper.Base_Column_List" />
         from public.入金データ
-            
+
         <where>
             <if test="paymentNumber != null">
                 入金番号 = #{paymentNumber,jdbcType=VARCHAR}
