@@ -35,6 +35,8 @@ import com.example.sms.domain.model.sales.order.OrderNumber;
 import com.example.sms.domain.model.procurement.order.PurchaseOrderDate;
 import com.example.sms.domain.model.procurement.order.DesignatedDeliveryDate;
 import com.example.sms.domain.model.procurement.payment.PurchasePayment;
+import com.example.sms.domain.model.procurement.receipt.Purchase;
+import com.example.sms.domain.model.procurement.receipt.PurchaseLine;
 import com.example.sms.domain.model.master.partner.supplier.SupplierCode;
 import com.example.sms.domain.type.money.Money;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
@@ -62,6 +64,7 @@ import com.example.sms.service.sales.sales.SalesRepository;
 import com.example.sms.service.sales.order.SalesOrderRepository;
 import com.example.sms.service.procurement.order.PurchaseOrderRepository;
 import com.example.sms.service.procurement.payment.PurchasePaymentRepository;
+import com.example.sms.service.procurement.receipt.PurchaseRepository;
 import com.example.sms.service.system.audit.AuditRepository;
 import com.example.sms.service.system.user.UserRepository;
 import com.example.sms.infrastructure.datasource.autogen.mapper.棚番マスタMapper;
@@ -112,6 +115,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
     PaymentReceivedRepository paymentIncomingRepository;
     @Autowired
     PurchaseOrderRepository purchaseOrderRepository;
+    @Autowired
+    PurchaseRepository purchaseRepository;
     @Autowired
     PurchasePaymentRepository purchasePaymentRepository;
     @Autowired
@@ -1592,46 +1597,44 @@ public class TestDataFactoryImpl implements TestDataFactory {
     }
 
     private void setUpPurchase() {
-        purchaseOrderRepository.deleteAll();
-        List<PurchaseOrder> purchases = getPurchases();
-        purchases.forEach(purchaseOrderRepository::save);
+        purchaseRepository.deleteAll();
+        List<Purchase> purchases = getPurchases();
+        purchases.forEach(purchaseRepository::save);
     }
 
-    private List<PurchaseOrder> getPurchases() {
-        List<PurchaseOrder> purchases = new ArrayList<>();
-        IntFunction<PurchaseOrder> getPurchase = i -> getPurchase("PU" + String.format("%08d", i));
+    private List<Purchase> getPurchases() {
+        List<Purchase> purchases = new ArrayList<>();
+        IntFunction<Purchase> getPurchase = i -> getPurchase("PU" + String.format("%08d", i));
         IntStream.range(1, 4).forEach(i -> purchases.add(getPurchase.apply(i)));
         return purchases;
     }
 
-    private PurchaseOrder getPurchase(String purchaseNumber) {
+    private Purchase getPurchase(String purchaseNumber) {
         LocalDateTime now = LocalDateTime.now();
 
-        List<PurchaseOrderLine> lines = List.of(
-                PurchaseOrderLine.of(
+        List<PurchaseLine> lines = List.of(
+                PurchaseLine.of(
                         purchaseNumber,
                         1,
                         1,
-                        "OD25010001",
                         1,
                         "10101001",
+                        "W01",
                         "商品1",
                         1000,
-                        10,
-                        0,
-                        0
+                        10
                 )
         );
 
-        return PurchaseOrder.of(
+        return Purchase.of(
                 purchaseNumber,
                 now,
-                "OD25010001",
                 "001",
-                1,  // 枝番を1に変更（テストデータに合わせる）
+                0,
                 "EMP001",
-                now.plusDays(7),
-                "W01",
+                now,
+                "PO25010001",
+                "10001",
                 10000,
                 1000,
                 "テスト備考",
