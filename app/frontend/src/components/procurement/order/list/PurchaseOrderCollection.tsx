@@ -1,6 +1,6 @@
 import React from "react";
 import { usePurchaseContext } from "../../../../providers/procurement/Purchase.tsx";
-import { PurchaseOrderCollectionView } from "../../../../views/procurement/purchase/list/PurchaseOrderCollection.tsx";
+import { PurchaseOrderCollectionView } from "../../../../views/procurement/order/list/PurchaseOrderCollection.tsx";
 import { PurchaseOrderType } from "../../../../models/procurement/purchase.ts";
 import { showErrorMessage } from "../../../application/utils.ts";
 import { PurchaseOrderSearchModal } from "./PurchaseOrderSearchModal.tsx";

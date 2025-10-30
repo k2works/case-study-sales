@@ -3,7 +3,7 @@ import { PurchaseOrderUploadModal } from "./PurchaseOrderUploadModal.tsx";
 import { usePurchaseContext } from "../../../../providers/procurement/Purchase.tsx";
 import {
     PurchaseOrderUploadCollectionView
-} from "../../../../views/procurement/purchase/upload/PurchaseOrderUploadCollection.tsx";
+} from "../../../../views/procurement/order/upload/PurchaseOrderUploadCollection.tsx";
 
 export const PurchaseOrderUploadCollection: React.FC = () => {
     const { uploadResults, setUploadResults, setUploadModalIsOpen } = usePurchaseContext();

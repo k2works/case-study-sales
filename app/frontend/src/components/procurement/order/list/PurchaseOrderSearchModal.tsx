@@ -1,6 +1,6 @@
 import React from "react";
 import Modal from "react-modal";
-import { PurchaseOrderSearchSingleView } from "../../../../views/procurement/purchase/list/PurchaseOrderSearch.tsx";
+import { PurchaseOrderSearchSingleView } from "../../../../views/procurement/order/list/PurchaseOrderSearch.tsx";
 import { showErrorMessage } from "../../../application/utils.ts";
 import { usePurchaseContext } from "../../../../providers/procurement/Purchase.tsx";
 import { PurchaseOrderCriteriaType } from "../../../../models/procurement/purchase.ts";

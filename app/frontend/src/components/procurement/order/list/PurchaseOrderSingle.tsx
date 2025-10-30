@@ -1,6 +1,6 @@
 import React from "react";
 import { usePurchaseContext } from "../../../../providers/procurement/Purchase.tsx";
-import { PurchaseOrderSingleView } from "../../../../views/procurement/purchase/list/PurchaseOrderSingle.tsx";
+import { PurchaseOrderSingleView } from "../../../../views/procurement/order/list/PurchaseOrderSingle.tsx";
 import { showErrorMessage } from "../../../application/utils.ts";
 import {useEmployeeContext} from "../../../../providers/master/Employee.tsx";
 import {useVendorContext} from "../../../../providers/master/partner/Vendor.tsx";

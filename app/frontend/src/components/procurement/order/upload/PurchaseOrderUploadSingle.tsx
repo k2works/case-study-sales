@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { usePurchaseContext } from "../../../../providers/procurement/Purchase.tsx";
-import { PurchaseOrderUploadSingleView } from "../../../../views/procurement/purchase/upload/PurchaseOrderUploadSingle.tsx";
+import { PurchaseOrderUploadSingleView } from "../../../../views/procurement/order/upload/PurchaseOrderUploadSingle.tsx";
 
 export const PurchaseOrderUploadSingle: React.FC = () => {
     const {
