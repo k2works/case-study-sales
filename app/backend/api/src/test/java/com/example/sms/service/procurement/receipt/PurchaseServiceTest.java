@@ -2,10 +2,9 @@ package com.example.sms.service.procurement.receipt;
 
 import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactory;
-import com.example.sms.domain.model.procurement.order.PurchaseOrder;
-import com.example.sms.domain.model.procurement.order.PurchaseOrderLine;
-import com.example.sms.domain.model.procurement.order.PurchaseOrderList;
-import com.example.sms.service.procurement.order.PurchaseOrderCriteria;
+import com.example.sms.domain.model.procurement.receipt.Purchase;
+import com.example.sms.domain.model.procurement.receipt.PurchaseLine;
+import com.example.sms.domain.model.procurement.receipt.PurchaseList;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -32,73 +31,73 @@ class PurchaseServiceTest {
     class PurchaseTest {
         @BeforeEach
         void setUp() {
-            testDataFactory.setUpForPurchaseOrderService();
+            testDataFactory.setUpForPurchaseService();
         }
 
         @Test
         @DisplayName("仕入一覧を取得できる")
-        void shouldRetrieveAllPurchaseOrders() {
-            PurchaseOrderList result = purchaseService.selectAll();
+        void shouldRetrieveAllPurchases() {
+            PurchaseList result = purchaseService.selectAll();
             assertNotNull(result);
             assertTrue(result.asList().size() >= 0);
         }
 
         @Test
         @DisplayName("仕入一覧をページングで取得できる")
-        void shouldRetrieveAllPurchaseOrdersWithPaging() {
-            PageInfo<PurchaseOrder> result = purchaseService.selectAllWithPageInfo();
+        void shouldRetrieveAllPurchasesWithPaging() {
+            PageInfo<Purchase> result = purchaseService.selectAllWithPageInfo();
             assertNotNull(result);
             assertTrue(result.getList().size() >= 0);
         }
 
         @Test
         @DisplayName("仕入を新規登録できる")
-        void shouldRegisterNewPurchaseOrder() {
-            PurchaseOrder newPurchaseOrder = getPurchaseOrder("PO00000099");
+        void shouldRegisterNewPurchase() {
+            Purchase newPurchase = getPurchase("PU00000099");
 
-            purchaseService.register(newPurchaseOrder);
+            purchaseService.register(newPurchase);
 
-            assertNotNull(newPurchaseOrder.getPurchaseOrderNumber());
-            PurchaseOrder result = purchaseService.find(newPurchaseOrder.getPurchaseOrderNumber().getValue());
+            assertNotNull(newPurchase.getPurchaseNumber());
+            Purchase result = purchaseService.find(newPurchase.getPurchaseNumber().getValue());
             assertNotNull(result);
-            assertEquals(newPurchaseOrder.getPurchaseOrderNumber().getValue(), result.getPurchaseOrderNumber().getValue());
+            assertEquals(newPurchase.getPurchaseNumber().getValue(), result.getPurchaseNumber().getValue());
         }
 
         @Test
         @DisplayName("仕入番号nullで新規登録できる")
-        void shouldRegisterNewPurchaseOrderWithNullPurchaseOrderNumber() {
-            PurchaseOrder newPurchaseOrder = getPurchaseOrder(null);
+        void shouldRegisterNewPurchaseWithNullPurchaseNumber() {
+            Purchase newPurchase = getPurchase(null);
 
-            purchaseService.register(newPurchaseOrder);
+            purchaseService.register(newPurchase);
 
-            PurchaseOrderList result = purchaseService.selectAll();
+            PurchaseList result = purchaseService.selectAll();
             assertNotNull(result);
         }
 
         @Test
         @DisplayName("仕入の登録情報を編集できる")
-        void shouldEditPurchaseOrderDetails() {
-            PurchaseOrder purchaseOrder = getPurchaseOrder("PO00000099");
-            purchaseService.register(purchaseOrder);
+        void shouldEditPurchaseDetails() {
+            Purchase purchase = getPurchase("PU00000099");
+            purchaseService.register(purchase);
 
-            PurchaseOrder updatedPurchaseOrder = PurchaseOrder.of(
-                    purchaseOrder.getPurchaseOrderNumber().getValue(),
-                    purchaseOrder.getPurchaseOrderDate().getValue(),
-                    purchaseOrder.getSalesOrderNumber().getValue(),
+            Purchase updatedPurchase = Purchase.of(
+                    purchase.getPurchaseNumber().getValue(),
+                    purchase.getPurchaseDate().getValue(),
                     "003", // 更新された仕入先コード
                     0,
-                    purchaseOrder.getPurchaseManagerCode().getValue(),
-                    purchaseOrder.getDesignatedDeliveryDate().getValue(),
-                    purchaseOrder.getWarehouseCode().getValue(),
-                    200000, // 更新された発注金額合計
+                    purchase.getPurchaseManagerCode().getValue(),
+                    purchase.getStartDate(),
+                    purchase.getPurchaseOrderNumber() != null ? purchase.getPurchaseOrderNumber().getValue() : null,
+                    purchase.getDepartmentCode().getValue(),
+                    200000, // 更新された仕入金額合計
                     20000, // 更新された消費税合計
                     "Updated remarks", // 更新された備考
-                    purchaseOrder.getPurchaseOrderLines()
+                    purchase.getPurchaseLines()
             );
 
-            purchaseService.save(updatedPurchaseOrder);
+            purchaseService.save(updatedPurchase);
 
-            PurchaseOrder result = purchaseService.find(purchaseOrder.getPurchaseOrderNumber().getValue());
+            Purchase result = purchaseService.find(purchase.getPurchaseNumber().getValue());
             assertNotNull(result);
             assertEquals("003", result.getSupplierCode().getCode().getValue());
             assertEquals("Updated remarks", result.getRemarks());
@@ -106,44 +105,44 @@ class PurchaseServiceTest {
 
         @Test
         @DisplayName("仕入を削除できる")
-        void shouldDeletePurchaseOrder() {
-            PurchaseOrder purchaseOrder = getPurchaseOrder("PO00000099");
-            purchaseService.register(purchaseOrder);
+        void shouldDeletePurchase() {
+            Purchase purchase = getPurchase("PU00000099");
+            purchaseService.register(purchase);
 
-            purchaseService.delete(purchaseOrder);
+            purchaseService.delete(purchase);
 
-            PurchaseOrder result = purchaseService.find(purchaseOrder.getPurchaseOrderNumber().getValue());
+            Purchase result = purchaseService.find(purchase.getPurchaseNumber().getValue());
             assertNull(result);
         }
 
         @Test
         @DisplayName("条件付きで仕入を検索できる (ページング)")
-        void shouldSearchPurchaseOrdersWithPaging() {
+        void shouldSearchPurchasesWithPaging() {
             String supplierCode = "001";
-            PurchaseOrder purchaseOrder = getPurchaseOrder("PO00000099");
-            PurchaseOrder searchPurchaseOrder = PurchaseOrder.of(
-                    purchaseOrder.getPurchaseOrderNumber().getValue(),
-                    purchaseOrder.getPurchaseOrderDate().getValue(),
-                    purchaseOrder.getSalesOrderNumber().getValue(),
+            Purchase purchase = getPurchase("PU00000099");
+            Purchase searchPurchase = Purchase.of(
+                    purchase.getPurchaseNumber().getValue(),
+                    purchase.getPurchaseDate().getValue(),
                     supplierCode, // 仕入先コード
                     0,
-                    purchaseOrder.getPurchaseManagerCode().getValue(),
-                    purchaseOrder.getDesignatedDeliveryDate().getValue(),
-                    purchaseOrder.getWarehouseCode().getValue(),
-                    purchaseOrder.getTotalPurchaseAmount().getAmount(),
-                    purchaseOrder.getTotalConsumptionTax().getAmount(),
-                    purchaseOrder.getRemarks(),
-                    purchaseOrder.getPurchaseOrderLines()
+                    purchase.getPurchaseManagerCode().getValue(),
+                    purchase.getStartDate(),
+                    purchase.getPurchaseOrderNumber() != null ? purchase.getPurchaseOrderNumber().getValue() : null,
+                    purchase.getDepartmentCode().getValue(),
+                    purchase.getTotalPurchaseAmount().getAmount(),
+                    purchase.getTotalConsumptionTax().getAmount(),
+                    purchase.getRemarks(),
+                    purchase.getPurchaseLines()
             );
-            purchaseService.register(searchPurchaseOrder);
+            purchaseService.register(searchPurchase);
 
             // 検索条件の設定
-            PurchaseOrderCriteria criteria = PurchaseOrderCriteria.builder()
+            PurchaseCriteria criteria = PurchaseCriteria.builder()
                     .supplierCode(supplierCode) // 仕入先コードを設定
                     .build();
 
             // 検索結果の呼び出し
-            PageInfo<PurchaseOrder> result = purchaseService.searchPurchaseOrderWithPageInfo(criteria);
+            PageInfo<Purchase> result = purchaseService.searchPurchaseWithPageInfo(criteria);
 
             // 検索結果のアサーション
             assertNotNull(result);
@@ -155,55 +154,53 @@ class PurchaseServiceTest {
     /**
      * テスト用の仕入データを生成
      */
-    private PurchaseOrder getPurchaseOrder(String purchaseOrderNumber) {
-        // purchaseOrderNumberがnullの場合はダミーの番号を使用してPurchaseOrderLineを作成
-        String tempPurchaseOrderNumber = (purchaseOrderNumber != null) ? purchaseOrderNumber : "PO00000000";
+    private Purchase getPurchase(String purchaseNumber) {
+        // purchaseNumberがnullの場合はダミーの番号を使用してPurchaseLineを作成
+        String tempPurchaseNumber = (purchaseNumber != null) ? purchaseNumber : "PU00000000";
 
-        List<PurchaseOrderLine> lines = List.of(
-                PurchaseOrderLine.of(
-                        tempPurchaseOrderNumber,
+        List<PurchaseLine> lines = List.of(
+                PurchaseLine.of(
+                        tempPurchaseNumber,
+                        1, // purchaseLineNumber
+                        1, // purchaseLineDisplayNumber
                         1, // purchaseOrderLineNumber
-                        1, // purchaseOrderLineDisplayNumber
-                        "OD00000001", // salesOrderNumber
-                        1, // salesOrderLineNumber
                         "99999001", // productCode
+                        "W01", // warehouseCode
                         "商品1", // productName
                         3000, // purchaseUnitPrice
-                        10, // purchaseOrderQuantity
-                        0, // receivedQuantity
-                        0 // completionFlag
+                        10 // purchaseQuantity
                 )
         );
 
-        // nullの場合はbuilderを使ってpurchaseOrderNumberをnullのままにする
-        if (purchaseOrderNumber == null) {
-            return PurchaseOrder.builder()
-                    .purchaseOrderNumber(null)
-                    .purchaseOrderDate(com.example.sms.domain.model.procurement.order.PurchaseOrderDate.of(LocalDateTime.now()))
-                    .salesOrderNumber(com.example.sms.domain.model.sales.order.OrderNumber.of("OD00000001"))
+        // nullの場合はbuilderを使ってpurchaseNumberをnullのままにする
+        if (purchaseNumber == null) {
+            return Purchase.builder()
+                    .purchaseNumber(null)
+                    .purchaseDate(com.example.sms.domain.model.procurement.receipt.PurchaseDate.of(LocalDateTime.now()))
                     .supplierCode(com.example.sms.domain.model.master.partner.supplier.SupplierCode.of("001", 0))
                     .purchaseManagerCode(com.example.sms.domain.model.master.employee.EmployeeCode.of("EMP001"))
-                    .designatedDeliveryDate(com.example.sms.domain.model.procurement.order.DesignatedDeliveryDate.of(LocalDateTime.now().plusDays(7)))
-                    .warehouseCode(com.example.sms.domain.model.master.warehouse.WarehouseCode.of("W01"))
+                    .startDate(LocalDateTime.now())
+                    .purchaseOrderNumber(com.example.sms.domain.model.procurement.order.PurchaseOrderNumber.of("PO00000001"))
+                    .departmentCode(com.example.sms.domain.model.master.department.DepartmentCode.of("10001"))
                     .totalPurchaseAmount(com.example.sms.domain.type.money.Money.of(30000))
                     .totalConsumptionTax(com.example.sms.domain.type.money.Money.of(3000))
                     .remarks("Test remarks")
-                    .purchaseOrderLines(lines)
+                    .purchaseLines(lines)
                     .build();
         }
 
-        return PurchaseOrder.of(
-                purchaseOrderNumber,
+        return Purchase.of(
+                purchaseNumber,
                 LocalDateTime.now(),
-                "OD00000001",
-                "001",
-                0,
-                "EMP001", // 修正: EMPから始まる社員コード
-                LocalDateTime.now().plusDays(7),
-                "W01", // 修正: 倉庫コードはW+2桁の数字
-                30000,
-                3000,
-                "Test remarks",
+                "001", // supplierCode
+                0, // supplierBranchNumber
+                "EMP001", // purchaseManagerCode
+                LocalDateTime.now(), // startDate
+                "PO00000001", // purchaseOrderNumber
+                "10001", // departmentCode
+                30000, // totalPurchaseAmount
+                3000, // totalConsumptionTax
+                "Test remarks", // remarks
                 lines
         );
     }

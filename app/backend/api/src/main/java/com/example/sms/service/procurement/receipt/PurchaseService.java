@@ -132,7 +132,7 @@ public class PurchaseService {
         LocalDateTime purchaseDate = Objects.requireNonNull(Objects.requireNonNull(purchase.getPurchaseDate()).getValue());
         LocalDateTime yearMonth = YearMonth.of(purchaseDate.getYear(), purchaseDate.getMonth()).atDay(1).atStartOfDay();
         Integer autoNumber = autoNumberService.getNextDocumentNumber(code, yearMonth);
-        String purchaseNumber = code + yearMonth.format(java.time.format.DateTimeFormatter.ofPattern("yyyyMM")) + String.format("%04d", autoNumber);
+        String purchaseNumber = code + yearMonth.format(java.time.format.DateTimeFormatter.ofPattern("yyMM")) + String.format("%04d", autoNumber);
         autoNumberService.save(AutoNumber.of(code, yearMonth, autoNumber));
         autoNumberService.incrementDocumentNumber(code, yearMonth);
         return purchaseNumber;
