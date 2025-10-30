@@ -4,6 +4,7 @@ import {
     PaymentCriteriaType,
     PaymentSearchCriteriaType,
     PaymentFetchType,
+    convertCodeToPaymentMethodType,
 } from "../../models/procurement/payment.ts";
 import { PaymentService } from "../../services/procurement/payment.ts";
 import { useMessage } from "../../components/application/Message.tsx";
@@ -82,7 +83,7 @@ export const PaymentProvider: React.FC<Props> = ({ children }) => {
         departmentStartDate: new Date().toISOString().split('T')[0],
         supplierCode: "",
         supplierBranchNumber: 1,
-        paymentMethodType: 1,
+        paymentMethodType: "振込",
         paymentAmount: 0,
         totalConsumptionTax: 0,
         paymentCompletedFlag: false,
@@ -102,7 +103,11 @@ export const PaymentProvider: React.FC<Props> = ({ children }) => {
             setLoading(true);
             try {
                 const response = await paymentService.search(criteria, pageNumber, 20);
-                setPayments(response.list.map((payment: PaymentType) => ({ ...payment, checked: false })));
+                setPayments(response.list.map((payment: PaymentType) => ({
+                    ...payment,
+                    paymentMethodType: convertCodeToPaymentMethodType(payment.paymentMethodType),
+                    checked: false
+                })));
                 setPageNation(response);
             } finally {
                 setLoading(false);
@@ -115,7 +120,7 @@ export const PaymentProvider: React.FC<Props> = ({ children }) => {
             ...searchPaymentCriteria,
             paymentCompletedFlag: searchPaymentCriteria.paymentCompletedFlag === "true" ? true :
                                    searchPaymentCriteria.paymentCompletedFlag === "false" ? false : undefined,
-            paymentMethodType: searchPaymentCriteria.paymentMethodType ? Number(searchPaymentCriteria.paymentMethodType) : undefined
+            paymentMethodType: searchPaymentCriteria.paymentMethodType
         };
         setCriteria(mappedCriteria);
     }, [searchPaymentCriteria]);

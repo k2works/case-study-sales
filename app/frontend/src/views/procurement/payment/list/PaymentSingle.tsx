@@ -1,8 +1,8 @@
 import React from 'react';
 import { Message } from "../../../../components/application/Message.tsx";
-import { PaymentType } from "../../../../models/procurement/payment.ts";
+import { PaymentType, PaymentMethodType } from "../../../../models/procurement/payment.ts";
 import { convertToDateInputFormat } from "../../../../components/application/utils.ts";
-import { FormInput, SingleViewHeaderActions, SingleViewHeaderItem } from "../../../Common.tsx";
+import { FormInput, FormSelect, SingleViewHeaderActions, SingleViewHeaderItem } from "../../../Common.tsx";
 
 // 日付を整数からYYYY-MM-DD形式に変換
 const formatDateFromInteger = (dateInt: number | string): string => {
@@ -127,13 +127,12 @@ const Form = ({
                 value={newPayment.supplierBranchNumber}
                 onChange={(e) => setNewPayment({...newPayment, supplierBranchNumber: Number(e.target.value)})}
             />
-            <FormInput
+            <FormSelect
                 label="支払方法区分"
                 id="paymentMethodType"
-                type="number"
-                className="single-view-content-item-form-item-input"
                 value={newPayment.paymentMethodType}
-                onChange={(e) => setNewPayment({...newPayment, paymentMethodType: Number(e.target.value)})}
+                options={PaymentMethodType}
+                onChange={(e) => setNewPayment({...newPayment, paymentMethodType: e})}
             />
             <FormInput
                 label="支払金額"

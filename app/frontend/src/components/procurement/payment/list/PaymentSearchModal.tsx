@@ -3,7 +3,7 @@ import Modal from "react-modal";
 import { PaymentSearchSingleView } from "../../../../views/procurement/payment/list/PaymentSearch.tsx";
 import { showErrorMessage } from "../../../application/utils.ts";
 import { usePaymentContext } from "../../../../providers/procurement/Payment.tsx";
-import { PaymentCriteriaType } from "../../../../models/procurement/payment.ts";
+import { PaymentCriteriaType, convertCodeToPaymentMethodType } from "../../../../models/procurement/payment.ts";
 import { VendorSelectModal } from "./VendorSelectModal.tsx";
 import { useVendorContext } from "../../../../providers/master/partner/Vendor.tsx";
 import { useDepartmentContext } from "../../../../providers/master/Department.tsx";
@@ -44,14 +44,15 @@ export const PaymentSearchModal: React.FC = () => {
         try {
             const mappedCriteria: PaymentCriteriaType = {
                 ...searchPaymentCriteria,
-                paymentMethodType: searchPaymentCriteria.paymentMethodType
-                    ? Number(searchPaymentCriteria.paymentMethodType)
-                    : undefined,
+                paymentMethodType: searchPaymentCriteria.paymentMethodType,
                 paymentCompletedFlag: searchPaymentCriteria.paymentCompletedFlag === "true" ? true :
                                       searchPaymentCriteria.paymentCompletedFlag === "false" ? false : undefined
             };
             const result = await paymentService.search(mappedCriteria);
-            setPayments(result ? result.list : []);
+            setPayments(result ? result.list.map(payment => ({
+                ...payment,
+                paymentMethodType: convertCodeToPaymentMethodType(payment.paymentMethodType)
+            })) : []);
             if (result.list.length === 0) {
                 showErrorMessage(`検索結果は0件です`, setError);
             } else {
