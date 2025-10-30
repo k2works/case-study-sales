@@ -138,7 +138,7 @@ class PurchasePaymentRepositoryTest {
             assertEquals(20251029, actual.getPaymentDate().getValue());
             assertEquals("11102", actual.getDepartmentCode().getValue());
             assertEquals("004", actual.getSupplierCode().getValue());
-            assertEquals(2, actual.getPaymentMethodType().getValue());
+            assertEquals(2, actual.getPaymentMethodType().getCode());
             assertEquals(20000, actual.getPaymentAmount().getAmount());
             assertEquals(2000, actual.getTotalConsumptionTax().getAmount());
             assertTrue(actual.getPaymentCompletedFlag());

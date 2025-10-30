@@ -64,7 +64,7 @@ public class PurchasePaymentResource {
                 .departmentStartDate(payment.getDepartmentStartDate())
                 .supplierCode(payment.getSupplierCode().getCode().getValue())
                 .supplierBranchNumber(payment.getSupplierCode().getBranchNumber())
-                .paymentMethodType(payment.getPaymentMethodType().getValue())
+                .paymentMethodType(payment.getPaymentMethodType().getCode())
                 .paymentAmount(payment.getPaymentAmount().getAmount())
                 .totalConsumptionTax(payment.getTotalConsumptionTax().getAmount())
                 .paymentCompletedFlag(payment.getPaymentCompletedFlag())

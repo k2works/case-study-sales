@@ -75,7 +75,7 @@ class PurchasePaymentServiceTest {
                     payment.getDepartmentStartDate(),
                     "003", // 更新された仕入先コード
                     1,
-                    payment.getPaymentMethodType().getValue(),
+                    payment.getPaymentMethodType().getCode(),
                     200000, // 更新された支払金額
                     20000, // 更新された消費税合計
                     true // 支払完了フラグ
@@ -113,7 +113,7 @@ class PurchasePaymentServiceTest {
                     payment.getDepartmentStartDate(),
                     supplierCode, // 仕入先コード
                     1,
-                    payment.getPaymentMethodType().getValue(),
+                    payment.getPaymentMethodType().getCode(),
                     payment.getPaymentAmount().getAmount(),
                     payment.getTotalConsumptionTax().getAmount(),
                     payment.getPaymentCompletedFlag()

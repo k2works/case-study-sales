@@ -50,7 +50,7 @@ public class PurchasePayment {
                 .departmentCode(DepartmentCode.of(departmentCode))
                 .departmentStartDate(departmentStartDate)
                 .supplierCode(SupplierCode.of(supplierCode, supplierBranchNumber))
-                .paymentMethodType(PurchasePaymentMethodType.of(paymentMethodType))
+                .paymentMethodType(PurchasePaymentMethodType.fromCode(paymentMethodType))
                 .paymentAmount(Money.of(paymentAmount))
                 .totalConsumptionTax(Money.of(totalConsumptionTax))
                 .paymentCompletedFlag(paymentCompletedFlag)

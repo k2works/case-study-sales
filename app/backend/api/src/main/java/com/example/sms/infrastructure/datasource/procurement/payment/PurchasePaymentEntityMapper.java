@@ -26,7 +26,7 @@ public class PurchasePaymentEntityMapper {
                 .departmentStartDate(entity.get部門開始日())
                 .supplierCode(com.example.sms.domain.model.master.partner.supplier.SupplierCode.of(
                         entity.get仕入先コード(), entity.get仕入先枝番()))
-                .paymentMethodType(com.example.sms.domain.model.procurement.payment.PurchasePaymentMethodType.of(entity.get支払方法区分()))
+                .paymentMethodType(com.example.sms.domain.model.procurement.payment.PurchasePaymentMethodType.fromCode(entity.get支払方法区分()))
                 .paymentAmount(com.example.sms.domain.type.money.Money.of(entity.get支払金額()))
                 .totalConsumptionTax(com.example.sms.domain.type.money.Money.of(entity.get消費税合計()))
                 .paymentCompletedFlag(entity.get支払完了フラグ() != null && entity.get支払完了フラグ() == 1)
@@ -60,7 +60,7 @@ public class PurchasePaymentEntityMapper {
         entity.set部門開始日(model.getDepartmentStartDate());
         entity.set仕入先コード(model.getSupplierCode().getValue());
         entity.set仕入先枝番(model.getSupplierCode().getBranchNumber());
-        entity.set支払方法区分(model.getPaymentMethodType().getValue());
+        entity.set支払方法区分(model.getPaymentMethodType().getCode());
         entity.set支払金額(model.getPaymentAmount().getAmount());
         entity.set消費税合計(model.getTotalConsumptionTax().getAmount());
         entity.set支払完了フラグ(model.getPaymentCompletedFlag() != null && model.getPaymentCompletedFlag() ? 1 : 0);
