@@ -46,6 +46,9 @@ import {PurchaseOrderTabContainer} from "../procurement/order/PurchaseOrderTabCo
 import {PurchaseOrderContainer} from "../procurement/order/list/PurchaseOrderContainer.tsx";
 import {PurchaseOrderUploadContainer} from "../procurement/order/upload/PurchaseOrderUploadContainer.tsx";
 import {PurchaseOrderRuleContainer} from "../procurement/order/rule/PurchaseOrderRuleContainer.tsx";
+import {PurchaseTabContainer} from "../procurement/purchase/PurchaseTabContainer.tsx";
+import {PurchaseContainer} from "../procurement/purchase/list/PurchaseContainer.tsx";
+import {PurchaseRuleContainer} from "../procurement/purchase/rule/PurchaseRuleContainer.tsx";
 import {InventoryTabContainer} from "../inventory/InventoryTabContainer.tsx";
 import {InventoryContainer} from "../inventory/list/InventoryContainer.tsx";
 import {InventoryUploadContainer} from "../inventory/upload/InventoryUploadContainer.tsx";
@@ -246,6 +249,22 @@ export const RouteConfig: React.FC = () => {
         )
     }
 
+    const PurchasePage = () => {
+        return (
+            <SiteLayout>
+                <PurchaseContainer/>
+            </SiteLayout>
+        )
+    }
+
+    const PurchaseRulePage = () => {
+        return (
+            <SiteLayout>
+                <PurchaseRuleContainer/>
+            </SiteLayout>
+        )
+    }
+
     const InventoryListPage = () => {
         return (
             <SiteLayout>
@@ -341,6 +360,12 @@ export const RouteConfig: React.FC = () => {
                 <Route path="/purchase-order-upload" element={<RouteAuthGuard component={<PurchaseOrderUploadPage/>} redirectPath="/"
                                                                            allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/purchase-order-rule" element={<RouteAuthGuard component={<PurchaseOrderRulePage/>} redirectPath="/"
+                                                                           allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/purchase" element={<RouteAuthGuard component={<PurchaseTabContainer/>} redirectPath="/"
+                                                                     allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/purchase-list" element={<RouteAuthGuard component={<PurchasePage/>} redirectPath="/"
+                                                                           allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/purchase-rule" element={<RouteAuthGuard component={<PurchaseRulePage/>} redirectPath="/"
                                                                            allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/inventory" element={<RouteAuthGuard component={<InventoryTabContainer/>} redirectPath="/"
                                                                      allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
