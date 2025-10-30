@@ -2,7 +2,7 @@ import React from "react";
 import Modal from "react-modal";
 import { WarehouseCollectionSelectView } from "../../../../views/master/inventory/warehouse/WarehouseSelect.tsx";
 import { useWarehouseContext } from "../../../../providers/master/Warehouse.tsx";
-import { usePurchaseReceiptContext } from "../../../../providers/procurement/Purchase.tsx";
+import { usePurchaseContext } from "../../../../providers/procurement/Purchase.tsx";
 import { WarehouseType } from "../../../../models/master/warehouse.ts";
 
 type WarehouseSelectModalProps = {
@@ -14,7 +14,7 @@ export const WarehouseSelectModal: React.FC<WarehouseSelectModalProps> = ({ type
         newPurchase,
         setNewPurchase,
         selectedLineIndex,
-    } = usePurchaseReceiptContext();
+    } = usePurchaseContext();
 
     const {
         modalIsOpen: warehouseModalIsOpen,

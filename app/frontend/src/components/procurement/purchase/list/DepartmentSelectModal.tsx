@@ -2,7 +2,7 @@ import React from "react";
 import Modal from "react-modal";
 import { DepartmentCollectionSelectView } from "../../../../views/master/department/DepartmentSelect.tsx";
 import { useDepartmentContext } from "../../../../providers/master/Department.tsx";
-import { usePurchaseReceiptContext } from "../../../../providers/procurement/Purchase.tsx";
+import { usePurchaseContext } from "../../../../providers/procurement/Purchase.tsx";
 import { DepartmentType } from "../../../../models/master/department";
 
 type DepartmentSelectModalProps = {
@@ -15,7 +15,7 @@ export const DepartmentSelectModal: React.FC<DepartmentSelectModalProps> = ({ ty
         setNewPurchase,
         searchPurchaseCriteria,
         setSearchPurchaseCriteria,
-    } = usePurchaseReceiptContext();
+    } = usePurchaseContext();
 
     const {
         pageNation: departmentPageNation,

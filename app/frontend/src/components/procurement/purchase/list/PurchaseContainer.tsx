@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { showErrorMessage } from "../../../application/utils.ts";
 import LoadingIndicator from "../../../../views/application/LoadingIndicatior.tsx";
-import { PurchaseReceiptProvider, usePurchaseReceiptContext } from "../../../../providers/procurement/Purchase.tsx";
+import { PurchaseProvider, usePurchaseContext } from "../../../../providers/procurement/Purchase.tsx";
 import { PurchaseCollection } from "./PurchaseCollection.tsx";
 import { DepartmentProvider, useDepartmentContext } from "../../../../providers/master/Department.tsx";
 import { EmployeeProvider, useEmployeeContext } from "../../../../providers/master/Employee.tsx";
@@ -15,7 +15,7 @@ export const PurchaseContainer: React.FC = () => {
             loading,
             setError,
             fetchPurchases,
-        } = usePurchaseReceiptContext();
+        } = usePurchaseContext();
 
         const {
             fetchDepartments,
@@ -66,7 +66,7 @@ export const PurchaseContainer: React.FC = () => {
     };
 
     return (
-        <PurchaseReceiptProvider>
+        <PurchaseProvider>
             <DepartmentProvider>
                 <EmployeeProvider>
                     <VendorProvider>
@@ -78,6 +78,6 @@ export const PurchaseContainer: React.FC = () => {
                     </VendorProvider>
                 </EmployeeProvider>
             </DepartmentProvider>
-        </PurchaseReceiptProvider>
+        </PurchaseProvider>
     );
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import Modal from "react-modal";
 import { PurchaseOrderSingle } from "./PurchaseOrderSingle.tsx";
-import { usePurchaseContext } from "../../../../providers/procurement/Purchase.tsx";
+import { usePurchaseOrderContext } from "../../../../providers/procurement/PurchaseOrder.tsx";
 import {EmployeeSelectModal} from "./EmployeeSelectModal.tsx";
 import {VendorSelectModal} from "./VendorSelectModal.tsx";
 import {ProductSelectModal} from "./ProductSelectModal.tsx";
@@ -12,7 +12,7 @@ export const PurchaseOrderEditModal: React.FC = () => {
         setModalIsOpen,
         setEditId,
         setError
-    } = usePurchaseContext();
+    } = usePurchaseOrderContext();
 
     const handleCloseModal = () => {
         setError("");

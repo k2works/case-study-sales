@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { showErrorMessage } from "../../../application/utils.ts";
 import LoadingIndicator from "../../../../views/application/LoadingIndicatior.tsx";
-import { PurchaseReceiptProvider, usePurchaseReceiptContext } from "../../../../providers/procurement/Purchase.tsx";
+import { PurchaseProvider, usePurchaseContext } from "../../../../providers/procurement/Purchase.tsx";
 import { PurchaseRuleCollection } from "./PurchaseRuleCollection.tsx";
 
 export const PurchaseRuleContainer: React.FC = () => {
@@ -10,7 +10,7 @@ export const PurchaseRuleContainer: React.FC = () => {
             loading,
             setError,
             fetchPurchases,
-        } = usePurchaseReceiptContext();
+        } = usePurchaseContext();
 
         useEffect(() => {
             (async () => {
@@ -34,8 +34,8 @@ export const PurchaseRuleContainer: React.FC = () => {
     };
 
     return (
-        <PurchaseReceiptProvider>
+        <PurchaseProvider>
             <Content />
-        </PurchaseReceiptProvider>
+        </PurchaseProvider>
     );
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import { usePurchaseReceiptContext } from "../../../../providers/procurement/Purchase.tsx";
+import { usePurchaseContext } from "../../../../providers/procurement/Purchase.tsx";
 import { PurchaseRuleCollectionView } from "../../../../views/procurement/purchase/rule/PurchaseRuleCollection.tsx";
 
 export const PurchaseRuleCollection: React.FC = () => {
@@ -7,7 +7,7 @@ export const PurchaseRuleCollection: React.FC = () => {
         ruleCheckResults,
         setRuleCheckResults,
         purchaseService,
-    } = usePurchaseReceiptContext();
+    } = usePurchaseContext();
 
     const handleExecuteRuleCheck = async () => {
         try {

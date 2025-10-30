@@ -2,8 +2,8 @@ import React from "react";
 import Modal from "react-modal";
 import { PurchaseOrderSearchSingleView } from "../../../../views/procurement/order/list/PurchaseOrderSearch.tsx";
 import { showErrorMessage } from "../../../application/utils.ts";
-import { usePurchaseContext } from "../../../../providers/procurement/Purchase.tsx";
-import { PurchaseOrderCriteriaType } from "../../../../models/procurement/purchase.ts";
+import { usePurchaseOrderContext } from "../../../../providers/procurement/PurchaseOrder.tsx";
+import { PurchaseOrderCriteriaType } from "../../../../models/procurement/purchaseOrder.ts";
 import {EmployeeSelectModal} from "./EmployeeSelectModal.tsx";
 import {VendorSelectModal} from "./VendorSelectModal.tsx";
 import {useVendorContext} from "../../../../providers/master/partner/Vendor.tsx";
@@ -22,7 +22,7 @@ export const PurchaseOrderSearchModal: React.FC = () => {
         setMessage,
         setError,
         purchaseOrderService
-    } = usePurchaseContext();
+    } = usePurchaseOrderContext();
 
     const {
         setSearchModalIsOpen: setVendorSearchModalIsOpen,

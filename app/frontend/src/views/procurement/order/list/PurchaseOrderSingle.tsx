@@ -4,7 +4,7 @@ import {
     CompletionFlagEnumType,
     PurchaseOrderLineType,
     PurchaseOrderType,
-} from "../../../../models/procurement/purchase.ts";
+} from "../../../../models/procurement/purchaseOrder.ts";
 import {convertToDateInputFormat} from "../../../../components/application/utils.ts";
 import {FormInput, SingleViewHeaderActions, SingleViewHeaderItem} from "../../../Common.tsx";
 import "./PurchaseOrder.css";

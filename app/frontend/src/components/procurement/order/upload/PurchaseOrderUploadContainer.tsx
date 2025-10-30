@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { showErrorMessage } from "../../../application/utils.ts";
 import LoadingIndicator from "../../../../views/application/LoadingIndicatior.tsx";
-import { PurchaseProvider, usePurchaseContext } from "../../../../providers/procurement/Purchase.tsx";
+import { PurchaseOrderProvider, usePurchaseOrderContext } from "../../../../providers/procurement/PurchaseOrder.tsx";
 import { PurchaseOrderUploadCollection } from "./PurchaseOrderUploadCollection.tsx";
 
 export const PurchaseOrderUploadContainer: React.FC = () => {
@@ -10,7 +10,7 @@ export const PurchaseOrderUploadContainer: React.FC = () => {
             loading,
             setError,
             fetchPurchaseOrders,
-        } = usePurchaseContext();
+        } = usePurchaseOrderContext();
 
         useEffect(() => {
             (async () => {
@@ -36,8 +36,8 @@ export const PurchaseOrderUploadContainer: React.FC = () => {
     };
 
     return (
-        <PurchaseProvider>
+        <PurchaseOrderProvider>
             <Content />
-        </PurchaseProvider>
+        </PurchaseOrderProvider>
     );
 };

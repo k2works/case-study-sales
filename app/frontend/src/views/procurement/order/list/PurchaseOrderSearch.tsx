@@ -1,6 +1,6 @@
 import React, { MouseEventHandler } from "react";
 import { FormInput, SingleViewHeaderItem } from "../../../Common.tsx";
-import { PurchaseOrderSearchCriteriaType } from "../../../../models/procurement/purchase.ts";
+import { PurchaseOrderSearchCriteriaType } from "../../../../models/procurement/purchaseOrder.ts";
 
 interface FormProps {
     criteria: PurchaseOrderSearchCriteriaType,

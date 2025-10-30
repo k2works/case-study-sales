@@ -2,7 +2,7 @@ import React from "react";
 import Modal from "react-modal";
 import { ProductCollectionSelectView } from "../../../../views/master/product/item/ProductSelect.tsx";
 import { useProductItemContext } from "../../../../providers/master/product/ProductItem.tsx";
-import { usePurchaseReceiptContext } from "../../../../providers/procurement/Purchase.tsx";
+import { usePurchaseContext } from "../../../../providers/procurement/Purchase.tsx";
 import { ProductType } from "../../../../models/master/product";
 
 export const ProductSelectModal: React.FC = () => {
@@ -10,7 +10,7 @@ export const ProductSelectModal: React.FC = () => {
         newPurchase,
         setNewPurchase,
         selectedLineIndex
-    } = usePurchaseReceiptContext();
+    } = usePurchaseContext();
 
     const {
         products,

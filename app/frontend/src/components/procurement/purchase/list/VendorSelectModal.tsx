@@ -2,7 +2,7 @@ import React from "react";
 import Modal from "react-modal";
 import { VendorCollectionSelectView } from "../../../../views/master/partner/vendor/VendorSelect.tsx";
 import { useVendorContext } from "../../../../providers/master/partner/Vendor.tsx";
-import { usePurchaseReceiptContext } from "../../../../providers/procurement/Purchase.tsx";
+import { usePurchaseContext } from "../../../../providers/procurement/Purchase.tsx";
 import { VendorType } from "../../../../models/master/partner";
 
 type VendorSelectModalProps = {
@@ -15,7 +15,7 @@ export const VendorSelectModal: React.FC<VendorSelectModalProps> = ({ type }) =>
         setNewPurchase,
         searchPurchaseCriteria,
         setSearchPurchaseCriteria,
-    } = usePurchaseReceiptContext();
+    } = usePurchaseContext();
 
     const {
         modalIsOpen: vendorModalIsOpen,

@@ -1,5 +1,5 @@
 import React from "react";
-import { usePurchaseContext } from "../../../../providers/procurement/Purchase.tsx";
+import { usePurchaseOrderContext } from "../../../../providers/procurement/PurchaseOrder.tsx";
 import { PurchaseOrderSingleView } from "../../../../views/procurement/order/list/PurchaseOrderSingle.tsx";
 import { showErrorMessage } from "../../../application/utils.ts";
 import {useEmployeeContext} from "../../../../providers/master/Employee.tsx";
@@ -20,7 +20,7 @@ export const PurchaseOrderSingle: React.FC = () => {
         fetchPurchaseOrders,
         purchaseOrderService,
         setSelectedLineIndex,
-    } = usePurchaseContext();
+    } = usePurchaseOrderContext();
 
     const {
         setModalIsOpen: setEmployeeModalIsOpen,

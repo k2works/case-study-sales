@@ -1,5 +1,5 @@
 import React from "react";
-import { usePurchaseReceiptContext } from "../../../../providers/procurement/Purchase.tsx";
+import { usePurchaseContext } from "../../../../providers/procurement/Purchase.tsx";
 import { PurchaseCollectionView } from "../../../../views/procurement/purchase/list/PurchaseCollection.tsx";
 import { PurchaseType } from "../../../../models/procurement/purchase.ts";
 import { showErrorMessage } from "../../../application/utils.ts";
@@ -26,7 +26,7 @@ export const PurchaseCollection: React.FC = () => {
         fetchPurchases,
         purchaseService,
         setSearchModalIsOpen,
-    } = usePurchaseReceiptContext();
+    } = usePurchaseContext();
 
     const handleOpenModal = (purchase?: PurchaseType) => {
         setMessage("");

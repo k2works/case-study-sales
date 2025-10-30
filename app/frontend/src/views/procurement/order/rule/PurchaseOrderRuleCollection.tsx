@@ -1,6 +1,6 @@
 import React from "react";
 import { Message } from "../../../../components/application/Message.tsx";
-import { RuleCheckResultType } from "../../../../services/procurement/purchase.ts";
+import { RuleCheckResultType } from "../../../../services/procurement/purchaseOrder.ts";
 
 interface PurchaseOrderRuleCollectionViewProps {
     ruleHeaderItems: {

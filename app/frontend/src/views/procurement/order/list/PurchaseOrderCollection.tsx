@@ -1,5 +1,5 @@
 import React from "react";
-import { PurchaseOrderCriteriaType, PurchaseOrderType } from "../../../../models/procurement/purchase.ts";
+import { PurchaseOrderCriteriaType, PurchaseOrderType } from "../../../../models/procurement/purchaseOrder.ts";
 import { Message } from "../../../../components/application/Message.tsx";
 import { PageNation, PageNationType } from "../../../application/PageNation.tsx";
 import { Search } from "../../../Common.tsx";

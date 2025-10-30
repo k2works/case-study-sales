@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { usePurchaseContext } from "../../../../providers/procurement/Purchase.tsx";
+import { usePurchaseOrderContext } from "../../../../providers/procurement/PurchaseOrder.tsx";
 import { PurchaseOrderUploadSingleView } from "../../../../views/procurement/order/upload/PurchaseOrderUploadSingle.tsx";
 
 export const PurchaseOrderUploadSingle: React.FC = () => {
@@ -10,7 +10,7 @@ export const PurchaseOrderUploadSingle: React.FC = () => {
         setError,
         setUploadModalIsOpen,
         uploadPurchaseOrders,
-    } = usePurchaseContext();
+    } = usePurchaseOrderContext();
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
     const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {

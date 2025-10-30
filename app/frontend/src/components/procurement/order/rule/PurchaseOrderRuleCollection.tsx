@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { RuleCheckResultType } from "../../../../services/procurement/purchase.ts";
-import { usePurchaseContext } from "../../../../providers/procurement/Purchase.tsx";
+import { RuleCheckResultType } from "../../../../services/procurement/purchaseOrder.ts";
+import { usePurchaseOrderContext } from "../../../../providers/procurement/PurchaseOrder.tsx";
 import { PurchaseOrderRuleCollectionView } from "../../../../views/procurement/order/rule/PurchaseOrderRuleCollection.tsx";
 
 export const PurchaseOrderRuleCollection: React.FC = () => {
     const [ruleResults, setRuleResults] = useState<RuleCheckResultType[]>([]);
-    const { purchaseOrderService } = usePurchaseContext();
+    const { purchaseOrderService } = usePurchaseOrderContext();
 
     const handleExecuteRuleCheck = async () => {
         try {

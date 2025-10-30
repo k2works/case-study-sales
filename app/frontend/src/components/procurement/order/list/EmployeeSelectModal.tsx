@@ -2,7 +2,7 @@ import React from "react";
 import Modal from "react-modal";
 import { EmployeeCollectionSelectView } from "../../../../views/master/employee/EmployeeSelect.tsx";
 import { useEmployeeContext } from "../../../../providers/master/Employee.tsx";
-import { usePurchaseContext } from "../../../../providers/procurement/Purchase.tsx";
+import { usePurchaseOrderContext } from "../../../../providers/procurement/PurchaseOrder.tsx";
 import { EmployeeType } from "../../../../models/master/employee";
 
 type EmployeeSelectModalProps = {
@@ -15,7 +15,7 @@ export const EmployeeSelectModal: React.FC<EmployeeSelectModalProps> = ({ type }
         setNewPurchaseOrder,
         searchPurchaseOrderCriteria,
         setSearchPurchaseOrderCriteria,
-    } = usePurchaseContext();
+    } = usePurchaseOrderContext();
 
     const {
         pageNation: employeePageNation,

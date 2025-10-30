@@ -1,7 +1,7 @@
 import React from "react";
-import { usePurchaseContext } from "../../../../providers/procurement/Purchase.tsx";
+import { usePurchaseOrderContext } from "../../../../providers/procurement/PurchaseOrder.tsx";
 import { PurchaseOrderCollectionView } from "../../../../views/procurement/order/list/PurchaseOrderCollection.tsx";
-import { PurchaseOrderType } from "../../../../models/procurement/purchase.ts";
+import { PurchaseOrderType } from "../../../../models/procurement/purchaseOrder.ts";
 import { showErrorMessage } from "../../../application/utils.ts";
 import { PurchaseOrderSearchModal } from "./PurchaseOrderSearchModal.tsx";
 import { PurchaseOrderEditModal } from "./PurchaseOrderEditModal.tsx";
@@ -26,7 +26,7 @@ export const PurchaseOrderCollection: React.FC = () => {
         fetchPurchaseOrders,
         purchaseOrderService,
         setSearchModalIsOpen,
-    } = usePurchaseContext();
+    } = usePurchaseOrderContext();
 
     const handleOpenModal = (purchaseOrder?: PurchaseOrderType) => {
         setMessage("");

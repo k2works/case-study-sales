@@ -1,6 +1,6 @@
 import React from "react";
 import Modal from "react-modal";
-import { usePurchaseContext } from "../../../../providers/procurement/Purchase.tsx";
+import { usePurchaseOrderContext } from "../../../../providers/procurement/PurchaseOrder.tsx";
 import { PurchaseOrderUploadSingle } from "./PurchaseOrderUploadSingle.tsx";
 
 export const PurchaseOrderUploadModal: React.FC = () => {
@@ -9,7 +9,7 @@ export const PurchaseOrderUploadModal: React.FC = () => {
         setError,
         uploadModalIsOpen,
         setUploadModalIsOpen,
-    } = usePurchaseContext();
+    } = usePurchaseOrderContext();
 
     const handleCloseModal = () => {
         setError("");

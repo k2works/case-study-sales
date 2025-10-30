@@ -1,12 +1,12 @@
 import React from "react";
 import { PurchaseOrderUploadModal } from "./PurchaseOrderUploadModal.tsx";
-import { usePurchaseContext } from "../../../../providers/procurement/Purchase.tsx";
+import { usePurchaseOrderContext } from "../../../../providers/procurement/PurchaseOrder.tsx";
 import {
     PurchaseOrderUploadCollectionView
 } from "../../../../views/procurement/order/upload/PurchaseOrderUploadCollection.tsx";
 
 export const PurchaseOrderUploadCollection: React.FC = () => {
-    const { uploadResults, setUploadResults, setUploadModalIsOpen } = usePurchaseContext();
+    const { uploadResults, setUploadResults, setUploadModalIsOpen } = usePurchaseOrderContext();
 
     const handleOpenUploadModal = () => {
         setUploadModalIsOpen(true);
