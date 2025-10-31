@@ -39,6 +39,7 @@ const Form: React.FC<FormProps> = ({selectedTarget, setSelectedTarget}) => {
                 <option value={DownloadTarget.入金}>{getKeyBySymbol(DownloadTarget, DownloadTarget.入金)}</option>
                 <option value={DownloadTarget.発注}>{getKeyBySymbol(DownloadTarget, DownloadTarget.発注)}</option>
                 <option value={DownloadTarget.仕入}>{getKeyBySymbol(DownloadTarget, DownloadTarget.仕入)}</option>
+                <option value={DownloadTarget.支払}>{getKeyBySymbol(DownloadTarget, DownloadTarget.支払)}</option>
                 <option value={DownloadTarget.在庫}>{getKeyBySymbol(DownloadTarget, DownloadTarget.在庫)}</option>
                 <option value={DownloadTarget.倉庫}>{getKeyBySymbol(DownloadTarget, DownloadTarget.倉庫)}</option>
                 <option value={DownloadTarget.棚番}>{getKeyBySymbol(DownloadTarget, DownloadTarget.棚番)}</option>
