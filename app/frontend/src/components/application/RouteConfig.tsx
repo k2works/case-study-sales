@@ -51,6 +51,7 @@ import {PurchaseContainer} from "../procurement/purchase/list/PurchaseContainer.
 import {PurchaseRuleContainer} from "../procurement/purchase/rule/PurchaseRuleContainer.tsx";
 import {PaymentTabContainer as PurchasePaymentTabContainer} from "../procurement/payment/PaymentTabContainer.tsx";
 import {PaymentContainer as PurchasePaymentContainer} from "../procurement/payment/list/PaymentContainer.tsx";
+import {PurchasePaymentAggregateContainer} from "../procurement/payment/aggregate/PurchasePaymentAggregateContainer.tsx";
 import {InventoryTabContainer} from "../inventory/InventoryTabContainer.tsx";
 import {InventoryContainer} from "../inventory/list/InventoryContainer.tsx";
 import {InventoryUploadContainer} from "../inventory/upload/InventoryUploadContainer.tsx";
@@ -275,6 +276,14 @@ export const RouteConfig: React.FC = () => {
         )
     }
 
+    const PurchasePaymentAggregatePage = () => {
+        return (
+            <SiteLayout>
+                <PurchasePaymentAggregateContainer/>
+            </SiteLayout>
+        )
+    }
+
     const InventoryListPage = () => {
         return (
             <SiteLayout>
@@ -380,6 +389,8 @@ export const RouteConfig: React.FC = () => {
                 <Route path="/purchase-payment" element={<RouteAuthGuard component={<PurchasePaymentTabContainer/>} redirectPath="/"
                                                                      allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/purchase-payment-list" element={<RouteAuthGuard component={<PurchasePaymentPage/>} redirectPath="/"
+                                                                         allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/purchase-payment-summary" element={<RouteAuthGuard component={<PurchasePaymentAggregatePage/>} redirectPath="/"
                                                                          allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/inventory" element={<RouteAuthGuard component={<InventoryTabContainer/>} redirectPath="/"
                                                                      allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>

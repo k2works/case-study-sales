@@ -1,6 +1,7 @@
 import {useTab} from "../../application/hooks";
 import {SiteLayout} from "../../../views/SiteLayout";
 import {PaymentContainer} from "./list/PaymentContainer.tsx";
+import {PurchasePaymentAggregateContainer} from "./aggregate/PurchasePaymentAggregateContainer.tsx";
 
 export const PaymentTabContainer: React.FC = () => {
     const {
@@ -15,9 +16,13 @@ export const PaymentTabContainer: React.FC = () => {
             <Tabs>
                 <TabList>
                     <Tab>一覧</Tab>
+                    <Tab>支払集計</Tab>
                 </TabList>
                 <TabPanel>
                     <PaymentContainer/>
+                </TabPanel>
+                <TabPanel>
+                    <PurchasePaymentAggregateContainer/>
                 </TabPanel>
             </Tabs>
         </SiteLayout>
