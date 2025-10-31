@@ -132,4 +132,16 @@ public class PurchasePaymentApiController {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
+
+    @Operation(summary = "支払データを集計する", description = "支払データを集計します。")
+    @PostMapping("/aggregate")
+    @AuditAnnotation(process = ApplicationExecutionProcessType.支払登録, type = ApplicationExecutionHistoryType.同期)
+    public ResponseEntity<?> aggregate(@RequestBody PurchasePaymentCriteriaResource resource) {
+        try {
+            purchasePaymentService.aggregate();
+            return ResponseEntity.ok(new MessageResponse(message.getMessage("success.purchase.payment.aggregated")));
+        } catch (BusinessException | IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
+    }
 }

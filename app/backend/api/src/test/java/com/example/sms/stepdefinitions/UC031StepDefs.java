@@ -53,6 +53,9 @@ public class UC031StepDefs extends SpringAcceptanceTest {
             case "支払データ":
                 testDataFactory.setUpForPurchasePaymentService();
                 break;
+            case "仕入データ":
+                testDataFactory.setUpForPurchaseService();
+                break;
             default:
                 break;
         }
@@ -122,6 +125,17 @@ public class UC031StepDefs extends SpringAcceptanceTest {
         criteria.setSupplierCode(null);
         criteria.setPaymentMethodType(null);
         criteria.setPaymentCompletedFlag(null);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        String json = objectMapper.writeValueAsString(criteria);
+        executePost(url, json);
+    }
+
+    @もし(":UC031 支払データを集計する")
+    public void aggregatePayment() throws IOException {
+        String url = PURCHASE_PAYMENT_API_URL + "/aggregate";
+        PurchasePaymentCriteriaResource criteria = new PurchasePaymentCriteriaResource();
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());

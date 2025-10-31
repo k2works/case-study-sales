@@ -314,4 +314,39 @@ public class PurchasePaymentApiControllerTest {
             verify(purchasePaymentService).searchWithPageInfo(any());
         }
     }
+
+    @Nested
+    @DisplayName("支払集計")
+    class AggregateTest {
+
+        @Test
+        @WithMockUser(username = "admin", roles = {"ADMIN"})
+        @DisplayName("管理者が支払を集計できる")
+        void shouldAggregatePaymentsAsAdmin() throws Exception {
+            PurchasePaymentCriteriaResource criteria = new PurchasePaymentCriteriaResource();
+            doNothing().when(purchasePaymentService).aggregate();
+
+            mockMvc.perform(post("/api/purchase-payments/aggregate")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(criteria)))
+                    .andExpect(status().isOk());
+
+            verify(purchasePaymentService).aggregate();
+        }
+
+        @Test
+        @WithMockUser(username = "user")
+        @DisplayName("利用者が支払を集計できる")
+        void shouldAggregatePaymentsAsUser() throws Exception {
+            PurchasePaymentCriteriaResource criteria = new PurchasePaymentCriteriaResource();
+            doNothing().when(purchasePaymentService).aggregate();
+
+            mockMvc.perform(post("/api/purchase-payments/aggregate")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(criteria)))
+                    .andExpect(status().isOk());
+
+            verify(purchasePaymentService).aggregate();
+        }
+    }
 }
