@@ -8,6 +8,12 @@ import {
     mapToPaymentResource,
 } from "../../models/procurement/payment.ts";
 
+// 支払集計結果の型定義
+export interface PaymentAggregateResponse {
+    message: string;
+    details: string[];
+}
+
 export interface PaymentServiceType {
     select: (page?: number, pageSize?: number) => Promise<PaymentFetchType>;
     find: (paymentNumber: string) => Promise<PaymentType>;
@@ -15,6 +21,7 @@ export interface PaymentServiceType {
     update: (payment: PaymentType) => Promise<void>;
     destroy: (paymentNumber: string) => Promise<void>;
     search: (criteria: PaymentCriteriaType, page?: number, pageSize?: number) => Promise<PaymentFetchType>;
+    aggregate: () => Promise<PaymentAggregateResponse>;
 }
 
 export const PaymentService = () => {
@@ -51,12 +58,18 @@ export const PaymentService = () => {
         await apiUtils.fetchDelete<void>(url);
     };
 
+    const aggregate = async (): Promise<PaymentAggregateResponse> => {
+        const url = `${endPoint}/aggregate`;
+        return await apiUtils.fetchPost<PaymentAggregateResponse>(url, {});
+    };
+
     return {
         select,
         find,
         create,
         update,
         destroy,
-        search
+        search,
+        aggregate
     };
 };
