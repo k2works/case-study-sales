@@ -6,6 +6,7 @@ import com.example.sms.domain.model.procurement.purchase.Purchase;
 import com.example.sms.domain.model.procurement.purchase.PurchaseLine;
 import com.example.sms.infrastructure.datasource.autogen.model.仕入データ;
 import com.example.sms.infrastructure.datasource.autogen.model.仕入データ明細;
+import com.example.sms.infrastructure.datasource.system.download.PurchaseDownloadCSV;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -146,6 +147,33 @@ public class PurchaseEntityMapper {
                 entity.get電話番号(),
                 entity.getFax番号(),
                 entity.get職種コード()
+        );
+    }
+
+    /**
+     * PurchaseとPurchaseLineからCSVモデルに変換
+     */
+    public PurchaseDownloadCSV mapToCsvModel(Purchase purchase, PurchaseLine purchaseLine) {
+        return new PurchaseDownloadCSV(
+                purchase.getPurchaseNumber().getValue(),
+                purchase.getPurchaseDate().getValue(),
+                purchase.getSupplierCode().getValue(),
+                purchase.getSupplierCode().getBranchNumber(),
+                purchase.getPurchaseManagerCode().getValue(),
+                purchase.getStartDate(),
+                purchase.getPurchaseOrderNumber() != null ? purchase.getPurchaseOrderNumber().getValue() : null,
+                purchase.getDepartmentCode().getValue(),
+                purchase.getTotalPurchaseAmount().getAmount(),
+                purchase.getTotalConsumptionTax().getAmount(),
+                purchase.getRemarks(),
+                purchaseLine.getPurchaseLineNumber(),
+                purchaseLine.getPurchaseLineDisplayNumber(),
+                purchaseLine.getPurchaseOrderLineNumber(),
+                purchaseLine.getProductCode().getValue(),
+                purchaseLine.getWarehouseCode().getValue(),
+                purchaseLine.getProductName(),
+                purchaseLine.getPurchaseUnitPrice().getAmount(),
+                purchaseLine.getPurchaseQuantity().getAmount()
         );
     }
 }
