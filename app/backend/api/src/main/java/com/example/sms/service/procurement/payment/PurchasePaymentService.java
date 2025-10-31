@@ -155,13 +155,12 @@ public class PurchasePaymentService {
         Integer paymentDate = Integer.parseInt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
 
         // 支払データを作成
-        // NOTE: 部門コードと部門開始日は部門マスタに存在する値を使用する必要がある
-        // テストデータでは部門コード"10000"、開始日"2021-01-01"が存在する
+        // 部門コードと部門開始日は仕入データから取得
         PurchasePayment payment = PurchasePayment.of(
                 paymentNumber,
                 paymentDate,
-                "10000", // デフォルトの部門コード（部門マスタに存在する値）
-                LocalDateTime.of(2021, 1, 1, 0, 0), // デフォルトの部門開始日（部門マスタに存在する値）
+                firstPurchase.getDepartmentCode().getValue(),
+                firstPurchase.getStartDate(),
                 firstPurchase.getSupplierCode().getCode().getValue(),
                 firstPurchase.getSupplierCode().getBranchNumber(),
                 1, // デフォルトの支払方法（現金）

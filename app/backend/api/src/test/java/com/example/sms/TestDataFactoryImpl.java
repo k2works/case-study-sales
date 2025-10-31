@@ -1611,6 +1611,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
 
     private Purchase getPurchase(String purchaseNumber) {
         LocalDateTime now = LocalDateTime.now();
+        LocalDateTime departmentStartDate = LocalDateTime.of(2021, 1, 1, 0, 0);
 
         List<PurchaseLine> lines = List.of(
                 PurchaseLine.of(
@@ -1632,9 +1633,9 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 "001",
                 1, // 仕入先枝番を1に変更（仕入先マスタに存在する値）
                 "EMP001",
-                now,
+                departmentStartDate, // 部門開始日を部門マスタに存在する値に設定
                 "PO25010001",
-                "10001",
+                "10000", // 部門コードを部門マスタに存在する値に変更
                 10000,
                 1000,
                 "テスト備考",
