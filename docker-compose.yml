@@ -16,6 +16,23 @@ services:
     hostname: postgres
     user: root
 
+  db_mysql:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mydb
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
+      TZ: 'Asia/Tokyo'
+    command: --authentication-policy=*,,
+    hostname: mysql
+    volumes:
+      - mysql8-data:/var/lib/mysql
+      - ./ops/docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./ops/docker/mysql:/docker-entrypoint-initdb.d
+    ports:
+      - 3306:3306
+
   db_mssql:
     image: mcr.microsoft.com/mssql/server:2019-latest
     container_name: sql-server-2019-express
