@@ -5,7 +5,7 @@ describe('支払管理', () => {
         })
 
         const userPage = () => {
-            cy.get('#side-nav-purchase-payment-nav').click();
+            cy.get('#side-nav-menu > :nth-child(1) > :nth-child(3) > :nth-child(2) > :nth-child(6) > :nth-child(1) > #side-nav-purchase-list-nav').click();
         }
 
         context('支払一覧', () => {
@@ -26,11 +26,9 @@ describe('支払管理', () => {
                 cy.get('#paymentNumber').type('PP00000009');
                 cy.get('#paymentDate').type('2024-01-01');
                 cy.get('#departmentCode').click();
-                cy.get('.close-modal-button').click();
                 cy.get('#departmentCode').type('10000');
                 cy.get('#departmentStartDate').type('2021-01-01')
                 cy.get('#supplierCode').click();
-                cy.get('.close-modal-button').click();
                 cy.get('#supplierCode').type('001');
                 cy.get('#paymentMethodType').select('現金');
                 cy.get('#paymentAmount').type('10000');
@@ -83,7 +81,7 @@ describe('支払管理', () => {
                 cy.get('#search-all').click();
                 cy.wait(1000);
                 cy.get('#delete').click();
-                cy.get('#message').contains('支払情報を削除しました。');
+                cy.get('#message').contains('支払を削除しました。');
             });
         });
     });
@@ -94,7 +92,7 @@ describe('支払管理', () => {
         })
 
         const userPage = () => {
-            cy.get('#side-nav-purchase-payment-nav').click();
+            cy.get('#side-nav-menu > :nth-child(1) > :nth-child(2) > .nav-item > :nth-child(2) > :nth-child(6) > :nth-child(1) > #side-nav-purchase-list-nav').click();
         }
 
         context('支払一覧', () => {
@@ -115,11 +113,9 @@ describe('支払管理', () => {
                 cy.get('#paymentNumber').type('PP00000009');
                 cy.get('#paymentDate').type('2024-01-01');
                 cy.get('#departmentCode').click();
-                cy.get('.close-modal-button').click();
                 cy.get('#departmentCode').type('10000');
                 cy.get('#departmentStartDate').type('2021-01-01')
                 cy.get('#supplierCode').click();
-                cy.get('.close-modal-button').click();
                 cy.get('#supplierCode').type('001');
                 cy.get('#paymentMethodType').select('現金');
                 cy.get('#paymentAmount').type('10000');
@@ -172,7 +168,7 @@ describe('支払管理', () => {
                 cy.get('#search-all').click();
                 cy.wait(1000);
                 cy.get('#delete').click();
-                cy.get('#message').contains('支払情報を削除しました。');
+                cy.get('#message').contains('支払を削除しました。');
             });
         });
     });
