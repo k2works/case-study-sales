@@ -107,6 +107,7 @@ const NaveItems: React.FC = () => {
                             {!Env.isProduction() && (
                                 <ul className="nav-sub-list">
                                     <SubNavItem id="side-nav-purchase-list-nav" to="/purchase-payment-list">一覧</SubNavItem>
+                                    <SubNavItem id="side-nav-purchase-list-nav" to="/purchase-payment-summary">集計</SubNavItem>
                                 </ul>
                             )}
                         </ul>
@@ -231,6 +232,7 @@ const NaveItems: React.FC = () => {
                             {!Env.isProduction() && (
                                 <ul className="nav-sub-list">
                                     <SubNavItem id="side-nav-purchase-list-nav" to="/purchase-payment-list">一覧</SubNavItem>
+                                    <SubNavItem id="side-nav-purchase-list-nav" to="/purchase-payment-summary">集計</SubNavItem>
                                 </ul>
                             )}
                         </ul>

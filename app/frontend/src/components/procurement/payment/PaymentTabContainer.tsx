@@ -16,7 +16,7 @@ export const PaymentTabContainer: React.FC = () => {
             <Tabs>
                 <TabList>
                     <Tab>一覧</Tab>
-                    <Tab>支払集計</Tab>
+                    <Tab>集計</Tab>
                 </TabList>
                 <TabPanel>
                     <PaymentContainer/>
