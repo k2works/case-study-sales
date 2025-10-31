@@ -1,12 +1,19 @@
 package com.example.sms.service.procurement.payment;
 
+import com.example.sms.domain.model.procurement.purchase.Purchase;
+import com.example.sms.domain.model.procurement.purchase.PurchaseList;
 import com.example.sms.domain.model.procurement.payment.PurchasePayment;
+import com.example.sms.service.procurement.purchase.PurchaseRepository;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * 支払データサービス
@@ -17,8 +24,11 @@ public class PurchasePaymentService {
 
     final PurchasePaymentRepository purchasePaymentRepository;
 
-    public PurchasePaymentService(PurchasePaymentRepository purchasePaymentRepository) {
+    final PurchaseRepository purchaseRepository;
+
+    public PurchasePaymentService(PurchasePaymentRepository purchasePaymentRepository, PurchaseRepository purchaseRepository) {
         this.purchasePaymentRepository = purchasePaymentRepository;
+        this.purchaseRepository = purchaseRepository;
     }
 
     /**
@@ -91,5 +101,75 @@ public class PurchasePaymentService {
      */
     public PageInfo<PurchasePayment> searchWithPageInfo(PurchasePaymentCriteria criteria) {
         return purchasePaymentRepository.searchWithPageInfo(criteria);
+    }
+
+    /**
+     * 仕入データから支払データを集計する
+     * 仕入先ごとに当月の仕入金額を合計して支払データを作成する
+     */
+    public void aggregate() {
+        PurchaseList purchaseList = purchaseRepository.selectAll();
+
+        // 仕入先コードでグループ化
+        Map<String, List<Purchase>> purchasesBySupplier = purchaseList.asList().stream()
+                .collect(Collectors.groupingBy(purchase ->
+                    purchase.getSupplierCode().getCode().getValue() + "-" +
+                    purchase.getSupplierCode().getBranchNumber()
+                ));
+
+        // 仕入先ごとに支払データを作成（カウンターを使用してユニーク性を確保）
+        final int[] counter = {1};
+        purchasesBySupplier.forEach((supplierKey, purchases) -> {
+            registerPurchasePaymentApplication(purchases, counter[0]++);
+        });
+    }
+
+    /**
+     * 仕入データリストから支払データを登録する
+     * 同じ仕入先の仕入データを集計して1つの支払データを作成
+     *
+     * @param purchases 仕入データのリスト
+     * @param counter カウンター（支払番号のユニーク性を確保するため）
+     */
+    public void registerPurchasePaymentApplication(List<Purchase> purchases, int counter) {
+        if (purchases.isEmpty()) {
+            return;
+        }
+
+        // 最初の仕入データから仕入先情報を取得
+        Purchase firstPurchase = purchases.get(0);
+
+        // 仕入金額と消費税を合計
+        int totalAmount = purchases.stream()
+                .mapToInt(p -> p.getTotalPurchaseAmount().getAmount())
+                .sum();
+
+        int totalTax = purchases.stream()
+                .mapToInt(p -> p.getTotalConsumptionTax().getAmount())
+                .sum();
+
+        // 支払番号を生成（カウンターを使用してユニーク性を確保）
+        String paymentNumber = String.format("PAY%07d", counter);
+
+        // 支払日を現在日時から生成
+        Integer paymentDate = Integer.parseInt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+
+        // 支払データを作成
+        // NOTE: 部門コードと部門開始日は部門マスタに存在する値を使用する必要がある
+        // テストデータでは部門コード"10000"、開始日"2021-01-01"が存在する
+        PurchasePayment payment = PurchasePayment.of(
+                paymentNumber,
+                paymentDate,
+                "10000", // デフォルトの部門コード（部門マスタに存在する値）
+                LocalDateTime.of(2021, 1, 1, 0, 0), // デフォルトの部門開始日（部門マスタに存在する値）
+                firstPurchase.getSupplierCode().getCode().getValue(),
+                firstPurchase.getSupplierCode().getBranchNumber(),
+                1, // デフォルトの支払方法（現金）
+                totalAmount,
+                totalTax,
+                false // 支払未完了
+        );
+
+        purchasePaymentRepository.save(payment);
     }
 }

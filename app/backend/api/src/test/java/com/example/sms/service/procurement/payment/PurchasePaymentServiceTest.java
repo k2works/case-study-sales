@@ -2,7 +2,9 @@ package com.example.sms.service.procurement.payment;
 
 import com.example.sms.IntegrationTest;
 import com.example.sms.TestDataFactory;
+import com.example.sms.domain.model.procurement.purchase.Purchase;
 import com.example.sms.domain.model.procurement.payment.PurchasePayment;
+import com.example.sms.service.procurement.purchase.PurchaseRepository;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,6 +23,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class PurchasePaymentServiceTest {
     @Autowired
     private PurchasePaymentService purchasePaymentService;
+
+    @Autowired
+    private PurchasePaymentRepository purchasePaymentRepository;
+
+    @Autowired
+    private PurchaseRepository purchaseRepository;
 
     @Autowired
     private TestDataFactory testDataFactory;
@@ -151,5 +159,31 @@ class PurchasePaymentServiceTest {
                 10000, // totalConsumptionTax
                 false // paymentCompletedFlag
         );
+    }
+
+    @Nested
+    @DisplayName("支払集計")
+    class PaymentAggregation {
+        @BeforeEach
+        void setUp() {
+            purchasePaymentRepository.deleteAll();
+            purchaseRepository.deleteAll();
+            testDataFactory.setUpForPurchaseService();
+        }
+
+        @Test
+        @DisplayName("仕入データから支払データを集計できる")
+        void shouldAggregatePaymentFromPurchases() {
+            // Given: 仕入データが存在する
+            List<Purchase> purchases = purchaseRepository.selectAll().asList();
+            assertTrue(purchases.size() > 0, "仕入データが存在すること");
+
+            // When: 支払集計を実行
+            purchasePaymentService.aggregate();
+
+            // Then: 支払データが作成される
+            List<PurchasePayment> payments = purchasePaymentService.selectAll();
+            assertTrue(payments.size() > 0, "支払データが作成されること");
+        }
     }
 }

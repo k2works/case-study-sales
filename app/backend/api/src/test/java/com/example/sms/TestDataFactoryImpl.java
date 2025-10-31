@@ -1630,7 +1630,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
                 purchaseNumber,
                 now,
                 "001",
-                0,
+                1, // 仕入先枝番を1に変更（仕入先マスタに存在する値）
                 "EMP001",
                 now,
                 "PO25010001",
