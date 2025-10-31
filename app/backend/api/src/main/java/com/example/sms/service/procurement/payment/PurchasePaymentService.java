@@ -1,8 +1,11 @@
 package com.example.sms.service.procurement.payment;
 
+import com.example.sms.domain.model.master.partner.vendor.Vendor;
+import com.example.sms.domain.model.master.partner.vendor.VendorCode;
 import com.example.sms.domain.model.procurement.purchase.Purchase;
 import com.example.sms.domain.model.procurement.purchase.PurchaseList;
 import com.example.sms.domain.model.procurement.payment.PurchasePayment;
+import com.example.sms.service.master.partner.PartnerRepository;
 import com.example.sms.service.procurement.purchase.PurchaseRepository;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -26,9 +29,12 @@ public class PurchasePaymentService {
 
     final PurchaseRepository purchaseRepository;
 
-    public PurchasePaymentService(PurchasePaymentRepository purchasePaymentRepository, PurchaseRepository purchaseRepository) {
+    final PartnerRepository partnerRepository;
+
+    public PurchasePaymentService(PurchasePaymentRepository purchasePaymentRepository, PurchaseRepository purchaseRepository, PartnerRepository partnerRepository) {
         this.purchasePaymentRepository = purchasePaymentRepository;
         this.purchaseRepository = purchaseRepository;
+        this.partnerRepository = partnerRepository;
     }
 
     /**
@@ -154,6 +160,16 @@ public class PurchasePaymentService {
         // 支払日を現在日時から生成
         Integer paymentDate = Integer.parseInt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
 
+        // 仕入先マスタから支払方法を取得
+        VendorCode vendorCode = VendorCode.of(
+                firstPurchase.getSupplierCode().getCode().getValue(),
+                firstPurchase.getSupplierCode().getBranchNumber()
+        );
+        Optional<Vendor> vendorOpt = partnerRepository.findVendorById(vendorCode);
+        int paymentMethod = vendorOpt
+                .map(vendor -> vendor.getVendorClosingBilling().getPaymentMethod().getValue())
+                .orElse(1); // デフォルトは振込
+
         // 支払データを作成
         // 部門コードと部門開始日は仕入データから取得
         PurchasePayment payment = PurchasePayment.of(
@@ -163,7 +179,7 @@ public class PurchasePaymentService {
                 firstPurchase.getStartDate(),
                 firstPurchase.getSupplierCode().getCode().getValue(),
                 firstPurchase.getSupplierCode().getBranchNumber(),
-                1, // デフォルトの支払方法（現金）
+                paymentMethod, // 仕入先マスタの支払方法を使用
                 totalAmount,
                 totalTax,
                 false // 支払未完了
