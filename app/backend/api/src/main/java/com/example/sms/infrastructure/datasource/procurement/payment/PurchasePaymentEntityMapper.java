@@ -2,6 +2,7 @@ package com.example.sms.infrastructure.datasource.procurement.payment;
 
 import com.example.sms.domain.model.procurement.payment.PurchasePayment;
 import com.example.sms.infrastructure.datasource.autogen.model.支払データ;
+import com.example.sms.infrastructure.datasource.system.download.PurchasePaymentDownloadCSV;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -65,5 +66,23 @@ public class PurchasePaymentEntityMapper {
         entity.set消費税合計(model.getTotalConsumptionTax().getAmount());
         entity.set支払完了フラグ(model.getPaymentCompletedFlag() != null && model.getPaymentCompletedFlag() ? 1 : 0);
         return entity;
+    }
+
+    /**
+     * ドメインモデルからCSVモデルに変換
+     */
+    public PurchasePaymentDownloadCSV mapToCsvModel(PurchasePayment purchasePayment) {
+        return new PurchasePaymentDownloadCSV(
+                purchasePayment.getPaymentNumber().getValue(),
+                purchasePayment.getPaymentDate().getValue(),
+                purchasePayment.getDepartmentCode().getValue(),
+                purchasePayment.getDepartmentStartDate(),
+                purchasePayment.getSupplierCode().getValue(),
+                purchasePayment.getSupplierCode().getBranchNumber(),
+                purchasePayment.getPaymentMethodType().getCode(),
+                purchasePayment.getPaymentAmount().getAmount(),
+                purchasePayment.getTotalConsumptionTax().getAmount(),
+                purchasePayment.getPaymentCompletedFlag() != null && purchasePayment.getPaymentCompletedFlag() ? 1 : 0
+        );
     }
 }

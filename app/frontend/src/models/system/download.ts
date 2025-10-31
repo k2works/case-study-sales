@@ -15,9 +15,10 @@ export enum DownloadTarget {
     口座 = "13",
     発注 = "14",
     仕入 = "15",
-    在庫 = "16",
-    倉庫 = "17",
-    棚番 = "18"
+    支払 = "16",
+    在庫 = "17",
+    倉庫 = "18",
+    棚番 = "19"
 }
 
 export type DownloadConditionType = {

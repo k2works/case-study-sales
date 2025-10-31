@@ -30,6 +30,7 @@ public class DownloadCriteriaResource {
             case 売上 -> Sales.of();
             case 発注 -> PurchaseOrder.of();
             case 仕入 -> Purchase.of();
+            case 支払 -> PurchasePayment.of();
             case 請求 -> Invoice.of();
             case 入金 -> Payment.of();
             case 口座 -> PaymentAccount.of();

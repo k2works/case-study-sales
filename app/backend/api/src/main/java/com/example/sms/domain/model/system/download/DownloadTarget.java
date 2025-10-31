@@ -23,6 +23,7 @@ public enum DownloadTarget {
     口座("payment_account"),
     発注("purchase_order"),
     仕入("purchase"),
+    支払("purchase_payment"),
     在庫("inventory"),
     倉庫("warehouse"),
     棚番("location_number");
