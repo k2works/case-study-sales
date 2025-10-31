@@ -5,7 +5,7 @@ describe('仕入管理', () => {
         })
 
         const userPage = () => {
-            cy.get('#side-nav-purchase-nav').click();
+            cy.get('#side-nav-menu > :nth-child(1) > :nth-child(3) > :nth-child(2) > :nth-child(4) > :nth-child(1) > #side-nav-purchase-nav').click();
         }
 
         context('仕入一覧', () => {
@@ -35,7 +35,7 @@ describe('仕入管理', () => {
                 cy.get('#purchaseOrderNumber').type('PO00000001');
                 cy.get('#departmentCode').click();
                 cy.get('.close-modal-button').click();
-                cy.get('#departmentCode').type('D001');
+                cy.get('#departmentCode').type('10000');
                 cy.get('#remarks').type('テスト仕入');
 
                 // 明細行を追加
@@ -66,7 +66,6 @@ describe('仕入管理', () => {
                 cy.get('#message').contains('仕入を作成しました。');
             });
         });
-
         context('仕入検索', () => {
             it('検索', () => {
                 userPage();
@@ -121,7 +120,7 @@ describe('仕入管理', () => {
         })
 
         const userPage = () => {
-            cy.get('#side-nav-purchase-nav').click();
+            cy.get('#side-nav-menu > :nth-child(1) > :nth-child(2) > .nav-item > :nth-child(2) > :nth-child(4) > :nth-child(1) > #side-nav-purchase-nav').click();
         }
 
         context('仕入一覧', () => {
@@ -151,7 +150,7 @@ describe('仕入管理', () => {
                 cy.get('#purchaseOrderNumber').type('PO00000001');
                 cy.get('#departmentCode').click();
                 cy.get('.close-modal-button').click();
-                cy.get('#departmentCode').type('D001');
+                cy.get('#departmentCode').type('10000');
                 cy.get('#remarks').type('テスト仕入');
 
                 // 明細行を追加
