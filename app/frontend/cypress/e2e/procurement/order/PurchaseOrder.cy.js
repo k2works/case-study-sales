@@ -5,7 +5,7 @@ describe('発注管理', () => {
         })
 
         const userPage = () => {
-            cy.get('#side-nav-menu > :nth-child(1) > :nth-child(3) > :nth-child(2) > .nav-sub-list > :nth-child(1) > #side-nav-order-order-nav').click();
+            cy.get('#side-nav-menu > :nth-child(1) > :nth-child(3) > :nth-child(2) > .nav-sub-list > :nth-child(1) > #side-nav-purchase-order-nav').click();
         }
 
         context('発注一覧', () => {
@@ -40,7 +40,7 @@ describe('発注管理', () => {
                 cy.get('.add-line-button').click();
 
                 // 明細行1のデータを入力
-                cy.get('.order-order-line-row').eq(0).within(() => {
+                cy.get('.purchase-order-line-row').eq(0).within(() => {
                     // 発注行表示番号
                     cy.get(':nth-child(2) > .table-input').clear().type('1');
                     // 受注番号
@@ -73,7 +73,7 @@ describe('発注管理', () => {
             it('検索', () => {
                 userPage();
                 cy.get('#search').click();
-                cy.get('#search-order-order-number').type('PO00000009');
+                cy.get('#search-purchase-order-number').type('PO00000009');
                 cy.wait(1000);
                 cy.get('#search-all').click();
                 cy.get('.collection-object-item-content-name').contains('PO00000009');
@@ -84,7 +84,7 @@ describe('発注管理', () => {
             it('登録情報編集', () => {
                 userPage();
                 cy.get('#search').click();
-                cy.get('#search-order-order-number').type('PO00000009');
+                cy.get('#search-purchase-order-number').type('PO00000009');
                 cy.wait(1000);
                 cy.get('#search-all').click();
                 cy.wait(1000);
@@ -93,8 +93,8 @@ describe('発注管理', () => {
                 cy.get('#remarks').clear();
                 cy.get('#remarks').type('テスト発注更新');
 
-                // Update order order line
-                cy.get('.order-order-line-row').eq(0).within(() => {
+                // Update purchase order line
+                cy.get('.purchase-order-line-row').eq(0).within(() => {
                     cy.get(':nth-child(8) > .table-input').clear().type('10');
                     cy.get(':nth-child(10) > .table-input').select('完了');
                 });
@@ -108,7 +108,7 @@ describe('発注管理', () => {
             it('削除', () => {
                 userPage();
                 cy.get('#search').click();
-                cy.get('#search-order-order-number').type('PO00000009');
+                cy.get('#search-purchase-order-number').type('PO00000009');
                 cy.wait(1000);
                 cy.get('#search-all').click();
                 cy.wait(1000);
@@ -124,7 +124,7 @@ describe('発注管理', () => {
         })
 
         const userPage = () => {
-            cy.get('#side-nav-menu > :nth-child(1) > :nth-child(2) > .nav-item > :nth-child(2) > .nav-sub-list > :nth-child(1) > #side-nav-order-order-nav').click();
+            cy.get('#side-nav-menu > :nth-child(1) > :nth-child(2) > .nav-item > :nth-child(2) > .nav-sub-list > :nth-child(1) > #side-nav-purchase-order-nav').click();
         }
 
         context('発注一覧', () => {
@@ -159,7 +159,7 @@ describe('発注管理', () => {
                 cy.get('.add-line-button').click();
 
                 // 明細行1のデータを入力
-                cy.get('.order-order-line-row').eq(0).within(() => {
+                cy.get('.purchase-order-line-row').eq(0).within(() => {
                     // 発注行表示番号
                     cy.get(':nth-child(2) > .table-input').clear().type('1');
                     // 受注番号
@@ -192,7 +192,7 @@ describe('発注管理', () => {
             it('検索', () => {
                 userPage();
                 cy.get('#search').click();
-                cy.get('#search-order-order-number').type('PO00000009');
+                cy.get('#search-purchase-order-number').type('PO00000009');
                 cy.wait(1000);
                 cy.get('#search-all').click();
                 cy.get('.collection-object-item-content-name').contains('PO00000009');
@@ -203,7 +203,7 @@ describe('発注管理', () => {
             it('登録情報編集', () => {
                 userPage();
                 cy.get('#search').click();
-                cy.get('#search-order-order-number').type('PO00000009');
+                cy.get('#search-purchase-order-number').type('PO00000009');
                 cy.wait(1000);
                 cy.get('#search-all').click();
                 cy.wait(1000);
@@ -212,8 +212,8 @@ describe('発注管理', () => {
                 cy.get('#remarks').clear();
                 cy.get('#remarks').type('テスト発注更新');
 
-                // Update order order line
-                cy.get('.order-order-line-row').eq(0).within(() => {
+                // Update purchase order line
+                cy.get('.purchase-order-line-row').eq(0).within(() => {
                     cy.get(':nth-child(8) > .table-input').clear().type('10');
                     cy.get(':nth-child(10) > .table-input').select('完了');
                 });
@@ -227,7 +227,7 @@ describe('発注管理', () => {
             it('削除', () => {
                 userPage();
                 cy.get('#search').click();
-                cy.get('#search-order-order-number').type('PO00000009');
+                cy.get('#search-purchase-order-number').type('PO00000009');
                 cy.wait(1000);
                 cy.get('#search-all').click();
                 cy.wait(1000);
