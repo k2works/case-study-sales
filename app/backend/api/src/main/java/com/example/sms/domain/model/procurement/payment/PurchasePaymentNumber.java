@@ -15,4 +15,14 @@ public class PurchasePaymentNumber {
         notBlank(value, "支払番号は必須です");
         this.value = value;
     }
+
+    /**
+     * カウンターから支払番号を生成する
+     *
+     * @param counter カウンター
+     * @return 支払番号
+     */
+    public static PurchasePaymentNumber generate(int counter) {
+        return of(String.format("PAY%07d", counter));
+    }
 }

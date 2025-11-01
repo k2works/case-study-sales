@@ -5,14 +5,15 @@ import com.example.sms.domain.model.master.partner.vendor.VendorCode;
 import com.example.sms.domain.model.procurement.purchase.Purchase;
 import com.example.sms.domain.model.procurement.purchase.PurchaseList;
 import com.example.sms.domain.model.procurement.payment.PurchasePayment;
+import com.example.sms.domain.model.procurement.payment.PurchasePaymentDate;
+import com.example.sms.domain.model.procurement.payment.PurchasePaymentMethodType;
+import com.example.sms.domain.model.procurement.payment.PurchasePaymentNumber;
 import com.example.sms.service.master.partner.PartnerRepository;
 import com.example.sms.service.procurement.purchase.PurchaseRepository;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -146,40 +147,31 @@ public class PurchasePaymentService {
         Purchase firstPurchase = purchases.get(0);
 
         // 支払日を現在日時から生成
-        Integer paymentDate = Integer.parseInt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+        PurchasePaymentDate paymentDate = PurchasePaymentDate.now();
 
         // 既存の支払データを検索
         PurchasePaymentCriteria criteria = PurchasePaymentCriteria.builder()
                 .supplierCode(firstPurchase.getSupplierCode().getCode().getValue())
                 .supplierBranchNumber(firstPurchase.getSupplierCode().getBranchNumber())
-                .paymentDate(paymentDate)
+                .paymentDate(paymentDate.getValue())
                 .build();
 
         PageInfo<PurchasePayment> existingPayments = purchasePaymentRepository.searchWithPageInfo(criteria);
 
-        // 既存の支払データが存在し、支払完了フラグがtrueの場合はスキップ
+        // 既存の支払データが存在し、支払完了している場合はスキップ
         if (!existingPayments.getList().isEmpty()) {
             PurchasePayment existingPayment = existingPayments.getList().get(0);
-            if (existingPayment.getPaymentCompletedFlag()) {
+            if (existingPayment.isCompleted()) {
                 return; // 支払済みのデータは更新しない
             }
         }
 
-        // 仕入金額と消費税を合計
-        int totalAmount = purchases.stream()
-                .mapToInt(p -> p.getTotalPurchaseAmount().getAmount())
-                .sum();
-
-        int totalTax = purchases.stream()
-                .mapToInt(p -> p.getTotalConsumptionTax().getAmount())
-                .sum();
-
         // 支払番号を決定（既存データがあればそれを使用、なければ新規生成）
-        String paymentNumber;
+        PurchasePaymentNumber paymentNumber;
         if (!existingPayments.getList().isEmpty()) {
-            paymentNumber = existingPayments.getList().get(0).getPaymentNumber().getValue();
+            paymentNumber = existingPayments.getList().get(0).getPaymentNumber();
         } else {
-            paymentNumber = String.format("PAY%07d", counter);
+            paymentNumber = PurchasePaymentNumber.generate(counter);
         }
 
         // 仕入先マスタから支払方法を取得
@@ -188,23 +180,16 @@ public class PurchasePaymentService {
                 firstPurchase.getSupplierCode().getBranchNumber()
         );
         Optional<Vendor> vendorOpt = partnerRepository.findVendorById(vendorCode);
-        int paymentMethod = vendorOpt
-                .map(vendor -> vendor.getVendorClosingBilling().getPaymentMethod().getValue())
-                .orElse(1); // デフォルトは振込
+        PurchasePaymentMethodType paymentMethodType = vendorOpt
+                .map(vendor -> PurchasePaymentMethodType.fromCode(vendor.getVendorClosingBilling().getPaymentMethod().getValue()))
+                .orElse(PurchasePaymentMethodType.fromCode(1)); // デフォルトは振込
 
-        // 支払データを作成
-        // 部門コードと部門開始日は仕入データから取得
-        PurchasePayment payment = PurchasePayment.of(
+        // 仕入データから支払データを集計
+        PurchasePayment payment = PurchasePayment.aggregateFromPurchases(
+                purchases,
                 paymentNumber,
                 paymentDate,
-                firstPurchase.getDepartmentCode().getValue(),
-                firstPurchase.getStartDate(),
-                firstPurchase.getSupplierCode().getCode().getValue(),
-                firstPurchase.getSupplierCode().getBranchNumber(),
-                paymentMethod, // 仕入先マスタの支払方法を使用
-                totalAmount,
-                totalTax,
-                false // 支払未完了
+                paymentMethodType
         );
 
         purchasePaymentRepository.save(payment);
