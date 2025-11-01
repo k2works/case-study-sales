@@ -145,6 +145,26 @@ public class PurchasePaymentService {
         // 最初の仕入データから仕入先情報を取得
         Purchase firstPurchase = purchases.get(0);
 
+        // 支払日を現在日時から生成
+        Integer paymentDate = Integer.parseInt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+
+        // 既存の支払データを検索
+        PurchasePaymentCriteria criteria = PurchasePaymentCriteria.builder()
+                .supplierCode(firstPurchase.getSupplierCode().getCode().getValue())
+                .supplierBranchNumber(firstPurchase.getSupplierCode().getBranchNumber())
+                .paymentDate(paymentDate)
+                .build();
+
+        PageInfo<PurchasePayment> existingPayments = purchasePaymentRepository.searchWithPageInfo(criteria);
+
+        // 既存の支払データが存在し、支払完了フラグがtrueの場合はスキップ
+        if (!existingPayments.getList().isEmpty()) {
+            PurchasePayment existingPayment = existingPayments.getList().get(0);
+            if (existingPayment.getPaymentCompletedFlag()) {
+                return; // 支払済みのデータは更新しない
+            }
+        }
+
         // 仕入金額と消費税を合計
         int totalAmount = purchases.stream()
                 .mapToInt(p -> p.getTotalPurchaseAmount().getAmount())
@@ -154,11 +174,13 @@ public class PurchasePaymentService {
                 .mapToInt(p -> p.getTotalConsumptionTax().getAmount())
                 .sum();
 
-        // 支払番号を生成（カウンターを使用してユニーク性を確保）
-        String paymentNumber = String.format("PAY%07d", counter);
-
-        // 支払日を現在日時から生成
-        Integer paymentDate = Integer.parseInt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+        // 支払番号を決定（既存データがあればそれを使用、なければ新規生成）
+        String paymentNumber;
+        if (!existingPayments.getList().isEmpty()) {
+            paymentNumber = existingPayments.getList().get(0).getPaymentNumber().getValue();
+        } else {
+            paymentNumber = String.format("PAY%07d", counter);
+        }
 
         // 仕入先マスタから支払方法を取得
         VendorCode vendorCode = VendorCode.of(

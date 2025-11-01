@@ -185,5 +185,49 @@ class PurchasePaymentServiceTest {
             List<PurchasePayment> payments = purchasePaymentService.selectAll();
             assertTrue(payments.size() > 0, "支払データが作成されること");
         }
+
+        @Test
+        @DisplayName("支払い済みの支払いデータは更新しない")
+        void shouldNotUpdateCompletedPaymentData() {
+            // Given: 仕入データが存在する
+            List<Purchase> purchases = purchaseRepository.selectAll().asList();
+            assertTrue(purchases.size() > 0, "仕入データが存在すること");
+
+            // When: 支払集計を実行して支払データを作成
+            purchasePaymentService.aggregate();
+            List<PurchasePayment> payments = purchasePaymentService.selectAll();
+            assertTrue(payments.size() > 0, "支払データが作成されること");
+
+            // 最初の支払データを支払済みに更新
+            PurchasePayment firstPayment = payments.get(0);
+            PurchasePayment completedPayment = PurchasePayment.of(
+                    firstPayment.getPaymentNumber().getValue(),
+                    firstPayment.getPaymentDate().getValue(),
+                    firstPayment.getDepartmentCode().getValue(),
+                    firstPayment.getDepartmentStartDate(),
+                    firstPayment.getSupplierCode().getCode().getValue(),
+                    firstPayment.getSupplierCode().getBranchNumber(),
+                    firstPayment.getPaymentMethodType().getCode(),
+                    firstPayment.getPaymentAmount().getAmount(),
+                    firstPayment.getTotalConsumptionTax().getAmount(),
+                    true // 支払完了フラグをtrueに設定
+            );
+            purchasePaymentService.save(completedPayment);
+
+            // 元の支払金額を記録
+            int originalPaymentAmount = completedPayment.getPaymentAmount().getAmount();
+
+            // When: もう一度支払集計を実行
+            purchasePaymentService.aggregate();
+
+            // Then: 支払済みの支払データが更新されていないこと
+            Optional<PurchasePayment> updatedPayment = purchasePaymentService.findByPaymentNumber(
+                    firstPayment.getPaymentNumber().getValue()
+            );
+            assertTrue(updatedPayment.isPresent(), "支払データが存在すること");
+            assertTrue(updatedPayment.get().getPaymentCompletedFlag(), "支払完了フラグがtrueのままであること");
+            assertEquals(originalPaymentAmount, updatedPayment.get().getPaymentAmount().getAmount(),
+                    "支払金額が更新されていないこと");
+        }
     }
 }
