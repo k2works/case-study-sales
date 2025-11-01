@@ -42,10 +42,16 @@ import {PaymentContainer} from "../sales/payment/list/PaymentContainer.tsx";
 import {PaymentTabContainer} from "../sales/payment/PaymentTabContainer.tsx";
 import {AccountContainer} from "../master/account/AccountContainer.tsx";
 import {PaymentAggregateContainer} from "../sales/payment/aggregate/PaymentAggregateContainer.tsx";
-import {PurchaseOrderTabContainer} from "../procurement/purchase/PurchaseOrderTabContainer.tsx";
-import {PurchaseOrderContainer} from "../procurement/purchase/list/PurchaseOrderContainer.tsx";
-import {PurchaseOrderUploadContainer} from "../procurement/purchase/upload/PurchaseOrderUploadContainer.tsx";
-import {PurchaseOrderRuleContainer} from "../procurement/purchase/rule/PurchaseOrderRuleContainer.tsx";
+import {PurchaseOrderTabContainer} from "../procurement/order/PurchaseOrderTabContainer.tsx";
+import {PurchaseOrderContainer} from "../procurement/order/list/PurchaseOrderContainer.tsx";
+import {PurchaseOrderUploadContainer} from "../procurement/order/upload/PurchaseOrderUploadContainer.tsx";
+import {PurchaseOrderRuleContainer} from "../procurement/order/rule/PurchaseOrderRuleContainer.tsx";
+import {PurchaseTabContainer} from "../procurement/purchase/PurchaseTabContainer.tsx";
+import {PurchaseContainer} from "../procurement/purchase/list/PurchaseContainer.tsx";
+import {PurchaseRuleContainer} from "../procurement/purchase/rule/PurchaseRuleContainer.tsx";
+import {PaymentTabContainer as PurchasePaymentTabContainer} from "../procurement/payment/PaymentTabContainer.tsx";
+import {PaymentContainer as PurchasePaymentContainer} from "../procurement/payment/list/PaymentContainer.tsx";
+import {PurchasePaymentAggregateContainer} from "../procurement/payment/aggregate/PurchasePaymentAggregateContainer.tsx";
 import {InventoryTabContainer} from "../inventory/InventoryTabContainer.tsx";
 import {InventoryContainer} from "../inventory/list/InventoryContainer.tsx";
 import {InventoryUploadContainer} from "../inventory/upload/InventoryUploadContainer.tsx";
@@ -246,6 +252,38 @@ export const RouteConfig: React.FC = () => {
         )
     }
 
+    const PurchasePage = () => {
+        return (
+            <SiteLayout>
+                <PurchaseContainer/>
+            </SiteLayout>
+        )
+    }
+
+    const PurchaseRulePage = () => {
+        return (
+            <SiteLayout>
+                <PurchaseRuleContainer/>
+            </SiteLayout>
+        )
+    }
+
+    const PurchasePaymentPage = () => {
+        return (
+            <SiteLayout>
+                <PurchasePaymentContainer/>
+            </SiteLayout>
+        )
+    }
+
+    const PurchasePaymentAggregatePage = () => {
+        return (
+            <SiteLayout>
+                <PurchasePaymentAggregateContainer/>
+            </SiteLayout>
+        )
+    }
+
     const InventoryListPage = () => {
         return (
             <SiteLayout>
@@ -342,6 +380,18 @@ export const RouteConfig: React.FC = () => {
                                                                            allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/purchase-order-rule" element={<RouteAuthGuard component={<PurchaseOrderRulePage/>} redirectPath="/"
                                                                            allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/purchase" element={<RouteAuthGuard component={<PurchaseTabContainer/>} redirectPath="/"
+                                                                     allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/purchase-list" element={<RouteAuthGuard component={<PurchasePage/>} redirectPath="/"
+                                                                           allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/purchase-rule" element={<RouteAuthGuard component={<PurchaseRulePage/>} redirectPath="/"
+                                                                           allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/purchase-payment" element={<RouteAuthGuard component={<PurchasePaymentTabContainer/>} redirectPath="/"
+                                                                     allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/purchase-payment-list" element={<RouteAuthGuard component={<PurchasePaymentPage/>} redirectPath="/"
+                                                                         allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
+                <Route path="/purchase-payment-summary" element={<RouteAuthGuard component={<PurchasePaymentAggregatePage/>} redirectPath="/"
+                                                                         allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/inventory" element={<RouteAuthGuard component={<InventoryTabContainer/>} redirectPath="/"
                                                                      allowedRoles={[RoleType.ADMIN, RoleType.USER]}/>}/>
                 <Route path="/inventory-list" element={<RouteAuthGuard component={<InventoryListPage/>} redirectPath="/"

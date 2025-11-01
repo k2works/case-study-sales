@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.sms.infrastructure.datasource.procurement.payment.PurchasePaymentCustomMapper">
+  <resultMap
+          id="BaseResultMap"
+          type="com.example.sms.infrastructure.datasource.procurement.payment.PurchasePaymentCustomEntity"
+          extends="com.example.sms.infrastructure.datasource.autogen.mapper.支払データMapper.BaseResultMap">
+      <association property="仕入先マスタ"
+                   javaType="com.example.sms.infrastructure.datasource.master.partner.supplier.SupplierCustomEntity"
+                   column="{仕入先コード=仕入先コード, 仕入先枝番=仕入先枝番}"
+                   select="com.example.sms.infrastructure.datasource.master.partner.supplier.SupplierCustomMapper.selectByPrimaryKey"
+                   fetchType="eager"
+      />
+      <association property="部門マスタ"
+                  javaType="com.example.sms.infrastructure.datasource.master.department.DepartmentCustomEntity"
+                  column="{部門コード=部門コード, 開始日=部門開始日}"
+                  select="com.example.sms.infrastructure.datasource.master.department.DepartmentCustomMapper.selectByPrimaryKey"
+                  fetchType="eager"
+      />
+  </resultMap>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+      select
+      <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.支払データMapper.Base_Column_List"/>
+      from public.支払データ
+      where 支払番号 = #{支払番号,jdbcType=VARCHAR}
+  </select>
+
+    <select id="selectAll" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.支払データMapper.Base_Column_List"/>
+        from public.支払データ
+    </select>
+
+    <insert id="insert" parameterType="com.example.sms.infrastructure.datasource.autogen.model.支払データ">
+        insert into public.支払データ (支払番号, 支払日, 部門コード,
+                                       部門開始日, 仕入先コード, 仕入先枝番,
+                                       支払方法区分, 支払金額, 消費税合計,
+                                       支払完了フラグ, 作成日時, 作成者名,
+                                       更新日時, 更新者名)
+        values (#{支払番号,jdbcType=VARCHAR}, #{支払日,jdbcType=INTEGER}, #{部門コード,jdbcType=VARCHAR},
+                #{部門開始日,jdbcType=TIMESTAMP}, #{仕入先コード,jdbcType=VARCHAR}, #{仕入先枝番,jdbcType=INTEGER},
+                #{支払方法区分,jdbcType=INTEGER}, #{支払金額,jdbcType=INTEGER}, #{消費税合計,jdbcType=INTEGER},
+                #{支払完了フラグ,jdbcType=INTEGER}, #{作成日時,jdbcType=TIMESTAMP}, #{作成者名,jdbcType=VARCHAR},
+                #{更新日時,jdbcType=TIMESTAMP}, #{更新者名,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.example.sms.infrastructure.datasource.autogen.model.支払データ">
+        update public.支払データ
+        set 支払日 = #{支払日,jdbcType=INTEGER},
+            部門コード = #{部門コード,jdbcType=VARCHAR},
+            部門開始日 = #{部門開始日,jdbcType=TIMESTAMP},
+            仕入先コード = #{仕入先コード,jdbcType=VARCHAR},
+            仕入先枝番 = #{仕入先枝番,jdbcType=INTEGER},
+            支払方法区分 = #{支払方法区分,jdbcType=INTEGER},
+            支払金額 = #{支払金額,jdbcType=INTEGER},
+            消費税合計 = #{消費税合計,jdbcType=INTEGER},
+            支払完了フラグ = #{支払完了フラグ,jdbcType=INTEGER},
+            作成日時 = #{作成日時,jdbcType=TIMESTAMP},
+            作成者名 = #{作成者名,jdbcType=VARCHAR},
+            更新日時 = #{更新日時,jdbcType=TIMESTAMP},
+            更新者名 = #{更新者名,jdbcType=VARCHAR}
+        where 支払番号 = #{支払番号,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectByCriteria" resultMap="BaseResultMap">
+        select
+        <include refid="com.example.sms.infrastructure.datasource.autogen.mapper.支払データMapper.Base_Column_List"/>
+        from public.支払データ
+        <where>
+            <if test="paymentNumber != null">
+                支払番号 = #{paymentNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="paymentDate != null">
+                and 支払日 = #{paymentDate,jdbcType=INTEGER}
+            </if>
+            <if test="supplierCode != null">
+                and 仕入先コード = #{supplierCode,jdbcType=VARCHAR}
+            </if>
+            <if test="supplierBranchNumber != null">
+                and 仕入先枝番 = #{supplierBranchNumber,jdbcType=INTEGER}
+            </if>
+            <if test="departmentCode != null">
+                and 部門コード = #{departmentCode,jdbcType=VARCHAR}
+            </if>
+            <if test="paymentMethodType != null">
+                and 支払方法区分 = #{paymentMethodType,jdbcType=INTEGER}
+            </if>
+            <if test="paymentCompletedFlag != null">
+                and 支払完了フラグ = #{paymentCompletedFlag,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteAll">
+        delete from public.支払データ
+    </delete>
+</mapper>

@@ -1,10 +1,10 @@
 package com.example.sms.infrastructure.datasource.system.download;
 
-import com.example.sms.domain.model.procurement.purchase.PurchaseOrderList;
+import com.example.sms.domain.model.procurement.order.PurchaseOrderList;
 import com.example.sms.domain.model.system.download.DownloadCriteria;
-import com.example.sms.infrastructure.datasource.procurement.purchase.PurchaseOrderCustomEntity;
-import com.example.sms.infrastructure.datasource.procurement.purchase.PurchaseOrderCustomMapper;
-import com.example.sms.infrastructure.datasource.procurement.purchase.PurchaseOrderEntityMapper;
+import com.example.sms.infrastructure.datasource.procurement.order.PurchaseOrderCustomEntity;
+import com.example.sms.infrastructure.datasource.procurement.order.PurchaseOrderCustomMapper;
+import com.example.sms.infrastructure.datasource.procurement.order.PurchaseOrderEntityMapper;
 import com.example.sms.service.system.download.PurchaseOrderCSVRepository;
 import org.springframework.stereotype.Repository;
 

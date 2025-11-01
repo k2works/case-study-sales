@@ -7,8 +7,8 @@ import { ProductType } from "../../../../models/master/product";
 
 export const ProductSelectModal: React.FC = () => {
     const {
-        newPurchaseOrder,
-        setNewPurchaseOrder,
+        newPurchase,
+        setNewPurchase,
         selectedLineIndex
     } = usePurchaseContext();
 
@@ -28,7 +28,7 @@ export const ProductSelectModal: React.FC = () => {
     // 商品選択時の処理
     const handleProductSelect = (product: ProductType) => {
         if (selectedLineIndex !== null) {
-            const newLines = [...newPurchaseOrder.purchaseOrderLines];
+            const newLines = [...newPurchase.purchaseLines];
             newLines[selectedLineIndex] = {
                 ...newLines[selectedLineIndex],
                 productCode: product.productCode,
@@ -36,13 +36,13 @@ export const ProductSelectModal: React.FC = () => {
                 purchaseUnitPrice: product.sellingPrice
             };
 
-            const totalAmount = newLines.reduce((sum, line) => 
-                sum + (line.purchaseOrderQuantity * line.purchaseUnitPrice), 0);
+            const totalAmount = newLines.reduce((sum, line) =>
+                sum + (line.purchaseQuantity * line.purchaseUnitPrice), 0);
             const totalTax = Math.floor(totalAmount * 0.1);
 
-            setNewPurchaseOrder({
-                ...newPurchaseOrder,
-                purchaseOrderLines: newLines,
+            setNewPurchase({
+                ...newPurchase,
+                purchaseLines: newLines,
                 totalPurchaseAmount: totalAmount,
                 totalConsumptionTax: totalTax
             });

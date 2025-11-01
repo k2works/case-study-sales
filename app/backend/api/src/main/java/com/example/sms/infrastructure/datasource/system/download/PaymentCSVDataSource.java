@@ -1,11 +1,11 @@
 package com.example.sms.infrastructure.datasource.system.download;
 
-import com.example.sms.domain.model.sales.payment.incoming.Payment;
-import com.example.sms.domain.model.sales.payment.incoming.PaymentList;
+import com.example.sms.domain.model.sales.payment.PaymentReceived;
+import com.example.sms.domain.model.sales.payment.PaymentReceivedList;
 import com.example.sms.domain.model.system.download.DownloadCriteria;
-import com.example.sms.infrastructure.datasource.sales.payment.incoming.PaymentCustomEntity;
-import com.example.sms.infrastructure.datasource.sales.payment.incoming.PaymentCustomMapper;
-import com.example.sms.infrastructure.datasource.sales.payment.incoming.PaymentEntityMapper;
+import com.example.sms.infrastructure.datasource.sales.payment.PaymentReceivedCustomEntity;
+import com.example.sms.infrastructure.datasource.sales.payment.PaymentReceivedCustomMapper;
+import com.example.sms.infrastructure.datasource.sales.payment.PaymentReceivedEntityMapper;
 import com.example.sms.service.system.download.PaymentCSVRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,19 +13,19 @@ import java.util.List;
 
 @Repository
 public class PaymentCSVDataSource implements PaymentCSVRepository {
-    private final PaymentCustomMapper paymentCustomMapper;
-    private final PaymentEntityMapper paymentEntityMapper;
+    private final PaymentReceivedCustomMapper paymentReceivedCustomMapper;
+    private final PaymentReceivedEntityMapper paymentReceivedEntityMapper;
 
     // コンストラクタ
-    public PaymentCSVDataSource(PaymentCustomMapper paymentCustomMapper, PaymentEntityMapper paymentEntityMapper) {
-        this.paymentCustomMapper = paymentCustomMapper;
-        this.paymentEntityMapper = paymentEntityMapper;
+    public PaymentCSVDataSource(PaymentReceivedCustomMapper paymentReceivedCustomMapper, PaymentReceivedEntityMapper paymentReceivedEntityMapper) {
+        this.paymentReceivedCustomMapper = paymentReceivedCustomMapper;
+        this.paymentReceivedEntityMapper = paymentReceivedEntityMapper;
     }
 
     @Override
-    public List<PaymentDownloadCSV> convert(PaymentList paymentList) {
-        if (paymentList != null) {
-            return paymentList.asList().stream()
+    public List<PaymentDownloadCSV> convert(PaymentReceivedList paymentReceivedList) {
+        if (paymentReceivedList != null) {
+            return paymentReceivedList.asList().stream()
                     .map(this::mapToCsvModel)
                     .toList();
         }
@@ -34,20 +34,20 @@ public class PaymentCSVDataSource implements PaymentCSVRepository {
 
     @Override
     public int countBy(DownloadCriteria condition) {
-        List<PaymentCustomEntity> paymentEntities = paymentCustomMapper.selectAll();
-        return paymentEntities.size();
+        List<PaymentReceivedCustomEntity> paymentReceivedEntities = paymentReceivedCustomMapper.selectAll();
+        return paymentReceivedEntities.size();
     }
 
     @Override
-    public PaymentList selectBy(DownloadCriteria condition) {
-        List<PaymentCustomEntity> paymentEntities = paymentCustomMapper.selectAll();
-        return new PaymentList(paymentEntities.stream()
-                .map(paymentEntityMapper::mapToDomainModel)
+    public PaymentReceivedList selectBy(DownloadCriteria condition) {
+        List<PaymentReceivedCustomEntity> paymentReceivedEntities = paymentReceivedCustomMapper.selectAll();
+        return new PaymentReceivedList(paymentReceivedEntities.stream()
+                .map(paymentReceivedEntityMapper::mapToDomainModel)
                 .toList());
     }
 
-    // Payment から PaymentDownloadCSV へのマッピング
-    private PaymentDownloadCSV mapToCsvModel(Payment payment) {
+    // PaymentReceived から PaymentDownloadCSV へのマッピング
+    private PaymentDownloadCSV mapToCsvModel(PaymentReceived payment) {
         return new PaymentDownloadCSV(
                 payment.getPaymentNumber().getValue(),
                 payment.getPaymentDate(),

@@ -1,11 +1,11 @@
 package com.example.sms.stepdefinitions;
 
 import com.example.sms.TestDataFactory;
-import com.example.sms.domain.model.sales.payment.incoming.PaymentMethodType;
+import com.example.sms.domain.model.sales.payment.PaymentMethodType;
 import com.example.sms.presentation.api.sales.invoice.InvoiceResource;
-import com.example.sms.presentation.api.sales.payment.incoming.PaymentCriteriaResource;
-import com.example.sms.presentation.api.sales.payment.incoming.PaymentResource;
-import com.example.sms.service.sales.payment.incoming.PaymentService;
+import com.example.sms.presentation.api.sales.payment.PaymentReceivedCriteriaResource;
+import com.example.sms.presentation.api.sales.payment.PaymentReceivedResource;
+import com.example.sms.service.sales.payment.PaymentReceivedService;
 import com.example.sms.stepdefinitions.utils.MessageResponse;
 import com.example.sms.stepdefinitions.utils.SpringAcceptanceTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -37,7 +37,7 @@ public class UC022StepDefs extends SpringAcceptanceTest {
     TestDataFactory testDataFactory;
 
     @Autowired
-    PaymentService paymentService;
+    PaymentReceivedService paymentReceivedService;
 
     // ObjectMapperを共通化し、JavaTimeModuleを登録
     private ObjectMapper createObjectMapper() {
@@ -87,16 +87,16 @@ public class UC022StepDefs extends SpringAcceptanceTest {
 
         if (list.equals("入金データ一覧")) {
             String result = latestResponse.getBody();
-            com.github.pagehelper.PageInfo<PaymentResource> response = objectMapper.readValue(result, new TypeReference<>() {
+            com.github.pagehelper.PageInfo<PaymentReceivedResource> response = objectMapper.readValue(result, new TypeReference<>() {
             });
-            List<PaymentResource> actual = response.getList();
+            List<PaymentReceivedResource> actual = response.getList();
             assertTrue(actual.size() > 0);
         }
     }
 
     @もし(":UC022 入金番号 {string} 顧客コード {string} 枝番 {int} 入金口座コード {string} 入金額 {int} で新規登録する")
     public void toRegist(String paymentNumber, String customerCode, Integer branchNumber, String accountCode, Integer amount) throws IOException {
-        PaymentResource resource = new PaymentResource();
+        PaymentReceivedResource resource = new PaymentReceivedResource();
         resource.setPaymentNumber(paymentNumber);
         resource.setCustomerCode(customerCode);
         resource.setCustomerBranchNumber(branchNumber);
@@ -135,7 +135,7 @@ public class UC022StepDefs extends SpringAcceptanceTest {
         ObjectMapper objectMapper = createObjectMapper();
 
         String result = latestResponse.getBody();
-        PaymentResource payment = objectMapper.readValue(result, PaymentResource.class);
+        PaymentReceivedResource payment = objectMapper.readValue(result, PaymentReceivedResource.class);
         Assertions.assertEquals(paymentNumber, payment.getPaymentNumber());
     }
 
@@ -147,7 +147,7 @@ public class UC022StepDefs extends SpringAcceptanceTest {
         executeGet(url);
         String result = latestResponse.getBody();
         ObjectMapper objectMapper = createObjectMapper();
-        PaymentResource currentPayment = objectMapper.readValue(result, PaymentResource.class);
+        PaymentReceivedResource currentPayment = objectMapper.readValue(result, PaymentReceivedResource.class);
 
         // 入金額を更新
         currentPayment.setPaymentAmount(amount);
@@ -164,7 +164,7 @@ public class UC022StepDefs extends SpringAcceptanceTest {
         ObjectMapper objectMapper = createObjectMapper();
 
         String result = latestResponse.getBody();
-        PaymentResource payment = objectMapper.readValue(result, PaymentResource.class);
+        PaymentReceivedResource payment = objectMapper.readValue(result, PaymentReceivedResource.class);
         Assertions.assertEquals(amount, payment.getPaymentAmount());
     }
 
@@ -177,7 +177,7 @@ public class UC022StepDefs extends SpringAcceptanceTest {
     @もし(":UC022 検索条件で入金データを検索する")
     public void searchWithCriteria() throws IOException {
         // 検索条件を作成
-        PaymentCriteriaResource resource = new PaymentCriteriaResource();
+        PaymentReceivedCriteriaResource resource = new PaymentReceivedCriteriaResource();
         resource.setCustomerCode("001");
         resource.setPaymentAccountCode("A001");
 
@@ -194,9 +194,9 @@ public class UC022StepDefs extends SpringAcceptanceTest {
         ObjectMapper objectMapper = createObjectMapper();
 
         String result = latestResponse.getBody();
-        // PageInfo<PaymentResource>の形式でレスポンスを取得
-        com.github.pagehelper.PageInfo<PaymentResource> pageInfo = objectMapper.readValue(result, 
-            new TypeReference<com.github.pagehelper.PageInfo<PaymentResource>>() {});
+        // PageInfo<PaymentReceivedResource>の形式でレスポンスを取得
+        com.github.pagehelper.PageInfo<PaymentReceivedResource> pageInfo = objectMapper.readValue(result,
+            new TypeReference<com.github.pagehelper.PageInfo<PaymentReceivedResource>>() {});
 
         // 検索結果が存在することを確認
         assertFalse(pageInfo.getList().isEmpty());
@@ -206,7 +206,7 @@ public class UC022StepDefs extends SpringAcceptanceTest {
     public void aggregate() throws JsonProcessingException {
         String url = PAYMENTS_API_URL + "/aggregate";
 
-        PaymentResource payment = getPaymentResource(
+        PaymentReceivedResource payment = getPaymentResource(
                 "P20231001",
                 "2023-10-01T10:00:00",
                 "10000",
@@ -224,20 +224,20 @@ public class UC022StepDefs extends SpringAcceptanceTest {
         executePost(url, json);
     }
 
-    private static @NotNull PaymentResource getPaymentResource(String paymentNumber, String paymentDate, String departmentCode, String customerCode, Integer customerBranchNumber, String paymentMethodType, String paymentAccountCode, Integer paymentAmount, Integer offsetAmount) {
-        PaymentResource paymentResource = new PaymentResource();
-        paymentResource.setPaymentNumber(paymentNumber);
-        paymentResource.setPaymentDate(LocalDateTime.parse(paymentDate));
-        paymentResource.setDepartmentCode(departmentCode);
-        paymentResource.setCustomerCode(customerCode);
-        paymentResource.setCustomerBranchNumber(customerBranchNumber);
-        paymentResource.setPaymentMethodType(PaymentMethodType.valueOf(paymentMethodType));
-        paymentResource.setPaymentAccountCode(paymentAccountCode);
-        paymentResource.setPaymentAmount(paymentAmount);
-        paymentResource.setOffsetAmount(offsetAmount);
-        paymentResource.setCustomerName(null); // 初期値はnull
-        paymentResource.setPaymentAccountName(null); // 初期値はnull
-        return paymentResource;
+    private static @NotNull PaymentReceivedResource getPaymentResource(String paymentNumber, String paymentDate, String departmentCode, String customerCode, Integer customerBranchNumber, String paymentMethodType, String paymentAccountCode, Integer paymentAmount, Integer offsetAmount) {
+        PaymentReceivedResource paymentReceivedResource = new PaymentReceivedResource();
+        paymentReceivedResource.setPaymentNumber(paymentNumber);
+        paymentReceivedResource.setPaymentDate(LocalDateTime.parse(paymentDate));
+        paymentReceivedResource.setDepartmentCode(departmentCode);
+        paymentReceivedResource.setCustomerCode(customerCode);
+        paymentReceivedResource.setCustomerBranchNumber(customerBranchNumber);
+        paymentReceivedResource.setPaymentMethodType(PaymentMethodType.valueOf(paymentMethodType));
+        paymentReceivedResource.setPaymentAccountCode(paymentAccountCode);
+        paymentReceivedResource.setPaymentAmount(paymentAmount);
+        paymentReceivedResource.setOffsetAmount(offsetAmount);
+        paymentReceivedResource.setCustomerName(null); // 初期値はnull
+        paymentReceivedResource.setPaymentAccountName(null); // 初期値はnull
+        return paymentReceivedResource;
     }
 
 }

@@ -96,6 +96,20 @@ const NaveItems: React.FC = () => {
                                     <SubNavItem id="side-nav-purchase-order-nav" to="/purchase-order-rule">ルール</SubNavItem>
                                 </ul>
                             )}
+                            <SubNavItem id="side-nav-purchase-nav" to="/purchase">仕入</SubNavItem>
+                            {!Env.isProduction() && (
+                                <ul className="nav-sub-list">
+                                    <SubNavItem id="side-nav-purchase-nav" to="/purchase-list">一覧</SubNavItem>
+                                    <SubNavItem id="side-nav-purchase-nav" to="/purchase-rule">ルール</SubNavItem>
+                                </ul>
+                            )}
+                            <SubNavItem id="side-nav-purchase-payment-nav" to="/purchase-payment">支払</SubNavItem>
+                            {!Env.isProduction() && (
+                                <ul className="nav-sub-list">
+                                    <SubNavItem id="side-nav-purchase-list-nav" to="/purchase-payment-list">一覧</SubNavItem>
+                                    <SubNavItem id="side-nav-purchase-list-nav" to="/purchase-payment-summary">集計</SubNavItem>
+                                </ul>
+                            )}
                         </ul>
                         在庫
                         <ul className="nav-sub-list">
@@ -205,6 +219,20 @@ const NaveItems: React.FC = () => {
                                     <SubNavItem id="side-nav-purchase-order-nav" to="/purchase-order-list">一覧</SubNavItem>
                                     <SubNavItem id="side-nav-purchase-order-nav" to="/purchase-order-upload">一括登録</SubNavItem>
                                     <SubNavItem id="side-nav-purchase-order-nav" to="/purchase-order-rule">ルール</SubNavItem>
+                                </ul>
+                            )}
+                            <SubNavItem id="side-nav-purchase-nav" to="/purchase">仕入</SubNavItem>
+                            {!Env.isProduction() && (
+                                <ul className="nav-sub-list">
+                                    <SubNavItem id="side-nav-purchase-nav" to="/purchase-list">一覧</SubNavItem>
+                                    <SubNavItem id="side-nav-purchase-nav" to="/purchase-rule">ルール</SubNavItem>
+                                </ul>
+                            )}
+                            <SubNavItem id="side-nav-purchase-payment-nav" to="/purchase-payment">支払</SubNavItem>
+                            {!Env.isProduction() && (
+                                <ul className="nav-sub-list">
+                                    <SubNavItem id="side-nav-purchase-list-nav" to="/purchase-payment-list">一覧</SubNavItem>
+                                    <SubNavItem id="side-nav-purchase-list-nav" to="/purchase-payment-summary">集計</SubNavItem>
                                 </ul>
                             )}
                         </ul>

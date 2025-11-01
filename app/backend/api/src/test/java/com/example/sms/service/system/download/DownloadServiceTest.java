@@ -667,4 +667,93 @@ class DownloadServiceTest {
             }
         }
     }
+
+    @Nested
+    @DisplayName("仕入データ")
+    @WithMockUser(username = "admin", roles = "ADMIN")
+    class PurchaseDownload {
+        @Test
+        @DisplayName("件数取得")
+        void testCount() {
+            DownloadCriteria condition = com.example.sms.domain.model.system.download.Purchase.of();
+            int result = downloadService.count(condition);
+            assertEquals(3, result);
+        }
+
+        @Test
+        @DisplayName("データダウンロード変換")
+        void testDownload() {
+            DownloadCriteria condition = com.example.sms.domain.model.system.download.Purchase.of();
+            List<?> rawResult = downloadService.convert(condition);
+            List<PurchaseDownloadCSV> result = rawResult.stream()
+                    .filter(PurchaseDownloadCSV.class::isInstance)
+                    .map(PurchaseDownloadCSV.class::cast)
+                    .toList();
+
+            // 結果が空ではないことを確認
+            assertFalse(result.isEmpty(), "結果が空です");
+
+            // 最初のデータを確認
+            PurchaseDownloadCSV firstResult = result.getFirst();
+            assertNotNull(firstResult, "最初のデータがnullです");
+
+            // フィールドごとのアサーション
+            assertEquals("PU00000001", firstResult.getPurchaseNumber(), "仕入番号が一致しません");
+            assertNotNull(firstResult.getPurchaseDate(), "仕入日がnullです");
+            assertEquals("001", firstResult.getSupplierCode(), "仕入先コードが一致しません");
+            assertEquals(1, firstResult.getSupplierBranchNumber(), "仕入先枝番が一致しません");
+            assertEquals("EMP001", firstResult.getPurchaseManagerCode(), "仕入担当者コードが一致しません");
+            assertEquals("PO25010001", firstResult.getPurchaseOrderNumber(), "発注番号が一致しません");
+            assertEquals("10000", firstResult.getDepartmentCode(), "部門コードが一致しません");
+            assertEquals(10000, firstResult.getTotalPurchaseAmount(), "仕入金額合計が一致しません");
+            assertEquals(1000, firstResult.getTotalConsumptionTax(), "消費税合計が一致しません");
+            assertEquals("テスト備考", firstResult.getRemarks(), "備考が一致しません");
+            assertEquals(1, firstResult.getPurchaseLineNumber(), "仕入行番号が一致しません");
+            assertEquals("10101001", firstResult.getProductCode(), "商品コードが一致しません");
+            assertEquals("W01", firstResult.getWarehouseCode(), "倉庫コードが一致しません");
+            assertEquals("商品1", firstResult.getProductName(), "商品名が一致しません");
+            assertEquals(1000, firstResult.getPurchaseUnitPrice(), "仕入単価が一致しません");
+            assertEquals(10, firstResult.getPurchaseQuantity(), "仕入数量が一致しません");
+        }
+    }
+
+    @Nested
+    @DisplayName("支払データ")
+    @WithMockUser(username = "admin", roles = "ADMIN")
+    class PurchasePaymentDownload {
+        @Test
+        @DisplayName("件数取得")
+        void testCount() {
+            DownloadCriteria condition = PurchasePayment.of();
+            int result = downloadService.count(condition);
+            assertEquals(3, result);
+        }
+
+        @Test
+        @DisplayName("データダウンロード変換")
+        void testDownload() {
+            DownloadCriteria condition = PurchasePayment.of();
+            List<?> rawResult = downloadService.convert(condition);
+            List<PurchasePaymentDownloadCSV> result = rawResult.stream()
+                    .filter(PurchasePaymentDownloadCSV.class::isInstance)
+                    .map(PurchasePaymentDownloadCSV.class::cast)
+                    .toList();
+
+            // 結果が空ではないことを確認
+            assertFalse(result.isEmpty(), "結果が空です");
+
+            // 最初のデータを確認
+            PurchasePaymentDownloadCSV firstResult = result.getFirst();
+            assertNotNull(firstResult, "最初のデータがnullです");
+
+            // フィールドごとのアサーション
+            assertNotNull(firstResult.getPaymentNumber(), "支払番号がnullです");
+            assertNotNull(firstResult.getPaymentDate(), "支払日がnullです");
+            assertNotNull(firstResult.getDepartmentCode(), "部門コードがnullです");
+            assertNotNull(firstResult.getSupplierCode(), "仕入先コードがnullです");
+            assertNotNull(firstResult.getSupplierBranchNumber(), "仕入先枝番がnullです");
+            assertNotNull(firstResult.getPaymentMethodType(), "支払方法区分がnullです");
+            assertNotNull(firstResult.getPaymentAmount(), "支払金額がnullです");
+        }
+    }
 }

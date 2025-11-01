@@ -1,4 +1,4 @@
 /**
- * 発注ルール
+ * 仕入ルール
  */
 package com.example.sms.domain.model.procurement.purchase.rule;

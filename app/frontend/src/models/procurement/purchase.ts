@@ -1,119 +1,149 @@
 import { PageNationType } from "../../views/application/PageNation.tsx";
 import { toISOStringLocal } from "../../components/application/utils.ts";
 
-export enum CompletionFlagEnumType {
-    未完了 = "未完了",
-    完了 = "完了"
-}
-
-export type PurchaseOrderLineType = {
-    purchaseOrderNumber: string;
+export type PurchaseLineType = {
+    purchaseNumber: string;
+    purchaseLineNumber: number;
+    purchaseLineDisplayNumber: number;
     purchaseOrderLineNumber: number;
-    purchaseOrderLineDisplayNumber: number;
-    salesOrderNumber?: string;
-    salesOrderLineNumber?: number;
     productCode: string;
+    warehouseCode: string;
     productName?: string;
     purchaseUnitPrice: number;
-    purchaseOrderQuantity: number;
-    receivedQuantity: number;
-    completionFlag: CompletionFlagEnumType;
+    purchaseQuantity: number;
     checked?: boolean;
 };
 
-export type PurchaseOrderType = {
-    purchaseOrderNumber: string;
-    purchaseOrderDate: string;
-    salesOrderNumber?: string;
+export type PurchaseType = {
+    purchaseNumber: string;
+    purchaseDate: string;
     supplierCode: string;
-    supplierName?: string;
     supplierBranchNumber: number;
     purchaseManagerCode: string;
-    purchaseManagerName?: string;
-    designatedDeliveryDate: string;
-    warehouseCode?: string;
+    startDate: string;
+    purchaseOrderNumber?: string;
+    departmentCode: string;
     totalPurchaseAmount: number;
     totalConsumptionTax: number;
     remarks?: string;
-    purchaseOrderLines: PurchaseOrderLineType[];
+    purchaseLines: PurchaseLineType[];
     checked?: boolean;
 };
 
-export type PurchaseOrderCriteriaType = {
+export type PurchaseCriteriaType = {
+    purchaseNumber?: string;
+    purchaseDate?: string;
     purchaseOrderNumber?: string;
-    purchaseOrderDate?: string;
-    salesOrderNumber?: string;
     supplierCode?: string;
-    supplierName?: string;
+    supplierBranchNumber?: number;
     purchaseManagerCode?: string;
-    designatedDeliveryDate?: string;
-    warehouseCode?: string;
-    completionFlag?: boolean;
+    departmentCode?: string;
 };
 
-export type PurchaseOrderSearchCriteriaType = {
+export type PurchaseSearchCriteriaType = {
+    purchaseNumber?: string;
+    purchaseDate?: string;
     purchaseOrderNumber?: string;
-    purchaseOrderDate?: string;
-    salesOrderNumber?: string;
     supplierCode?: string;
-    supplierName?: string;
+    supplierBranchNumber?: string;
     purchaseManagerCode?: string;
-    designatedDeliveryDate?: string;
-    warehouseCode?: string;
-    completionFlag?: string;
+    departmentCode?: string;
 };
 
-export type PurchaseOrderFetchType = {
-    list: PurchaseOrderType[];
+export type PurchaseFetchType = {
+    list: PurchaseType[];
 } & PageNationType;
 
-export type PurchaseOrderPageNationType = PageNationType<PurchaseOrderCriteriaType>;
+export type PurchasePageNationType = PageNationType<PurchaseCriteriaType>;
 
-export const mapToPurchaseOrderResource = (purchaseOrder: PurchaseOrderType): PurchaseOrderType => {
+export const initialPurchase: PurchaseType = {
+    purchaseNumber: "",
+    purchaseDate: new Date().toISOString().split('T')[0],
+    supplierCode: "",
+    supplierBranchNumber: 0,
+    purchaseManagerCode: "",
+    startDate: new Date().toISOString().split('T')[0],
+    purchaseOrderNumber: "",
+    departmentCode: "",
+    totalPurchaseAmount: 0,
+    totalConsumptionTax: 0,
+    remarks: "",
+    purchaseLines: [],
+    checked: false
+};
+
+export const initialPurchaseLine: PurchaseLineType = {
+    purchaseNumber: "",
+    purchaseLineNumber: 0,
+    purchaseLineDisplayNumber: 0,
+    purchaseOrderLineNumber: 0,
+    productCode: "",
+    warehouseCode: "",
+    productName: "",
+    purchaseUnitPrice: 0,
+    purchaseQuantity: 0,
+    checked: false
+};
+
+export const initialPurchaseCriteria: PurchaseCriteriaType = {
+    purchaseNumber: "",
+    purchaseDate: "",
+    purchaseOrderNumber: "",
+    supplierCode: "",
+    supplierBranchNumber: 0,
+    purchaseManagerCode: "",
+    departmentCode: ""
+};
+
+export const mapToPurchaseResource = (purchase: PurchaseType) => {
     return {
-        purchaseOrderNumber: purchaseOrder.purchaseOrderNumber,
-        purchaseOrderDate: toISOStringLocal(new Date(purchaseOrder.purchaseOrderDate)),
-        salesOrderNumber: purchaseOrder.salesOrderNumber,
-        supplierCode: purchaseOrder.supplierCode,
-        supplierName: purchaseOrder.supplierName,
-        supplierBranchNumber: purchaseOrder.supplierBranchNumber,
-        purchaseManagerCode: purchaseOrder.purchaseManagerCode,
-        purchaseManagerName: purchaseOrder.purchaseManagerName,
-        designatedDeliveryDate: toISOStringLocal(new Date(purchaseOrder.designatedDeliveryDate)),
-        warehouseCode: purchaseOrder.warehouseCode,
-        totalPurchaseAmount: purchaseOrder.totalPurchaseAmount,
-        totalConsumptionTax: purchaseOrder.totalConsumptionTax,
-        remarks: purchaseOrder.remarks,
-        purchaseOrderLines: purchaseOrder.purchaseOrderLines
+        purchaseNumber: purchase.purchaseNumber,
+        purchaseDate: purchase.purchaseDate ? toISOStringLocal(new Date(purchase.purchaseDate)) : null,
+        supplierCode: purchase.supplierCode,
+        supplierBranchNumber: purchase.supplierBranchNumber,
+        purchaseManagerCode: purchase.purchaseManagerCode,
+        startDate: purchase.startDate ? toISOStringLocal(new Date(purchase.startDate)) : null,
+        purchaseOrderNumber: purchase.purchaseOrderNumber,
+        departmentCode: purchase.departmentCode,
+        totalPurchaseAmount: purchase.totalPurchaseAmount,
+        totalConsumptionTax: purchase.totalConsumptionTax,
+        remarks: purchase.remarks,
+        purchaseLines: purchase.purchaseLines.map(line => ({
+            purchaseNumber: line.purchaseNumber,
+            purchaseLineNumber: line.purchaseLineNumber,
+            purchaseLineDisplayNumber: line.purchaseLineDisplayNumber,
+            purchaseOrderLineNumber: line.purchaseOrderLineNumber,
+            productCode: line.productCode,
+            warehouseCode: line.warehouseCode,
+            productName: line.productName,
+            purchaseUnitPrice: line.purchaseUnitPrice,
+            purchaseQuantity: line.purchaseQuantity
+        }))
     };
 };
 
-export const mapToPurchaseOrderSearchResource = (criteria: PurchaseOrderSearchCriteriaType) => {
+export const mapToPurchaseSearchResource = (criteria: PurchaseSearchCriteriaType) => {
     const isEmpty = (value: unknown) => value === "" || value === null || value === undefined;
     return {
+        ...(isEmpty(criteria.purchaseNumber) ? {} : { purchaseNumber: criteria.purchaseNumber }),
+        ...(isEmpty(criteria.purchaseDate) ? {} : { purchaseDate: toISOStringLocal(new Date(criteria.purchaseDate)) }),
         ...(isEmpty(criteria.purchaseOrderNumber) ? {} : { purchaseOrderNumber: criteria.purchaseOrderNumber }),
-        ...(isEmpty(criteria.purchaseOrderDate) ? {} : { purchaseOrderDate: toISOStringLocal(new Date(criteria.purchaseOrderDate)) }),
-        ...(isEmpty(criteria.salesOrderNumber) ? {} : { salesOrderNumber: criteria.salesOrderNumber }),
         ...(isEmpty(criteria.supplierCode) ? {} : { supplierCode: criteria.supplierCode }),
-        ...(isEmpty(criteria.supplierName) ? {} : { supplierName: criteria.supplierName }),
+        ...(isEmpty(criteria.supplierBranchNumber) ? {} : { supplierBranchNumber: Number(criteria.supplierBranchNumber) }),
         ...(isEmpty(criteria.purchaseManagerCode) ? {} : { purchaseManagerCode: criteria.purchaseManagerCode }),
-        ...(isEmpty(criteria.designatedDeliveryDate) ? {} : { designatedDeliveryDate: toISOStringLocal(new Date(criteria.designatedDeliveryDate)) }),
-        ...(isEmpty(criteria.warehouseCode) ? {} : { warehouseCode: criteria.warehouseCode }),
-        ...(isEmpty(criteria.completionFlag) ? {} : { completionFlag: criteria.completionFlag === "true" })
+        ...(isEmpty(criteria.departmentCode) ? {} : { departmentCode: criteria.departmentCode })
     };
 };
 
-export const mapToPurchaseOrderCriteriaResource = (criteria: PurchaseOrderCriteriaType) => {
+export const mapToPurchaseCriteriaResource = (criteria: PurchaseCriteriaType) => {
     const isEmpty = (value: unknown) => value === "" || value === null || value === undefined;
     return {
+        ...(isEmpty(criteria.purchaseNumber) ? {} : { purchaseNumber: criteria.purchaseNumber }),
+        ...(isEmpty(criteria.purchaseDate) ? {} : { purchaseDate: toISOStringLocal(new Date(criteria.purchaseDate)) }),
         ...(isEmpty(criteria.purchaseOrderNumber) ? {} : { purchaseOrderNumber: criteria.purchaseOrderNumber }),
-        ...(isEmpty(criteria.purchaseOrderDate) ? {} : { purchaseOrderDate: toISOStringLocal(new Date(criteria.purchaseOrderDate)) }),
-        ...(isEmpty(criteria.salesOrderNumber) ? {} : { salesOrderNumber: criteria.salesOrderNumber }),
         ...(isEmpty(criteria.supplierCode) ? {} : { supplierCode: criteria.supplierCode }),
-        ...(isEmpty(criteria.supplierName) ? {} : { supplierName: criteria.supplierName }),
+        ...(isEmpty(criteria.supplierBranchNumber) ? {} : { supplierBranchNumber: criteria.supplierBranchNumber }),
         ...(isEmpty(criteria.purchaseManagerCode) ? {} : { purchaseManagerCode: criteria.purchaseManagerCode }),
-        ...(isEmpty(criteria.designatedDeliveryDate) ? {} : { designatedDeliveryDate: toISOStringLocal(new Date(criteria.designatedDeliveryDate)) }),
-        ...(isEmpty(criteria.warehouseCode) ? {} : { warehouseCode: criteria.warehouseCode }),
-        ...(isEmpty(criteria.completionFlag) ? {} : { completionFlag: criteria.completionFlag })
+        ...(isEmpty(criteria.departmentCode) ? {} : { departmentCode: criteria.departmentCode })
     };
 };

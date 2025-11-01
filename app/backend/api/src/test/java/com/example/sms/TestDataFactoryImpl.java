@@ -24,16 +24,19 @@ import com.example.sms.domain.model.sales.order.Order;
 import com.example.sms.domain.model.sales.order.OrderLine;
 import com.example.sms.domain.model.sales.order.OrderList;
 import com.example.sms.domain.model.sales.order.TaxRateType;
-import com.example.sms.domain.model.sales.payment.incoming.Payment;
-import com.example.sms.domain.model.sales.payment.incoming.PaymentMethodType;
+import com.example.sms.domain.model.sales.payment.PaymentReceived;
+import com.example.sms.domain.model.sales.payment.PaymentMethodType;
 import com.example.sms.domain.model.sales.sales.Sales;
 import com.example.sms.domain.model.sales.sales.SalesLine;
-import com.example.sms.domain.model.procurement.purchase.PurchaseOrder;
-import com.example.sms.domain.model.procurement.purchase.PurchaseOrderLine;
-import com.example.sms.domain.model.procurement.purchase.PurchaseOrderNumber;
+import com.example.sms.domain.model.procurement.order.PurchaseOrder;
+import com.example.sms.domain.model.procurement.order.PurchaseOrderLine;
+import com.example.sms.domain.model.procurement.order.PurchaseOrderNumber;
 import com.example.sms.domain.model.sales.order.OrderNumber;
-import com.example.sms.domain.model.procurement.purchase.PurchaseOrderDate;
-import com.example.sms.domain.model.procurement.purchase.DesignatedDeliveryDate;
+import com.example.sms.domain.model.procurement.order.PurchaseOrderDate;
+import com.example.sms.domain.model.procurement.order.DesignatedDeliveryDate;
+import com.example.sms.domain.model.procurement.payment.PurchasePayment;
+import com.example.sms.domain.model.procurement.purchase.Purchase;
+import com.example.sms.domain.model.procurement.purchase.PurchaseLine;
 import com.example.sms.domain.model.master.partner.supplier.SupplierCode;
 import com.example.sms.domain.type.money.Money;
 import com.example.sms.domain.model.system.audit.ApplicationExecutionHistory;
@@ -56,10 +59,12 @@ import com.example.sms.service.master.partner.PartnerRepository;
 import com.example.sms.service.master.product.ProductCategoryRepository;
 import com.example.sms.service.master.product.ProductRepository;
 import com.example.sms.service.sales.invoice.InvoiceRepository;
-import com.example.sms.service.sales.payment.incoming.PaymentRepository;
+import com.example.sms.service.sales.payment.PaymentReceivedRepository;
 import com.example.sms.service.sales.sales.SalesRepository;
 import com.example.sms.service.sales.order.SalesOrderRepository;
-import com.example.sms.service.procurement.purchase.PurchaseOrderRepository;
+import com.example.sms.service.procurement.order.PurchaseOrderRepository;
+import com.example.sms.service.procurement.payment.PurchasePaymentRepository;
+import com.example.sms.service.procurement.purchase.PurchaseRepository;
 import com.example.sms.service.system.audit.AuditRepository;
 import com.example.sms.service.system.user.UserRepository;
 import com.example.sms.infrastructure.datasource.autogen.mapper.棚番マスタMapper;
@@ -107,9 +112,13 @@ public class TestDataFactoryImpl implements TestDataFactory {
     @Autowired
     PaymentAccountRepository paymentAccountRepository;
     @Autowired
-    PaymentRepository paymentIncomingRepository;
+    PaymentReceivedRepository paymentIncomingRepository;
     @Autowired
     PurchaseOrderRepository purchaseOrderRepository;
+    @Autowired
+    PurchaseRepository purchaseRepository;
+    @Autowired
+    PurchasePaymentRepository purchasePaymentRepository;
     @Autowired
     InventoryRepository inventoryRepository;
     @Autowired
@@ -348,6 +357,12 @@ public class TestDataFactoryImpl implements TestDataFactory {
             inventoryRepository.save(getInventory("W01", "99999999", "LOT002"));
             inventoryRepository.save(getInventory("W02", "99999999", "LOT003"));
         });
+
+        // 仕入データの準備
+        setUpPurchase();
+
+        // 支払データの準備
+        setUpPurchasePayment();
     }
 
     private void setUpUser() {
@@ -812,7 +827,7 @@ public class TestDataFactoryImpl implements TestDataFactory {
     public void setUpForPaymentIncomingService() {
         paymentIncomingRepository.deleteAll();
         IntStream.range(0, 3).forEach(i -> {
-            Payment paymentIncoming = getPaymentData(String.format("PAY%03d", i));
+            PaymentReceived paymentIncoming = getPaymentData(String.format("PAY%03d", i));
             paymentIncomingRepository.save(paymentIncoming);
         });
     }
@@ -1127,8 +1142,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
         );
     }
 
-    public static Payment getPaymentData(String paymentNumber) {
-        return Payment.of(
+    public static PaymentReceived getPaymentData(String paymentNumber) {
+        return PaymentReceived.of(
                 paymentNumber,
                 LocalDateTime.of(2022, 1, 1, 0, 0),
                 "10000",
@@ -1142,8 +1157,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
         );
     }
 
-    public static Payment getPaymentWithCustomer(String paymentNumber, String customerCode, Integer branchNumber) {
-        return Payment.of(
+    public static PaymentReceived getPaymentWithCustomer(String paymentNumber, String customerCode, Integer branchNumber) {
+        return PaymentReceived.of(
                 paymentNumber,
                 LocalDateTime.now(),
                 "10000",
@@ -1157,8 +1172,8 @@ public class TestDataFactoryImpl implements TestDataFactory {
         );
     }
 
-    public static Payment getPaymentWithAccount(String paymentNumber, String accountCode) {
-        return Payment.of(
+    public static PaymentReceived getPaymentWithAccount(String paymentNumber, String accountCode) {
+        return PaymentReceived.of(
                 paymentNumber,
                 LocalDateTime.now(),
                 "10000",
@@ -1551,5 +1566,117 @@ public class TestDataFactoryImpl implements TestDataFactory {
         key.set棚番コード(locationNumberCode);
         key.set商品コード(productCode);
         return key;
+    }
+
+    @Override
+    public void setUpForPurchaseService() {
+        setUpForUserManagementService();
+        setUpForDepartmentService();
+        setUpForEmployeeService();
+        setUpForRegionService();
+        setUpForPartnerGroupService();
+        setUpForPartnerCategoryService();
+        setUpForPartnerService();
+        setUpForProductService();
+        setUpForSupplierService();
+        setUpForWarehouseService();
+        setUpPurchase();
+    }
+
+    @Override
+    public void setUpForSupplierService() {
+        // 仕入先は取引先の一種なので、VendorServiceのセットアップを使用
+        setUpForVendorService();
+    }
+
+    @Override
+    public void setUpForPurchasePaymentService() {
+        setUpForUserManagementService();
+        setUpForDepartmentService();
+        setUpForEmployeeService();
+        setUpForRegionService();
+        setUpForPartnerGroupService();
+        setUpForPartnerCategoryService();
+        setUpForPartnerService();
+        setUpForSupplierService();
+        setUpPurchasePayment();
+    }
+
+    private void setUpPurchase() {
+        purchaseRepository.deleteAll();
+        List<Purchase> purchases = getPurchases();
+        purchases.forEach(purchaseRepository::save);
+    }
+
+    private List<Purchase> getPurchases() {
+        List<Purchase> purchases = new ArrayList<>();
+        IntFunction<Purchase> getPurchase = i -> getPurchase("PU" + String.format("%08d", i));
+        IntStream.range(1, 4).forEach(i -> purchases.add(getPurchase.apply(i)));
+        return purchases;
+    }
+
+    private Purchase getPurchase(String purchaseNumber) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime departmentStartDate = LocalDateTime.of(2021, 1, 1, 0, 0);
+
+        List<PurchaseLine> lines = List.of(
+                PurchaseLine.of(
+                        purchaseNumber,
+                        1,
+                        1,
+                        1,
+                        "10101001",
+                        "W01",
+                        "商品1",
+                        1000,
+                        10
+                )
+        );
+
+        return Purchase.of(
+                purchaseNumber,
+                now,
+                "001",
+                1, // 仕入先枝番を1に変更（仕入先マスタに存在する値）
+                "EMP001",
+                departmentStartDate, // 部門開始日を部門マスタに存在する値に設定
+                "PO25010001",
+                "10000", // 部門コードを部門マスタに存在する値に変更
+                10000,
+                1000,
+                "テスト備考",
+                lines
+        );
+    }
+
+    private void setUpPurchasePayment() {
+        purchasePaymentRepository.deleteAll();
+        List<PurchasePayment> payments = getPurchasePayments();
+        payments.forEach(purchasePaymentRepository::save);
+    }
+
+    private List<PurchasePayment> getPurchasePayments() {
+        List<PurchasePayment> payments = new ArrayList<>();
+        IntFunction<PurchasePayment> getPayment = i -> getPurchasePayment("PAY" + String.format("%07d", i));
+        IntStream.range(1, 4).forEach(i -> payments.add(getPayment.apply(i)));
+        return payments;
+    }
+
+    private PurchasePayment getPurchasePayment(String paymentNumber) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime departmentStartDate = LocalDateTime.of(2021, 1, 1, 0, 0);
+
+        return PurchasePayment.of(
+                paymentNumber,
+                20231001, // paymentDate (YYYYMMDD形式)
+                "10000", // departmentCode
+                departmentStartDate,
+                "001", // supplierCode
+                1, // supplierBranchNumber
+                1, // paymentMethodType (現金=1)
+                100000, // paymentAmount
+                10000, // totalConsumptionTax
+                false // paymentCompletedFlag
+        );
     }
 }

@@ -57,6 +57,12 @@ public interface TestDataFactory {
 
     void setUpForPurchaseOrderServiceWithErrors();
 
+    void setUpForPurchaseService();
+
+    void setUpForSupplierService();
+
+    void setUpForPurchasePaymentService();
+
     void setUpForInventoryService();
 
     void setUpForWarehouseService();

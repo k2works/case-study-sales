@@ -11,10 +11,10 @@ type EmployeeSelectModalProps = {
 
 export const EmployeeSelectModal: React.FC<EmployeeSelectModalProps> = ({ type }) => {
     const {
-        newPurchaseOrder,
-        setNewPurchaseOrder,
-        searchPurchaseOrderCriteria,
-        setSearchPurchaseOrderCriteria,
+        newPurchase,
+        setNewPurchase,
+        searchPurchaseCriteria,
+        setSearchPurchaseCriteria,
     } = usePurchaseContext();
 
     const {
@@ -50,8 +50,8 @@ export const EmployeeSelectModal: React.FC<EmployeeSelectModalProps> = ({ type }
             <EmployeeCollectionSelectView
                 employees={employees}
                 handleSelect={(employee: EmployeeType) => {
-                    setNewPurchaseOrder({
-                        ...newPurchaseOrder,
+                    setNewPurchase({
+                        ...newPurchase,
                         purchaseManagerCode: employee.empCode,
                     });
                     setEmployeeModalIsOpen(false);
@@ -76,8 +76,8 @@ export const EmployeeSelectModal: React.FC<EmployeeSelectModalProps> = ({ type }
             <EmployeeCollectionSelectView
                 employees={employees}
                 handleSelect={(employee: EmployeeType) => {
-                    setSearchPurchaseOrderCriteria({
-                        ...searchPurchaseOrderCriteria,
+                    setSearchPurchaseCriteria({
+                        ...searchPurchaseCriteria,
                         purchaseManagerCode: employee.empCode,
                     });
                     setEmployeeSearchModalIsOpen(false);

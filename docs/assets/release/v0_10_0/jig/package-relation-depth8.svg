@@ -23,7 +23,7 @@
 <text text-anchor="middle" x="1137.03" y="-531.58" font-family="Times New Roman,serif" font-size="14.00">model.sales.shipping</text>
 </g>
 <g id="clust3" class="cluster">
-<title>cluster_com.example.sms.domain.model.procurement.purchase</title>
+<title>cluster_com.example.sms.domain.model.procurement.order</title>
 <polygon fill="lemonchiffon" stroke="#eedd82" stroke-width="2" points="311.03,-469.62 311.03,-563.12 486.03,-563.12 486.03,-469.62 311.03,-469.62"/>
 <text text-anchor="middle" x="398.53" y="-545.83" font-family="Times New Roman,serif" font-size="14.00">発注</text>
 <text text-anchor="middle" x="398.53" y="-531.58" font-family="Times New Roman,serif" font-size="14.00">model.procurement.purchase</text>
@@ -190,7 +190,7 @@
 </g>
 <!-- com.example.sms.domain.model.procurement.purchase -->
 <g id="node6" class="node">
-<title>com.example.sms.domain.model.procurement.purchase</title>
+<title>com.example.sms.domain.model.procurement.order</title>
 <g id="a_node6"><a xlink:href="./domain.html#com.example.sms.domain.model.procurement.purchase" xlink:title="発注\nmodel.procurement.purchase">
 <polygon fill="#eedd82" stroke="black" points="767.53,-413.5 592.53,-413.5 592.53,-374.75 767.53,-374.75 767.53,-413.5"/>
 <text text-anchor="middle" x="680.03" y="-396.2" font-family="Times New Roman,serif" font-size="14.00">発注</text>
@@ -477,7 +477,7 @@
 </g>
 <!-- com.example.sms.domain.model.procurement.purchase.rule -->
 <g id="node17" class="node">
-<title>com.example.sms.domain.model.procurement.purchase.rule</title>
+<title>com.example.sms.domain.model.procurement.order.rule</title>
 <g id="a_node17"><a xlink:href="./domain.html#com.example.sms.domain.model.procurement.purchase.rule" xlink:title="発注ルール\nrule">
 <polygon fill="#eedd82" stroke="black" points="422.15,-516.38 319.9,-516.38 319.9,-477.62 422.15,-477.62 422.15,-516.38"/>
 <text text-anchor="middle" x="371.03" y="-499.07" font-family="Times New Roman,serif" font-size="14.00">発注ルール</text>
@@ -487,13 +487,13 @@
 </g>
 <!-- com.example.sms.domain.model.procurement.purchase.rule&#45;&gt;com.example.sms.domain.model.procurement.purchase -->
 <g id="edge17" class="edge">
-<title>com.example.sms.domain.model.procurement.purchase.rule&#45;&gt;com.example.sms.domain.model.procurement.purchase</title>
+<title>com.example.sms.domain.model.procurement.order.rule&#45;&gt;com.example.sms.domain.model.procurement.order</title>
 <path fill="none" stroke="black" d="M422.4,-479.23C474.15,-462.33 554.31,-436.16 611.47,-417.51"/>
 <polygon fill="black" stroke="black" points="612.36,-420.9 620.78,-414.47 610.19,-414.24 612.36,-420.9"/>
 </g>
 <!-- com.example.sms.domain.model.procurement.purchase.rule&#45;&gt;com.example.sms.domain.type.money -->
 <g id="edge11" class="edge">
-<title>com.example.sms.domain.model.procurement.purchase.rule&#45;&gt;com.example.sms.domain.type.money</title>
+<title>com.example.sms.domain.model.procurement.order.rule&#45;&gt;com.example.sms.domain.type.money</title>
 <path fill="none" stroke="black" d="M336.32,-477.18C328.24,-473.59 319.5,-470.31 311.03,-468.25 290.82,-463.35 138.41,-475.27 124.03,-460.25 35.32,-367.67 41.43,-269.83 124.03,-171.75 157.04,-132.56 306.34,-121.61 386.97,-118.56"/>
 <polygon fill="black" stroke="black" points="386.97,-122.06 396.84,-118.21 386.72,-115.06 386.97,-122.06"/>
 </g>
