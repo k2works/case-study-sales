@@ -49,10 +49,13 @@ public class Sales {
     public static Sales of(String salesNumber, String orderNumber, LocalDateTime salesDate, Integer salesType, String departmentCode, LocalDateTime departmentStartDate,
                            String customerCode, Integer customerBranchNumber, String employeeCode, Integer voucherNumber, String originalVoucherNumber,
                            String remarks, List<SalesLine> salesLines) {
-        Money calcTotalSalesAmount = salesLines.stream()
+        // salesLinesがnullの場合は空のリストとして扱う
+        List<SalesLine> safeSalesLines = salesLines != null ? salesLines : List.of();
+
+        Money calcTotalSalesAmount = safeSalesLines.stream()
                 .map(SalesLine::calcSalesAmount)
                 .reduce(Money.of(0), Money::plusMoney);
-        Money calcTotalConsumptionTax = salesLines.stream()
+        Money calcTotalConsumptionTax = safeSalesLines.stream()
                 .map(SalesLine::calcConsumptionTaxAmount)
                 .reduce(Money.of(0), Money::plusMoney);
 
@@ -74,7 +77,7 @@ public class Sales {
                 remarks,
                 voucherNumber,
                 originalVoucherNumber,
-                salesLines,
+                safeSalesLines,
                 null,
                 null
         );

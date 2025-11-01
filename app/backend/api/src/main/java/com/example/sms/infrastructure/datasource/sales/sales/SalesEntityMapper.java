@@ -181,7 +181,9 @@ public class SalesEntityMapper {
                     e.get請求遅延区分(),
                     e.get自動仕訳日(),
                     e.get商品マスタ()  != null ? ProductEntityMapper.mapToDomainModel(e.get商品マスタ()) : null,
-                    TaxRateType.of(e.get消費税率())
+                    Optional.ofNullable(e.get消費税率())
+                            .map(TaxRateType::of)
+                            .orElse(null)
             );
         };
 
@@ -253,7 +255,9 @@ public class SalesEntityMapper {
                 Optional.ofNullable(salesLineData.get商品マスタ())
                         .map(ProductEntityMapper::mapToDomainModel)
                         .orElse(null),
-                TaxRateType.of(salesLineData.get消費税率())
+                Optional.ofNullable(salesLineData.get消費税率())
+                        .map(TaxRateType::of)
+                        .orElse(null)
         );
     }
 

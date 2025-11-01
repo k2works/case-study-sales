@@ -44,7 +44,7 @@ public class SalesResourceDTOMapper {
                 )
                 .filter(Objects::nonNull) // null要素を除外
                 .toList()
-                : null; // getSalesLinesがnullの場合
+                : List.of(); // getSalesLinesがnullの場合は空のリストを返す
 
         return Sales.of(
                 Objects.equals(resource.getSalesNumber(), "") ? null : resource.getSalesNumber(),

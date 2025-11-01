@@ -68,7 +68,7 @@ public class InventoryList {
      */
     public InventoryList filterByWarehouseCode(String warehouseCode) {
         List<Inventory> filtered = items.stream()
-                .filter(item -> item.getWarehouseCode().equals(warehouseCode))
+                .filter(item -> item.getWarehouseCode().getValue().equals(warehouseCode))
                 .collect(Collectors.toList());
         return InventoryList.of(filtered);
     }
