@@ -357,6 +357,12 @@ public class TestDataFactoryImpl implements TestDataFactory {
             inventoryRepository.save(getInventory("W01", "99999999", "LOT002"));
             inventoryRepository.save(getInventory("W02", "99999999", "LOT003"));
         });
+
+        // 仕入データの準備
+        setUpPurchase();
+
+        // 支払データの準備
+        setUpPurchasePayment();
     }
 
     private void setUpUser() {
