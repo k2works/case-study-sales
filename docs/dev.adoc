@@ -582,6 +582,72 @@ user --> 発注ルール確認
 @enduml
 ----
 
+#### 仕入
+
+[plantuml]
+----
+@startuml
+left to right direction
+actor "利用者" as member
+actor "管理者" as admin
+rectangle 仕入管理 {
+    usecase UC1 as "仕入一覧"
+    usecase UC2 as "仕入詳細"
+    usecase UC3 as "仕入検索"
+    usecase UC4 as "仕入編集"
+    usecase UC5 as "仕入確認"
+    usecase UC6 as "仕入ルール確認"
+}
+admin --> UC1
+admin --> UC2
+admin --> UC3
+admin --> UC4
+admin --> UC5
+admin --> UC6
+member --> UC1
+member --> UC2
+member --> UC3
+member --> UC4
+member --> UC5
+member --> UC6
+@enduml
+----
+
+#### 支払
+
+[plantuml]
+----
+@startuml
+left to right direction
+actor "利用者" as member
+actor "管理者" as admin
+rectangle 支払管理 {
+    usecase UC7 as "支払一覧"
+    usecase UC8 as "支払詳細"
+    usecase UC9 as "支払検索"
+    usecase UC10 as "支払登録"
+    usecase UC11 as "支払編集"
+    usecase UC12 as "支払削除"
+    usecase UC13 as "支払集計"
+}
+admin --> UC7
+admin --> UC8
+admin --> UC9
+admin --> UC10
+admin --> UC11
+admin --> UC12
+admin --> UC13
+member --> UC7
+member --> UC8
+member --> UC9
+member --> UC10
+member --> UC11
+member --> UC12
+member --> UC13
+@enduml
+----
+
+
 ### 在庫
 
 #### 在庫
@@ -799,6 +865,20 @@ include::./assets/procurement/purchase/order/PurchaseOrderRule.feature[]
 [source,yml]
 ----
 include::./assets/procurement/purchase/order/PurchaseOrderUpload.feature[]
+----
+
+#### 仕入
+
+[source,yml]
+----
+include::./assets/procurement/purchase/Purchase.feature[]
+----
+
+#### 支払
+
+[source,yml]
+----
+include::./assets/procurement/payment/PurchasePayment.feature[]
 ----
 
 ### 在庫
@@ -1123,6 +1203,61 @@ class 商品
 発注 --* 仕入先
 仕入先 *- 商品
 発注明細 --* 商品
+@enduml
+----
+
+### 仕入
+
+[plantuml]
+----
+@startuml
+class 発注一覧
+class 発注
+class 発注明細
+class 発注ルール
+class 仕入一覧
+class 仕入
+class 仕入明細
+class 仕入ルール
+class 支払一覧
+class 商品
+class 仕入先
+
+発注一覧 *-- 発注
+発注 *-- 発注明細
+発注ルール -> 発注
+発注明細 <-- 仕入
+仕入一覧 *-- 仕入
+仕入 *-- 仕入明細
+仕入ルール -> 仕入
+発注明細 *- 商品
+仕入明細 *- 商品
+仕入 *- 仕入先
+発注 *- 仕入先
+@enduml
+----
+
+### 支払
+
+[plantuml]
+----
+@startuml
+class 仕入一覧
+class 仕入
+class 仕入明細
+class 仕入ルール
+class 支払一覧
+class 支払
+class 商品
+class 仕入先
+
+仕入一覧 *-- 仕入
+仕入 *-- 仕入明細
+仕入ルール -> 仕入
+支払一覧 *-- 支払
+仕入 --> 支払
+仕入明細 *- 商品
+仕入 *- 仕入先
 @enduml
 ----
 
@@ -2550,6 +2685,143 @@ class 社員
 @endsalt
 ----
 
+##### 仕入
+
+[plantuml]
+----
+@startsalt
+{+
+  仕入一覧画面（コレクション）
+  {+
+     {
+      ホーム
+      ユーザー
+      マスタ
+      発注
+      ログアウト
+      } |
+      {
+        {
+          {/ <b>一覧 | ルール }
+          [ 検索 ]
+        }
+      {+
+        ---------------------
+        {
+          1xxxxxx | 商品1    | [  編集  ]
+          1xxxxxx | 商品2    | [  編集  ]
+          1xxxxxx | 商品3    | [  編集  ]
+        }
+      }
+     }
+  }
+  ----------------
+  仕入画面（シングル）
+  {+
+      {
+        [  保存   ]
+        ---------------------
+        発注番号    | "1xxxxxx"   "
+        商品名        | "商品1    "
+        数量        | "1"
+        仕入指示数  | "1"
+        仕入済数    | "0"
+      }
+  }
+  ----------------
+  仕入ルール画面（コレクション）
+  {+
+     {
+      ホーム
+      ユーザー
+      マスタ
+      発注
+      ログアウト
+      } |
+      {
+        {
+          {/ 一覧 | <b>ルール }
+          [ 確認 ]
+        }
+      {+
+        ---------------------
+        {
+          仕入ルール | [削除]
+          仕入ルール | [削除]
+          仕入ルール | [削除]
+        }
+      }
+     }
+  }
+}
+@endsalt
+----
+
+##### 支払
+
+[plantuml]
+----
+@startsalt
+{+
+  支払一覧画面（コレクション）
+  {+
+     {
+      ホーム
+      ユーザー
+      マスタ
+      発注
+      ログアウト
+      } |
+      {
+        {
+          {/ <b>一覧 | 支払集計 }
+          [ 検索 ] | [  新規登録  ]
+        }
+      {+
+        ---------------------
+        {
+          1xxxxxx | 商品1    | [  編集  ] | [  削除  ]
+          1xxxxxx | 商品2    | [  編集  ] | [  削除  ]
+          1xxxxxx | 商品3    | [  編集  ] | [  削除  ]
+        }
+      }
+     }
+  }
+    ----------------
+    支払画面（シングル）
+    {+
+        [保存]
+        ---------------------
+        {
+          支払番号    | "1xxxxxx"   "
+          商品名        | "商品1    "
+          数量        | "1"
+          支払金額    | "1000"
+        }
+    }
+    ----------------
+  支払集計画面（コレクション）
+  {+
+     {
+      ホーム
+      ユーザー
+      マスタ
+      発注
+      ログアウト
+      } |
+      {
+        {
+          {/ 一覧 | <b>支払集計 }
+          [ 集計 ]
+        }
+      {+
+      }
+     }
+  }
+}
+@endsalt
+----
+
 #### 在庫
 
 ##### 在庫
@@ -3326,6 +3598,69 @@ class ナビゲーション {
 @enduml
 ----
 
+##### 仕入
+
+[plantuml]
+----
+@startuml
+    class 仕入一覧 {
+        検索()
+        編集()
+    }
+    class 仕入 {
+        保存()
+    }
+    class 仕入ルール {
+        削除()
+    }
+  class ナビゲーション {
+    ホーム()
+    マスタ()
+    ユーザー()
+    仕入()
+    支払()
+    ログアウト()
+  }
+
+    ナビゲーション --* 仕入一覧
+    仕入一覧 *-- 仕入
+    ナビゲーション --* 仕入ルール
+@enduml
+----
+
+##### 支払
+
+[plantuml]
+----
+@startuml
+    class 支払一覧 {
+        検索()
+        新規登録()
+        編集()
+        削除()
+    }
+    class 支払 {
+        保存()
+    }
+    class 支払集計 {
+        集計()
+    }
+  class ナビゲーション {
+    ホーム()
+    マスタ()
+    ユーザー()
+    仕入()
+    支払()
+    ログアウト()
+  }
+
+    ナビゲーション --* 支払一覧
+    支払一覧 *-- 支払
+    ナビゲーション --* 支払集計
+@enduml
+----
+
+
 #### 在庫
 
 ##### 在庫
@@ -3626,6 +3961,29 @@ class ナビゲーション {
     アップロード_シングル --> 発注一括登録_コレクション
     発注_コレクション --> 発注ルール_コレクション
   ログイン_シングル <-- 発注_コレクション
+@enduml
+----
+
+##### 仕入
+
+[plantuml]
+----
+@startuml
+    ログイン_シングル --> 仕入一覧_コレクション
+    仕入一覧_コレクション --> 仕入_シングル
+    仕入_シングル --> 仕入一覧_コレクション
+@enduml
+----
+
+##### 支払
+
+[plantuml]
+----
+@startuml
+    ログイン_シングル --> 支払一覧_コレクション
+    支払一覧_コレクション --> 支払_シングル
+    支払_シングル --> 支払一覧_コレクション
+    ログイン_シングル --> 支払集計_コレクション
 @enduml
 ----
 
