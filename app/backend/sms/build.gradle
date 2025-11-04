@@ -119,7 +119,8 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
-	jvmArgs '-Xmx2g', '-Xms1g'
+	jvmArgs '-Xmx4g', '-Xms2g'
+	maxParallelForks = 1  // 並列実行を制限してメモリ消費を抑える
 }
 
 flyway {
