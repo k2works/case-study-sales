@@ -98,8 +98,8 @@ dependencies {
 	testImplementation 'io.cucumber:cucumber-spring:7.18.1'
 	implementation 'commons-io:commons-io:2.16.1'
 	testImplementation group: 'org.junit.vintage', name: 'junit-vintage-engine'
-	testImplementation 'com.tngtech.archunit:archunit:1.2.2'
-	testImplementation 'com.tngtech.archunit:archunit-junit5:1.2.2'
+	testImplementation 'com.tngtech.archunit:archunit:1.4.1'
+	testImplementation 'com.tngtech.archunit:archunit-junit5:1.4.1'
 	testImplementation 'io.github.hakky54:logcaptor:2.10.1'
 	implementation 'com.github.pagehelper:pagehelper-spring-boot-starter:1.4.7'
 	// testImplementation platform("io.qameta.allure:allure-bom:$allureVersion")  // Disabled: Allure plugin disabled
