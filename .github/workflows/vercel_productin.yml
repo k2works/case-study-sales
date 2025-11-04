@@ -32,12 +32,12 @@ jobs:
           distribution: 'oracle'
       - name: Grant execute permission for Gradle wrapper
         run: chmod +x ./gradlew
-        working-directory: app/backend/api
+        working-directory: app/backend/sms
       - name: Run migrations
         run: |
           ./gradlew assemble
           ./gradlew flywayMigrate
-        working-directory: app/backend/api
+        working-directory: app/backend/sms
 
       - name: Install Playwright
         run: npm install -D @playwright/test@latest

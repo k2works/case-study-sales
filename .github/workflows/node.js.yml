@@ -52,13 +52,13 @@ jobs:
           distribution: 'oracle'
       - name: Grant execute permission for Gradle wrapper
         run: chmod +x ./gradlew
-        working-directory: app/backend/api
+        working-directory: app/backend/sms
       - name: Build with Gradle in api directory
         run: ./gradlew build -x test
-        working-directory: app/backend/api
+        working-directory: app/backend/sms
       - name: Run with Gradle in api directory
         run: ./gradlew bootRun &
-        working-directory: app/backend/api
+        working-directory: app/backend/sms
 
       - name: Use Node.js latest
         uses: actions/setup-node@v4

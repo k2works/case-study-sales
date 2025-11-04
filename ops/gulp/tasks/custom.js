@@ -8,8 +8,8 @@ const merge = require('gulp-merge');
 // プロジェクトルートのディレクトリを取得
 const projectRoot = process.cwd();
 const appNpmPath = path.join(projectRoot, 'app/frontend', 'package.json');
-const apiGradlewPath = path.join(projectRoot, 'app/backend/api', 'gradlew');
-const apiCwd = path.join(projectRoot, 'app/backend/api');
+const apiGradlewPath = path.join(projectRoot, 'app/backend/sms', 'gradlew');
+const apiCwd = path.join(projectRoot, 'app/backend/sms');
 const appCwd = path.join(projectRoot, 'app/frontend');
 
 // Windows環境かどうかをチェック
