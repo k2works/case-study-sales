@@ -1,5 +1,5 @@
 -- スキーマを作成
-CREATE SCHEMA system;
+CREATE SCHEMA IF NOT EXISTS system;
 
 -- テーブルを作成
 CREATE TABLE system.usr
