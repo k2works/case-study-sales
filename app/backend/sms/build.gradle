@@ -1,6 +1,6 @@
 buildscript {
 	dependencies {
-		classpath("org.flywaydb:flyway-database-postgresql:11.0.1")
+		classpath("org.flywaydb:flyway-database-postgresql:11.15.0")
 	}
 }
 
@@ -9,7 +9,7 @@ plugins {
 	id 'org.springframework.boot' version '3.5.0-SNAPSHOT'
 	id 'io.spring.dependency-management' version '1.1.6'
 	id 'org.dddjava.jig-gradle-plugin' version '2025.10.1'
-	id "net.ltgt.flyway" version "0.2.0"
+	id "org.flywaydb.flyway" version "11.15.0"
 	id 'de.undercouch.download' version '5.6.0'
 	id "com.thinkimi.gradle.MybatisGenerator" version "2.4"
 	id 'io.qameta.allure' version '3.0.0'
@@ -84,11 +84,8 @@ dependencies {
 	testImplementation 'org.mockito:mockito-core:5.15.2'
 	testImplementation 'org.mockito:mockito-junit-jupiter:5.15.2'
 	testImplementation 'com.github.irof:jig-erd:latest.release'
-	implementation 'org.flywaydb:flyway-core:11.0.1'
-	runtimeOnly 'org.flywaydb:flyway-database-postgresql:11.0.1'
-	flyway 'org.flywaydb:flyway-core:11.0.1'
-	flyway 'org.flywaydb:flyway-database-postgresql:11.0.1'
-	flyway 'org.postgresql:postgresql'
+	implementation 'org.flywaydb:flyway-core:11.15.0'
+	runtimeOnly 'org.flywaydb:flyway-database-postgresql:11.15.0'
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
 	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
 	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.2.0'
@@ -129,10 +126,8 @@ flyway {
 	url = 'jdbc:postgresql://localhost:5432/mydb'
 	user = 'root'
 	password = 'password'
-	migrationLocations = files('src/main/resources/db/migration/postgresql')
-	configuration = [
-		'flyway.cleanDisabled': 'false'
-	]
+	locations = ['classpath:db/migration/postgresql']
+	cleanDisabled = false
 }
 
 // MyBatis Generator Task
