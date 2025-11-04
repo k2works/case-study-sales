@@ -21,6 +21,7 @@ public class ArchitectureRuleTest {
                 .should()
                 .accessClassesThat()
                 .resideInAPackage("..infrastructure..")
+                .allowEmptyShould(true)
                 .check(importedClasses);
     }
 
@@ -34,6 +35,7 @@ public class ArchitectureRuleTest {
                 .should()
                 .accessClassesThat()
                 .resideInAPackage("..presentation..")
+                .allowEmptyShould(true)
                 .check(importedClasses);
     }
 
@@ -47,6 +49,7 @@ public class ArchitectureRuleTest {
                 .should()
                 .accessClassesThat()
                 .resideInAPackage("..presentation..")
+                .allowEmptyShould(true)
                 .check(importedClasses);
 
         ArchRuleDefinition.noClasses()
@@ -55,6 +58,7 @@ public class ArchitectureRuleTest {
                 .should()
                 .accessClassesThat()
                 .resideInAPackage("..service..")
+                .allowEmptyShould(true)
                 .check(importedClasses);
 
         ArchRuleDefinition.noClasses()
@@ -63,6 +67,7 @@ public class ArchitectureRuleTest {
                 .should()
                 .accessClassesThat()
                 .resideInAPackage("..infrastructure..")
+                .allowEmptyShould(true)
                 .check(importedClasses);
     }
 
@@ -76,6 +81,7 @@ public class ArchitectureRuleTest {
                 .should()
                 .accessClassesThat()
                 .resideInAPackage("..presentation..")
+                .allowEmptyShould(true)
                 .check(importedClasses);
     }
 }

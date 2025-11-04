@@ -6,11 +6,11 @@ buildscript {
 
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.3.4'
+	id 'org.springframework.boot' version '3.5.0-SNAPSHOT'
 	id 'io.spring.dependency-management' version '1.1.6'
 	id 'org.dddjava.jig-gradle-plugin' version '2024.10.6'
 	id "org.flywaydb.flyway" version "10.7.2"
-	id 'de.undercouch.download' version '4.0.1'
+	id 'de.undercouch.download' version '5.6.0'
 	id "com.thinkimi.gradle.MybatisGenerator" version "2.4"
 	id 'io.qameta.allure' version '2.12.0'
 	id 'jacoco'
@@ -22,8 +22,12 @@ version = '0.0.1-SNAPSHOT'
 
 java {
 	toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(25)
 	}
+}
+
+springBoot {
+	mainClass = 'com.example.sms.SmsApplication'
 }
 
 configurations {
@@ -34,6 +38,12 @@ configurations {
 
 repositories {
 	mavenCentral()
+	maven {
+		url 'https://projectlombok.org/edge-releases'
+	}
+	maven {
+		url 'https://repo.spring.io/snapshot'
+	}
 }
 
 sourceSets {
@@ -60,15 +70,19 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-configuration-processor'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	compileOnly 'org.projectlombok:lombok'
-	testCompileOnly 'org.projectlombok:lombok'
-	testAnnotationProcessor 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
+	compileOnly 'org.projectlombok:lombok:edge-SNAPSHOT'
+	testCompileOnly 'org.projectlombok:lombok:edge-SNAPSHOT'
+	testAnnotationProcessor 'org.projectlombok:lombok:edge-SNAPSHOT'
+	annotationProcessor 'org.projectlombok:lombok:edge-SNAPSHOT'
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	runtimeOnly 'org.postgresql:postgresql'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.mockito', module: 'mockito-core'
+	}
 	testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation 'org.mockito:mockito-core:5.15.2'
+	testImplementation 'org.mockito:mockito-junit-jupiter:5.15.2'
 	testImplementation 'com.github.irof:jig-erd:latest.release'
 	implementation 'org.flywaydb:flyway-core:10.15.0'
 	runtimeOnly 'org.flywaydb:flyway-database-postgresql:10.14.0'
@@ -83,7 +97,7 @@ dependencies {
 	testImplementation 'io.cucumber:cucumber-junit:7.18.0'
 	testImplementation 'io.cucumber:cucumber-spring:7.18.1'
 	implementation 'commons-io:commons-io:2.16.1'
-	testImplementation group: 'org.junit.vintage', name: 'junit-vintage-engine', version: '5.11.0-M1'
+	testImplementation group: 'org.junit.vintage', name: 'junit-vintage-engine'
 	testImplementation 'com.tngtech.archunit:archunit:1.2.2'
 	testImplementation 'com.tngtech.archunit:archunit-junit5:1.2.2'
 	testImplementation 'io.github.hakky54:logcaptor:2.10.1'
@@ -129,13 +143,6 @@ mybatisGenerator {
 	verbose = true
 	configFile = 'src/main/resources/autogen/generatorConfig.xml'
     mybatisProperties = ['key1': "value1", 'key2': "value2"]
-
-download {
-	ext.postgres = file("${downloadTaskDir}/jdbc/postgresql-42.7.4.jar")
-	src('https://jdbc.postgresql.org/download/postgresql-42.7.4.jar')
-	dest(postgres)
-	overwrite = false
-}
 
 // optional, here is the override dependencies for the plugin or you can add other database dependencies.
 dependencies {
