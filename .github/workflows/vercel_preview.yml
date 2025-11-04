@@ -10,7 +10,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Start Database Services
         uses: hoverkraft-tech/compose-action@v2.0.1
@@ -22,10 +22,10 @@ jobs:
       - name: Setup Graphviz
         uses: tlylt/install-graphviz@main
       - name: Setup JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
-          java-version: '21'
-          distribution: 'temurin'
+          java-version: '25'
+          distribution: 'oracle'
       - name: Grant execute permission for Gradle wrapper
         run: chmod +x ./gradlew
         working-directory: app/backend/api
