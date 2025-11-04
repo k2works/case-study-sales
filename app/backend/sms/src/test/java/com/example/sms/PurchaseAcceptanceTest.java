@@ -10,8 +10,8 @@ import org.junit.runner.RunWith;
         glue = {"com.example.sms"},
         plugin = {
                 "pretty",
-                "html:build/reports/tests/purchase-acceptance.html",
-                "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm"
+                "html:build/reports/tests/purchase-acceptance.html"
+                // "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm"  // Disabled: Allure plugin disabled
         }
 )
 public class PurchaseAcceptanceTest {
