@@ -12,7 +12,7 @@ plugins {
 	id "org.flywaydb.flyway" version "11.15.0"
 	id 'de.undercouch.download' version '5.6.0'
 	id "com.thinkimi.gradle.MybatisGenerator" version "2.4"
-	id 'io.qameta.allure' version '2.12.0'
+	// id 'io.qameta.allure' version '2.12.0'  // Disabled: Gradle 9.0 compatibility issue
 	id 'jacoco'
 	id "org.sonarqube" version "6.0.1.5171"
 }
@@ -51,7 +51,7 @@ sourceSets {
 		resources.srcDirs = ["src/main/java", "src/main/resources"]
 	}
 }
-def allureVersion = "2.24.0"
+// def allureVersion = "2.24.0"  // Disabled: Allure plugin disabled
 
 sonar {
 	properties {
@@ -102,9 +102,9 @@ dependencies {
 	testImplementation 'com.tngtech.archunit:archunit-junit5:1.2.2'
 	testImplementation 'io.github.hakky54:logcaptor:2.10.1'
 	implementation 'com.github.pagehelper:pagehelper-spring-boot-starter:1.4.7'
-	testImplementation platform("io.qameta.allure:allure-bom:$allureVersion")
-	testImplementation "io.qameta.allure:allure-cucumber7-jvm"
-	testImplementation "io.qameta.allure:allure-junit-platform"
+	// testImplementation platform("io.qameta.allure:allure-bom:$allureVersion")  // Disabled: Allure plugin disabled
+	// testImplementation "io.qameta.allure:allure-cucumber7-jvm"  // Disabled: Allure plugin disabled
+	// testImplementation "io.qameta.allure:allure-junit-platform"  // Disabled: Allure plugin disabled
 	implementation 'com.github.pagehelper:pagehelper-spring-boot-starter:2.1.0'
 	testImplementation "org.junit.jupiter:junit-jupiter:5.11.4"
 	testImplementation "org.testcontainers:testcontainers:1.20.4"
@@ -157,11 +157,11 @@ mybatisProperties = ['jdbcUrl'        : 'jdbc:postgresql://localhost:5432/mydb',
 					 'jdbcPassword'   : 'password',]
 }
 
-allure {
-	adapter {
-		aspectjWeaver.set(false)
-	}
-}
+// allure {  // Disabled: Allure plugin disabled
+// 	adapter {
+// 		aspectjWeaver.set(false)
+// 	}
+// }
 
 test {
 	finalizedBy jacocoTestReport
