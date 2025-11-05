@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-22.04
     environment: development
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - uses: akhileshns/heroku-deploy@v3.13.15
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: ${{secrets.HEROKU_APP_DEVELOP_NAME}}
           heroku_email: ${{secrets.HEROKU_EMAIL}}
-          appdir: "app/backend/api" # <- This will point to the api folder in your project
+          appdir: "app/backend/sms" # <- This will point to the api folder in your project

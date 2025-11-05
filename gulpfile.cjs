@@ -13,7 +13,6 @@ const build = series(
     custom.jigBuildTasks(),
     custom.jigErdBuildTasks(),
     custom.erdBuildTasks(),
-    custom.allureGradleBuildTasks(),
     custom.astroBuildTasks(),
     custom.wiki.buildWiki,
 );
