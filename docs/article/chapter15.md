@@ -615,11 +615,396 @@ class ReconciliationTest {
 
 ---
 
+## 15.3 React コンポーネントの実装
+
+### 請求・入金画面のコンポーネント構成
+
+請求・回収管理画面は、請求一覧、入金一覧、集計画面で構成されています。
+
+```plantuml
+@startuml
+title 請求・回収管理のコンポーネント構成
+
+package "請求管理" {
+  class InvoiceContainer {
+    + fetchInvoices()
+    + handleDelete()
+  }
+  class InvoiceAggregateContainer {
+    + fetchAggregates()
+  }
+}
+
+package "入金管理" {
+  class PaymentContainer {
+    + fetchPayments()
+    + handleCreateOrUpdate()
+    + handleDelete()
+  }
+  class PaymentAggregateContainer {
+    + fetchAggregates()
+  }
+}
+
+package "View" {
+  class InvoiceCollectionView
+  class InvoiceSingleView
+  class InvoiceAggregateCollectionView
+  class PaymentCollectionView
+  class PaymentSingleView
+  class PaymentAggregateCollectionView
+}
+
+InvoiceContainer --> InvoiceCollectionView
+InvoiceContainer --> InvoiceSingleView
+InvoiceAggregateContainer --> InvoiceAggregateCollectionView
+PaymentContainer --> PaymentCollectionView
+PaymentContainer --> PaymentSingleView
+PaymentAggregateContainer --> PaymentAggregateCollectionView
+
+@enduml
+```
+
+### 請求一覧画面の実装
+
+請求一覧画面では、請求番号、請求日、顧客コード、当月請求額を表示します。
+
+```typescript
+interface InvoiceCollectionViewProps {
+    error: string | null;
+    message: string | null;
+    searchItems: {
+        searchInvoiceCriteria: InvoiceCriteriaType;
+        setSearchInvoiceCriteria: React.Dispatch<React.SetStateAction<InvoiceCriteriaType>>;
+        handleOpenSearchModal: () => void;
+    };
+    headerItems: {
+        handleOpenModal: (invoice?: InvoiceType) => void;
+        handleCheckToggleCollection: () => void;
+        handleDeleteCheckedCollection: () => void;
+    };
+    collectionItems: {
+        invoices: InvoiceType[];
+        handleOpenModal: (invoice: InvoiceType) => void;
+        handleDeleteInvoice: (invoiceNumber: string) => void;
+        handleCheckInvoice: (invoice: InvoiceType) => void;
+    };
+    pageNationItems: PageNationItemsProps;
+}
+
+export const InvoiceCollectionView: React.FC<Props> = ({
+    error,
+    message,
+    searchItems,
+    headerItems,
+    collectionItems,
+    pageNationItems
+}) => (
+    <div className="collection-view-object-container">
+        <Message error={error} message={message} />
+        <div className="collection-view-container">
+            <div className="collection-view-header">
+                <h1 className="single-view-title">請求一覧</h1>
+            </div>
+            <div className="collection-view-content">
+                <Search
+                    searchCriteria={searchItems.searchInvoiceCriteria}
+                    setSearchCriteria={searchItems.setSearchInvoiceCriteria}
+                    handleSearchAudit={searchItems.handleOpenSearchModal}
+                />
+                <div className="button-container">
+                    <button onClick={headerItems.handleCheckToggleCollection}>
+                        一括選択
+                    </button>
+                    <button onClick={headerItems.handleDeleteCheckedCollection}>
+                        一括削除
+                    </button>
+                </div>
+                <ul className="collection-object-list">
+                    {collectionItems.invoices.map((invoice) => (
+                        <li key={invoice.invoiceNumber}>
+                            <input
+                                type="checkbox"
+                                checked={invoice.checked || false}
+                                onChange={() => collectionItems.handleCheckInvoice(invoice)}
+                            />
+                            <div>請求番号: {invoice.invoiceNumber}</div>
+                            <div>請求日: {invoice.invoiceDate.split("T")[0]}</div>
+                            <div>顧客コード: {invoice.customerCode}</div>
+                            <div>当月請求額: {invoice.currentMonthInvoiceAmount}</div>
+                            <button onClick={() => collectionItems.handleOpenModal(invoice)}>
+                                編集
+                            </button>
+                            <button onClick={() =>
+                                collectionItems.handleDeleteInvoice(invoice.invoiceNumber)}>
+                                削除
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </div>
+    </div>
+);
+```
+
+### 消込処理 UI
+
+入金詳細画面では、請求との消込処理を行います。未消込の請求を選択して消込金額を入力します。
+
+```plantuml
+@startuml
+title 消込処理の画面遷移
+
+actor ユーザー
+participant "入金一覧" as PaymentList
+participant "入金詳細" as PaymentDetail
+participant "請求選択モーダル" as InvoiceModal
+participant "API" as API
+
+ユーザー -> PaymentList : 新規入金登録
+PaymentList -> PaymentDetail : モーダル表示
+ユーザー -> PaymentDetail : 顧客コード選択
+PaymentDetail -> InvoiceModal : 未消込請求一覧表示
+InvoiceModal -> API : 未消込請求取得
+API --> InvoiceModal : 請求データ
+ユーザー -> InvoiceModal : 消込対象請求を選択
+InvoiceModal -> PaymentDetail : 請求情報設定
+ユーザー -> PaymentDetail : 消込金額入力
+PaymentDetail -> API : 入金・消込登録
+API --> PaymentDetail : 登録完了
+
+@enduml
+```
+
+### 入金詳細画面の実装
+
+```typescript
+interface PaymentSingleViewProps {
+    error: string | null;
+    message: string | null;
+    isEditing: boolean;
+    newPayment: PaymentType;
+    setNewPayment: React.Dispatch<React.SetStateAction<PaymentType>>;
+    handleCreateOrUpdatePayment: () => void;
+    handleCloseModal: () => void;
+    handleCustomerSelect: () => void;
+    handleInvoiceSelect: () => void;
+}
+
+const PaymentForm: React.FC<PaymentFormProps> = ({
+    isEditing,
+    newPayment,
+    setNewPayment,
+    handleCustomerSelect,
+    handleInvoiceSelect
+}) => (
+    <div className="single-view-content-item-form">
+        <FormInput
+            label="入金番号"
+            id="paymentNumber"
+            value={newPayment.paymentNumber}
+            onChange={(e) => setNewPayment({
+                ...newPayment,
+                paymentNumber: e.target.value
+            })}
+            disabled={isEditing}
+        />
+        <FormInput
+            label="入金日"
+            id="paymentDate"
+            type="date"
+            value={convertToDateInputFormat(newPayment.paymentDate)}
+            onChange={(e) => setNewPayment({
+                ...newPayment,
+                paymentDate: e.target.value
+            })}
+        />
+        <FormInput
+            label="顧客コード"
+            id="customerCode"
+            value={newPayment.customerCode}
+            onClick={handleCustomerSelect}
+        />
+        <FormInput
+            label="入金金額"
+            id="paymentAmount"
+            type="number"
+            value={newPayment.paymentAmount}
+            onChange={(e) => setNewPayment({
+                ...newPayment,
+                paymentAmount: parseInt(e.target.value)
+            })}
+        />
+        <FormSelect
+            label="入金方法"
+            id="paymentMethod"
+            value={newPayment.paymentMethod}
+            options={PaymentMethodEnumType}
+            onChange={(e) => setNewPayment({
+                ...newPayment,
+                paymentMethod: e
+            })}
+        />
+        <FormInput
+            label="請求番号"
+            id="invoiceNumber"
+            value={newPayment.invoiceNumber ?? ""}
+            onClick={handleInvoiceSelect}
+        />
+        <FormInput
+            label="消込金額"
+            id="reconciliationAmount"
+            type="number"
+            value={newPayment.reconciliationAmount ?? 0}
+            onChange={(e) => setNewPayment({
+                ...newPayment,
+                reconciliationAmount: parseInt(e.target.value)
+            })}
+        />
+    </div>
+);
+```
+
+### 集計画面の実装
+
+請求集計画面では、顧客別・期間別の請求残高を表示します。
+
+```typescript
+interface InvoiceAggregateCollectionViewProps {
+    aggregates: InvoiceAggregateType[];
+    criteria: InvoiceAggregateCriteriaType;
+    setCriteria: React.Dispatch<React.SetStateAction<InvoiceAggregateCriteriaType>>;
+    handleSearch: () => void;
+}
+
+export const InvoiceAggregateCollectionView: React.FC<Props> = ({
+    aggregates,
+    criteria,
+    setCriteria,
+    handleSearch
+}) => (
+    <div className="collection-view-object-container">
+        <div className="collection-view-header">
+            <h1>請求集計</h1>
+        </div>
+        <div className="collection-view-content">
+            <div className="search-container">
+                <FormInput
+                    label="集計開始日"
+                    type="date"
+                    value={criteria.startDate}
+                    onChange={(e) => setCriteria({
+                        ...criteria,
+                        startDate: e.target.value
+                    })}
+                />
+                <FormInput
+                    label="集計終了日"
+                    type="date"
+                    value={criteria.endDate}
+                    onChange={(e) => setCriteria({
+                        ...criteria,
+                        endDate: e.target.value
+                    })}
+                />
+                <button onClick={handleSearch}>集計</button>
+            </div>
+            <table className="aggregate-table">
+                <thead>
+                    <tr>
+                        <th>顧客コード</th>
+                        <th>顧客名</th>
+                        <th>請求金額</th>
+                        <th>入金金額</th>
+                        <th>残高</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {aggregates.map((agg) => (
+                        <tr key={agg.customerCode}>
+                            <td>{agg.customerCode}</td>
+                            <td>{agg.customerName}</td>
+                            <td>{agg.invoiceAmount.toLocaleString()}</td>
+                            <td>{agg.paymentAmount.toLocaleString()}</td>
+                            <td>{agg.balance.toLocaleString()}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    </div>
+);
+```
+
+### 型定義
+
+```typescript
+// 請求の型定義
+export interface InvoiceType {
+    invoiceNumber: string;
+    invoiceDate: string;
+    partnerCode: string;
+    customerCode: string;
+    customerBranchNumber: number;
+    previousPaymentAmount: number;
+    currentMonthSalesAmount: number;
+    currentMonthPaymentAmount: number;
+    currentMonthInvoiceAmount: number;
+    consumptionTaxAmount: number;
+    invoiceReconciliationAmount: number;
+    invoiceLines: InvoiceLineType[];
+    checked?: boolean;
+}
+
+// 請求明細の型定義
+export interface InvoiceLineType {
+    invoiceNumber: string;
+    salesNumber: string;
+    salesLineNumber: number;
+}
+
+// 入金の型定義
+export interface PaymentType {
+    paymentNumber: string;
+    paymentDate: string;
+    customerCode: string;
+    customerBranchNumber: number;
+    paymentAmount: number;
+    paymentMethod: PaymentMethodEnumType;
+    invoiceNumber?: string;
+    reconciliationAmount?: number;
+    checked?: boolean;
+}
+
+// 入金方法の列挙型
+export enum PaymentMethodEnumType {
+    銀行振込 = "銀行振込",
+    現金 = "現金",
+    手形 = "手形",
+    小切手 = "小切手",
+    相殺 = "相殺",
+    その他 = "その他"
+}
+
+// 請求集計の型定義
+export interface InvoiceAggregateType {
+    customerCode: string;
+    customerName: string;
+    invoiceAmount: number;
+    paymentAmount: number;
+    balance: number;
+}
+```
+
+---
+
 ## まとめ
 
 本章では、請求・回収管理の実装について解説しました。
 
 - **請求データの生成**: 売上からの請求作成、締め処理、請求番号の採番
 - **入金管理**: 入金登録、FIFO方式による自動消込、残高管理
+- **React コンポーネント**: 請求・入金画面、消込処理 UI、集計画面
 
 第4部「販売管理機能」では、受注から請求・回収までの一連の販売プロセスを実装しました。次の第5部では、調達管理機能として発注・仕入・支払の実装に進みます。

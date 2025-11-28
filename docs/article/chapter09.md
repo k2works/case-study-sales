@@ -566,6 +566,264 @@ end note
 
 ---
 
+## 9.5 React コンポーネントの実装
+
+### ログイン画面
+
+フロントエンドでは、React を使用してログイン画面を実装します。
+
+```plantuml
+@startuml
+title ログイン画面のコンポーネント構成
+
+package "Login Feature" {
+  class Login <<Component>> {
+    - userId: string
+    - password: string
+    - message: string
+    + handleSignIn()
+  }
+
+  class LoginSingleView <<View>> {
+    + message: string
+    + handleSignIn: () => void
+    + userId: string
+    + password: string
+  }
+
+  class LoginForm <<Component>> {
+    + userId: string
+    + setUserId: (userId) => void
+    + password: string
+    + setPassword: (password) => void
+  }
+
+  class ErrorMessage <<Component>> {
+    + message: string
+  }
+
+  Login --> LoginSingleView
+  LoginSingleView --> LoginForm
+  LoginSingleView --> ErrorMessage
+}
+
+@enduml
+```
+
+#### ログインビューの実装
+
+```typescript
+interface LoginFormProps {
+    userId: string;
+    setUserId: (userId: string) => void;
+    password: string;
+    setPassword: (password: string) => void;
+}
+
+const LoginForm = ({userId, setUserId, password, setPassword}: LoginFormProps) => (
+    <div className="single-view-content-item-form">
+        <div className="single-view-content-item-form-item">
+            <label className="single-view-content-item-form-item-label">ユーザー名</label>
+            <input
+                className="single-view-content-item-form-item-input"
+                type="text"
+                value={userId}
+                onChange={(e) => setUserId(e.target.value)}
+                id="userId"
+            />
+        </div>
+        <div className="single-view-content-item-form-item">
+            <label className="single-view-content-item-form-item-label">パスワード</label>
+            <input
+                className="single-view-content-item-form-item-input"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                id="password"
+            />
+        </div>
+    </div>
+);
+```
+
+### 認証状態の管理
+
+React Context を使用して、認証状態をアプリケーション全体で管理します。
+
+```plantuml
+@startuml
+title 認証状態管理の構成
+
+package "Auth Context" {
+  class AuthUserProvider <<Provider>> {
+    - user: UserType | null
+    + signIn(user, callback)
+    + signOut(callback)
+    + isLogin(): boolean
+  }
+
+  class AuthUserContext <<Context>> {
+    + user: UserType | null
+    + signIn: Function
+    + signOut: Function
+    + isLogin: Function
+  }
+
+  interface UserType {
+    userId: string
+    token: string
+    roles: string[]
+  }
+
+  AuthUserProvider --> AuthUserContext : provides
+  AuthUserContext --> UserType : contains
+}
+
+@enduml
+```
+
+#### AuthUserProvider の実装
+
+```typescript
+export type AuthUserContextType = {
+    user: UserType | null;
+    signIn: (user: UserType, callback: () => void) => void;
+    signOut: (callback: () => void) => void;
+    isLogin: () => boolean;
+}
+
+export const AuthUserProvider: React.FC<Props> = (props: Props) => {
+    const [user, setUser] = React.useState<UserType | null>(null);
+
+    const signIn = (user: UserType, callback: () => void) => {
+        setUser(user);
+        window.localStorage.setItem("user", JSON.stringify(user));
+        callback();
+    }
+
+    const signOut = (callback: () => void) => {
+        setUser(null);
+        window.localStorage.removeItem("user");
+        callback();
+    }
+
+    const isLogin = () => {
+        const user = window.localStorage.getItem("user");
+        if (user) {
+            setUser(JSON.parse(user));
+            return true;
+        }
+        return false;
+    }
+
+    const value: AuthUserContextType = {user, signIn, signOut, isLogin};
+    return (
+        <AuthUserContext.Provider value={value}>
+            {props.children}
+        </AuthUserContext.Provider>
+    );
+}
+```
+
+### 保護されたルーティング
+
+認証が必要なページへのアクセスを制御します。
+
+```plantuml
+@startuml
+title 保護されたルーティングの流れ
+
+start
+:ページにアクセス;
+:RequireAuth コンポーネント;
+
+if (isLogin?) then (yes)
+  :保護されたページを表示;
+else (no)
+  :ログインページにリダイレクト;
+  :元のパスを保存;
+endif
+
+stop
+
+@enduml
+```
+
+#### ログインコンポーネントの実装
+
+```typescript
+export const Login: React.FC = () => {
+    const [userId, setUserId] = useState("");
+    const [password, setPassword] = useState("");
+    const [message, setMessage] = useState("");
+    const navigate = useNavigate();
+    const location: CustomLocation = useLocation() as CustomLocation;
+    const fromPathName: string = location.state?.from?.pathname || "/";
+    const authUser: AuthUserContextType = useAuthUserContext();
+
+    useEffect(() => {
+        if (authUser.isLogin()) {
+            navigate("/", {replace: true});
+        }
+    }, [authUser, navigate]);
+
+    const handleSignIn = async () => {
+        const authService = AuthService();
+        try {
+            const result = await authService.signIn(userId, password);
+            if (result.message) {
+                setMessage(result.message);
+                return;
+            }
+            const user: UserType = {
+                userId: result.userId,
+                token: result.accessToken,
+                roles: result.roles,
+            };
+            authUser.signIn(user, () => {
+                navigate(fromPathName, {replace: true});
+            });
+        } catch (e: any) {
+            setMessage(e.message);
+        }
+    };
+
+    return (
+        <LoginSingleView
+            message={message}
+            handleSignIn={handleSignIn}
+            userId={userId}
+            setUserId={setUserId}
+            password={password}
+            setPassword={setPassword}
+        />
+    );
+}
+```
+
+### ログアウト処理
+
+```typescript
+export const Logout: React.FC = () => {
+    const authUser: AuthUserContextType = useAuthUserContext();
+    const navigate = useNavigate();
+
+    const handleSignOut = () => {
+        authUser.signOut(() => {
+            navigate("/login");
+        });
+    };
+
+    React.useEffect(() => {
+        handleSignOut();
+    }, []);
+
+    return null;
+};
+```
+
+---
+
 ## ドメインモデルの例外設計
 
 ドメイン層では、専用の例外クラスを定義します。

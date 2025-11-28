@@ -587,6 +587,356 @@ class QuantityTest {
 
 ---
 
+## 14.4 React コンポーネントの実装
+
+### 出荷・売上画面のコンポーネント構成
+
+出荷・売上管理画面は、出荷指示、出荷確認、売上の各機能で構成されています。
+
+```plantuml
+@startuml
+title 出荷・売上管理のコンポーネント構成
+
+package "出荷管理" {
+  class ShippingOrderContainer {
+    + fetchShippingOrders()
+    + handleShipmentInstruction()
+  }
+  class ShippingContainer {
+    + fetchShippings()
+    + handleUpdate()
+  }
+  class ShippingConfirmContainer {
+    + fetchConfirmations()
+    + handleConfirm()
+  }
+}
+
+package "売上管理" {
+  class SalesContainer {
+    + fetchSales()
+    + handleCreateOrUpdate()
+    + handleDelete()
+  }
+  class SalesAggregateContainer {
+    + fetchAggregates()
+  }
+}
+
+package "View" {
+  class ShippingOrderCollectionView
+  class ShippingCollectionView
+  class ShippingConfirmCollectionView
+  class SalesCollectionView
+  class SalesSingleView
+  class SalesAggregateCollectionView
+}
+
+ShippingOrderContainer --> ShippingOrderCollectionView
+ShippingContainer --> ShippingCollectionView
+ShippingConfirmContainer --> ShippingConfirmCollectionView
+SalesContainer --> SalesCollectionView
+SalesContainer --> SalesSingleView
+SalesAggregateContainer --> SalesAggregateCollectionView
+
+@enduml
+```
+
+### 出荷一覧画面の実装
+
+出荷一覧画面では、受注に紐づく出荷情報を表示します。受注数量、出荷指示数量、出荷済数量、完了フラグを確認できます。
+
+```typescript
+interface ShippingItemProps {
+    shipping: ShippingType;
+    onEdit: (shipping: ShippingType) => void;
+}
+
+const ShippingItem: React.FC<ShippingItemProps> = ({ shipping, onEdit }) => (
+    <li className="collection-object-item" key={shipping.orderNumber}>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">受注番号</div>
+            <div className="collection-object-item-content-name">{shipping.orderNumber}</div>
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">受注日</div>
+            <div className="collection-object-item-content-name">
+                {shipping.orderDate.split("T")[0]}
+            </div>
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">出荷日</div>
+            <div className="collection-object-item-content-name">
+                {shipping.shippingDate?.split("T")[0]}
+            </div>
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">顧客コード</div>
+            <div className="collection-object-item-content-name">{shipping.customerCode}</div>
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">商品名</div>
+            <div className="collection-object-item-content-name">{shipping.productName}</div>
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">受注数量</div>
+            <div className="collection-object-item-content-name">{shipping.orderQuantity}</div>
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">出荷指示数量</div>
+            <div className="collection-object-item-content-name">
+                {shipping.shipmentInstructionQuantity}
+            </div>
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">出荷済数量</div>
+            <div className="collection-object-item-content-name">{shipping.shippedQuantity}</div>
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">完了フラグ</div>
+            <div className="collection-object-item-content-name">
+                {shipping.completionFlag ? "完了" : "未完了"}
+            </div>
+        </div>
+        <div className="collection-object-item-actions">
+            <button onClick={() => onEdit(shipping)}>編集</button>
+        </div>
+    </li>
+);
+```
+
+### 受注との連携表示
+
+出荷画面では、受注情報と連携して出荷処理の進捗を管理します。
+
+```plantuml
+@startuml
+title 受注と出荷の連携フロー
+
+actor ユーザー
+participant "受注一覧" as OrderList
+participant "出荷指示一覧" as ShippingOrder
+participant "出荷一覧" as ShippingList
+participant "出荷確認" as ShippingConfirm
+participant "売上一覧" as SalesList
+
+ユーザー -> OrderList : 受注確認
+OrderList -> ShippingOrder : 出荷指示発行
+ShippingOrder -> ShippingList : 出荷データ生成
+ShippingList -> ShippingConfirm : 出荷確認
+ShippingConfirm -> SalesList : 売上計上
+
+note right of ShippingOrder
+  受注明細から出荷データを作成
+  - 引当処理
+  - 出荷指示発行
+end note
+
+note right of ShippingConfirm
+  出荷実績を登録
+  - 出荷済数量更新
+  - 完了フラグ更新
+end note
+
+@enduml
+```
+
+### 売上一覧画面の実装
+
+売上一覧画面では、売上番号、売上日、顧客コード、売上金額合計を表示します。
+
+```typescript
+interface SalesItemProps {
+    sales: SalesType;
+    onEdit: (sales: SalesType) => void;
+    onDelete: (salesNumber: string) => void;
+    onCheck: (sales: SalesType) => void;
+}
+
+const SalesItem: React.FC<SalesItemProps> = ({ sales, onEdit, onDelete, onCheck }) => (
+    <li className="collection-object-item" key={sales.salesNumber}>
+        <div className="collection-object-item-content">
+            <input
+                type="checkbox"
+                checked={sales.checked}
+                onChange={() => onCheck(sales)}
+            />
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">売上番号</div>
+            <div className="collection-object-item-content-name">{sales.salesNumber}</div>
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">売上日</div>
+            <div className="collection-object-item-content-name">
+                {sales.salesDate.split("T")[0]}
+            </div>
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">顧客コード</div>
+            <div className="collection-object-item-content-name">{sales.customerCode}</div>
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">売上金額合計</div>
+            <div className="collection-object-item-content-name">{sales.totalSalesAmount}</div>
+        </div>
+        <div className="collection-object-item-actions">
+            <button onClick={() => onEdit(sales)}>編集</button>
+        </div>
+        <div className="collection-object-item-actions">
+            <button onClick={() => onDelete(sales.salesNumber)}>削除</button>
+        </div>
+    </li>
+);
+```
+
+### 売上詳細画面と明細
+
+売上詳細画面では、売上ヘッダ情報と明細情報を管理します。
+
+```typescript
+interface SalesSingleViewProps {
+    error: string | null;
+    message: string | null;
+    isEditing: boolean;
+    newSales: SalesType;
+    setNewSales: React.Dispatch<React.SetStateAction<SalesType>>;
+    setSelectedLineIndex: Dispatch<SetStateAction<number | null>>;
+    handleCreateOrUpdateSales: () => void;
+    handleCloseModal: () => void;
+    handleDepartmentSelect: () => void;
+    handleEmployeeSelect: () => void;
+    handleCustomerSelect: () => void;
+    handleProductSelect: () => void;
+}
+
+// 売上明細の金額計算
+const calculateLineAmount = (line: SalesLineType): number => {
+    return line.salesQuantity * line.salesUnitPrice - (line.discountAmount || 0);
+};
+
+// 売上明細の消費税計算
+const calculateLineTax = (line: SalesLineType): number => {
+    const amount = calculateLineAmount(line);
+    const taxRate = getTaxRate(line);
+    return line.taxRate === TaxRateEnumType.非課税 ? 0 : Math.floor(amount * taxRate);
+};
+
+// 合計金額の計算
+const calculateTotalAmount = (lines: SalesLineType[]): number => {
+    return lines.reduce((sum, line) => sum + calculateLineAmount(line), 0);
+};
+```
+
+### タブによる画面切り替え
+
+出荷・売上管理画面では、タブコンポーネントで各機能を切り替えます。
+
+```typescript
+// ShippingTabContainer.tsx
+export const ShippingTabContainer: React.FC = () => {
+    const [activeTab, setActiveTab] = useState<string>("order");
+
+    return (
+        <div className="tab-container">
+            <div className="tab-header">
+                <button
+                    className={activeTab === "order" ? "active" : ""}
+                    onClick={() => setActiveTab("order")}
+                >
+                    出荷指示
+                </button>
+                <button
+                    className={activeTab === "list" ? "active" : ""}
+                    onClick={() => setActiveTab("list")}
+                >
+                    出荷一覧
+                </button>
+                <button
+                    className={activeTab === "confirm" ? "active" : ""}
+                    onClick={() => setActiveTab("confirm")}
+                >
+                    出荷確認
+                </button>
+                <button
+                    className={activeTab === "rule" ? "active" : ""}
+                    onClick={() => setActiveTab("rule")}
+                >
+                    ルール
+                </button>
+            </div>
+            <div className="tab-content">
+                {activeTab === "order" && <ShippingOrderCollection />}
+                {activeTab === "list" && <ShippingCollection />}
+                {activeTab === "confirm" && <ShippingConfirmCollection />}
+                {activeTab === "rule" && <ShippingRuleCollection />}
+            </div>
+        </div>
+    );
+};
+```
+
+### 型定義
+
+```typescript
+// 出荷の型定義
+export interface ShippingType {
+    orderNumber: string;
+    orderLineNumber: number;
+    orderDate: string;
+    customerCode: string;
+    customerBranchNumber: number;
+    productCode: string;
+    productName: string;
+    orderQuantity: number;
+    allocationQuantity: number;
+    shipmentInstructionQuantity: number;
+    shippedQuantity: number;
+    completionFlag: boolean;
+    deliveryDate: string;
+    shippingDate?: string;
+}
+
+// 売上の型定義
+export interface SalesType {
+    salesNumber: string;
+    orderNumber: string;
+    salesDate: string;
+    salesType: number;
+    departmentCode: string;
+    departmentStartDate: string;
+    customerCode: string;
+    customerBranchNumber: number;
+    employeeCode: string;
+    totalSalesAmount: number;
+    totalConsumptionTax: number;
+    remarks: string;
+    voucherNumber?: number;
+    originalVoucherNumber?: string;
+    salesLines: SalesLineType[];
+    checked?: boolean;
+}
+
+// 売上明細の型定義
+export interface SalesLineType {
+    salesNumber: string;
+    salesLineNumber: number;
+    orderNumber: string;
+    orderLineNumber: number;
+    productCode: string;
+    productName: string;
+    salesUnitPrice: number;
+    salesQuantity: number;
+    shippedQuantity: number;
+    discountAmount: number;
+    billingDate?: string;
+    billingNumber?: string;
+    taxRate: TaxRateEnumType;
+}
+```
+
+---
+
 ## まとめ
 
 本章では、出荷・売上管理の実装について解説しました。
@@ -594,5 +944,6 @@ class QuantityTest {
 - **出荷指示と出荷実績**: 受注からの出荷データ生成、数量管理、完了フラグ
 - **売上計上**: 出荷からの売上データ生成、金額計算、請求との連携
 - **ドメインモデルの改善**: 値オブジェクトの活用、不変性、Builder パターン
+- **React コンポーネント**: 出荷指示・出荷確認・売上画面、受注との連携表示
 
 次章では、請求・回収管理の実装について解説します。

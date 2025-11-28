@@ -700,6 +700,383 @@ class VendorTest {
 
 ---
 
+## 12.4 React コンポーネントの実装
+
+### 取引先画面のコンポーネント構成
+
+取引先管理画面は、Collection/Single パターンに基づいて実装されています。取引先、顧客、仕入先、取引先グループの各画面が連携し、パーティモデルに対応した UI を提供します。
+
+```plantuml
+@startuml
+title 取引先管理のコンポーネント構成
+
+package "Container" {
+  class PartnerContainer {
+    + fetchPartners()
+    + handleCreateOrUpdate()
+    + handleDelete()
+  }
+  class CustomerContainer {
+    + fetchCustomers()
+    + handleCreateOrUpdate()
+    + handleDelete()
+  }
+  class VendorContainer {
+    + fetchVendors()
+    + handleCreateOrUpdate()
+    + handleDelete()
+  }
+  class PartnerGroupContainer {
+    + fetchGroups()
+    + handleCreateOrUpdate()
+    + handleDelete()
+  }
+}
+
+package "View" {
+  class PartnerCollectionView
+  class PartnerSingleView
+  class CustomerCollectionView
+  class CustomerSingleView
+  class VendorCollectionView
+  class VendorSingleView
+  class PartnerGroupCollectionView
+  class PartnerGroupSingleView
+}
+
+PartnerContainer --> PartnerCollectionView
+PartnerContainer --> PartnerSingleView
+CustomerContainer --> CustomerCollectionView
+CustomerContainer --> CustomerSingleView
+VendorContainer --> VendorCollectionView
+VendorContainer --> VendorSingleView
+PartnerGroupContainer --> PartnerGroupCollectionView
+PartnerGroupContainer --> PartnerGroupSingleView
+
+@enduml
+```
+
+### 取引先一覧画面の実装
+
+取引先一覧画面では、検索、一括選択、一括削除、ページネーションなどの機能を提供します。
+
+```typescript
+interface PartnerItemProps {
+    partner: PartnerType;
+    onEdit: (partner: PartnerType) => void;
+    onDelete: (partnerCode: string) => void;
+    onCheck: (partner: PartnerType) => void;
+}
+
+const PartnerItem: React.FC<PartnerItemProps> = ({
+    partner,
+    onEdit,
+    onDelete,
+    onCheck
+}) => (
+    <li className="collection-object-item" key={partner.partnerCode}>
+        <div className="collection-object-item-content">
+            <input
+                type="checkbox"
+                checked={partner.checked || false}
+                onChange={() => onCheck(partner)}
+            />
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">取引先コード</div>
+            <div className="collection-object-item-content-name">{partner.partnerCode}</div>
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">取引先名</div>
+            <div className="collection-object-item-content-name">{partner.partnerName}</div>
+        </div>
+        <div className="collection-object-item-actions">
+            <button onClick={() => onEdit(partner)}>編集</button>
+        </div>
+        <div className="collection-object-item-actions">
+            <button onClick={() => onDelete(partner.partnerCode)}>削除</button>
+        </div>
+    </li>
+);
+```
+
+### 取引先詳細画面の実装
+
+取引先詳細画面では、取引先の基本情報、与信情報、取引先グループの設定を行います。
+
+```typescript
+interface PartnerSingleViewProps {
+    error: string | null;
+    message: string | null;
+    isEditing: boolean;
+    headerItems: {
+        handleCreateOrUpdatePartner: () => void;
+        handleCloseModal: () => void;
+    };
+    formItems: {
+        newPartner: PartnerType;
+        setNewPartner: React.Dispatch<React.SetStateAction<PartnerType>>;
+    };
+    handleSelectPartnerGroup: () => void;
+}
+
+const Form = ({ isEditing, newPartner, setNewPartner, handleSelectPartnerGroup }) => (
+    <div className="single-view-content-item-form">
+        <FormInput
+            label="取引先コード"
+            id="partnerCode"
+            value={newPartner.partnerCode ?? ""}
+            onChange={(e) => setNewPartner({ ...newPartner, partnerCode: e.target.value })}
+            disabled={isEditing}
+        />
+        <FormInput
+            label="取引先名"
+            id="partnerName"
+            value={newPartner.partnerName ?? ""}
+            onChange={(e) => setNewPartner({ ...newPartner, partnerName: e.target.value })}
+        />
+        <FormSelect
+            id="vendorType"
+            label="仕入先区分"
+            value={newPartner.vendorType}
+            options={VendorEnumType}
+            onChange={(e) => setNewPartner({ ...newPartner, vendorType: e })}
+        />
+        <FormSelect
+            id="tradeProhibitedFlag"
+            label="取引禁止フラグ"
+            value={newPartner.tradeProhibitedFlag}
+            options={TradeProhibitedFlagEnumType}
+            onChange={(e) => setNewPartner({ ...newPartner, tradeProhibitedFlag: e })}
+        />
+        <FormInput
+            label="取引先グループコード"
+            id="partnerGroupCode"
+            value={newPartner.partnerGroupCode ?? ""}
+            onClick={handleSelectPartnerGroup}
+        />
+        <FormInput
+            label="与信限度額"
+            id="creditLimit"
+            type="number"
+            value={newPartner.creditLimit ?? ""}
+            onChange={(e) => setNewPartner({ ...newPartner, creditLimit: parseFloat(e.target.value) })}
+        />
+    </div>
+);
+```
+
+### 顧客・仕入先の切り替え表示
+
+取引先から顧客または仕入先への切り替えは、タブやナビゲーションを使用して実装されています。
+
+```plantuml
+@startuml
+title 顧客・仕入先の画面遷移
+
+state "取引先一覧" as PartnerList
+state "取引先詳細" as PartnerDetail
+state "顧客一覧" as CustomerList
+state "顧客詳細" as CustomerDetail
+state "仕入先一覧" as VendorList
+state "仕入先詳細" as VendorDetail
+
+[*] --> PartnerList
+PartnerList --> PartnerDetail : 編集/新規
+PartnerDetail --> PartnerList : 戻る
+
+PartnerList --> CustomerList : 顧客タブ
+CustomerList --> CustomerDetail : 編集/新規
+CustomerDetail --> CustomerList : 戻る
+
+PartnerList --> VendorList : 仕入先タブ
+VendorList --> VendorDetail : 編集/新規
+VendorDetail --> VendorList : 戻る
+
+@enduml
+```
+
+### 顧客詳細画面と出荷先管理
+
+顧客詳細画面では、顧客情報に加えて、複数の出荷先を動的に追加・削除できます。
+
+```typescript
+interface CustomerShippingCollectionAddListViewProps {
+    setNewShipping: React.Dispatch<React.SetStateAction<ShippingType>>;
+    shippings: ShippingType[];
+    handleAddShipping: () => void;
+    handleDeleteShipping: (shipping: ShippingType) => void;
+    handleAddRegion: () => void;
+}
+
+export const CustomerShippingCollectionAddListView: React.FC<Props> = ({
+    setNewShipping,
+    shippings,
+    handleAddShipping,
+    handleDeleteShipping,
+    handleAddRegion,
+}) => {
+    const [editingFieldIndex, setEditingFieldIndex] = useState<{
+        index: number | null;
+        field: "destinationName" | "regionCode" | "postalCode" | null;
+    }>({ index: null, field: null });
+
+    const handleFieldClick = (index: number, field: string, value: string) => {
+        setEditingFieldIndex({ index, field });
+        setCurrentValue(value);
+    };
+
+    return (
+        <div className="collection-view-object-container">
+            <h2>出荷先</h2>
+            <button onClick={handleAddShipping}>出荷先追加</button>
+            <ul>
+                {shippings.map((shipping, index) => (
+                    <li key={shipping.destinationNumber}>
+                        <span>{shipping.destinationNumber}</span>
+                        <span onClick={() => handleFieldClick(index, "destinationName", shipping.destinationName)}>
+                            {shipping.destinationName}
+                        </span>
+                        <span onClick={() => handleRegionClick(index)}>
+                            {shipping.regionCode}
+                        </span>
+                        <button onClick={() => handleDeleteShipping(shipping)}>削除</button>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+};
+```
+
+### 取引先グループ管理画面
+
+取引先グループの一覧・詳細画面では、グループの作成・編集・削除を管理します。
+
+```typescript
+interface PartnerGroupItemProps {
+    groupItem: PartnerGroupType;
+    onEdit: (group: PartnerGroupType) => void;
+    onDelete: (groupId: string) => void;
+    onCheck: (group: PartnerGroupType) => void;
+}
+
+const PartnerGroupItem: React.FC<PartnerGroupItemProps> = ({
+    groupItem,
+    onEdit,
+    onDelete,
+    onCheck,
+}) => (
+    <li className="collection-object-item" key={groupItem.partnerGroupCode}>
+        <div className="collection-object-item-content">
+            <input
+                type="checkbox"
+                checked={groupItem.checked}
+                onChange={() => onCheck(groupItem)}
+            />
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">取引先グループコード</div>
+            <div className="collection-object-item-content-name">{groupItem.partnerGroupCode}</div>
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">取引先グループ名</div>
+            <div className="collection-object-item-content-name">{groupItem.partnerGroupName}</div>
+        </div>
+        <div className="collection-object-item-actions">
+            <button onClick={() => onEdit(groupItem)}>編集</button>
+        </div>
+        <div className="collection-object-item-actions">
+            <button onClick={() => onDelete(groupItem.partnerGroupCode)}>削除</button>
+        </div>
+    </li>
+);
+```
+
+### 取引先グループ選択モーダル
+
+取引先詳細画面から取引先グループを選択するモーダルを実装しています。
+
+```plantuml
+@startuml
+title 取引先グループ選択フロー
+
+actor ユーザー
+participant "PartnerSingleView" as Single
+participant "PartnerGroupSelectModal" as Modal
+participant "API" as API
+
+ユーザー -> Single : グループコード入力欄クリック
+Single -> Modal : モーダル表示
+Modal -> API : グループ一覧取得
+API --> Modal : グループデータ
+Modal --> ユーザー : グループ一覧表示
+ユーザー -> Modal : グループ選択
+Modal -> Single : 選択グループコード設定
+Single --> ユーザー : フォーム更新
+
+@enduml
+```
+
+### 型定義とモデル
+
+取引先関連の型定義は、バックエンドの API レスポンスに対応しています。
+
+```typescript
+// 取引先の型定義
+export interface PartnerType {
+    partnerCode: string;
+    partnerName: string;
+    partnerNameKana: string;
+    vendorType: number;
+    postalCode: string;
+    prefecture: string;
+    address1: string;
+    address2: string;
+    tradeProhibitedFlag: number;
+    miscellaneousType: number;
+    partnerGroupCode: string;
+    creditLimit: number;
+    temporaryCreditIncrease: number;
+    checked?: boolean;
+}
+
+// 顧客の型定義
+export interface CustomerType {
+    customerCode: string;
+    customerBranchNumber: number;
+    customerName: string;
+    customerNameKana: string;
+    customerType: number;
+    billingCode: string;
+    billingBranchNumber: number;
+    // ... 請求・出荷先情報
+    shippings: ShippingType[];
+    checked?: boolean;
+}
+
+// 出荷先の型定義
+export interface ShippingType {
+    customerCode: string;
+    destinationNumber: number;
+    customerBranchNumber: number;
+    destinationName: string;
+    regionCode: string;
+    postalCode: string;
+    address1: string;
+    address2: string;
+}
+
+// 取引先グループの型定義
+export interface PartnerGroupType {
+    partnerGroupCode: string;
+    partnerGroupName: string;
+    checked?: boolean;
+}
+```
+
+---
+
 ## まとめ
 
 本章では、取引先管理の実装について解説しました。

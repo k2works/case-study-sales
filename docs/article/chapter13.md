@@ -752,6 +752,432 @@ void shouldCompleteSalesOrderLine() {
 
 ---
 
+## 13.5 React コンポーネントの実装
+
+### 受注画面のコンポーネント構成
+
+受注管理画面は、一覧・詳細・ルールチェック・一括登録の各機能で構成されています。
+
+```plantuml
+@startuml
+title 受注管理のコンポーネント構成
+
+package "Container" {
+  class OrderContainer {
+    + fetchOrders()
+    + handleCreateOrUpdate()
+    + handleDelete()
+  }
+  class OrderRuleContainer {
+    + executeRuleCheck()
+  }
+  class OrderUploadContainer {
+    + handleUpload()
+  }
+}
+
+package "View" {
+  class SalesOrderCollectionView
+  class SalesOrderSingleView
+  class SalesOrderRuleCollectionView
+  class OrderUploadCollectionView
+}
+
+OrderContainer --> SalesOrderCollectionView
+OrderContainer --> SalesOrderSingleView
+OrderRuleContainer --> SalesOrderRuleCollectionView
+OrderUploadContainer --> OrderUploadCollectionView
+
+@enduml
+```
+
+### 受注一覧画面の実装
+
+受注一覧画面では、受注番号、受注日、顧客コード、受注金額合計を表示します。
+
+```typescript
+interface SalesOrderItemProps {
+    salesOrder: SalesOrderType;
+    onEdit: (salesOrder: SalesOrderType) => void;
+    onDelete: (orderNumber: string) => void;
+    onCheck: (salesOrder: SalesOrderType) => void;
+}
+
+const SalesOrderItem: React.FC<SalesOrderItemProps> = ({
+    salesOrder,
+    onEdit,
+    onDelete,
+    onCheck
+}) => (
+    <li className="collection-object-item" key={salesOrder.orderNumber}>
+        <div className="collection-object-item-content">
+            <input
+                type="checkbox"
+                checked={salesOrder.checked}
+                onChange={() => onCheck(salesOrder)}
+            />
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">受注番号</div>
+            <div className="collection-object-item-content-name">{salesOrder.orderNumber}</div>
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">受注日</div>
+            <div className="collection-object-item-content-name">
+                {salesOrder.orderDate.split("T")[0]}
+            </div>
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">顧客コード</div>
+            <div className="collection-object-item-content-name">{salesOrder.customerCode}</div>
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">受注金額合計</div>
+            <div className="collection-object-item-content-name">{salesOrder.totalOrderAmount}</div>
+        </div>
+        <div className="collection-object-item-actions">
+            <button onClick={() => onEdit(salesOrder)}>編集</button>
+        </div>
+        <div className="collection-object-item-actions">
+            <button onClick={() => onDelete(salesOrder.orderNumber)}>削除</button>
+        </div>
+    </li>
+);
+```
+
+### 受注明細の動的追加・削除
+
+受注詳細画面では、明細行を動的に追加・削除できます。金額計算も自動的に行われます。
+
+```typescript
+// 明細行の金額計算
+const calculateLineAmount = (line: SalesOrderLineType): number => {
+    return line.orderQuantity * line.salesUnitPrice - (line.discountAmount || 0);
+};
+
+// 明細行の消費税計算
+const calculateLineTax = (line: SalesOrderLineType): number => {
+    const amount = calculateLineAmount(line);
+    const taxRate = getTaxRate(line);
+    return line.taxRate === TaxRateEnumType.非課税 ? 0 : Math.floor(amount * taxRate);
+};
+
+// 合計金額の計算
+const calculateTotalAmount = (lines: SalesOrderLineType[]): number => {
+    return lines.reduce((sum, line) => sum + calculateLineAmount(line), 0);
+};
+
+// 合計消費税の計算
+const calculateTotalTax = (lines: SalesOrderLineType[]): number => {
+    return lines.reduce((sum, line) => sum + calculateLineTax(line), 0);
+};
+```
+
+### 明細の追加・更新・削除処理
+
+```typescript
+const Form = ({ newSalesOrder, setNewSalesOrder, ... }) => {
+    // 明細行の更新
+    const handleUpdateLine = (index: number, line: SalesOrderLineType) => {
+        const newLines = [...newSalesOrder.salesOrderLines];
+        newLines[index] = { ...line, orderNumber: newSalesOrder.orderNumber };
+
+        const totalAmount = calculateTotalAmount(newLines);
+        const totalTax = calculateTotalTax(newLines);
+
+        setNewSalesOrder({
+            ...newSalesOrder,
+            salesOrderLines: newLines,
+            totalOrderAmount: totalAmount,
+            totalConsumptionTax: totalTax
+        });
+    };
+
+    // 明細行の削除
+    const handleDeleteLine = (index: number) => {
+        const newLines = newSalesOrder.salesOrderLines
+            .filter((_, i) => i !== index)
+            .map((line, i) => ({ ...line, orderLineNumber: i + 1 }));
+
+        setNewSalesOrder({
+            ...newSalesOrder,
+            salesOrderLines: newLines,
+            totalOrderAmount: calculateTotalAmount(newLines),
+            totalConsumptionTax: calculateTotalTax(newLines)
+        });
+    };
+
+    // 明細行の追加
+    const handleAddLine = () => {
+        const newLine: SalesOrderLineType = {
+            orderNumber: newSalesOrder.orderNumber,
+            orderLineNumber: newSalesOrder.salesOrderLines.length + 1,
+            productCode: '',
+            productName: '',
+            salesUnitPrice: 0,
+            orderQuantity: 0,
+            taxRate: TaxRateEnumType.標準税率,
+            allocationQuantity: 0,
+            shipmentInstructionQuantity: 0,
+            shippedQuantity: 0,
+            completionFlag: CompletionFlagEnumType.未完了,
+            discountAmount: 0,
+            deliveryDate: new Date().toISOString().slice(0, 16)
+        };
+        setNewSalesOrder({
+            ...newSalesOrder,
+            salesOrderLines: [...newSalesOrder.salesOrderLines, newLine]
+        });
+    };
+    // ...
+};
+```
+
+### 受注明細テーブルの実装
+
+明細はテーブル形式で表示し、インライン編集が可能です。
+
+```typescript
+<div className="single-view-content-item-form-lines order-detail">
+    <h3>
+        受注明細
+        <button className="add-line-button" onClick={handleAddLine}>
+            <span>＋</span> 明細追加
+        </button>
+    </h3>
+    <div className="table-container">
+        <table className="order-lines-table">
+            <thead>
+                <tr>
+                    <th>商品コード</th>
+                    <th>商品名</th>
+                    <th>販売単価</th>
+                    <th>受注数量</th>
+                    <th>消費税率</th>
+                    <th>完了フラグ</th>
+                    <th>値引金額</th>
+                    <th>納期</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {newSalesOrder.salesOrderLines.map((line, index) => (
+                    <tr key={index}>
+                        <td>
+                            <input
+                                type="text"
+                                value={line.productCode}
+                                onChange={(e) => handleUpdateLine(index, {
+                                    ...line,
+                                    productCode: e.target.value
+                                })}
+                            />
+                            <button onClick={() => handleProductSelectEvent(index)}>
+                                選択
+                            </button>
+                        </td>
+                        {/* ... 他のカラム */}
+                        <td>
+                            <button onClick={() => handleDeleteLine(index)}>
+                                削除
+                            </button>
+                        </td>
+                    </tr>
+                ))}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td className="total-label">小計</td>
+                    <td className="total-amount">
+                        {newSalesOrder.totalOrderAmount.toLocaleString()}
+                    </td>
+                </tr>
+                <tr>
+                    <td className="total-label">消費税</td>
+                    <td className="total-amount">
+                        {newSalesOrder.totalConsumptionTax.toLocaleString()}
+                    </td>
+                </tr>
+                <tr>
+                    <td className="total-label">合計金額</td>
+                    <td className="total-amount">
+                        {(newSalesOrder.totalOrderAmount +
+                          newSalesOrder.totalConsumptionTax).toLocaleString()}
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+```
+
+### ステータス遷移 UI（完了フラグ）
+
+受注明細の完了フラグは、セレクトボックスで切り替えます。
+
+```typescript
+// 完了フラグの列挙型
+export enum CompletionFlagEnumType {
+    完了 = "完了",
+    未完了 = "未完了"
+}
+
+// 消費税率の列挙型
+export enum TaxRateEnumType {
+    標準税率 = "標準税率",
+    軽減税率 = "軽減税率",
+    非課税 = "非課税"
+}
+
+// 完了フラグのセレクトボックス
+<td className="table-cell">
+    <select
+        value={line.completionFlag}
+        onChange={(e) => handleUpdateLine(index, {
+            ...line,
+            completionFlag: e.target.value as CompletionFlagEnumType
+        })}
+    >
+        <option value={CompletionFlagEnumType.完了}>完了</option>
+        <option value={CompletionFlagEnumType.未完了}>未完了</option>
+    </select>
+</td>
+```
+
+### 受注ルールチェック画面
+
+受注ルールチェック画面では、ビジネスルールの検証結果を表示します。
+
+```typescript
+interface SalesOrderRuleCollectionViewProps {
+    ruleHeaderItems: {
+        handleExecuteRuleCheck: () => void;
+    };
+    ruleResults: RuleCheckResultType[];
+    handleDeleteRuleResult: (index: number) => void;
+}
+
+export const SalesOrderRuleCollectionView: React.FC<Props> = ({
+    ruleHeaderItems: { handleExecuteRuleCheck },
+    ruleResults,
+    handleDeleteRuleResult,
+}) => (
+    <div className="collection-view-object-container">
+        <div className="collection-view-header">
+            <h1 className="single-view-title">受注ルールチェック</h1>
+        </div>
+        <div className="collection-view-content">
+            <div className="button-container">
+                <button onClick={handleExecuteRuleCheck}>実行</button>
+            </div>
+            <ul className="collection-object-list">
+                {ruleResults.map((result, index) => (
+                    <div key={index} className="upload-result-item">
+                        <div className="upload-result-message">
+                            <Message message={result.message} />
+                            {result.details && result.details.length > 0 && (
+                                <div className="upload-result-details">
+                                    {result.details.map((detail, detailIndex) => (
+                                        <div key={detailIndex}>
+                                            {Object.entries(detail).map(([key, value]) => (
+                                                <div key={key}>
+                                                    <span>{key}:</span>
+                                                    <span>{value}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                        <button onClick={() => handleDeleteRuleResult(index)}>x</button>
+                    </div>
+                ))}
+            </ul>
+        </div>
+    </div>
+);
+```
+
+### マスタ選択モーダル連携
+
+受注詳細画面から、部門・社員・顧客・商品を選択するモーダルを呼び出します。
+
+```plantuml
+@startuml
+title マスタ選択モーダル連携
+
+actor ユーザー
+participant "SalesOrderSingleView" as Single
+participant "CustomerSelectModal" as CustModal
+participant "ProductSelectModal" as ProdModal
+participant "DepartmentSelectModal" as DeptModal
+
+ユーザー -> Single : 顧客コード入力欄クリック
+Single -> CustModal : モーダル表示
+CustModal --> ユーザー : 顧客一覧表示
+ユーザー -> CustModal : 顧客選択
+CustModal -> Single : 顧客情報設定
+Single --> ユーザー : フォーム更新
+
+ユーザー -> Single : 商品コード選択ボタン
+Single -> ProdModal : モーダル表示（行番号指定）
+ProdModal --> ユーザー : 商品一覧表示
+ユーザー -> ProdModal : 商品選択
+ProdModal -> Single : 明細行に商品情報設定
+
+@enduml
+```
+
+### 型定義
+
+```typescript
+// 受注の型定義
+export interface SalesOrderType {
+    orderNumber: string;
+    orderDate: string;
+    departmentCode: string;
+    departmentStartDate: string;
+    customerCode: string;
+    customerBranchNumber: number;
+    employeeCode: string;
+    desiredDeliveryDate: string;
+    customerOrderNumber: string;
+    warehouseCode: string;
+    totalOrderAmount: number;
+    totalConsumptionTax: number;
+    remarks: string;
+    salesOrderLines: SalesOrderLineType[];
+    checked?: boolean;
+}
+
+// 受注明細の型定義
+export interface SalesOrderLineType {
+    orderNumber: string;
+    orderLineNumber: number;
+    productCode: string;
+    productName: string;
+    salesUnitPrice: number;
+    orderQuantity: number;
+    taxRate: TaxRateEnumType;
+    allocationQuantity: number;
+    shipmentInstructionQuantity: number;
+    shippedQuantity: number;
+    completionFlag: CompletionFlagEnumType;
+    discountAmount: number;
+    deliveryDate: string;
+    shippingDate?: string;
+}
+
+// ルールチェック結果の型定義
+export interface RuleCheckResultType {
+    message: string;
+    details?: Record<string, string>[];
+}
+```
+
+---
+
 ## まとめ
 
 本章では、受注管理の実装について解説しました。
@@ -760,5 +1186,6 @@ void shouldCompleteSalesOrderLine() {
 - **受注ヘッダと明細**: 親子関係のモデリング、金額の自動計算
 - **受注ルール**: Strategy パターンによるビジネスルールの実装
 - **TDD によるテスト**: 金額計算、消費税計算のテストケース
+- **React コンポーネント**: 明細の動的追加・削除、金額の自動計算、ステータス遷移 UI
 
 次章では、出荷・売上管理の実装について解説します。

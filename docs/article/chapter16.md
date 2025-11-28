@@ -906,6 +906,494 @@ end note
 @enduml
 ```
 
+## 16.4 React コンポーネントの実装
+
+### 発注画面のコンポーネント構成
+
+発注管理のフロントエンド実装は、React を使用してコンポーネントベースで構築されています。
+
+```plantuml
+@startuml
+title 発注コンポーネント構成
+
+package "発注管理" {
+  [PurchaseOrderTabContainer] as Tab
+
+  package "一覧タブ" {
+    [PurchaseOrderCollection] as Collection
+    [PurchaseOrderItem] as Item
+    [PurchaseOrderSingle] as Single
+    [PurchaseOrderEditModal] as EditModal
+    [PurchaseOrderSearchModal] as SearchModal
+  }
+
+  package "ルールチェックタブ" {
+    [PurchaseOrderRuleCollection] as RuleCollection
+  }
+
+  package "アップロードタブ" {
+    [PurchaseOrderUploadCollection] as UploadCollection
+    [PurchaseOrderUploadModal] as UploadModal
+  }
+
+  package "マスタ選択モーダル" {
+    [EmployeeSelectModal] as EmployeeModal
+    [VendorSelectModal] as VendorModal
+    [ProductSelectModal] as ProductModal
+  }
+}
+
+Tab --> Collection
+Tab --> RuleCollection
+Tab --> UploadCollection
+Collection --> Item
+Collection --> Single
+Collection --> EditModal
+Collection --> SearchModal
+Single --> EmployeeModal
+Single --> VendorModal
+Single --> ProductModal
+UploadCollection --> UploadModal
+
+@enduml
+```
+
+### 発注一覧画面の実装
+
+発注一覧画面は、発注データの検索、表示、一括操作機能を提供します。
+
+```typescript
+interface PurchaseOrderItemProps {
+    purchaseOrder: PurchaseOrderType;
+    onEdit: (purchaseOrder: PurchaseOrderType) => void;
+    onDelete: (purchaseOrderNumber: string) => void;
+    onCheck: (purchaseOrder: PurchaseOrderType) => void;
+}
+
+const PurchaseOrderItem: React.FC<PurchaseOrderItemProps> = ({
+    purchaseOrder, onEdit, onDelete, onCheck
+}) => (
+    <li className="collection-object-item" key={purchaseOrder.purchaseOrderNumber}>
+        <div className="collection-object-item-content">
+            <input
+                type="checkbox"
+                checked={purchaseOrder.checked}
+                onChange={() => onCheck(purchaseOrder)}
+            />
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">発注番号</div>
+            <div className="collection-object-item-content-name">
+                {purchaseOrder.purchaseOrderNumber}
+            </div>
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">発注日</div>
+            <div className="collection-object-item-content-name">
+                {purchaseOrder.purchaseOrderDate.split("T")[0]}
+            </div>
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">仕入先コード</div>
+            <div className="collection-object-item-content-name">
+                {purchaseOrder.supplierCode}
+            </div>
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">発注金額合計</div>
+            <div className="collection-object-item-content-name">
+                {purchaseOrder.totalPurchaseAmount.toLocaleString()}
+            </div>
+        </div>
+        <div className="collection-object-item-actions">
+            <button onClick={() => onEdit(purchaseOrder)}>編集</button>
+        </div>
+        <div className="collection-object-item-actions">
+            <button onClick={() => onDelete(purchaseOrder.purchaseOrderNumber)}>削除</button>
+        </div>
+    </li>
+);
+```
+
+### 発注明細の動的追加・削除
+
+発注詳細フォームでは、明細行を動的に追加・削除できます。金額は自動計算されます。
+
+```typescript
+// 金額計算関数
+const calculateLineAmount = (line: PurchaseOrderLineType): number => {
+    return line.purchaseOrderQuantity * line.purchaseUnitPrice;
+};
+
+const calculateLineTax = (line: PurchaseOrderLineType): number => {
+    const amount = calculateLineAmount(line);
+    return Math.floor(amount * 0.1); // 消費税 10%
+};
+
+const calculateTotalAmount = (lines: PurchaseOrderLineType[]): number => {
+    return lines.reduce((sum, line) => sum + calculateLineAmount(line), 0);
+};
+
+const calculateTotalTax = (lines: PurchaseOrderLineType[]): number => {
+    return lines.reduce((sum, line) => sum + calculateLineTax(line), 0);
+};
+
+// 明細更新処理
+const handleUpdateLine = (index: number, line: PurchaseOrderLineType) => {
+    const newLines = [...newPurchaseOrder.purchaseOrderLines];
+    newLines[index] = {
+        ...line,
+        purchaseOrderNumber: newPurchaseOrder.purchaseOrderNumber
+    };
+
+    // 合計金額の再計算
+    const totalAmount = calculateTotalAmount(newLines);
+    const totalTax = calculateTotalTax(newLines);
+
+    setNewPurchaseOrder({
+        ...newPurchaseOrder,
+        purchaseOrderLines: newLines,
+        totalPurchaseAmount: totalAmount,
+        totalConsumptionTax: totalTax
+    });
+};
+
+// 明細削除処理
+const handleDeleteLine = (index: number) => {
+    const newLines = newPurchaseOrder.purchaseOrderLines
+        .filter((_, i) => i !== index)
+        .map((line, i) => ({ ...line, purchaseOrderLineNumber: i + 1 }));
+
+    const totalAmount = calculateTotalAmount(newLines);
+    const totalTax = calculateTotalTax(newLines);
+
+    setNewPurchaseOrder({
+        ...newPurchaseOrder,
+        purchaseOrderLines: newLines,
+        totalPurchaseAmount: totalAmount,
+        totalConsumptionTax: totalTax
+    });
+};
+
+// 明細追加処理
+const handleAddLine = () => {
+    const newLine: PurchaseOrderLineType = {
+        purchaseOrderNumber: newPurchaseOrder.purchaseOrderNumber,
+        purchaseOrderLineNumber: newPurchaseOrder.purchaseOrderLines.length + 1,
+        purchaseOrderLineDisplayNumber: newPurchaseOrder.purchaseOrderLines.length + 1,
+        salesOrderNumber: '',
+        salesOrderLineNumber: 0,
+        productCode: '',
+        productName: '',
+        purchaseUnitPrice: 0,
+        purchaseOrderQuantity: 0,
+        receivedQuantity: 0,
+        completionFlag: CompletionFlagEnumType.未完了
+    };
+    setNewPurchaseOrder({
+        ...newPurchaseOrder,
+        purchaseOrderLines: [...newPurchaseOrder.purchaseOrderLines, newLine]
+    });
+};
+```
+
+### 発注明細テーブルの実装
+
+発注明細はテーブル形式で表示され、インライン編集が可能です。
+
+```typescript
+<div className="single-view-content-item-form-lines purchase-order-detail">
+    <h3>
+        発注明細
+        <button className="add-line-button" onClick={handleAddLine}>
+            <span>＋</span> 明細追加
+        </button>
+    </h3>
+    <div className="table-container">
+        <table className="purchase-order-lines-table">
+            <thead>
+                <tr>
+                    <th>発注行番号</th>
+                    <th>受注番号</th>
+                    <th>商品コード</th>
+                    <th>商品名</th>
+                    <th>発注単価</th>
+                    <th>発注数量</th>
+                    <th>入荷数量</th>
+                    <th>完了フラグ</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {newPurchaseOrder.purchaseOrderLines.map((line, index) => (
+                    <tr key={index}>
+                        <td>
+                            <input
+                                type="number"
+                                value={line.purchaseOrderLineNumber}
+                                disabled={true}
+                            />
+                        </td>
+                        <td>
+                            <input
+                                type="text"
+                                value={line.salesOrderNumber}
+                                onChange={(e) => handleUpdateLine(index, {
+                                    ...line,
+                                    salesOrderNumber: e.target.value
+                                })}
+                            />
+                        </td>
+                        <td>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <input
+                                    type="text"
+                                    value={line.productCode}
+                                    onChange={(e) => handleUpdateLine(index, {
+                                        ...line,
+                                        productCode: e.target.value
+                                    })}
+                                />
+                                <button onClick={() => handleProductSelectEvent(index)}>
+                                    選択
+                                </button>
+                            </div>
+                        </td>
+                        <td>
+                            <input
+                                type="text"
+                                value={line.productName}
+                                onChange={(e) => handleUpdateLine(index, {
+                                    ...line,
+                                    productName: e.target.value
+                                })}
+                            />
+                        </td>
+                        <td>
+                            <input
+                                type="number"
+                                value={line.purchaseUnitPrice}
+                                onChange={(e) => handleUpdateLine(index, {
+                                    ...line,
+                                    purchaseUnitPrice: Number(e.target.value)
+                                })}
+                            />
+                        </td>
+                        <td>
+                            <input
+                                type="number"
+                                value={line.purchaseOrderQuantity}
+                                onChange={(e) => handleUpdateLine(index, {
+                                    ...line,
+                                    purchaseOrderQuantity: Number(e.target.value)
+                                })}
+                            />
+                        </td>
+                        <td>
+                            <input
+                                type="number"
+                                value={line.receivedQuantity}
+                                onChange={(e) => handleUpdateLine(index, {
+                                    ...line,
+                                    receivedQuantity: Number(e.target.value)
+                                })}
+                            />
+                        </td>
+                        <td>
+                            <select
+                                value={line.completionFlag}
+                                onChange={(e) => handleUpdateLine(index, {
+                                    ...line,
+                                    completionFlag: e.target.value as CompletionFlagEnumType
+                                })}
+                            >
+                                <option value={CompletionFlagEnumType.完了}>完了</option>
+                                <option value={CompletionFlagEnumType.未完了}>未完了</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button onClick={() => handleDeleteLine(index)}>
+                                削除
+                            </button>
+                        </td>
+                    </tr>
+                ))}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colSpan={4} className="total-label">小計</td>
+                    <td className="total-amount">
+                        {(newPurchaseOrder.totalPurchaseAmount || 0).toLocaleString()}
+                    </td>
+                </tr>
+                <tr>
+                    <td colSpan={4} className="total-label">消費税</td>
+                    <td className="total-amount">
+                        {(newPurchaseOrder.totalConsumptionTax || 0).toLocaleString()}
+                    </td>
+                </tr>
+                <tr>
+                    <td colSpan={4} className="total-label">合計金額</td>
+                    <td className="total-amount">
+                        {((newPurchaseOrder.totalPurchaseAmount || 0) +
+                          (newPurchaseOrder.totalConsumptionTax || 0)).toLocaleString()}
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+```
+
+### ルールチェック画面の実装
+
+ルールチェック画面は、発注ルールの違反を検出して表示します。
+
+```typescript
+interface PurchaseOrderRuleCollectionViewProps {
+    ruleHeaderItems: {
+        handleExecuteRuleCheck: () => void;
+    };
+    ruleResults: RuleCheckResultType[];
+    handleDeleteRuleResult: (index: number) => void;
+}
+
+export const PurchaseOrderRuleCollectionView: React.FC<PurchaseOrderRuleCollectionViewProps> = ({
+    ruleHeaderItems: { handleExecuteRuleCheck },
+    ruleResults,
+    handleDeleteRuleResult,
+}) => {
+    return (
+        <div className="collection-view-object-container">
+            <div className="collection-view-container">
+                <div className="collection-view-header">
+                    <h1 className="single-view-title">発注ルールチェック</h1>
+                </div>
+                <div className="collection-view-content">
+                    <div className="button-container">
+                        <button onClick={handleExecuteRuleCheck}>実行</button>
+                    </div>
+                    <div className="collection-object-container">
+                        <ul className="collection-object-list">
+                            {ruleResults.map((result, index) => (
+                                <div key={index} className="upload-result-item">
+                                    <div className="upload-result-message">
+                                        <Message error={null} message={result.message}/>
+                                        {result.details && result.details.length > 0 && (
+                                            <div className="upload-result-details">
+                                                {result.details.map((detail, detailIndex) => (
+                                                    <div key={detailIndex} className="upload-result-detail">
+                                                        {Object.entries(detail).map(([key, value]) => (
+                                                            <div key={key} className="detail-item">
+                                                                <span className="detail-key">{key}:</span>
+                                                                <span className="detail-value">{value}</span>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                    <button onClick={() => handleDeleteRuleResult(index)}>x</button>
+                                </div>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+```
+
+### マスタ選択モーダルの連携
+
+発注画面では、仕入先、担当者、商品をモーダルから選択できます。
+
+```plantuml
+@startuml
+title マスタ選択モーダル連携
+
+actor ユーザー
+participant "PurchaseOrderSingle" as Single
+participant "VendorSelectModal" as Vendor
+participant "EmployeeSelectModal" as Employee
+participant "ProductSelectModal" as Product
+
+ユーザー -> Single: 仕入先コード欄クリック
+Single -> Vendor: handleVendorSelect()
+Vendor --> Single: 選択した仕入先
+Single -> Single: setNewPurchaseOrder(\n  supplierCode, supplierBranchNumber)
+
+ユーザー -> Single: 担当者コード欄クリック
+Single -> Employee: handleEmployeeSelect()
+Employee --> Single: 選択した担当者
+Single -> Single: setNewPurchaseOrder(\n  purchaseManagerCode)
+
+ユーザー -> Single: 商品選択ボタンクリック
+Single -> Product: handleProductSelect(index)
+Product --> Single: 選択した商品
+Single -> Single: handleUpdateLine(\n  productCode, productName, purchaseUnitPrice)
+
+@enduml
+```
+
+### 型定義
+
+発注管理で使用する TypeScript の型定義を示します。
+
+```typescript
+export enum CompletionFlagEnumType {
+    未完了 = "未完了",
+    完了 = "完了"
+}
+
+export type PurchaseOrderLineType = {
+    purchaseOrderNumber: string;
+    purchaseOrderLineNumber: number;
+    purchaseOrderLineDisplayNumber: number;
+    salesOrderNumber?: string;
+    salesOrderLineNumber?: number;
+    productCode: string;
+    productName?: string;
+    purchaseUnitPrice: number;
+    purchaseOrderQuantity: number;
+    receivedQuantity: number;
+    completionFlag: CompletionFlagEnumType;
+    checked?: boolean;
+};
+
+export type PurchaseOrderType = {
+    purchaseOrderNumber: string;
+    purchaseOrderDate: string;
+    salesOrderNumber?: string;
+    supplierCode: string;
+    supplierName?: string;
+    supplierBranchNumber: number;
+    purchaseManagerCode: string;
+    purchaseManagerName?: string;
+    designatedDeliveryDate: string;
+    warehouseCode?: string;
+    totalPurchaseAmount: number;
+    totalConsumptionTax: number;
+    remarks?: string;
+    purchaseOrderLines: PurchaseOrderLineType[];
+    checked?: boolean;
+};
+
+export type PurchaseOrderCriteriaType = {
+    purchaseOrderNumber?: string;
+    purchaseOrderDate?: string;
+    salesOrderNumber?: string;
+    supplierCode?: string;
+    supplierName?: string;
+    purchaseManagerCode?: string;
+    designatedDeliveryDate?: string;
+    warehouseCode?: string;
+    completionFlag?: boolean;
+};
+```
+
 ## まとめ
 
 この章では、発注管理の実装について解説しました。

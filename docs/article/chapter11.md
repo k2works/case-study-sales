@@ -691,6 +691,286 @@ public class ProductController {
 
 ---
 
+## 11.4 React コンポーネントの実装
+
+### 商品分類一覧・詳細画面
+
+商品分類の管理画面は、一覧（コレクション）と詳細（シングル）で構成されます。
+
+```plantuml
+@startuml
+title 商品分類画面のコンポーネント構成
+
+package "Product Category Feature" {
+  class ProductCategoryContainer <<Component>> {
+    - productCategories: ProductCategoryType[]
+    - error: string
+    - message: string
+    + fetchProductCategories()
+    + handleOpenModal()
+    + handleDeleteProductCategory()
+  }
+
+  class ProductCategoryCollectionView <<View>> {
+    + productCategories: ProductCategoryType[]
+    + error: string
+    + message: string
+  }
+
+  class ProductCategoryItem <<Component>> {
+    + productCategory: ProductCategoryType
+    + onEdit: () => void
+    + onDelete: () => void
+    + onCheck: () => void
+  }
+
+  class ProductCategorySingle <<View>> {
+    + productCategory: ProductCategoryType
+    + onSave: () => void
+  }
+
+  ProductCategoryContainer --> ProductCategoryCollectionView
+  ProductCategoryCollectionView --> ProductCategoryItem
+  ProductCategoryContainer --> ProductCategorySingle
+}
+
+@enduml
+```
+
+#### 商品分類一覧ビューの実装
+
+```typescript
+interface ProductCategoryItemProps {
+    productCategory: ProductCategoryType;
+    onEdit: (productCategory: ProductCategoryType) => void;
+    onDelete: (productCategoryCode: string) => void;
+    onCheck: (productCategory: ProductCategoryType) => void;
+}
+
+const ProductCategoryItem: React.FC<ProductCategoryItemProps> = ({
+    productCategory, onEdit, onDelete, onCheck
+}) => (
+    <li className="collection-object-item" key={productCategory.productCategoryCode}>
+        <div className="collection-object-item-content">
+            <input type="checkbox"
+                   checked={productCategory.checked}
+                   onChange={() => onCheck(productCategory)}/>
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">商品分類コード</div>
+            <div className="collection-object-item-content-name">
+                {productCategory.productCategoryCode}
+            </div>
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">商品分類名</div>
+            <div className="collection-object-item-content-name">
+                {productCategory.productCategoryName}
+            </div>
+        </div>
+        <div className="collection-object-item-actions">
+            <button className="action-button" onClick={() => onEdit(productCategory)}>
+                編集
+            </button>
+        </div>
+        <div className="collection-object-item-actions">
+            <button className="action-button" onClick={() => onDelete(productCategory.productCategoryCode)}>
+                削除
+            </button>
+        </div>
+    </li>
+);
+```
+
+### 商品一覧・詳細画面
+
+商品の管理画面も同様のパターンで実装します。
+
+```plantuml
+@startuml
+title 商品画面のコンポーネント構成
+
+package "Product Feature" {
+  class ProductItemContainer <<Component>> {
+    - products: ProductType[]
+    - error: string
+    - message: string
+    + fetchProducts()
+    + handleOpenModal()
+    + handleDeleteProduct()
+  }
+
+  class ProductCollectionView <<View>> {
+    + products: ProductType[]
+    + onEdit: () => void
+    + onDelete: () => void
+  }
+
+  class ProductItem <<Component>> {
+    + product: ProductType
+    + onEdit: () => void
+    + onDelete: () => void
+    + onCheck: () => void
+  }
+
+  class ProductSingleView <<View>> {
+    + product: ProductType
+    + onSave: () => void
+  }
+
+  ProductItemContainer --> ProductCollectionView
+  ProductCollectionView --> ProductItem
+  ProductItemContainer --> ProductSingleView
+}
+
+@enduml
+```
+
+#### 商品一覧ビューの実装
+
+```typescript
+interface ProductItemProps {
+    product: ProductType;
+    onEdit: (product: ProductType) => void;
+    onDelete: (productCode: string) => void;
+    onCheck: (product: ProductType) => void;
+}
+
+const ProductItem: React.FC<ProductItemProps> = ({product, onEdit, onDelete, onCheck}) => (
+    <li className="collection-object-item" key={product.productCode}>
+        <div className="collection-object-item-content">
+            <input type="checkbox"
+                   checked={product.checked}
+                   onChange={() => onCheck(product)}/>
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">商品コード</div>
+            <div className="collection-object-item-content-name">{product.productCode}</div>
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">商品名</div>
+            <div className="collection-object-item-content-name">{product.productFormalName}</div>
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">売価</div>
+            <div className="collection-object-item-content-name">{product.sellingPrice}</div>
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">原価</div>
+            <div className="collection-object-item-content-name">{product.costOfSales}</div>
+        </div>
+        <div className="collection-object-item-actions">
+            <button className="action-button" onClick={() => onEdit(product)}>編集</button>
+        </div>
+        <div className="collection-object-item-actions">
+            <button className="action-button" onClick={() => onDelete(product.productCode)}>削除</button>
+        </div>
+    </li>
+);
+```
+
+### 顧客別販売単価の管理画面
+
+顧客別販売単価は、商品詳細画面の中でサブコレクションとして管理します。
+
+```plantuml
+@startuml
+title 顧客別販売単価の画面構成
+
+rectangle "商品詳細画面" {
+  rectangle "商品基本情報フォーム" as form
+  rectangle "顧客別販売単価リスト" as prices {
+    (顧客コード)
+    (販売単価)
+    (追加ボタン)
+    (削除ボタン)
+  }
+  rectangle "部品表リスト" as bom
+  rectangle "代替商品リスト" as substitute
+}
+
+form --> prices
+form --> bom
+form --> substitute
+
+@enduml
+```
+
+#### 商品コレクション追加リストビュー
+
+```typescript
+interface ProductCollectionAddListProps {
+    products: ProductType[];
+    handleAdd: () => void;
+    handleDelete: (product: ProductType) => void;
+}
+
+export const ProductCollectionAddListView: React.FC<ProductCollectionAddListProps> = ({
+    products, handleAdd, handleDelete
+}) => {
+    return (
+        <div className="collection-view-object-container">
+            <div className="collection-view-container">
+                <div className="collection-view-header">
+                    <h2 className="single-view-title">商品</h2>
+                </div>
+                <div className="collection-view-content">
+                    <div className="button-container">
+                        <button className="action-button" onClick={handleAdd}>追加</button>
+                    </div>
+                    <ul className="collection-object-list">
+                        {products.map(product => (
+                            <li className="collection-object-item" key={product.productCode}>
+                                <div className="collection-object-item-content">
+                                    <div className="collection-object-item-content-details">商品コード</div>
+                                    <div className="collection-object-item-content-name">
+                                        {product.productCode}
+                                    </div>
+                                </div>
+                                <div className="collection-object-item-content">
+                                    <div className="collection-object-item-content-details">商品名</div>
+                                    <div className="collection-object-item-content-name">
+                                        {product.productFormalName}
+                                    </div>
+                                </div>
+                                <div className="collection-object-item-actions">
+                                    <button className="action-button"
+                                            onClick={() => handleDelete(product)}>
+                                        削除
+                                    </button>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    );
+};
+```
+
+### 共通コンポーネントの活用
+
+商品管理画面では、検索やページネーションなどの共通コンポーネントを活用しています。
+
+```typescript
+// 検索コンポーネント
+<Search
+    searchCriteria={searchProductCriteria}
+    setSearchCriteria={setSearchProductCriteria}
+    handleSearchAudit={handleOpenSearchModal}
+/>
+
+// ページネーションコンポーネント
+<PageNation
+    pageNation={pageNation}
+    callBack={fetchProducts}
+    criteria={criteria}
+/>
+```
+
+---
+
 ## 商品エンティティの完全な実装
 
 最後に、商品エンティティの完全な実装を示します。

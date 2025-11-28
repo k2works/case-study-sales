@@ -924,6 +924,502 @@ void shouldAggregatePaymentsFromPurchases() {
 }
 ```
 
+## 17.5 React コンポーネントの実装
+
+### 仕入・支払画面のコンポーネント構成
+
+仕入・支払管理のフロントエンド実装は、React を使用してコンポーネントベースで構築されています。
+
+```plantuml
+@startuml
+title 仕入・支払コンポーネント構成
+
+package "仕入・支払管理" {
+  [PurchaseTabContainer] as Tab
+
+  package "仕入一覧タブ" {
+    [PurchaseCollection] as Collection
+    [PurchaseItem] as Item
+    [PurchaseSingle] as Single
+    [PurchaseEditModal] as EditModal
+    [PurchaseSearchModal] as SearchModal
+  }
+
+  package "仕入ルールタブ" {
+    [PurchaseRuleCollection] as RuleCollection
+  }
+
+  package "支払集計タブ" {
+    [PurchasePaymentAggregateCollection] as AggregateCollection
+  }
+
+  package "マスタ選択モーダル" {
+    [EmployeeSelectModal] as EmployeeModal
+    [VendorSelectModal] as VendorModal
+    [ProductSelectModal] as ProductModal
+    [DepartmentSelectModal] as DeptModal
+    [WarehouseSelectModal] as WarehouseModal
+  }
+}
+
+Tab --> Collection
+Tab --> RuleCollection
+Tab --> AggregateCollection
+Collection --> Item
+Collection --> Single
+Collection --> EditModal
+Collection --> SearchModal
+Single --> EmployeeModal
+Single --> VendorModal
+Single --> ProductModal
+Single --> DeptModal
+Single --> WarehouseModal
+
+@enduml
+```
+
+### 仕入一覧画面の実装
+
+仕入一覧画面は、仕入データの検索、表示、一括操作機能を提供します。
+
+```typescript
+interface PurchaseItemProps {
+    purchase: PurchaseType;
+    onEdit: (purchase: PurchaseType) => void;
+    onDelete: (purchaseNumber: string) => void;
+    onCheck: (purchase: PurchaseType) => void;
+}
+
+const PurchaseItem: React.FC<PurchaseItemProps> = ({
+    purchase, onEdit, onDelete, onCheck
+}) => (
+    <li className="collection-object-item" key={purchase.purchaseNumber}>
+        <div className="collection-object-item-content">
+            <input
+                type="checkbox"
+                checked={purchase.checked}
+                onChange={() => onCheck(purchase)}
+            />
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">仕入番号</div>
+            <div className="collection-object-item-content-name">
+                {purchase.purchaseNumber}
+            </div>
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">仕入日</div>
+            <div className="collection-object-item-content-name">
+                {purchase.purchaseDate.split("T")[0]}
+            </div>
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">仕入先コード</div>
+            <div className="collection-object-item-content-name">
+                {purchase.supplierCode}
+            </div>
+        </div>
+        <div className="collection-object-item-content">
+            <div className="collection-object-item-content-details">仕入金額合計</div>
+            <div className="collection-object-item-content-name">
+                {purchase.totalPurchaseAmount.toLocaleString()}
+            </div>
+        </div>
+        <div className="collection-object-item-actions">
+            <button onClick={() => onEdit(purchase)}>編集</button>
+        </div>
+        <div className="collection-object-item-actions">
+            <button onClick={() => onDelete(purchase.purchaseNumber)}>削除</button>
+        </div>
+    </li>
+);
+```
+
+### 仕入明細の動的追加・削除
+
+仕入詳細フォームでは、明細行を動的に追加・削除できます。金額は自動計算されます。
+
+```typescript
+// 金額計算関数
+const calculateLineAmount = (line: PurchaseLineType): number => {
+    return line.purchaseQuantity * line.purchaseUnitPrice;
+};
+
+const calculateLineTax = (line: PurchaseLineType): number => {
+    const amount = calculateLineAmount(line);
+    return Math.floor(amount * 0.1); // 消費税 10%
+};
+
+const calculateTotalAmount = (lines: PurchaseLineType[]): number => {
+    return lines.reduce((sum, line) => sum + calculateLineAmount(line), 0);
+};
+
+const calculateTotalTax = (lines: PurchaseLineType[]): number => {
+    return lines.reduce((sum, line) => sum + calculateLineTax(line), 0);
+};
+
+// 明細更新処理
+const handleUpdateLine = (index: number, line: PurchaseLineType) => {
+    const newLines = [...newPurchase.purchaseLines];
+    newLines[index] = {
+        ...line,
+        purchaseNumber: newPurchase.purchaseNumber
+    };
+
+    // 合計金額の再計算
+    const totalAmount = calculateTotalAmount(newLines);
+    const totalTax = calculateTotalTax(newLines);
+
+    setNewPurchase({
+        ...newPurchase,
+        purchaseLines: newLines,
+        totalPurchaseAmount: totalAmount,
+        totalConsumptionTax: totalTax
+    });
+};
+
+// 明細追加処理
+const handleAddLine = () => {
+    const newLine: PurchaseLineType = {
+        purchaseNumber: newPurchase.purchaseNumber,
+        purchaseLineNumber: newPurchase.purchaseLines.length + 1,
+        purchaseLineDisplayNumber: newPurchase.purchaseLines.length + 1,
+        purchaseOrderLineNumber: 0,
+        productCode: '',
+        warehouseCode: '',
+        productName: '',
+        purchaseUnitPrice: 0,
+        purchaseQuantity: 0
+    };
+    setNewPurchase({
+        ...newPurchase,
+        purchaseLines: [...newPurchase.purchaseLines, newLine]
+    });
+};
+```
+
+### 仕入明細テーブルの実装
+
+仕入明細はテーブル形式で表示され、インライン編集が可能です。倉庫選択も含まれます。
+
+```typescript
+<div className="single-view-content-item-form-lines purchase-order-detail">
+    <h3>
+        仕入明細
+        <button className="add-line-button" onClick={handleAddLine}>
+            <span>＋</span> 明細追加
+        </button>
+    </h3>
+    <div className="table-container">
+        <table className="purchase-order-lines-table">
+            <thead>
+                <tr>
+                    <th>仕入行番号</th>
+                    <th>発注行番号</th>
+                    <th>商品コード</th>
+                    <th>商品名</th>
+                    <th>倉庫コード</th>
+                    <th>仕入単価</th>
+                    <th>仕入数量</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {newPurchase.purchaseLines.map((line, index) => (
+                    <tr key={index}>
+                        <td>
+                            <input
+                                type="number"
+                                value={line.purchaseLineNumber}
+                                disabled={true}
+                            />
+                        </td>
+                        <td>
+                            <input
+                                type="number"
+                                value={line.purchaseOrderLineNumber}
+                                onChange={(e) => handleUpdateLine(index, {
+                                    ...line,
+                                    purchaseOrderLineNumber: Number(e.target.value)
+                                })}
+                            />
+                        </td>
+                        <td>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <input
+                                    type="text"
+                                    value={line.productCode}
+                                    onChange={(e) => handleUpdateLine(index, {
+                                        ...line,
+                                        productCode: e.target.value
+                                    })}
+                                />
+                                <button onClick={() => handleProductSelectEvent(index)}>
+                                    選択
+                                </button>
+                            </div>
+                        </td>
+                        <td>
+                            <input
+                                type="text"
+                                value={line.productName}
+                                onChange={(e) => handleUpdateLine(index, {
+                                    ...line,
+                                    productName: e.target.value
+                                })}
+                            />
+                        </td>
+                        <td>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <input
+                                    type="text"
+                                    value={line.warehouseCode}
+                                    onChange={(e) => handleUpdateLine(index, {
+                                        ...line,
+                                        warehouseCode: e.target.value
+                                    })}
+                                />
+                                <button onClick={() => handleWarehouseSelectEvent(index)}>
+                                    選択
+                                </button>
+                            </div>
+                        </td>
+                        <td>
+                            <input
+                                type="number"
+                                value={line.purchaseUnitPrice}
+                                onChange={(e) => handleUpdateLine(index, {
+                                    ...line,
+                                    purchaseUnitPrice: Number(e.target.value)
+                                })}
+                            />
+                        </td>
+                        <td>
+                            <input
+                                type="number"
+                                value={line.purchaseQuantity}
+                                onChange={(e) => handleUpdateLine(index, {
+                                    ...line,
+                                    purchaseQuantity: Number(e.target.value)
+                                })}
+                            />
+                        </td>
+                        <td>
+                            <button onClick={() => handleDeleteLine(index)}>削除</button>
+                        </td>
+                    </tr>
+                ))}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colSpan={5} className="total-label">小計</td>
+                    <td className="total-amount">
+                        {(newPurchase.totalPurchaseAmount || 0).toLocaleString()}
+                    </td>
+                </tr>
+                <tr>
+                    <td colSpan={5} className="total-label">消費税</td>
+                    <td className="total-amount">
+                        {(newPurchase.totalConsumptionTax || 0).toLocaleString()}
+                    </td>
+                </tr>
+                <tr>
+                    <td colSpan={5} className="total-label">合計金額</td>
+                    <td className="total-amount">
+                        {((newPurchase.totalPurchaseAmount || 0) +
+                          (newPurchase.totalConsumptionTax || 0)).toLocaleString()}
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+```
+
+### 支払集計画面の実装
+
+支払集計画面は、仕入データを集計して支払データを生成する機能を提供します。
+
+```typescript
+interface PurchasePaymentAggregateCollectionViewProps {
+    aggregateHeaderItems: {
+        handleExecuteAggregate: () => void;
+    };
+    aggregateResults: PaymentAggregateResponse[];
+    handleDeleteAggregateResult: (index: number) => void;
+}
+
+export const PurchasePaymentAggregateCollectionView: React.FC<
+    PurchasePaymentAggregateCollectionViewProps
+> = ({
+    aggregateHeaderItems: { handleExecuteAggregate },
+    aggregateResults,
+    handleDeleteAggregateResult,
+}) => {
+    return (
+        <div className="collection-view-object-container">
+            <div className="collection-view-container">
+                <div className="collection-view-header">
+                    <h1 className="single-view-title">支払集計</h1>
+                </div>
+                <div className="collection-view-content">
+                    <div className="button-container">
+                        <button onClick={handleExecuteAggregate}>実行</button>
+                    </div>
+                    <div className="collection-object-container">
+                        <ul className="collection-object-list">
+                            {aggregateResults.map((result, index) => (
+                                <div key={index} className="upload-result-item">
+                                    <div className="check-result-message">
+                                        <Message error={null} message={result.message}/>
+                                        {result.details && result.details.length > 0 && (
+                                            <div className="upload-result-details">
+                                                {result.details.map((detail, detailIndex) => (
+                                                    <div key={detailIndex} className="upload-result-detail">
+                                                        {Object.entries(detail).map(([key, value]) => (
+                                                            <div key={key} className="detail-item">
+                                                                <span className="detail-key">{key}:</span>
+                                                                <span className="detail-value">
+                                                                    {typeof value === 'object'
+                                                                        ? JSON.stringify(value)
+                                                                        : String(value)}
+                                                                </span>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                    <button onClick={() => handleDeleteAggregateResult(index)}>
+                                        x
+                                    </button>
+                                </div>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+```
+
+### 支払集計処理のフロー
+
+```plantuml
+@startuml
+title 支払集計 UI フロー
+
+actor ユーザー
+participant "PurchasePaymentAggregate\nCollectionView" as View
+participant "PurchasePaymentService" as Service
+participant "Backend API" as API
+
+ユーザー -> View: 「実行」ボタンクリック
+View -> Service: handleExecuteAggregate()
+Service -> API: POST /api/payments/aggregate
+API --> Service: 集計結果\n(PaymentAggregateResponse[])
+
+Service --> View: aggregateResults を更新
+View --> ユーザー: 集計結果を表示
+
+note right of View
+  集計結果には以下が含まれる:
+  - 仕入先ごとの支払金額
+  - 消費税合計
+  - 支払方法
+  - 処理件数
+end note
+
+@enduml
+```
+
+### 型定義
+
+仕入・支払管理で使用する TypeScript の型定義を示します。
+
+```typescript
+export type PurchaseLineType = {
+    purchaseNumber: string;
+    purchaseLineNumber: number;
+    purchaseLineDisplayNumber: number;
+    purchaseOrderLineNumber: number;
+    productCode: string;
+    warehouseCode: string;
+    productName?: string;
+    purchaseUnitPrice: number;
+    purchaseQuantity: number;
+    checked?: boolean;
+};
+
+export type PurchaseType = {
+    purchaseNumber: string;
+    purchaseDate: string;
+    supplierCode: string;
+    supplierBranchNumber: number;
+    purchaseManagerCode: string;
+    startDate: string;
+    purchaseOrderNumber?: string;
+    departmentCode: string;
+    totalPurchaseAmount: number;
+    totalConsumptionTax: number;
+    remarks?: string;
+    purchaseLines: PurchaseLineType[];
+    checked?: boolean;
+};
+
+export type PurchaseCriteriaType = {
+    purchaseNumber?: string;
+    purchaseDate?: string;
+    purchaseOrderNumber?: string;
+    supplierCode?: string;
+    supplierBranchNumber?: number;
+    purchaseManagerCode?: string;
+    departmentCode?: string;
+};
+
+// 支払集計レスポンス型
+export type PaymentAggregateResponse = {
+    message: string;
+    details?: Record<string, unknown>[];
+};
+```
+
+### マスタ選択モーダルの連携
+
+仕入画面では、発注画面と同様にマスタ選択モーダルを使用しますが、追加で部門と倉庫の選択も可能です。
+
+```plantuml
+@startuml
+title 仕入画面でのマスタ選択
+
+actor ユーザー
+participant "PurchaseSingle" as Single
+participant "VendorSelectModal" as Vendor
+participant "EmployeeSelectModal" as Employee
+participant "ProductSelectModal" as Product
+participant "DepartmentSelectModal" as Dept
+participant "WarehouseSelectModal" as Warehouse
+
+ユーザー -> Single: 仕入先コード欄クリック
+Single -> Vendor: handleVendorSelect()
+Vendor --> Single: 選択した仕入先
+Single -> Single: setNewPurchase(supplierCode, supplierBranchNumber)
+
+ユーザー -> Single: 部門コード欄クリック
+Single -> Dept: handleDepartmentSelect()
+Dept --> Single: 選択した部門
+Single -> Single: setNewPurchase(departmentCode)
+
+ユーザー -> Single: 倉庫選択ボタンクリック
+Single -> Warehouse: handleWarehouseSelectEvent(index)
+Warehouse --> Single: 選択した倉庫
+Single -> Single: handleUpdateLine(warehouseCode)
+
+@enduml
+```
+
 ## まとめ
 
 この章では、仕入・支払管理の実装について解説しました。

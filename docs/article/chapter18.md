@@ -794,7 +794,435 @@ public class InventoryService {
 }
 ```
 
-## 18.4 E2E テスト
+## 18.4 React コンポーネントの実装
+
+### 在庫画面のコンポーネント構成
+
+在庫管理のフロントエンド実装は、React を使用してコンポーネントベースで構築されています。
+
+```plantuml
+@startuml
+title 在庫コンポーネント構成
+
+package "在庫管理" {
+  [InventoryTabContainer] as Tab
+
+  package "在庫一覧タブ" {
+    [InventoryCollection] as Collection
+    [InventoryItem] as Item
+    [InventorySingle] as Single
+    [InventoryEditModal] as EditModal
+    [InventorySearchModal] as SearchModal
+  }
+
+  package "在庫アップロードタブ" {
+    [InventoryUploadCollection] as UploadCollection
+    [InventoryUploadModal] as UploadModal
+  }
+
+  package "在庫ルールタブ" {
+    [InventoryRuleCollection] as RuleCollection
+  }
+
+  package "マスタ選択モーダル" {
+    [WarehouseSelectModal] as WarehouseModal
+    [ProductSelectModal] as ProductModal
+  }
+}
+
+Tab --> Collection
+Tab --> UploadCollection
+Tab --> RuleCollection
+Collection --> Item
+Collection --> Single
+Collection --> EditModal
+Collection --> SearchModal
+Single --> WarehouseModal
+Single --> ProductModal
+UploadCollection --> UploadModal
+
+@enduml
+```
+
+### 在庫一覧画面の実装
+
+在庫一覧画面は、複合主キー（倉庫コード・商品コード・ロット番号・在庫区分・良品区分）で在庫データを管理します。
+
+```typescript
+interface InventoryItemProps {
+    inventory: InventoryType;
+    onEdit: (inventory: InventoryType) => void;
+    onDelete: (
+        warehouseCode: string,
+        productCode: string,
+        lotNumber: string,
+        stockCategory: string,
+        qualityCategory: string
+    ) => void;
+    onCheck: (inventory: InventoryType) => void;
+}
+
+const InventoryItem: React.FC<InventoryItemProps> = ({
+    inventory, onEdit, onDelete, onCheck
+}) => {
+    // 在庫区分ラベル変換
+    const getStockCategoryLabel = (code: string) => {
+        switch (code) {
+            case "1": return "通常在庫";
+            case "2": return "安全在庫";
+            case "3": return "廃棄予定";
+            default: return code;
+        }
+    };
+
+    // 良品区分ラベル変換
+    const getQualityCategoryLabel = (code: string) => {
+        switch (code) {
+            case "G": return "良品";
+            case "B": return "不良品";
+            case "R": return "返品";
+            default: return code;
+        }
+    };
+
+    // 複合主キーでユニークキーを生成
+    const inventoryKey = `${inventory.warehouseCode}-${inventory.productCode}-` +
+                        `${inventory.lotNumber}-${inventory.stockCategory}-` +
+                        `${inventory.qualityCategory}`;
+
+    return (
+        <li className="collection-object-item" key={inventoryKey}>
+            <div className="collection-object-item-content">
+                <input
+                    type="checkbox"
+                    checked={inventory.checked}
+                    onChange={() => onCheck(inventory)}
+                />
+            </div>
+            <div className="collection-object-item-content">
+                <div className="collection-object-item-content-details">倉庫コード</div>
+                <div className="collection-object-item-content-name">
+                    {inventory.warehouseCode}
+                </div>
+            </div>
+            <div className="collection-object-item-content">
+                <div className="collection-object-item-content-details">商品コード</div>
+                <div className="collection-object-item-content-name">
+                    {inventory.productCode}
+                </div>
+            </div>
+            <div className="collection-object-item-content">
+                <div className="collection-object-item-content-details">ロット番号</div>
+                <div className="collection-object-item-content-name">
+                    {inventory.lotNumber}
+                </div>
+            </div>
+            <div className="collection-object-item-content">
+                <div className="collection-object-item-content-details">在庫区分</div>
+                <div className="collection-object-item-content-name">
+                    {getStockCategoryLabel(inventory.stockCategory)}
+                </div>
+            </div>
+            <div className="collection-object-item-content">
+                <div className="collection-object-item-content-details">実在庫数</div>
+                <div className="collection-object-item-content-name">
+                    {inventory.actualStockQuantity?.toLocaleString()}
+                </div>
+            </div>
+            <div className="collection-object-item-actions">
+                <button onClick={() => onEdit(inventory)}>編集</button>
+            </div>
+            <div className="collection-object-item-actions">
+                <button onClick={() => onDelete(
+                    inventory.warehouseCode,
+                    inventory.productCode,
+                    inventory.lotNumber,
+                    inventory.stockCategory,
+                    inventory.qualityCategory
+                )}>削除</button>
+            </div>
+        </li>
+    );
+};
+```
+
+### 在庫詳細フォームの実装
+
+在庫詳細フォームでは、倉庫と商品をモーダルから選択し、区分ドロップダウンで在庫区分・良品区分を設定します。
+
+```typescript
+interface FormProps {
+    isEditing: boolean;
+    inventory: InventoryType;
+    setInventory: React.Dispatch<React.SetStateAction<InventoryType>>;
+    handleWarehouseSelect?: () => void;
+    handleProductSelect?: () => void;
+}
+
+const Form = ({
+    isEditing,
+    inventory,
+    setInventory,
+    handleWarehouseSelect,
+    handleProductSelect
+}: FormProps) => {
+    return (
+        <div className="single-view-content-item-form">
+            <FormInput
+                label="倉庫コード"
+                id="warehouseCode"
+                type="text"
+                value={inventory.warehouseCode}
+                onChange={(e) => setInventory({
+                    ...inventory,
+                    warehouseCode: e.target.value
+                })}
+                onClick={handleWarehouseSelect}
+                disabled={isEditing}
+            />
+            <FormInput
+                label="商品コード"
+                id="productCode"
+                type="text"
+                value={inventory.productCode}
+                onChange={(e) => setInventory({
+                    ...inventory,
+                    productCode: e.target.value
+                })}
+                onClick={handleProductSelect}
+                disabled={isEditing}
+            />
+            <FormInput
+                label="ロット番号"
+                id="lotNumber"
+                type="text"
+                value={inventory.lotNumber}
+                onChange={(e) => setInventory({
+                    ...inventory,
+                    lotNumber: e.target.value
+                })}
+                disabled={isEditing}
+            />
+            <div className="single-view-content-item-form-item">
+                <label htmlFor="stockCategory">在庫区分</label>
+                <select
+                    id="stockCategory"
+                    value={inventory.stockCategory}
+                    onChange={(e) => setInventory({
+                        ...inventory,
+                        stockCategory: e.target.value
+                    })}
+                    disabled={isEditing}
+                >
+                    <option value={StockCategoryEnumType.通常在庫}>通常在庫</option>
+                    <option value={StockCategoryEnumType.安全在庫}>安全在庫</option>
+                    <option value={StockCategoryEnumType.廃棄予定}>廃棄予定</option>
+                </select>
+            </div>
+            <div className="single-view-content-item-form-item">
+                <label htmlFor="qualityCategory">良品区分</label>
+                <select
+                    id="qualityCategory"
+                    value={inventory.qualityCategory}
+                    onChange={(e) => setInventory({
+                        ...inventory,
+                        qualityCategory: e.target.value
+                    })}
+                    disabled={isEditing}
+                >
+                    <option value={QualityCategoryEnumType.良品}>良品</option>
+                    <option value={QualityCategoryEnumType.不良品}>不良品</option>
+                    <option value={QualityCategoryEnumType.返品}>返品</option>
+                </select>
+            </div>
+            <FormInput
+                label="実在庫数"
+                id="actualStockQuantity"
+                type="number"
+                value={inventory.actualStockQuantity}
+                onChange={(e) => setInventory({
+                    ...inventory,
+                    actualStockQuantity: Number(e.target.value)
+                })}
+            />
+            <FormInput
+                label="有効在庫数"
+                id="availableStockQuantity"
+                type="number"
+                value={inventory.availableStockQuantity}
+                onChange={(e) => setInventory({
+                    ...inventory,
+                    availableStockQuantity: Number(e.target.value)
+                })}
+            />
+            <FormInput
+                label="最終出荷日"
+                id="lastShipmentDate"
+                type="date"
+                value={inventory.lastShipmentDate || ''}
+                onChange={(e) => setInventory({
+                    ...inventory,
+                    lastShipmentDate: e.target.value
+                })}
+            />
+        </div>
+    );
+};
+```
+
+### マスタ選択モーダルの連携
+
+在庫画面では、倉庫と商品をモーダルから選択できます。
+
+```plantuml
+@startuml
+title 在庫画面でのマスタ選択
+
+actor ユーザー
+participant "InventorySingle" as Single
+participant "WarehouseSelectModal" as Warehouse
+participant "ProductSelectModal" as Product
+participant "InventoryContext" as Context
+
+ユーザー -> Single: 倉庫コード欄クリック
+Single -> Warehouse: handleWarehouseSelect()
+Warehouse --> Single: 選択した倉庫
+Single -> Context: setNewInventory(warehouseCode, warehouseName)
+
+ユーザー -> Single: 商品コード欄クリック
+Single -> Product: handleProductSelect()
+Product --> Single: 選択した商品
+Single -> Context: setNewInventory(productCode, productName)
+
+ユーザー -> Single: 保存ボタンクリック
+Single -> Context: handleSaveInventory()
+
+alt 新規登録
+  Context -> Context: inventoryService.create(inventory)
+else 編集
+  Context -> Context: inventoryService.update(inventory)
+end
+
+Context --> Single: 完了メッセージ
+
+@enduml
+```
+
+### 型定義
+
+在庫管理で使用する TypeScript の型定義を示します。
+
+```typescript
+export enum StockCategoryEnumType {
+    通常在庫 = "1",
+    安全在庫 = "2",
+    廃棄予定 = "3"
+}
+
+export enum QualityCategoryEnumType {
+    良品 = "G",
+    不良品 = "B",
+    返品 = "R"
+}
+
+export type InventoryType = {
+    warehouseCode: string;
+    productCode: string;
+    lotNumber: string;
+    stockCategory: string;
+    qualityCategory: string;
+    actualStockQuantity: number;
+    availableStockQuantity: number;
+    lastShipmentDate?: string;
+    productName?: string;
+    warehouseName?: string;
+    checked?: boolean;
+};
+
+export type InventoryCriteriaType = {
+    warehouseCode?: string;
+    productCode?: string;
+    lotNumber?: string;
+    stockCategory?: string;
+    qualityCategory?: string;
+    productName?: string;
+    warehouseName?: string;
+    hasStock?: boolean;
+    isAvailable?: boolean;
+};
+```
+
+### 在庫コンテキストによる状態管理
+
+在庫画面は、React Context を使用して状態管理を行います。
+
+```typescript
+export const InventorySingle: React.FC = () => {
+    const {
+        message,
+        setMessage,
+        error,
+        setError,
+        isEditing,
+        newInventory,
+        setNewInventory,
+        inventoryService,
+        fetchInventories,
+        setModalIsOpen,
+    } = useInventoryContext();
+
+    const { setModalIsOpen: setWarehouseModalIsOpen } = useWarehouseContext();
+    const { setModalIsOpen: setProductModalIsOpen } = useProductItemContext();
+
+    const handleCloseModal = () => {
+        setModalIsOpen(false);
+    };
+
+    const handleWarehouseSelect = () => {
+        setWarehouseModalIsOpen(true);
+    };
+
+    const handleProductSelect = () => {
+        setProductModalIsOpen(true);
+    };
+
+    const handleSaveInventory = async () => {
+        try {
+            if (isEditing) {
+                await inventoryService.update(newInventory);
+                setMessage("在庫データを更新しました。");
+            } else {
+                await inventoryService.create(newInventory);
+                setMessage("在庫データを登録しました。");
+            }
+            await fetchInventories.load();
+            setModalIsOpen(false);
+        } catch (error: any) {
+            showErrorMessage(
+                `在庫データの${isEditing ? '更新' : '登録'}に失敗しました: ${error?.message}`,
+                setError
+            );
+        }
+    };
+
+    return (
+        <InventoryEditModalView
+            isOpen={true}
+            onClose={handleCloseModal}
+            isEditing={isEditing}
+            inventory={newInventory}
+            setInventory={setNewInventory}
+            onSave={handleSaveInventory}
+            error={error}
+            message={message}
+            handleWarehouseSelect={handleWarehouseSelect}
+            handleProductSelect={handleProductSelect}
+        />
+    );
+};
+```
+
+## 18.5 E2E テスト
 
 ### Cypress によるテスト
 
