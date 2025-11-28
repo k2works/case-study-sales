@@ -1,56 +1,32 @@
 {
   "name": "",
   "version": "0.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npx gulp",
-    "test": "",
-    "build": "npx gulp build",
-    "dev": "npx gulp dev",
-    "docs": "npx gulp docs",
-    "heroku-postbuild": "webpack --config ./webpack.config.js --progress",
-    "deploy": "npm-run-all deploy:*",
-    "deploy:api": "git subtree push --prefix app/backend/sms heroku main",
-    "deploy:app": "cd app/frontend && npx vercel",
-    "deploy:docs": "npx vercel build && npx vercel deploy --prebuilt",
-    "jig": "npm-run-all jig:*",
-    "jig:api": "npx gulp jig",
-    "jig:db": "npx gulp jig_erd",
-    "erd": "npx gulp erd",
-    "allure": "npx gulp allure",
-    "allure:build": "npx gulp allureBuild",
-    "db:schemaspy:mysql": "docker compose run --rm schemaspy_mysql",
-    "db:schemaspy:postresql": "docker compose run --rm schemaspy_postgresql"
+    "start": "gulp dev",
+    "journal": "gulp journal:generate",
+    "docs:serve": "gulp mkdocs:serve",
+    "docs:stop": "gulp mkdocs:stop",
+    "docs:build": "gulp mkdocs:build",
+    "claude:yol": "claude --dangerously-skip-permissions"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/k2works/{project_name}.git"
+  },
+  "keywords": [
+    "ai",
+    "programming",
+    "learning"
+  ],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "@babel/preset-env": "^7.25.4",
-    "@marp-team/marp-cli": "^3.4.0",
-    "asciidoctor": "^3.0.4",
-    "asciidoctor-kroki": "^0.18.1",
-    "babel-loader": "^9.2.1",
-    "browser-sync": "^3.0.3",
-    "cpx": "^1.5.0",
-    "css-loader": "^7.1.2",
-    "fs": "^0.0.1-security",
-    "gulp": "^5.0.0",
-    "gulp-merge": "^0.1.1",
-    "html-webpack-plugin": "^5.6.0",
-    "npm-run-all": "^4.1.5",
-    "rimraf": "^6.0.1",
-    "style-loader": "^4.0.0",
-    "webpack": "^5.95.0",
-    "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^5.1.0"
+  "bugs": {
+    "url": "https://github.com/k2works/{project_name}/issues"
   },
+  "homepage": "https://github.com/k2works/{project_name}#readme",
+  "type": "module",
   "dependencies": {
-    "@k2works/adr": "^1.8.0",
-    "@k2works/full-stack-lab": "^1.8.0",
-    "fs-extra": "^11.2.0",
-    "gulp-exec": "^5.0.0",
-    "gulp-rename": "^2.0.0",
-    "http-server": "^14.1.1"
+    "gulp": "^5.0.0"
   }
 }

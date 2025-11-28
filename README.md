@@ -1,56 +1,51 @@
-# 販売管理システムのケーススタディ
-
-[![Node.js CI](https://github.com/k2works/case-study-sales/actions/workflows/node.js.yml/badge.svg)](https://github.com/k2works/case-study-sales/actions/workflows/node.js.yml)
-[![Java CI](https://github.com/k2works/case-study-sales/actions/workflows/gradle.yml/badge.svg)](https://github.com/k2works/case-study-sales/actions/workflows/gradle.yml)
-
-[![Heroku Production](https://github.com/k2works/case-study-sales/actions/workflows/heroku_backend_production.yml/badge.svg)](https://github.com/k2works/case-study-sales/actions/workflows/heroku_backend_production.yml)
-[![Heroku Develop](https://github.com/k2works/case-study-sales/actions/workflows/heroku_backend_develop.yml/badge.svg)](https://github.com/k2works/case-study-sales/actions/workflows/heroku_backend_develop.yml)
-
-
-[![Vercel Production](https://github.com/k2works/case-study-sales/actions/workflows/vercel_frontend_production.yml/badge.svg)](https://github.com/k2works/case-study-sales/actions/workflows/vercel_frontend_production.yml)
-[![Vercel Develop](https://github.com/k2works/case-study-sales/actions/workflows/vercel_frontend_preview.yml/badge.svg)](https://github.com/k2works/case-study-sales/actions/workflows/vercel_frontend_preview.yml)
-
-[![Maintainability](https://qlty.sh/gh/k2works/projects/case-study-sales/maintainability.svg)](https://qlty.sh/gh/k2works/projects/case-study-sales)
-[![Code Coverage](https://qlty.sh/gh/k2works/projects/case-study-sales/coverage.svg)](https://qlty.sh/gh/k2works/projects/case-study-sales)
-
-[![SonarQube Cloud](https://sonarcloud.io/images/project_badges/sonarcloud-light.svg)](https://sonarcloud.io/summary/new_code?id=k2works_case-study-sales)
+# {project-name}
 
 ## 概要
-
-[ガイドライン](./docs/slides/PITCHME.md)
 
 ### 目的
 
 ### 前提
 
-| ソフトウェア    | バージョン | 備考          |
-|:----------|:------|:------------|
-| Java      | 25    |             |
-| nodejs    | 24.x  |             |
-| graphviz  |       | ドキュメント生成に必要 |
+| ソフトウェア | バージョン | 備考 |
+| :----------- | :--------- | :--- |
+| nodejs       | 12.12.0    |      |
 
-### Quick Start
+## 構成
+
+- [構築](#構築)
+- [配置](#配置)
+- [運用](#運用)
+- [開発](#開発)
+
+## 詳細
+
+### Qick Start
 
 ```bash
 npm install
-npm run build
 npm start
 ```
-## 構成
 
-- [要件](./docs/req.adoc)
-- [開発](./docs/dev.adoc)
-- [構築](./docs/build.adoc)
-- [配置](./docs/ship.adoc)
-- [運用](./docs/run.adoc)
+### 構築
+
+```bash
+claude mcp add github npx @modelcontextprotocol/server-github -e GITHUB_PERSONAL_ACCESS_TOKEN=xxxxxxxxxxxxxxx
+claude mcp add --transport http byterover-mcp --scope user https://mcp.byterover.dev/v2/mcp
+claude mcp add github npx -y @modelcontextprotocol/server-github -s project  
+```
+
+**[⬆ back to top](#構成)**
+
+### 配置
+
+**[⬆ back to top](#構成)**
+
+### 運用
+
+**[⬆ back to top](#構成)**
+
+### 開発
+
+**[⬆ back to top](#構成)**
 
 ## 参照
-
-- [Conventional Commits 1.0.0](https://www.conventionalcommits.org/ja/v1.0.0/)
-- [@k2works/intercept-booster-2](https://www.npmjs.com/package/@k2works/intercept-booster-2)
-- [@k2works/full-stack-lab](https://www.npmjs.com/package/@k2works/full-stack-lab)
-- [@k2works/adr](https://www.npmjs.com/package/@k2works/adr)
-- [Gulp](https://gulpjs.com/docs/en/getting-started/quick-start)
-- [Asciidoctor](https://asciidoctor.org/)
-- [Browsersync](https://browsersync.io/)
-- [Marp](https://marp.app/)

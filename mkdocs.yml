@@ -1,8 +1,8 @@
-site_name: Intercept Booster2 Documentation
-site_description: Documentation for the Intercept Booster2 project
+site_name: Site Name
+site_description: Site Description
 site_author: Project Team
-repo_url: https://github.com/k2works/intercept-booster-2-sample
-repo_name: intercept-booster-2-sample
+repo_url: https://github.com/k2works/claude-code-booster
+repo_name: claude-code-booster
 
 theme:
   name: material
@@ -17,7 +17,7 @@ theme:
     - search.highlight
 
 extra_css:
-  - ops/docker/mkdocs/assets/css/extra.css
+  - docs/mkdocs/assets/css/extra.css
 
 markdown_extensions:
   - pymdownx.highlight
@@ -43,17 +43,17 @@ markdown_extensions:
 
 extra_javascript:
   - https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js
-  - ops/docker/mkdocs/assets/js/extra.js
+  - docs/assets/js/extra.js
 
 extra:
   plantuml_url: http://www.plantuml.com/plantuml
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/yourusername/go-ddd
-      name: GitHub Repository
+      link: https://github.com/k2works
+      name: GitHub Repository/claude-code-booster
 
 plugins:
   - search
 
 nav:
-  - Home: home.md
+  - Home: index.md

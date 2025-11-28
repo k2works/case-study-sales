@@ -1,138 +1,15 @@
-version: '3'
-
 services:
-  db_postgresql:
-    image: postgres:15
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgresql-data:/var/lib/postgresql/data
-      - ./ops/docker/postgres/init:/docker-entrypoint-initdb.d
-    environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: password
-      POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
-      POSTGRES_DB: mydb
-    hostname: postgres
-    user: root
-
-  db_mysql:
-    image: mysql:8
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: mydb
-      MYSQL_USER: docker
-      MYSQL_PASSWORD: docker
-      TZ: 'Asia/Tokyo'
-    command: --authentication-policy=*,,
-    hostname: mysql
-    volumes:
-      - mysql8-data:/var/lib/mysql
-      - ./ops/docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
-      - ./ops/docker/mysql:/docker-entrypoint-initdb.d
-    ports:
-      - 3306:3306
-
-  db_mssql:
-    image: mcr.microsoft.com/mssql/server:2019-latest
-    container_name: sql-server-2019-express
-    ports:
-      - "1433:1433"
-    environment:
-      - ACCEPT_EULA=Y
-    env_file:
-      - ./ops/docker/mssql/sql-server-2019.env
-    volumes:
-      - ./ops/docker/mssql/data:/var/opt/mssql/data
-      - ./ops/docker/mssql/log:/var/opt/mssql/log
-      - ./ops/docker/mssql/secrets:/var/opt/mssql/sec
-
-  dynamodb-local:
-    image: instructure/dynamo-local-admin
-    container_name: dynamodb
-    ports:
-      - "8000:8000"
-    volumes:
-      - "./ops/docker/dynamodb/data:/home/dynamodblocal/data"
-    working_dir: /home/dynamodblocal
-
-  schemaspy_postgresql:
-    build:
-      context: ops/docker
-      dockerfile: ./schemaspy/Dockerfile
-    volumes:
-      - ./ops/docker/schemaspy/output/postgresql:/output
-      - ./ops/docker/schemaspy/config:/config
-    container_name: "schemaspy_local_postgresql"
-    command: [ "-all", "-configFile", "/config/postgresql/schemaspy.properties" ]
-    links:
-      - db_postgresql
-
-  allure:
-    container_name: allure
-    image: "frankescobar/allure-docker-service"
-    environment:
-      # 毎秒テスト結果を確認するかどうかの設定です
-      # マシンへの負担が大きいとのことなので今回はNONEにします
-      CHECK_RESULTS_EVERY_SECONDS: NONE
-      # テストの履歴を保存したいのでKEEP_HISTORYを有効化(TRUE)にします
-      KEEP_HISTORY: 1
-      # 直近25回分までを保存します
-      KEEP_HISTORY_LATEST: 25
-    ports:
-      - "5050:5050"
-    volumes:
-      - ./ops/docker/allure/allure-results:/app/allure-results
-      - ./ops/docker/allure/allure-reports:/app/default-reports
-
-  allure-ui:
-    container_name: allure-ui
-    image: "frankescobar/allure-docker-service-ui"
-    environment:
-      ALLURE_DOCKER_PUBLIC_API_URL: "http://localhost:5050"
-      ALLURE_DOCKER_PUBLIC_API_URL_PREFIX: ""
-    ports:
-      - "5252:5252"
-
-  wiki_db:
-    image: mysql:8
-    environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: wiki
-      MYSQL_PASSWORD: wikijsrocks
-      MYSQL_USER: wikijs
-      TZ: 'Asia/Tokyo'
-    volumes:
-      - wiki-db-data:/var/lib/mysql
-      - ./ops/docker/wiki/dump:/dump
-    ports:
-      - "3306:3306"
-
-  wiki:
-    image: requarks/wiki:2
-    environment:
-      DB_TYPE: mysql
-      DB_HOST: wiki_db
-      DB_PORT: 3306
-      DB_USER: wikijs
-      DB_PASS: wikijsrocks
-      DB_NAME: wiki
-    links:
-      - wiki_db
-      - plantuml
-      - mkdocs
-    ports:
-      - "80:3000"
-
   mkdocs:
     build:
       context: .
-      dockerfile: ./ops/docker/mkdocs/Dockerfile
+      dockerfile: ./docs/Dockerfile
     environment:
-      PLANTUML_SERVER_URL: http://plantuml:8080/plantuml
+        PLANTUML_SERVER_URL: http://plantuml:8080/plantuml
     volumes:
-      - ./docs/wiki:/docs/docs
+      - ./docs:/docs/docs
+      - ./README.md:/docs/README.md
       - ./mkdocs.yml:/docs/mkdocs.yml
+      - ./site:/docs/site
     ports:
       - "8000:8000"
     command: mkdocs serve --dev-addr=0.0.0.0:8000
@@ -143,8 +20,3 @@ services:
     image: plantuml/plantuml-server:jetty
     environment:
       BASE_URL: plantuml
-
-volumes:
-  mysql8-data:
-  postgresql-data:
-  wiki-db-data:
