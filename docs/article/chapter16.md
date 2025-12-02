@@ -212,19 +212,22 @@ title 発注ステータス管理
 
 発注作成 --> 発注確定 : 登録完了
 発注確定 --> 一部入荷 : 部分入荷
+note right
+  receivedQuantity < purchaseOrderQuantity
+end note
 一部入荷 --> 一部入荷 : 追加入荷
 一部入荷 --> 完了 : 全数入荷
 発注確定 --> 完了 : 全数入荷
+
+note left
+ completionFlag = 1
+end note
 完了 --> [*]
 
 state 発注作成
 state 発注確定
-state 一部入荷 {
-  note "receivedQuantity < purchaseOrderQuantity"
-}
-state 完了 {
-  note "completionFlag = 1"
-}
+state 一部入荷
+state 完了
 
 @enduml
 ```

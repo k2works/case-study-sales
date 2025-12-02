@@ -409,7 +409,234 @@ public enum TaxRateType {
 
 ---
 
-## 13.3 受注ルール
+## 13.3 受注一括登録
+
+### CSVファイルによる一括登録
+
+大量の受注データを効率的に登録するため、CSVファイルによる一括アップロード機能を提供しています。
+
+```plantuml
+@startuml
+title 受注一括登録のフロー
+
+actor ユーザー
+participant "フロントエンド" as FE
+participant "API\n(OrderApiController)" as API
+participant "サービス\n(SalesOrderService)" as SVC
+participant "リポジトリ" as REPO
+database "データベース" as DB
+
+ユーザー -> FE : CSVファイル選択
+FE -> FE : ファイル検証\n(拡張子、サイズ)
+FE -> API : POST /api/sales/orders/upload\n(multipart/form-data)
+API -> SVC : uploadCsvFile(file)
+
+SVC -> SVC : ファイル検証
+note right
+  - ファイルが空でない
+  - CSV形式である
+  - 10MB以下
+end note
+
+SVC -> SVC : CSVパース
+SVC -> SVC : データ検証
+
+alt バリデーションエラー
+  SVC --> API : SalesOrderUploadErrorList
+  API --> FE : エラー詳細
+  FE --> ユーザー : エラー表示
+else 検証成功
+  SVC -> REPO : save(orderList)
+  REPO -> DB : INSERT
+  SVC --> API : 空のエラーリスト
+  API --> FE : 成功メッセージ
+  FE --> ユーザー : 完了表示
+end
+
+@enduml
+```
+
+### CSVファイルフォーマット
+
+受注データのCSVファイルは、ヘッダ行を含む以下のフォーマットで作成します。
+
+| 列番号 | カラム名 | データ型 | 必須 | 説明 |
+|--------|----------|----------|------|------|
+| 0 | 受注番号 | 文字列 | ○ | OD + 年月 + 連番（10桁） |
+| 1 | 受注日 | 日時 | ○ | yyyy-MM-dd HH:mm:ss |
+| 2 | 部門コード | 文字列 | ○ | 5桁 |
+| 3 | 部門開始日 | 日時 | ○ | yyyy-MM-dd HH:mm:ss |
+| 4 | 顧客コード | 文字列 | ○ | 8桁 |
+| 5 | 顧客枝番 | 整数 | - | デフォルト: 0 |
+| 6 | 社員コード | 文字列 | - | 担当社員 |
+| 7 | 希望納期 | 日時 | ○ | yyyy-MM-dd HH:mm:ss |
+| 8 | 客先注文番号 | 文字列 | - | 顧客の発注番号 |
+| 9 | 倉庫コード | 文字列 | - | 出荷倉庫 |
+| 10 | 受注金額合計 | 整数 | - | 自動計算可能 |
+| 11 | 消費税合計 | 整数 | - | 自動計算可能 |
+| 12 | 備考 | 文字列 | - | |
+| 13 | 受注行番号 | 整数 | ○ | 明細の行番号 |
+| 14 | 商品コード | 文字列 | ○ | 16桁以内 |
+| 15 | 商品名 | 文字列 | - | |
+| 16 | 販売単価 | 整数 | ○ | |
+| 17 | 受注数量 | 整数 | ○ | |
+| 18 | 消費税率 | 整数 | ○ | 10, 8, 0 |
+| 19 | 引当数量 | 整数 | - | デフォルト: 0 |
+| 20 | 出荷指示数量 | 整数 | - | デフォルト: 0 |
+| 21 | 出荷済数量 | 整数 | - | デフォルト: 0 |
+| 22 | 完了フラグ | 整数 | - | 0: 未完了, 1: 完了 |
+| 23 | 値引金額 | 整数 | - | デフォルト: 0 |
+| 24 | 納期 | 日時 | ○ | yyyy-MM-dd HH:mm:ss |
+| 25 | 出荷日 | 日時 | - | |
+
+### CSVマッピングクラス
+
+OpenCSVを使用してCSVファイルをJavaオブジェクトにマッピングします。
+
+```java
+@Data
+public class OrderUploadCSV {
+
+    @CsvBindByPosition(position = 0)
+    @CsvBindByName(column = "受注番号", required = true)
+    private String orderNumber;
+
+    @CsvCustomBindByPosition(position = 1, converter = LocalDateTimeConverter.class)
+    @CsvCustomBindByName(column = "受注日", converter = LocalDateTimeConverter.class)
+    private LocalDateTime orderDate;
+
+    @CsvBindByPosition(position = 2)
+    @CsvBindByName(column = "部門コード", required = true)
+    private String departmentCode;
+
+    @CsvCustomBindByPosition(position = 3, converter = LocalDateTimeConverter.class)
+    @CsvCustomBindByName(column = "部門開始日", converter = LocalDateTimeConverter.class)
+    private LocalDateTime departmentStartDate;
+
+    @CsvBindByPosition(position = 4)
+    @CsvBindByName(column = "顧客コード", required = true)
+    private String customerCode;
+
+    @CsvBindByPosition(position = 5)
+    @CsvCustomBindByName(column = "顧客枝番", converter = SafeIntegerConverter.class)
+    private Integer customerBranchNumber;
+
+    // 明細項目
+    @CsvBindByPosition(position = 13)
+    @CsvCustomBindByName(column = "受注行番号", converter = SafeIntegerConverter.class)
+    private Integer orderLineNumber;
+
+    @CsvBindByPosition(position = 14)
+    @CsvBindByName(column = "商品コード", required = true)
+    private String productCode;
+
+    @CsvBindByPosition(position = 16)
+    @CsvCustomBindByName(column = "販売単価", converter = SafeIntegerConverter.class)
+    private Integer salesUnitPrice;
+
+    @CsvBindByPosition(position = 17)
+    @CsvCustomBindByName(column = "受注数量", converter = SafeIntegerConverter.class)
+    private Integer orderQuantity;
+
+    // ... 省略
+}
+```
+
+### サービス層の実装
+
+```java
+/**
+ * CSVファイルアップロード
+ */
+public SalesOrderUploadErrorList uploadCsvFile(MultipartFile file) {
+    // ファイル検証
+    notNull(file, "アップロードファイルは必須です。");
+    isTrue(!file.isEmpty(), "アップロードファイルが空です。");
+
+    String originalFilename = Optional.ofNullable(file.getOriginalFilename())
+            .orElseThrow(() -> new IllegalArgumentException("アップロードファイル名は必須です。"));
+    isTrue(originalFilename.endsWith(".csv"), "アップロードファイルがCSVではありません。");
+    isTrue(file.getSize() < 10000000, "アップロードファイルが大きすぎます。");
+
+    // CSVパース
+    Pattern2ReadCSVUtil<OrderUploadCSV> csvUtil = new Pattern2ReadCSVUtil<>();
+    List<OrderUploadCSV> dataList = csvUtil.readCSV(
+        OrderUploadCSV.class, file, "Windows-31J");
+    isTrue(!dataList.isEmpty(), "CSVファイルの読み込みに失敗しました");
+
+    // データ検証
+    SalesOrderUploadErrorList errorList = validateErrors(dataList);
+    if (!errorList.isEmpty()) return errorList;
+
+    // ドメインモデルに変換して保存
+    OrderList orderList = convert(dataList);
+    salesOrderRepository.save(orderList);
+    return errorList;
+}
+```
+
+### エラーリストの設計
+
+アップロード時のエラーは、行番号とエラー内容を含むリストとして返却します。
+
+```java
+/**
+ * 受注アップロードエラーリスト
+ */
+public class SalesOrderUploadErrorList {
+    List<Map<String, String>> value;
+
+    public SalesOrderUploadErrorList(List<Map<String, String>> value) {
+        this.value = Collections.unmodifiableList(value);
+    }
+
+    public int size() {
+        return value.size();
+    }
+
+    public SalesOrderUploadErrorList add(Map<String, String> error) {
+        List<Map<String, String>> newValue = new ArrayList<>(value);
+        newValue.add(error);
+        return new SalesOrderUploadErrorList(newValue);
+    }
+
+    public List<Map<String, String>> asList() {
+        return value;
+    }
+
+    public boolean isEmpty() {
+        return value.isEmpty();
+    }
+}
+```
+
+### APIエンドポイント
+
+```java
+@Operation(summary = "受注を一括登録する", description = "ファイルアップロードで受注を登録する")
+@PostMapping("/upload")
+@AuditAnnotation(process = ApplicationExecutionProcessType.受注登録,
+                 type = ApplicationExecutionHistoryType.同期)
+public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file) {
+    try {
+        SalesOrderUploadErrorList result = salesOrderService.uploadCsvFile(file);
+        if (result.isEmpty()) {
+            return ResponseEntity.ok(new MessageResponseWithDetail(
+                message.getMessage("success.order.upload"),
+                result.asList()));
+        }
+        return ResponseEntity.ok(new MessageResponseWithDetail(
+            message.getMessage("error.order.upload"),
+            result.asList()));
+    } catch (RuntimeException e) {
+        return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+    }
+}
+```
+
+---
+
+## 13.4 受注ルール
 
 ### ビジネスルールの設計
 
@@ -556,7 +783,7 @@ public class OrderRuleCheckList {
 
 ---
 
-## 13.4 TDD によるテスト
+## 13.5 TDD によるテスト
 
 ### 受注のテスト
 
@@ -752,7 +979,7 @@ void shouldCompleteSalesOrderLine() {
 
 ---
 
-## 13.5 React コンポーネントの実装
+## 13.6 React コンポーネントの実装
 
 ### 受注画面のコンポーネント構成
 
@@ -1099,6 +1326,185 @@ export const SalesOrderRuleCollectionView: React.FC<Props> = ({
 );
 ```
 
+### 一括登録画面の実装
+
+一括登録画面は、Container/View パターンで実装されています。
+
+```plantuml
+@startuml
+title 一括登録画面のコンポーネント構成
+
+package "Container" {
+  class OrderUploadContainer {
+    + loading: boolean
+    + fetchSalesOrders()
+  }
+  class OrderUploadCollection {
+    + handleOpenUploadModal()
+    + handleDeleteUploadResult()
+  }
+  class OrderUploadSingle {
+    + selectedFile: File
+    + handleFileSelect()
+    + handleUpload()
+  }
+}
+
+package "View" {
+  class SalesOrderUploadCollectionView
+  class SalesOrderUploadSingleView
+}
+
+package "Modal" {
+  class OrderUploadModal {
+    + uploadModalIsOpen: boolean
+  }
+}
+
+OrderUploadContainer --> OrderUploadCollection
+OrderUploadCollection --> SalesOrderUploadCollectionView
+OrderUploadCollection --> OrderUploadModal
+OrderUploadModal --> OrderUploadSingle
+OrderUploadSingle --> SalesOrderUploadSingleView
+
+@enduml
+```
+
+#### 一括登録一覧画面
+
+アップロード結果（成功・エラー）を一覧表示します。
+
+```typescript
+interface UploadResultType {
+    message: string;
+    details: Array<{ [key: string]: string }>;
+}
+
+interface SalesOrderUploadCollectionViewProps {
+    uploadHeaderItems: {
+        handleOpenUploadModal: () => void;
+    };
+    uploadResults: UploadResultType[];
+    handleDeleteUploadResult: (index: number) => void;
+}
+
+export const SalesOrderUploadCollectionView: React.FC<Props> = ({
+    uploadHeaderItems: { handleOpenUploadModal },
+    uploadResults,
+    handleDeleteUploadResult,
+}) => {
+    return (
+        <div className="collection-view-object-container">
+            <div className="collection-view-header">
+                <h1 className="single-view-title">受注一括登録</h1>
+            </div>
+            <div className="collection-view-content">
+                <div className="button-container">
+                    <button onClick={handleOpenUploadModal}>
+                        アップロード
+                    </button>
+                </div>
+                <ul className="collection-object-list">
+                    {uploadResults.map((result, index) => (
+                        <div key={index} className="upload-result-item">
+                            <div className="upload-result-message">
+                                <Message message={result.message} />
+                                {result.details?.length > 0 && (
+                                    <div className="upload-result-details">
+                                        {result.details.map((detail, i) => (
+                                            <div key={i}>
+                                                {Object.entries(detail).map(([key, value]) => (
+                                                    <div key={key}>
+                                                        <span>{key}:</span>
+                                                        <span>{value}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                            <button onClick={() => handleDeleteUploadResult(index)}>
+                                x
+                            </button>
+                        </div>
+                    ))}
+                </ul>
+            </div>
+        </div>
+    );
+};
+```
+
+#### アップロードモーダル
+
+ファイル選択とアップロード実行を行うモーダルダイアログです。
+
+```typescript
+export const OrderUploadSingle: React.FC = () => {
+    const {
+        message, setMessage,
+        error, setError,
+        setUploadModalIsOpen,
+        uploadSalesOrders,
+    } = useSalesOrderContext();
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+    const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files[0]) {
+            setSelectedFile(event.target.files[0]);
+        }
+    };
+
+    const handleUpload = async () => {
+        setError("");
+        setMessage("");
+        if (!selectedFile) {
+            setError("ファイルを選択してください");
+            return;
+        }
+        try {
+            await uploadSalesOrders(selectedFile);
+            setUploadModalIsOpen(false);
+            setSelectedFile(null);
+        } catch (error) {
+            const errorMessage = error instanceof Error
+                ? error.message
+                : "アップロード中にエラーが発生しました";
+            setError(errorMessage);
+        }
+    };
+
+    return (
+        <SalesOrderUploadSingleView
+            error={error}
+            message={message}
+            onFileSelect={handleFileSelect}
+            onUpload={handleUpload}
+            onClose={handleCloseModal}
+            isUploadDisabled={!selectedFile}
+        />
+    );
+};
+```
+
+#### プロバイダーでのアップロード処理
+
+Context を使ってアップロード処理と状態を管理します。
+
+```typescript
+const uploadSalesOrders = async (file: File) => {
+    setLoading(true);
+    try {
+        const results = await salesOrderService.upload(file);
+        setUploadResults(results);
+        await fetchSalesOrders.load();
+    } finally {
+        setLoading(false);
+    }
+};
+```
+
 ### マスタ選択モーダル連携
 
 受注詳細画面から、部門・社員・顧客・商品を選択するモーダルを呼び出します。
@@ -1184,8 +1590,9 @@ export interface RuleCheckResultType {
 
 - **受注ワークフロー**: 受注ステータス、受注番号の採番ルール
 - **受注ヘッダと明細**: 親子関係のモデリング、金額の自動計算
+- **受注一括登録**: CSV ファイルによる大量データのアップロード、OpenCSV によるマッピング
 - **受注ルール**: Strategy パターンによるビジネスルールの実装
 - **TDD によるテスト**: 金額計算、消費税計算のテストケース
-- **React コンポーネント**: 明細の動的追加・削除、金額の自動計算、ステータス遷移 UI
+- **React コンポーネント**: 明細の動的追加・削除、金額の自動計算、一括登録モーダル
 
 次章では、出荷・売上管理の実装について解説します。

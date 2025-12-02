@@ -194,7 +194,7 @@ end note
 
 ### 請求・入金データ
 
-本システムでは、請求・入金データは将来の拡張として設計されています。現時点では受注・出荷・売上までをスコープとしています。
+売上から請求へ、請求から入金へとデータが連携します。
 
 ```plantuml
 @startuml
@@ -204,18 +204,241 @@ rectangle "受注" as order #lightblue
 rectangle "在庫引当" as alloc #lightblue
 rectangle "出荷" as ship #lightblue
 rectangle "売上" as sales #lightblue
-rectangle "請求" as invoice #lightgray
-rectangle "入金" as payment #lightgray
+rectangle "請求" as invoice #lightblue
+rectangle "入金" as payment #lightblue
 
 order --> alloc
 alloc --> ship
 ship --> sales
-sales --> invoice : "将来実装"
-invoice --> payment : "将来実装"
+sales --> invoice
+invoice --> payment
 
-note bottom of invoice
-  現時点ではスコープ外
+@enduml
+```
+
+#### 請求データの構造
+
+請求データは売上明細を集約し、顧客への請求書を構成します。
+
+```plantuml
+@startuml
+title 請求データの構造
+
+entity "請求データ" as invoice {
+  * 請求番号 [PK]
+  --
+  請求日
+  取引先コード [FK]
+  顧客枝番 [FK]
+  前回入金額
+  当月売上額
+  当月入金額
+  当月請求額
+  消費税金額
+  請求消込金額
+  ...
+}
+
+entity "請求データ明細" as invoice_line {
+  * 請求番号 [PK][FK]
+  * 売上番号 [PK][FK]
+  * 売上行番号 [PK][FK]
+  --
+  ...
+}
+
+entity "売上データ明細" as sales_line {
+  * 売上番号 [PK]
+  * 売上行番号 [PK]
+  --
+  請求日
+  請求番号
+  ...
+}
+
+invoice ||--|{ invoice_line : "明細"
+invoice_line }o--|| sales_line : "売上明細"
+
+note right of invoice
+  請求金額の計算:
+  当月請求額 = 前回入金額 + 当月売上額 - 当月入金額
 end note
+
+@enduml
+```
+
+#### 請求データのテーブル定義
+
+```sql
+create table if not exists 請求データ
+(
+    請求番号     varchar(10)                       not null
+        constraint pk_invoice primary key,
+    請求日       timestamp(6),
+    取引先コード varchar(8)                        not null,
+    顧客枝番     integer      default 0,
+    前回入金額   integer      default 0,
+    当月売上額   integer      default 0,
+    当月入金額   integer      default 0,
+    当月請求額   integer      default 0,
+    消費税金額   integer      default 0            not null,
+    請求消込金額 integer      default 0,
+    作成日時     timestamp(6) default CURRENT_DATE not null,
+    作成者名     varchar(12),
+    更新日時     timestamp(6) default CURRENT_DATE not null,
+    更新者名     varchar(12)
+);
+```
+
+#### 請求データ明細のテーブル定義
+
+```sql
+create table if not exists 請求データ明細
+(
+    請求番号   varchar(10)                       not null
+        references 請求データ
+            on update cascade on delete restrict,
+    売上番号   varchar(10)                       not null,
+    売上行番号 integer                           not null,
+    作成日時   timestamp(6) default CURRENT_DATE not null,
+    作成者名   varchar(12),
+    更新日時   timestamp(6) default CURRENT_DATE not null,
+    更新者名   varchar(12),
+    constraint pk_invoice_details
+        primary key (請求番号, 売上番号, 売上行番号),
+    foreign key (売上番号, 売上行番号) references 売上データ明細
+        on update cascade on delete restrict
+);
+```
+
+#### 入金データの構造
+
+入金データは顧客からの支払いを記録し、請求との消込処理を行います。
+
+```plantuml
+@startuml
+title 入金データの構造
+
+entity "入金データ" as payment {
+  * 入金番号 [PK]
+  --
+  入金日
+  部門コード [FK]
+  開始日 [FK]
+  顧客コード [FK]
+  顧客枝番 [FK]
+  支払方法区分
+  入金口座コード [FK]
+  入金金額
+  消込金額
+  ...
+}
+
+entity "入金口座マスタ" as bank_account {
+  * 入金口座コード [PK]
+  --
+  入金口座名
+  入金口座区分
+  入金口座番号
+  銀行口座種別
+  口座名義人
+  部門コード [FK]
+  ...
+}
+
+entity "請求データ" as invoice {
+  * 請求番号 [PK]
+  --
+  請求消込金額
+  ...
+}
+
+payment }o--|| bank_account : "口座"
+payment ..> invoice : "消込"
+
+note right of payment
+  支払方法区分:
+  1: 振込
+  2: 手形
+end note
+
+@enduml
+```
+
+#### 入金データのテーブル定義
+
+```sql
+create table if not exists 入金データ
+(
+    入金番号           varchar(10)                       not null
+        constraint pk_credit primary key,
+    入金日             timestamp(6),
+    部門コード         varchar(6)                        not null,
+    開始日             timestamp(6) default CURRENT_DATE not null,
+    顧客コード         varchar(8)                        not null,
+    顧客枝番           integer      default 0,
+    支払方法区分       integer      default 1,
+    入金口座コード     varchar(8),
+    入金金額           integer      default 0,
+    消込金額           integer      default 0,
+    作成日時           timestamp(6) default CURRENT_DATE not null,
+    作成者名           varchar(12),
+    更新日時           timestamp(6) default CURRENT_DATE not null,
+    更新者名           varchar(12),
+    プログラム更新日時 timestamp(6) default CURRENT_DATE,
+    更新プログラム名   varchar(50)
+);
+```
+
+#### 入金口座マスタのテーブル定義
+
+```sql
+create table if not exists 入金口座マスタ
+(
+    入金口座コード       varchar(8)                        not null
+        constraint pk_bank_acut_mst primary key,
+    入金口座名           varchar(30),
+    適用開始日           timestamp(6) default CURRENT_DATE not null,
+    適用終了日           timestamp(6) default '2100-12-31 00:00:00',
+    適用開始後入金口座名 varchar(30),
+    入金口座区分         varchar(1),
+    入金口座番号         varchar(12),
+    銀行口座種別         varchar(1),
+    口座名義人           varchar(20),
+    部門コード           varchar(6)                        not null,
+    部門開始日           timestamp(6) default CURRENT_DATE not null,
+    全銀協銀行コード     varchar(4),
+    全銀協支店コード     varchar(3),
+    作成日時             timestamp(6) default CURRENT_DATE not null,
+    作成者名             varchar(12),
+    更新日時             timestamp(6) default CURRENT_DATE not null,
+    更新者名             varchar(12)
+);
+```
+
+#### 請求・入金の消込処理
+
+```plantuml
+@startuml
+title 請求消込の流れ
+
+start
+:入金データを登録;
+:顧客の未消込請求を取得;
+
+while (未消込請求がある AND 消込残額 > 0) is (はい)
+  :請求データを取得;
+  if (入金残額 >= 請求残額?) then (はい)
+    :請求を全額消込;
+    :入金消込金額を更新;
+  else (いいえ)
+    :請求を部分消込;
+    :入金消込金額を更新;
+  endif
+endwhile (いいえ)
+
+:消込完了;
+stop
 
 @enduml
 ```
@@ -334,7 +557,7 @@ create table if not exists 発注データ明細
 
 ### 仕入・支払データ
 
-仕入・支払データも将来の拡張として設計されています。
+発注から入荷、仕入、支払へとデータが連携します。
 
 ```plantuml
 @startuml
@@ -342,18 +565,192 @@ title 調達プロセスの全体像
 
 rectangle "発注" as po #lightblue
 rectangle "入荷" as receive #lightblue
-rectangle "仕入" as purchase #lightgray
-rectangle "支払" as payment #lightgray
+rectangle "仕入" as purchase #lightblue
+rectangle "支払" as payment #lightblue
 
 po --> receive
-receive --> purchase : "将来実装"
-purchase --> payment : "将来実装"
+receive --> purchase
+purchase --> payment
 
-note bottom of purchase
-  現時点ではスコープ外
+@enduml
+```
+
+#### 仕入データの構造
+
+仕入データは発注に基づく入荷検収の結果を記録します。
+
+```plantuml
+@startuml
+title 仕入データの構造
+
+entity "仕入データ" as purchase {
+  * 仕入番号 [PK]
+  --
+  仕入日
+  仕入先コード [FK]
+  仕入先枝番 [FK]
+  仕入担当者コード [FK]
+  開始日
+  発注番号
+  部門コード [FK]
+  仕入金額合計
+  消費税合計
+  備考
+  ...
+}
+
+entity "仕入データ明細" as purchase_line {
+  * 仕入番号 [PK][FK]
+  * 仕入行番号 [PK]
+  --
+  仕入行表示番号
+  発注行番号
+  商品コード [FK]
+  倉庫コード [FK]
+  商品名
+  仕入単価
+  仕入数量
+  ...
+}
+
+entity "発注データ" as po {
+  * 発注番号 [PK]
+  --
+  ...
+}
+
+purchase ||--|{ purchase_line : "明細"
+purchase }o--|| po : "発注"
+
+note right of purchase
+  発注番号による紐付けで
+  トレーサビリティを確保
 end note
 
 @enduml
+```
+
+#### 仕入データのテーブル定義
+
+```sql
+create table if not exists 仕入データ
+(
+    仕入番号         varchar(10)                       not null
+        constraint pk_pu primary key,
+    仕入日           timestamp(6) default CURRENT_DATE,
+    仕入先コード     varchar(8)                        not null,
+    仕入先枝番       integer      default 0,
+    仕入担当者コード varchar(10)                       not null,
+    開始日           timestamp(6) default CURRENT_DATE not null,
+    発注番号         varchar(10),
+    部門コード       varchar(6)                        not null,
+    仕入金額合計     integer      default 0,
+    消費税合計       integer      default 0            not null,
+    備考             varchar(1000),
+    作成日時         timestamp(6) default CURRENT_DATE not null,
+    作成者名         varchar(12),
+    更新日時         timestamp(6) default CURRENT_DATE not null,
+    updater          varchar(12),
+    version          integer      default 1            not null
+);
+```
+
+#### 仕入データ明細のテーブル定義
+
+```sql
+create table if not exists 仕入データ明細
+(
+    仕入番号       varchar(10)                       not null
+        references 仕入データ
+            on update cascade on delete restrict,
+    仕入行番号     integer                           not null,
+    仕入行表示番号 integer                           not null,
+    発注行番号     integer                           not null,
+    商品コード     varchar(16)                       not null,
+    倉庫コード     varchar(3)                        not null,
+    商品名         varchar(10)                       not null,
+    仕入単価       integer      default 0,
+    仕入数量       integer      default 1            not null,
+    作成日時       timestamp(6) default CURRENT_DATE not null,
+    作成者名       varchar(12),
+    更新日時       timestamp(6) default CURRENT_DATE not null,
+    更新者名       varchar(12),
+    version        integer      default 1            not null,
+    constraint pk_pu_details
+        primary key (仕入行番号, 仕入番号)
+);
+```
+
+#### 支払データの構造
+
+支払データは仕入先への支払いを管理します。
+
+```plantuml
+@startuml
+title 支払データの構造
+
+entity "支払データ" as payment {
+  * 支払番号 [PK]
+  --
+  支払日
+  部門コード [FK]
+  部門開始日 [FK]
+  仕入先コード [FK]
+  仕入先枝番 [FK]
+  支払方法区分
+  支払金額
+  消費税合計
+  支払完了フラグ
+  ...
+}
+
+entity "仕入先マスタ" as vendor {
+  * 仕入先コード [PK]
+  * 枝番 [PK]
+  --
+  ...
+}
+
+payment }o--|| vendor : "仕入先"
+
+note right of payment
+  支払日:
+    10 = 10日払い
+    99 = 末日払い
+
+  支払方法区分:
+    1 = 振込
+    2 = 手形
+
+  支払完了フラグ:
+    0 = 未完了
+    1 = 完了
+end note
+
+@enduml
+```
+
+#### 支払データのテーブル定義
+
+```sql
+create table if not exists 支払データ
+(
+    支払番号       varchar(10)                       not null
+        constraint pk_pay primary key,
+    支払日         integer      default 0,
+    部門コード     varchar(6)                        not null,
+    部門開始日     timestamp(6) default CURRENT_DATE not null,
+    仕入先コード   varchar(8)                        not null,
+    仕入先枝番     integer      default 0,
+    支払方法区分   integer      default 1,
+    支払金額       integer      default 0,
+    消費税合計     integer      default 0            not null,
+    支払完了フラグ integer      default 0            not null,
+    作成日時       timestamp(6) default CURRENT_DATE not null,
+    作成者名       varchar(12),
+    更新日時       timestamp(6) default CURRENT_DATE not null,
+    更新者名       varchar(12)
+);
 ```
 
 ### 発注から支払までのデータフロー
@@ -455,6 +852,109 @@ end note
 ---
 
 ## 6.3 在庫トランザクション
+
+### 在庫データの構造
+
+在庫データは、倉庫・商品・ロット・在庫区分・良品区分の5つの項目で複合主キーを構成します。
+
+```plantuml
+@startuml
+title 在庫データの構造
+
+entity "在庫データ" as stock {
+  * 倉庫コード [PK][FK]
+  * 商品コード [PK]
+  * ロット番号 [PK]
+  * 在庫区分 [PK]
+  * 良品区分 [PK]
+  --
+  実在庫数
+  有効在庫数
+  最終出荷日
+  version
+  ...
+}
+
+entity "倉庫マスタ" as warehouse {
+  * 倉庫コード [PK]
+  --
+  倉庫名
+  倉庫区分
+  ...
+}
+
+entity "商品マスタ" as product {
+  * 商品コード [PK]
+  --
+  商品名
+  ...
+}
+
+stock }o--|| warehouse : "倉庫"
+stock }o--|| product : "商品"
+
+note right of stock
+  在庫区分:
+    1 = 自社在庫
+    2 = 預り在庫
+
+  良品区分:
+    G = 良品
+    F = 不良品
+    U = 未検品
+end note
+
+@enduml
+```
+
+#### 在庫データのテーブル定義
+
+```sql
+create table if not exists 在庫データ
+(
+    倉庫コード varchar(3)                                  not null
+        references 倉庫マスタ
+            on update cascade on delete restrict,
+    商品コード varchar(16)                                 not null,
+    ロット番号 varchar(20)                                 not null,
+    在庫区分   varchar(1)   default '1'                    not null,
+    良品区分   varchar(1)   default 'G'                    not null,
+    実在庫数   integer      default 1                      not null,
+    有効在庫数 integer      default 1                      not null,
+    最終出荷日 timestamp(6),
+    作成日時   timestamp(6) default CURRENT_DATE           not null,
+    作成者名   varchar(12),
+    更新日時   timestamp(6) default CURRENT_DATE           not null,
+    更新者名   varchar(12),
+    version    integer      default 1                      not null,
+    constraint pk_stock
+        primary key (倉庫コード, 商品コード, ロット番号, 在庫区分, 良品区分)
+);
+```
+
+#### 実在庫数と有効在庫数
+
+| 項目 | 説明 |
+|------|------|
+| 実在庫数 | 物理的に存在する在庫の数量 |
+| 有効在庫数 | 引当可能な在庫の数量（実在庫数 - 引当済数量） |
+
+```plantuml
+@startuml
+title 実在庫数と有効在庫数の関係
+
+rectangle "実在庫数 = 100" as actual {
+  rectangle "引当済 = 30" as reserved #lightgray
+  rectangle "有効在庫数 = 70" as available #lightblue
+}
+
+note bottom of actual
+  有効在庫数 = 実在庫数 - 引当済数量
+  新規引当は有効在庫数の範囲内で可能
+end note
+
+@enduml
+```
 
 ### 在庫移動の記録
 

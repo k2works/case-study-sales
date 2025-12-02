@@ -1,524 +1,477 @@
-# 第23章: 今後の展望
+# 第23章: リリース管理
 
-## 23.1 機能拡張
+## 23.1 バージョニング戦略
 
-### レポーティング強化
+### セマンティックバージョニング
 
-現在のシステムは基本的な CRUD 操作と一覧表示を提供していますが、ビジネスインテリジェンス（BI）機能の強化が今後の課題です。
-
-```plantuml
-@startuml
-title レポーティング機能の拡張計画
-
-rectangle "現在の機能" as current {
-  (一覧表示)
-  (CSV ダウンロード)
-  (基本的な検索)
-}
-
-rectangle "拡張計画" as planned {
-  package "分析レポート" {
-    (売上分析)
-    (在庫回転率)
-    (顧客別収益)
-  }
-
-  package "集計機能" {
-    (期間別集計)
-    (カテゴリ別集計)
-    (担当者別実績)
-  }
-
-  package "可視化" {
-    (グラフ表示)
-    (ダッシュボード)
-    (リアルタイム更新)
-  }
-}
-
-current --> planned : "機能拡張"
-
-@enduml
-```
-
-### ダッシュボード実装
-
-経営層や管理者向けのダッシュボードを実装することで、システムの価値を大幅に向上させることができます。
+本プロジェクトでは、セマンティックバージョニング（Semantic Versioning）を採用しています。バージョン番号は `MAJOR.MINOR.PATCH` の形式で表現されます。
 
 ```plantuml
 @startuml
-title ダッシュボード構成案
+title セマンティックバージョニング
 
-rectangle "経営ダッシュボード" {
-  rectangle "KPI パネル" {
-    (月次売上)
-    (受注残高)
-    (在庫金額)
-    (売掛金残高)
-  }
-
-  rectangle "トレンドグラフ" {
-    (売上推移)
-    (受注推移)
-    (在庫推移)
-  }
-
-  rectangle "アラート" {
-    (在庫切れ警告)
-    (支払期限通知)
-    (目標達成率)
-  }
-}
-
-@enduml
-```
-
-### モバイル対応
-
-現在のシステムはレスポンシブデザインを採用していますが、より本格的なモバイル対応も検討課題です。
-
-```plantuml
-@startuml
-title モバイル対応の選択肢
-
-rectangle "選択肢" {
-  rectangle "PWA（推奨）" as pwa {
+rectangle "バージョン番号: X.Y.Z" {
+  rectangle "X (MAJOR)" as major #lightblue {
     note as N1
-      - 既存 React アプリを活用
-      - オフライン対応
-      - プッシュ通知
-      - インストール可能
+      後方互換性のない変更
+      - API の破壊的変更
+      - データベーススキーマの大幅変更
     end note
   }
 
-  rectangle "ネイティブアプリ" as native {
+  rectangle "Y (MINOR)" as minor #lightgreen {
     note as N2
-      - React Native
-      - Flutter
-      - 高いパフォーマンス
-      - デバイス機能フルアクセス
+      後方互換性のある機能追加
+      - 新機能の追加
+      - 既存機能の拡張
     end note
   }
 
-  rectangle "レスポンシブ強化" as responsive {
+  rectangle "Z (PATCH)" as patch #lightyellow {
     note as N3
-      - 現状の延長
-      - コスト最小
-      - メンテナンス容易
+      後方互換性のあるバグ修正
+      - バグ修正
+      - セキュリティパッチ
     end note
   }
 }
 
-pwa -[#green]-> (優先度高)
-native --> (優先度中)
-responsive --> (継続改善)
+@enduml
+```
+
+### プロジェクトのバージョン履歴
+
+本プロジェクトのリリースバージョンは以下のように進化してきました。
+
+| バージョン | 主な内容 |
+|-----------|---------|
+| 0.1.0 | 環境構築、基本的な認証機能 |
+| 0.2.0 | マスタ管理（部門、社員） |
+| 0.3.0 | マスタ管理（商品） |
+| 0.4.0 | 取引先管理 |
+| 0.5.0 | 受注管理 |
+| 0.6.0 | 発注管理 |
+| 0.7.0 | 出荷・売上管理 |
+| 0.8.0 | 在庫管理 |
+| 0.9.0 | 仕入・支払管理 |
+| 0.10.0 | 請求・回収管理 |
+| 0.11.0 | ドキュメント整備 |
+| 0.11.1 | バグ修正、依存関係更新 |
+
+### リリースサイクル
+
+```plantuml
+@startuml
+title リリースサイクル
+
+|開発|
+start
+:機能開発;
+:テスト実装;
+:コードレビュー;
+
+|統合|
+:feature ブランチをマージ;
+:CI/CD による自動テスト;
+
+|リリース準備|
+:ドキュメント更新;
+:JIG/JIG-ERD 生成;
+:バージョン番号決定;
+
+|リリース|
+:タグ付け;
+:GitHub Release 作成;
+:本番デプロイ;
+
+stop
 
 @enduml
 ```
 
-## 23.2 アーキテクチャ進化
+## 23.2 CI/CD パイプライン
 
-### マイクロサービス化の検討
+### GitHub Actions による自動化
 
-現在のモノリシックアーキテクチャから、段階的にマイクロサービスへ移行することを検討できます。
+本プロジェクトでは、GitHub Actions を使用して CI/CD パイプラインを構築しています。
 
 ```plantuml
 @startuml
-title マイクロサービス化の段階
+title CI/CD パイプライン構成
 
-rectangle "Phase 1: 現状（モノリス）" as p1 {
-  rectangle "販売管理システム" as mono {
-    (認証)
-    (マスタ管理)
-    (販売管理)
-    (調達管理)
-    (在庫管理)
+rectangle "GitHub Repository" as repo {
+  (Push/PR)
+}
+
+rectangle "GitHub Actions" as actions {
+  rectangle "CI ジョブ" as ci {
+    (Build)
+    (Test)
+    (Coverage)
+    (SonarQube)
+  }
+
+  rectangle "CD ジョブ" as cd {
+    (Backend Deploy)
+    (Frontend Deploy)
   }
 }
 
-rectangle "Phase 2: モジュラーモノリス" as p2 {
-  rectangle "モジュール構成" as modular {
-    package "認証モジュール"
-    package "マスタモジュール"
-    package "販売モジュール"
-    package "調達モジュール"
-    package "在庫モジュール"
+rectangle "Heroku" as heroku {
+  (Backend API)
+}
+
+rectangle "Vercel" as vercel {
+  (Frontend App)
+}
+
+rectangle "SonarCloud" as sonar {
+  (品質レポート)
+}
+
+repo --> actions
+ci --> cd : "main ブランチ"
+cd --> heroku
+cd --> vercel
+ci --> sonar
+
+@enduml
+```
+
+### バックエンドの CI 設定
+
+Gradle プロジェクトのビルドとテストを自動化します。
+
+```yaml
+name: Java CI with Gradle in api directory
+on:
+  push:
+    branches: [ '*' ]
+  pull_request:
+    branches: [ main ]
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'oracle'
+      - name: Grant execute permission for Gradle wrapper
+        run: chmod +x ./gradlew
+        working-directory: app/backend/sms
+      - name: Build with Gradle in api directory
+        run: ./gradlew build -x test -x jigReports
+        working-directory: app/backend/sms
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'oracle'
+      - name: Grant execute permission for Gradle wrapper
+        run: chmod +x ./gradlew
+        working-directory: app/backend/sms
+      - name: Test with Gradle in api directory
+        run: ./gradlew test
+        working-directory: app/backend/sms
+
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'oracle'
+      - name: Grant execute permission for Gradle wrapper
+        run: chmod +x ./gradlew
+        working-directory: app/backend/sms
+      - name: Gradle build
+        run: ./gradlew clean build jacocoTestReport
+        working-directory: app/backend/sms
+      - uses: qltysh/qlty-action/coverage@v1
+        with:
+          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
+          files: app/backend/sms/build/reports/jacoco/test/jacocoTestReport.xml
+```
+
+### バックエンドのデプロイ設定
+
+Heroku へのデプロイを自動化します。
+
+```yaml
+name: Heroku Backend Production Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: akhileshns/heroku-deploy@v3.13.15
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
+          heroku_email: ${{secrets.HEROKU_EMAIL}}
+          appdir: "app/backend/sms"
+```
+
+### フロントエンドのデプロイ設定
+
+Vercel へのデプロイを自動化します。
+
+```yaml
+name: Vercel FrontEnd Production Deployment
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_FRONTEND_PROJECT_ID }}
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+          cache-dependency-path: app/frontend/package-lock.json
+      - name: Setup Environment Variables
+        run: |
+          echo VITE_APP_API_URL=${{ vars.PRD_APP_API_URL }} > .env
+        working-directory: app/frontend
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        working-directory: app/frontend
+      - name: Build Project Artifacts
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        working-directory: app/frontend
+      - name: Deploy Project Artifacts to Vercel
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        working-directory: app/frontend
+```
+
+### デプロイメントフロー
+
+```plantuml
+@startuml
+title デプロイメントフロー
+
+|開発者|
+start
+:コードを push;
+
+|GitHub Actions|
+:ビルド実行;
+:テスト実行;
+
+if (テスト成功?) then (yes)
+  if (main ブランチ?) then (yes)
+    |Heroku|
+    :バックエンドデプロイ;
+
+    |Vercel|
+    :フロントエンドデプロイ;
+  else (no)
+    :プレビュー環境デプロイ;
+  endif
+else (no)
+  |開発者|
+  :エラー修正;
+  -> コードを push;
+endif
+
+|本番環境|
+:アプリケーション稼働;
+
+stop
+
+@enduml
+```
+
+## 23.3 JIG/JIG-ERD アーカイブ
+
+### リリース時のドキュメント保存
+
+各リリースバージョンで生成された JIG および JIG-ERD ドキュメントを保存することで、アーキテクチャの変遷を追跡できます。
+
+```plantuml
+@startuml
+title リリースごとのドキュメント構成
+
+folder "docs/assets/release" {
+  folder "v0_1_0" {
+    folder "jig" {
+      file "index.html"
+      file "domain.html"
+      file "application.html"
+      file "usecase.html"
+      file "*.svg"
+    }
+    folder "jig-erd" {
+      file "library-er-overview.svg"
+      file "library-er-summary.svg"
+      file "library-er-detail.svg"
+    }
+  }
+
+  folder "v0_2_0" {
+    folder "jig"
+    folder "jig-erd"
+  }
+
+  folder "..." as dots
+
+  folder "v0_11_0" {
+    folder "jig"
+    folder "jig-erd"
   }
 }
 
-rectangle "Phase 3: マイクロサービス" as p3 {
-  rectangle "独立サービス" as micro {
-    node "認証サービス"
-    node "マスタサービス"
-    node "販売サービス"
-    node "調達サービス"
-    node "在庫サービス"
-  }
-}
-
-p1 --> p2 : "境界の明確化"
-p2 --> p3 : "サービス分離"
-
 @enduml
 ```
 
-### イベントソーシング
+### JIG ドキュメントの生成手順
 
-イベントソーシングは、状態の変更をイベントとして記録するアーキテクチャパターンです。監査証跡や履歴追跡に優れています。
+リリース時に JIG ドキュメントを生成する手順です。
 
-```plantuml
-@startuml
-title イベントソーシングの概念
+```bash
+# 1. JIG レポートの生成
+cd app/backend/sms
+./gradlew jigReports
 
-rectangle "従来のアプローチ" as traditional {
-  database "現在の状態のみ保存" as db1 {
-  }
-}
+# 2. JIG-ERD の生成
+./gradlew test --tests "*JigErdTest*"
 
-rectangle "イベントソーシング" as eventsourcing {
-  queue "イベントストア" as events {
-    (OrderCreated)
-    (OrderItemAdded)
-    (OrderConfirmed)
-    (OrderShipped)
-    (OrderDelivered)
-  }
-
-  database "現在の状態\n（リードモデル）" as db2 {
-  }
-}
-
-events --> db2 : "イベントから\n状態を再構築"
-
-note right of events
-  - 完全な履歴を保持
-  - 任意の時点の状態を復元可能
-  - 監査証跡として利用
-end note
-
-@enduml
+# 3. 生成されたドキュメントをリリースディレクトリにコピー
+mkdir -p ../../../docs/assets/release/v0_12_0/jig
+mkdir -p ../../../docs/assets/release/v0_12_0/jig-erd
+cp -r build/jig/* ../../../docs/assets/release/v0_12_0/jig/
+cp -r build/jig-erd/* ../../../docs/assets/release/v0_12_0/jig-erd/
 ```
 
-### CQRS パターン
+### バージョン間の比較
 
-CQRS（Command Query Responsibility Segregation）は、読み取りと書き込みを分離するパターンです。
-
-```plantuml
-@startuml
-title CQRS パターン
-
-actor "ユーザー" as user
-
-rectangle "コマンド側（書き込み）" as command {
-  (受注登録)
-  (受注更新)
-  (受注キャンセル)
-
-  database "書き込みDB" as writedb
-}
-
-rectangle "クエリ側（読み取り）" as query {
-  (受注一覧取得)
-  (受注詳細取得)
-  (レポート生成)
-
-  database "読み取りDB" as readdb
-}
-
-user --> command
-user --> query
-
-command --> writedb
-writedb --> readdb : "同期/非同期"
-readdb --> query
-
-note bottom of command
-  - ドメインロジック実行
-  - 整合性保証
-  - イベント発行
-end note
-
-note bottom of query
-  - 高速なクエリ
-  - 非正規化データ
-  - キャッシュ活用
-end note
-
-@enduml
-```
-
-### 技術スタックの進化
+JIG ドキュメントを比較することで、アーキテクチャの進化を可視化できます。
 
 ```plantuml
 @startuml
-title 技術スタックの進化予測
+title バージョン間のドメインモデル比較
 
-rectangle "現在" as current {
-  (Java 25)
-  (Spring Boot 3.x)
-  (MyBatis)
-  (PostgreSQL)
-  (React)
-  (Vite)
-}
-
-rectangle "短期（1年以内）" as short {
-  (Java 27 LTS)
-  (Spring Boot 3.x 最新)
-  (Virtual Threads 活用)
-  (React 19+)
-}
-
-rectangle "中期（2-3年）" as mid {
-  (Project Loom 完全活用)
-  (GraalVM ネイティブイメージ)
-  (Kubernetes 対応)
-  (GraphQL 検討)
-}
-
-current --> short : "継続的更新"
-short --> mid : "戦略的進化"
-
-@enduml
-```
-
-## 23.3 AI/ML 統合
-
-### 需要予測機能
-
-機械学習を活用した需要予測は、在庫最適化や販売計画に大きな価値をもたらします。
-
-```plantuml
-@startuml
-title 需要予測システム
-
-rectangle "入力データ" as input {
-  (過去の売上データ)
-  (季節性データ)
-  (イベント情報)
-  (市場トレンド)
-}
-
-rectangle "ML パイプライン" as ml {
-  (データ前処理)
-  (特徴量エンジニアリング)
-  (モデル学習)
-  (予測生成)
-}
-
-rectangle "出力" as output {
-  (需要予測レポート)
-  (発注推奨量)
-  (在庫最適化提案)
-}
-
-input --> ml
-ml --> output
-
-note bottom of ml
-  使用可能なアルゴリズム:
-  - 時系列分析（ARIMA, Prophet）
-  - 機械学習（XGBoost, LightGBM）
-  - 深層学習（LSTM, Transformer）
-end note
-
-@enduml
-```
-
-### 異常検知
-
-取引データの異常検知は、不正検出や品質管理に活用できます。
-
-```plantuml
-@startuml
-title 異常検知システム
-
-rectangle "監視対象" as target {
-  (受注パターン)
-  (価格変動)
-  (在庫変動)
-  (支払いパターン)
-}
-
-rectangle "異常検知エンジン" as engine {
-  (統計的手法)
-  (機械学習)
-  (ルールベース)
-}
-
-rectangle "アクション" as action {
-  (アラート通知)
-  (自動レビューフラグ)
-  (レポート生成)
-}
-
-target --> engine : "リアルタイム\nモニタリング"
-engine --> action : "異常検出時"
-
-note bottom of engine
-  検出可能な異常:
-  - 不正な割引適用
-  - 異常な大量発注
-  - 不自然な在庫操作
-  - 通常外の取引パターン
-end note
-
-@enduml
-```
-
-### AI 活用のロードマップ
-
-```plantuml
-@startuml
-title AI/ML 統合ロードマップ
-
-rectangle "Phase 1: 基盤構築" as p1 {
+rectangle "v0.1.0" as v1 {
   note as N1
-    - データ収集基盤整備
-    - 分析用データウェアハウス
-    - 基本的なレポーティング
+    **ドメインクラス数:** 45
+    **エンティティ:** 8
+    **値オブジェクト:** 12
   end note
 }
 
-rectangle "Phase 2: 予測分析" as p2 {
+rectangle "v0.5.0" as v5 {
   note as N2
-    - 需要予測モデル
-    - 在庫最適化
-    - 売上予測
+    **ドメインクラス数:** 120
+    **エンティティ:** 25
+    **値オブジェクト:** 45
   end note
 }
 
-rectangle "Phase 3: 高度な自動化" as p3 {
+rectangle "v0.11.0" as v11 {
   note as N3
-    - 自動発注システム
-    - 動的価格設定
-    - 顧客セグメンテーション
+    **ドメインクラス数:** 250+
+    **エンティティ:** 50+
+    **値オブジェクト:** 100+
   end note
 }
 
-rectangle "Phase 4: AI アシスタント" as p4 {
-  note as N4
-    - 自然言語クエリ
-    - インテリジェント推奨
-    - 意思決定支援
-  end note
-}
-
-p1 --> p2
-p2 --> p3
-p3 --> p4
+v1 --> v5 : "機能追加"
+v5 --> v11 : "機能追加\nリファクタリング"
 
 @enduml
 ```
 
-### LLM 統合の可能性
+### リリース手順チェックリスト
 
-大規模言語モデル（LLM）を活用した機能拡張も将来的な検討課題です。
-
-```plantuml
-@startuml
-title LLM 統合の可能性
-
-rectangle "LLM 活用シーン" {
-  rectangle "自然言語インターフェース" {
-    (「先月の売上トップ10を見せて」)
-    (「在庫が少ない商品を教えて」)
-    (「A社への請求書を作成して」)
-  }
-
-  rectangle "ドキュメント生成" {
-    (レポート自動作成)
-    (契約書ドラフト)
-    (メール文面生成)
-  }
-
-  rectangle "データ分析支援" {
-    (異常値の説明)
-    (トレンド分析の解説)
-    (改善提案)
-  }
-}
-
-@enduml
-```
-
-## 23.4 継続的改善
-
-### 技術的負債の管理
-
-システムの健全性を維持するため、技術的負債を継続的に管理します。
+リリース時に確認すべき項目のチェックリストです。
 
 ```plantuml
 @startuml
-title 技術的負債管理サイクル
+title リリース手順チェックリスト
 
 start
-:技術的負債の特定;
-note right
-  - SonarQube レポート
-  - コードレビュー
-  - パフォーマンス分析
-end note
 
-:優先度付け;
-note right
-  - ビジネスインパクト
-  - 修正コスト
-  - リスク評価
-end note
+:1. 全テストがパス;
+:2. コードレビュー完了;
+:3. SonarQube 品質ゲート通過;
+:4. JIG ドキュメント生成;
+:5. JIG-ERD 生成;
+:6. ドキュメントをリリースディレクトリにコピー;
+:7. CHANGELOG 更新;
+:8. バージョン番号を更新;
+:9. Git タグを作成;
+:10. GitHub Release を作成;
+:11. 本番デプロイ確認;
 
-:リファクタリング計画;
-:段階的な改善実施;
-:効果測定;
-
--> 技術的負債の特定;
+stop
 
 @enduml
 ```
 
-### 品質指標の継続監視
+### タグ付けとリリース作成
 
-```plantuml
-@startuml
-title 品質指標ダッシュボード
+```bash
+# バージョンタグの作成
+git tag -a v0.12.0 -m "Release v0.12.0: 新機能の追加"
 
-rectangle "コード品質" {
-  (テストカバレッジ: 80%+)
-  (技術的負債: 最小化)
-  (重複コード: 3%以下)
-}
+# タグのプッシュ
+git push origin v0.12.0
 
-rectangle "パフォーマンス" {
-  (API 応答時間: 200ms以下)
-  (ページロード: 2秒以下)
-  (スループット: 目標値達成)
-}
+# GitHub CLI でリリース作成
+gh release create v0.12.0 \
+  --title "Release v0.12.0" \
+  --notes "## 変更内容
 
-rectangle "信頼性" {
-  (可用性: 99.9%)
-  (エラー率: 0.1%以下)
-  (MTTR: 最小化)
-}
+  ### 新機能
+  - 機能A の追加
+  - 機能B の追加
 
-@enduml
+  ### バグ修正
+  - 問題X の修正
+
+  ### ドキュメント
+  - JIG ドキュメント更新"
 ```
 
 ## まとめ
 
-この章では、今後の展望について解説しました。
+この章では、リリース管理について解説しました。
 
 **重要なポイント:**
 
-1. **機能拡張**: レポーティング強化、ダッシュボード実装、モバイル対応（PWA 推奨）により、システムの価値を向上させます。
+1. **セマンティックバージョニング**: MAJOR.MINOR.PATCH の形式でバージョンを管理し、変更の種類を明確に伝えます。
 
-2. **アーキテクチャ進化**: 必要に応じて、モジュラーモノリス、マイクロサービス、イベントソーシング、CQRS パターンへの段階的な移行を検討します。
+2. **CI/CD パイプライン**: GitHub Actions を使用して、ビルド、テスト、デプロイを自動化します。Heroku（バックエンド）と Vercel（フロントエンド）への継続的デプロイを実現しています。
 
-3. **AI/ML 統合**: 需要予測、異常検知、LLM 活用により、ビジネスインテリジェンスを強化します。段階的なロードマップに従って実装を進めます。
+3. **JIG/JIG-ERD アーカイブ**: 各リリースバージョンでドキュメントを保存し、アーキテクチャの変遷を追跡可能にします。これにより、システムの成長と進化を可視化できます。
 
-4. **継続的改善**: 技術的負債の管理と品質指標の継続監視により、システムの健全性を維持します。
-
-本書で解説したドメイン駆動設計、テスト駆動開発、継続的リファクタリングの原則に従い、システムを進化させていくことが重要です。技術は変化しますが、よいソフトウェアを作るための基本原則は変わりません。
-
----
-
-これで本書の本文は終了です。付録では、技術スタック一覧、ユースケース一覧、データモデル、開発タイムライン、参考文献を提供します。
+次の章では、今後の展望について解説します。機能拡張、アーキテクチャの進化、AI/ML 統合の可能性を探ります。

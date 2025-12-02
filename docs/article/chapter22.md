@@ -1,477 +1,754 @@
-# 第22章: リリース管理
+# 第22章: 非機能要件
 
-## 22.1 バージョニング戦略
+## 22.1 実行履歴管理
 
-### セマンティックバージョニング
+### 実行履歴の必要性
 
-本プロジェクトでは、セマンティックバージョニング（Semantic Versioning）を採用しています。バージョン番号は `MAJOR.MINOR.PATCH` の形式で表現されます。
+エンタープライズシステムでは、「誰が」「いつ」「何を」実行したかを記録することが重要です。これは監査証跡（Audit Trail）として、セキュリティ、コンプライアンス、トラブルシューティングの観点から必須の機能です。
 
 ```plantuml
 @startuml
-title セマンティックバージョニング
+title 実行履歴の目的
 
-rectangle "バージョン番号: X.Y.Z" {
-  rectangle "X (MAJOR)" as major #lightblue {
-    note as N1
-      後方互換性のない変更
-      - API の破壊的変更
-      - データベーススキーマの大幅変更
-    end note
+rectangle "監査証跡" {
+  rectangle "セキュリティ" as sec {
+    (不正アクセスの検知)
+    (操作者の特定)
   }
 
-  rectangle "Y (MINOR)" as minor #lightgreen {
-    note as N2
-      後方互換性のある機能追加
-      - 新機能の追加
-      - 既存機能の拡張
-    end note
+  rectangle "コンプライアンス" as comp {
+    (法令遵守)
+    (内部統制)
   }
 
-  rectangle "Z (PATCH)" as patch #lightyellow {
-    note as N3
-      後方互換性のあるバグ修正
-      - バグ修正
-      - セキュリティパッチ
-    end note
+  rectangle "運用" as ops {
+    (障害調査)
+    (パフォーマンス分析)
   }
 }
 
 @enduml
 ```
 
-### プロジェクトのバージョン履歴
+### 実行履歴ドメインモデル
 
-本プロジェクトのリリースバージョンは以下のように進化してきました。
-
-| バージョン | 主な内容 |
-|-----------|---------|
-| 0.1.0 | 環境構築、基本的な認証機能 |
-| 0.2.0 | マスタ管理（部門、社員） |
-| 0.3.0 | マスタ管理（商品） |
-| 0.4.0 | 取引先管理 |
-| 0.5.0 | 受注管理 |
-| 0.6.0 | 発注管理 |
-| 0.7.0 | 出荷・売上管理 |
-| 0.8.0 | 在庫管理 |
-| 0.9.0 | 仕入・支払管理 |
-| 0.10.0 | 請求・回収管理 |
-| 0.11.0 | ドキュメント整備 |
-| 0.11.1 | バグ修正、依存関係更新 |
-
-### リリースサイクル
+実行履歴は以下の情報を記録します。
 
 ```plantuml
 @startuml
-title リリースサイクル
+title 実行履歴ドメインモデル
 
-|開発|
-start
-:機能開発;
-:テスト実装;
-:コードレビュー;
+class ApplicationExecutionHistory <<Entity>> {
+  - id: Integer
+  - process: ApplicationExecutionProcess
+  - type: ApplicationExecutionHistoryType
+  - processStart: LocalDateTime
+  - processEnd: LocalDateTime
+  - processFlag: ApplicationExecutionProcessFlag
+  - processDetails: String
+  - user: User
+}
 
-|統合|
-:feature ブランチをマージ;
-:CI/CD による自動テスト;
+class ApplicationExecutionProcess <<ValueObject>> {
+  - processName: String
+  - processCode: String
+}
 
-|リリース準備|
-:ドキュメント更新;
-:JIG/JIG-ERD 生成;
-:バージョン番号決定;
+enum ApplicationExecutionHistoryType {
+  同期
+  非同期
+}
 
-|リリース|
-:タグ付け;
-:GitHub Release 作成;
-:本番デプロイ;
+enum ApplicationExecutionProcessFlag {
+  実行中
+  正常終了
+  異常終了
+}
 
-stop
+ApplicationExecutionHistory *-- ApplicationExecutionProcess
+ApplicationExecutionHistory --> ApplicationExecutionHistoryType
+ApplicationExecutionHistory --> ApplicationExecutionProcessFlag
 
 @enduml
 ```
 
-## 22.2 CI/CD パイプライン
+### 実行プロセス区分
 
-### GitHub Actions による自動化
+システム内の各操作に対応するプロセス区分を定義します。
 
-本プロジェクトでは、GitHub Actions を使用して CI/CD パイプラインを構築しています。
+```java
+/**
+ * アプリケーション実行プロセス区分
+ */
+@Getter
+public enum ApplicationExecutionProcessType {
+    ユーザー登録("ユーザー登録", "0001"),
+    ユーザー更新("ユーザー更新", "0002"),
+    ユーザー削除("ユーザー削除", "0003"),
+    部門登録("部門登録", "0004"),
+    部門更新("部門更新", "0005"),
+    部門削除("部門削除", "0006"),
+    // ... マスタ操作
+    受注登録("受注登録", "0034"),
+    受注更新("受注更新", "0035"),
+    受注削除("受注削除", "0036"),
+    出荷登録("出荷登録", "0037"),
+    // ... トランザクション操作
+    在庫登録("在庫登録", "0056"),
+    在庫更新("在庫更新", "0057"),
+    在庫削除("在庫削除", "0058"),
+    在庫調整("在庫調整", "0059"),
+    // ... 在庫操作
+    データダウンロード("データダウンロード", "9001"),
+    その他("その他", "9999");
 
-```plantuml
-@startuml
-title CI/CD パイプライン構成
+    private final String name;
+    private final String code;
 
-rectangle "GitHub Repository" as repo {
-  (Push/PR)
-}
-
-rectangle "GitHub Actions" as actions {
-  rectangle "CI ジョブ" as ci {
-    (Build)
-    (Test)
-    (Coverage)
-    (SonarQube)
-  }
-
-  rectangle "CD ジョブ" as cd {
-    (Backend Deploy)
-    (Frontend Deploy)
-  }
-}
-
-rectangle "Heroku" as heroku {
-  (Backend API)
-}
-
-rectangle "Vercel" as vercel {
-  (Frontend App)
-}
-
-rectangle "SonarCloud" as sonar {
-  (品質レポート)
-}
-
-repo --> actions
-ci --> cd : "main ブランチ"
-cd --> heroku
-cd --> vercel
-ci --> sonar
-
-@enduml
-```
-
-### バックエンドの CI 設定
-
-Gradle プロジェクトのビルドとテストを自動化します。
-
-```yaml
-name: Java CI with Gradle in api directory
-on:
-  push:
-    branches: [ '*' ]
-  pull_request:
-    branches: [ main ]
-permissions:
-  contents: read
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          java-version: '25'
-          distribution: 'oracle'
-      - name: Grant execute permission for Gradle wrapper
-        run: chmod +x ./gradlew
-        working-directory: app/backend/sms
-      - name: Build with Gradle in api directory
-        run: ./gradlew build -x test -x jigReports
-        working-directory: app/backend/sms
-
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          java-version: '25'
-          distribution: 'oracle'
-      - name: Grant execute permission for Gradle wrapper
-        run: chmod +x ./gradlew
-        working-directory: app/backend/sms
-      - name: Test with Gradle in api directory
-        run: ./gradlew test
-        working-directory: app/backend/sms
-
-  coverage:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          java-version: '25'
-          distribution: 'oracle'
-      - name: Grant execute permission for Gradle wrapper
-        run: chmod +x ./gradlew
-        working-directory: app/backend/sms
-      - name: Gradle build
-        run: ./gradlew clean build jacocoTestReport
-        working-directory: app/backend/sms
-      - uses: qltysh/qlty-action/coverage@v1
-        with:
-          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
-          files: app/backend/sms/build/reports/jacoco/test/jacocoTestReport.xml
-```
-
-### バックエンドのデプロイ設定
-
-Heroku へのデプロイを自動化します。
-
-```yaml
-name: Heroku Backend Production Deployment
-
-on:
-  push:
-    branches:
-      - main
-
-jobs:
-  deploy:
-    runs-on: ubuntu-22.04
-    environment: production
-    steps:
-      - uses: actions/checkout@v4
-      - uses: akhileshns/heroku-deploy@v3.13.15
-        with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
-          heroku_email: ${{secrets.HEROKU_EMAIL}}
-          appdir: "app/backend/sms"
-```
-
-### フロントエンドのデプロイ設定
-
-Vercel へのデプロイを自動化します。
-
-```yaml
-name: Vercel FrontEnd Production Deployment
-env:
-  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_FRONTEND_PROJECT_ID }}
-on:
-  push:
-    branches:
-      - main
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    environment: production
-    steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js 24
-        uses: actions/setup-node@v4
-        with:
-          node-version: '24'
-          cache: 'npm'
-          cache-dependency-path: app/frontend/package-lock.json
-      - name: Setup Environment Variables
-        run: |
-          echo VITE_APP_API_URL=${{ vars.PRD_APP_API_URL }} > .env
-        working-directory: app/frontend
-      - name: Install Vercel CLI
-        run: npm install --global vercel@latest
-      - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-        working-directory: app/frontend
-      - name: Build Project Artifacts
-        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-        working-directory: app/frontend
-      - name: Deploy Project Artifacts to Vercel
-        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
-        working-directory: app/frontend
-```
-
-### デプロイメントフロー
-
-```plantuml
-@startuml
-title デプロイメントフロー
-
-|開発者|
-start
-:コードを push;
-
-|GitHub Actions|
-:ビルド実行;
-:テスト実行;
-
-if (テスト成功?) then (yes)
-  if (main ブランチ?) then (yes)
-    |Heroku|
-    :バックエンドデプロイ;
-
-    |Vercel|
-    :フロントエンドデプロイ;
-  else (no)
-    :プレビュー環境デプロイ;
-  endif
-else (no)
-  |開発者|
-  :エラー修正;
-  -> コードを push;
-endif
-
-|本番環境|
-:アプリケーション稼働;
-
-stop
-
-@enduml
-```
-
-## 22.3 JIG/JIG-ERD アーカイブ
-
-### リリース時のドキュメント保存
-
-各リリースバージョンで生成された JIG および JIG-ERD ドキュメントを保存することで、アーキテクチャの変遷を追跡できます。
-
-```plantuml
-@startuml
-title リリースごとのドキュメント構成
-
-folder "docs/assets/release" {
-  folder "v0_1_0" {
-    folder "jig" {
-      file "index.html"
-      file "domain.html"
-      file "application.html"
-      file "usecase.html"
-      file "*.svg"
+    ApplicationExecutionProcessType(String name, String code) {
+        this.name = name;
+        this.code = code;
     }
-    folder "jig-erd" {
-      file "library-er-overview.svg"
-      file "library-er-summary.svg"
-      file "library-er-detail.svg"
+}
+```
+
+### AOP による自動記録
+
+Spring AOP を使用して、アノテーションベースで実行履歴を自動記録します。
+
+```plantuml
+@startuml
+title AOP による実行履歴記録
+
+actor ユーザー
+participant "Controller" as ctrl
+participant "AuditServiceAspect" as aspect
+participant "AuditService" as service
+participant "Repository" as repo
+database "DB" as db
+
+ユーザー -> ctrl : API 呼び出し
+ctrl -> aspect : @AuditAnnotation\n付きメソッド実行
+activate aspect
+
+aspect -> service : start(process, type)
+service -> repo : 履歴レコード作成
+repo -> db : INSERT
+service --> aspect : 履歴エンティティ
+
+aspect -> ctrl : proceed()
+ctrl --> aspect : 処理結果
+
+alt 正常終了
+  aspect -> service : end(audit)
+  service -> repo : 終了時刻・フラグ更新
+  repo -> db : UPDATE
+else 異常終了
+  aspect -> service : error(audit, message)
+  service -> repo : エラー情報更新
+  repo -> db : UPDATE
+end
+
+aspect --> ctrl : 結果を返却
+ctrl --> ユーザー : レスポンス
+
+deactivate aspect
+
+@enduml
+```
+
+### 監査アノテーション
+
+```java
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface AuditAnnotation {
+    ApplicationExecutionProcessType process();
+    ApplicationExecutionHistoryType type();
+}
+```
+
+### Aspect の実装
+
+```java
+@Slf4j
+@Aspect
+@Component
+public class AuditServiceAspect {
+    private final AuditService auditService;
+
+    @Autowired
+    public AuditServiceAspect(AuditService auditService) {
+        this.auditService = auditService;
     }
-  }
 
-  folder "v0_2_0" {
-    folder "jig"
-    folder "jig-erd"
-  }
+    @Around("@annotation(auditAnnotation)")
+    public Object handleAuditAspect(ProceedingJoinPoint joinPoint,
+                                     AuditAnnotation auditAnnotation) throws Throwable {
+        // プロセス情報取得
+        ApplicationExecutionProcessType process =
+            ApplicationExecutionProcessType.fromNameAndCode(
+                auditAnnotation.process().getName(),
+                auditAnnotation.process().getCode());
+        ApplicationExecutionHistoryType type =
+            ApplicationExecutionHistoryType.fromName(auditAnnotation.type().getName());
 
-  folder "..." as dots
+        // 実行開始記録
+        ApplicationExecutionHistory audit = auditService.start(process, type);
+        log.info("{}:{}を開始しました", audit.getProcessStart(), process.getName());
 
-  folder "v0_11_0" {
-    folder "jig"
-    folder "jig-erd"
-  }
+        try {
+            // 対象メソッド実行
+            Object result = joinPoint.proceed();
+
+            // 正常終了記録
+            audit = auditService.end(audit);
+            log.info("{}:{}を終了しました", audit.getProcessEnd(), process.getName());
+            return result;
+        } catch (Throwable e) {
+            // 異常終了記録
+            auditService.error(audit, e.getMessage());
+            log.error("{}:{}でエラーが発生しました", audit.getProcessEnd(), process.getName());
+            throw e;
+        }
+    }
 }
-
-@enduml
 ```
 
-### JIG ドキュメントの生成手順
+### コントローラでの使用例
 
-リリース時に JIG ドキュメントを生成する手順です。
-
-```bash
-# 1. JIG レポートの生成
-cd app/backend/sms
-./gradlew jigReports
-
-# 2. JIG-ERD の生成
-./gradlew test --tests "*JigErdTest*"
-
-# 3. 生成されたドキュメントをリリースディレクトリにコピー
-mkdir -p ../../../docs/assets/release/v0_12_0/jig
-mkdir -p ../../../docs/assets/release/v0_12_0/jig-erd
-cp -r build/jig/* ../../../docs/assets/release/v0_12_0/jig/
-cp -r build/jig-erd/* ../../../docs/assets/release/v0_12_0/jig-erd/
+```java
+@Operation(summary = "受注を登録する")
+@PostMapping
+@AuditAnnotation(process = ApplicationExecutionProcessType.受注登録,
+                 type = ApplicationExecutionHistoryType.同期)
+public ResponseEntity<?> create(@RequestBody OrderResource resource) {
+    try {
+        Order order = convertToEntity(resource);
+        salesOrderService.register(order);
+        return ResponseEntity.ok(new MessageResponse(
+            message.getMessage("success.order.registered")));
+    } catch (BusinessException | IllegalArgumentException e) {
+        return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+    }
+}
 ```
 
-### バージョン間の比較
+### 実行履歴 API
 
-JIG ドキュメントを比較することで、アーキテクチャの進化を可視化できます。
+```java
+@RestController
+@RequestMapping("/api/audits")
+@Tag(name = "Audit", description = "監査")
+public class AuditApiController {
+    final AuditService auditService;
+
+    @Operation(summary = "アプリケーション実行履歴一覧を取得する")
+    @GetMapping
+    public ResponseEntity<?> select(
+            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(value = "page", defaultValue = "1") int... page) {
+        PageNation.startPage(page, pageSize);
+        PageInfo<ApplicationExecutionHistory> result = auditService.selectAllWithPageInfo();
+        return ResponseEntity.ok(result);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "アプリケーション実行履歴を検索する")
+    @PostMapping("/search")
+    public ResponseEntity<?> search(
+            @RequestBody AuditCriteriaResource resource,
+            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(value = "page", defaultValue = "1") int... page) {
+        PageNation.startPage(page, pageSize);
+        AuditCriteria criteria = convertToCriteria(resource);
+        PageInfo<ApplicationExecutionHistory> result = auditService.searchWithPageInfo(criteria);
+        return ResponseEntity.ok(result);
+    }
+}
+```
+
+---
+
+## 22.2 データダウンロード機能
+
+### ダウンロード機能の設計
+
+業務システムでは、データを CSV 形式でダウンロードする機能が必須です。バックアップ、データ移行、外部システム連携、レポート作成など多様な用途に対応します。
 
 ```plantuml
 @startuml
-title バージョン間のドメインモデル比較
+title データダウンロード機能の構成
 
-rectangle "v0.1.0" as v1 {
-  note as N1
-    **ドメインクラス数:** 45
-    **エンティティ:** 8
-    **値オブジェクト:** 12
-  end note
-}
+actor ユーザー
+participant "フロントエンド" as FE
+participant "DownloadApiController" as API
+participant "DownloadService" as SVC
+participant "CSVRepository" as REPO
+database "データベース" as DB
 
-rectangle "v0.5.0" as v5 {
-  note as N2
-    **ドメインクラス数:** 120
-    **エンティティ:** 25
-    **値オブジェクト:** 45
-  end note
-}
+ユーザー -> FE : ダウンロード対象選択
+FE -> API : POST /api/downloads/count
+API -> SVC : count(criteria)
+SVC -> REPO : countBy(condition)
+REPO -> DB : SELECT COUNT
+REPO --> SVC : 件数
+SVC --> API : 件数
+API --> FE : 件数表示
 
-rectangle "v0.11.0" as v11 {
-  note as N3
-    **ドメインクラス数:** 250+
-    **エンティティ:** 50+
-    **値オブジェクト:** 100+
-  end note
-}
-
-v1 --> v5 : "機能追加"
-v5 --> v11 : "機能追加\nリファクタリング"
+ユーザー -> FE : 実行ボタン
+FE -> API : POST /api/downloads/download
+API -> SVC : download(streamWriter, criteria)
+SVC -> REPO : selectBy(condition)
+REPO -> DB : SELECT
+REPO --> SVC : データリスト
+SVC -> SVC : CSV 変換
+SVC --> API : StreamWriter に書き込み
+API --> FE : CSV ファイル
+FE --> ユーザー : ファイル保存
 
 @enduml
 ```
 
-### リリース手順チェックリスト
+### ダウンロード対象
 
-リリース時に確認すべき項目のチェックリストです。
+システム内の主要なデータはすべてダウンロード可能です。
 
 ```plantuml
 @startuml
-title リリース手順チェックリスト
+title ダウンロード対象一覧
 
-start
+rectangle "マスタデータ" {
+  (部門)
+  (社員)
+  (商品分類)
+  (商品)
+  (取引先グループ)
+  (取引先)
+  (顧客)
+  (仕入先)
+  (口座)
+  (倉庫)
+  (棚番)
+}
 
-:1. 全テストがパス;
-:2. コードレビュー完了;
-:3. SonarQube 品質ゲート通過;
-:4. JIG ドキュメント生成;
-:5. JIG-ERD 生成;
-:6. ドキュメントをリリースディレクトリにコピー;
-:7. CHANGELOG 更新;
-:8. バージョン番号を更新;
-:9. Git タグを作成;
-:10. GitHub Release を作成;
-:11. 本番デプロイ確認;
+rectangle "トランザクションデータ" {
+  (受注)
+  (出荷)
+  (売上)
+  (請求)
+  (入金)
+  (発注)
+  (仕入)
+  (支払)
+  (在庫)
+}
 
-stop
+note bottom of マスタデータ
+  管理者権限が必要
+end note
+
+note bottom of トランザクションデータ
+  一般ユーザーも利用可能
+end note
 
 @enduml
 ```
 
-### タグ付けとリリース作成
+### ダウンロード条件の定義
 
-```bash
-# バージョンタグの作成
-git tag -a v0.12.0 -m "Release v0.12.0: 新機能の追加"
+```java
+/**
+ * ダウンロード対象
+ */
+public enum DownloadTarget {
+    部門("department.csv"),
+    社員("employee.csv"),
+    商品分類("product_category.csv"),
+    商品("product.csv"),
+    取引先グループ("partner_group.csv"),
+    取引先("partner.csv"),
+    顧客("customer.csv"),
+    仕入先("vendor.csv"),
+    口座("payment_account.csv"),
+    受注("order.csv"),
+    出荷("shipping.csv"),
+    売上("sales.csv"),
+    請求("invoice.csv"),
+    入金("payment.csv"),
+    発注("purchase_order.csv"),
+    仕入("purchase.csv"),
+    支払("purchase_payment.csv"),
+    在庫("inventory.csv"),
+    倉庫("warehouse.csv"),
+    棚番("location_number.csv");
 
-# タグのプッシュ
-git push origin v0.12.0
+    private final String fileName;
 
-# GitHub CLI でリリース作成
-gh release create v0.12.0 \
-  --title "Release v0.12.0" \
-  --notes "## 変更内容
-
-  ### 新機能
-  - 機能A の追加
-  - 機能B の追加
-
-  ### バグ修正
-  - 問題X の修正
-
-  ### ドキュメント
-  - JIG ドキュメント更新"
+    DownloadTarget(String fileName) {
+        this.fileName = fileName;
+    }
+}
 ```
+
+### ダウンロードサービス
+
+```java
+@Service
+public class DownloadService {
+    // 各種 CSV リポジトリ
+    private final DepartmentCSVRepository departmentCSVRepository;
+    private final EmployeeCSVRepository employeeCSVRepository;
+    private final ProductCSVRepository productCSVRepository;
+    // ... 省略
+
+    /**
+     * ダウンロード件数取得
+     */
+    public int count(DownloadCriteria condition) {
+        return switch (condition.getTarget()) {
+            case 部門 -> {
+                checkPermission("ROLE_ADMIN");
+                yield departmentCSVRepository.countBy(condition);
+            }
+            case 社員 -> {
+                checkPermission("ROLE_ADMIN");
+                yield employeeCSVRepository.countBy(condition);
+            }
+            case 受注 -> orderCSVRepository.countBy(condition);
+            case 在庫 -> inventoryCSVRepository.countBy(condition);
+            // ... 他の対象
+        };
+    }
+
+    /**
+     * ダウンロード実行
+     */
+    public void download(OutputStreamWriter streamWriter,
+                         DownloadCriteria condition) throws Exception {
+        switch (condition.getTarget()) {
+            case 部門 -> writeCsv(DepartmentDownloadCSV.class)
+                .accept(streamWriter, convert(condition));
+            case 社員 -> writeCsv(EmployeeDownloadCSV.class)
+                .accept(streamWriter, convert(condition));
+            case 受注 -> writeCsv(OrderDownloadCSV.class)
+                .accept(streamWriter, convert(condition));
+            case 在庫 -> writeCsv(InventoryDownloadCSV.class)
+                .accept(streamWriter, convert(condition));
+            // ... 他の対象
+        }
+    }
+}
+```
+
+### ダウンロード API
+
+```java
+@Slf4j
+@RestController
+@RequestMapping("/api/downloads")
+@Tag(name = "Download", description = "データダウンロード")
+public class DownloadApiController {
+    final DownloadService downloadService;
+
+    @Operation(summary = "ダウンロード件数", description = "ダウンロード件数を取得する")
+    @PostMapping("/count")
+    public ResponseEntity<?> count(@RequestBody DownloadCriteriaResource resource) {
+        try {
+            DownloadCriteria condition = DownloadCriteriaResource.of(resource.getTarget());
+            return ResponseEntity.ok(downloadService.count(condition));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
+    }
+
+    @Operation(summary = "ダウンロード", description = "ダウンロードする")
+    @PostMapping("/download")
+    @AuditAnnotation(process = ApplicationExecutionProcessType.データダウンロード,
+                     type = ApplicationExecutionHistoryType.同期)
+    public void download(@RequestBody DownloadCriteriaResource resource,
+                         HttpServletResponse response) {
+        DownloadCriteria condition = DownloadCriteriaResource.of(resource.getTarget());
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+            "attachment; filename=" + condition.getFileName());
+        try (OutputStreamWriter streamWriter =
+                new OutputStreamWriter(response.getOutputStream(), "Windows-31J")) {
+            downloadService.download(streamWriter, condition);
+        } catch (Exception e) {
+            log.error("ダウンロードエラー", e);
+        }
+    }
+}
+```
+
+### 権限によるアクセス制御
+
+マスタデータのダウンロードは管理者権限が必要です。
+
+```plantuml
+@startuml
+title ダウンロード権限マトリクス
+
+|= 対象 |= 一般ユーザー |= 管理者 |
+| 部門 | X | O |
+| 社員 | X | O |
+| 商品分類 | X | O |
+| 商品 | X | O |
+| 取引先 | X | O |
+| 顧客 | X | O |
+| 仕入先 | X | O |
+| 口座 | X | O |
+| 倉庫 | X | O |
+| 棚番 | X | O |
+| 受注 | O | O |
+| 出荷 | O | O |
+| 売上 | O | O |
+| 請求 | O | O |
+| 入金 | O | O |
+| 発注 | O | O |
+| 仕入 | O | O |
+| 支払 | O | O |
+| 在庫 | O | O |
+
+@enduml
+```
+
+---
+
+## 22.3 React コンポーネントの実装
+
+### ダウンロード画面の構成
+
+```plantuml
+@startuml
+title ダウンロード画面のコンポーネント構成
+
+package "Container" {
+  class DownloadContainer {
+    + loading: boolean
+  }
+  class DownloadSingle {
+    + selectedTarget: DownloadTarget
+    + handleDownload()
+  }
+}
+
+package "View" {
+  class SingleView {
+    + formItems
+    + headerActions
+  }
+}
+
+package "Provider" {
+  class DownloadProvider {
+    + downloadService
+    + executeDownload()
+  }
+}
+
+DownloadContainer --> DownloadSingle
+DownloadSingle --> SingleView
+DownloadContainer --> DownloadProvider
+
+@enduml
+```
+
+### ダウンロード対象の型定義
+
+```typescript
+export const DownloadTarget = {
+    部門: "部門",
+    社員: "社員",
+    商品分類: "商品分類",
+    商品: "商品",
+    取引先グループ: "取引先グループ",
+    取引先: "取引先",
+    顧客: "顧客",
+    仕入先: "仕入先",
+    口座: "口座",
+    受注: "受注",
+    出荷: "出荷",
+    売上: "売上",
+    請求: "請求",
+    入金: "入金",
+    発注: "発注",
+    仕入: "仕入",
+    支払: "支払",
+    在庫: "在庫",
+    倉庫: "倉庫",
+    棚番: "棚番",
+} as const;
+
+export type DownloadTarget = typeof DownloadTarget[keyof typeof DownloadTarget];
+```
+
+### ダウンロード画面の実装
+
+```typescript
+interface FormProps {
+    selectedTarget: DownloadTarget | null;
+    setSelectedTarget: React.Dispatch<React.SetStateAction<DownloadTarget | null>>;
+}
+
+const Form: React.FC<FormProps> = ({ selectedTarget, setSelectedTarget }) => {
+    return (
+        <div className="single-view-content-item-form">
+            <label htmlFor="downloadTarget" className="form-label">
+                ダウンロード対象
+            </label>
+            <select
+                id="downloadTarget"
+                value={selectedTarget ?? ""}
+                onChange={(e) => setSelectedTarget(e.target.value as DownloadTarget)}
+                className="dropdown"
+            >
+                <option value="" disabled>
+                    対象を選択してください
+                </option>
+                <option value={DownloadTarget.部門}>部門</option>
+                <option value={DownloadTarget.社員}>社員</option>
+                <option value={DownloadTarget.商品分類}>商品分類</option>
+                <option value={DownloadTarget.商品}>商品</option>
+                <option value={DownloadTarget.取引先グループ}>取引先グループ</option>
+                <option value={DownloadTarget.取引先}>取引先</option>
+                <option value={DownloadTarget.顧客}>顧客</option>
+                <option value={DownloadTarget.仕入先}>仕入先</option>
+                <option value={DownloadTarget.口座}>口座</option>
+                <option value={DownloadTarget.受注}>受注</option>
+                <option value={DownloadTarget.出荷}>出荷</option>
+                <option value={DownloadTarget.売上}>売上</option>
+                <option value={DownloadTarget.請求}>請求</option>
+                <option value={DownloadTarget.入金}>入金</option>
+                <option value={DownloadTarget.発注}>発注</option>
+                <option value={DownloadTarget.仕入}>仕入</option>
+                <option value={DownloadTarget.支払}>支払</option>
+                <option value={DownloadTarget.在庫}>在庫</option>
+                <option value={DownloadTarget.倉庫}>倉庫</option>
+                <option value={DownloadTarget.棚番}>棚番</option>
+            </select>
+        </div>
+    );
+};
+```
+
+### ダウンロード実行処理
+
+```typescript
+const handleDownload = async () => {
+    if (!selectedTarget) {
+        setError("ダウンロード対象を選択してください");
+        return;
+    }
+
+    setLoading(true);
+    try {
+        // Blob としてダウンロード
+        const response = await downloadService.download(selectedTarget);
+        const blob = new Blob([response], { type: 'text/csv;charset=Windows-31J' });
+        const url = window.URL.createObjectURL(blob);
+
+        // ダウンロードリンク作成
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${selectedTarget}.csv`;
+        document.body.appendChild(link);
+        link.click();
+
+        // クリーンアップ
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(link);
+
+        setMessage("ダウンロードが完了しました");
+    } catch (error) {
+        setError("ダウンロードに失敗しました");
+    } finally {
+        setLoading(false);
+    }
+};
+```
+
+---
+
+## 22.4 実行履歴画面の実装
+
+### 実行履歴一覧画面
+
+```plantuml
+@startuml
+title 実行履歴画面の構成
+
+package "Container" {
+  class AuditContainer {
+    + fetchAudits()
+    + handleSearch()
+  }
+}
+
+package "View" {
+  class AuditCollectionView {
+    + audits: AuditType[]
+    + searchCriteria
+    + pagination
+  }
+}
+
+AuditContainer --> AuditCollectionView
+
+note right of AuditCollectionView
+  表示項目:
+  - プロセス名
+  - 実行区分（同期/非同期）
+  - 開始日時
+  - 終了日時
+  - 結果フラグ
+  - ユーザー名
+end note
+
+@enduml
+```
+
+### 実行履歴の型定義
+
+```typescript
+export interface AuditType {
+    id: number;
+    process: {
+        processName: string;
+        processCode: string;
+    };
+    type: "同期" | "非同期";
+    processStart: string;
+    processEnd: string | null;
+    processFlag: "実行中" | "正常終了" | "異常終了";
+    processDetails: string | null;
+    user: {
+        userId: string;
+        userName: string;
+    };
+}
+
+export interface AuditCriteriaType {
+    processType?: string;
+    type?: string;
+    processFlag?: string;
+}
+```
+
+---
 
 ## まとめ
 
-この章では、リリース管理について解説しました。
+この章では、非機能要件として実行履歴管理とデータダウンロード機能について解説しました。
 
 **重要なポイント:**
 
-1. **セマンティックバージョニング**: MAJOR.MINOR.PATCH の形式でバージョンを管理し、変更の種類を明確に伝えます。
+1. **実行履歴管理**: AOP を活用したアノテーションベースの自動記録により、コードへの侵襲を最小限に抑えながら監査証跡を実現しています。
 
-2. **CI/CD パイプライン**: GitHub Actions を使用して、ビルド、テスト、デプロイを自動化します。Heroku（バックエンド）と Vercel（フロントエンド）への継続的デプロイを実現しています。
+2. **データダウンロード**: システム内の全データを CSV 形式でエクスポート可能にし、バックアップ、データ移行、外部連携に対応しています。
 
-3. **JIG/JIG-ERD アーカイブ**: 各リリースバージョンでドキュメントを保存し、アーキテクチャの変遷を追跡可能にします。これにより、システムの成長と進化を可視化できます。
+3. **権限管理**: マスタデータのダウンロードは管理者に限定し、トランザクションデータは一般ユーザーも利用可能とすることで、セキュリティと利便性のバランスを取っています。
 
-次の章では、今後の展望について解説します。機能拡張、アーキテクチャの進化、AI/ML 統合の可能性を探ります。
+4. **横断的関心事の分離**: Spring AOP により、ビジネスロジックと監査ロジックを分離し、保守性の高い実装を実現しています。
+
+次の章では、リリース管理について解説します。バージョニング戦略、CI/CD パイプライン、ドキュメント管理について説明します。
