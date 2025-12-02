@@ -583,7 +583,456 @@ public enum QualityCategory {
 }
 ```
 
-## 18.3 在庫ルール
+## 18.3 一括登録
+
+### CSVファイルによる在庫一括登録
+
+大量の在庫データを効率的に登録するため、CSVファイルによる一括アップロード機能を提供しています。
+
+```plantuml
+@startuml
+title 在庫一括登録のフロー
+
+actor ユーザー
+participant "フロントエンド" as FE
+participant "API\n(InventoryApiController)" as API
+participant "サービス\n(InventoryService)" as SVC
+participant "リポジトリ" as REPO
+database "データベース" as DB
+
+ユーザー -> FE : CSVファイル選択
+FE -> FE : ファイル検証\n(拡張子、サイズ)
+FE -> API : POST /api/inventories/upload\n(multipart/form-data)
+API -> SVC : uploadCsvFile(file)
+
+SVC -> SVC : ファイル検証
+note right
+  - ファイルが空でない
+  - CSV形式である
+  - サイズ制限内
+end note
+
+SVC -> SVC : CSVパース
+SVC -> SVC : データ検証
+
+alt バリデーションエラー
+  SVC --> API : InventoryUploadErrorList
+  API --> FE : エラー詳細
+  FE --> ユーザー : エラー表示
+else 検証成功
+  loop 各在庫データ
+    SVC -> REPO : save(inventory)
+    REPO -> DB : INSERT/UPDATE
+  end
+  SVC --> API : 空のエラーリスト
+  API --> FE : 成功メッセージ
+  FE --> ユーザー : 完了表示
+end
+
+@enduml
+```
+
+### CSVファイルフォーマット
+
+在庫データのCSVファイルは、以下のフォーマットで作成します。
+
+| 列番号 | カラム名 | データ型 | 必須 | 説明 |
+|--------|----------|----------|------|------|
+| 0 | 倉庫コード | 文字列 | ○ | W + 数字2桁（例: W01） |
+| 1 | 商品コード | 文字列 | ○ | 16桁以内 |
+| 2 | ロット番号 | 文字列 | ○ | 英数字とハイフン、20文字以内 |
+| 3 | 在庫区分 | 文字列 | ○ | 1: 通常在庫, 2: 安全在庫, 3: 廃棄予定 |
+| 4 | 良品区分 | 文字列 | ○ | G: 良品, B: 不良品, R: 返品 |
+| 5 | 実在庫数量 | 整数 | ○ | 0以上 |
+| 6 | 有効在庫数量 | 整数 | ○ | 0以上、実在庫数以下 |
+
+**CSVファイル例:**
+
+```csv
+W01,10101001,LOT001,1,G,100,95
+W01,10101002,LOT001,1,G,50,50
+W02,10101001,LOT002,2,G,30,30
+W01,10101003,LOT001,1,B,10,0
+```
+
+### CSVマッピングクラス
+
+OpenCSVを使用してCSVファイルをJavaオブジェクトにマッピングします。
+
+```java
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonPropertyOrder({
+    "warehouseCode", "productCode", "lotNumber",
+    "stockCategory", "qualityCategory",
+    "actualStockQuantity", "availableStockQuantity"
+})
+public class InventoryUploadCSV {
+
+    /** 倉庫コード */
+    @CsvBindByPosition(position = 0)
+    private String warehouseCode;
+
+    /** 商品コード */
+    @CsvBindByPosition(position = 1)
+    private String productCode;
+
+    /** ロット番号 */
+    @CsvBindByPosition(position = 2)
+    private String lotNumber;
+
+    /** 在庫区分 */
+    @CsvBindByPosition(position = 3)
+    private String stockCategory;
+
+    /** 良品区分 */
+    @CsvBindByPosition(position = 4)
+    private String qualityCategory;
+
+    /** 実在庫数量 */
+    @CsvBindByPosition(position = 5)
+    private String actualStockQuantity;
+
+    /** 有効在庫数量 */
+    @CsvBindByPosition(position = 6)
+    private String availableStockQuantity;
+}
+```
+
+### サービス層の実装
+
+```java
+/**
+ * 在庫一括登録
+ */
+public InventoryUploadErrorList uploadCsvFile(MultipartFile file) {
+    // ファイル検証
+    notNull(file, "アップロードファイルは必須です。");
+    isTrue(!file.isEmpty(), "CSVファイルの読み込みに失敗しました");
+
+    String originalFilename = Optional.ofNullable(file.getOriginalFilename())
+            .orElseThrow(() -> new IllegalArgumentException("アップロードファイル名は必須です。"));
+    isTrue(originalFilename.endsWith(".csv"), "アップロードファイルがCSVではありません。");
+    isTrue(file.getSize() < 1000, "アップロードファイルが大きすぎます。");
+
+    log.info("在庫CSVアップロード開始: ファイル名={}, サイズ={}",
+             originalFilename, file.getSize());
+
+    // CSVパース
+    Pattern2ReadCSVUtil<InventoryUploadCSV> csvUtil = new Pattern2ReadCSVUtil<>();
+    List<InventoryUploadCSV> dataList = csvUtil.readCSV(
+        InventoryUploadCSV.class, file, "UTF-8");
+    isTrue(!dataList.isEmpty(), "CSVファイルの読み込みに失敗しました");
+
+    // データ検証
+    InventoryUploadErrorList errorList = validateErrors(dataList);
+    if (!errorList.isEmpty()) {
+        log.warn("在庫CSVアップロードバリデーションエラー: エラー数={}",
+                 errorList.size());
+        return errorList;
+    }
+
+    // CSV データをドメインオブジェクトに変換して保存
+    List<Inventory> inventoryList = convertFromCsv(dataList);
+    List<Map<String, String>> saveErrors = new ArrayList<>();
+
+    for (Inventory inventory : inventoryList) {
+        try {
+            inventoryRepository.save(inventory);
+            log.debug("在庫登録成功: {}", inventory.getKey());
+        } catch (Exception e) {
+            log.error("在庫登録エラー: key={}, error={}",
+                      inventory.getKey(), e.getMessage());
+            Map<String, String> error = new HashMap<>();
+            error.put(inventory.getKey().toString(), e.getMessage());
+            saveErrors.add(error);
+        }
+    }
+
+    return new InventoryUploadErrorList(saveErrors);
+}
+```
+
+### バリデーション処理
+
+各項目に対してドメインルールに基づいた検証を行います。
+
+```java
+/**
+ * アップロードデータの検証
+ */
+private InventoryUploadErrorList validateErrors(List<InventoryUploadCSV> dataList) {
+    List<Map<String, String>> errors = new ArrayList<>();
+    int rowNum = 1;
+
+    for (InventoryUploadCSV csv : dataList) {
+        final int currentRow = rowNum;
+
+        BiConsumer<String, String> addError = (field, message) -> {
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put("行" + currentRow, field + ": " + message);
+            errors.add(errorMap);
+        };
+
+        // 倉庫コード検証
+        if (csv.getWarehouseCode() == null || csv.getWarehouseCode().isEmpty()) {
+            addError.accept("倉庫コード", "必須項目です");
+        } else {
+            try {
+                WarehouseCode.of(csv.getWarehouseCode());
+            } catch (IllegalArgumentException e) {
+                addError.accept("倉庫コード", e.getMessage());
+            }
+        }
+
+        // 商品コード検証
+        if (csv.getProductCode() == null || csv.getProductCode().isEmpty()) {
+            addError.accept("商品コード", "必須項目です");
+        }
+
+        // ロット番号検証
+        if (csv.getLotNumber() == null || csv.getLotNumber().isEmpty()) {
+            addError.accept("ロット番号", "必須項目です");
+        } else {
+            try {
+                LotNumber.of(csv.getLotNumber());
+            } catch (IllegalArgumentException e) {
+                addError.accept("ロット番号", e.getMessage());
+            }
+        }
+
+        // 在庫区分検証
+        if (csv.getStockCategory() == null || csv.getStockCategory().isEmpty()) {
+            addError.accept("在庫区分", "必須項目です");
+        } else {
+            try {
+                StockCategory.of(csv.getStockCategory());
+            } catch (IllegalArgumentException e) {
+                addError.accept("在庫区分", e.getMessage());
+            }
+        }
+
+        // 良品区分検証
+        if (csv.getQualityCategory() == null || csv.getQualityCategory().isEmpty()) {
+            addError.accept("良品区分", "必須項目です");
+        } else {
+            try {
+                QualityCategory.of(csv.getQualityCategory());
+            } catch (IllegalArgumentException e) {
+                addError.accept("良品区分", e.getMessage());
+            }
+        }
+
+        // 数量検証
+        validateQuantity(csv.getActualStockQuantity(), "実在庫数量", addError);
+        validateQuantity(csv.getAvailableStockQuantity(), "有効在庫数量", addError);
+
+        // 有効在庫数 <= 実在庫数のチェック
+        if (isValidInteger(csv.getActualStockQuantity()) &&
+            isValidInteger(csv.getAvailableStockQuantity())) {
+            int actual = Integer.parseInt(csv.getActualStockQuantity());
+            int available = Integer.parseInt(csv.getAvailableStockQuantity());
+            if (available > actual) {
+                addError.accept("有効在庫数量", "実在庫数量以下である必要があります");
+            }
+        }
+
+        rowNum++;
+    }
+
+    return new InventoryUploadErrorList(errors);
+}
+```
+
+### エラーリストの設計
+
+アップロード時のエラーは、行番号とエラー内容を含むリストとして返却します。
+
+```java
+/**
+ * 在庫アップロードエラーリスト
+ */
+public class InventoryUploadErrorList {
+    List<Map<String, String>> value;
+
+    public InventoryUploadErrorList(List<Map<String, String>> value) {
+        this.value = Collections.unmodifiableList(value);
+    }
+
+    public int size() {
+        return value.size();
+    }
+
+    public List<Map<String, String>> asList() {
+        return value;
+    }
+
+    public boolean isEmpty() {
+        return value.isEmpty();
+    }
+}
+```
+
+### APIエンドポイント
+
+```java
+@Operation(summary = "在庫を一括登録する", description = "ファイルアップロードで在庫を登録する")
+@PostMapping("/upload")
+@AuditAnnotation(process = ApplicationExecutionProcessType.在庫登録,
+                 type = ApplicationExecutionHistoryType.同期)
+public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file) {
+    try {
+        InventoryUploadErrorList result = inventoryService.uploadCsvFile(file);
+        if (result.isEmpty()) {
+            return ResponseEntity.ok(new MessageResponseWithDetail(
+                message.getMessage("success.inventory.upload"),
+                result.asList()));
+        }
+        return ResponseEntity.ok(new MessageResponseWithDetail(
+            message.getMessage("error.inventory.upload"),
+            result.asList()));
+    } catch (RuntimeException e) {
+        return ResponseEntity.badRequest().body(
+            new MessageResponseWithDetail(e.getMessage(), List.of()));
+    }
+}
+```
+
+### React コンポーネントの実装
+
+一括登録画面は、Container/View パターンで実装されています。
+
+```plantuml
+@startuml
+title 在庫一括登録画面のコンポーネント構成
+
+package "Container" {
+  class InventoryUploadContainer {
+    + loading: boolean
+  }
+  class InventoryUploadCollection {
+    + handleOpenUploadModal()
+    + handleDeleteUploadResult()
+  }
+  class InventoryUploadSingle {
+    + selectedFile: File
+    + handleFileSelect()
+    + handleUpload()
+  }
+}
+
+package "View" {
+  class InventoryUploadCollectionView
+  class InventoryUploadSingleView
+}
+
+package "Modal" {
+  class InventoryUploadModal {
+    + uploadModalIsOpen: boolean
+  }
+}
+
+InventoryUploadContainer --> InventoryUploadCollection
+InventoryUploadCollection --> InventoryUploadCollectionView
+InventoryUploadCollection --> InventoryUploadModal
+InventoryUploadModal --> InventoryUploadSingle
+InventoryUploadSingle --> InventoryUploadSingleView
+
+@enduml
+```
+
+#### アップロードモーダル
+
+ファイル選択とアップロード実行を行うモーダルダイアログです。
+
+```typescript
+export const InventoryUploadSingle: React.FC = () => {
+    const {
+        message, setMessage,
+        error, setError,
+        setUploadModalIsOpen,
+        uploadInventories,
+    } = useInventoryContext();
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+    const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files[0]) {
+            setSelectedFile(event.target.files[0]);
+        }
+    };
+
+    const handleUpload = async () => {
+        setError("");
+        setMessage("");
+        if (!selectedFile) {
+            setError("ファイルを選択してください");
+            return;
+        }
+        try {
+            await uploadInventories(selectedFile);
+            setUploadModalIsOpen(false);
+            setSelectedFile(null);
+        } catch (error) {
+            const errorMessage = error instanceof Error
+                ? error.message
+                : "アップロード中にエラーが発生しました";
+            setError(errorMessage);
+        }
+    };
+
+    const handleCloseModal = () => {
+        setError("");
+        setMessage("");
+        setUploadModalIsOpen(false);
+        setSelectedFile(null);
+    };
+
+    return (
+        <InventoryUploadSingleView
+            error={error}
+            message={message}
+            onFileSelect={handleFileSelect}
+            onUpload={handleUpload}
+            onClose={handleCloseModal}
+            isUploadDisabled={!selectedFile}
+        />
+    );
+};
+```
+
+#### アップロード結果の表示
+
+アップロード結果（成功・エラー）を一覧表示します。
+
+```typescript
+export const InventoryUploadCollection: React.FC = () => {
+    const { uploadResults, setUploadResults, setUploadModalIsOpen } = useInventoryContext();
+
+    const handleOpenUploadModal = () => {
+        setUploadModalIsOpen(true);
+    };
+
+    const handleDeleteUploadResult = (index: number) => {
+        setUploadResults((prev: any[]) => prev.filter((_: any, i: number) => i !== index));
+    };
+
+    return (
+        <>
+            <InventoryUploadCollectionView
+                uploadHeaderItems={{ handleOpenUploadModal }}
+                uploadResults={uploadResults}
+                handleDeleteUploadResult={handleDeleteUploadResult}
+            />
+            <InventoryUploadModal/>
+        </>
+    );
+};
+```
+
+---
+
+## 18.4 在庫ルール
 
 ### Strategy パターンによるルール実装
 
@@ -794,7 +1243,7 @@ public class InventoryService {
 }
 ```
 
-## 18.4 React コンポーネントの実装
+## 18.5 React コンポーネントの実装
 
 ### 在庫画面のコンポーネント構成
 
@@ -1222,7 +1671,7 @@ export const InventorySingle: React.FC = () => {
 };
 ```
 
-## 18.5 E2E テスト
+## 18.6 E2E テスト
 
 ### Cypress によるテスト
 
@@ -1429,10 +1878,12 @@ stop
 
 2. **複合主キー**: 在庫は、倉庫コード・商品コード・ロット番号・在庫区分・良品区分の5つの属性で一意に識別されます。これにより、同じ商品でも異なるロットや品質区分で別々に管理できます。
 
-3. **在庫操作メソッド**: 在庫エンティティには、入荷（receive）、出荷（ship）、予約（reserve）、調整（adjustStock）などの操作メソッドが実装されています。不変オブジェクトとして、操作のたびに新しいインスタンスを返します。
+3. **一括登録**: CSV ファイルによる在庫データの一括アップロードに対応。OpenCSV でのマッピング、ドメインルールに基づくバリデーション、エラー詳細の返却を実装しています。
 
 4. **在庫ルール**: Strategy パターンでルールを実装し、在庫レベル警告や在庫ゼロ警告などのチェックを行います。
 
-5. **E2E テスト**: Cypress を使って、管理者と利用者の両方のシナリオをカバーするテストを実装しています。テストデータは CSV アップロードで準備します。
+5. **在庫操作メソッド**: 在庫エンティティには、入荷（receive）、出荷（ship）、予約（reserve）、調整（adjustStock）などの操作メソッドが実装されています。不変オブジェクトとして、操作のたびに新しいインスタンスを返します。
+
+6. **E2E テスト**: Cypress を使って、管理者と利用者の両方のシナリオをカバーするテストを実装しています。テストデータは CSV アップロードで準備します。
 
 次の章では、テスト戦略について解説します。テストピラミッド、TestContainer の活用、受け入れテストの実装方法を学びます。
